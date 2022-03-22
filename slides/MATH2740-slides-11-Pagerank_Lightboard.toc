@@ -1,0 +1,7 @@
+\beamer@sectionintoc {1}{Markov chains}{4}{0}{1}
+\beamer@sectionintoc {2}{Running example -- Mendelian inheritance}{8}{0}{2}
+\beamer@sectionintoc {3}{Repetition of the process}{13}{0}{3}
+\beamer@sectionintoc {4}{Regular Markov chains}{21}{0}{4}
+\beamer@sectionintoc {5}{Back to the genetics example}{25}{0}{5}
+\beamer@sectionintoc {6}{Changing the setting of the genetic experiment}{30}{0}{6}
+\beamer@sectionintoc {7}{Absorbing Markov chains}{31}{0}{7}

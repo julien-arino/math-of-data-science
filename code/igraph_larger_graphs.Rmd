@@ -1,0 +1,204 @@
+---
+title: "Some larger graphs"
+author: "Julien Arino"
+date: "03/11/2021"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Some examples of (connected?) graphs
+
+There are a few very interesting datasets available online. We start with something from a collection from Stanford University, see [here](https://snap.stanford.edu/data/). There are relatively large graphs, so will give us the opportunity to explore what happens when the graphs are not just a few vertices.
+
+Let us start with something small: [here](https://snap.stanford.edu/data/ego-Facebook.html). This dataset consists of 'circles' (or 'friends lists') from Facebook. Facebook data was collected from survey participants using this Facebook app. The dataset includes node features (profiles), circles, and ego networks.
+
+When you read the description, you notice right away that the notion of connectedness is embedded in the graph description: the acronym WCC means *weakly connected components*, SCC being, of course, *strongly connected components*.
+
+Downloading the data, we see that there are a number of files, each prefixed by a number. From the description, these files are as follows (for a given `nodeId`):
+
+- nodeId.edges : The edges in the ego network for the node 'nodeId'. Edges are undirected for facebook, and directed (a follows b) for twitter and gplus. The 'ego' node does not appear, but it is assumed that they follow every node id that appears in this file.
+- nodeId.circles : The set of circles for the ego node. Each line contains one circle, consisting of a series of node ids. The first entry in each line is the name of the circle.
+- nodeId.feat : The features for each of the nodes that appears in the edge file.
+- nodeId.egofeat : The features for the ego user.
+- nodeId.featnames : The names of each of the feature dimensions. Features are '1' if the user has this property in their profile, and '0' otherwise. This file has been anonymized for facebook users, since the names of the features would reveal private data.
+
+Let us take a look at `nodeId=0`. The most important files (for now) are `0.circles` and `0.edges`. We take a quick look at the text files themselves and remark that `0.circles` seems to be tsv (tab separated values) files, while the entries in `0.edges` are separated by spaces. Also, the data starts from the first row.
+
+
+```{r}
+circles = read.csv("0.circles", sep = "\t", header = FALSE)
+edges = read.csv("0.edges", sep = " ", header = FALSE)
+```
+
+
+```{r}
+circles
+head(edges)
+```
+
+`edges` went fine, but for `circles`, we have a problem: despite the fact that all entries in circle15, for instance, seem to be on the same line in the file, they are read as multiple lines. Let us confirm.
+
+
+```{r}
+dim(circles)
+```
+
+Yup, clearly a problem here, there should be way more than 21 columns! Let us try something a bit more evolved: we read line by line and process this. We make a little function (slightly adapted from one [here](https://stackoverflow.com/questions/12626637/read-a-text-file-in-r-line-by-line)).
+
+
+```{r}
+processFile = function(filepath) {
+    con = file(filepath, "r")
+    OUT = list()
+    i = 1
+    while ( TRUE ) {
+        line = readLines(con, n = 1)
+        if ( length(line) == 0 ) {
+            break
+        }
+        OUT[[i]] = line
+        i = i+1
+    }
+    close(con)
+    return(OUT)
+}
+
+circles = processFile("0.circles")
+```
+
+Note that you can also suppress code output:
+```{r, echo=FALSE}
+processFile = function(filepath) {
+    con = file(filepath, "r")
+    OUT = list()
+    i = 1
+    while ( TRUE ) {
+        line = readLines(con, n = 1)
+        if ( length(line) == 0 ) {
+            break
+        }
+        OUT[[i]] = line
+        i = i+1
+    }
+    close(con)
+    return(OUT)
+}
+
+circles = processFile("0.circles")
+circles[[1]]
+```
+
+
+```{r}
+circles[[1]]
+```
+
+Looks good. Let us process this to make things a bit easier to use.
+
+
+```{r}
+for (i in 1:length(circles)) {
+    circles[[i]] = gsub("\t", ",", circles[[i]])
+}
+circles[[1]]
+```
+
+
+This one's okay, now let us make the graph, using `graph_from_edgelist` (`from_edgelist` for short); see help [here](https://igraph.org/r/html/latest/graph_from_edgelist.html). Data description says the facebook graph is undirected, so we use that option.
+
+
+```{r}
+library(igraph)
+G = graph_from_edgelist(as.matrix(edges), directed = FALSE)
+plot(G)
+```
+
+
+
+
+```{r}
+gorder(G)
+```
+
+
+
+```{r}
+C = components(G)
+writeLines(paste0("Number of components: ", C$no))
+C$csize
+```
+
+Let us keep only the vertices in the largest connected component (the one with `r max(G$csize)` vertices). We look at the membership information.
+
+
+```{r}
+groups(C)
+```
+
+We need to be able to find what component is the largest. To do that, we simply seek the group with the most elements.
+
+
+```{r}
+idx_large = which(unlist(lapply(groups(C), length) == max(C$csize)))
+idx_large
+```
+
+```{r}
+G_c = induced_subgraph(G, groups(C)[[idx_large]])
+plot(G_c)
+```
+
+
+# Another example
+
+To see how efficacious component computation goes, let us look at [this dataset](https://snap.stanford.edu/data/twitch_gamers.html). We just load one file of the three in the zip file. The file is quite big, so we do not unzip it and just load it as is. The next operation might take a while.
+
+
+```{r}
+twitch <- read.csv(unz("large_twitch_edges.csv.zip", "large_twitch_edges.csv"))
+```
+
+
+```{r}
+head(twitch)
+dim(twitch)
+```
+
+Ah, that's bigger! We'll load but not try to plot..
+
+
+```{r}
+#G = graph_from_edgelist(as.matrix(twitch), directed = FALSE)
+```
+
+Actually, strike that: tried this, it's too big for the machines at syzygy.ca, it seems. So I ran this on one of the beefy machines of my home cluster and saved the result as an `Rds` file, which I will distribute. Actually, doing this I realised that perhaps the problem was that the data contains reference to vertices labelled 0, and taking them out was important. Let's see if that works here.
+
+Let us try another way to clean up data, using the so-called `tidyverse`. Note that when loading libraries and the like, you can also suppress the output. Sometimes it is not easy, but usually, trying the following should do the trick.
+
+
+```{r, warning=FALSE, messages=FALSE}
+suppressPackageStartupMessages(library(tidyverse))
+#library(tidyverse)
+```
+
+```{r, echo=FALSE}
+# The following version of which returns array (matrix) indices of the found 
+# entries, because the zeros can be in both columns of twitch. But then we only need 
+# the rows in that index set.
+twitch_2 = twitch %>%
+  filter(numeric_id_1 > 0) %>%
+  filter(numeric_id_2 > 0)
+twitch = twitch+1
+```
+
+
+```{r}
+G = graph_from_edgelist(as.matrix(twitch), directed = FALSE)
+```
+
+Works, now! There are `r gorder(G)` vertices in the graph. The graph is connected? `r is.connected(G)`. You could also do like so: The graph is **`r ifelse(is.connected(G),"connected","not connected")`**.

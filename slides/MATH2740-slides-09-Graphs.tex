@@ -1,0 +1,1226 @@
+\PassOptionsToPackage{landscape}{geometry}
+\documentclass[aspectratio=43]{beamer}
+
+\input{nonLightBoard_slides.tex}
+
+\title{Graphs -- Introduction (theory)}
+\date{}
+
+\begin{document}
+\DeclareFontShape{OT1}{cmss}{b}{n}{<->ssub * cmss/bx/n}{} 
+\begin{frame}
+	\titlepage
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{frame}{Graphs versus networks}
+Mostly a terminology difference:
+\begin{itemize}
+\item graphs in the mathematical world
+\item networks elsewhere
+\end{itemize}
+\vfill
+I will mostly say \emph{graphs} (this is a math course) but might oscillate
+\vfill
+I will be basing the theory part on Berge (Graphs and Hypergraphs, 1973) and Bang-Jensen \& Gutin (Digraphs: Theory, Algorithms and Applications, 2009)
+\vfill
+Graph theory's vocabulary is not homogeneous. As much as possible, I will point out alternate terms
+\vfill
+\end{frame}
+
+
+\begin{frame}{Graph}
+Intuitively: a graph is a set of points, and a set of arrows, with each arrow joining one point to another
+\vfill
+The points are called the \emph{vertices} of the graph and the arrows are the \emph{arcs} of the graph
+\end{frame}
+
+\begin{frame}
+\begin{definition}[Graph]
+A graph $G$ is a pair $(X,U)$, where
+\begin{enumerate}
+\item $X$ a set $\{x_1,x_2,\ldots,x_n\}$ of elements called \textbf{vertices}
+\item $U$ a family $(u_1,u_2,\ldots,u_m)$ of elements of the Cartesian product $X\times X$, called \textbf{arcs}. This family is often be denoted by the set $U=\{1,2,\ldots,m\}$ of its indices.
+An element $(x,y)$ of $X\times X$ can appear more than once in this family.
+A graph in which no element of $X\times X$ appears more than $p$ times is called a $p$-graph
+\end{enumerate}
+\end{definition}
+\vfill
+\begin{definition}[Order of a graph]
+The number of vertices in a graph is called the \textbf{order} of the graph
+\end{definition}
+\end{frame}
+
+\begin{frame}
+\begin{definition}[Loop]
+An arc of $G$ of the form $(x,x)$ is called a \textbf{loop}
+\end{definition}
+\vfill
+\begin{definition}[Arc endpoints]
+For an arc $u=(x,y)$, vertex $x$ is the \textbf{initial endpoint}, and vertex $y$ is the \textbf{terminal endpoint}
+\end{definition}
+\vfill
+\begin{definition}[Successors/Predecessors]
+Vertex $y$ is a \textbf{successor} (resp. \textbf{predecessor}) of vertex $x$ if there is an arc with $y$ as its initial (resp. terminal) endpoint and $x$ as its termina1 (resp. initial) endpoint. The set of all successors (resp. predecessors) of $x$ is denoted $\Gamma^+_G(x)$ (resp. $\Gamma^-_G(x)$)
+\end{definition}
+
+\begin{definition}
+The set of all neighbours of $x$ is denoted $\Gamma(x) = \Gamma^+_G(x)\cup\Gamma^-_G(x)$
+\end{definition}
+\end{frame}
+
+\begin{frame}{Examples}
+	\begin{figure}[htbp]
+		\centering
+		\def\skip{2.75cm}
+		\begin{tikzpicture}[scale=0.75, 
+		every node/.style={transform shape},
+		auto,
+		cloud/.style={minimum width={width("N-1")+2pt},
+			draw, ellipse},
+		connected/.style={dotted,-}]
+		%% Vertices
+		\node [cloud] at (0,0) (a) {$a$};
+		\node [cloud] at (1*\skip,1*\skip) (b) {$b$};
+		\node [cloud] at (1*\skip,-1*\skip) (c) {$c$};
+		\node [cloud] at (2*\skip,0) (d) {$d$};
+		%% Arcs
+		\path [line, thick,bend right] (a) to node [midway, above] (TextNode) {2} (b);
+		\path [line, thick] (a) to node [midway, above] (TextNode) {3} (b);
+		\path [line, thick,bend left] (a) to node [midway, above] (TextNode) {4} (b);
+		\path [line, thick, looseness=5] (b) to node [midway, above] (TextNode) {5} (b);
+		\path [line, thick, looseness=15] (b) to node [midway, above] (TextNode) {6} (b);
+		\path [line, thick] (c) to node [midway, left] (TextNode) {7} (b);
+		\path [line, thick] (c) to node [midway, above] (TextNode) {1} (a);
+		\path [line, thick, bend left] (d) to node [midway, above] (TextNode) {8} (c);
+		\path [line, thick, bend right] (d) to node [midway, above] (TextNode) {9} (c);
+		\path [line, thick, looseness=5] (d) to node [midway, above] (TextNode) {10} (d);
+		\end{tikzpicture}
+	\end{figure}
+	\begin{figure}[htbp]
+	\centering
+	\def\skip{2.75cm}
+	\begin{tikzpicture}[scale=0.75, 
+	every node/.style={transform shape},
+	auto,
+	cloud/.style={minimum width={width("N-1")+2pt},
+		draw, ellipse},
+	connected/.style={dotted,-}]
+	%% Vertices
+	\node [cloud] at (0,0) (x1) {$x_1$};
+	\node [cloud] at (1*\skip,1*\skip) (x2) {$x_2$};
+	\node [cloud] at (2*\skip,1*\skip) (x3) {$x_3$};
+	\node [cloud] at (1.5*\skip,0) (x4) {$x_4$};
+	\node [cloud] at (2.5*\skip,0*\skip) (x5) {$x_5$};
+	\node [cloud] at (2.5*\skip,1*\skip) (x6) {$x_6$};
+	%% Arcs
+	\path [line, thick,bend left] (x1) to node [midway, above] (TextNode) {1} (x2);
+	\path [line, thick,bend left] (x2) to node [midway, below] (TextNode) {2} (x1);
+	\path [line, thick, looseness=5] (x2) to node [midway, above] (TextNode) {3} (x2);
+	\path [line, thick] (x2) to node [midway, above] (TextNode) {4} (x3);
+	\path [line, thick] (x2) to node [midway, below] (TextNode) {5} (x4);
+	\path [line, thick] (x4) to node [midway, below] (TextNode) {6} (x3);
+	\path [line, thick, looseness=5, below] (x6) to node [midway, above] (TextNode) {7} (x6);
+	\path [line, thick] (x6) to node [midway, right] (TextNode) {8} (x5);
+	\end{tikzpicture}
+\end{figure}
+\end{frame}
+
+
+\begin{frame}{Directed versus undirected graph}
+\begin{definition}[Edge]
+In $G=(X,U)$, each arc $u_i=(x,y)$ determines a continuous line
+joining $x$ and $y$. Such a line with no specification of direction is an \textbf{edge}, and is denoted by $e_i=[x,y]$.
+The family $(e_1,e_2,\ldots,e_m)$ of the edges of $G$ is denoted by its set of indices $E=\{1,2,\ldots,m\}$
+\end{definition}
+\vfill
+Without direction, $G=(X,E)$, we talk of \textbf{undirected graph} (or \textbf{multigraph})
+\vfill
+An undirected graph in which there is no loops and no more than one edge joins any two vertices is \textbf{simple}
+\vfill
+In modern texts (e.g., B-J\&G), a \textbf{digraph} (or directed graph) has no loops
+\end{frame}
+
+
+\begin{frame}
+\begin{definition}[Adjacent arcs/edges]
+Two arcs (or two edges) are \textbf{adjacent} if they have at least one endpoint in common
+\end{definition}
+
+\begin{definition}[Multiplicity of a pair]
+The \textbf{multiplicity} of a pair $x,y$ is the number $m_G^+(x,y)$ of arcs with initial endpoint $x$ and terminal endpoint $y$. Let
+\begin{align*}
+m_G^-(x,y) &= m_G^+(y,x) \\
+m_G(x,y) &= m_G^+(x,y)+m_G^-(x,y)
+\end{align*}
+If $x\neq y$, then $m_G(x,y)$ is number of arcs with both $x$ and $y$ as endpoints. If $x=y$, then $m_G(x,y)$ equals twice the number of loops attached to vertex $x$. If $A,B\subset X$, $A\neq B$, let
+\begin{align*}
+m_G^+(A,B) &= \{u:u\in U, u=(x,y),x\in A,y\in B\} \\
+m_G(A,B) &= m_G^+(A,B)+m_G^+(A,B)
+\end{align*}
+\end{definition}
+\end{frame}
+
+
+\begin{frame}
+\begin{definition}[Arc incident to a vertex]
+If a vertex $x$ is the initial endpoint of an arc $u$, which is not a loop, the arc $u$ is \textbf{incident out of vertex} $x$ 
+\vskip0.2cm
+The number of arcs incident out of $x$ plus the number of loops attached to $x$ is denoted $d_G^+(x)$ and is the \textbf{outer demi-degree} of $x$
+\vskip0.2cm
+An arc \textbf{incident into vertex} $x$ and the \textbf{inner demi-degree} $d_G^-(x)$ are defined similarly
+\end{definition}
+\vfill
+\begin{definition}[Degree]
+The \textbf{degree} of vertex $x$ is the number of arcs with $x$ as an endpoint, each loop being counted twice. The degree of $x$ is denoted $d_G(x)=d_G^+(x)+d_G^-(x)$
+\vskip0.2cm
+If each vertex has the same degree, the graph is \textbf{regular}
+\end{definition}
+\end{frame}
+
+
+\begin{frame}
+\begin{definition}[Arc incident out of $A\subset X$]
+If the initial endpoint of an arc $u$ belongs to $A$, and if the terminal endpoint of arc $u$ does not belong to $A$, then $u$ is said to be incident out of $A$, and we write $u\in\omega^+(A)$
+\vskip0.5cm
+Similarly, we define an arc incident into $A$, and the set $\omega^-(A)$
+\vskip0.5cm
+Finally, the set of arcs incident to $A$ is denoted
+\[
+\omega(A) = \omega^+(A)\cup\omega^-(A)
+\]
+\end{definition}
+\end{frame}
+
+
+\begin{frame}
+\begin{definition}[Symmetric graph]
+If $m_G^+(x,y)=m_G^-(x,y)$ for all $x,y\in X$, the graph $G$ is
+\textbf{symmetric}. A 1-graph $G=(X,U)$ is symmetric if, and only if,
+\[
+(x,y)\in U\implies (y,x)\in U
+\]
+\end{definition}
+\vfill
+\begin{definition}[Anti-symmetric graph]
+If for each pair $(x,y)\in X\times X$,
+\[
+m_G^+(x,y)+m_G^-(x,y)\leq 1
+\]
+then the graph $G$ is \textbf{anti-symmetric}. A 1-graph $G=(X,U)$ is anti-symmetric if, and only if,
+\[
+(x,y)\in U\implies (y,x)\not\in U
+\]
+An anti-symmetric 1-graph without its direction is a simple graph
+\end{definition}
+\end{frame}
+
+
+\begin{frame}
+\begin{definition}[Complete graph]
+A graph $G$ is \textbf{complete} if
+\[
+m_G(x,y)=m_G^+(x,y)+m_G^-(x,y)\geq 1
+\]
+for all $x,y\in X$ such that $x\neq y$
+\vskip0.2cm
+A 1-graph is complete if, and only if,
+\[
+(x,y)\not\in U\implies (y,x)\in U
+\]
+\end{definition}
+\vfill
+\begin{definition}[$n$-clique]
+A simple, complete graph on $n$ vertices is called an $n$-\textbf{clique} and is often denoted $K_n$
+\end{definition}
+\end{frame}
+
+\begin{frame}
+\begin{definition}[Bipartite graph]
+A graph is \textbf{bipartite} if its vertices can be partitioned into two sets $X_1$ and $X_2$, s.t. no two vertices in the same set are adjacent.
+This graph may be written $G=(X_1,X_2,U)$
+\end{definition}
+\vfill
+\begin{definition}[Complete bipartite graph]
+If $\forall x_1\in X_1, \forall x_2\in X$, we have $m_G(x_1,x_2)\geq 1$, then $G=(X_1,X_2,U)$ is a \textbf{complete bipartite} graph
+\vskip0.5cm
+A simple, complete bipartite graph with $|X_1|=p$ and $|X_2|=q$ is often denoted $K_{p,q}$
+\end{definition}
+\end{frame}
+
+\begin{frame}
+\begin{definition}[Subgraph of $G$ generated by $A\subset X$]
+The \textbf{subgraph} of $G$ generated by $A$ is the graph with $A$ as its vertex set and with all the arcs in $G$ that have both their endpoints in $A$. If $G=(X,\Gamma)$ is a 1-graph, then the subgraph generated by $A$ is the 1-graph $G_A=(A,\Gamma_A)$ where
+\[
+\Gamma_A(x)=\Gamma(x)\cap A\qquad (x\in A)
+\]
+\end{definition}
+\vfill
+\begin{definition}[Partial graph of $G$ generated by $V\subset U$]
+\label{def:partial_graph}
+The graph $(X,V)$ whose vertex set is $X$ and whose arc set is $V$. 
+In other words, it is graph $G$ without the arcs $U-V$
+\end{definition}
+\vfill
+\begin{definition}[Partial subgraph of $G$]
+A partial subgraph of $G$ is the subgraph of a partial graph of $G$
+\end{definition}
+\end{frame}
+
+
+\begin{frame}{Chain}
+\begin{definition}[Chain of length $q>0$]
+A \textbf{chain} is a sequence $\mu=(u_1,\ldots, u_q)$ of arcs of $G$ s.t. each arc in the sequence has one endpoint in common with its predecessor in the sequence and its other endpoint in common with its successor in the sequence
+\vskip1cm 
+The number of arcs in the sequence is the \textbf{length} of chain $\mu$
+\vskip1cm
+A chain that does not encounter the same vertex twice is \textbf{elementary}
+\vskip1cm
+A chain that does not use the same arc twice is \textbf{simple}
+\end{definition}
+\end{frame}
+
+
+\begin{frame}{Path}
+\begin{definition}[Path of length $q>0$]\label{def:path_length_q}
+A \textbf{path} of length $q$ is a chain $\mu=(u_1, \ldots, u_i, \ldots, u_q)$
+in which the terminal endpoint of arc $u_i$ is the initial endpoint of arc $u_{i+1}$ for all $i < q$. 
+For a 1-graph, a path is completely determined by the sequence of vertices $x_1,x_2,\ldots$ that it encounters. Hence, we often write
+\begin{align*}
+\mu &=
+((x_1,x_2), (x_2, x_3), \ldots) \\
+&= [x_1, x_2, \ldots, x_k ,x_{k+1}] \\
+&= \mu[x_1,x_{k+1}]
+\end{align*}
+Vertices $x_1$ and $x_k$ are the \textbf{initial} and \textbf{terminal endpoints} of path $\mu$.
+Similarly, for a simple graph, a chain $\mu$ with endpoints $x$ and $y$ is determined by the sequence of its vertices, and we may write
+\[
+\mu=\mu[x,y] = [x,x_1,\ldots,y]
+\]
+\end{definition}
+\end{frame}
+
+\begin{frame}
+\begin{definition}[Cycle]
+A \textbf{cycle} is a chain such that
+\begin{enumerate}
+\item no arc appears twice in the sequence
+\item the two endpoints of the chain are the same vertex
+\end{enumerate}
+\end{definition}
+\vfill
+\begin{definition}[Pseudo-cycle]
+A \textbf{pseudo-cycle} is a chain $\mu=(u_1, u_2,\ldots,u_q)$ whose two endpoints are the same vertex and whose arcs are not necessarily distinct
+\end{definition}
+\vfill
+\begin{definition}[Circuit]
+A \textbf{circuit} is a cycle $\mu=(u_1, u_2,\ldots,u_q)$ such that for all $i<q$, the terminal endpoint of $u_i$ is the initial endpoint of $u_{i+1}$
+\end{definition}
+\end{frame}
+
+\begin{frame}
+\begin{definition}[Connected graph]
+A \textbf{connected graph} is a graph that contains a chain $\mu[x,y]$ for each pair $x,y$ of distinct vertices
+\end{definition}
+\vfill
+Denote $x\equiv y$ the relation  ``$x=y$, or $x\neq y$ and there exists a chain in $G$ connecting $x$ and $y$''. $\equiv$ is an equivalence relation since
+\begin{enumerate}
+	\item $x\equiv y$ \hfill[reflexivity]
+	\item $x\equiv y\implies y\equiv x$ \hfill[symmetry]
+	\item $x\equiv y, y\equiv z\implies x\equiv z$ \hfill[transitivity]
+\end{enumerate}
+\begin{definition}[Connected component of a graph]
+The classes of the equivalence relation $\equiv$ partition $X$ into connected sub-graphs of $G$ called \textbf{connected components}
+\end{definition}
+\end{frame}
+
+\begin{frame} 
+\begin{definition}[Articulation set]
+For a connected graph, a set $A$ of vertices is called an \textbf{articulation set} (or a \textbf{cutset}) if the subgraph of $G$ generated by $X-A$ is not connected
+\end{definition}
+\vfill
+\begin{definition}[Stable set]
+A set $S$ of vertices is called a stable set if no arc joins two distinct vertices in $S$
+\end{definition}
+\vfill
+\begin{definition}[Matrix associated with $G$]
+If $G$ has vertices $x_1,x_2,\ldots,x_n$, then the \textbf{matrix associated} with $G$ is 
+\[
+a_{ij}=m_G^+(x_i,x_j)
+\]
+\end{definition}
+\vfill
+\begin{definition}[Adjacency matrix]
+The matrix $a_{ij}+a_{ji}$ is the \textbf{adjacency matrix} associated with $G$
+\end{definition}
+\end{frame}
+
+
+
+\begin{frame}{More on cycles}
+In a graph $G=(X,U)$, a \textbf{cycle} is a sequence of arcs
+\[
+\mu=(u_1,u_2,\ldots,u_q)
+\]
+such that
+\begin{enumerate}
+\item each arc $u_k$, where $1 < k < q$, has one endpoint in common with the
+preceding arc $u_{k-1}$, and the other end point in common with the succeeding
+arc $u_{k+1}$ (i.e., this sequence is a chain)
+\item the sequence does not use the same arc twice
+\item the initial vertex and terminal vertex of the chain are the same
+\end{enumerate}
+An \textbf{elementary cycle} is a cycle in which, in addition,
+\begin{enumerate}\setcounter{enumi}{3}
+\item no vertex is encountered more than once (except, of course, the initial
+vertex which is also the terminal vertex)
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Example}
+	\begin{figure}[htbp]
+		\centering
+		\def\skip{2.75cm}
+		\begin{tikzpicture}[scale=0.75, 
+		every node/.style={transform shape},
+		auto,
+		cloud/.style={minimum width={width("N-1")+2pt},
+			draw, ellipse},
+		connected/.style={dotted,-}]
+		%% Vertices
+		\node [cloud] at (0,0) (a) {$a$};
+		\node [cloud] at (1*\skip,0) (b) {$b$};
+		\node [cloud] at (0.5*\skip,1*\skip) (c) {$c$};
+		\node [cloud] at (1.5*\skip,1*\skip) (d) {$d$};
+		%% Arcs
+		\path [line, thick] (a) to node [midway, above] (TextNode) {1} (b);
+		\path [line, thick, bend left] (a) to node [midway, above] (TextNode) {2} (c);
+		\path [line, thick] (b) to node [midway, above] (TextNode) {6} (c);
+		\path [line, thick] (b) to node [midway, above] (TextNode) {4} (d);
+		\path [line, thick, bend left] (c) to node [midway, above] (TextNode) {3} (a);
+		\path [line, thick] (c) to node [midway, above] (TextNode) {5} (d);
+		\end{tikzpicture}
+	\end{figure}
+	\vfill
+	Elementary cycles:
+	\begin{itemize}
+		\item $\bmu^1=(1,6,2)=[abca]$
+		\item $\bmu^2=(1,6,3)=[abca]$
+		\item $\bmu^3=(2,3)=[aca]$
+		\item $\bmu^4=(1,4,5,2)=[abdca]$
+		\item $\bmu^5=(6,5,4)=[acdb]$
+		\item $\bmu^6=(1,4,5,3)=[abdca]$
+	\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+Given a cycle $\mu$, denote $\mu^+$ the set of all arcs in $\mu$ that are in the direction that the cycle is traversed and $\mu^-$ the set of all the other arcs in $\mu$
+\vfill
+Number the arcs in $G$ as $1,2,\ldots,m$, then the cycle $\mu$ is the vector
+\[
+\bm{\mu}=(\mu_1,\ldots,\mu_m)
+\]
+where
+\[
+\mu_i = \begin{cases}
+0 & \textrm{if }i\not\in\mu^+\cup\mu^- \\
++1 & \textrm{if }i\in\mu^+ \\
+-1 & \textrm{if }i\in\mu^-
+\end{cases}
+\]
+\end{frame}
+
+
+\begin{frame}{Cocycles}
+Let $A\subset X$ be nonempty and denote $\omega^+(A)$ the set of arcs that have only their initial endpoint in $A$ and $\omega^-(A)$ the set of arcs that have only their terminal endpoint in $A$. Let
+\[
+\omega(A)=\omega^+(A)\cup\omega^-(A)
+\]
+\vfill
+A \textbf{cocycle} is a nonempty set of arcs of the form $\omega(A)$, partitioned into two sets $\omega^+(A)$ and $\omega^-(A)$
+\vfill
+An \textbf{elementary cocycle} is the set of arcs joining two connected subgraphs $A_1$ and $A_2$ s.t. 
+\begin{itemize}
+\item $A_1,A_2\neq\emptyset$
+\item $A_1\cap A_2=\emptyset$
+\item $A_1\cup A_2=C$, with $C$ a connected component of the graph
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{A colouring lemma}
+\begin{lemma}[Arc colouring Lemma]\label{lemma:arc_colouring_lemma}
+Consider $G$ with arcs $1,\ldots,m$. Colour arc 1 black and arbitrarily colour the remaining arcs red, black or green. Then exactly one of the following holds true:
+\begin{enumerate}
+\item there is an elementary cycle containing arc 1 and only red and black
+arcs with the property that all black arcs in the cycle have the same
+direction
+\item there is an elementary cocycle containing arc 1 and only green and black
+arcs, with the property that all black arcs in the cocycle have the same
+direction
+\end{enumerate}
+\end{lemma}
+\end{frame}
+
+\begin{frame}{Independent cycles and cycle bases}
+Consider cycles $\bmu^1,\bmu^2,\ldots,\bmu^k$. The cycles are \textbf{independent} if
+\begin{multline*}
+c_1\bmu^1+c_2\bmu^2+\cdots+c_k\bmu^k=\b0 \\
+\iff
+c_1=c_2=\cdots=c_k=0
+\end{multline*}
+A \textbf{cycle basis} is an independent set $\{\bmu^1,\bmu^2,\ldots,\bmu^k\}$ of cycles such that any cycle $\bmu$ can be written as
+\[
+\bmu= c_1\bmu^1+c_2\bmu^2+\cdots+c_k\bmu^k
+\]
+for $c_1,\ldots,c_k\in\IR$
+\vfill
+The constant $k$ is the \textbf{cyclomatic number} of $G$, denoted $\nu(G)$
+\end{frame}
+
+
+\begin{frame}{Example}
+\begin{figure}[htbp]
+	\centering
+	\def\skip{2.75cm}
+	\begin{tikzpicture}[scale=0.75, 
+	every node/.style={transform shape},
+	auto,
+	cloud/.style={minimum width={width("N-1")+2pt},
+		draw, ellipse},
+	connected/.style={dotted,-}]
+	%% Vertices
+	\node [cloud] at (0,0) (a) {$a$};
+	\node [cloud] at (1*\skip,0) (b) {$b$};
+	\node [cloud] at (0.5*\skip,1*\skip) (c) {$c$};
+	\node [cloud] at (1.5*\skip,1*\skip) (d) {$d$};
+	%% Arcs
+	\path [line, thick] (a) to node [midway, above] (TextNode) {1} (b);
+	\path [line, thick, bend left] (a) to node [midway, above] (TextNode) {2} (c);
+	\path [line, thick] (b) to node [midway, above] (TextNode) {6} (c);
+	\path [line, thick] (b) to node [midway, above] (TextNode) {4} (d);
+	\path [line, thick, bend left] (c) to node [midway, above] (TextNode) {3} (a);
+	\path [line, thick] (c) to node [midway, above] (TextNode) {5} (d);
+	\end{tikzpicture}
+\end{figure}
+\vfill
+Elementary cycles:
+\begin{itemize}
+\item $\bmu^1=(1,6,2)=[abca]$
+\item $\bmu^2=(1,6,3)=[abca]$
+\item $\bmu^3=(2,3)=[aca]$
+\item $\bmu^4=(1,4,5,2)=[abdca]$
+\item $\bmu^5=(6,5,4)=[acdb]$
+\item $\bmu^6=(1,4,5,3)=[abdca]$
+\end{itemize}
+We have $\bmu^1-\bmu^2+\bmu^3=\b0$ 
+\end{frame}
+
+\begin{frame}{An important result}
+\begin{importanttheorem}\label{th:cyclomatic_nb}
+Let $G$ be a graph with $n$ vertices, $m$ arcs and $p$ connected components. Then the cyclomatic number of $G$ is
+\[
+\nu(G)=m-n+p
+\]
+\end{importanttheorem}
+\end{frame}
+
+\begin{frame}{Trees and forests}
+\begin{definition}[Tree]
+A \textbf{tree} is a connected graph without cycles
+\end{definition}
+(A tree is a special kind of 1-graph)
+\vfill
+\begin{definition}[Forest]
+A \textbf{forest} is a graph whose connected components are trees
+\end{definition}
+(i.e., a forest is a graph without cycles)
+\end{frame}
+
+
+\begin{frame}
+\begin{theorem}[Characterisation of trees]\label{th:characterisation_tree}
+$H=(X,U)$ a graph of order $|X|=n>2$. TFAE and all characterise a tree (i.e., $H$ satisfying any of these is a tree):
+\begin{enumerate}
+\item $H$ connected and has no cycles
+\item $H$ has $n-1$ arcs and no cycles
+\item $H$ connected and has exactly $n-1$ arcs
+\item $H$ has no cycles, and if an arc is added to $H$, exactly one cycle is created
+\item $H$ connected, and if any arc is removed, the remaining graph is not
+connected
+\item Every pair of vertices of $H$ is connected by one and only one chain
+\end{enumerate}
+\end{theorem}
+\end{frame}
+
+
+\begin{frame}{Proof of Theorem~\ref{th:characterisation_tree}}
+We make abundant use of Theorem~\ref{th:cyclomatic_nb}
+\vfill
+[$\mathbf{1\implies 2}$] 
+Let $p$ be the number of connected components, $m$ the number of arcs and $\nu(H)$ the cyclomatic number. Since $H$ connected, $p=1$. Since $H$ has no cycles, $\nu(H)=m-n+p=0$
+
+$\implies$ $m=n-p=n-1$
+\vfill
+
+[$\mathbf{2\implies 3}$] 
+Assume $H$ has no cycles ($\nu(H)=0$) and has $n-1$ arcs ($m=n-1$). Then, since
+\[
+\nu(H)=m-n+p
+\]
+$p=\nu(H)-m+n=0-(n-1)-n=1$, i.e., $H$ is connected
+\end{frame}
+
+\begin{frame}{Proof of Theorem~\ref{th:characterisation_tree} (cont.)}
+[$\mathbf{3\implies 4}$]
+Assume $H$ connected ($p=1$) and contains exactly $n-1$ arcs ($m=n-1$). Then
+\[
+\nu(H)=m-n+p=(n-1)-n+1=0
+\]
+and $H$ has no cycles
+\vskip0.5cm
+Now add an arc, i.e., suppose $m=n$. Then $\nu(H)=m-n+p=n-n+1=1$ and there is one cycle in the new graph
+\end{frame}
+
+
+\begin{frame}{Proof of Theorem~\ref{th:characterisation_tree} (cont.)}
+[$\mathbf{4\implies 5}$]
+Assume $H$ has no cycles ($\nu(H)=0$) and that addition of an arc to $H$ creates exactly one cycle
+\vskip0.5cm
+Suppose $H$ not connected. Then there are two vertices, say $a$ and $b$, that are not connected and adding the arc $(a,b)$ does not create a cycle, a contradiction with ``addition of an arc to $H$ creates exactly one cycle'' 
+
+$\implies$ $p=1$. Since $\nu(H)=0$, this implies that $m=n-1$
+\vskip0.5cm
+Now suppose we remove an arc. We obtain graph $H'$ with
+\[
+m'=n'-2\quad\text{and}\quad \nu(H')=0
+\]
+So
+\[
+p'=\nu(H')-m'+n'=2
+\]
+$\implies$ $H'$ not connected
+\end{frame}
+
+\begin{frame}{Proof of Theorem~\ref{th:characterisation_tree} (cont.)}
+[$\mathbf{5\implies 6}$]
+Assume $H$ connected and if any arc is removed, the remaining graph is not connected
+\vskip0.5cm
+Any vertices $a,b\in X$ are connected by a chain (since $H$ connected). That chain is unique: suppose there is a second chain connecting $a$ to $b$; then removing an arc from that chain does not disconnect the graph, since there is still the original chain connecting $a$ and $b$
+\vfill
+[$\mathbf{6\implies 1}$]
+Assume every pair of vertices of $H$ is connected by one and only one chain
+
+Now assume $H$ has a cycle. Then at least one pair of vertices would be connected by two distinct chains, a contradiction
+\vfill
+\flushright$\qed$
+\end{frame}
+
+
+\begin{frame}
+\begin{definition}[Pendant vertex]
+A vertex is \textbf{pendant} if it is adjacent to exactly one other vertex
+\end{definition}
+\vfill
+\begin{theorem}
+A tree of order $n\geq 2$ has at least two pendant vertices
+\end{theorem}
+\vfill
+\textbf{Proof:} 
+Suppose $H$ tree of order $n\geq 2$ with 0 or 1 pendant vertices
+\vskip0.5cm
+Consider a traveller traversing the graph edges starting from a pendant vertex (if there is one) or anywhere if there is no pendant vertex
+\vskip0.5cm
+If he does not allow himself to use same edge twice, he cannot go to the same vertex twice ($H$ has no cycle)
+\vskip0.5cm
+If he arrives at vertex $x$, he can depart $x$ using a new edge ($x$ is not a pendant vertex as there are 0 or 1 pendant vertex and if there is 1, that's where he started)
+\vskip0.5cm
+So the trip continues without end, which is impossible as $H$ finite $\qed$
+\end{frame}
+
+\begin{frame}
+\begin{theorem}\label{th:partial_graph_tree_G_connected}
+A graph $G=(X,U)$ has a partial graph that is a tree $\iff$ $G$ connected
+\end{theorem}
+\vfill
+Recall that a partial graph is a graph generated by a subset of the arcs (Definition~\ref{def:partial_graph} slide~\pageref{def:partial_graph})
+\vfill
+\textbf{Proof:}
+Suppose $G$ not connected. Then no partial graph of $G$ is connected $\implies$ there is no partial graph of $G$ that is a tree [we want to show $P\iff Q$, we start with $\wedge Q\implies \wedge P$ (which $\iff$ $P\implies Q$)]
+\vskip1cm
+Suppose $G$ connected. Look for an arc whose removal does not disconnect $G$
+\begin{itemize}
+\item if there is none, $G$ is a tree by Theorem~\ref{th:characterisation_tree}(5)
+\item if there is, remove it and look for another one, etc. When no more arcs can be removed, the remaining graph is a tree with vertex set $X$ $\qed$
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Spanning tree}
+The procedure in the proof of Theorem~\ref{th:partial_graph_tree_G_connected} gives a \textbf{spanning tree}
+\vfill
+Can also build a spanning tree as follows:
+\begin{itemize}
+\item Consider any arc $u_0$
+\item Find arc $u_1$ that does not form a cycle with $u_0$
+\item Find arc $u_2$ that does not form a cycle with $\{u_0,u_1\}$
+\item Continue
+\item When you cannot continue anymore, you have a spanning tree
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Strongly connected graphs}
+Recall that paths are defined in Definition~\ref{def:path_length_q} (slide~\pageref{def:path_length_q})
+\vfill
+$G=(X,U)$ connected. 
+A \textbf{path of length 0} is any sequence $\{x\}$ consisting of a single vertex $x\in X$
+\vfill
+For $x,y\in X$, let $x\equiv y$ be the relation ``there is a path $\mu_1[x,y]$ from $x$ to $y$ as well as a path $\mu_2[y,x]$ from $y$ to $x$''. This is an equivalence relation (it is reflexive, symmetric and transitive)
+\vfill
+\begin{definition}[Strong components]\label{def:strong_components}
+Sets of the form 
+\[
+A(x_0)=\{x:x\in X, x\equiv x_0\}	
+\]
+are equivalence classes; they partition $X$ and are the \textbf{strongly connected components} of $G$	
+\end{definition}
+\vfill
+\begin{definition}[Strongly connected graph]
+\label{def:strongly_connected_graph}
+$G$ \textbf{strongly connected} if it has a single strong component
+\end{definition}
+\end{frame}
+
+
+\begin{frame}
+\begin{theorem}
+$G$ connected graph with $\geq 1$ arc. TFAE
+\begin{enumerate}
+\item $G$ strongly connected
+\item Every arc lies on a circuit
+\item $G$ contains no cocircuits
+\end{enumerate}
+\end{theorem}
+\vfill
+\textbf{Proof:}
+[$\mathbf{1\implies 2}$]
+$(x,y)$ an arc of $G$; there is a path from $y$ to $x$ ($G$ strongly connected), so arc $(x,y)$ is contained in a circuit of $G$
+
+[$\mathbf{2\implies 3}$]
+Suppose $G$ has a cocircuit containing arc $(x,y)$; then $G$ cannot have
+a circuit containing this arc by the Arc Colouring Lemma (Lemma~\ref{lemma:arc_colouring_lemma} slide~\pageref{lemma:arc_colouring_lemma}) with
+all arcs coloured black. This contradicts (2)
+
+[$\mathbf{3\implies 1}$]
+Assume $G$ connected graph without cocircuits, but $G$ not strongly connected.
+Since $G$ not strongly connected, it has $>1$ strongly
+connected component. 
+Since $G$ connected, there exist two distinct strongly connected components that are joined by an arc $(a,b)$. Arc $(a,b)$ is not contained in any circuit because otherwise $a$ and $b$ would be in the same strongly connected component. 
+By Lemma~\ref{lemma:arc_colouring_lemma}, arc $(a,b)$ is contained in some co-
+circuit. This contradicts (3)\qed
+\end{frame}
+
+
+\begin{frame}
+\begin{theorem}
+$G$ graph with $\geq 1$ arc. TFAE
+\begin{enumerate}
+\item $G$ is a graph without circuits
+\item Each arc is contained in a cocircuit
+\end{enumerate}
+\end{theorem}
+\vfill
+\begin{theorem}
+If $G$ is a strongly connected graph of order $n$, then $G$ has a cycle basis of $\nu(G)$ circuits
+\end{theorem}
+\end{frame}
+
+\begin{frame}
+\begin{definition}[Node, anti-node, branch]
+$G=(X,U)$ strongly connected without loops and $>1$ vertex. For each $x\in X$, there is a path from it and a path to it so $x$ has at least 2 incident arcs. Specifically,
+\begin{itemize}
+\item $x\in X$ with $>2$ incident arcs is a \textbf{node}
+\item $x\in X$ with $2$ incident arcs is an \textbf{anti-node}
+\end{itemize}
+A path whose only nodes are its endpoints is a \textbf{branch}
+\end{definition}
+\vfill
+\begin{definition}[Minimally connected graph]
+$G$ is \textbf{minimally connected} if it is strongly connected and removal of any arc destroys strong-connectedness
+\end{definition}
+A minimally connected graph is 1-graph without loops
+\vfill
+\begin{definition}[Contraction]
+$G=(X,U)$. The \textbf{contraction} of the set $A\subset X$ of vertices consists in replacing $A$ by a single vertex $a$ and replacing each arc into (resp. out of) $A$ by an arc with same index into (resp. out of) $a$
+\end{definition}
+\end{frame}
+
+
+\begin{frame}
+\begin{theorem}
+$G$ minimally connected, $A\subset X$ generating a strongly connected subgraph of $G$. Then the contraction of $A$ gives a minimally connected graph
+\end{theorem}
+\vfill
+\textbf{Proof:}
+First, show that contraction of $A$ yields a 1-graph. 
+If this were not the case, there would exist $x\not\in A$ and $a,a'\in A$ s.t. $(x,a),(x,a')\in U$ (or, with $(a,x),(a',x)\in U$ but this would not
+change the proof). 
+If one of these arcs is removed, the graph remains strongly
+connected. Thus, $G$ is not minimally connected, a contradiction
+
+\vskip1cm
+Now show that the contraction of $A$ yields a graph $G'$ that is minimally connected. Clearly, $G'$ strongly connected. If an arc $u$ is removed, the remaining graph is not strongly connected, since the graph
+$(X,U-\{u\})$ not strongly connected \qed
+\end{frame}
+
+\begin{frame} 
+\begin{theorem}
+$G$ a minimally connected graph, $G'$ be the minimally connected graph obtained by the contraction of an elementary circuit of $G$.	Then
+\[
+\nu(G)=\nu(G')+1
+\]
+\end{theorem}
+\vfill
+\begin{theorem}
+$G$ minimally connected of order $n\geq 2$ $\implies$ $G$ has $\geq 2$ anti-nodes
+\end{theorem}
+\vfill
+\begin{theorem}
+$G=(X,U)$. Then the graph $C'$ obtained by contracting each strongly connected component of $G$ contains no circuits
+\end{theorem}
+\end{frame}
+
+
+\begin{frame}{Arborescences}
+\begin{definition}[Root]
+Vertex $a\in X$ in $G=(X,U)$ is a \textbf{root} if all vertices of $G$ can be reached by paths \emph{starting} from $a$
+\end{definition}
+Not all graphs have roots
+\vfill
+\begin{definition}[Quasi-strong connectedness]
+$G$ is \textbf{quasi-strongly connected} if $\forall x,y\in X$, exists $z\in X$ (denoted $z(x,y)$ to emphasize dependence on $x,y$) from which there is a path to $x$ and a path to $y$
+\end{definition}
+Strongly connected $\implies$ quasi-strongly connected (take $z(x,y)=x$); converse not true
+
+Quasi-strongly connected $\implies$ connected
+\vfill
+\begin{definition}[Arborescence]
+An \textbf{arborescence} is a tree that has a root
+\end{definition}
+\vfill
+\begin{lemma}
+$G=(X,U)$ has a root $\iff$ $G$ quasi-strongly connected
+\end{lemma}
+\end{frame}
+
+\begin{frame}
+\begin{theorem}
+$H$ graph of order $n>1$. TFAE (and all characterise an arborescence)
+\begin{enumerate}
+\item $H$ quasi-strongly connected without cycles
+\item $H$ quasi-strongly connected with $n-1$ arcs
+\item $H$ tree having a root $a$
+\item $\exists a\in X$ s.t. all other vertices are connected with $a$ by 1 and only 1 path from $a$
+\item $H$ quasi-strongly connected and loses quasi-strong connectedness if any arc is removed
+\item $H$ quasi-strongly connected and $\exists a\in X$ s.t.
+\begin{align*}
+d_H^-(a)&=0 \\
+d_H^-(x)&=1\qquad \forall x\neq a
+\end{align*}
+\item $H$ has no cycles and $\exists a\in X$ s.t.
+\begin{align*}
+d_H^-(a)&=0 \\
+d_H^-(x)&=1\qquad \forall x\neq a
+\end{align*}
+\end{enumerate}
+\end{theorem}
+\end{frame}
+
+
+\begin{frame}
+\begin{theorem}
+$G$ has a partial graph that is an arborescence $\iff$ $G$ quasi-strongly connected
+\end{theorem}
+\vfill
+\begin{theorem}
+$G=(X,E)$ simple connected graph and $x_1\in X$. It is possible to direct all edges of $E$ so that the resulting graph $G_0=(X,U)$ has a spanning tree $H$ s.t.
+\begin{enumerate}
+	\item $H$ is an arborescence with root $x_1$
+	\item The cycles associated with $H$ are circuits
+	\item The only elementary circuits of $G_0$ are the cycles associated with $H$
+\end{enumerate}
+\end{theorem}
+\end{frame}
+
+
+\begin{frame}{Counting trees}
+\begin{proposition}
+$X$ a set with $n$ distinct objects, $n_1,\ldots,n_p$ nonnegative integers s.t. $n_1+\cdots+n_p=n$. The number of ways to place the $n$ objects into $p$ boxes $X_1,\ldots,X_p$ containing $n_1,\ldots,n_p$ objects respectively is 
+\[
+	\begin{pmatrix}
+		n\\ n_1,\ldots,n_p
+	\end{pmatrix}
+	=
+	\frac{n!}{n_1!\cdots n_p!}
+\]
+\end{proposition}
+\vfill
+\begin{proposition}[Multinomial formula]
+Let $a_1,\ldots,a_p\in\IR$ be $p$ real numbers, then
+\begin{multline*}
+	(a_1+\cdots+a_p)^n= \\
+	\sum_{n_1,\ldots,n_p\geq 0}
+	\begin{pmatrix}
+		n\\ n_1,\ldots,n_p
+	\end{pmatrix}
+	(a_1)^{n_1}\cdots(a_p)^{n_p}	
+\end{multline*}
+\end{proposition}
+(Recall the binomial formula, where $p=2$)
+\end{frame}
+
+
+\begin{frame}
+\begin{theorem}
+Denote $T(n;d_1,\ldots,d_n)$ the number of distinct trees $H$ with vertices $x_1,\ldots,x_n$ and with degrees $d_H(x_1)=d_1,\ldots,d_H(x_n)=d_n$. Then
+\[
+	T(n;d_1,\ldots,d_n) = 
+	\begin{pmatrix}
+		n-2 \\
+		d_1-1,\ldots,d_n-1
+	\end{pmatrix}
+\]
+\end{theorem}
+\vfill
+\begin{theorem}
+The number of different trees with vertices $x_1,\ldots,x_n$ is 
+$n^{n-2}$
+\end{theorem}
+\vfill
+There is a whole industry of similar results (as well as for arborescences), but we will stop here. The main point is that we are talking about a large number of possibilities..
+\end{frame}
+
+
+\begin{frame}{Matrices associated to a graph}
+	There are multiple matrices associated to a graph
+	\vfill
+	We review some of them now
+	\vfill
+	We also review some of their uses
+	\vfill
+	The branch of graph theory that studies the properties of matrices derived from graphs and uses of these matrices in determining graph properties if \emph{spectral graph theory}
+\end{frame}
+
+
+\begin{frame}{Adjacency matrix}
+We have already seen adjacency matrices, let us recall the definition here
+\begin{definition}[Adjacency matrix]
+	$G$ a 1-graph, then the \textbf{adjacency matrix} $A=[a_{ij}]$ is defined as follows
+	\[
+		a_{ij} = \begin{cases}
+			1 & \text{if arc } (i,j)\in U\\
+			0 & \text{otherwise}
+		\end{cases}
+	\]
+\end{definition}
+\vfill
+We often write $A(G)$ and, reciprocally, if $A$ is an adjacency matrix, $G(A)$ the corresponding graph
+\vfill
+$G$ undirected $\implies$ $A(G)$ symmetric
+\vfill
+$A(G)$ has nonzero diagonal entries if $G$ is not simple
+\end{frame}
+
+\begin{frame}{Adjacency matrix -- Multigraph case}
+\begin{definition}
+	$G$ an $\ell$-graph, then the adjacency matrix $A=[a_{ij}]$ is defined as follows
+	\[
+		a_{ij} = \begin{cases}
+			k & \text{if arc there are $k$ arcs } (i,j)\in U\\
+			0 & \text{otherwise}
+		\end{cases}
+	\]
+	with $k\leq \ell$
+\end{definition}
+\vfill
+$G$ undirected $\implies$ $A(G)$ symmetric
+\vfill
+$A(G)$ has nonzero diagonal entries if $G$ is not simple
+\end{frame}
+
+\begin{frame}{Weighted adjacency matrices}
+	Sometimes, adjacency matrices (typically for 1-graphs) have real entries, usually positive
+	\vfill
+	This means that the arcs/edges have been given a weight
+\end{frame}
+
+\begin{frame}{Spectrum of a graph}
+	We will come back to this later, but for now..
+	\vfill
+	\begin{definition}[Spectrum of a graph]
+		The \textbf{spectrum} of a graph $G$ is the spectrum (set of eigenvalues) of its associated adjacency matrix $A(G)$
+	\end{definition}
+	\vfill
+	This is regardless of the type of adjacency matrix or graph
+\end{frame}
+
+
+\begin{frame}{Incidence matrix}
+	\begin{definition}[Incidence matrix -- Undirected case]
+		$G=(X,E)$ an undirected graph of order $n$ with $p$ edges. The \textbf{incidence} matrix of $G$ is an $n\times p$ matrix with vertices as rows and edges as columns and where $B=[b_{ij}]$ satisfies
+		\[
+			b_{ij} = \begin{cases}
+				1 & \text{if edge }j\text{ is incident to vertex }i \\
+				0 & \text{otherwise}
+			\end{cases}
+		\]
+	\end{definition}
+	\vfill
+	\begin{definition}[Incidence matrix -- Directed case]
+		$G=(X,U)$ a directed graph of order $n$ with $p$ arcs. The \textbf{incidence} matrix of $G$ is an $n\times p$ matrix with vertices as rows and edges as columns and where $B=[b_{ij}]$ satisfies
+		\[
+			b_{ij} = \begin{cases}
+				1 & \text{if arc }j\text{ ``enters'' vertex }i \\
+				-1 & \text{if arc }j\text{ ``leaves'' vertex }i \\
+				0 & \text{otherwise}
+			\end{cases}
+		\]
+	\end{definition}
+\end{frame}
+
+
+
+\begin{frame}{Degree matrix}
+	\begin{definition}[Degree matrix]
+		The \textbf{degree} matrix $D=[d_{ij}]$ for $G$ is a $n \times n$ diagonal matrix defined as
+		\[
+			d_{ij} = \begin{cases}
+				d_G(v_i) & \text{if } i = j \\
+				0 & \text{otherwise}
+			\end{cases}
+		\]
+	\end{definition}
+\vfill
+In an undirected graph, this means that each loop increases the degree of a vertex by two
+\vfill
+In a directed graph, the term ``degree'' may refer either to indegree (the number of incoming edges at each vertex) or outdegree (the number of outgoing edges at each vertex)
+\end{frame}
+
+\begin{frame}{Laplacian matrix}
+\begin{definition}
+	$G=(X,U)$ a simple graph with $n$ vertices. The \textbf{Laplacian} matrix is 
+	\[
+		L=D(G)-A(G)
+	\]
+	where $D(G)$ is the degree matrix and $A(G)$ is the adjacency matrix
+\end{definition}
+$G$ simple graph $\implies$ $A(G)$ only contains 1 or 0 and its diagonal elements are all 0
+\vfill
+For directed graphs, either the indegree or outdegree is used, depending on the application
+\vfill
+Elements of $L$ are given by
+\[
+\ell_{ij}=\begin{cases}
+	d_G(v_{i}) & \text{if } i=j\\
+	-1 & \text{if } i\neq j \text{ and } v_{i} 
+	\text{ is adjacent to }v_{j}\\
+	0 & \text{otherwise}
+\end{cases}
+\]
+\end{frame}
+
+\begin{frame}{Counting paths}
+	To count paths between vertices $x$ and $y$ in a graph, we use the adjacency matrix
+	\vfill
+	\begin{theorem}
+		$G$ a graph and $A(G)$ its adjacency matrix. Denote $P=[p_{ij}]$ the matrix $P=A^k$. Then $p_{ij}$ is the number of distinct paths of length $k$ from $i$ to $j$ in $G$
+	\end{theorem}
+	\vfill
+	This provides an interesting connection with linear algebra
+	\begin{definition}[Irreducible matrix]
+		A matrix $A\in\M_n$ is \textbf{reducible} if $\exists P\in\M_n$, permutation matrix, s.t. $P^TAP$ can be written in block triangular form. If no such $P$ exists, $A$ is \textbf{irreducible}
+	\end{definition}
+	\vfill
+	\begin{theorem}
+		$A$ irreducible $\iff$ $G(A)$ strongly connected
+	\end{theorem}
+\end{frame}
+
+
+\begin{frame}{Perron-Frobenius theorem}
+Assignment 7 had the following:
+\vfill
+$A=[a_{ij}]\in\M_n(\IR)$ \textbf{nonnegative} if $a_{ij}\geq 0$ $\forall i,j=1,\ldots,n$; $\bv\in\IR^n$ nonnegative if $v_i\geq 0$ $\forall i=1,\ldots,n$.  \textbf{Spectral radius} of $A$
+\[
+\rho(A) = \max_{\lambda\in\mathsf{Sp}(A)}\{|\lambda|\}
+\]
+$\mathsf{Sp}(A)$ the \textbf{spectrum} of $A$
+\vfill
+\begin{theorem}[PF -- Nonnegative case]
+$0\leq A\in\M_n(\IR)$. Then $\exists\bv\geq\b0$ s.t. 
+\[
+	A\bv=\rho(A)\bv
+\]
+\end{theorem}
+\vfill
+
+\begin{theorem}[PF -- Irreducible case]
+	\label{th:PF}
+	Let $0\leq A\in \M_n(\IR)$ irreducible. Then $\exists\bv>\b0$ s.t.
+	\[
+		A\bv=\rho(A)\bv
+	\]
+	$\rho(A)>0$ and with algebraic multiplicity 1
+	\vskip0.5cm
+	No nonnegative eigenvector is associated to any other eigenvalue of $A$
+\end{theorem}
+\end{frame}
+
+
+
+\begin{frame}{Primitive matrices}
+\begin{definition}
+$0\leq A\in\M_n(\IR)$ \textbf{primitive} (with \textbf{primitivity index} $k\in \IN_{+}^{*}$) if $\exists k\in \IN_{+}^{*}$ s.t.
+\[
+A^k>0,
+\]
+with $k$ the smallest integer for which this is true.
+$A$ \textbf{imprimitive} if it is not primitive
+\end{definition}
+\vfill
+$A$ primitive $\implies$ $A$ irreducible; converse false
+\vfill
+\begin{theorem}
+	$A\in\M_n(\IR)$ irreducible and $\exists i=1,\ldots,n$ s.t. $a_{ii}>0$ $\implies$ $A$ primitive
+\end{theorem}
+\vfill
+Here $d$ is the index of imprimitivity (i.e., the number of eigenvalues that have the same modulus as $\lambda_p=\rho(A)$). If $d=1$, then $A$ is primitive. We have that $d=\mathsf{gcd}$ of all the lengths of closed walks in $G(A)$
+\end{frame}
+
+\begin{frame}
+\begin{minipage}{0.49\textwidth}
+	\begin{tikzpicture}[auto, %node distance = 2cm, auto,
+		cloud/.style={minimum width={width("N-1")+2pt},
+		draw, ellipse}]
+		\node [cloud] (S1) at (0,0) {$1$};
+		\node [cloud] (S2) at (2,0) {$2$};
+		\node [cloud] (S3) at (1,-2) {$3$};
+		%% Recoveries
+		\path [line, thick] (S1) to [bend left = 20] (S2);
+		\path [line, thick] (S2) to [bend left = 20] (S3);
+		\path [line, thick] (S3) to [bend left = 20] (S1);
+	\end{tikzpicture}
+\end{minipage}
+\begin{minipage}{0.49\textwidth}
+Adjacency matrix
+\[
+	A=\begin{pmatrix}
+	0&1& 0\\
+	0&0&1\\
+	1&0&0
+	\end{pmatrix}
+\]
+\end{minipage}
+\vskip0.2cm
+Closed walks in $G(A)$ (lengths): $1\to 1$ (3), $2\to 2$ (3), $2\to 2$ (3)
+$\implies$ $\gcd = 3$ $\implies$ $d=3$ (here, all eigenvalues have modulus $1$)
+\vfill
+\begin{minipage}{0.49\textwidth}
+\begin{tikzpicture}[auto, %node distance = 2cm, auto,
+cloud/.style={minimum width={width("N-1")+2pt},
+draw, ellipse}]
+\node [cloud] (S1) at (0,0) {$1$};
+\node [cloud] (S2) at (2,0) {$2$};
+\node [cloud] (S3) at (1,-2) {$3$};
+%% Loops
+\path [line, thick, distance=30] (S1) to (S1);
+%% Recoveries
+\path [line, thick] (S1) to [bend left = 20] (S2);
+\path [line, thick] (S2) to [bend left = 20] (S3);
+\path [line, thick] (S3) to [bend left = 20] (S1);
+\end{tikzpicture}
+\end{minipage}
+\begin{minipage}{0.49\textwidth}
+\[
+A= \begin{pmatrix}
+1&1&0\\
+0&0&1\\
+1&0&0
+\end{pmatrix}
+\]
+\end{minipage}
+\vskip0.2cm
+Closed walk $1\to 1$ has length 1 $\implies$
+gcd of lengths of closed walks is 1 $\implies$ $A$ primitive
+\end{frame}
+
+\begin{frame}
+\begin{theorem}
+$0\leq A\in \M_n$. $A$ primitive $\implies$ $A^k>0$ for some $0<k\leq (n-1)n^n$
+\end{theorem}
+\vfill
+\begin{theorem}
+$A\geq 0$ primtive. Suppose the shortest simple directed cycle in $G(A)$ has length $s$, then primitivity index is $\leq n+s(n-1)$
+\end{theorem}
+\vfill
+\begin{theorem}
+$0\leq A\in \M_n$ primitive $\iff$ $A^{n^2-2n+2}>0$
+\end{theorem}
+\vfill
+\begin{theorem}
+	$0\leq A\in \M_n$ irreducible. $A$ has $d$ positive entries on the diagonal $\implies$ primitivity index $\leq 2n-d-1$
+\end{theorem}
+\end{frame}
+
+
+\begin{frame}
+\begin{theorem}\label{th:PF_allCases}
+	$0\leq A\in\M_n$, $\lambda_P=\rho(A)$ the Perron root of $A$, $\bv_P$ and $\bw_P$ the corresponding right and left Perron vectors of $A$, respectively, $d$ the index of imprimitivity of $A$ (with $d=1$ when $A$ is primitive) and $\lambda_j\in\sigma(A)$ the spectrum of $A$, with $j=2,\ldots,n$ unless otherwise specified (assuming $\lambda_1=\lambda_P$) 
+	\begin{center}
+		\begin{tikzpicture}[scale=0.75, every node/.style={transform shape},
+			auto,
+		cloud/.style={minimum width={width("N-1")+2pt},
+			draw, rectangle}]
+		\node [cloud] at (5,0) (nonneg) {\sc Nonnegative};
+		\node [cloud] (reduc) at (2,-3) [text width=3cm] {{\sc Reducible}\\ \noindent\begin{itemize}
+			\item $\lambda_P\geq 0$
+			\item $\bw_P\geq 0$
+			\item $\bv_P\geq 0$
+			\item $\lambda_P \geq | \lambda_j |$
+			\end{itemize}
+		};
+		\node [cloud] (irred) at (6,-4) {\sc Irreducible};	
+		\node [cloud] (notprim) at (3,-8) [text width=3cm] {{\sc Imprimitive}\\ \begin{itemize}
+			\item $\lambda_P> 0$
+			\item $\bw_P> 0$
+			\item $\bv_P> 0$
+			\item $\lambda_P=|\lambda_j|$, $j=2,\ldots,d$
+			\item $\lambda_P > |\lambda_j|$, $j>d$
+			\end{itemize}
+		};	
+		\node [cloud] (prim) [text width=3cm] at (8,-8) {{\sc Primitive}\\
+			\begin{itemize}
+			\item $\lambda_P> 0$
+			\item $\bw_P> 0$
+			\item $\bv_P> 0$
+			\item $\lambda_P>|\lambda_j|$, $j\neq P$ 
+			\end{itemize}
+		};	
+		%% Links
+		\path [line, thick] (nonneg) to (reduc);
+		\path [line, thick] (nonneg) to (irred);
+		\path [line, thick] (irred) to (notprim);
+		\path [line, thick] (irred) to (prim);
+		\end{tikzpicture}
+	\end{center}
+	\end{theorem}	
+\end{frame}
+
+\end{document}

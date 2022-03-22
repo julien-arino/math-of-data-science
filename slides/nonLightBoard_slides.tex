@@ -1,0 +1,135 @@
+\usepackage{bm}
+
+\usepackage{xcolor}
+\usepackage{colortbl}
+\def\boldred#1{\color{red}\textbf{#1}}
+
+\def\IC{\mathbb{C}}
+\def\IF{\mathbb{F}}
+\def\II{\mathbb{I}}
+\def\IM{\mathbb{M}}
+\def\IN{\mathbb{N}}
+\def\IP{\mathbb{P}}
+\def\IR{\mathbb{R}}
+\def\IZ{\mathbb{Z}}
+
+\def\ba{\mathbf{a}}
+\def\bb{\mathbf{b}}
+\def\bc{\mathbf{c}}
+\def\be{\mathbf{e}}
+\def\bh{\mathbf{h}}
+\def\bi{\mathbf{i}}
+\def\bj{\mathbf{j}}
+\def\bk{\mathbf{k}}
+\def\bn{\mathbf{n}}
+\def\bp{\mathbf{p}}
+\def\br{\mathbf{r}}
+\def\bs{\mathbf{s}}
+\def\bu{\mathbf{u}}
+\def\bv{\mathbf{v}}
+\def\bw{\mathbf{w}}
+\def\bx{\mathbf{x}}
+\def\by{\mathbf{y}}
+\def\bz{\mathbf{z}}
+
+\def\bB{\mathbf{B}}
+\def\bD{\mathbf{D}}
+\def\bF{\mathbf{F}}
+\def\bG{\mathbf{G}}
+\def\bN{\mathbf{N}}
+\def\bR{\mathbf{R}}
+\def\bS{\mathbf{S}}
+\def\bT{\mathbf{T}}
+\def\b0{\mathbf{0}}
+
+\bmdefine{\bmu}{\bm{\mu}}
+
+\def\A{\mathcal{A}}
+\def\B{\mathcal{B}}
+\def\C{\mathcal{C}}
+\def\D{\mathcal{D}}
+\def\E{\mathcal{E}}
+\def\F{\mathcal{F}}
+\def\G{\mathcal{G}}
+\def\I{\mathcal{I}}
+\def\L{\mathcal{L}}
+\def\M{\mathcal{M}}
+\def\P{\mathcal{P}}
+\def\R{\mathcal{R}}
+\def\S{\mathcal{S}}
+\def\T{\mathcal{T}}
+\def\U{\mathcal{U}}
+\def\V{\mathcal{V}}
+
+\def\nbOne{{\mathchoice {\rm 1\mskip-4mu l} {\rm 1\mskip-4mu l}
+{\rm 1\mskip-4.5mu l} {\rm 1\mskip-5mu l}}}
+
+\def\cov{\ensuremath{\mathsf{cov}}}
+\def\Var{\ensuremath{\mathsf{Var}\ }}
+
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{property}[theorem]{Property}
+\newtheorem{importantproperty}[theorem]{Property}
+\newtheorem{importanttheorem}[theorem]{Theorem}
+%\newtheorem{lemma}[theorem]{Lemma}
+
+
+
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}
+{%
+	\quad\insertsection\hfill p. \insertpagenumber\quad\mbox{}\vskip2pt
+}
+\usecolortheme{orchid}
+\setbeamertemplate{theorems}[numbered]
+
+\makeatletter
+\newlength\beamerleftmargin
+\setlength\beamerleftmargin{\Gm@lmargin}
+\makeatother
+
+%%%%%%% 
+%% Definitions in yellow boxes
+\usepackage{etoolbox}
+\setbeamercolor{block title}{use=structure,fg=structure.fg,bg=structure.fg!05!bg}
+\setbeamercolor{block body}{parent=normal text,use=block title,bg=block title.bg!20!bg}
+
+\BeforeBeginEnvironment{definition}{%
+	\setbeamercolor{block title}{fg=black,bg=yellow!20!white}
+	\setbeamercolor{block body}{fg=black, bg=yellow!05!white}
+}
+\AfterEndEnvironment{definition}{
+	\setbeamercolor{block title}{use=structure,fg=structure.fg,bg=structure.fg!20!bg}
+	\setbeamercolor{block body}{parent=normal text,use=block title,bg=block title.bg!50!bg, fg=black}
+}
+\BeforeBeginEnvironment{importanttheorem}{%
+	\setbeamercolor{block title}{fg=black,bg=red!20!white}
+	\setbeamercolor{block body}{fg=black, bg=red!05!white}
+}
+\AfterEndEnvironment{importanttheorem}{
+	\setbeamercolor{block title}{use=structure,fg=structure.fg,bg=structure.fg!20!bg}
+	\setbeamercolor{block body}{parent=normal text,use=block title,bg=block title.bg!50!bg, fg=black}
+}
+\BeforeBeginEnvironment{importantproperty}{%
+	\setbeamercolor{block title}{fg=black,bg=red!50!white}
+	\setbeamercolor{block body}{fg=black, bg=red!30!white}
+}
+\AfterEndEnvironment{importantproperty}{
+	\setbeamercolor{block title}{use=structure,fg=structure.fg,bg=structure.fg!20!bg}
+	\setbeamercolor{block body}{parent=normal text,use=block title,bg=block title.bg!50!bg, fg=black}
+}
+
+
+%%%%%%%%%%%%%%%%%
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows}
+\usetikzlibrary{positioning}
+\tikzstyle{cloud} = [draw, ellipse,fill=red!20, node distance=0.87cm,
+minimum height=2em]
+\tikzstyle{line} = [draw, -latex']
+\usetikzlibrary{shapes.symbols,shapes.callouts,patterns}
+\usetikzlibrary{calc,fit}
+\usetikzlibrary{backgrounds}
+
+\usetikzlibrary{decorations.pathmorphing,backgrounds,positioning,fit,petri}
+\usetikzlibrary{automata}
