@@ -1,6 +1,6 @@
 ## MATH 2740 (Mathematics of Data Science)
 
-On the [GitHub version](https://github.com/julien-arino/math2740-of-data-science/) of the site, you have access to all the files.
+On the [GitHub version](https://github.com/julien-arino/math2740-of-data-science/) of the site, you have access to all the files. You can also download the entire repository by clicking the buttons on the left. (You can also of course clone this repo, but you will need to do that from the GitHub version of the site.)
 
 ### Slides
 
@@ -26,3 +26,5 @@ On the [GitHub version](https://github.com/julien-arino/math2740-of-data-science
   {% endif %}
 {% endfor %}
 </ul>
+
+Feel free to use the material in these slides or in the folders. If you find this useful, I will be happy to know.
