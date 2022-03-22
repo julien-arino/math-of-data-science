@@ -2,6 +2,14 @@
 
 On the [GitHub version](https://github.com/julien-arino/math2740-of-data-science/) of the site, you have access to all the files.
 
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/julien-arino/math2740-of-data-science/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+<ul>
+{% for pdf in site.static_files %}
+  {% if pdf.path contains 'slides' %}
+    {% if pdf.path contains 'MATH2740' %}
+      {% if pdf.path contains 'pdf' %}
+        <li><a href="{{ pdf.path }}">{{ pdf.basename }}</a></li>
+      {% endif %}
+    {% endif %}
+  {% endif %}
+{% endfor %}
+</ul>
