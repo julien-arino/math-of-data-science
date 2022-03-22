@@ -9,7 +9,7 @@ On the [GitHub version](https://github.com/julien-arino/math2740-of-data-science
   {% if html.path contains 'slides' %}
     {% if html.path contains 'MATH2740' %}
       {% if html.path contains 'html' %}
-        <li><a href="{{ html.path }}">{{ html.basename }}</a></li>
+        <li><a href="https://julien-arino.github.io/math2740-of-data-science/slides/{{ html.basename }}.html">{{ html.basename }}</a></li>
       {% endif %}
     {% endif %}
   {% endif %}
@@ -19,7 +19,7 @@ On the [GitHub version](https://github.com/julien-arino/math2740-of-data-science
     {% if pdf.path contains 'MATH2740' %}
       {% if pdf.path contains 'pdf' %}
         {% unless pdf.path contains 'LightBoard' %}
-          <li><a href="{{ pdf.path }}">{{ pdf.basename }}</a></li>
+          <li><a href="https://julien-arino.github.io/math2740-of-data-science/slides/{{ pdf.basename }}.pdf">{{ pdf.basename }}</a></li>
         {% endunless %}
       {% endif %}
     {% endif %}
