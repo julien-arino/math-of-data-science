@@ -28,3 +28,7 @@ On the [GitHub version](https://github.com/julien-arino/math2740-of-data-science
 </ul>
 
 Feel free to use the material in these slides or in the folders. If you find this useful, I will be happy to know.
+
+### Videos
+
+The videos for the course are available on YouTube as a [playlist](https://youtube.com/playlist?list=PLfRaznSpWo2vQAn1jVyueTuAiryDaxkH3). Note that the videos are far from perfect.. the slides and the videos will be reworked prior to the next instance of the course (although the latter will hopefully be taught in person).
