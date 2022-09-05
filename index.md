@@ -18,7 +18,7 @@ On the [GitHub version](https://github.com/julien-arino/math2740-of-data-science
   {% if ipynb.path contains 'slides' %}
     {% if ipynb.path contains 'MATH2740' %}
       {% if ipynb.path contains 'ipynb' %}
-        <li><a href="https://julien-arino.github.io/math2740-of-data-science/slides/{{ html.basename }}.ipynb">{{ ipynb.basename }}</a></li>
+        <li><a href="https://julien-arino.github.io/math2740-of-data-science/slides/{{ ipynb.basename }}.ipynb">{{ ipynb.basename }}</a></li>
       {% endif %}
     {% endif %}
   {% endif %}
@@ -29,6 +29,26 @@ On the [GitHub version](https://github.com/julien-arino/math2740-of-data-science
       {% if pdf.path contains 'pdf' %}
         {% unless pdf.path contains 'LightBoard' %}
           <li><a href="https://julien-arino.github.io/math2740-of-data-science/slides/{{ pdf.basename }}.pdf">{{ pdf.basename }}</a></li>
+        {% endunless %}
+      {% endif %}
+    {% endif %}
+  {% endif %}
+{% endfor %}
+</ul>
+
+<ul>
+{% for file in site.static_files %}
+  {% if file.path contains 'slides' %}
+    {% if file.path contains 'MATH2740' %}
+      {% if file.path contains 'html' %}
+        <li><a href="https://julien-arino.github.io/math2740-of-data-science/slides/{{ file.basename }}.html">{{ file.basename }}</a></li>
+      {% endif %}
+      {% if file.path contains 'ipynb' %}
+        <li><a href="https://julien-arino.github.io/math2740-of-data-science/slides/{{ file.basename }}.ipynb">{{ file.basename }}</a></li>
+      {% endif %}
+      {% if file.path contains 'pdf' %}
+        {% unless file.path contains 'LightBoard' %}
+          <li><a href="https://julien-arino.github.io/math2740-of-data-science/slides/{{ file.basename }}.pdf">{{ file.basename }}</a></li>
         {% endunless %}
       {% endif %}
     {% endif %}
