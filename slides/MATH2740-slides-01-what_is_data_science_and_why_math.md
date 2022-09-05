@@ -12,7 +12,7 @@ _paginate: false
 
 
 # What is Data Science and why would you care about Mathematics as a data scientist?
-Julien Arino ([Julien.Arino@umanitoba.ca](mailto:Julien.Arino@umanitoba.ca))
+Julien Arino ([julien.arino@umanitoba.ca](mailto:julien.arino@umanitoba.ca))
 
 Department of Mathematics & Data Science Nexus
 University of Manitoba
@@ -25,11 +25,11 @@ NSERC-PHAC EID Modelling Consortium - CANMOD, OMNI/RÉUNIS & MfPH
 
 # In days of yore (circa 2010)
 
-“Big data is like teenage sex: everyone talks about it, nobody really knows how to do it, everyone thinks everyone else is doing it, so everyone claims they are doing it...” 
+> Big data is like teenage sex: everyone talks about it, nobody really knows how to do it, everyone thinks everyone else is doing it, so everyone claims they are doing it...
 
-Attributed to Dan Ariely (Duke University)
+Attributed to [Dan Ariely](https://twitter.com/danariely/status/287952257926971392?lang=en) (Duke University)
 
-The vocabulary has evolved: big data $\to$ complex data $\to$ data science
+The vocabulary has evolved, big data $\to$ complex data $\to$ data science, but Data Science remains a loosely defined concept, although things are becoming better
 
 ---
 

@@ -32,7 +32,7 @@ NSERC-PHAC EID Modelling Consortium - CANMOD, OMNI/RÉUNIS & MfPH
 - Times are 24h
 - Units are SI
 
-In case you want to know, the slides in the course are (for most of them) html5 generated from `markdown` files using [marp](https://marp.app/). A few are pure $\LaTeX$. All (including source code) are available on GitHub [here](https://github.com/julien-arino/math2740-of-data-science)
+In case you want to know, some of the slides in the course are html5 generated from `markdown` files using [marp](https://marp.app/). Others are pure $\LaTeX$. All (including source code) are available on GitHub [here](https://github.com/julien-arino/math2740-of-data-science)
 
 ---
 
