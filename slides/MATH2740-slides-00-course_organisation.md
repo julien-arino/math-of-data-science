@@ -15,7 +15,7 @@ _paginate: false
 
 # Some information about the course
 
-Julien Arino ([Julien.Arino@umanitoba.ca](mailto:Julien.Arino@umanitoba.ca))
+Julien Arino ([julien.arino@umanitoba.ca](mailto:julien.arino@umanitoba.ca))
 
 Department of Mathematics & Data Science Nexus
 University of Manitoba
@@ -24,35 +24,45 @@ Canadian Centre for Disease Modelling
 Canadian COVID-19 Mathematical Modelling Task Force
 NSERC-PHAC EID Modelling Consortium - CANMOD, OMNI/RÉUNIS & MfPH
 
+---
+
+# Foreword
+
+- "Numerical dates" are in the form YYYY-MM-DD (e.g, today is 2022-09-08)
+- Times are 24h
+- Units are SI
+
+In case you want to know, the slides in the course are (for most of them) html5 generated from `markdown` files using [marp](https://marp.app/). A few are pure $\LaTeX$. All (including source code) are available on GitHub [here](https://github.com/julien-arino/math2740-of-data-science)
 
 ---
 
 # Getting in touch
 
-- [Julien.Arino@umanitoba.ca](mailto:Julien.Arino@umanitoba.ca)
+- [julien.arino@umanitoba.ca](mailto:julien.arino@umanitoba.ca)
 
-- Please use your `myumanitoba` email address. Use a tag such as `[MATH 2740]` in your subject line: because of my work on COVID-19, there are days when I receive more than one hundred emails, so if you want to be read..
+- Please use your `myumanitoba` email address. Use a tag such as `[MATH 2740]` in your subject line, if you want to be read..
 
-- There's an entry in the university address book for a phone for me.. don't bother!
+- There's an entry in the university address book with a phone for me.. don't bother!
 
-- I will be physically present on campus at times, but there will not be any in-person meetings until the end of October when the University's mandate for full vaccination takes effect
+- I am physically present on campus on lecture days and some other days, but **do not** come to see me outside of office hours without an appointment!
+    - Office hours: TR 14:00-16:00
+- My office hours are for both courses I teach (MATH 2090 and MATH 2740) and might get busy. If things do get busy, I will limit each person to 10 minutes at a time, so come with your questions prepared!
+
 ---
 
-# Course website
+# Course website - UMLearn
 
-- All information about the course will be on UMLearn
-
-- It is your responsibility to check the UMLearn site regularly. All announcements about the course will be made there
+- All information about the course is posted on UMLearn
+- It is your responsibility to check the UMLearn site regularly: all announcements about the course is made there as News items
+- (Remember to hit the link at the top of the page that says *MATH-2740-A01 - Mathematics of Data Science*, sometimes UMLearn takes you directly to Content, which is not where the announcements are)
 
 ---
 
 # Lectures
 
-- All lectures will be pre-recorded and available online. I am hoping to be done recording by mid-September
+- TR 11:30-12:45 in 207 Buller
 
-- Lecture times (TR 11:30-12:45) will normally see me online in Zoom to answer questions about the course. Times may change because of work-related obligations. All information will be posted online on UMLearn
-
-- If you cannot attend the "lecture time Zoom", send me an email to arrange a meeting at some other time
+- Videos for the course as I taught it last year are available on as a [YouTube playlist](https://www.youtube.com/playlist?list=PLfRaznSpWo2vQAn1jVyueTuAiryDaxkH3). There is no guarantee that that the content will be the same this year, but there will be commonalities for sure
 
 ---
 
@@ -61,28 +71,70 @@ NSERC-PHAC EID Modelling Consortium - CANMOD, OMNI/RÉUNIS & MfPH
 - It is strongly recommended to attend tutorials, as this is where you will review some of the mathematical content
 
 - Tutorials are as follows
-    - B01	8:30 - 9:20	W
-    - B02	9:30 - 10:20	W
-    - B03	11:30 - 12:20	W
+
+| Section | Day and time | Location |
+|---------|--------------|----------|
+| B01 | W 8:30-9:20 | 124 Machray Hall |
+| B02 | W 9:30-10:20 | 124 Machray Hall |
+| B03 | W 11:30-12:20 | 124 Machray Hall |
+
 ---
 
-# Evaluation - Assignments
-- Because the course is not in-person, evaluation will be through assignments only
-- One assignment per week, which will include a mix of mathematical and computer work
-- On assignments, not all questions will be marked (but solutions will be provided to all questions). If you do not submit an answer to a question that is marked, you will receive **zero** for that question
+# Evaluation through assignments only
+- Evaluation will be through assignments only (no tests, no final examination!)
+- One assignment per week (posted Friday at 12:00, due the following Friday at 12:00)
+- Assignments will be mathematical OR (not XOR) computational. If both, (assignment complete $\iff$ **both** parts are handed back)
+- The mark for assignments will consist of the average of the marks on the **best 10** assignments
+- In the mathematical part, it is possible that not all questions will be marked. If you do not submit an answer to a question that is marked, you will receive **zero** for that question
 - There will be **no** tolerance for late assignments and there will not be any make-up for missed assignments: any assignment not returned by the deadline will result in a mark of **zero**
-- The mark for assignments will consist of the average of the marks on the **best 8** assignments
+
+---
+
+# No late assignments, but ...
+
+- Because of a policy change, you can now self-declare an absence of less than 72 hours instead of providing a doctor's note
+- If a self-declared absence overlaps with the due date and time of Friday at 12:00
+    - send me the form **prior** to the deadline
+    - I will modify *your* deadline for *that* assignment so you can still submit on time
+- **I will not accept self-declarations after the deadline**: if at 12:00 Friday, I have not received a self-declaration form XOR the assignment, you get a mark of zero on that assignment
 
 ---
 
 # Computer work
 
-- Being able to use computers is an integral part of being a data scientist, so in this course, we will use computers a lot
-- The main two languages in data science are `R` and `Python`. Typically, `R` is used more by people in Stats, while `Python` is more CS. There is great value in both and knowing both is a plus, but for simplicity, here we will use `R`. As much as possible, I will provide the equivalent code in `Python`, but computer assignments will need to be handed back in `R`
+- Being able to use computers is an integral part of being a data scientist, so in this course, we use computers a lot
+- The two main languages in data science are `R` and `Python`. Typically, `R` is used more by people in Stats, while `Python` is more CS
+- There is great value in both and knowing both is a plus, but for simplicity, here we use `R`. Computer assignments will need to be handed back in `R` (Python $\Rightarrow$ 0)
 
 ---
 
-# Computer work - jupyter notebooks on syzygy.ca
+# Returning assignments
 
-- To facilitate computer work, we will use `R` within `jupyter` notebooks on syzygy.ca 
-- I will provide a whole lecture on using `jupyter` notebooks and syzygy.ca, for now just know that this is a development environment that runs on the web and to which you have access as U of M students
+- Mathematical part of the assignment goes to Crowdmark
+    - Ensure legibility
+    - Answer questions in order
+- Computer part of the assignment goes to UMLearn
+    - `R` language only (Python $\Rightarrow$ 0)
+    - Needs to be a jupyter notebook (.ipynb) or an RMarkdown file (.Rmd)
+    - Single file
+    - Can submit several times but only the latest file will be used
+- In both cases, explain what you are doing. Math or code without explanation will lose marks
+- If an assignment has both a mathematical and a computer part, the assignment is complete if and only if both parts are handed back. Incomplete assignment $\Rightarrow$ 0
+
+---
+
+# Academic dishonesty
+
+- Feel free to discuss work with others, but solutions must be your own !
+- Markers will be on the lookout for this
+- Paraphrasing my computer code = academic dishonesty !
+- [stack overflow](https://stackoverflow.com/) is a fantastic resource but if you use a solution from there, cite it (in a notebook, that's easy)
+
+---
+
+# Jupyter notebooks on [syzygy.ca](https://syzygy.ca)
+
+- To facilitate computer work, we will use `R` within `jupyter` notebooks on [syzygy.ca](https://syzygy.ca) 
+- I will provide a whole lecture on using jupyter notebooks and [syzygy.ca](https://syzygy.ca), for now just know that this is a development environment that runs on the web and to which you have access as U of M students
+- I am also allowing the return of computer assignments as RMarkdown (Rmd) files. The lecture on jupyter will also cover this
+- There is a page on UMLearn on how to connect to [syzygy.ca](https://syzygy.ca), how to install `R` or jupyter notebooks on your computer
