@@ -14,6 +14,15 @@ On the [GitHub version](https://github.com/julien-arino/math2740-of-data-science
     {% endif %}
   {% endif %}
 {% endfor %}
+{% for ipynb in site.static_files %}
+  {% if ipynb.path contains 'slides' %}
+    {% if ipynb.path contains 'MATH2740' %}
+      {% if ipynb.path contains 'ipynb' %}
+        <li><a href="https://julien-arino.github.io/math2740-of-data-science/slides/{{ html.basename }}.ipynb">{{ ipynb.basename }}</a></li>
+      {% endif %}
+    {% endif %}
+  {% endif %}
+{% endfor %}
 {% for pdf in site.static_files %}
   {% if pdf.path contains 'slides' %}
     {% if pdf.path contains 'MATH2740' %}
