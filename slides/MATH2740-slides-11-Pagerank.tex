@@ -1,4 +1,4 @@
-\PassOptionsToPackage{landscape}{geometry}
+%\PassOptionsToPackage{landscape}{geometry}
 \documentclass[aspectratio=43]{beamer}
 
 \input{nonLightBoard_slides.tex}
@@ -521,23 +521,26 @@ Suppose now the same type of experiment, but mate each new generation with a GG 
 \end{tikzpicture}
 \end{center}
 \vfill
-\begin{center}
-\begin{tabular}{c|ccc}
-$\nearrow$ & GG & Gg & gg \\
-\hline
-GG & 1 & 0 & 0 \\
-Gg & 0.5 & 0.5 & 0 \\
-gg & 0 & 1 & 0
-\end{tabular}
-\end{center}
-and 
-\[
-P=\begin{pmatrix}
-1 & 0 & 0 \\[2pt]
-\dfrac 12 & \dfrac 12 & 0 \\[7pt]
-0 & 1 & 0
-\end{pmatrix}
-\]
+\begin{minipage}{0.45\textwidth}
+	\begin{center}
+		\begin{tabular}{c|ccc}
+		$\nearrow$ & GG & Gg & gg \\
+		\hline
+		GG & 1 & 0 & 0 \\
+		Gg & 0.5 & 0.5 & 0 \\
+		gg & 0 & 1 & 0
+		\end{tabular}
+	\end{center}
+\end{minipage}
+\begin{minipage}{0.45\textwidth}
+	\[
+		P=\begin{pmatrix}
+		1 & 0 & 0 \\[2pt]
+		\dfrac 12 & \dfrac 12 & 0 \\[7pt]
+		0 & 1 & 0
+		\end{pmatrix}
+	\]
+\end{minipage}
 \begin{itemize}
 \item leave gg after 1 iteration and can never return
 \item when we leave Gg, we can never return
