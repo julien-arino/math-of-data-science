@@ -1,0 +1,165 @@
+%\PassOptionsToPackage{landscape}{geometry}
+\documentclass[aspectratio=169]{beamer}
+
+%\input{nonLightBoard_slides.tex}
+\input{slides_setup_nonLightBoard.tex}
+
+\title{Clustering \& Classification}
+\date{}
+
+\begin{document}
+\DeclareFontShape{OT1}{cmss}{b}{n}{<->ssub * cmss/bx/n}{} 
+\begin{frame}
+	\titlepage
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+\section{What are clustering and classification ?}
+
+\begin{frame}{Clustering vs classification}
+    Clustering is partitioning an unlabelled dataset into groups of similar objects
+    \vfill
+    Classification sorts data into specific categories using a labelled dataset
+\end{frame}
+
+\begin{frame}{Clustering}
+    From \href{https://en.wikipedia.org/wiki/Cluster_analysis}{Wikipedia}
+    \begin{quote}
+        \textbf{Cluster analysis} or \textbf{clustering} is the task of grouping a set of objects in such a way that objects in the same group (called a \textbf{cluster}) are more similar (in some sense) to each other than to those in other groups (clusters).
+    \end{quote}
+    \vfill
+    There are a myriad of ways to do clustering, this is an extremely active field of research and application. See the Wikipedia page for leads
+\end{frame}
+
+
+\begin{frame}{We have done clustering already}
+    We have seen some clustering, for example when we sought strongly connected components or cliques or, to some extent, when we did PCA    
+\end{frame}
+
+
+\begin{frame}{Classification}
+    From \href{https://en.wikipedia.org/wiki/Statistical_classification}{Wikipedia}
+    \begin{quote}
+        In statistics, \textbf{classification} is the problem of identifying which of a set of categories (sub-populations) an observation (or observations) belongs to. Examples are assigning a given email to the "spam" or "non-spam" class, and assigning a diagnosis to a given patient based on observed characteristics of the patient (sex, blood pressure, presence or absence of certain symptoms, etc.).
+    \end{quote}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+\section{Support vector machines}
+
+\begin{frame}{Support vector machines (SVM)}
+
+\end{frame}
+
+\begin{frame}{Linear SVM}
+    We are given a training dataset of $n$ points of the form
+    \[ 
+        (\bx_1, y_1), \ldots, (\bx_n, y_n)
+    \]
+    where $\bx_i\in\IR^p$ and $y_i=\{-1,1\}$. The value of $y_i$ indicates the class to which the point $\bx_i $ belongs
+    \vfill
+    \begin{quote}\textbf{Linear SVM --}
+        Find the ``maximum-margin hyperplane'' that divides the group of points $\bx_i$ for which $y_i = 1$ from the group of points for which $y_i = -1$, which is such that the distance between the hyperplane and the nearest point $\bx_i$ from either group is maximized.
+    \end{quote}
+\end{frame}
+
+\begin{frame}
+    \begin{minipage}{0.7\textwidth}
+        \includegraphics[height=\textheight]{FIGS_slides/SVM_margin}
+    \end{minipage}
+    \begin{minipage}{0.28\textwidth}
+        Maximum-margin hyperplane and margins for an SVM trained with samples from two classes. Samples on the margin are the \textbf{support vectors}
+    \end{minipage}
+\end{frame}
+
+\begin{frame}
+    Any \textbf{hyperplane} can be written as the set of points $\mathbf{x}$ satisfying
+    \[
+        \bw^\mathsf{T} \bx - b = 0
+    \]
+    where $\bw$ is the (not necessarily normalized) \textbf{normal vector} to the hyperplane
+    % \vfill
+    % This is much like \textbf{Hesse normal form}, except that $\mathbf{w}$ is not necessarily a unit vector
+    \vfill
+    The parameter $b/\|\bw\|$ determines the offset of the hyperplane from the origin along the normal vector $\bw$
+    \vfill
+    Remark: a hyperplane defined thusly is not a subspace of $\IR^p$ unless $b=0$. We can of course transform the data so that it is...
+\end{frame}
+
+\begin{frame}{Hard-margin SVM}
+    If the training data is \textbf{linearly separable}, we can select two parallel hyperplanes that separate the two classes of data, so that the distance between them is as large as possible 
+    \vfill
+    The region bounded by these two hyperplanes is called the ``margin'', and the maximum-margin hyperplane is the hyperplane that lies halfway between them
+    \vfill
+    With a normalized or standardized dataset, these hyperplanes can be described by the equations
+    \begin{itemize}
+        \item $\mathbf{w}^\mathsf{T} \mathbf{x} - b = 1$ (anything on or above this boundary is of one class, with label 1) 
+        \item $\mathbf{w}^\mathsf{T} \mathbf{x} - b = -1$ (anything on or below this boundary is of the other class, with label -1)
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    Distance between these two hyperplanes is $2/\|\bw\|$
+    \vfilll
+    $\Rightarrow$ to maximize the distance between the planes we want to minimize $\|\bw\|$
+    \vfill
+    The distance is computed using the distance from a point to a plane equation
+    \vfill
+    We must also prevent data points from falling into the margin, so we add the following constraint: for each $i$ either
+    \[
+        \mathbf{w}^\mathsf{T} \mathbf{x}_i - b \ge 1 \, , \text{ if } y_i = 1
+    \]
+    or
+    \[
+        \mathbf{w}^\mathsf{T} \mathbf{x}_i - b \le -1 \, , \text{ if } y_i = -1
+    \]
+    \vfill
+    (Each data point must lie on the correct side of the margin)
+\end{frame}
+
+\begin{frame}
+    This can be rewritten as
+    \[
+        y_i(\mathbf{w}^\mathsf{T} \mathbf{x}_i - b) \ge 1, \quad \text{ for all } 1 \le i \le n
+    \]
+    We can put this together to get the optimization problem:
+    \begin{quote}
+        "Minimize $\|\mathbf{w}\|$ subject to $y_i(\mathbf{w}^\mathsf{T} \mathbf{x}_i - b) \ge 1$ for $i = 1, \ldots, n$."
+    \end{quote}
+    
+    The $\mathbf{w}$ and $b$ that solve this problem determine our classifier, $\mathbf{x} \mapsto \sgn(\mathbf{w}^\mathsf{T} \mathbf{x} - b)$ where $\sgn(\cdot)$ is the [[sign function]].
+\end{frame}
+
+\begin{frame}   
+    An important consequence of this geometric description is that the max-margin hyperplane is completely determined by those $\mathbf{x}_i$ that lie nearest to it. These $\mathbf{x}_i$ are called ''support vectors''.
+\end{frame}
+
+\begin{frame}{Soft-margin SVM}
+    To extend SVM to cases in which the data are not linearly separable, the ''[[hinge loss]]'' function is helpful
+    \[
+        \max\left(0, 1 - y_i(\mathbf{w}^\mathsf{T} \mathbf{x}_i - b)\right)
+    \]
+    Note that $y_i$ is the ''i''-th target (i.e., in this case, 1 or -1), and $\mathbf{w}^\mathsf{T} \mathbf{x}_i - b$ is the ''i''-th output.
+    
+    This function is zero if the constraint in {{EquationNote|1|(1)}} is satisfied, in other words, if $\mathbf{x}_i$ lies on the correct side of the margin. For data on the wrong side of the margin, the function's value is proportional to the distance from the margin.
+\end{frame}
+
+\begin{frame}
+   
+    The goal of the optimization then is to minimize
+    
+    \[ 
+        \lambda \lVert \mathbf{w} \rVert^2 +\left[\frac 1 n \sum_{i=1}^n \max\left(0, 1 - y_i(\mathbf{w}^\mathsf{T} \mathbf{x}_i - b)\right) \right]
+    \]
+    
+    where the parameter $\lambda > 0$ determines the trade-off between increasing the margin size and ensuring that the $\mathbf{x}_i$ lie on the correct side of the margin. Thus, for sufficiently small values of $\lambda$, it will behave similar to the hard-margin SVM, if the input data are linearly classifiable, but will still learn if a classification rule is viable or not. (This parameter $\lambda$ is often also called $C$, e.g. in ''[[LIBSVM]]'', but usually refers to the inverse of $\lambda$.)
+        
+\end{frame}
+
+\end{document}
