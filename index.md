@@ -13,7 +13,9 @@ On the [GitHub version](https://github.com/julien-arino/math2740-of-data-science
         <li><a href="https://julien-arino.github.io/math2740-of-data-science/slides/{{ file.basename }}.html">{{ file.basename }}</a></li>
       {% endif %}
       {% if file.path contains 'ipynb' %}
-        <li><a href="https://julien-arino.github.io/math2740-of-data-science/slides/{{ file.basename }}.ipynb">{{ file.basename }}</a></li>
+        {% unless file.path contains 'CODE' %}
+          <li><a href="https://julien-arino.github.io/math2740-of-data-science/slides/{{ file.basename }}.ipynb">{{ file.basename }}</a></li>
+        {% endunless %}
       {% endif %}
       {% if file.path contains 'pdf' %}
         {% unless file.path contains 'LightBoard' %}
