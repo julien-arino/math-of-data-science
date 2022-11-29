@@ -54,7 +54,15 @@
 \section{Support vector machines}
 
 \begin{frame}{Support vector machines (SVM)}
-
+    We are given a training dataset of $n$ points of the form
+    \[ 
+        (\bx_1, y_1), \ldots, (\bx_n, y_n)
+    \]
+    where $\bx_i\in\IR^p$ and $y_i=\{-1,1\}$. The value of $y_i$ indicates the class to which the point $\bx_i $ belongs
+    \vfill
+    We want to find a \textbf{surface} $\S$ in $\IR^p$ that divides the group of points into two subgroups
+    \vfill
+    Once we have this surface $\S$, any additional point that is added to the set can then be \emph{classified} as belonging to either one of the sets depending on where it is with respect to the surface $\S$
 \end{frame}
 
 \begin{frame}{Linear SVM}
@@ -83,13 +91,24 @@
     \[
         \bw^\mathsf{T} \bx - b = 0
     \]
-    where $\bw$ is the (not necessarily normalized) \textbf{normal vector} to the hyperplane
+    where $\bw$ is the (not necessarily normalized) \textbf{normal vector} to the hyperplane (if the hyperplane has equation $a_1z_1+\cdots+a_pz_p=c$, then $(a_1,\ldots,a_n)$ is normal to the hyperplane)
     % \vfill
     % This is much like \textbf{Hesse normal form}, except that $\mathbf{w}$ is not necessarily a unit vector
     \vfill
     The parameter $b/\|\bw\|$ determines the offset of the hyperplane from the origin along the normal vector $\bw$
     \vfill
     Remark: a hyperplane defined thusly is not a subspace of $\IR^p$ unless $b=0$. We can of course transform the data so that it is...
+\end{frame}
+
+\begin{frame}{Linearly separable points}
+    Let $X_1$ and $X_2$ be two sets of points in $\IR^n$ 
+    \vfill
+    Then $X_1$ and $X_2$ are \textbf{linearly separable} if there exist $w_{1}, w_{2},..,w_{n}, k\in\IR$ such that 
+    \begin{itemize}
+        \item every point $x \in X_1$ satisfies $\sum^{n}_{i=1} w_{i}x_{i} > k$ 
+        \item every point $x \in X_2$ satisfies $\sum^{n}_{i=1} w_{i}x_{i} < k$
+    \end{itemize}
+    where $x_{i}$ is the $i$th component of $x$
 \end{frame}
 
 \begin{frame}{Hard-margin SVM}
@@ -106,7 +125,7 @@
 
 \begin{frame}
     Distance between these two hyperplanes is $2/\|\bw\|$
-    \vfilll
+    \vfill
     $\Rightarrow$ to maximize the distance between the planes we want to minimize $\|\bw\|$
     \vfill
     The distance is computed using the distance from a point to a plane equation
@@ -128,26 +147,32 @@
     \[
         y_i(\mathbf{w}^\mathsf{T} \mathbf{x}_i - b) \ge 1, \quad \text{ for all } 1 \le i \le n
     \]
-    We can put this together to get the optimization problem:
+    \vfill
+    We get the optimization problem:
     \begin{quote}
-        "Minimize $\|\mathbf{w}\|$ subject to $y_i(\mathbf{w}^\mathsf{T} \mathbf{x}_i - b) \ge 1$ for $i = 1, \ldots, n$."
+        Minimize $\|\mathbf{w}\|$ subject to $y_i(\mathbf{w}^\mathsf{T} \mathbf{x}_i - b) \ge 1$ for $i = 1, \ldots, n$
     \end{quote}
-    
-    The $\mathbf{w}$ and $b$ that solve this problem determine our classifier, $\mathbf{x} \mapsto \sgn(\mathbf{w}^\mathsf{T} \mathbf{x} - b)$ where $\sgn(\cdot)$ is the [[sign function]].
+    \vfill
+    The $\mathbf{w}$ and $b$ that solve this problem determine our classifier, $\mathbf{x} \mapsto \sgn(\mathbf{w}^\mathsf{T} \mathbf{x} - b)$ where $\sgn(\cdot)$ is the \textbf{sign function}.
 \end{frame}
 
 \begin{frame}   
-    An important consequence of this geometric description is that the max-margin hyperplane is completely determined by those $\mathbf{x}_i$ that lie nearest to it. These $\mathbf{x}_i$ are called ''support vectors''.
+    The maximum-margin hyperplane is completely determined by those $\bx_i$ that lie nearest to it. 
+    \vfill
+    These $\bx_i$ are the \textbf{support vectors}
 \end{frame}
 
 \begin{frame}{Soft-margin SVM}
-    To extend SVM to cases in which the data are not linearly separable, the ''[[hinge loss]]'' function is helpful
+    To extend SVM to cases in which the data are not linearly separable, the \textbf{hinge loss} function is helpful
     \[
         \max\left(0, 1 - y_i(\mathbf{w}^\mathsf{T} \mathbf{x}_i - b)\right)
     \]
-    Note that $y_i$ is the ''i''-th target (i.e., in this case, 1 or -1), and $\mathbf{w}^\mathsf{T} \mathbf{x}_i - b$ is the ''i''-th output.
-    
-    This function is zero if the constraint in {{EquationNote|1|(1)}} is satisfied, in other words, if $\mathbf{x}_i$ lies on the correct side of the margin. For data on the wrong side of the margin, the function's value is proportional to the distance from the margin.
+    \vfill
+    $y_i$ is the $i$th target (i.e., in this case, 1 or -1), and $\mathbf{w}^\mathsf{T} \mathbf{x}_i - b$ is the $i$-th output
+    \vfill
+    This function is zero if the constraint is satisfied, in other words, if $\mathbf{x}_i$ lies on the correct side of the margin
+    \vfill 
+    For data on the wrong side of the margin, the function's value is proportional to the distance from the margin
 \end{frame}
 
 \begin{frame}
@@ -158,7 +183,8 @@
         \lambda \lVert \mathbf{w} \rVert^2 +\left[\frac 1 n \sum_{i=1}^n \max\left(0, 1 - y_i(\mathbf{w}^\mathsf{T} \mathbf{x}_i - b)\right) \right]
     \]
     
-    where the parameter $\lambda > 0$ determines the trade-off between increasing the margin size and ensuring that the $\mathbf{x}_i$ lie on the correct side of the margin. Thus, for sufficiently small values of $\lambda$, it will behave similar to the hard-margin SVM, if the input data are linearly classifiable, but will still learn if a classification rule is viable or not. (This parameter $\lambda$ is often also called $C$, e.g. in ''[[LIBSVM]]'', but usually refers to the inverse of $\lambda$.)
+    where the parameter $\lambda > 0$ determines the trade-off between increasing the margin size and ensuring that the $\mathbf{x}_i$ lie on the correct side of the margin. Thus, for sufficiently small values of $\lambda$, it will behave similar to the hard-margin SVM, if the input data are linearly classifiable, but will still learn if a classification rule is viable or not
+    % (This parameter $\lambda$ is often also called $C$, e.g. in ''[[LIBSVM]]'', but usually refers to the inverse of $\lambda$.)
         
 \end{frame}
 
