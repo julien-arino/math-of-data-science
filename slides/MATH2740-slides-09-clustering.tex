@@ -101,12 +101,12 @@
 \end{frame}
 
 \begin{frame}{Linearly separable points}
-    Let $X_1$ and $X_2$ be two sets of points in $\IR^n$ 
+    Let $X_1$ and $X_2$ be two sets of points in $\IR^p$ 
     \vfill
-    Then $X_1$ and $X_2$ are \textbf{linearly separable} if there exist $w_{1}, w_{2},..,w_{n}, k\in\IR$ such that 
+    Then $X_1$ and $X_2$ are \textbf{linearly separable} if there exist $w_{1}, w_{2},..,w_{p}, k\in\IR$ such that 
     \begin{itemize}
-        \item every point $x \in X_1$ satisfies $\sum^{n}_{i=1} w_{i}x_{i} > k$ 
-        \item every point $x \in X_2$ satisfies $\sum^{n}_{i=1} w_{i}x_{i} < k$
+        \item every point $x \in X_1$ satisfies $\sum^{p}_{i=1} w_{i}x_{i} > k$ 
+        \item every point $x \in X_2$ satisfies $\sum^{p}_{i=1} w_{i}x_{i} < k$
     \end{itemize}
     where $x_{i}$ is the $i$th component of $x$
 \end{frame}
@@ -147,19 +147,41 @@
     \[
         y_i(\mathbf{w}^\mathsf{T} \mathbf{x}_i - b) \ge 1, \quad \text{ for all } 1 \le i \le n
     \]
+    or
+    \[
+        y_i(\mathbf{w}^\mathsf{T} \mathbf{x}_i - b)-1\geq 0, \quad \text{ for all } 1 \le i \le n
+    \]
     \vfill
     We get the optimization problem:
     \begin{quote}
-        Minimize $\|\mathbf{w}\|$ subject to $y_i(\mathbf{w}^\mathsf{T} \mathbf{x}_i - b) \ge 1$ for $i = 1, \ldots, n$
+        Minimize $\|\mathbf{w}\|$ subject to $y_i(\mathbf{w}^\mathsf{T} \mathbf{x}_i - b)-1 \ge 0$ for $i = 1, \ldots, n$
     \end{quote}
     \vfill
-    The $\mathbf{w}$ and $b$ that solve this problem determine our classifier, $\mathbf{x} \mapsto \sgn(\mathbf{w}^\mathsf{T} \mathbf{x} - b)$ where $\sgn(\cdot)$ is the \textbf{sign function}.
+    The $\mathbf{w}$ and $b$ that solve this problem determine the classifier, $\mathbf{x} \mapsto \sgn(\mathbf{w}^\mathsf{T} \mathbf{x} - b)$ where $\sgn(\cdot)$ is the \textbf{sign function}.
 \end{frame}
 
 \begin{frame}   
     The maximum-margin hyperplane is completely determined by those $\bx_i$ that lie nearest to it. 
     \vfill
     These $\bx_i$ are the \textbf{support vectors}
+\end{frame}
+
+\begin{frame}{The Lagrangian approach}
+    Recall that our goal is to
+    \begin{quote}
+        minimize $\|\mathbf{w}\|$ subject to $y_i(\mathbf{w}^\mathsf{T} \mathbf{x}_i - b)-1 \ge 0$ for $i = 1, \ldots, n$
+    \end{quote}
+    \vfill
+    Using Lagrange multipliers $\lambda_1,\ldots,\lambda_n$, we have the function
+    \[
+        L_P:=F(\bw,b\lambda_1,\ldots,\lambda_n) =
+        \frac 12\|\bw\|^2 -\sum_{i=1}^n \lambda_iy_i(\bx_i\bw+b)
+        +\sum_{i=1}^n\lambda_i
+    \]
+    \vfill
+    Note that we have as many Lagrange multipliers as there are data points. Indeed, there are that many inequalities that must be satisfied
+    \vfill 
+    The aim is to minimise $L_p$ with respect to $\bw$ and $b$ while the derivatives of $L_p$ w.r.t. $\lambda_i$ vanish, $i=1,\ldots,n$
 \end{frame}
 
 \begin{frame}{Soft-margin SVM}
