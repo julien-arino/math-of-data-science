@@ -337,7 +337,7 @@
 \subsection{Perceptron}
 
 \begin{frame}{The perceptron}
-    One of the first neural networks (1957), made for simple classification tasks, for example recognising letters or numbers
+    One of the first neural networks (invented 1943, implemented 1957), made for simple classification tasks, for example recognising letters or numbers
     \vfill
     Two layers: the \emph{input} layer (the \emph{retina}) and the \emph{output} layer
     \vfill
@@ -465,6 +465,47 @@
         \end{tabular}
     \end{center}
     So we will have two neurons in the retina and a single output neuron
+\end{frame}
+
+\begin{frame}{Supervised learning}
+    (From R. Rojas)
+    \begin{quote}
+    \textbf{Supervised learning}: method in which some input vectors are collected and presented to the network. The output computed by the network is observed and the deviation from the expected answer is measured
+    \vskip0.5cm
+    The weights are corrected according to the magnitude of the error in the way defined by the learning algorithm
+    \vskip0.5cm
+    Also called \emph{learning with a teacher}, since a control process knows the correct answer for the set of selected input vectors
+    \end{quote}
+\end{frame}
+
+\begin{frame}{Further distinctions in supervised learning}
+    Supervised learning is further divided into methods which use \textbf{reinforcement} or \textbf{error correction} 
+    
+    \begin{itemize}
+        \item Reinforcement learning is used when after each presentation of an input-output example we only know whether the network
+        produces the desired result or not. The weights are updated based on this
+        information (that is, the Boolean values true or false) so that only the input
+        vector can be used for weight correction
+        \item In learning with error correction, the
+        magnitude of the error, together with the input vector, determines the magnitude of the corrections to the weights, and in many cases we try to eliminate
+        the error in a single correction step
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{A first learning algorithm}
+    Suppose the training set consists of two sets of points $P$ and $N$
+    \begin{itemize}
+        \item \textbf{start:} The weight vector w0 is generated randomly, set $t := 0$
+        \item \textbf{test:} A vector $x\in P\cup N$ is selected randomly
+        \begin{itemize}
+            \item if $x\in P$ and $w_t\bullet x > 0$ go to \textbf{test}
+            \item if $x\in P$ and $w_t\bullet x\leq 0$ go to \textbf{add}
+            \item if $x\in N$ and $w_t\bullet x < 0$ go to \textbf{test}
+            \item if $x\in N$ and $w_t\bullet x \geq 0$ go to \textbf{subtract}
+        \end{itemize}
+        \item \textbf{add:} set $w_{t+1} = w_t + x$ and $t := t + 1$, goto \textbf{test}
+        \item \textbf{subtract:} set $w_{t+1} = w_t - x$ and $t := t + 1$, goto \textbf{test}
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Widrow-Hoff learning rule}
@@ -628,11 +669,12 @@
         \node[circle,draw,very thick] (c) at (1,1){};
     \end{tikzpicture}
     \end{center}
+    A single-layer perceptron can only learn linearly separable problems
 \end{frame}
 
 
 \begin{frame}{Adding a hidden layer}
-    It is still possible to do XOR, but we need to add a \textbf{hidden layer}
+    It is possible to do XOR, but we need to add a \textbf{hidden layer}
     \begin{center}
         \def\hhskip{4cm}
         \def\vvskip{4cm}
