@@ -10,16 +10,16 @@ On the [GitHub version](https://github.com/julien-arino/math-of-data-science/) o
   {% if file.path contains 'slides' %}
     {% if file.path contains 'MATH2740' %}
       {% if file.path contains 'html' %}
-        <li><a href="https://julien-arino.github.io/math2740-of-data-science/slides/{{ file.basename }}.html">{{ file.basename }}</a></li>
+        <li><a href="https://julien-arino.github.io/math-of-data-science/slides/{{ file.basename }}.html">{{ file.basename }}</a></li>
       {% endif %}
       {% if file.path contains 'ipynb' %}
         {% unless file.path contains 'CODE' %}
-          <li><a href="https://julien-arino.github.io/math2740-of-data-science/slides/{{ file.basename }}.ipynb">{{ file.basename }}</a></li>
+          <li><a href="https://julien-arino.github.io/math-of-data-science/slides/{{ file.basename }}.ipynb">{{ file.basename }}</a></li>
         {% endunless %}
       {% endif %}
       {% if file.path contains 'pdf' %}
         {% unless file.path contains 'LightBoard' %}
-          <li><a href="https://julien-arino.github.io/math2740-of-data-science/slides/{{ file.basename }}.pdf">{{ file.basename }}</a></li>
+          <li><a href="https://julien-arino.github.io/math-of-data-science/slides/{{ file.basename }}.pdf">{{ file.basename }}</a></li>
         {% endunless %}
       {% endif %}
     {% endif %}
