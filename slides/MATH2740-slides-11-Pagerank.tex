@@ -1,9 +1,9 @@
-\PassOptionsToPackage{landscape}{geometry}
-\documentclass[aspectratio=43]{beamer}
+%\PassOptionsToPackage{landscape}{geometry}
+\documentclass[aspectratio=169]{beamer}
 
 \input{nonLightBoard_slides.tex}
 
-\title{Page rank (and Markov chains)}
+\title{Markov chains, Eigenvector centrality \& PageRank}
 \date{}
 
 \begin{document}
@@ -389,7 +389,7 @@ is equal to one. If not, use
 \]
 \end{frame}
 
-\section{Back to the genetics example}
+
 \begin{frame}{Back to genetics}
 Suppose we want to understand what it means to have hybrid individuals in the population
 \vfill
@@ -503,8 +503,15 @@ that is, $w_2=w_2$, i.e., $w_2$ can take any value
 \]
 \end{frame}
 
-\section{Changing the setting of the genetic experiment}
-\begin{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Absorbing Markov chains}
+
+\begin{frame}{Changing the setting of the genetic experiment}
 Suppose now the same type of experiment, but mate each new generation with a GG individual instead of a Gg individual
 \vfill
 \begin{center}
@@ -521,23 +528,26 @@ Suppose now the same type of experiment, but mate each new generation with a GG 
 \end{tikzpicture}
 \end{center}
 \vfill
-\begin{center}
-\begin{tabular}{c|ccc}
-$\nearrow$ & GG & Gg & gg \\
-\hline
-GG & 1 & 0 & 0 \\
-Gg & 0.5 & 0.5 & 0 \\
-gg & 0 & 1 & 0
-\end{tabular}
-\end{center}
-and 
-\[
-P=\begin{pmatrix}
-1 & 0 & 0 \\[2pt]
-\dfrac 12 & \dfrac 12 & 0 \\[7pt]
-0 & 1 & 0
-\end{pmatrix}
-\]
+\begin{minipage}{0.45\textwidth}
+	\begin{center}
+		\begin{tabular}{c|ccc}
+		$\nearrow$ & GG & Gg & gg \\
+		\hline
+		GG & 1 & 0 & 0 \\
+		Gg & 0.5 & 0.5 & 0 \\
+		gg & 0 & 1 & 0
+		\end{tabular}
+	\end{center}
+\end{minipage}
+\begin{minipage}{0.45\textwidth}
+	\[
+		P=\begin{pmatrix}
+		1 & 0 & 0 \\[2pt]
+		\dfrac 12 & \dfrac 12 & 0 \\[7pt]
+		0 & 1 & 0
+		\end{pmatrix}
+	\]
+\end{minipage}
 \begin{itemize}
 \item leave gg after 1 iteration and can never return
 \item when we leave Gg, we can never return
@@ -546,7 +556,6 @@ P=\begin{pmatrix}
 \end{frame}
 
 
-\section{Absorbing Markov chains}
 \begin{frame}{Absorbing Markov chains}
 \begin{definition}[Absorbing state]
 A state $S_i$ in a Markov chain is \textbf{absorbing} if whenever it occurs on the $n^{th}$ generation of the experiment, it then occurs on every subsequent step. In other words, $S_i$ is absorbing if $p_{ii}=1$ and $p_{ij}=0$ for $i\neq j$
@@ -752,5 +761,96 @@ B
 \end{frame}
 
 
+%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%
+\section{Eigenvector centrality}
+
+\begin{frame}{Constructing a stochastic matrix from an adjacency matrix}
+	Let $A$ be the adjacency matrix of a simple graph $G=(V,E)$ and $D$ its degree matrix, i.e., the diagonal matrix $D=(d_{ij})$ with diagonal entries
+	\[
+		d_{ii} = \sum_{j=1}^n a_{ji} =\sum_{j=1}^n a_{ij}
+	\]
+	(Recall that $A$ symmetric since $G$ nondirected.)
+	Then the matrix $AD^{-1}$ is column stochastic
+	\vfill
+	Indeed, let $\nbOne=(1,\ldots,1)^T$, then
+	\begin{align*}
+		\nbOne^TAD^{-1} = 
+	\end{align*}
+\end{frame}
+
+\begin{frame}{Eigenvector centrality (undirected graph)}
+Let $\bx$ be an eigenvector corresponding to the largest eigenvalue $\lambda$ of the non-negative adjacency matrix $A$ of the undirected graph $G = (V, E)$. (We often call $\lambda$ the \textbf{Perron root} of $A$ and $\bx$ a \textbf{Perron eigenvector}.)
+\vfill
+The \textbf{eigenvector centrality} (or \textbf{prestige score}) of vertex $i$ is the $i$th component of the eigenvector $\bx$ of the (column) stochastic matrix $N := AD^{-1}$ corresponding to the eigenvalue 1:
+\[
+	N\bx = \bx
+\]
+\vfill
+Consider a particular vertex $i$ with its neighbouring vertices $\N(i)$:
+\[
+	x_i = \sum_{j\in\N(i)} x_j 
+	= \sum_j A_{ij} x_j	
+\]
+\vfill
+The eigenvector centrality defined this way depends both on the number of neighbours $|\N(i)|$ and the quality of its connections $x_j$, $j\in\N(i)$
+\end{frame}
+
+\begin{frame}
+	Let $A = (a_{ij})$ be the adjacency matrix of a graph. The eigenvector centrality $x_{i}$ of vertex $i$ is given by
+	$$
+	x_i = \frac{1}{\lambda} \sum_k a_{k,i} \, x_k
+	$$ 
+	where $\lambda \neq 0$ is a constant. In matrix form
+	$$
+	\bx^T A=\lambda\bx^T
+	$$
+
+Hence the centrality vector $\bx$ is the left eigenvector of the adjacency matrix $A$ associated with the eigenvalue $\lambda$. 
+\end{frame}
+
+
+\begin{frame} 
+The power method can be used to solve the eigenvector centrality problem. Let $m(v)$ denote the signed component of maximal magnitude of vector $v$. If there is more than one maximal component, let $m(v)$ be the first one. For instance, $m(-3,3,2) = -3$. Let $x^{(0)}$ be an arbitrary vector. For $k \geq 1$:
+
+repeatedly compute $x^{(k)} = x^{(k-1)} A$;
+normalize $x^{(k)} = x^{(k)} / m(x^{(k)})$;
+until the desired precision is achieved. It follows that $x^{(k)}$ converges to the dominant eigenvector of $A$ and $m(x^{(k)})$ converges to the dominant eigenvalue of $A$. If matrix $A$ is sparse, each vector-matrix product can be performed in linear time in the size of the graph.
+
+The method converges when the dominant (largest) and the sub-dominant (second largest) eigenvalues of $A$, respectively denoted by $\lambda_1$ and $\lambda_2$, are separated, that is they are different in absolute value, hence when $|\lambda_1| > |\lambda_2|$. The rate of convergence is the rate at which $(\lambda_2 / \lambda_1)^k$ goes to $0$. Hence, if the sub-dominant eigenvalue is small compared to the dominant one, then the method quickly converges.
+\end{frame}
+
+
+\begin{frame}{Why use the leading eigenvector?}
+	We want a nonnegative measure, so we want a vector in $\IR_+$
+	\vfill
+	We know from the Perron-Frobenius Theorem that the eigenvector corresponding to the dominant eigenvalue of a nonnegative matrix is nonnegative
+	\vfill
+	Furthermore, if the graph is strongly connected, the matrix is irreducible and the eigenvector corresponding to the dominant eigenvalue is \emph{positive}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%
+\section{PageRank}
+
+\begin{frame}{PageRank}
+Variant of the Eigenvector centrality measure for directed network
+\vfill
+\textbf{Basic PageRank}
+\begin{itemize}
+\item Whenever a vertex $i$ has no outgoing link, we add a self-loop to $i$ such that $k^{in}_i=k^{out}_i=1$. Therefore $A_{ii}=1$ for such vertices in the adjacency matrix
+\item Let $D^+$ be the diagonal matrix of outdegrees where each element $D_{ii}^+ = k_i^{out}$
+\item Define a column stochastic matrix $N = A(D^+)^{-1}$
+\item
+The PageRank centrality of node i is equal to the 
+eigenvector xi of matrix N (The leading eigenvalue is 1):
+x = Nx
+\end{itemize}
+\end{frame}
 
 \end{document}

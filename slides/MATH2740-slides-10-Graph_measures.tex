@@ -1,7 +1,7 @@
-\PassOptionsToPackage{landscape}{geometry}
-\documentclass[aspectratio=43]{beamer}
+%\PassOptionsToPackage{landscape}{geometry}
+\documentclass[aspectratio=169]{beamer}
 
-\input{nonLightBoard_slides.tex}
+\input{slides_setup_nonLightBoard.tex}
 
 \title{Characteristing graphs}
 \date{}
@@ -12,6 +12,7 @@
 	\titlepage
 \end{frame}
 
+\stretchon
 
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
@@ -19,31 +20,85 @@
 %%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Why and how to characterise a graph}
 Graphs are everywhere!
-\vfill
+
 To compare graphs, understand their properties, we need ways to describe their shape and characteristics
-\vfill
-Some ``measures'' concern the vertices, others the graph as a whole
-\vfill
 \end{frame}
 
 
+\begin{frame}{The global air transportation network}
+	\bigskip
+	{\centering
+		\hspace*{-\beamerleftmargin}
+		\includegraphics[width=\paperwidth]{FIGS_slides/world_graph-degree}
+	}
+\end{frame}
+
+\begin{frame}{Example of spread of p-H1N1}
+	\bigskip
+	{\centering
+		\hspace*{-\beamerleftmargin}
+		\includegraphics[width=\paperwidth]{FIGS_slides/Cauchemez_etal_H1N1}
+	}
+	\vskip0pt plus 1filll
+	\tiny
+	Role of social networks in shaping disease transmission during a community outbreak of 2009 H1N1 pandemic influenza, Cauchemez \emph{et al}, PNAS \textbf{108}(7):2825-2830 (2011)
+\end{frame}
+
+\begin{frame}{Example of spread of MERS}
+	\begin{minipage}{0.8\textwidth}
+		\hspace*{-\beamerleftmargin}
+		\includegraphics[height=\paperheight]{FIGS_slides/YangJung2015SouthKoreaMERS}
+	\end{minipage}
+	\begin{minipage}{0.18\textwidth}
+	\tiny
+	Topological dynamics of the 2015 South Korea MERS-CoV spread-on-contact networks, Yang \& Jung, Scientific Reports \textbf{10}:4327 (2020)
+	\end{minipage}
+\end{frame}
+
+
+\begin{frame}
+	Some ``measures'' concern the vertices, others the graph as a whole
+	
+	In all that follows, unless otherwise indicated, $G=(X,A)$ is a digraph. If undirected, we write $G=(X,E)$.
+\end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
-\section{Centre \& Periphery}
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\section{Measures specific to vertices}
+
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\subsection{Centre of a graph}
 
 \begin{frame}{Geodesic distance}
-In all that follows, unless otherwise indicated, 
-$G=(X,U)$ is a 1-graph. If undirected, we write $G=(X,E)$
-\vfill
 \begin{definition}[Geodesic distance]
-For $x,y\in X$, the \textbf{geodesic distance} $d(x,y)$ is the length of the shortest path from $x$ to $y$, with $d(x,y)=\infty$ if no such path exists
+For $x,y\in X$, the \defword{geodesic distance} $d(x,y)$ is the length of the shortest path from $x$ to $y$, with $d(x,y)=\infty$ if no such path exists
 \end{definition}
-\vfill
 \end{frame}
 
-\begin{frame}{Our example graph (rings a bell?)}
-	\begin{center}
+\begin{frame}
+	\begin{minipage}{0.5\textwidth}
+	\begin{itemize}
+	\item $d(x_1,x_2)=1$
+	\item $d(x_1,x_3)=2$
+	\item $\cdots$
+	\end{itemize}
+	\vfill
+	\[
+	\begin{pmatrix}
+	0 & 1 & 2 & 2 & 4 & 3 \\
+	1 & 0 & 1 & 1 & 3 & 2 \\
+	3 & 4 & 0 & 5 & 2 & 1 \\
+	4 & 5 & 1 & 0 & 3 & 2 \\
+	1 & 2 & 3 & 3 & 0 & 4 \\
+	2 & 3 & 4 & 4 & 1 & 0
+	\end{pmatrix}		
+	\]		
+	\end{minipage}
+	\begin{minipage}{0.49\textwidth}
 		\def\skip{2.75cm}
 		\begin{tikzpicture}[scale=0.75,auto,
 			cloud/.style={minimum width={width("N-1")+2pt},
@@ -68,11 +123,14 @@ For $x,y\in X$, the \textbf{geodesic distance} $d(x,y)$ is the length of the sho
 			\path [line, thick] (x3) to (x6);
 			\path [line, thick, bend left] (x5) to (x1);
 			\end{tikzpicture}
-		\end{center}
-	\vfill
+\end{minipage}
+\end{frame}
+
+\begin{frame}
+	\begin{minipage}{0.5\textwidth}
 	\begin{itemize}
-		\item $d(x_1,x_2)=1$
-		\item $d(x_1,x_3)=2$
+		\item $d(x_5,x_1)=\infty$
+		\item $d(x_3,x_1)=\infty$
 		\item $\cdots$
 	\end{itemize}
 	\vfill
@@ -80,16 +138,14 @@ For $x,y\in X$, the \textbf{geodesic distance} $d(x,y)$ is the length of the sho
 	\begin{pmatrix}
 		0 & 1 & 2 & 2 & 4 & 3 \\
 		1 & 0 & 1 & 1 & 3 & 2 \\
-		3 & 4 & 0 & 5 & 2 & 1 \\
-		4 & 5 & 1 & 0 & 3 & 2 \\
-		1 & 2 & 3 & 3 & 0 & 4 \\
-		2 & 3 & 4 & 4 & 1 & 0
-	\end{pmatrix}		
+		\infty & \infty & 0 & \infty & 2 & 1 \\
+		\infty& \infty& 1 & 0 & 3 & 2 \\
+		\infty& \infty & \infty & \infty & 0 & \infty \\
+		\infty & \infty & \infty & \infty & 1 & 0
+	\end{pmatrix}
 	\]
-\end{frame}
-
-\begin{frame}
-	\begin{center}
+	\end{minipage}
+	\begin{minipage}{0.49\textwidth}
 		\def\skip{2.75cm}
 		\begin{tikzpicture}[scale=0.75,auto,
 			cloud/.style={minimum width={width("N-1")+2pt},
@@ -113,24 +169,7 @@ For $x,y\in X$, the \textbf{geodesic distance} $d(x,y)$ is the length of the sho
 			\path [line, thick] (x6) to (x5);
 			\path [line, thick] (x3) to (x6);
 			\end{tikzpicture}
-		\end{center}
-	\vfill
-	\begin{itemize}
-		\item $d(x_5,x_1)=\infty$
-		\item $d(x_3,x_1)=\infty$
-		\item $\cdots$
-	\end{itemize}
-	\vfill
-	\[
-	\begin{pmatrix}
-		0 & 1 & 2 & 2 & 4 & 3 \\
-		1 & 0 & 1 & 1 & 3 & 2 \\
-		\infty & \infty & 0 & \infty & 2 & 1 \\
-		\infty& \infty& 1 & 0 & 3 & 2 \\
-		\infty& \infty & \infty & \infty & 0 & \infty \\
-		\infty & \infty & \infty & \infty & 1 & 0
-	\end{pmatrix}
-	\]
+	\end{minipage}
 \end{frame}
 
 \begin{frame}{Eccentricity}
@@ -140,8 +179,19 @@ For $x,y\in X$, the \textbf{geodesic distance} $d(x,y)$ is the length of the sho
 		e(x)=\max_{\stackrel{y\in X}{y\neq x}}d(x,y)
 	\]
 \end{definition}
-\vfill
-\begin{center}
+\begin{minipage}{0.5\textwidth}
+	\[
+\begin{pmatrix}
+	0 & 1 & 2 & 2 & \boldred{4} & 3 \\
+	1 & 0 & 1 & 1 & \boldred{3} & 2 \\
+	3 & 4 & 0 & \boldred{5} & 2 & 1 \\
+	4 & \boldred{5} & 1 & 0 & 3 & 2 \\
+	1 & 2 & 3 & 3 & 0 & \boldred{4} \\
+	2 & 3 & \boldred{4} & \boldred{4} & 1 & 0
+\end{pmatrix}		
+\]
+\end{minipage}
+\begin{minipage}{0.49\textwidth}
 	\def\skip{2.75cm}
 	\begin{tikzpicture}[scale = 0.75,auto,
 		cloud/.style={minimum width={width("N-1")+2pt},
@@ -166,18 +216,7 @@ For $x,y\in X$, the \textbf{geodesic distance} $d(x,y)$ is the length of the sho
 		\path [line, thick] (x3) to (x6);
 		\path [line, thick, bend left] (x5) to (x1);
 		\end{tikzpicture}
-	\end{center}	
-	\vfill
-	\[
-	\begin{pmatrix}
-		0 & 1 & 2 & 2 & \boldred{4} & 3 \\
-		1 & 0 & 1 & 1 & \boldred{3} & 2 \\
-		3 & 4 & 0 & \boldred{5} & 2 & 1 \\
-		4 & \boldred{5} & 1 & 0 & 3 & 2 \\
-		1 & 2 & 3 & 3 & 0 & \boldred{4} \\
-		2 & 3 & \boldred{4} & \boldred{4} & 1 & 0
-	\end{pmatrix}		
-	\]
+\end{minipage}
 \end{frame}
 
 
@@ -204,15 +243,30 @@ The \textbf{centre} of $G$ is the set of vertices that are central points of $G$
 
 
 \begin{frame}
-	\begin{center}
-		\def\skip{2.75cm}
+	\begin{minipage}{0.5\textwidth}
+	\[
+\begin{pmatrix}
+	0 & 1 & 2 & 2 & \boldred{4} & 3 \\
+	\rowcolor{gray!95}
+	1 & 0 & 1 & 1 & \boldred{3} & 2 \\
+	3 & 4 & 0 & \boldred{5} & 2 & 1 \\
+	4 & \boldred{5} & 1 & 0 & 3 & 2 \\
+	1 & 2 & 3 & 3 & 0 & \boldred{4} \\
+	2 & 3 & \boldred{4} & \boldred{4} & 1 & 0
+\end{pmatrix}		
+\]
+%\vfill
+Radius is 3, $x_2$ is a central point (the only one) and the centre is $\{x_2\}$
+	\end{minipage}
+	\begin{minipage}{0.49\textwidth}
+		\def\skip{2.5cm}
 		\begin{tikzpicture}[scale = 0.85,auto,
 			cloud/.style={minimum width={width("N-1")+2pt},
 				draw, ellipse},
 			connected/.style={dotted,-}]
 			%% Vertices
 			\node [cloud] at (0,0) (x1) {$x_1$};
-			\node [cloud] at (1*\skip,1*\skip) (x2) {$x_2$};
+			\node [cloud, fill=gray!20] at (1*\skip,1*\skip) (x2) {$x_2$};
 			\node [cloud] at (2*\skip,1*\skip) (x3) {$x_3$};
 			\node [cloud] at (1.5*\skip,0) (x4) {$x_4$};
 			\node [cloud] at (3*\skip,0*\skip) (x5) {$x_5$};
@@ -229,46 +283,233 @@ The \textbf{centre} of $G$ is the set of vertices that are central points of $G$
 			\path [line, thick] (x3) to (x6);
 			\path [line, thick, bend left] (x5) to (x1);
 			\end{tikzpicture}
-		\end{center}	
-	\vfill
-	\[
-		\begin{pmatrix}
-			0 & 1 & 2 & 2 & \boldred{4} & 3 \\
-			\rowcolor{gray!95}
-			1 & 0 & 1 & 1 & \boldred{3} & 2 \\
-			3 & 4 & 0 & \boldred{5} & 2 & 1 \\
-			4 & \boldred{5} & 1 & 0 & 3 & 2 \\
-			1 & 2 & 3 & 3 & 0 & \boldred{4} \\
-			2 & 3 & \boldred{4} & \boldred{4} & 1 & 0
-		\end{pmatrix}		
-	\]
-	\vfill
-	Radius is 3, $x_2$ is a central point (the only one) and the centre is $\{x_2\}$
+	\end{minipage}
 \end{frame}
 
+
+%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Centrality -- Betweenness and closeness}
+\begin{frame}{How \emph{central} is a vertex?}
+	\emph{Centrality} tries to answer the question: what are the most influent vertices? 
+	
+	We have seen central vertices and vertices on the periphery, let us consider two other measures of centrality
+	\begin{itemize}
+			\item Betweenness centrality
+			\item Closeness centrality
+	\end{itemize}
+	Many other forms (we will come back to this, e.g., degree centrality)
+\end{frame}
+
+\begin{frame}{Betweenness}
+\begin{definition}[Betweenness]
+	$G=(X,U)$ a graph, $x\in X$. The \textbf{betweenness} of $v$ is
+	\[
+	b_\D(v)= \sum_{s\neq t\neq v  \in X} \frac{\sigma_{st}(v)}{\sigma_{st}}
+	\]
+	where
+	\begin{itemize}
+	\item $\sigma_{st}$ number of shortest geodesic paths from $s$ to $t$
+	\item $\sigma_{st}(v)$ number of shortest geodesic paths from $s$ to $t$ through $v$
+	\end{itemize}		
+\end{definition}
+\vfill
+In other words
+\begin{itemize}
+	\item For each pair of vertices $(s,t)$, compute the shortest paths between them
+	\item For each pair of vertices $(s,t)$, determine the fraction of shortest paths that pass through vertex $v$
+	\item Sum this fraction over all pairs of vertices $(s,t)$
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Normalising betweenness}
+	Betweenness may be normalized by dividing through the number of pairs of vertices not including $v$:
+	\begin{itemize}
+		\item for directed graphs, $(n-1)(n-2)$
+		\item for undirected graphs, $(n-1)(n-2)/2$
+	\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Example of betweenness}
+	\begin{minipage}{0.39\textwidth}
+		{\tt distances(G, mode="out")}
+		\[
+			\begin{pmatrix}
+				0 & 1 & 2 & 2 & 4 & 3 \\
+				1 & 0 & 1 & 1 & 3 & 2 \\
+				3 & 4 & 0 & 5 & 2 & 1 \\
+				4 & 5 & 1 & 0 & 3 & 2 \\
+				1 & 2 & 3 & 3 & 0 & 4 \\
+				2 & 3 & 4 & 4 & 1 & 0
+			\end{pmatrix}
+		\]
+		\end{minipage}
+	\begin{minipage}{0.6\textwidth}
+		\def\skip{2.75cm}
+		\begin{tikzpicture}[scale = 0.85,
+			every node/.style={transform shape},
+			auto,
+			cloud/.style={minimum width={width("N-1")+2pt},
+				draw, ellipse},
+			connected/.style={dotted,-}]
+			%% Vertices
+			\node [cloud] at (0,0) (x1) {$x_1$};
+			\node [cloud] at (1*\skip,1*\skip) (x2) {$x_2$};
+			\node [cloud] at (2*\skip,1*\skip) (x3) {$x_3$};
+			\node [cloud] at (1.5*\skip,0) (x4) {$x_4$};
+			\node [cloud] at (3*\skip,0*\skip) (x5) {$x_5$};
+			\node [cloud] at (3*\skip,1*\skip) (x6) {$x_6$};
+			%% Arcs
+			\path [line, thick,bend left] (x1) to (x2);
+			\path [line, thick,bend left] (x2) to (x1);
+			\path [line, thick] (x2) to (x3);
+			\path [line, thick] (x2) to (x4);
+			\path [line, thick] (x4) to (x3);
+			\path [line, thick] (x6) to (x5);
+			\path [line, thick] (x3) to (x6);
+			\path [line, thick, bend left] (x5) to (x1);
+			\path [line, thick, looseness=5] (x2) to (x2);
+			\path [line, thick, looseness=5, below] (x6) to (x6);
+		\end{tikzpicture}
+	\end{minipage}
+\end{frame}
+
+
+\begin{frame}{Number of shortest paths}
+	Recall we found 
+	{\tt distances(G, mode="out")}
+	\[
+		\mathcal{D} =
+		\begin{pmatrix}
+			0 & 1 & 2 & 2 & 4 & 3 \\
+			1 & 0 & 1 & 1 & 3 & 2 \\
+			3 & 4 & 0 & 5 & 2 & 1 \\
+			4 & 5 & 1 & 0 & 3 & 2 \\
+			1 & 2 & 3 & 3 & 0 & 4 \\
+			2 & 3 & 4 & 4 & 1 & 0
+		\end{pmatrix}
+	\]
+	\vfill
+	To find the number of shortest paths between pairs of vertices, we can use powers of the adjacency matrix
+	\vfill
+	Write $\mathcal{D}=[d_{ij}]$, for a given $(i,j)$ ($i\neq j$), if $d_{ij}=k$, then pick the $(i,j)$ in $A^k$
+\end{frame}
 
 \begin{frame}
-Recall that a root $x_0$ is s.t. $\forall y\in X$, there is a path from $x_0$ to $y$ and that a graph has a root iff it is quasi-strongly connected
-\vskip1cm
-So a central point $x_0$ has $e(x_0)<\infty$ $\iff$ $G$ has a root $\iff$ G quasi-strongly connected
-\vfill
-\begin{theorem}
-	If $x_0,y_0\in X$ are two central points of $G=(X,U)$ quasi-strongly connected, then they both belong to the same strongly connected component
-\end{theorem}
-\vfill
-\begin{theorem}
-	$G$ 1-graph of order $n$, without loops and s.t.
+	We find
 	\[
-		\max d_G^+(x)=p>1
+		\begin{pmatrix}
+			0 & 1 & 1 & 1 & 1 & 1 \\
+			1 & 0 & 1 & 1 & 1 & 1 \\
+			1 & 1 & 0 & 1 & 1 & 1 \\
+			1 & 1 & 1 & 0 & 1 & 1 \\
+			1 & 1 & 1 & 1 & 0 & 1 \\
+			1 & 1 & 1 & 1 & 1 & 0
+		\end{pmatrix}
 	\]
-	then
+	\vfill
+	Recall that betweenness of $v$ is
 	\[
-		\rho(G)\geq \frac{\ln(np-n+1)}{\ln p}-1
+		b_\D(v)= \sum_{s\neq t\neq v  \in X} \frac{\sigma_{st}(v)}{\sigma_{st}}
 	\]
-\end{theorem}
+	\vfill
+	$\sigma_{st}$ (\# shortest paths from $s$ to $t$) is found in the matrix above
+	\vfill
+	What about $\sigma_{st}(v)$, \# of those shortest paths that go through $v$?
+	\vfill
+	We can use {\tt all\_shortest\_paths(G, from = s, to = t, mode = "out")}
 \end{frame}
 
 
+\begin{frame}{Example of betweenness}
+	\begin{minipage}{0.35\textwidth}
+		{\tt betweenness(G, directed = FALSE, normalized = TRUE)}
+
+		Values shown in the vertices.
+	\end{minipage}
+	\begin{minipage}{0.6\textwidth}
+		\def\skip{2.75cm}
+		\begin{tikzpicture}[scale = 0.85,
+			every node/.style={transform shape},
+			auto,
+			cloud/.style={minimum width={width("N-1")+2pt},
+				draw, ellipse},
+			connected/.style={dotted,-}]
+			%% Vertices
+			\node [cloud] at (0,0) (x1) {$0.5$};
+			\node [cloud] at (1*\skip,1*\skip) (x2) {$0.5$};
+			\node [cloud] at (2*\skip,1*\skip) (x3) {$0.45$};
+			\node [cloud] at (1.5*\skip,0) (x4) {$0$};
+			\node [cloud] at (3*\skip,0*\skip) (x5) {$0.45$};
+			\node [cloud] at (3*\skip,1*\skip) (x6) {$0.45$};
+			%% Arcs
+			\path [line, thick,bend left] (x1) to (x2);
+			\path [line, thick,bend left] (x2) to (x1);
+			\path [line, thick] (x2) to (x3);
+			\path [line, thick] (x2) to (x4);
+			\path [line, thick] (x4) to (x3);
+			\path [line, thick] (x6) to (x5);
+			\path [line, thick] (x3) to (x6);
+			\path [line, thick, bend left] (x5) to (x1);
+			\path [line, thick, looseness=5] (x2) to (x2);
+			\path [line, thick, looseness=5, below] (x6) to (x6);
+		\end{tikzpicture}
+	\end{minipage}
+\end{frame}
+
+
+\begin{frame}{Closeness}
+	\begin{definition}
+		$G=(X,U)$, $v\in X$. The \textbf{closeness} of $v$ is
+		\[
+		c_\D(v)=\frac{1}{n-1}\displaystyle \sum_{t\in X\setminus\{v\}}d_\D(v,t)
+		\]
+		i.e., mean geodesic distance between a vertex $v$ and all other vertices it has access to
+		\vskip1cm 
+		Another definition is
+		\[
+		c_\D(v)=\frac{1}{\displaystyle\sum_{t \in X\setminus\{v\}}d_\D(v,t)}
+		\]				
+	\end{definition}
+\end{frame}
+
+\begin{frame}{Example of (out) closeness}
+	\vfill
+	{\tt closeness(G, normalized = TRUE, mode=``out'')}
+	\vfill
+	\begin{center}
+		\def\skip{2.75cm}
+		\begin{tikzpicture}[scale = 0.85,
+			every node/.style={transform shape},
+			auto,
+			cloud/.style={minimum width={width("N-1")+2pt},
+				draw, ellipse},
+			connected/.style={dotted,-}]
+			%% Vertices
+			\node [cloud] at (0,0) (x1) {$0.417$};
+			\node [cloud] at (1*\skip,1*\skip) (x2) {$0.625$};
+			\node [cloud] at (2*\skip,1*\skip) (x3) {$0.333$};
+			\node [cloud] at (1.5*\skip,0) (x4) {$0.333$};
+			\node [cloud] at (3*\skip,0*\skip) (x5) {$0.385$};
+			\node [cloud] at (3*\skip,1*\skip) (x6) {$0.357$};
+			%% Arcs
+			\path [line, thick,bend left] (x1) to (x2);
+			\path [line, thick,bend left] (x2) to (x1);
+			\path [line, thick] (x2) to (x3);
+			\path [line, thick] (x2) to (x4);
+			\path [line, thick] (x4) to (x3);
+			\path [line, thick] (x6) to (x5);
+			\path [line, thick] (x3) to (x6);
+			\path [line, thick, bend left] (x5) to (x1);
+			\path [line, thick, looseness=5] (x2) to (x2);
+			\path [line, thick, looseness=5, below] (x6) to (x6);
+		\end{tikzpicture}
+	\end{center}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Periphery of a graph}
 \begin{frame}{Diametre and periphery of a graph}
 \begin{definition}[Diametre of a graph]
 The \textbf{diametre} of $G$ is 
@@ -293,8 +534,23 @@ $\delta(G)<\infty$ $\iff$ $G$ strongly connected
 
 
 \begin{frame}
-	\begin{center}
-		\def\skip{2.75cm}
+		\begin{minipage}{0.5\textwidth}
+	\[
+\begin{pmatrix}
+	0 & 1 & 2 & 2 & \boldred{4} & 3 \\
+	1 & 0 & 1 & 1 & \boldred{3} & 2 \\
+	\rowcolor{gray!95}
+	3 & 4 & 0 & \boldred{5} & 2 & 1 \\
+	\rowcolor{gray!95}
+	4 & \boldred{5} & 1 & 0 & 3 & 2 \\
+	1 & 2 & 3 & 3 & 0 & \boldred{4} \\
+	2 & 3 & \boldred{4} & \boldred{4} & 1 & 0
+\end{pmatrix}		
+\]
+Diametre is 5 and the periphery is $\{x_3,x_4\}$
+	\end{minipage}
+	\begin{minipage}{0.49\textwidth}
+		\def\skip{2.5cm}
 		\begin{tikzpicture}[scale = 0.85,auto,
 			cloud/.style={minimum width={width("N-1")+2pt},
 				draw, ellipse},
@@ -302,8 +558,8 @@ $\delta(G)<\infty$ $\iff$ $G$ strongly connected
 			%% Vertices
 			\node [cloud] at (0,0) (x1) {$x_1$};
 			\node [cloud] at (1*\skip,1*\skip) (x2) {$x_2$};
-			\node [cloud] at (2*\skip,1*\skip) (x3) {$x_3$};
-			\node [cloud] at (1.5*\skip,0) (x4) {$x_4$};
+			\node [cloud, fill=gray!20] at (2*\skip,1*\skip) (x3) {$x_3$};
+			\node [cloud, fill=gray!20] at (1.5*\skip,0) (x4) {$x_4$};
 			\node [cloud] at (3*\skip,0*\skip) (x5) {$x_5$};
 			\node [cloud] at (3*\skip,1*\skip) (x6) {$x_6$};
 			%% Arcs
@@ -318,22 +574,188 @@ $\delta(G)<\infty$ $\iff$ $G$ strongly connected
 			\path [line, thick] (x3) to (x6);
 			\path [line, thick, bend left] (x5) to (x1);
 			\end{tikzpicture}
-		\end{center}	
+		\end{minipage}	
+	\begin{definition}[{Antipodal vertices}]
+			A pair of vertices $x$ and $y$ are \defword{antipodal} if they satisfy $d(x,y)=\delta(G)$.
+	\end{definition}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Degree distribution}
+
+\begin{frame}{Degree distribution}
+	\begin{definition}[Arc incident to a vertex]
+		If a vertex $x$ is the initial endpoint of an arc $u$, which is not a loop, the arc $u$ is \textbf{incident out of vertex} $x$ 
+		\vskip0.2cm
+		The number of arcs incident out of $x$ plus the number of loops attached to $x$ is denoted $d_G^+(x)$ and is the \textbf{outer demi-degree} of $x$
+		\vskip0.2cm
+		An arc \textbf{incident into vertex} $x$ and the \textbf{inner demi-degree} $d_G^-(x)$ are defined similarly
+		\end{definition}
+		\vfill
+		\begin{definition}[Degree]
+		The \textbf{degree} of vertex $x$ is the number of arcs with $x$ as an endpoint, each loop being counted twice. The degree of $x$ is denoted $d_G(x)=d_G^+(x)+d_G^-(x)$
+		\vskip0.2cm
+		If each vertex has the same degree, the graph is \textbf{regular}
+	\end{definition}
+\end{frame}
+
+\begin{frame}
+	\begin{definition}[{Isolated vertex}]
+	A vertex of degree $0$ is \textbf{isolated}.
+	\end{definition}
+	\begin{definition}[{Average degree of $G$}]
+	$d(G)=\frac{1}{|V|}\sum_{v\in V}deg_G(v)$.
+	\end{definition}
+	\begin{definition}[{Minimum degree of $G$}]
+	$\delta(G)=\min \{deg_G(v)|v\in V\}$.
+	\end{definition}
+	\begin{definition}[{Maximum degree of $G$}]
+	$\Delta(G)=\max \{deg_G(v)|v\in V\}$.
+	\end{definition}
+\end{frame}
+
+
+\begin{frame}{Degrees in an undirected graph}
+	\begin{minipage}{0.65\textwidth}
+		\def\skip{2.75cm}
+		\begin{tikzpicture}[scale=0.75,auto,
+			cloud/.style={minimum width={width("N-1")+2pt},
+				draw, ellipse},
+			connected/.style={dotted,-}]
+			%% Vertices
+			\node [cloud] at (0,0) (x1) {$2$};
+			\node [cloud] at (1*\skip,1*\skip) (x2) {$3$};
+			\node [cloud] at (2*\skip,1*\skip) (x3) {$3$};
+			\node [cloud] at (1.5*\skip,0) (x4) {$2$};
+			\node [cloud] at (3*\skip,0*\skip) (x5) {$2$};
+			\node [cloud] at (3*\skip,1*\skip) (x6) {$2$};
+			%% Arcs
+			\draw [thick] (x1) --  (x2);
+			\draw [thick] (x2) --  (x3);
+			\draw [thick] (x2) --  (x4);
+			\draw [thick] (x3) --  (x6);
+			\draw [thick] (x4) --  (x3);
+			\draw [thick] (x6) --  (x5);
+			\draw (x5) to[thick, out=-150, in=-30] (x1);
+			\end{tikzpicture}
+	\end{minipage}
+	\begin{minipage}{0.3\textwidth}
+		Here, vertices are labelled using the degree
+	\end{minipage}
+\end{frame}
+
+
+\begin{frame}{Degrees in a directed graph}
+	\begin{minipage}{0.45\textwidth}
+		\def\skip{2.75cm}
+		\begin{tikzpicture}[scale = 0.65, 
+			every node/.style={transform shape},
+			auto,
+			cloud/.style={minimum width={width("N-1")+2pt},
+				draw, ellipse},
+			connected/.style={dotted,-}]
+			%% Vertices
+			\node [cloud] at (0,0) (x1) {$\begin{matrix}d^+=1\\ d^-=2\end{matrix}$};
+			\node [cloud] at (1*\skip,1*\skip) (x2) {$\begin{matrix}d^+=3\\ d^-=1\end{matrix}$};
+			\node [cloud] at (2*\skip,1*\skip) (x3) {$\begin{matrix}d^+=1\\ d^-=2\end{matrix}$};
+			\node [cloud] at (1.5*\skip,0) (x4) {$\begin{matrix}d^+=1\\ d^-=1\end{matrix}$};
+			\node [cloud] at (3*\skip,0*\skip) (x5) {$\begin{matrix}d^+=1\\ d^-=1\end{matrix}$};
+			\node [cloud] at (3*\skip,1*\skip) (x6) {$\begin{matrix}d^+=1\\ d^-=1\end{matrix}$};
+			%% Arcs
+			\path [line, thick,bend left] (x1) to (x2);
+			\path [line, thick,bend left] (x2) to (x1);
+			\path [line, thick] (x2) to (x3);
+			\path [line, thick] (x2) to (x4);
+			\path [line, thick] (x4) to (x3);
+			\path [line, thick] (x6) to (x5);
+			\path [line, thick] (x3) to (x6);
+			\path [line, thick, bend left] (x5) to (x1);
+			\end{tikzpicture}
+	\end{minipage}
+	\quad
+	\begin{minipage}{0.45\textwidth}
+		\def\skip{2.75cm}
+		\begin{tikzpicture}[scale = 0.65, 
+			every node/.style={transform shape},
+			auto,
+			cloud/.style={minimum width={width("N-1")+2pt},
+				draw, ellipse},
+			connected/.style={dotted,-}]
+			%% Vertices
+			\node [cloud] at (0,0) (x1) {$\begin{matrix}d^+=1\\ d^-=2\end{matrix}$};
+			\node [cloud] at (1*\skip,1*\skip) (x2) {$\begin{matrix}d^+=4\\ d^-=2\end{matrix}$};
+			\node [cloud] at (2*\skip,1*\skip) (x3) {$\begin{matrix}d^+=1\\ d^-=2\end{matrix}$};
+			\node [cloud] at (1.5*\skip,0) (x4) {$\begin{matrix}d^+=1\\ d^-=1\end{matrix}$};
+			\node [cloud] at (3*\skip,0*\skip) (x5) {$\begin{matrix}d^+=1\\ d^-=1\end{matrix}$};
+			\node [cloud] at (3*\skip,1*\skip) (x6) {$\begin{matrix}d^+=2\\ d^-=2\end{matrix}$};
+			%% Arcs
+			\path [line, thick,bend left] (x1) to (x2);
+			\path [line, thick,bend left] (x2) to (x1);
+			\path [line, thick] (x2) to (x3);
+			\path [line, thick] (x2) to (x4);
+			\path [line, thick] (x4) to (x3);
+			\path [line, thick] (x6) to (x5);
+			\path [line, thick] (x3) to (x6);
+			\path [line, thick, bend left] (x5) to (x1);
+			\path [line, thick, looseness=5] (x2) to (x2);
+			\path [line, thick, looseness=5] (x6) to (x6);
+			\end{tikzpicture}
+		\end{minipage}
+\end{frame}
+
+
+\begin{frame}{What to consider about degrees?}
+	Degrees are often considered as a measure of popularity
 	\vfill
-	\[
-		\begin{pmatrix}
-			0 & 1 & 2 & 2 & \boldred{4} & 3 \\
-			1 & 0 & 1 & 1 & \boldred{3} & 2 \\
-			\rowcolor{gray!95}
-			3 & 4 & 0 & \boldred{5} & 2 & 1 \\
-			\rowcolor{gray!95}
-			4 & \boldred{5} & 1 & 0 & 3 & 2 \\
-			1 & 2 & 3 & 3 & 0 & \boldred{4} \\
-			2 & 3 & \boldred{4} & \boldred{4} & 1 & 0
-		\end{pmatrix}		
-	\]
+	Often write $k(i)$ (or $k_i$) for ``degree of vertex $i$'', $k^-(i)$ and $k^+(i)$ for in- and out-degree
 	\vfill
-	Diametre is 5 and the periphery is $\{x_3,x_4\}$
+	\begin{itemize}
+		\item Minimum and maximum degree
+		\item Minimum and maximum in/out-degree. E.g., if you consider the global air transportation network and the in/out-degree of airports, in-degree is a measure of a location's ``popularity'' as a travel destination
+		\item Range of degrees in a graph: are there large discrepancies in connectivity between vertices in the graph?
+		\item Average degree (often denoted $\langle k\rangle$ because of physicists)
+		\item Average in/out-degree
+		\item Variance of the degrees or in/out-degrees
+	\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}
+	\begin{itemize}
+		\item Average (nearest) neighbour degree, to encode for \emph{preferential attachment} (one prefers to hang out with popular people)
+		\[
+			k_i^{nn} = \frac{1}{k(i)}\sum_{j\in\mathcal{N}(i)}k(j)
+		\]
+		or, in terms of the adjacency matrix $A=[a_{ij}]$,
+		\[
+			k_i^{nn} = \frac{1}{k(i)}\sum_{j}a_{ij}k(j)
+		\]
+		\item \emph{Excess degree}: take nearest neighbour degree but do not consider the edge/arc followed to get to the neighbour
+		\item Degree, nearest neighbour and excess degree distributions
+	\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Degrees in {\tt igraph}}
+	\begin{itemize}
+		\item {\tt degree} gives the degrees of the vertices
+		\item {\tt degree\_distribution} gives numeric vector of the same length as the maximum degree plus one. The first element is the relative frequency zero degree vertices, the second vertices with degree one, etc.
+		\item {\tt knn} calculate the average nearest neighbor degree of the given vertices and the same quantity in the function of vertex degree
+		\item {\tt strength} sums up the edge weights of the adjacent edges for each vertex
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Degree from adjacency matrix}
+	Suppose adjacency matrix take the form $A=[a_{ij}]$ with $a_{ij}=1$ if there is an arc from the vertex indexed $i$ to the vertex indexed $j$ and 0 otherwise. (Could be the other way round, using $A^T$, just make sure)
+	\vfill
+	Let $\be=(1,\ldots,1)^T$ be the vector of all ones 
+	\vfill
+	$A\be=(d_G^+(1),\ldots,d_G^+(1))^T$ (out-degree)
+	\vfill
+	$\be^TA=(d_G^-(1),\ldots,d_G^-(1))$ (in-degree)
 \end{frame}
 
 
@@ -341,15 +763,20 @@ $\delta(G)<\infty$ $\iff$ $G$ strongly connected
 %%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%
-\section{Circumference \& Girth}
+\section{Measures at the graph level}
+%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Circumference \& Girth}
 
 \begin{frame}{Circumference}
-\begin{definition}
+\begin{definition}[Circumference]
     In an undirected (resp. directed) graph, the total number of edges (resp. arcs) in the longest cycle of graph $G$ is the \textbf{circumference} of $G$
 \end{definition}
-\vfill
-\begin{center}
-	\def\skip{2.75cm}
+\begin{minipage}{0.5\textwidth}
+	Circumference is 6.
+\end{minipage}
+\begin{minipage}{0.49\textwidth}
+	\def\skip{2.5cm}
 	\begin{tikzpicture}[scale = 0.85,auto,
 		cloud/.style={minimum width={width("N-1")+2pt},
 			draw, ellipse},
@@ -371,18 +798,19 @@ $\delta(G)<\infty$ $\iff$ $G$ strongly connected
 		\path [line, thick, color=red] (x3) to (x6);
 		\path [line, thick, bend left, color=red] (x5) to (x1);
 		\end{tikzpicture}
-	\end{center}	
-	Circumference is 6
+\end{minipage}
 \end{frame}
 
 
 \begin{frame}{Girth}
-\begin{definition}
+\begin{definition}[Girth]
     The total number of edges in the shortest cycle of graph $G$ is the \textbf{girth} $g(G)$
 \end{definition}
-\vfill
-\begin{center}
-	\def\skip{2.75cm}
+\begin{minipage}{0.3\textwidth}
+	Girth is 2.
+\end{minipage}
+\begin{minipage}{0.69\textwidth}
+	\def\skip{2.5cm}
 	\begin{tikzpicture}[scale = 0.85,auto,
 		cloud/.style={minimum width={width("N-1")+2pt},
 			draw, ellipse},
@@ -404,48 +832,44 @@ $\delta(G)<\infty$ $\iff$ $G$ strongly connected
 		\path [line, thick] (x3) to (x6);
 		\path [line, thick, bend left] (x5) to (x1);
 		\end{tikzpicture}
-	\end{center}	
-	Girth is 2
+	\end{minipage}	
 \end{frame}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Graph density}
+\subsection{Graph density}
 
 \begin{frame}{Completeness}
-\begin{definition}[Complete graph]
-	A graph $G$ is \textbf{complete} if
-	\[
-	m_G(x,y)=m_G^+(x,y)+m_G^-(x,y)\geq 1
-	\]
-	for all $x,y\in X$ such that $x\neq y$
-	\vskip0.2cm
-	A 1-graph is complete if, and only if,
-	\[
-	(x,y)\not\in U\implies (y,x)\in U
-	\]
-\end{definition}
-\vfill
+	\begin{definition}[{Complete undirected graph}]
+		An undirected graph is complete if every two of its vertices are adjacent.
+	\end{definition}
+	\begin{definition}[{Complete digraph}]
+		A digraph $D(V,A)$ is complete if $\forall u,v\in V$, $uv\in A$.
+	\end{definition}
+	\vfill
 In case of simple graphs, completeness effectively means that ``information'' can be transmitted from every vertex to every other vertex quickly (1 step)
 \vfill
 It can be useful to know how far away we are from being complete
 \end{frame}
 
-\begin{frame}{Density of a graph}
+\begin{frame}{Number of edges/arcs in a complete graph}
 $G=(X,E)$ undirected and simple of order $n$ has at most
 \[
 	\frac {n(n-1)}{2}
 \]
-edges, while $G=(X,U)$ directed and simple of order $n$ has at most
+edges, while $G=(X,A)$ directed and simple of order $n$ has at most
 \[
 	n(n-1)
 \]
 arcs 
-\vfill
-Fraction of maximum number of edges or arcs present in the graph is the \textbf{density} of the graph, i.e., if the graph has $p$ edges or arcs, then its density is, respectively,
+\end{frame}
+
+\begin{frame}{Density of a graph}
+	\begin{definition}[Density]
+		The fraction of maximum number of edges or arcs present in the graph is the \textbf{density} of the graph.
+	\end{definition}
+If the graph has $p$ edges or arcs, then its density is, respectively,
 \[
 	\frac {2p}{n(n-1)}
 \]
@@ -456,7 +880,7 @@ or
 \end{frame}
 
 \begin{frame}{Example of density}
-	\begin{center}
+	\begin{minipage}{0.69\textwidth}
 		\def\skip{2.75cm}
 		\begin{tikzpicture}[scale = 0.85,auto,
 			cloud/.style={minimum width={width("N-1")+2pt},
@@ -479,19 +903,19 @@ or
 			\path [line, thick] (x3) to (x6);
 			\path [line, thick, bend left] (x5) to (x1);
 			\end{tikzpicture}
-		\end{center}
-	\vfill
-	Graph has order 6 and thus a max of 30 arcs. Here,8 arcs $\implies$ density 0.267
-	\vfill 
-	(26.7\% of arcs are present)	
+		\end{minipage}
+	\begin{minipage}{0.3\textwidth}
+		Graph has order 6 and thus a max of 30 arcs. 
+		Here, 8 arcs $\implies$ density 0.267
+		\vfill 
+		(26.7\% of arcs are present)	
+	\end{minipage}
 \end{frame}
 	
 
 %%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Graph connectivity}
+\subsection{Graph connectivity}
 
 \begin{frame}{Connectedness}
 We have already seen connectedness (quasi- or strong in the oriented case)
@@ -576,33 +1000,33 @@ Connectedness is important in terms of characteristing graph properties, as it s
 	$G=(X,U)$ \textbf{weakly connected} if $G=(X,E)$ connected, where $E$ is obtained from $U$ by ignoring the direction of arcs
 \end{definition}
 \vfill
-\begin{center}
-	\def\skip{2.75cm}
-	\begin{tikzpicture}[scale=0.75,auto,
-		cloud/.style={minimum width={width("N-1")+2pt},
-			draw, ellipse},
-		connected/.style={dotted,-}]
-		%% Vertices
-		\node [cloud] at (0,0) (x1) {$x_1$};
-		\node [cloud] at (1*\skip,1*\skip) (x2) {$x_2$};
-		\node [cloud] at (2*\skip,1*\skip) (x3) {$x_3$};
-		\node [cloud] at (1.5*\skip,0) (x4) {$x_4$};
-		\node [cloud] at (3*\skip,0*\skip) (x5) {$x_5$};
-		\node [cloud] at (3*\skip,1*\skip) (x6) {$x_6$};
-		%% Arcs
-		\path [line, thick,bend left] (x1) to (x2);
-		\path [line, thick,bend left] (x2) to (x1);
-		\path [line, thick] (x2) to (x3);
-		\path [line, thick] (x2) to (x4);
-		\path [line, thick] (x4) to (x3);
-		\path [line, thick] (x6) to (x5);
-		\path [line, thick] (x3) to (x6);
-		\end{tikzpicture}
-	\end{center}
-	\vfill
-	\begin{center}
+	\begin{minipage}{0.4\textwidth}
 		\def\skip{2.75cm}
-		\begin{tikzpicture}[scale=0.75,auto,
+		\begin{tikzpicture}[scale=0.5,auto,
+			cloud/.style={minimum width={width("N-1")+2pt},
+				draw, ellipse},
+			connected/.style={dotted,-}]
+			%% Vertices
+			\node [cloud] at (0,0) (x1) {$x_1$};
+			\node [cloud] at (1*\skip,1*\skip) (x2) {$x_2$};
+			\node [cloud] at (2*\skip,1*\skip) (x3) {$x_3$};
+			\node [cloud] at (1.5*\skip,0) (x4) {$x_4$};
+			\node [cloud] at (3*\skip,0*\skip) (x5) {$x_5$};
+			\node [cloud] at (3*\skip,1*\skip) (x6) {$x_6$};
+			%% Arcs
+			\path [line, thick,bend left] (x1) to (x2);
+			\path [line, thick,bend left] (x2) to (x1);
+			\path [line, thick] (x2) to (x3);
+			\path [line, thick] (x2) to (x4);
+			\path [line, thick] (x4) to (x3);
+			\path [line, thick] (x6) to (x5);
+			\path [line, thick] (x3) to (x6);
+			\end{tikzpicture}
+		\end{minipage}
+		$\implies$
+	\begin{minipage}{0.4\textwidth}
+		\def\skip{2.75cm}
+		\begin{tikzpicture}[scale=0.65,auto,
 			cloud/.style={minimum width={width("N-1")+2pt},
 				draw, ellipse},
 			connected/.style={dotted,-}]
@@ -621,7 +1045,7 @@ Connectedness is important in terms of characteristing graph properties, as it s
 			\draw [thick] (x4) --  (x3);
 			\draw [thick] (x6) --  (x5);
 			\end{tikzpicture}
-		\end{center}	
+		\end{minipage}
 \end{frame}
 
 
@@ -654,9 +1078,7 @@ $G=(X,U)$ is weakly connected if there is a single weak component
 	
 %%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Cliques}
+\subsection{Cliques}
 
 \begin{frame}{Cliques}
 	\begin{definition}[Clique in undirected graphs]
@@ -674,9 +1096,9 @@ $G=(X,U)$ is weakly connected if there is a single weak component
 \end{frame}
 
 \begin{frame}
-	\begin{center}
+	\begin{minipage}{0.45\textwidth}
 		\def\skip{2.75cm}
-		\begin{tikzpicture}[scale = 0.85,auto,
+		\begin{tikzpicture}[scale = 0.65,auto,
 			cloud/.style={minimum width={width("N-1")+2pt},
 				draw, ellipse},
 			connected/.style={dotted,-}]
@@ -697,11 +1119,11 @@ $G=(X,U)$ is weakly connected if there is a single weak component
 			\path [line, thick] (x3) to (x6);
 			\path [line, thick, bend left] (x5) to (x1);
 			\end{tikzpicture}
-	\end{center}
-	\vfill
-	\begin{center}
+	\end{minipage}
+	\quad
+	\begin{minipage}{0.45\textwidth}
 		\def\skip{2.75cm}
-		\begin{tikzpicture}[scale=0.75,auto,
+		\begin{tikzpicture}[scale=0.65,auto,
 			cloud/.style={minimum width={width("N-1")+2pt},
 				draw, ellipse},
 			connected/.style={dotted,-}]
@@ -721,7 +1143,7 @@ $G=(X,U)$ is weakly connected if there is a single weak component
 			\draw [thick] (x6) --  (x5);
 			\draw (x5) to[thick, out=-150, in=-30] (x1);
 			\end{tikzpicture}
-		\end{center}	
+		\end{minipage}	
 \end{frame}
 
 
@@ -736,202 +1158,9 @@ $G=(X,U)$ is weakly connected if there is a single weak component
 \end{frame}
 	
 	
-%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Degree distribution}
-
-\begin{frame}{Degree distribution}
-	\begin{definition}[Arc incident to a vertex]
-		If a vertex $x$ is the initial endpoint of an arc $u$, which is not a loop, the arc $u$ is \textbf{incident out of vertex} $x$ 
-		\vskip0.2cm
-		The number of arcs incident out of $x$ plus the number of loops attached to $x$ is denoted $d_G^+(x)$ and is the \textbf{outer demi-degree} of $x$
-		\vskip0.2cm
-		An arc \textbf{incident into vertex} $x$ and the \textbf{inner demi-degree} $d_G^-(x)$ are defined similarly
-		\end{definition}
-		\vfill
-		\begin{definition}[Degree]
-		The \textbf{degree} of vertex $x$ is the number of arcs with $x$ as an endpoint, each loop being counted twice. The degree of $x$ is denoted $d_G(x)=d_G^+(x)+d_G^-(x)$
-		\vskip0.2cm
-		If each vertex has the same degree, the graph is \textbf{regular}
-	\end{definition}
-\end{frame}
-
-
-\begin{frame}{Degrees in an undirected graph}
-	\begin{center}
-		\def\skip{2.75cm}
-		\begin{tikzpicture}[scale=0.75,auto,
-			cloud/.style={minimum width={width("N-1")+2pt},
-				draw, ellipse},
-			connected/.style={dotted,-}]
-			%% Vertices
-			\node [cloud] at (0,0) (x1) {$2$};
-			\node [cloud] at (1*\skip,1*\skip) (x2) {$3$};
-			\node [cloud] at (2*\skip,1*\skip) (x3) {$3$};
-			\node [cloud] at (1.5*\skip,0) (x4) {$2$};
-			\node [cloud] at (3*\skip,0*\skip) (x5) {$2$};
-			\node [cloud] at (3*\skip,1*\skip) (x6) {$2$};
-			%% Arcs
-			\draw [thick] (x1) --  (x2);
-			\draw [thick] (x2) --  (x3);
-			\draw [thick] (x2) --  (x4);
-			\draw [thick] (x3) --  (x6);
-			\draw [thick] (x4) --  (x3);
-			\draw [thick] (x6) --  (x5);
-			\draw (x5) to[thick, out=-150, in=-30] (x1);
-			\end{tikzpicture}
-		\end{center}	
-\end{frame}
-
-
-\begin{frame}{Degrees in a directed graph}
-	\begin{center}
-		\def\skip{2.75cm}
-		\begin{tikzpicture}[scale = 0.75, 
-			every node/.style={transform shape},
-			auto,
-			cloud/.style={minimum width={width("N-1")+2pt},
-				draw, ellipse},
-			connected/.style={dotted,-}]
-			%% Vertices
-			\node [cloud] at (0,0) (x1) {$\begin{matrix}d^+=1\\ d^-=2\end{matrix}$};
-			\node [cloud] at (1*\skip,1*\skip) (x2) {$\begin{matrix}d^+=3\\ d^-=1\end{matrix}$};
-			\node [cloud] at (2*\skip,1*\skip) (x3) {$\begin{matrix}d^+=1\\ d^-=2\end{matrix}$};
-			\node [cloud] at (1.5*\skip,0) (x4) {$\begin{matrix}d^+=1\\ d^-=1\end{matrix}$};
-			\node [cloud] at (3*\skip,0*\skip) (x5) {$\begin{matrix}d^+=1\\ d^-=1\end{matrix}$};
-			\node [cloud] at (3*\skip,1*\skip) (x6) {$\begin{matrix}d^+=1\\ d^-=1\end{matrix}$};
-			%% Arcs
-			\path [line, thick,bend left] (x1) to (x2);
-			\path [line, thick,bend left] (x2) to (x1);
-			\path [line, thick] (x2) to (x3);
-			\path [line, thick] (x2) to (x4);
-			\path [line, thick] (x4) to (x3);
-			\path [line, thick] (x6) to (x5);
-			\path [line, thick] (x3) to (x6);
-			\path [line, thick, bend left] (x5) to (x1);
-			\end{tikzpicture}
-	\end{center}
-	\vfill
-	\begin{center}
-		\def\skip{2.75cm}
-		\begin{tikzpicture}[scale = 0.75, 
-			every node/.style={transform shape},
-			auto,
-			cloud/.style={minimum width={width("N-1")+2pt},
-				draw, ellipse},
-			connected/.style={dotted,-}]
-			%% Vertices
-			\node [cloud] at (0,0) (x1) {$\begin{matrix}d^+=1\\ d^-=2\end{matrix}$};
-			\node [cloud] at (1*\skip,1*\skip) (x2) {$\begin{matrix}d^+=4\\ d^-=2\end{matrix}$};
-			\node [cloud] at (2*\skip,1*\skip) (x3) {$\begin{matrix}d^+=1\\ d^-=2\end{matrix}$};
-			\node [cloud] at (1.5*\skip,0) (x4) {$\begin{matrix}d^+=1\\ d^-=1\end{matrix}$};
-			\node [cloud] at (3*\skip,0*\skip) (x5) {$\begin{matrix}d^+=1\\ d^-=1\end{matrix}$};
-			\node [cloud] at (3*\skip,1*\skip) (x6) {$\begin{matrix}d^+=2\\ d^-=2\end{matrix}$};
-			%% Arcs
-			\path [line, thick,bend left] (x1) to (x2);
-			\path [line, thick,bend left] (x2) to (x1);
-			\path [line, thick] (x2) to (x3);
-			\path [line, thick] (x2) to (x4);
-			\path [line, thick] (x4) to (x3);
-			\path [line, thick] (x6) to (x5);
-			\path [line, thick] (x3) to (x6);
-			\path [line, thick, bend left] (x5) to (x1);
-			\path [line, thick, looseness=5] (x2) to (x2);
-			\path [line, thick, looseness=5] (x6) to (x6);
-			\end{tikzpicture}
-	\end{center}
-\end{frame}
-
-
-\begin{frame}{What to consider about degrees?}
-	Degrees are often considered as a measure of popularity
-	\vfill
-	Often write $k(i)$ (or $k_i$) for ``degree of vertex $i$'', $k^-(i)$ and $k^+(i)$ for in- and out-degree
-	\vfill
-	\begin{itemize}
-		\item Minimum and maximum degree
-		\item Minimum and maximum in/out-degree. E.g., if you consider the global air transportation network and the in/out-degree of airports, in-degree is a measure of a location's ``popularity'' as a travel destination
-		\item Range of degrees in a graph: are there large discrepancies in connectivity between vertices in the graph?
-		\item Average degree (often denoted $\langle k\rangle$ because of physicists)
-		\item Average in/out-degree
-		\item Variance of the degrees or in/out-degrees
-	\end{itemize}
-\end{frame}
-
-\begin{frame}{The global air transportation network}
-	\bigskip\bigskip\bigskip
-	\bigskip
-	\begin{center}
-	\hspace*{-\beamerleftmargin}
-	\includegraphics[width=\paperwidth]{FIGS_slides/world_graph-degree}
-	\end{center}
-\end{frame}
-
-\begin{frame}{Example of spread of p-H1N1}
-	\bigskip\bigskip\bigskip
-	\bigskip
-	\begin{center}
-	\hspace*{-\beamerleftmargin}
-	\includegraphics[width=\paperwidth]{FIGS_slides/Cauchemez_etal_H1N1}
-	\end{center}
-	\vskip0pt plus 1filll
-	\tiny
-	Role of social networks in shaping disease transmission during a community outbreak of 2009 H1N1 pandemic influenza, Cauchemez \emph{et al}, PNAS \textbf{108}(7):2825-2830 (2011)
-\end{frame}
-	
-\begin{frame}{Example of spread of MERS}
-	\begin{center}
-	\hspace*{-\beamerleftmargin}
-	\includegraphics[width=\paperwidth]{FIGS_slides/YangJung2015SouthKoreaMERS}
-	\end{center}
-	\vskip0pt plus 1filll
-	\tiny
-	Topological dynamics of the 2015 South Korea MERS-CoV spread-on-contact networks, Yang \& Jung, Scientific Reports \textbf{10}:4327 (2020)
-\end{frame}
-
-
-\begin{frame}
-	\begin{itemize}
-		\item Average (nearest) neighbour degree, to encode for \emph{preferential attachment} (one prefers to hang out with popular people)
-		\[
-			k_i^{nn} = \frac{1}{k(i)}\sum_{j\in\mathcal{N}(i)}k(j)
-		\]
-		or, in terms of the adjacency matrix $A=[a_{ij}]$,
-		\[
-			k_i^{nn} = \frac{1}{k(i)}\sum_{j}a_{ij}k(j)
-		\]
-		\item \emph{Excess degree}: take nearest neighbour degree but do not consider the edge/arc followed to get to the neighbour
-		\item Degree, nearest neighbour and excess degree distributions
-	\end{itemize}
-\end{frame}
-
-
-\begin{frame}{Degrees in {\tt igraph}}
-	\begin{itemize}
-		\item {\tt degree} gives the degrees of the vertices
-		\item {\tt degree\_distribution} gives numeric vector of the same length as the maximum degree plus one. The first element is the relative frequency zero degree vertices, the second vertices with degree one, etc.
-		\item {\tt knn} calculate the average nearest neighbor degree of the given vertices and the same quantity in the function of vertex degree
-		\item {\tt strength} sums up the edge weights of the adjacent edges for each vertex
-	\end{itemize}
-\end{frame}
-
-\begin{frame}{Degree from adjacency matrix}
-	Suppose adjacency matrix take the form $A=[a_{ij}]$ with $a_{ij}=1$ if there is an arc from the vertex indexed $i$ to the vertex indexed $j$ and 0 otherwise. (Could be the other way round, using $A^T$, just make sure)
-	\vfill
-	Let $\be=(1,\ldots,1)^T$ be the vector of all ones 
-	\vfill
-	$A\be=(d_G^+(1),\ldots,d_G^+(1))^T$ (out-degree)
-	\vfill
-	$\be^TA=(d_G^-(1),\ldots,d_G^-(1))$ (in-degree)
-\end{frame}
-
 %%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%
-\section{$k$-cores}
+\subsection{$k$-cores}
 
 \begin{frame}{$k$-core}
 	\begin{definition}[$k$-core of a graph]
@@ -980,10 +1209,9 @@ $G=(X,U)$ is weakly connected if there is a single weak component
 \end{frame}
 
 \begin{frame}{In-coreness in the directed case}
-	Change the graph a tad.. \vfill
-	\begin{center}
+	\begin{minipage}{0.45\textwidth}
 		\def\skip{2.75cm}
-		\begin{tikzpicture}[scale = 0.8,auto,
+		\begin{tikzpicture}[scale = 0.65,auto,
 			cloud/.style={minimum width={width("N-1")+2pt},
 				draw, ellipse},
 			connected/.style={dotted,-}]
@@ -1008,11 +1236,11 @@ $G=(X,U)$ is weakly connected if there is a single weak component
 			\path [line, thick, looseness=5] (x2) to (x2);
 			\path [line, thick, looseness=5, below] (x6) to (x6);
 		\end{tikzpicture}
-	\end{center}
-	\vfill$\implies$\vfill
-	\begin{center}
+	\end{minipage}
+	$\implies$
+	\begin{minipage}{0.45\textwidth}
 		\def\skip{2.75cm}
-		\begin{tikzpicture}[scale = 0.8,auto,
+		\begin{tikzpicture}[scale = 0.65,auto,
 			cloud/.style={minimum width={width("N-1")+2pt},
 				draw, ellipse},
 			connected/.style={dotted,-}]
@@ -1037,13 +1265,13 @@ $G=(X,U)$ is weakly connected if there is a single weak component
 			\path [line, thick, looseness=5,red] (x2) to (x2);
 			\path [line, thick, looseness=5,red, below] (x6) to (x6);
 		\end{tikzpicture}
-	\end{center}
+	\end{minipage}
 \end{frame}
 
 \begin{frame}{Coreness in the undirected case}
-	\begin{center}
+	\begin{minipage}{0.45\textwidth}
 		\def\skip{2.75cm}
-		\begin{tikzpicture}[scale=0.75,
+		\begin{tikzpicture}[scale=0.65,
 			every node/.style={transform shape},
 			auto,
 			cloud/.style={minimum width={width("N-1")+2pt},
@@ -1067,11 +1295,11 @@ $G=(X,U)$ is weakly connected if there is a single weak component
 			\draw [thick,looseness=5] (x2) to (x2);
 			\draw [thick,looseness=5] (x6) to (x6);
 		\end{tikzpicture}
-	\end{center}	
-	\vfill
-	\begin{center}
+	\end{minipage}	
+	$\implies$
+	\begin{minipage}{0.45\textwidth}
 		\def\skip{2.75cm}
-		\begin{tikzpicture}[scale=0.75,
+		\begin{tikzpicture}[scale=0.65,
 			every node/.style={transform shape},
 			auto,
 			cloud/.style={minimum width={width("N-1")+2pt},
@@ -1096,237 +1324,13 @@ $G=(X,U)$ is weakly connected if there is a single weak component
 			\draw [thick,looseness=5,red] (x3) to (x3);
 			\draw [thick,looseness=5,red] (x6) to (x6);
 		\end{tikzpicture}
-	\end{center}	
+	\end{minipage}	
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%
-\section{Centrality}
-
-\begin{frame}{How \emph{central} is a vertex?}
-	\emph{Centrality} tries to answer the question: what are the most influent vertices?
-	\vfill
-	\begin{itemize}
-		\item We have already seen degree centrality
-		\vfill
-		\item There are also a few other types:
-		\vfill
-		\begin{itemize}
-			\item Betweenness centrality
-			\vfill
-			\item Closeness centrality
-		\end{itemize}
-	\end{itemize}
-	\vfill
-	Many other forms (we will come back to this)
-\end{frame}
-
-\begin{frame}{Betweenness}
-\begin{definition}[Betweenness]
-	$G=(X,U)$ a graph, $x\in X$. The \textbf{betweenness} of $v$ is
-	\[
-	b_\D(v)= \sum_{s\neq t\neq v  \in X} \frac{\sigma_{st}(v)}{\sigma_{st}}
-	\]
-	where
-	\begin{itemize}
-	\item $\sigma_{st}$ number of shortest geodesic paths from $s$ to $t$
-	\item $\sigma_{st}(v)$ number of shortest geodesic paths from $s$ to $t$ through $v$
-	\end{itemize}		
-\end{definition}
-\vfill
-In other words
-\begin{itemize}
-	\item For each pair of vertices $(s,t)$, compute the shortest paths between them
-	\item For each pair of vertices $(s,t)$, determine the fraction of shortest paths that pass through vertex $v$
-	\item Sum this fraction over all pairs of vertices $(s,t)$
-\end{itemize}
-\end{frame}
-
-\begin{frame}{Normalising betweenness}
-	Betweenness may be normalized by dividing through the number of pairs of vertices not including $v$:
-	\begin{itemize}
-		\item for directed graphs, $(n-1)(n-2)$
-		\item for undirected graphs, $(n-1)(n-2)/2$
-	\end{itemize}
-\end{frame}
-
-
-\begin{frame}{Example of betweenness}
-	\begin{center}
-		\def\skip{2.75cm}
-		\begin{tikzpicture}[scale = 0.85,
-			every node/.style={transform shape},
-			auto,
-			cloud/.style={minimum width={width("N-1")+2pt},
-				draw, ellipse},
-			connected/.style={dotted,-}]
-			%% Vertices
-			\node [cloud] at (0,0) (x1) {$x_1$};
-			\node [cloud] at (1*\skip,1*\skip) (x2) {$x_2$};
-			\node [cloud] at (2*\skip,1*\skip) (x3) {$x_3$};
-			\node [cloud] at (1.5*\skip,0) (x4) {$x_4$};
-			\node [cloud] at (3*\skip,0*\skip) (x5) {$x_5$};
-			\node [cloud] at (3*\skip,1*\skip) (x6) {$x_6$};
-			%% Arcs
-			\path [line, thick,bend left] (x1) to (x2);
-			\path [line, thick,bend left] (x2) to (x1);
-			\path [line, thick] (x2) to (x3);
-			\path [line, thick] (x2) to (x4);
-			\path [line, thick] (x4) to (x3);
-			\path [line, thick] (x6) to (x5);
-			\path [line, thick] (x3) to (x6);
-			\path [line, thick, bend left] (x5) to (x1);
-			\path [line, thick, looseness=5] (x2) to (x2);
-			\path [line, thick, looseness=5, below] (x6) to (x6);
-		\end{tikzpicture}
-	\end{center}
-	\vfill
-	{\tt distances(G, mode="out")}
-	\[
-		\begin{pmatrix}
-			0 & 1 & 2 & 2 & 4 & 3 \\
-			1 & 0 & 1 & 1 & 3 & 2 \\
-			3 & 4 & 0 & 5 & 2 & 1 \\
-			4 & 5 & 1 & 0 & 3 & 2 \\
-			1 & 2 & 3 & 3 & 0 & 4 \\
-			2 & 3 & 4 & 4 & 1 & 0
-		\end{pmatrix}
-	\]
-\end{frame}
-
-
-\begin{frame}{Number of shortest paths}
-	Recall we found 
-	{\tt distances(G, mode="out")}
-	\[
-		\mathcal{D} =
-		\begin{pmatrix}
-			0 & 1 & 2 & 2 & 4 & 3 \\
-			1 & 0 & 1 & 1 & 3 & 2 \\
-			3 & 4 & 0 & 5 & 2 & 1 \\
-			4 & 5 & 1 & 0 & 3 & 2 \\
-			1 & 2 & 3 & 3 & 0 & 4 \\
-			2 & 3 & 4 & 4 & 1 & 0
-		\end{pmatrix}
-	\]
-	\vfill
-	To find the number of shortest paths between pairs of vertices, we can use powers of the adjacency matrix
-	\vfill
-	Write $\mathcal{D}=[d_{ij}]$, for a given $(i,j)$ ($i\neq j$), if $d_{ij}=k$, then pick the $(i,j)$ in $A^k$
-\end{frame}
-
-\begin{frame}
-	We find
-	\[
-		\begin{pmatrix}
-			0 & 1 & 1 & 1 & 1 & 1 \\
-			1 & 0 & 1 & 1 & 1 & 1 \\
-			1 & 1 & 0 & 1 & 1 & 1 \\
-			1 & 1 & 1 & 0 & 1 & 1 \\
-			1 & 1 & 1 & 1 & 0 & 1 \\
-			1 & 1 & 1 & 1 & 1 & 0
-		\end{pmatrix}
-	\]
-	\vfill
-	Recall that betweenness of $v$ is
-	\[
-		b_\D(v)= \sum_{s\neq t\neq v  \in X} \frac{\sigma_{st}(v)}{\sigma_{st}}
-	\]
-	\vfill
-	$\sigma_{st}$ (\# shortest paths from $s$ to $t$) is found in the matrix above
-	\vfill
-	What about $\sigma_{st}(v)$, \# of those shortest paths that go through $v$?
-	\vfill
-	We can use {\tt all\_shortest\_paths(G, from = s, to = t, mode = "out")}
-\end{frame}
-
-
-\begin{frame}{Example of betweenness}
-	\vfill
-	{\tt betweenness(G, directed = FALSE, normalized = TRUE)}
-	\vfill
-	\begin{center}
-		\def\skip{2.75cm}
-		\begin{tikzpicture}[scale = 0.85,
-			every node/.style={transform shape},
-			auto,
-			cloud/.style={minimum width={width("N-1")+2pt},
-				draw, ellipse},
-			connected/.style={dotted,-}]
-			%% Vertices
-			\node [cloud] at (0,0) (x1) {$0.5$};
-			\node [cloud] at (1*\skip,1*\skip) (x2) {$0.5$};
-			\node [cloud] at (2*\skip,1*\skip) (x3) {$0.45$};
-			\node [cloud] at (1.5*\skip,0) (x4) {$0$};
-			\node [cloud] at (3*\skip,0*\skip) (x5) {$0.45$};
-			\node [cloud] at (3*\skip,1*\skip) (x6) {$0.45$};
-			%% Arcs
-			\path [line, thick,bend left] (x1) to (x2);
-			\path [line, thick,bend left] (x2) to (x1);
-			\path [line, thick] (x2) to (x3);
-			\path [line, thick] (x2) to (x4);
-			\path [line, thick] (x4) to (x3);
-			\path [line, thick] (x6) to (x5);
-			\path [line, thick] (x3) to (x6);
-			\path [line, thick, bend left] (x5) to (x1);
-			\path [line, thick, looseness=5] (x2) to (x2);
-			\path [line, thick, looseness=5, below] (x6) to (x6);
-		\end{tikzpicture}
-	\end{center}
-\end{frame}
-
-
-\begin{frame}{Closeness}
-	\begin{definition}
-		$G=(X,U)$, $v\in X$. The \textbf{closeness} of $v$ is
-		\[
-		c_\D(v)=\frac{1}{n-1}\displaystyle \sum_{t\in X\setminus\{v\}}d_\D(v,t)
-		\]
-		i.e., mean geodesic distance between a vertex $v$ and all other vertices it has access to
-		\vskip1cm 
-		Another definition is
-		\[
-		c_\D(v)=\frac{1}{\displaystyle\sum_{t \in X\setminus\{v\}}d_\D(v,t)}
-		\]				
-	\end{definition}
-\end{frame}
-
-\begin{frame}{Example of (out) closeness}
-	\vfill
-	{\tt closeness(G, normalized = TRUE, mode=``out'')}
-	\vfill
-	\begin{center}
-		\def\skip{2.75cm}
-		\begin{tikzpicture}[scale = 0.85,
-			every node/.style={transform shape},
-			auto,
-			cloud/.style={minimum width={width("N-1")+2pt},
-				draw, ellipse},
-			connected/.style={dotted,-}]
-			%% Vertices
-			\node [cloud] at (0,0) (x1) {$0.417$};
-			\node [cloud] at (1*\skip,1*\skip) (x2) {$0.625$};
-			\node [cloud] at (2*\skip,1*\skip) (x3) {$0.333$};
-			\node [cloud] at (1.5*\skip,0) (x4) {$0.333$};
-			\node [cloud] at (3*\skip,0*\skip) (x5) {$0.385$};
-			\node [cloud] at (3*\skip,1*\skip) (x6) {$0.357$};
-			%% Arcs
-			\path [line, thick,bend left] (x1) to (x2);
-			\path [line, thick,bend left] (x2) to (x1);
-			\path [line, thick] (x2) to (x3);
-			\path [line, thick] (x2) to (x4);
-			\path [line, thick] (x4) to (x3);
-			\path [line, thick] (x6) to (x5);
-			\path [line, thick] (x3) to (x6);
-			\path [line, thick, bend left] (x5) to (x1);
-			\path [line, thick, looseness=5] (x2) to (x2);
-			\path [line, thick, looseness=5, below] (x6) to (x6);
-		\end{tikzpicture}
-	\end{center}
-\end{frame}
-
 
 
 

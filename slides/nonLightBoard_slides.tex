@@ -54,6 +54,7 @@
 \def\I{\mathcal{I}}
 \def\L{\mathcal{L}}
 \def\M{\mathcal{M}}
+\def\N{\mathcal{N}}
 \def\P{\mathcal{P}}
 \def\R{\mathcal{R}}
 \def\S{\mathcal{S}}
@@ -133,3 +134,17 @@ minimum height=2em]
 
 \usetikzlibrary{decorations.pathmorphing,backgrounds,positioning,fit,petri}
 \usetikzlibrary{automata}
+
+
+% Beginning of a section
+\AtBeginSection[]{
+	{
+		\setbeamercolor{background canvas}{bg=orange!10}
+		\begin{frame}[noframenumbering,plain]
+			\framesubtitle{\nameofthepart Chapter \insertromanpartnumber \ -- \iteminsert{\insertpart}}
+			\tableofcontents[currentsection,currentsubsection]
+		\end{frame}
+	\addtocounter{page}{-1}
+	%\addtocounter{framenumber}{-1} 
+	}
+}
