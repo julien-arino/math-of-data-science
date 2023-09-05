@@ -1,6 +1,6 @@
 ## MATH 2740 (Mathematics of Data Science)
 
-On the [GitHub version](https://github.com/julien-arino/math2740-of-data-science/) of the page, you have access to all the files. You can also download the entire repository by clicking the buttons on the left. (You can also of course clone this repo, but you will need to do that from the GitHub version of the site.)
+On the [GitHub version](https://github.com/julien-arino/math-of-data-science/) of the page, you have access to all the files. You can also download the entire repository by clicking the buttons on the left. (You can also of course clone this repo, but you will need to do that from the GitHub version of the site.)
 
 ### Slides
 (`.ipynb` files need to be run in a jupyter notebook.)
@@ -10,14 +10,16 @@ On the [GitHub version](https://github.com/julien-arino/math2740-of-data-science
   {% if file.path contains 'slides' %}
     {% if file.path contains 'MATH2740' %}
       {% if file.path contains 'html' %}
-        <li><a href="https://julien-arino.github.io/math2740-of-data-science/slides/{{ file.basename }}.html">{{ file.basename }}</a></li>
+        <li><a href="https://julien-arino.github.io/math-of-data-science/slides/{{ file.basename }}.html">{{ file.basename }}</a></li>
       {% endif %}
       {% if file.path contains 'ipynb' %}
-        <li><a href="https://julien-arino.github.io/math2740-of-data-science/slides/{{ file.basename }}.ipynb">{{ file.basename }}</a></li>
+        {% unless file.path contains 'CODE' %}
+          <li><a href="https://julien-arino.github.io/math-of-data-science/slides/{{ file.basename }}.ipynb">{{ file.basename }}</a></li>
+        {% endunless %}
       {% endif %}
       {% if file.path contains 'pdf' %}
         {% unless file.path contains 'LightBoard' %}
-          <li><a href="https://julien-arino.github.io/math2740-of-data-science/slides/{{ file.basename }}.pdf">{{ file.basename }}</a></li>
+          <li><a href="https://julien-arino.github.io/math-of-data-science/slides/{{ file.basename }}.pdf">{{ file.basename }}</a></li>
         {% endunless %}
       {% endif %}
     {% endif %}
