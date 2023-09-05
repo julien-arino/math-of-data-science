@@ -46,7 +46,7 @@ In case you want to know, some of the slides in the course are html5 generated f
 
 - I am physically present on campus on lecture days and some other days, but **do not** come to see me outside of office hours without an appointment!
     - Office hours: TR 14:00-16:00
-- My office hours are for both courses I teach (MATH 2090 and MATH 2740) and might get busy. If things do get busy, I will limit each person to 10 minutes at a time, so come with your questions prepared!
+- My office hours are for both courses I teach (MATH 2740 and MATH 4370/7370) and might get busy. If things do get busy, I will limit each person to 10 minutes at a time, so come with your questions prepared!
 
 ---
 
@@ -60,9 +60,9 @@ In case you want to know, some of the slides in the course are html5 generated f
 
 # Lectures
 
-- TR 11:30-12:45 in 207 Buller
+- TR 11:30-12:45 in 204 Armes
 
-- Videos for the course as I taught it last year are available on as a [YouTube playlist](https://www.youtube.com/playlist?list=PLfRaznSpWo2vQAn1jVyueTuAiryDaxkH3). There is no guarantee that that the content will be the same this year, but there will be commonalities for sure
+- Videos for the course as I taught it in 2021 are available on as a [YouTube playlist](https://www.youtube.com/playlist?list=PLfRaznSpWo2vQAn1jVyueTuAiryDaxkH3). There is no guarantee that that the content will be the same this year, but there will be commonalities for sure
 
 ---
 
@@ -74,29 +74,30 @@ In case you want to know, some of the slides in the course are html5 generated f
 
 | Section | Day and time | Location |
 |---------|--------------|----------|
-| B01 | W 8:30-9:20 | 124 Machray Hall |
-| B02 | W 9:30-10:20 | 124 Machray Hall |
-| B03 | W 11:30-12:20 | 124 Machray Hall |
+| B01 | W 8:30-9:20 | 114 St John's College |
+| B02 | W 9:30-10:20 | 315 Buller |
+| B03 | W 11:30-12:20 | 315 Buller |
 
 ---
 
 # Evaluation through assignments only
-- Evaluation will be through assignments only (no tests, no final examination!)
-- One assignment per week (posted Friday at 12:00, due the following Friday at 12:00)
+- Evaluation is through assignments only (no tests, no final examination!)
+- One assignment per week (posted Friday at 12:00, due the following Friday at 12:00, except Friday before reading week, which is due the Friday after reading week)
 - Assignments will be mathematical OR (not XOR) computational. If both, (assignment complete $\iff$ **both** parts are handed back)
-- The mark for assignments will consist of the average of the marks on the **best 10** assignments
+- The mark will consist of the average of the marks on the **best 10** assignments
 - In the mathematical part, it is possible that not all questions will be marked. If you do not submit an answer to a question that is marked, you will receive **zero** for that question
 - There will be **no** tolerance for late assignments and there will not be any make-up for missed assignments: any assignment not returned by the deadline will result in a mark of **zero**
 
 ---
 
-# No late assignments, but ...
+# Self-declaration of absences
 
-- Because of a policy change, you can now self-declare an absence of less than 72 hours instead of providing a doctor's note
+- You can self-declare an absence of less than 120 hours (5 days) instead of providing a doctor's note
 - If a self-declared absence overlaps with the due date and time of Friday at 12:00
-    - send me the form **prior** to the deadline
+    - send me [the form](https://umanitoba.ca/sites/default/files/2022-09/Self%20Declaration%20Fillable%20Form-%20FINAL%20for%20Website.pdf) and submit the [simplified form](https://forms.office.com/r/HSXE50PefN) **prior** to the deadline
     - I will modify *your* deadline for *that* assignment so you can still submit on time
 - **I will not accept self-declarations after the deadline**: if at 12:00 Friday, I have not received a self-declaration form XOR the assignment, you get a mark of zero on that assignment
+- Self-declarations are intended for very occasional and unforeseen circumstances $\implies$ I **will not accept more than two** during the term 
 
 ---
 
