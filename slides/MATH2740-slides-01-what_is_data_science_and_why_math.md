@@ -79,7 +79,7 @@ In other cases, many of the concepts used have their roots in math and to unders
 
 # Warning!
 
-We will barely brush the surface here:
+We barely brush the surface here:
 
 - Some techniques from linear algebra
 - Some graph theory ideas

@@ -13,7 +13,7 @@ _paginate: false
 
 # <!-- fit --> MATH 2740 Mathematics of Data Science
 
-# Some information about the course
+# Some information about the course (Fall 2023)
 
 Julien Arino ([julien.arino@umanitoba.ca](mailto:julien.arino@umanitoba.ca))
 
@@ -21,7 +21,6 @@ Department of Mathematics & Data Science Nexus
 University of Manitoba
 
 Canadian Centre for Disease Modelling
-Canadian COVID-19 Mathematical Modelling Task Force
 NSERC-PHAC EID Modelling Consortium - CANMOD, OMNI/RÉUNIS & MfPH
 
 ---
