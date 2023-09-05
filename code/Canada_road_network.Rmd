@@ -1,0 +1,42 @@
+---
+title: "Having fun with the Canadian road network"
+output: html_document
+date: "2022-11-01"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+#library(OpenStreetMap)
+library(sf)
+```
+
+Canada has much information online, so we should be able to hack something together... Some sources of information:
+
+- [Road network file](https://www150.statcan.gc.ca/n1/en/catalogue/92-500-X)
+- [National road network](https://open.canada.ca/data/en/dataset/3d282116-e556-400c-9306-ca1a3cada77f)
+- A more general [site](https://freegisdata.rtwilson.com/) with a myriad of links to various GIS resources.
+
+Let us try [this one](https://www12.statcan.gc.ca/census-recensement/2011/geo/RNF-FRR/index-s-eng.cfm?year=22), see if it works. Note that they mention a [reference guide](https://www150.statcan.gc.ca/n1/pub/92-500-g/92-500-g2022001-eng.htm). It is always a good idea to download that, because you can expect that things may get a bit complicated...
+
+In terms of format, let's go with Shapefile (.shp). We get a ~350MB zip file that unzips to a 1.7GB folder. Unfortunately, that's common: geographic files are often large... 
+
+```{r}
+America_roads <- st_read("groads-v1-americas-shp/gROADS-v1-americas.shp")
+```
+
+```{r}
+CAN_roads <- st_read("lrnf000r22a_e/lrnf000r22a_e.shp")
+```
+
+
+```{r}
+sort(unique(CAN_roads$TYPE))
+CAN_hwy = CAN_roads %>%
+  filter(TYPE == "HWY")
+rm(CAN_roads)
+plot(CAN_hwy)
+```
+
+
+
