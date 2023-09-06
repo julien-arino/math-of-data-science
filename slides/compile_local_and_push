@@ -12,6 +12,10 @@ for f in MATH2740-slides-*.tex
 do 
     pdflatex $f
 done
+for f in MATH2740-slides-*.ipynb
+do
+    jupyter nbconvert --execute --to html $f
+done
 rm *.aux *.fdb_latexmk *.fls *.idx *.ilg *.ind *.log *.nav *.out *.snm *.toc
 git pull
 git commit -a -m "Update the slides and assignments"
