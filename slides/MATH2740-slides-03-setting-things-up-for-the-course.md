@@ -38,7 +38,7 @@ In short: `Python` is more CS, `R` is more Stats/Math
 
 Both are good languages for data science
 
-In this course, assignments will need to use `R`
+In this course, assignments **must** use `R`
 
 ---
 
@@ -58,6 +58,18 @@ In this course, assignments will need to use `R`
 All computer coding will be in `R`; assignments will also need to be returned in `R`. For this reason, you will need to find a way to run `R`. Below are some methods, from the easiest to the most challenging.
 
 Note that all options described below are Open Source (completely free). 
+
+---
+
+# In short...
+
+- Terminal version, not very friendly
+- Nicer terminal: [radian](https://github.com/randy3k/radian)
+- Execute R scripts by using `Rscript name_of_script.R`. Useful to run code in `cron`, for instance
+- Use IDEs:
+    - [RStudio](https://www.rstudio.com/products/rstudio/) has become the reference
+    - [RKWard](https://invent.kde.org/education/rkward) is useful if you are for instance using an ARM processor (Raspberry Pi, some Chromebooks..)
+- Integrate into jupyter notebooks
 
 ---
 
@@ -90,19 +102,7 @@ This is the most complex way, but will give you access to locally hosted (on you
 
 You will first need to install `Python` from [here](https://www.python.org/). Once `Python` is installed, you will need to install `Jupyter` and Jupyter notebooks by following the instructions [here](https://jupyter.org/install). Then install `R` as indicated above (with this solution, you do not need to install RStudio). Then finally activate `R` support in Jupyter notebooks by following the instructions [here](https://github.com/IRkernel/IRkernel).
 
-As an option, you may want to install [RISE](https://rise.readthedocs.io/en/stable/), if you want to use jupyter notebook to give a presentation, as was done for instance in Slides 04.
-
----
-
-# In short...
-
-- Terminal version, not very friendly
-- Nicer terminal: [radian](https://github.com/randy3k/radian)
-- Execute R scripts by using `Rscript name_of_script.R`. Useful to run code in `cron`, for instance
-- Use IDEs:
-    - [RStudio](https://www.rstudio.com/products/rstudio/) has become the reference
-    - [RKWard](https://invent.kde.org/education/rkward) is useful if you are for instance using an ARM processor (Raspberry Pi, some Chromebooks..)
-- Integrate into jupyter notebooks
+As an option, you may want to install [RISE](https://rise.readthedocs.io/en/stable/), if you want to use jupyter notebook to give a presentation, as is done for instance in Slides 04.
 
 ---
 
