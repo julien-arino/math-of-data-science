@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# Render the slides
+# Do a web render (will not work in the absence of a
+# web connection)
+# Does pull and push, so beware..
+
+npx @marp-team/marp-cli@latest  --bespoke.progress --html MATH2740-slides-*.md
+pdflatex MATH2740-slides-*.tex
+git pull
+git commit -a -m "Update the slides"
+git push

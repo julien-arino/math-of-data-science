@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# Render the lectures and copy them where they need 
+# to be (/docs in the repo)
+# Do a local render (might not be most recent version
+# of marp)
+# Does pull and push, so beware..
+
+
+npx marp  --html MATH2740-slides-*.md
+pdflatex MATH2740-slides-*.tex
+git pull
+git commit -a -m "Update the slides and assignments"
+git push

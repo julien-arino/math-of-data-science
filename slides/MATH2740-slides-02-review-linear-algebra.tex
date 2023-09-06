@@ -1,0 +1,1171 @@
+\documentclass{beamer}
+%\documentclass[handout]{beamer}
+
+%\usepackage{graphics}
+\usepackage{graphicx}
+\usepackage{amsmath,amssymb,amsthm}
+%\usepackage{subfigure}
+
+%% To make 4 per page
+%\usepackage{pgfpages}
+%\mode<handout>{\setbeamercolor{background canvas}{bg=white}}
+%\pgfpagesuselayout{4 on 1}[letterpaper,landscape]%,border shrink=5mm]
+
+
+
+
+\def\IC{\mathbb{C}}
+\def\IF{\mathbb{F}}
+\def\II{\mathbb{I}}
+\def\IM{\mathbb{M}}
+\def\IN{\mathbb{N}}
+\def\IP{\mathbb{P}}
+\def\IR{\mathbb{R}}
+\def\IZ{\mathbb{Z}}
+
+\def\ba{\mathbf{a}}
+\def\bb{\mathbf{b}}
+\def\bc{\mathbf{c}}
+\def\be{\mathbf{e}}
+\def\bh{\mathbf{h}}
+\def\bi{\mathbf{i}}
+\def\bj{\mathbf{j}}
+\def\bk{\mathbf{k}}
+\def\bn{\mathbf{n}}
+\def\bp{\mathbf{p}}
+\def\br{\mathbf{r}}
+\def\bs{\mathbf{s}}
+\def\bu{\mathbf{u}}
+\def\bv{\mathbf{v}}
+\def\bw{\mathbf{w}}
+\def\bx{\mathbf{x}}
+\def\by{\mathbf{y}}
+\def\bz{\mathbf{z}}
+
+\def\bB{\mathbf{B}}
+\def\bD{\mathbf{D}}
+\def\bF{\mathbf{F}}
+\def\bG{\mathbf{G}}
+\def\bN{\mathbf{N}}
+\def\bR{\mathbf{R}}
+\def\bS{\mathbf{S}}
+\def\bT{\mathbf{T}}
+\def\b0{\mathbf{0}}
+
+\def\A{\mathcal{A}}
+\def\B{\mathcal{B}}
+\def\C{\mathcal{C}}
+\def\D{\mathcal{D}}
+\def\E{\mathcal{E}}
+\def\F{\mathcal{F}}
+\def\G{\mathcal{G}}
+\def\I{\mathcal{I}}
+\def\L{\mathcal{L}}
+\def\M{\mathcal{M}}
+\def\P{\mathcal{P}}
+\def\R{\mathcal{R}}
+\def\S{\mathcal{S}}
+\def\T{\mathcal{T}}
+\def\U{\mathcal{U}}
+\def\V{\mathcal{V}}
+
+\newcommand{\range}{\ensuremath{\mathsf{range}}}
+%\renewcommand{\null}{\ensuremath{\mathsf{null}}}
+\newcommand{\diag}{\ensuremath{\mathsf{diag}}}
+\newcommand{\tr}{\ensuremath{\mathsf{tr}}}
+\renewcommand{\det}{\ensuremath{\mathsf{det}}}
+\newcommand{\sgn}{\ensuremath{\mathsf{sgn}}}
+\renewcommand{\span}{\ensuremath{\mathsf{span}}}
+\newcommand{\imply}{$\Rightarrow$}
+\def\restrictTo#1#2{\left.#1\right|_{#2}}
+
+\newcommand{\parallelsum}{\mathbin{\!/\mkern-5mu/\!}}
+
+\def\Im{\textrm{Im}\;}
+\def\Re{\textrm{Re}\;}
+
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{property}[theorem]{Property}
+\newtheorem{importantproperty}[theorem]{Property}
+\newtheorem{importanttheorem}[theorem]{Theorem}
+%\newtheorem{lemma}[theorem]{Lemma}
+
+
+
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}
+{%
+	\quad\insertsection\hfill p. \insertpagenumber\quad\mbox{}\vskip2pt
+}
+\usecolortheme{orchid}
+\setbeamertemplate{theorems}[numbered]
+
+
+%%%%%%% 
+%% Definitions in yellow boxes
+\usepackage{etoolbox}
+\setbeamercolor{block title}{use=structure,fg=structure.fg,bg=structure.fg!20!bg}
+\setbeamercolor{block body}{parent=normal text,use=block title,bg=block title.bg!50!bg}
+
+\BeforeBeginEnvironment{definition}{%
+\setbeamercolor{block title}{fg=black,bg=yellow!50!white}
+\setbeamercolor{block body}{fg=black, bg=yellow!30!white}
+}
+\AfterEndEnvironment{definition}{
+\setbeamercolor{block title}{use=structure,fg=structure.fg,bg=structure.fg!20!bg}
+\setbeamercolor{block body}{parent=normal text,use=block title,bg=block title.bg!50!bg, fg=black}
+}
+\BeforeBeginEnvironment{importanttheorem}{%
+\setbeamercolor{block title}{fg=black,bg=red!50!white}
+\setbeamercolor{block body}{fg=black, bg=red!30!white}
+}
+\AfterEndEnvironment{importanttheorem}{
+\setbeamercolor{block title}{use=structure,fg=structure.fg,bg=structure.fg!20!bg}
+\setbeamercolor{block body}{parent=normal text,use=block title,bg=block title.bg!50!bg, fg=black}
+}
+\BeforeBeginEnvironment{importantproperty}{%
+\setbeamercolor{block title}{fg=black,bg=red!50!white}
+\setbeamercolor{block body}{fg=black, bg=red!30!white}
+}
+\AfterEndEnvironment{importantproperty}{
+\setbeamercolor{block title}{use=structure,fg=structure.fg,bg=structure.fg!20!bg}
+\setbeamercolor{block body}{parent=normal text,use=block title,bg=block title.bg!50!bg, fg=black}
+}
+
+
+
+
+\AtBeginSection[]
+{
+	\begin{frame}[noframenumbering,plain]
+		\tableofcontents[currentsection,currentsubsection]
+	\end{frame}
+	%\addtocounter{framenumber}{-1}
+}
+
+
+\title{Review of first-year linear algebra}
+\date{}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+\DeclareFontShape{OT1}{cmss}{b}{n}{<->ssub * cmss/bx/n}{} 
+
+\begin{frame}
+	\titlepage
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+In MATH 2740, we rely on notions you acquired in MATH 1210/1220/1300
+\vfill
+So let us (briefly) go over material in these courses
+\vfill
+I also add (for some of you) a few things that will be handy and establish some terminology that we use throughout the course
+\end{frame}
+
+\begin{frame}[noframenumbering,plain]{OUTLINE}
+	\tableofcontents
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\section{Sets and logic}
+
+\frame{\frametitle{Sets and elements}
+	\begin{definition}[Set]
+		A \textbf{set} $X$ is a collection of \textbf{elements}
+	\end{definition}
+	We write $x\in X$ or $x\not\in X$ to indicate that the element $x$ belongs to
+	the set $X$ or does not belong to the set $X$, respectively
+	\vfill
+	\begin{definition}[Subset]
+		Let $X$ be a set. The set $S$ is a \textbf{subset} of $X$, which is denoted
+		$S\subset X$, if all its elements belong to $X$
+	\end{definition}
+Not used here but worth noting: we say $S$ is a \textbf{proper subset} of $X$ and write $S\subsetneq X$, if it is a subset of $X$ and not equal to $X$
+}
+
+
+\frame{\frametitle{Quantifiers}
+	A shorthand notation for ``for all elements $x$ belonging to $X$'' is $\forall x\in X$
+	\vfill
+	For example, if $X=\IR$, the \emph{field} of real numbers, then $\forall x\in\IR$ means ``for all real numbers $x$''
+	\vfill
+	A shorthand notation for ``there exists an element $x$ in the set $X$'' is
+	$\exists x\in X$
+	\vfill
+	$\forall$ and $\exists$ are \textbf{quantifiers}
+}
+
+\frame{\frametitle{Intersection and union of sets}
+	Let $X$ and $Y$ be two sets
+	\vfill
+	\begin{definition}[Intersection]
+		The intersection of $X$ and $Y$, $X\cap Y$, is the set of elements that belong
+		to $X$ \textbf{and} to $Y$,
+		\[
+		X\cap Y=\{x:x\in X\textbf{ and } x\in Y\}
+		\]
+	\end{definition}
+	\vfill
+	\begin{definition}[Union]
+		The union of $X$ and $Y$, $X\cup Y$, is the set of elements that belong
+		to $X$ \textbf{or} to $Y$,
+		\[
+		X\cup Y=\{x:x\in X\textbf{ or } x\in Y\}
+		\]
+	\end{definition}
+In mathematics, or=and/or in common parlance. We also have an \textbf{exclusive or} (xor)
+}
+
+\frame{\frametitle{A teeny bit of logic}
+	In a logical sense, a \textbf{proposition} is an assertion (or statement)
+	whose truth value (true or false) can be asserted. For example, a theorem is a
+	proposition that has been shown to be true. ``The sky is blue'' is also a
+	proposition
+	\vfill
+	Let $A$ be a proposition. We generally write
+	\[
+	A
+	\]
+	to mean that $A$ is true, and 
+	\[
+	\mathbf{not}\ A
+	\]
+	to mean that $A$ is false.
+	$\mathbf{not}\ A$ is the \textbf{contraposition} of $A$ (or $\mathbf{not}\ A$
+	is the contraposite of $A$)
+}
+
+\frame{\frametitle{A teeny bit of logic (cont.)}
+	Let $A,B$ be propositions. Then
+	\begin{itemize}
+		\item $A\Rightarrow B$ (read $A$ implies $B$) means that whenever $A$ is true,
+		then so is $B$
+		\item $A\Leftrightarrow B$, also denoted $A$ if and only if $B$ ($A$
+		iff $B$ for short), means that $A\Rightarrow B$ \textbf{and} $B\Rightarrow A$\newline
+		We also say that $A$ and $B$ are \textbf{equivalent}
+	\end{itemize}
+	\vfill
+	Let $A$ and $B$ be propositions. Then
+	\[
+	(A\Rightarrow B)\Leftrightarrow(\mathbf{not}\ B\Rightarrow\mathbf{not}\ A)
+	\]
+}
+
+\frame{\frametitle{Necessary or sufficient conditions}
+	Suppose we want to establish whether a given statement $P$ is true, depending
+	on the truth value of a statement $H$. Then we say that
+	\begin{itemize}
+		\item $H$ is a \textbf{necessary condition} if $P\Rightarrow H$ \\
+		(It is necessary that $H$ be true for $P$ to be true; so whenever
+		$P$ is true, so is $H$)
+		\vfill
+		\item $H$ is a \textbf{sufficient condition} if $H\Rightarrow P$ \\
+		(It suffices for $H$ to be true for $P$ to also be true)
+		\vfill
+		\item $H$ is a \textbf{necessary and sufficient condition} if $H\Leftrightarrow
+		P$, i.e., $H$ and $P$ are equivalent
+	\end{itemize}
+}
+
+\frame{\frametitle{Playing with quantifiers}
+	For the quantifiers $\forall$ (for all) and $\exists$ (there exists),
+	\begin{center}
+		$\exists$ is the contraposite of $\forall$
+	\end{center}
+	\vfill
+	Therefore, for example, the contraposite of
+	\[
+	\forall x\in X,\exists y\in Y
+	\]
+	is
+	\[
+	\exists x\in X,\forall y\in Y
+	\]
+}
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\section{Complex numbers}
+
+\begin{frame}{Complex numbers}
+	\begin{definition}[Complex numbers]
+		A \textbf{complex number} is an ordered pair $(a,b)$, where $a,b\in\IR$. Usually written $a+ib$ or $a+bi$, where $i^2=-1$ (i.e., $i=\sqrt{-1}$)
+		\vfill
+		The set of all complex numbers is denoted $\IC$, 
+		\[
+		\IC=\{a+ib: a,b\in\IR\}
+		\]
+	\end{definition}
+\end{frame}
+
+\begin{frame}
+	\begin{definition}[Addition and multiplication on $\IC$]
+		Letting $a+ib$ and $c+id\in\IC$, addition on $\IC$ is defined by
+		\[
+		(a+ib)+(c+id) = (a+c)+i(b+d)
+		\]
+		and multiplication on $\IC$ is defined by
+		\[
+		(a+ib)(c+id) = (ac-bd)+i(ad+bc)
+		\]
+	\end{definition}
+	\vfill
+	Latter is easy to obtain using regular multiplication and $i^2=-1$
+\end{frame}
+
+\begin{frame}{Properties}
+	$\forall\alpha,\beta,\gamma\in\IC$,
+	\vfill
+	$\alpha+\beta=\beta+\alpha$ and $\alpha\beta=\beta\alpha$ \hfill[\textbf{commutativity}]
+	\vfill
+	$(\alpha+\beta)+\gamma=\alpha+(\beta+\gamma)$ and $(\alpha\beta)\gamma=\alpha(\beta\gamma)$ \hfill[\textbf{associativity}]
+	\vfill
+	$\gamma+0=\gamma$ and $\gamma 1=\gamma$ \hfill[\textbf{identities}]
+	\vfill
+	$\forall\alpha\in\IC$, $\exists\beta\in\IC$ unique s.t. $\alpha+\beta=0$ \hfill[\textbf{additive inverse}]
+	\vfill
+	$\forall \alpha\neq 0\in\IC$, $\exists\beta\in\IC$ unique s.t. $\alpha\beta=1$ \hfill[\textbf{multiplicative inverse}]
+	\vfill
+	$\gamma(\alpha+\beta)=\gamma\alpha+\gamma\beta$ \hfill[\textbf{distributivity}]
+\end{frame}
+
+
+\begin{frame}{Additive \& multiplicative inverse, subtraction, division}
+	\begin{definition}
+		Let $\alpha,\beta\in\IC$
+		\begin{itemize}
+			\item $-\alpha$ is the \textbf{additive inverse} of $\alpha$, i.e., the unique number in $\IC$ s.t. $\alpha+(-\alpha)=0$
+			\item \textbf{Subtraction} on $\IC$:
+			\[
+			\beta-\alpha=\beta+(-\alpha)
+			\]
+			\item For $\alpha\neq 0$, $1/\alpha$ is the \textbf{multiplicative inverse} of $\alpha$, i.e., the unique number in $\IC$ s.t.
+			\[
+			\alpha(1/\alpha)=1
+			\]
+			\item \textbf{Division} on $\IC$:
+			\[
+			\beta/\alpha=\beta(1/\alpha)
+			\]
+		\end{itemize}
+	\end{definition}
+\end{frame}
+
+
+\begin{frame}
+	\begin{definition}[Real and imaginary parts]
+		Let $z=a+ib$. Then $\Re z=a$ is \textbf{real part} and $\Im z=b$ is \textbf{imaginary part} of $z$
+	\end{definition}
+	\vfill
+	If ambiguous, write $\Re(z)$ and $\Im(z)$
+	\vfill
+	\begin{definition}[Conjugate and Modulus]
+		Let $z=a+ib\in\IC$. Then
+		\begin{itemize}
+			\item \textbf{Complex conjugate} of $z$ is
+			\[
+			\bar z = a-ib
+			\]
+			\item \textbf{Modulus} (or \textbf{absolute value}) of $z$ is
+			\[
+			|z|=\sqrt{a^2+b^2} \geq 0
+			\]
+		\end{itemize}
+	\end{definition}
+\end{frame}
+
+\begin{frame}{Properties of complex numbers}
+	Let $w,z\in\IC$, then
+	\begin{itemize}
+		\item $z+\bar z=2\Re z$
+		\item $z-\bar z=2i\Im z$
+		\item $z\bar z=|z|^2$
+		\item $\overline{w+z}=\bar w+\bar z$ and $\overline{wz}=\bar w\bar z$
+		\item $\overline{\bar z}=z$
+		\item $|\Re z|\leq |z|$ and $|\Im z|\leq |z|$
+		\item $|\bar z|=|z|$
+		\item $|wz|=|w|\;|z|$
+		\item $|w+z|\leq |w|+|z|$ \hfill[\textbf{triangle inequality}]
+	\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Solving quadratic equations}
+Consider the polynomial
+\[
+P(x)=a_0+a_1x+a_2x^2
+\]
+where $x,a_0,a_1,a_2\in\IR$. Letting
+\[
+\Delta = a_1^2-4a_0a_2
+\]
+you know that if $\Delta>0$, then 
+\[
+P(x)=0
+\]
+has two distinct \emph{real} solutions, 
+\[
+x_1=\frac{-a_1-\sqrt{\Delta}}{2a_2}
+\quad\textrm{and}\quad
+x_2=\frac{-a_1+\sqrt{\Delta}}{2a_2}
+\]
+if $\Delta=0$, then there is a (multiplicity 2) unique \emph{real} solution
+\[
+x_{1}=\frac{-a_1}{2a_2}
+\]
+while if $\Delta<0$, there is no solution
+\end{frame}
+
+
+\begin{frame}{Solving quadratic equations with complex numbers}
+	Consider the polynomial
+	\[
+	P(x)=a_0+a_1x+a_2x^2
+	\]
+	where $x,a_0,a_1,a_2\in\IR$. If instead of seeking $x\in\IR$, we seek $x\in\IC$, then the situation is the same, except when $\Delta<0$
+	\vfill
+	In the latter case, note that
+	\[
+	\sqrt{\Delta} 
+	= \sqrt{(-1)(-\Delta)} 
+	= \sqrt{-1}\sqrt{-\Delta}
+	= i\sqrt{-\Delta}
+	\]
+	\vfill
+	Since $\Delta<0$, $-\Delta>0$ and the square root is the usual one
+\end{frame}
+
+\begin{frame}{Solving quadratic equations with complex numbers}
+	To summarize, consider the polynomial
+	\[
+	P(x)=a_0+a_1x+a_2x^2
+	\]
+	where $x,a_0,a_1,a_2\in\IR$. Letting
+	\[
+	\Delta = a_1^2-4a_0a_2
+	\]
+	\vfill
+	Then 
+	\[
+	P(x)=0
+	\]
+	has two solutions, 
+	\[
+	x_{1,2} = \frac{-a_1\pm\sqrt{\Delta}}{2a_2}
+	\]
+	where, if $\Delta<0$, $x_1,x_2\in\IC$ and take the form
+	\[
+	x_{1,2} = \frac{-a_1\pm i\sqrt{-\Delta}}{2a_2}
+	\]
+\end{frame}
+
+\begin{frame}{Why this matters}
+Recall (we will come back to this later) that to find the \emph{eigenvalues} of the matrix
+\[
+A=
+\begin{pmatrix}
+a_{11} & a_{12} \\ a_{21} & a_{22}
+\end{pmatrix}
+\]
+we seek $\lambda$ solutions to $\det(A-\lambda\II)=0$, i.e., $\lambda$ solutions to
+\[
+|A-\lambda\II|
+=\left|
+\begin{matrix}
+a_{11}-\lambda & a_{12} \\ a_{21} & a_{22}-\lambda
+\end{matrix}
+\right|
+=(a_{11}-\lambda)(a_{22}-\lambda)-a_{12}a_{21}=0
+\]
+i.e., $\lambda$ solutions to
+\[
+\lambda^2 - (a_{11}+a_{22})\lambda + a_{11}a_{22}-a_{12}a_{21} = 0
+\]
+\end{frame}
+
+\begin{frame}{Why this matters (cont.)}
+Let
+\[
+P(\lambda) = \lambda^2 - (a_{11}+a_{22})\lambda + a_{11}a_{22}-a_{12}a_{21}
+\]
+From previous discussion, letting 
+\[
+\begin{matrix} 
+\Delta &=& (a_{11}+a_{22})^2-4(a_{11}a_{22}-a_{12}a_{21}) \\
+&=& a_{11}^2+a_{22}^2+2a_{11}a_{22}
+-4a_{11}a_{22}+4a_{12}a_{21} \\
+&=& a_{11}^2+a_{22}^2-2a_{11}a_{22}
++4a_{12}a_{21} \\
+&=& (a_{11}-a_{22})^2+4a_{12}a_{21}
+\end{matrix}
+\]
+we have two (potentially equal) solutions to $P(\lambda)=0$
+\[
+x_{1,2} = \frac{a_{11}+a_{22}\pm \sqrt{\Delta}}{2}
+\]
+that are complex if $\Delta<0$
+
+Example:
+$\begin{pmatrix}
+0 & -1 \\ 1 & 0
+\end{pmatrix}$
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\section{Vectors and vector spaces}
+
+\begin{frame}{Vectors}
+	A \textbf{vector} $\bv$ is an ordered $n$-tuple of real or complex numbers
+	\vfill 
+	Denote $\IF=\IR$ or $\IC$ (real or complex numbers). 
+	For
+	$v_1,\ldots,v_n\in\IF$, 
+	\[
+	\bv=(v_1,\ldots,v_n)\in\IF^n
+	\]
+	is a vector. $v_1,\ldots,v_n$ are the \textbf{components} of $\bv$
+	\vfill
+	If unambiguous, we write $v$. Otherwise, $\bv$ or $\vec{v}$
+\end{frame}
+
+
+\frame{\frametitle{Vector space}
+	\begin{definition}[Vector space]
+		A \textbf{vector space} over $\IF$ is a set $V$
+		together with two binary operations, \textbf{vector addition}, denoted $+$,
+		and \textbf{scalar multiplication}, that satisfy the relations:
+		\begin{enumerate}
+			\item $\forall\bu, \bv, \bw\in V$, $\bu+(\bv+\bw)=(\bu+\bv)+\bw$
+			\item $\forall\bv, \bw\in V$, $\bv + \bw = \bw + \bv$
+			\item $\exists\b0\in V$, the zero vector, such that $\bv +\b0
+			= \bv$ for all $\bv\in V$
+			\item $\forall\bv\in V$, there exists an element $\bw\in V$, the additive
+			inverse of $\bv$, such that $\bv + \bw = \b0$
+			\item $\forall\alpha\in\IR$ and $\forall \bv,\bw\in V$, $\alpha(\bv + \bw) = \alpha \bv +
+			\alpha \bw$
+			\item $\forall\alpha,\beta\in\IR$ and $\forall \bv\in V$, $(\alpha+\beta)\bv=
+			\alpha \bv + \beta \bv$
+			\item $\forall\alpha,\beta\in\IR$ and $\forall\bv\in V$, $\alpha (\beta\bv) =
+			(\alpha\beta)\bv$
+			\item $\forall\bv\in V$, $1\bv =\bv$
+		\end{enumerate}
+	\end{definition}
+}
+
+\frame{\frametitle{Norms}
+	\begin{definition}[Norm]
+		Let $V$ be a vector space over $\IF$, and $\bv\in V$ be a vector. The
+		\textbf{norm} of $\bv$, denoted $\|\bv\|$, is a function from $V$ to $\IR_+$ that has the
+		following properties:
+		\begin{enumerate}
+			\item For all $\bv\in V$, $\|\bv\|\geq 0$ with $\|\bv\|=0$ iff $\bv=\b0$
+			\item For all $\alpha\in\IF$ and all $\bv\in V$, $\|\alpha \bv\|=|\alpha|\ \|\bv\|$
+			\item For all $\bu,\bv\in V$, $\|\bu+\bv\|\leq\|\bu\|+\|\bv\|$
+		\end{enumerate}
+	\end{definition}
+}
+
+\frame{
+	Let $V$ be a vector space (for example, $\IR^2$ or $\IR^3$)
+	\vfill
+	The \textbf{zero element} (or \textbf{zero vector}) is the vector $\b0=(0,\ldots,0)$
+	\vfill
+	The \textbf{additive inverse} of $\bv=(v_1,\ldots,v_n)$ is $-\bv=(-v_1,\ldots,-v_n)$ 
+	\vfill
+	For $\bv=(v_1,\ldots,v_n)\in V$, the length (or Euclidean norm) of $\bv$ is the
+	\textbf{scalar}
+	\[
+	\|\bv\|=\sqrt{v_1^2+\cdots+v_n^2}
+	\]
+	\vfill
+	To \textbf{normalize} the vector $\bv$ consists in considering $\tilde\bv=\bv/\|\bv\|$, i.e., the vector in the same direction as $\bv$ that has unit length
+}
+
+\frame{\frametitle{Standard basis vectors}
+	\begin{minipage}{0.49\textwidth}
+		Vectors ${\bi}=(1,0,0)$, ${\bj}=(0,1,0)$ and ${\bk}=(0,0,1)$ are the \textbf{standard basis vectors} of $\IR^3$. A vector $\bv=(v_1,v_2,v_3)$ can then be written
+		\[
+		\bv=v_1{\bi}+v_2{\bj}+v_3{\bk}
+		\]
+	\end{minipage}
+	\begin{minipage}{0.49\textwidth}
+		\begin{center}
+			\includegraphics[width=1.15\textwidth]{FIGS_slides/vect_comb_lin_standard_basis_vectors}
+		\end{center}
+	\end{minipage}
+	\vfill
+	For $V$ ($\IR^n$), the standard basis vectors are usually denoted $\be_1,\ldots,\be_n$, with 
+	\[
+	\be_k=(\underbrace{0,\ldots,0}_{k-1},1,\underbrace{0,\ldots,0}_{n-k+1})
+	\]
+}
+
+\frame{\frametitle{Dot product}
+	\begin{definition}[Dot product]
+		Let $\ba=(a_1,\ldots,a_n)\in \IR^n$, $\bb=(b_1,\ldots,b_n)\in\IR^n$. The \textbf{dot product} of $\ba$ and $\bb$ is the \textbf{scalar}
+		\[
+		\ba\bullet \bb=\sum_{i=1}^n a_ib_i=a_1b_1+\cdots+a_nb_n
+		\]
+	\end{definition}
+\vfill
+The dot product is a special case of \textbf{inner product}
+}
+
+\frame{\frametitle{Properties of the dot product}
+	\begin{theorem}
+		For $\ba,\bb,\bc\in \IR^n$ and $\alpha\in\IR$,
+		\begin{itemize}
+			\item $\ba\bullet\ba=\|\ba\|^2$ \hfill (so $\ba\bullet \ba\geq 0$, with $\ba\bullet \ba=0$ iff $\ba=\b0$)
+			\item $\ba\bullet \bb=\bb\bullet \ba$ \hfill ($\bullet$ is commutative)
+			\item $\ba\bullet(\bb+\bc)=\ba\bullet \bb+\ba\bullet \bc$ \hfill ($\bullet$ distributive over $+$)
+			\item $(\alpha \ba)\bullet \bb=\alpha(\ba\bullet \bb)=\ba\bullet(\alpha \bb)$
+			\item $\b0\bullet \ba=0$
+		\end{itemize}
+	\end{theorem}
+}
+
+\frame{\frametitle{Some results stemming from the dot product}
+	\begin{theorem}
+		If $\theta$ is the angle between the vectors $\ba$ and $\bb$, then
+		\[
+		\ba\bullet \bb=\|\ba\|\;\|\bb\|\;\cos\theta
+		\]
+	\end{theorem}
+	\begin{corollary}[Cauchy-Schwarz inequality]
+		For any two vectors $\ba$ and $\bb$, we have
+		\[
+		|\ba\bullet \bb|\leq \|\ba\|\;\|\bb\|
+		\]
+		with equality if and only if $\ba$ is a scalar multiple of $\bb$, or one of them is $\b0$.
+	\end{corollary}
+	\begin{theorem}
+		$\ba$ and $\bb$ are orthogonal if and only if $\ba\bullet \bb=0$.
+	\end{theorem}
+}
+
+\frame{\frametitle{Scalar and vector projections}
+	Scalar projection of $\bv$ onto $\ba$ (or component of $\bv$ along $\ba$):
+	\[
+	\textrm{comp}_\ba\bv=\frac{\ba\bullet \bv}{\|\ba\|}
+	\]
+	\begin{minipage}{0.59\textwidth}
+		Vector (or orthogonal) projection of $\bv$ onto $\ba$:
+		\[
+		\textrm{proj}_\ba\bv=\left(\frac{\ba\bullet \bv}{\|\ba\|}\right)\frac{\ba}{\|\ba\|}
+		=\frac{\ba\bullet \bv}{\|\ba\|^2}\ba
+		\]
+	\end{minipage}
+	\begin{minipage}{0.39\textwidth}
+		\begin{center}
+			\includegraphics[width=1.1\textwidth]{FIGS_slides/proj_v_onto_a}
+		\end{center}
+	\end{minipage}
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\section{Linear systems and matrices}
+
+
+\begin{frame}{Linear systems}
+\begin{definition}[Linear system]
+	A \textbf{linear system} of $m$ equations in $n$ unknowns takes the form
+	\begin{equation}\label{sys:linear_system}
+	\begin{matrix}
+	a_{11}x_1 &+& a_{12}x_2 &+& \cdots &+& a_{1n}x_n &=& b_1 \\
+	a_{21}x_1 &+& a_{22}x_2 &+& \cdots &+& a_{2n}x_n &=& b_2 \\
+	\vdots && \vdots && \vdots && \vdots && \vdots \\
+	a_{m1}x_1 &+& a_{m2}x_2 &+& \cdots &+& a_{mn}x_n &=& b_n
+	\end{matrix}
+	\end{equation}
+\end{definition}
+The $a_{ij}$, $x_j$ and $b_j$ could be in $\IR$ or $\IC$, although here we typically assume they are in $\IR$
+\vfill
+The aim is to find $x_1,x_2,\ldots,x_n$ that satisfy all equations simultaneously
+\end{frame}
+
+\begin{frame}
+\begin{importanttheorem}[Nature of solutions to a linear system]
+\label{th:nature_solutions_linear_system}
+A linear system can have
+\begin{itemize}
+	\item no solution
+	\item a unique solution
+	\item infinitely many solutions
+\end{itemize}
+\end{importanttheorem}
+\end{frame}
+
+
+\begin{frame}{Operations on linear systems}
+You learned to manipulate linear systems using
+\begin{itemize}
+	\item Gaussian elimination
+	\item Gauss-Jordan elimination
+\end{itemize}
+with the aim to put the system in \textbf{row echelon form} (REF) or \textbf{reduced row echelon form} (RREF) 
+\end{frame}
+
+
+\begin{frame}{Matrices and linear systems}
+Writing
+$$
+A=
+\begin{pmatrix}
+a_{11} & a_{12} & \cdots & a_{1n} \\
+a_{21} & a_{22} & \cdots & a_{2n} \\
+\vdots &\vdots & & \vdots \\
+a_{m1} & a_{m2} & \cdots & a_{mn}
+\end{pmatrix},\quad
+\bx=
+\begin{pmatrix}
+x_1\\ x_2 \\ \vdots \\ x_n
+\end{pmatrix}
+\quad\textrm{and}\quad
+\bb=
+\begin{pmatrix}
+b_1\\ b_2 \\ \vdots \\ b_n
+\end{pmatrix}
+$$
+where $A$ is an $m\times n$ \textbf{matrix}, $\bx$ and $\bb$ are $n$ (column) \textbf{vectors} (or $n\times 1$ matrices), then the linear system in the previous slide takes the form
+$$
+A\bx=\bb  
+$$
+\end{frame}
+
+
+
+\begin{frame}{Notation for vectors}
+We usually assume vectors are column vectors and thus write, e.g.,
+\[ 
+\bx=
+\begin{pmatrix}
+x_1\\ x_2 \\ \vdots \\ x_n
+\end{pmatrix}
+= (x_1,x_2,\ldots,x_n)^T
+\]
+Here, $^T$ is the \textbf{transpose operator} (more on this soon)
+\end{frame}
+
+
+
+\begin{frame}
+Consider the system
+\[
+A\bx=\bb
+\]
+\vfill
+If $\bb=\b0$, the system is \textbf{homogeneous} and always has the solution $\bx=0$ and so the ``no solution'' option in Theorem~\ref{th:nature_solutions_linear_system} goes away
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\section{Matrix arithmetic}
+
+\begin{frame}
+	\begin{definition}[Matrix]
+		An $m$-by-$n$ or $m\times n$ matrix is a rectangular array of elements of $\IR$ or $\IC$ with $m$ rows and $n$ columns,
+		\[
+		A=[a_{ij}]=
+		\begin{pmatrix}
+		a_{11} & \cdots & a_{1n} \\
+		\vdots & & \vdots \\
+		a_{m1} & \cdots & a_{mn}
+		\end{pmatrix}
+		\]
+	\end{definition}
+	\vfill
+	We always list indices as ``row,column''
+	\vfill
+	We denote $\M_{mn}(\IF)$ or $\IF^{mn}$ the set of $m\times n$ matrices with entries in $\IF=\{\IR,\IC\}$. Often, we omit $\IF$ in $\M_{mn}$ if the nature of $\IF$ is not important
+	\vfill
+	When $m=n$, we usually write $\M_n$
+\end{frame}
+
+\begin{frame}{Basic matrix arithmetic}
+Let $A\in\M_{mn},B\in\M_{mn}$ be matrices (of the same size) and $c\in\IF=\{\IR,\IC\}$ be a scalar
+\begin{itemize}
+	\item \textbf{Scalar multiplication}
+	\[
+	cA = [ca_{ij}]
+	\]
+	\item \textbf{Addition}
+	\[
+	A+B = [a_{ij}+b_{ij}]
+	\]
+	\item \textbf{Subtraction} (addition of $-B=(-1)B$ to $A$)
+	\[
+	A-B=A+(-1)B=[a_{ij}+(-1)b_{ij}]=[a_{ij}-b_{ij}]
+	\]
+	\item \textbf{Transposition} of $A$ gives a matrix $A^T=\M_{nm}$ with
+	\[
+	A^T=[a_{ji}],\quad j=1,\ldots,n,\quad i=1,\ldots,m
+	\]
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Matrix multiplication}
+The (matrix) \textbf{product} of $A$ and $B$, $AB$, requires the ``inner dimensions'' to match, i.e., the number of columns in $A$ must equal the number of rows in $B$
+\vfill
+Suppose that is the case, i.e., let $A\in\M_{mn}$, $B\in\M_{np}$. Then the $i,j$ entry in $C:=AB$ takes the form
+\[
+c_{ij} = \sum_{k=1}^n a_{ik}b_{kj}
+\]
+\vfill
+Recall that the matrix product is not commutative, i.e., in general, $AB\neq BA$ (when both those products are defined, i.e., when $A,B\in\M_n$)
+\end{frame}
+
+\begin{frame}{Special matrices}
+\begin{definition}[Zero and identity matrices]
+The \textbf{zero} matrix is the matrix $0_{mn}$ whose entries are all zero.
+The \textbf{identity} matrix is a square $n\times n$ matrix $\II_n$ with all entries on the main diagonal equal to one and all off diagonal entries equal to zero
+\end{definition}
+\begin{definition}[Symmetric matrix]
+A square matrix $A\in\M_n$ is \textbf{symmetric} if $\forall i,j=1,\ldots,n$, $a_{ij}=a_{ji}$. In other words, $A\in\M_n$ is symmetric if $A=A^T$
+\end{definition}
+\end{frame}
+
+
+\begin{frame}{Properties of symmetric matrices}
+\begin{theorem}
+\begin{enumerate}
+	\item If $A\in\M_n$, then $A+A^T$ is symmetric
+	\item If $A\in\M_{mn}$, then $AA^T\in\M_m$ and $A^TA\in\M_n$ are symmetric
+\end{enumerate}
+\end{theorem}
+\vfill
+$X$ symmetric $\iff$ $X=X^T$, so use $X=$ the matrix whose symmetric property you want to check
+
+1. True if $A+A^T=(A+A^T)^T$. We have 
+\[
+(A+A^T)^T=A^T+(A^T)^T=A^T+A=A+A^T
+\]
+
+2. $AA^T$ symmetric if $AA^T=(AA^T)^T$. We have 
+\[
+(AA^T)^T=(A^T)^TA^T=AA^T
+\]
+$A^TA$ works similarly
+\end{frame}
+
+\begin{frame}{Determinants}
+\begin{definition}[Determinant]
+Let $A\in\M_n$ with $n\geq 2$. The \textbf{determinant} of $A$ is the \emph{scalar}
+\[
+\det(A)=|A|=\sum_{j=1}^na_{ij}C_{ij}
+\]
+where $C_{ij}=(-1)^{i+j}\det(A_{ij})$ is the $(i,j)$-\textbf{cofactor} of $A$ and $A_{ij}$ is the submatrix of $A$ from which the $i$th row and $j$th column have been removed
+\end{definition}
+This is a cofactor expansion along the $i$th row
+\vfill
+This is a recursive formula: it gives result in terms of $n$ $\M_{n-1}$ matrices, to which it must in turn be applied, all the way down to
+\[
+\det\left(
+\begin{matrix}
+a_{11} & a_{12} \\ a_{21} & a_{22}
+\end{matrix}\right) = a_{11}a_{22}-a_{12}a_{21}
+\]
+\end{frame}
+
+\begin{frame}{Two special matrices and their determinants}
+\begin{definition}
+$A\in\M_n$ is \textbf{upper triangular} if $a_{ij}=0$ when $i>j$, \textbf{lower triangular} if $a_{ij}=0$ when $j>i$, \textbf{triangular} if it is \emph{either} upper or lower triangular and \textbf{diagonal} if it is \emph{both} upper and lower triangular
+\end{definition}
+When $A$ diagonal, we often write $A=\diag(a_{11},a_{22},\ldots,a_{nn})$
+\begin{importanttheorem}
+Let $A\in\M_n$ be triangular or diagonal. Then
+\[
+\det(A)=\prod_{i=1}^n a_{ii}=a_{11}a_{22}\cdots a_{nn}
+\]
+\end{importanttheorem}
+\end{frame}
+
+\begin{frame}{Inversion/Singularity}
+\begin{definition}[Matrix inverse]
+$A\in\M_n$ is \textbf{invertible} (or \textbf{nonsingular}) if $\exists A^{-1}\in\M_n$ s.t.
+\[
+AA^{-1}=A^{-1}A=\II
+\]
+$A^{-1}$ is the \textbf{inverse} of $A$. If $A^{-1}$ does not exist, $A$ is \textbf{singular}
+\end{definition}
+\begin{importanttheorem}
+Let $A\in\M_n$, $\bx,\bb\in\IF^n$. Then
+\begin{itemize}
+	\item $A$ invertible $\iff$ $\det(A)\neq 0$
+	\item If $A$ invertible, $A^{-1}$ is unique
+	\item If $A$ invertible, then $A\bx=\bb$ has the unique solution $\bx=A^{-1}\bb$
+\end{itemize}
+\end{importanttheorem}
+\end{frame}
+
+\begin{frame}{Revisiting matrix arithmetic}
+With addition, subtraction, scalar multiplication, multiplication, transposition and inversion, you can perform arithmetic on matrices essentially as on scalar, if you bear in mind a few rules
+\begin{itemize}
+\item The sizes have to be compatible
+\item The order is important since matrix multiplication is not commutative
+\item Transposition and inversion change the order of products:
+\[
+(AB)^T=B^TA^T\textrm{ and }(AB)^{-1}=B^{-1}A^{-1}
+\]
+\end{itemize}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\section{Diagonalisation}
+
+\begin{frame}{Eigenvalues / Eigenvectors / Eigenpairs}
+\begin{definition}
+Let $A\in\M_n$. A vector $\bx\in\IF^n$ such that $\bx\neq\b0$ is an \textbf{eigenvector} of $A$ if $\exists\lambda\in\IF$ called an \textbf{eigenvalue}, s.t.
+\[
+A\bx=\lambda \bx
+\]
+A couple $(\lambda,\bx)$ with $\bx\neq\b0$ s.t. $A\bx=\lambda\bx$ is an \textbf{eigenpair}
+\end{definition}
+If $(\lambda,\bx)$ eigenpair, then for $c\neq 0$, $(\lambda,c\bx)$ also eigenpair since $A(c\bx)=cA\bx=c\lambda\bx$ and dividing both sides by $c$..
+\end{frame}
+
+
+\begin{frame}{Similarity}
+\begin{definition}[Similarity]
+$A,B\in\M_n$ are \textbf{similar} ($A\sim B$) if $\exists P\in\M_n$ invertible s.t.
+\[
+P^{-1}AP=B
+\]
+\end{definition}
+\begin{theorem}[$\sim$ is an equivalence relation]
+$A,B,C\in\M_n$, then
+\begin{itemize}
+	\item $A\sim A$ \hfill ($\sim$ \textbf{reflexive})
+	\item $A\sim B\implies B\sim A$ \hfill ($\sim$ \textbf{symmetric})
+	\item $A\sim B$ and $B\sim C$ $\implies$ $A\sim C$ \hfill ($\sim$ \textbf{transitive})
+\end{itemize}
+\end{theorem}
+\end{frame}
+
+\begin{frame}{Similarity (cont.)}
+\begin{theorem}
+$A,B\in\M_n$ with $A\sim B$. Then
+\begin{itemize}
+	\item $\det\ A=\det\ B$
+	\item $A$ invertible $\iff$ $B$ invertible
+	\item $A$ and $B$ have the same eigenvalues
+\end{itemize}
+\end{theorem}
+\end{frame}
+
+
+\begin{frame}{Diagonalisation}
+\begin{definition}[Diagonalisability]
+$A\in\M_n$ is \textbf{diagonalisable} if $\exists D\in\M_n$ diagonal s.t. $A\sim D$
+\end{definition}
+\vfill
+In other words, $A\in\M_n$ is diagonalisable if there exists a diagonal matrix $D\in\M_n$ and a nonsingular matrix $P\in\M_n$ s.t. $P^{-1}AP=D$
+\vfill
+Could of course write $PAP^{-1}=D$ since $P$ invertible, but $P^{-1}AP$ makes more sense for computations
+\end{frame}
+
+
+\begin{frame}
+\begin{importanttheorem}
+$A\in\M_n$ diagonalisable $\iff$ $A$ has $n$ linearly independent eigenvectors
+\end{importanttheorem}
+\vfill
+\begin{corollary}[Sufficient condition for diagonalisability]
+$A\in\M_n$ has all its eigenvalues distinct $\implies$ $A$ diagonalisable
+\end{corollary}
+\vfill
+For $P^{-1}AP=D$: in $P$, put the linearly independent eigenvectors as columns and in $D$, the corresponding eigenvalues
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\section{Linear independence/Bases/Dimension}
+
+\begin{frame}{Linear combination and span}
+	\begin{definition}[Linear combination]
+		Let $V$ be a vector space.
+		A \textbf{linear combination} of a set $\{\bv_1,\ldots,\bv_k\}$ of vectors in $V$ is a \emph{vector}
+		\[
+		c_1\bv_1+\cdots+c_k\bv_k
+		\]
+		where $c_1,\ldots,c_k\in\IF$
+	\end{definition}
+	\vfill
+	\begin{definition}[Span]
+		The set of all linear combinations of a set of vectors $\bv_1,\ldots,\bv_k$ is the \textbf{span} of $\{\bv_1,\ldots,\bv_k\}$,
+		\[
+		\span(\bv_1,\ldots,\bv_k)=
+		\left\{
+		c_1\bv_1+\cdots+c_k\bv_k:c_1,\ldots,c_k\in\IF
+		\right\}
+		\]
+	\end{definition}
+\end{frame}
+
+
+\begin{frame}{Finite/infinite-dimensional vector spaces}
+	\begin{theorem}
+		The span of a set of vectors in $V$ is the smallest subspace of $V$ containing all the vectors in the set
+	\end{theorem}
+	\vfill
+	\begin{definition}[Set of vectors spanning a space]
+		If $\span(\bv_1,\ldots,\bv_k)=V$, we say $\bv_1,\ldots,\bv_k$ \textbf{spans} $V$
+	\end{definition}
+	\vfill
+	\begin{definition}[Dimension of a vector space]
+		A vector space $V$ is \textbf{finite-dimensional} if some set of vectors in it spans $V$.
+		A vector space $V$ is \textbf{infinite-dimensional} if it is not finite-dimensional
+	\end{definition}
+\end{frame}
+
+
+\begin{frame}{Linear (in)dependence}
+	\begin{definition}[Linear independence/Linear dependence]
+		A set $\{\bv_1,\ldots,\bv_k\}$ of vectors in a vector space $V$ is \textbf{linearly independent} if
+		\[
+		\left(c_1\bv_1+\cdots+c_k\bv_k=0\right)
+		\Leftrightarrow
+		\left(c_1=\cdots=c_k=0\right),
+		\]
+		where $c_1,\ldots,c_k\in\IF$. 
+		A set of vectors is \textbf{linearly dependent} if it is not linearly independent.
+	\end{definition}
+	\vfill
+	If linearly dependent, assume w.l.o.g. that $c_1\neq 0$, then
+	\[
+	\bv_1 = -\frac{c_2}{c_1}\bv_2-\cdots-\frac{c_k}{c_1}\bv_k
+	\]
+	i.e., $\bv_1$ is a linear combination of the other vectors in the set
+\end{frame}
+
+
+\begin{frame}
+	\begin{theorem}
+		Let $V$ be a finite-dimensional vector space. Then the \textbf{cardinal} (number of elements) of every linearly independent set of vectors is less than or equal to the number of elements in every spanning set of vectors
+	\end{theorem}
+\vfill
+E.g., in $\IR^3$, a set with 4 or more vectors is automatically linearly dependent
+\end{frame}
+
+
+\begin{frame}{Basis}
+	\begin{definition}[Basis]
+		Let $V$ be a vector space. A \textbf{basis} of $V$ is a set of vectors in $V$ that is both linearly independent and spanning
+	\end{definition}
+	\vfill
+	\begin{theorem}[Criterion for a basis]
+		A set $\{\bv_1,\ldots,\bv_k\}$ of vectors in a vector space $V$ is a basis of $V$ $\iff$ $\forall \bv\in V$, $\bv$ can be written uniquely in the form
+		\[
+		\bv=c_1\bv_1+\cdots+c_k\bv_k,
+		\]
+		where $c_1,\ldots,c_k\in\IF$
+	\end{theorem}
+\end{frame}
+
+\begin{frame}{Plus/Minus Theorem}
+	\begin{theorem}[Plus/Minus Theorem]
+		$S$ a nonempty set of vectors in vector space $V$
+		\begin{itemize}
+			\item If $S$ is linearly independent and $V\ni\bv\not\in \span(S)$, then $S\cup\{\bv\}$ is linearly independent
+			\item If $\bv\in S$ is linear combination of other vectors in $S$, then $\span(S)=\span(S-\{\bv\})$
+		\end{itemize}
+	\end{theorem}
+\end{frame}
+
+
+\begin{frame}{More on bases}
+	\begin{theorem}[Basis of finite-dimensional vector space]
+	Every finite-dimensional vector space has a basis
+	\end{theorem}
+	\vfill
+	\begin{importanttheorem}
+		Any two bases of a finite-dimensional vector space have the same number of vectors
+	\end{importanttheorem}
+	\vfill
+	\begin{definition}[Dimension]
+		The \textbf{dimension} $\dim V$ of a finite-dimensional vector space $V$ is the number of vectors in any basis of the vector space
+	\end{definition}
+	\vfill
+	\begin{theorem}[Dimension of a subspace]
+		Let $V$ be a finite-dimensional vector space and $U\subset V$ be a subspace of $V$. Then $\dim U\leq \dim V$
+	\end{theorem}
+\end{frame}
+
+
+\begin{frame}{Constructing bases}
+	\begin{theorem}
+		Let $V$ be a finite-dimensional vector space. Then every linearly independent set of vectors in $V$ with $\dim V$ elements is a basis of $V$
+	\end{theorem}
+	\vfill
+	\begin{theorem}
+		Let $V$ be a finite-dimensional vector space. Then every spanning set of vectors in $V$ with $\dim V$ elements is a basis of $V$
+	\end{theorem}
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\section{Linear algebra in a nutshell}
+\begin{frame}{To finish: the ``famous'' ``growing result''}
+\begin{importanttheorem}
+Let $A\in\M_n$. The following statements are equivalent (TFAE)
+\begin{enumerate}
+\item The matrix $A$ is invertible
+\item $\forall\bb\in\IF^n$, $A\bx = \bb$ has a unique solution ($\bx=A^{-1}\bb$)
+\item The only solution to $A\bx = \b0$ is the trivial solution $\bx = \b0$
+\item $RREF(A)=\II_n$
+\item The matrix A is equal to a product of elementary matrices
+\item $\forall\bb\in\IF^n$, $A\bx = \bb$ has a solution
+\item There is a matrix $B\in\M_n$ such that $AB = \II_n$
+\item There is an invertible matrix $B\in\M_n$ such that $AB = \II_n$
+\item $\det(A)\neq 0$
+\item $0$ is not an eigenvalue of $A$
+\end{enumerate}
+\end{importanttheorem}
+\end{frame}
+
+
+\end{document}
