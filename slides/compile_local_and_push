@@ -8,8 +8,9 @@
 
 
 npx marp  --html MATH2740-slides-*.md
-for f in MATH2740-slides-*.tex; 
-    do pdflatex $f; 
+for f in MATH2740-slides-*.tex 
+do 
+    pdflatex $f
 done
 git pull
 git commit -a -m "Update the slides and assignments"

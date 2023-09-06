@@ -6,7 +6,10 @@
 # Does pull and push, so beware..
 
 npx @marp-team/marp-cli@latest  --bespoke.progress --html MATH2740-slides-*.md
-pdflatex MATH2740-slides-*.tex
+for f in MATH2740-slides-*.tex 
+do 
+    pdflatex $f
+done
 git pull
 git commit -a -m "Update the slides"
 git push
