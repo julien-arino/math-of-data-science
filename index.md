@@ -2,6 +2,8 @@
 
 On the [GitHub version](https://github.com/julien-arino/math-of-data-science/) of the page, you have access to all the files. You can also download the entire repository by clicking the buttons on the left. (You can also of course clone this repo, but you will need to do that from the GitHub version of the site.)
 
+Feel free to use the material in these slides or in the folders. If you find this useful, I will be happy to know.
+
 ### Slides
 (`.ipynb` files need to be run in a jupyter notebook.)
 
@@ -27,7 +29,9 @@ On the [GitHub version](https://github.com/julien-arino/math-of-data-science/) o
 {% endfor %}
 </ul>
 
-Feel free to use the material in these slides or in the folders. If you find this useful, I will be happy to know.
+### Lecture notes
+
+Some lecture notes are available [here](lecture-notes/MATH2740.pdf). Beware: these are not complete!
 
 ### Videos
 
