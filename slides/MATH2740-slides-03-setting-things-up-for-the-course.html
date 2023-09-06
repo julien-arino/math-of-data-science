@@ -26,7 +26,7 @@ NSERC-PHAC EID Modelling Consortium - CANMOD, OMNI/RÉUNIS &amp; MfPH</p>
 <h1 id="r-versus-python">R versus Python</h1>
 <p>Slightly different take on life <img class="emoji" draggable="false" alt="😃" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@14.1.2/assets/svg/1f603.svg" data-marp-twemoji=""/></p>
 <p>In short: <code>Python</code> is more CS, <code>R</code> is more Stats/Math</p>
-<p>Both are good languages for data science, I just prefer <code>R</code></p>
+<p>Both are good languages for data science</p>
 <p>In this course, assignments will need to use <code>R</code></p>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="4" data-theme="default" style="--theme:default;">
@@ -34,7 +34,7 @@ NSERC-PHAC EID Modelling Consortium - CANMOD, OMNI/RÉUNIS &amp; MfPH</p>
 <ul>
 <li>Open source version of S</li>
 <li>Appeared in 1993</li>
-<li>Now version 4.2</li>
+<li>Now version 4.3</li>
 <li>One major advantage in my view: uses a lot of C and Fortran code. E.g., <code>deSolve</code>:</li>
 </ul>
 <blockquote>
@@ -45,12 +45,31 @@ NSERC-PHAC EID Modelling Consortium - CANMOD, OMNI/RÉUNIS &amp; MfPH</p>
 </ul>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="5" data-theme="default" style="--theme:default;">
-<h1 id="installing-r">Installing <code>R</code></h1>
-<p><a href="https://www.r-project.org/">Visit https://www.r-project.org/</a></p>
-<p>Choose your version: Windows or Mac. Under Linux, you can install directly from your package manager (e.g., <code>sudo apt install R-base</code> for Debian-based distros)</p>
+<h1 id="getting-your-computer-ready-for-the-course">Getting your computer ready for the course</h1>
+<p>All computer coding will be in <code>R</code>; assignments will also need to be returned in <code>R</code>. For this reason, you will need to find a way to run <code>R</code>. Below are some methods, from the easiest to the most challenging.</p>
+<p>Note that all options described below are Open Source (completely free).</p>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="6" data-theme="default" style="--theme:default;">
-<h1 id="development-environments">Development environments</h1>
+<h2 id="use-syzygyca">Use syzygy.ca</h2>
+<p><a href="https://syzygy.ca">syzygy.ca</a> is a resource provided by the <a href="https://www.pims.math.ca/">Pacific Institute for the Mathematical Sciences</a> to students in various universities including ours. From the <a href="https://syzygy.ca">webpage</a>, click the blue <em>Launch</em> button at the top right and select UManitoba, click <em>Log in</em> on the following page and use your regular University of Manitoba log in information.</p>
+<p>This will take you to a Jupyter notebook page, from which you can start notebooks.</p>
+<p>The advantage with this method is that all you need is a web browser and access to the internet. The problem with this method is that you need access to the internet. Also, these are shared VMs, there can be downtime, access issues, etc.</p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="7" data-theme="default" style="--theme:default;">
+<h2 id="install-r-and-rstudio">Install <code>R</code> and RStudio</h2>
+<p>This is probably the best option if you intend to go a little further than what we will do in the course. <code>R</code> is available on most platforms, while <code>RStudio</code> is available on most platforms except for Linux ARM devices (but can be compiled there)</p>
+<p>Visit <a href="https://www.r-project.org/">https://www.r-project.org/</a></p>
+<p>Choose your version: Windows or Mac. Under Linux, you can install directly from your package manager (e.g., <code>sudo apt install R-base</code> for Debian-based distros)</p>
+<p>To install RStudio, see <a href="https://www.rstudio.com/products/rstudio/">here</a></p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="8" data-theme="default" style="--theme:default;">
+<h2 id="install-jupyter-and-jupyter-notebook">Install Jupyter and Jupyter notebook</h2>
+<p>This is the most complex way, but will give you access to locally hosted (on your machine) Jupyter notebooks, which you can use for both <code>R</code> and <code>Python</code>.</p>
+<p>You will first need to install <code>Python</code> from <a href="https://www.python.org/">here</a>. Once <code>Python</code> is installed, you will need to install <code>Jupyter</code> and Jupyter notebooks by following the instructions <a href="https://jupyter.org/install">here</a>. Then install <code>R</code> as indicated above (with this solution, you do not need to install RStudio). Then finally activate <code>R</code> support in Jupyter notebooks by following the instructions <a href="https://github.com/IRkernel/IRkernel">here</a>.</p>
+<p>As an option, you may want to install <a href="https://rise.readthedocs.io/en/stable/">RISE</a>, if you want to use jupyter notebook to give a presentation, as was done for instance in Slides 04.</p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="9" data-theme="default" style="--theme:default;">
+<h1 id="in-short">In short...</h1>
 <ul>
 <li>Terminal version, not very friendly</li>
 <li>Nicer terminal: <a href="https://github.com/randy3k/radian">radian</a></li>
@@ -64,7 +83,7 @@ NSERC-PHAC EID Modelling Consortium - CANMOD, OMNI/RÉUNIS &amp; MfPH</p>
 <li>Integrate into jupyter notebooks</li>
 </ul>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="7" data-theme="default" style="--theme:default;">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="10" data-theme="default" style="--theme:default;">
 <h1 id="going-further">Going further</h1>
 <ul>
 <li><a href="https://www.rstudio.com/products/rstudio/#rstudio-server">RStudio server</a>: run RStudio on a Linux server and connect via a web interface</li>
@@ -74,7 +93,7 @@ NSERC-PHAC EID Modelling Consortium - CANMOD, OMNI/RÉUNIS &amp; MfPH</p>
 <li>RSweave: LaTeX incorporating R commands. Useful for generating reports. Not used as much as Rmarkdown these days</li>
 </ul>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="8" data-theme="default" style="--theme:default;">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="11" data-theme="default" style="--theme:default;">
 <h1 id="r-is-a-scripted-language">R is a scripted language</h1>
 <ul>
 <li>Interactive</li>
@@ -86,10 +105,10 @@ NSERC-PHAC EID Modelling Consortium - CANMOD, OMNI/RÉUNIS &amp; MfPH</p>
 </li>
 </ul>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="9" data-background-image="linear-gradient(to bottom, #f1c40f, 20%, white)" data-theme="default" style="--background-image:linear-gradient(to bottom, #f1c40f, 20%, white);--theme:default;background-image:linear-gradient(to bottom, #f1c40f, 20%, white);background-position:center;background-repeat:no-repeat;background-size:cover;">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="12" data-background-image="linear-gradient(to bottom, #f1c40f, 20%, white)" data-theme="default" style="--background-image:linear-gradient(to bottom, #f1c40f, 20%, white);--theme:default;background-image:linear-gradient(to bottom, #f1c40f, 20%, white);background-position:center;background-repeat:no-repeat;background-size:cover;">
 <h1 is="marp-h1" data-auto-scaling id="basic-programming-in-r">(Basic) Programming in R</h1>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="10" data-theme="default" style="--theme:default;">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="13" data-theme="default" style="--theme:default;">
 <h1 id="assignment">Assignment</h1>
 <p>Two ways:</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-R">X <span class="hljs-operator">&lt;-</span> 10
@@ -99,7 +118,7 @@ NSERC-PHAC EID Modelling Consortium - CANMOD, OMNI/RÉUNIS &amp; MfPH</p>
 </code></pre>
 <p>First version is preferred by R purists.. I don't really care</p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="11" data-theme="default" style="--theme:default;">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="14" data-theme="default" style="--theme:default;">
 <h1 id="lists">Lists</h1>
 <p>A very useful data structure, quite flexible and versatile. Empty list: <code>L &lt;- list()</code>. Convenient for things like parameters. For instance</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-R">L <span class="hljs-operator">&lt;-</span> <span class="hljs-built_in">list</span><span class="hljs-punctuation">(</span><span class="hljs-punctuation">)</span>
@@ -120,7 +139,7 @@ L<span class="hljs-punctuation">[[</span><span class="hljs-string">&quot;another
 <span class="hljs-punctuation">[</span><span class="hljs-number">1</span><span class="hljs-punctuation">]</span> <span class="hljs-string">&quot;Plouf plouf&quot;</span>
 </code></pre>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="12" data-theme="default" style="--theme:default;">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="15" data-theme="default" style="--theme:default;">
 <h1 id="vectors">Vectors</h1>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-R">x <span class="hljs-operator">=</span> <span class="hljs-number">1</span><span class="hljs-operator">:</span><span class="hljs-number">10</span>
 y <span class="hljs-operator">&lt;-</span> <span class="hljs-built_in">c</span><span class="hljs-punctuation">(</span>x<span class="hljs-punctuation">,</span> <span class="hljs-number">12</span><span class="hljs-punctuation">)</span>
@@ -135,7 +154,7 @@ z <span class="hljs-operator">=</span> <span class="hljs-built_in">c</span><span
 </code></pre>
 <p>Note that in <code>z</code>, since the first two entries are characters, the added entry is also a character. Contrary to lists, vectors have all entries of the same type</p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="13" data-theme="default" style="--theme:default;">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="16" data-theme="default" style="--theme:default;">
 <h1 id="matrices">Matrices</h1>
 <p>Matrix (or vector) of zeros</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-R">A <span class="hljs-operator">&lt;-</span> mat.or.vec<span class="hljs-punctuation">(</span>nr <span class="hljs-operator">=</span> <span class="hljs-number">2</span><span class="hljs-punctuation">,</span> nc <span class="hljs-operator">=</span> <span class="hljs-number">3</span><span class="hljs-punctuation">)</span>
@@ -154,7 +173,7 @@ C <span class="hljs-operator">&lt;-</span> matrix<span class="hljs-punctuation">
 </code></pre>
 <p>Remark that here and elsewhere, naming the arguments (e.g., <code>nr = 2</code>) allows to use arguments in any order</p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="14" data-theme="default" style="--theme:default;">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="17" data-theme="default" style="--theme:default;">
 <h1 id="matrix-operations">Matrix operations</h1>
 <p>Probably the biggest annoyance in R compared to other languages</p>
 <ul>
@@ -162,7 +181,7 @@ C <span class="hljs-operator">&lt;-</span> matrix<span class="hljs-punctuation">
 <li>Matrix multiplication is written <code>A %*% B</code></li>
 </ul>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="15" data-theme="default" style="--theme:default;">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="18" data-theme="default" style="--theme:default;">
 <h1 id="vector-operations">Vector operations</h1>
 <p>Vector addition is also frustrating. Say you write <code>x=1:10</code>, i.e., make the vector</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-R"><span class="hljs-operator">&gt;</span> x
@@ -175,14 +194,14 @@ C <span class="hljs-operator">&lt;-</span> matrix<span class="hljs-punctuation">
 <p>i.e., adds 1 to all entries in the vector</p>
 <p>Beware of this in particular when addressing sets of indices in lists, vectors or matrices</p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="16" data-theme="default" style="--theme:default;">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="19" data-theme="default" style="--theme:default;">
 <h1 id="for-the-matlab-ers-here">For the matlab-ers here</h1>
 <ul>
 <li>R does not have the keyword <code>end</code> to access the last entry in a matrix/vector/list..</li>
 <li>Use <code>length</code> (lists or vectors), <code>nchar</code> (character chains), <code>dim</code> (matrices.. careful, of course returns 2 values)</li>
 </ul>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="17" data-theme="default" style="--theme:default;">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="20" data-theme="default" style="--theme:default;">
 <h1 id="flow-control">Flow control</h1>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-R"><span class="hljs-keyword">if</span> <span class="hljs-punctuation">(</span>condition is true<span class="hljs-punctuation">)</span> <span class="hljs-punctuation">{</span>
   <span class="hljs-built_in">list</span> of stuff to do
@@ -198,7 +217,7 @@ C <span class="hljs-operator">&lt;-</span> matrix<span class="hljs-punctuation">
 <span class="hljs-punctuation">}</span>
 </code></pre>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="18" data-theme="default" style="--theme:default;">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="21" data-theme="default" style="--theme:default;">
 <h1 id="for-loops">For loops</h1>
 <p><code>for</code> applies to lists or vectors</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-R"><span class="hljs-keyword">for</span> <span class="hljs-punctuation">(</span>i <span class="hljs-keyword">in</span> <span class="hljs-number">1</span><span class="hljs-operator">:</span><span class="hljs-number">10</span><span class="hljs-punctuation">)</span> <span class="hljs-punctuation">{</span>
@@ -215,7 +234,7 @@ C <span class="hljs-operator">&lt;-</span> matrix<span class="hljs-punctuation">
 <span class="hljs-punctuation">}</span>
 </code></pre>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="19" data-theme="default" style="--theme:default;">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="22" data-theme="default" style="--theme:default;">
 <h1 id="lapply">lapply</h1>
 <p>Very useful function (a few others in the same spirit: <code>sapply</code>, <code>vapply</code>, <code>mapply</code>)</p>
 <p>Applies a function to each entry in a list/vector/matrix. Because there is a parallel version (<code>parLapply</code>) that we will see later, worth learning</p>
@@ -232,7 +251,7 @@ lapply<span class="hljs-punctuation">(</span>X <span class="hljs-operator">=</sp
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-R">sapply<span class="hljs-punctuation">(</span>X <span class="hljs-operator">=</span> l<span class="hljs-punctuation">,</span> FUN <span class="hljs-operator">=</span> mean<span class="hljs-punctuation">)</span>
 </code></pre>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="20" data-theme="default" style="--theme:default;">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="23" data-theme="default" style="--theme:default;">
 <h1 id="advanced-lapply">&quot;Advanced&quot; lapply</h1>
 <p>Can &quot;pick up&quot; nontrivial list entries</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-R">l <span class="hljs-operator">=</span> <span class="hljs-built_in">list</span><span class="hljs-punctuation">(</span><span class="hljs-punctuation">)</span>
@@ -248,7 +267,7 @@ sapply<span class="hljs-punctuation">(</span>X <span class="hljs-operator">=</sp
 </code></pre>
 <p>Just recall: the argument to the function you define is a list entry (<code>l[[1]]</code>, <code>l[[2]]</code>, etc., here)</p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="21" data-theme="default" style="--theme:default;">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="24" data-theme="default" style="--theme:default;">
 <h1 is="marp-h1" data-auto-scaling id="avoid-parameter-variation-loops-with-expandgrid">Avoid parameter variation loops with expand.grid</h1>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-R"><span class="hljs-comment"># Suppose we want to vary 3 parameters</span>
 variations <span class="hljs-operator">=</span> <span class="hljs-built_in">list</span><span class="hljs-punctuation">(</span>
