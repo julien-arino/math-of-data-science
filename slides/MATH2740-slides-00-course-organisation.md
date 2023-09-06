@@ -129,6 +129,7 @@ In case you want to know, some of the slides in the course are html5 generated f
 - Markers will be on the lookout for this
 - Paraphrasing my computer code = academic dishonesty !
 - [stack overflow](https://stackoverflow.com/) is a fantastic resource but if you use a solution from there, cite it (in a notebook, that's easy)
+- ChatGPT, GitHub Copilot, etc. are not your friends in this course..
 
 ---
 

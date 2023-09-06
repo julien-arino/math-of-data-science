@@ -36,7 +36,7 @@ Slightly different take on life :smiley:
 
 In short: `Python` is more CS, `R` is more Stats/Math
 
-Both are good languages for data science, I just prefer `R`
+Both are good languages for data science
 
 In this course, assignments will need to use `R`
 
@@ -46,22 +46,55 @@ In this course, assignments will need to use `R`
 
 - Open source version of S
 - Appeared in 1993
-- Now version 4.2
+- Now version 4.3
 - One major advantage in my view: uses a lot of C and Fortran code. E.g., `deSolve`:
 > The functions provide an interface to the FORTRAN functions 'lsoda', 'lsodar', 'lsode', 'lsodes' of the 'ODEPACK' collection, to the FORTRAN functions 'dvode', 'zvode' and 'daspk' and a C-implementation of solvers of the 'Runge-Kutta' family with fixed or variable time steps
 - Very active community on the web, easy to find solutions (same true of Python, I just prefer R)
 
 ---
 
-# Installing `R`
+# Getting your computer ready for the course
 
-[Visit https://www.r-project.org/](https://www.r-project.org/)
+All computer coding will be in `R`; assignments will also need to be returned in `R`. For this reason, you will need to find a way to run `R`. Below are some methods, from the easiest to the most challenging.
 
-Choose your version: Windows or Mac. Under Linux, you can install directly from your package manager (e.g., `sudo apt install R-base` for Debian-based distros)
+Note that all options described below are Open Source (completely free). 
 
 ---
 
-# Development environments
+## Use syzygy.ca
+
+[syzygy.ca](https://syzygy.ca) is a resource provided by the [Pacific Institute for the Mathematical Sciences](https://www.pims.math.ca/) to students in various universities including ours. From the [webpage](https://syzygy.ca), click the blue *Launch* button at the top right and select UManitoba, click *Log in* on the following page and use your regular University of Manitoba log in information.
+
+This will take you to a Jupyter notebook page, from which you can start notebooks.
+
+The advantage with this method is that all you need is a web browser and access to the internet. The problem with this method is that you need access to the internet. Also, these are shared VMs, there can be downtime, access issues, etc.
+
+---
+
+## Install `R` and RStudio
+
+This is probably the best option if you intend to go a little further than what we will do in the course. `R` is available on most platforms, while `RStudio` is available on most platforms except for Linux ARM devices (but can be compiled there)
+
+Visit [https://www.r-project.org/](https://www.r-project.org/)
+
+Choose your version: Windows or Mac. Under Linux, you can install directly from your package manager (e.g., `sudo apt install R-base` for Debian-based distros)
+
+
+To install RStudio, see [here](https://www.rstudio.com/products/rstudio/)
+
+---
+
+## Install Jupyter and Jupyter notebook
+
+This is the most complex way, but will give you access to locally hosted (on your machine) Jupyter notebooks, which you can use for both `R` and `Python`.
+
+You will first need to install `Python` from [here](https://www.python.org/). Once `Python` is installed, you will need to install `Jupyter` and Jupyter notebooks by following the instructions [here](https://jupyter.org/install). Then install `R` as indicated above (with this solution, you do not need to install RStudio). Then finally activate `R` support in Jupyter notebooks by following the instructions [here](https://github.com/IRkernel/IRkernel).
+
+As an option, you may want to install [RISE](https://rise.readthedocs.io/en/stable/), if you want to use jupyter notebook to give a presentation, as was done for instance in Slides 04.
+
+---
+
+# In short...
 
 - Terminal version, not very friendly
 - Nicer terminal: [radian](https://github.com/randy3k/radian)

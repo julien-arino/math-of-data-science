@@ -18,7 +18,6 @@ Department of Mathematics & Data Science Nexus
 University of Manitoba
 
 Canadian Centre for Disease Modelling
-Canadian COVID-19 Mathematical Modelling Task Force
 NSERC-PHAC EID Modelling Consortium - CANMOD, OMNI/RÉUNIS & MfPH
 
 ---
