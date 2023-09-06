@@ -12,6 +12,7 @@ for f in MATH2740-slides-*.tex
 do 
     pdflatex $f
 done
+rm *.aux *.fdb_latexmk *.fls *.idx *.ilg *.ind *.log *.nav *.out *.snm *.toc
 git pull
 git commit -a -m "Update the slides and assignments"
 git push
