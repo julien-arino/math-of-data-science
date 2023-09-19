@@ -12,16 +12,16 @@ Feel free to use the material in these slides or in the folders. If you find thi
   {% if file.path contains 'SLIDES' %}
     {% if file.path contains 'MATH2740' %}
       {% if file.path contains 'html' %}
-        <li><a href="https://julien-arino.github.io/math-of-data-science/slides/{{ file.basename }}.html">{{ file.basename }}</a></li>
+        <li><a href="https://julien-arino.github.io/math-of-data-science/SLIDES/{{ file.basename }}.html">{{ file.basename }}</a></li>
       {% endif %}
       {% if file.path contains 'ipynb' %}
         {% unless file.path contains 'CODE' %}
-          <li><a href="https://julien-arino.github.io/math-of-data-science/slides/{{ file.basename }}.ipynb">{{ file.basename }}</a></li>
+          <li><a href="https://julien-arino.github.io/math-of-data-science/SLIDES/{{ file.basename }}.ipynb">{{ file.basename }}</a></li>
         {% endunless %}
       {% endif %}
       {% if file.path contains 'pdf' %}
         {% unless file.path contains 'LightBoard' %}
-          <li><a href="https://julien-arino.github.io/math-of-data-science/slides/{{ file.basename }}.pdf">{{ file.basename }}</a></li>
+          <li><a href="https://julien-arino.github.io/math-of-data-science/SLIDES/{{ file.basename }}.pdf">{{ file.basename }}</a></li>
         {% endunless %}
       {% endif %}
     {% endif %}
