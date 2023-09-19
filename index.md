@@ -9,7 +9,7 @@ Feel free to use the material in these slides or in the folders. If you find thi
 
 <ul>
 {% for file in site.static_files %}
-  {% if file.path contains 'slides' %}
+  {% if file.path contains 'SLIDES' %}
     {% if file.path contains 'MATH2740' %}
       {% if file.path contains 'html' %}
         <li><a href="https://julien-arino.github.io/math-of-data-science/slides/{{ file.basename }}.html">{{ file.basename }}</a></li>
