@@ -7,7 +7,9 @@
 
 npx @marp-team/marp-cli@latest  --bespoke.progress --html MATH2740-slides-*.md
 for f in MATH2740-slides-*.tex 
-do 
+do
+    # We need to run pdflatex twice to get the TOC right
+    pdflatex $f
     pdflatex $f
 done
 for f in MATH2740-slides-*.ipynb
