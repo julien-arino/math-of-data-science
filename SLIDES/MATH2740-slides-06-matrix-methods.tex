@@ -688,9 +688,15 @@ Norms are functions $V\to\IR_+$, so $\|A\bv\|$ and $\|A\bv\|^2$ are $\geq 0$ and
 \textbf{Proof.}
 Let $(\lambda,\bv)$ be an eigenpair of $A^TA$ with $\lambda\neq 0$. Then $\bv\neq\b0$ and
 \[
-	A^TA\bv=\lambda\bv
+	A^TA\bv=\lambda\bv\neq\b0
 \]
-
+Left multiply by $A$
+\[
+	AA^TA\bv = \lambda A\bv
+\]
+Let $\bw=A\bv$, we thus have $AA^T\bw=\lambda\bw$; in other words, $A\bv$ is an eigenvector of $AA^T$ corresponding to the (nonzero) eigenvalue $\lambda$
+\vfill
+The reverse works the same way.. \qed
 \end{frame}
 
 
@@ -722,7 +728,12 @@ A=U\Sigma V^T
 \begin{definition}
 We call a factorisation as in Theorem~\ref{th:SVD} the \textbf{singular value decomposition} of $A$. The columns of $U$ and $V$ are, respectively, the \textbf{left} and \textbf{right singular vectors} of $A$
 \end{definition}
+\vfill
 $U$ and $V^T$ are \emph{rotation} or \emph{reflection} matrices, $\Sigma$ is a \emph{scaling} matrix
+\vfill
+$U\in\M_m$ orthogonal matrix with columns the eigenvectors of $AA^T$
+\vfill
+$V\in\M_n$ orthogonal matrix with columns the eigenvectors of $A^TA$
 \end{frame}
 
 
@@ -765,7 +776,7 @@ So $(\lambda_1-\lambda_2)(\bv_1\bullet\bv_2)=0$. But $\lambda_1\neq\lambda_2$, s
 
 
 \begin{frame}{Computing the SVD (case of $\neq$ eigenvalues)}
-If all eigenvalues of $A^TA$ are distinct, we can use Theorem~\ref{th:eigenvectors_of_symmetric_are_orthogonal}
+If all eigenvalues of $A^TA$ (or $AA^T$) are distinct, we can use Theorem~\ref{th:eigenvectors_of_symmetric_are_orthogonal}
 \vfill
 \begin{enumerate}
 \item Compute $A^TA\in\M_n$
