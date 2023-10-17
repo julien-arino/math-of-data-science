@@ -1,7 +1,7 @@
 %\PassOptionsToPackage{landscape}{geometry}
-\documentclass[aspectratio=169]{beamer}
+\documentclass[aspectratio=43]{beamer}
 
-\input{slides_setup_nonLightBoard.tex}
+\input{slides_setup_nonLightBoard_whiteBG.tex}
 
 \title{Graphs -- Introduction (theory)}
 \date{}
@@ -12,7 +12,7 @@
 	\titlepage
 \end{frame}
 
-\stretchon
+%\stretchon
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
@@ -33,14 +33,14 @@
 \end{frame}
 
 \begin{frame}{Graphs vs digraphs vs multigraphs vs multidigraphs vs ...}
-	Name-wise and notation-wise, this domain is a mess. We see definitions later, but as far as possible, in these notes:
+	Name-wise and notation-wise, this domain is a bit of a mess. We see definitions later, but as far as possible, in these notes:
 	\begin{itemize}
-		\item The vertex set $V$ is essentially the only constant in what follows.
-		\item An undirected graph is denoted $G=(V,E)$, where $E$ are the edges.
-		\item An undirected multigraph is denoted $G_M=(V,E)$. We will not be using these much.
-		\item A directed graph (or digraph) is denoted $G=(V,A)$, where $A$ are the arcs.
-		\item A directed multigraph (or multidigraph) is denoted $G_M=(V,A)$.
-		\item Any of the above is called a graph and is denoted $G=(V,X)$, when we seek generality.
+		\item The vertex set $V$ is essentially the only constant in what follows
+		\item An undirected graph is denoted $G=(V,E)$, where $E$ are the \emph{edges}
+		\item An undirected multigraph is denoted $G_M=(V,E)$. We will not be using these much
+		\item A \emph{directed graph} (or \emph{digraph}) is denoted $G=(V,A)$, where $A$ are the \emph{arcs}
+		\item A \emph{directed multigraph} (or \emph{multidigraph}) is denoted $G_M=(V,A)$
+		\item Any of the above is called a \emph{graph} and is denoted $G=(V,X)$, when we seek generality
 	\end{itemize}
 And just to confuse the whole thing more: we often say \emph{graph} for \emph{unoriented graph}.
 \end{frame}
@@ -48,8 +48,8 @@ And just to confuse the whole thing more: we often say \emph{graph} for \emph{un
 \begin{frame}{The bridges of K\"onigsberg}
 	A ``real life'' problem from Euler: is it possible to cross the seven bridges in a continuous walk without recrossing any of them?
 	\begin{center}
-	\includegraphics[angle=90,width=.2\textwidth]{FIGS_slides/bridge_color}
-	\includegraphics[angle=90,width=.2\textwidth]{FIGS_slides/graph_bridge}
+	\includegraphics[angle=90,width=.49\textwidth]{FIGS_slides/bridge_color}
+	\includegraphics[angle=90,width=.49\textwidth]{FIGS_slides/graph_bridge}
 	\end{center}
 	\begin{block}{Mathematical problem}
 	Is it possible to find a trail containing all edges of the graph?
@@ -58,9 +58,9 @@ And just to confuse the whole thing more: we often say \emph{graph} for \emph{un
 
 
 \begin{frame}{Finding a cycle with all vertices}
-	A salesperson must visit a couple of cities for their job. Is it possible for them to plan a round trip using highways enabling him to visit each specified city exactly once?
+	A salesperson must visit a couple of cities for their job. Is it possible for them to plan a round trip using highways enabling tehm to visit each specified city exactly once?
 	\begin{center}
-	\includegraphics[angle=90,width=.25\textwidth]{FIGS_slides/florida}
+	\includegraphics[angle=90,width=.35\textwidth]{FIGS_slides/florida}
 	\end{center}
 	\begin{itemize}
 	\item vertices correspond to cities
@@ -93,12 +93,12 @@ And just to confuse the whole thing more: we often say \emph{graph} for \emph{un
 \section{Binary relations}
 
 \begin{frame}\frametitle{Binary relation}
-	\begin{definition}
+	\begin{definition}[Binary relation]
 	\begin{itemize}
-	\item A binary relation is an arbitrary association of elements of one set with elements of another (maybe the same) set.
-	\item  A binary relation over the sets $X$ and $Y$ is defined as a subset of the Cartesian product $X\times Y =\{(x,y)| x\in X , y\in Y\}$. 
-	\item $(x,y)\in R$ is read ``$x$ is $R-$related to $y$'' and is denoted $xRy$.
-	\item If $(x,y)\not\in R$, we write not $x R y$.
+	\item A \defword{binary relation} is an arbitrary association of elements of one set with elements of another (maybe the same) set
+	\item  A binary relation over the sets $X$ and $Y$ is defined as a subset of the Cartesian product $X\times Y =\{(x,y)| x\in X , y\in Y\}$
+	\item $(x,y)\in R$ is read ``$x$ is $R$-related to $y$'' and is denoted $xRy$
+	\item If $(x,y)\not\in R$, we write not $x R y$
 	\end{itemize}
 	\end{definition}
 \end{frame}
@@ -107,13 +107,13 @@ And just to confuse the whole thing more: we often say \emph{graph} for \emph{un
 	\begin{definition}[Properties of binary relations]
 		A binary relation $R$ over a set $X$ is
 	\begin{itemize}
-	\item \textbf{Reflexive} if $\forall x\in X$, $xRx$.
-	\item \textbf{Irreflexive} if there does not exist $x\in X$ such that $xRx$.
-	\item \textbf{Symmetric} if $xRy \Rightarrow yRx$.
-	\item \textbf{Asymmetric} if $xRy \Rightarrow $ not $y R x$.
-	\item \textbf{Antisymmetric} if $xRy$ and $yRx$ $\Rightarrow$ $x=y$.
-	\item \textbf{Transitive} if $xRy$ and $yRz$ $\Rightarrow$  $xRz$.
-	\item \textbf{Total} (or \textbf{complete}) if $\forall x, y\in X$, $x R y$ or $y R x$.
+	\item \defword{Reflexive} if $\forall x\in X$, $xRx$
+	\item \defword{Irreflexive} if there does not exist $x\in X$ such that $xRx$
+	\item \defword{Symmetric} if $xRy \Rightarrow yRx$
+	\item \defword{Asymmetric} if $xRy \Rightarrow $ not $y R x$
+	\item \defword{Antisymmetric} if $xRy$ and $yRx$ $\Rightarrow$ $x=y$
+	\item \defword{Transitive} if $xRy$ and $yRz$ $\Rightarrow$  $xRz$
+	\item \defword{Total} (or \defword{complete}) if $\forall x, y\in X$, $x R y$ or $y R x$
 	\end{itemize}
 	\end{definition}
 \end{frame}
@@ -121,12 +121,16 @@ And just to confuse the whole thing more: we often say \emph{graph} for \emph{un
 	
 \begin{frame} 
 	\begin{definition}[Equivalence relation]
-	 A relation which is reflexive, symmetric and transitive is called an \textbf{equivalence relation}. 
-	 \end{definition}
-	 \begin{definition}[Partial order]
-	 A relation which is reflexive, antisymmetric and transitive is called a \textbf{partial order}. 
-	 \end{definition}
-	% A partial order which is total is called a {\bf total order}.
+	 A relation which is reflexive, symmetric and transitive is called an \defword{equivalence relation}
+	\end{definition}
+	\vfill
+	\begin{definition}[Partial order]
+	 A relation which is reflexive, antisymmetric and transitive is called a \defword{partial order}
+	\end{definition}
+	\vfill
+	\begin{definition}[Total order]
+	A partial order which is total is called a \defword{total order}
+	\end{definition}
 \end{frame}
 	
 
@@ -147,7 +151,7 @@ And just to confuse the whole thing more: we often say \emph{graph} for \emph{un
 	\vfill
 	The points are called the \emph{vertices} of the graph and the relations are the \emph{edges} of the graph
 	\vfill
-	We can also think of the relations as being one directional, in which case the relations are the \emph{arcs} of the digraph (a contraction of ``directed graph``)
+	We can also think of the relations as being one directional, in which case the relations are the \emph{arcs} of the digraph (a contraction of ``directed graph'')
 \end{frame}
 
 
@@ -156,47 +160,50 @@ And just to confuse the whole thing more: we often say \emph{graph} for \emph{un
 	An \defword{undirected graph} is a pair $G=(V,E)$ of sets such that
 	\begin{itemize}
 	\item $V$ is a set of points:  $V=\{v_1,v_2,v_3,..,v_p\}$
-	\item $E$ is a set of 2-element subsets of $V$: $E=\{\{v_i,v_j\},\{v_i,v_k\},\dots,\{v_n,v_p\}\}$, also noted $E=\{v_iv_j,v_iv_k,\dots,v_nv_p\}$.
+	\item $E$ is a set of 2-element subsets of $V$: $E=\{\{v_i,v_j\},\{v_i,v_k\},\dots,\{v_n,v_p\}\}$, also noted $E=\{v_iv_j,v_iv_k,\dots,v_nv_p\}$
 	\end{itemize}
 	\end{definition}
 	\begin{definition}[Vertex]
 	The elements of $V$ are the \defword{vertices} (or nodes, or points) of the graph $G$.
-	$V$ is the vertex set of the graph $G$, also noted $V(G)$.
+	$V$ (or $V(G)$) is the vertex set of the graph $G$
 	\end{definition}
 	\begin{definition}[Edge]
 	The elements of $E$ are the \defword{edges} (or lines) of the graph $G$.
-	$E$ is the edge set of the graph $G$, also noted $E(G)$.
+	$E$ (or $E(G)$) is the edge set of the graph $G$
 	\end{definition}
 \end{frame}
 
 \begin{frame}\frametitle{Order and Size}
 	\begin{definition}[Order of a graph]
 	The number of vertices in $G$ is the \defword{order} of $G$. Using the notation $|V(G)|$ for the \emph{cardinality} of $V(G)$,
-	$$|V(G)|=\textrm{order of G}.$$
+	$$|V(G)|=\textrm{order of G}$$
 	\end{definition}
+	\vfill
 	\begin{definition}[Size of a graph]
 	The number of edges in $G$ is the \defword{size} of $G$,
-	$$|E(G)|=\textrm{size of G}.$$
+	$$|E(G)|=\textrm{size of G}$$
 	\end{definition}
+	\vfill
 	\begin{itemize}
-	\item A graph having order $p$ and size $q$ is called a $(p,q)-$graph.
-	\item A graph is finite if $|V(G)|<\infty$.
+	\item A graph having order $p$ and size $q$ is called a $(p,q)-$graph
+	\item A graph is finite if $|V(G)|<\infty$
 	\end{itemize}
 \end{frame}
 
 \begin{frame}\frametitle{Adjacent - Incident}
 	\begin{definition}[Incident]
 	\begin{itemize}
-	%\item A vertex $v$ is incident with an edge $e$ if $v\in e$; then $e$ is an edge at $v$.
-	\item If $e=uv\in E(G)$, then $u$ and $v$ are each incident with $e$.
-	\item The two vertices incident with an edge are its ends.
-	%\item An edge $e=uv$ is incident with both vertices $u$ and $v$
+	\item A vertex $v$ is \defword{incident} with an edge $e$ if $v\in e$; then $e$ is an edge at $v$
+	\item If $e=uv\in E(G)$, then $u$ and $v$ are each incident with $e$
+	\item The two vertices incident with an edge are its ends
+	\item An edge $e=uv$ is incident with both vertices $u$ and $v$
 	\end{itemize}
 	\end{definition}
+	\vfill
 	\begin{definition}[Adjacent]
 	\begin{itemize}
-	\item Two vertices $u$ and $v$ are adjacent in a graph $G$ if $uv\in E(G)$. 
-	\item If $uv$ and $uw$ are distinct edges (i.e. $v\not=w$) of a graph $G$, then $uv$ and $uw$ are adjacent edges.
+	\item Two vertices $u$ and $v$ are \defword{adjacent} in a graph $G$ if $uv\in E(G)$
+	\item If $uv$ and $uw$ are distinct edges (i.e. $v\not=w$) of a graph $G$, then $uv$ and $uw$ are adjacent edges
 	\end{itemize}
 	\end{definition}
 \end{frame}
@@ -204,28 +211,31 @@ And just to confuse the whole thing more: we often say \emph{graph} for \emph{un
 
 \begin{frame}
 	\begin{definition}[Multiple edge]
-	{\bf Multiple edges} are two or more edges connecting the same two vertices within a multigraph.
+	\defword{Multiple edges} are two or more edges connecting the same two vertices within a multigraph
 	\end{definition}
+	\vfill
 	\begin{definition}[Loop]
-	A {\bf loop} is an edge with both the same ends; \emph{e.g.} $\{u,u\}$ is a loop.
+	A \defword{loop} is an edge with both the same ends; \emph{e.g.} $\{u,u\}$ is a loop
 	\end{definition}
+	\vfill
 	\begin{definition}[Simple graph]
-		A {\bf simple graph} is a graph which contains no loops or multiple edges. 
+		A \defword{simple graph} is a graph which contains no loops or multiple edges
 	\end{definition}
+	\vfill
 	\begin{definition}[Multigraph]
-		A {\bf multigraph} is a graph which can contain multiple edges or loops.
+		A \defword{multigraph} is a graph which can contain multiple edges or loops
 	\end{definition}
 \end{frame}
 
 
 \begin{frame}\frametitle{Graph and binary relations}
-	A (simple) graph $G$ can be defined in term of a vertex set $V$ and an irreflexive and symmetric binary relation over $V$.
-	
-	$R$ is symmetric if $(u,v)\in R$ $\Rightarrow$ $(v,u)\in R$  (or, in other words, $uRv\implies vRu$).
-	
-	Hence, $\{(u,v),(v,u)\}\in E(G)$ ($\{(u,v),(v,u)\}$ is an edge).
-
-	The set of edges $E(G)$ is the set of symmetric pairs in $R$.
+	A (simple) graph $G$ can be defined in term of a vertex set $V$ and an irreflexive and symmetric binary relation over $V$
+	\vfill
+	$R$ is symmetric if $(u,v)\in R$ $\Rightarrow$ $(v,u)\in R$  (or, in other words, $uRv\implies vRu$)
+	\vfill
+	Hence, $\{(u,v),(v,u)\}\in E(G)$ ($\{(u,v),(v,u)\}$ is an edge)
+	\vfill
+	The set of edges $E(G)$ is the set of symmetric pairs in $R$
 \end{frame}
 
 
@@ -235,15 +245,16 @@ And just to confuse the whole thing more: we often say \emph{graph} for \emph{un
 	\begin{definition}[Degree of a vertex]
 	Let $v$ be a vertex of $G=(V,E)$.
 	\begin{itemize}
-	\item The number of edges of $G$ incident with $v$ is the {\bf degree} of $v$ in $G$.
-	\item The number of edges of $G$ at $v$ is the {\bf degree} of $v$ in $G$.
-	\item The degree of $v$ in $G$ is noted $d_G(v)$ or $deg_G(v)$.
+	\item The number of edges of $G$ incident with $v$ is the \defword{degree} of $v$ in $G$
+	\item The number of edges of $G$ at $v$ is the \defword{degree} of $v$ in $G$
+	\item The degree of $v$ in $G$ is noted $d_G(v)$ or $deg_G(v)$
 	\end{itemize}
 	\end{definition}
+	\vfill
 	\begin{theorem}
 	Let $G$ be a $(p,q)-$graph with vertices $v_1$, $\dots$, $v_p$, then
 	\[
-		\sum_{i=1}^{p}d_G(v_i)=2q.
+		\sum_{i=1}^{p}d_G(v_i)=2q
 	\]
 	\end{theorem}
 \end{frame}
@@ -252,9 +263,11 @@ And just to confuse the whole thing more: we often say \emph{graph} for \emph{un
 \begin{definition}[{Odd vertex}]
 A vertex is an \defword{odd vertex} is its degree is odd.
 \end{definition}
+\vfill
 \begin{definition}[{Even vertex}]
 A vertex is called \defword{even vertex} is its degree is even.
 \end{definition}
+\vfill
 \begin{theorem}
 Every graph contains an even number of odd vertices.
 \end{theorem}
@@ -262,7 +275,7 @@ Every graph contains an even number of odd vertices.
 
 \begin{frame}{Regular graph}
 \begin{definition}[{Regular graph}]
-	If all the vertices of $G$ have the same degree $k$, then the graph $G$ is $k-$regular.
+	If all the vertices of $G$ have the same degree $k$, then the graph $G$ is $k$-regular
 \end{definition}
 \end{frame}
 
@@ -273,20 +286,23 @@ Every graph contains an even number of odd vertices.
 \subsection{Complete, bipartite and other notable graphs}
 \begin{frame}
 \begin{definition}[{Complete graph}]
-A graph is complete if every two of its vertices are adjacent.
+A graph is complete if every two of its vertices are adjacent
 \end{definition}
+\vfill
 \begin{definition}[$n$-clique]
-	A simple, complete graph on $n$ vertices is called an $n$-\textbf{clique} and is often denoted $K_n$
+	A simple, complete graph on $n$ vertices is called an $n$-\defword{clique} and is often denoted $K_n$
 \end{definition}
+\vfill
 Note that a complete graph of order $p$ is $(p-1)-$regular
 \end{frame}
 
 \begin{frame}\frametitle{Bipartite graph}
 	\begin{definition}[Bipartite graph]
-		A graph $G=(V,E)$ is called {\bf bipartite} if it is possible to partition the vertex set of $G$ into two subsets, say $V_1$ and $V_2$ so that every edge of $G$ joins a vertex of $V_1$ with a vertex of $V_2$ and no vertex joins another vertex of its own set.
+		A graph $G=(V,E)$ is called \defword{bipartite} if it is possible to partition the vertex set of $G$ into two subsets, say $V_1$ and $V_2$ so that every edge of $G$ joins a vertex of $V_1$ with a vertex of $V_2$ and no vertex joins another vertex of its own set
 	\end{definition}
+	\vfill
 	\begin{definition}[Bipartite graph]
-		A graph is \textbf{bipartite} if its vertices can be partitioned into two sets $X_1$ and $X_2$, s.t. no two vertices in the same set are adjacent.
+		A graph is \defword{bipartite} if its vertices can be partitioned into two sets $X_1$ and $X_2$, s.t. no two vertices in the same set are adjacent.
 		This graph may be written $G=(X_1,X_2,U)$
 	\end{definition}
 \end{frame}
@@ -294,27 +310,28 @@ Note that a complete graph of order $p$ is $(p-1)-$regular
 
 \begin{frame}\frametitle{Complete Bipartite graph}
 	\begin{definition}[Complete bipartite graph]
-		A bipartite graph in which every two vertices from the 2 different partitions are adjacent is called a complete bipartite graph.
+		A bipartite graph in which every two vertices from the 2 different partitions are adjacent is called a complete bipartite graph
 	\end{definition}
+	\vfill
 	\begin{definition}[Complete bipartite graph]
-		If $\forall x_1\in X_1, \forall x_2\in X$, we have $m_G(x_1,x_2)\geq 1$, then $G=(X_1,X_2,U)$ is a \textbf{complete bipartite} graph
-		\vskip0.5cm
+		If $\forall x_1\in X_1, \forall x_2\in X$, we have $m_G(x_1,x_2)\geq 1$, then $G=(X_1,X_2,U)$ is a \defword{complete bipartite} graph
+		\vskip0.25cm
 		A simple, complete bipartite graph with $|X_1|=p$ and $|X_2|=q$ is often denoted $K_{p,q}$
 	\end{definition}
 \end{frame}
 
 \begin{frame}\frametitle{Some specific graphs}
 	\begin{definition}[{Tree}]
-		Any connected graph that has no cycles is called a tree.
+		Any connected graph that has no cycles is a \defword{tree}
 	\end{definition}
 	\begin{definition}[{Cycle $C_n$}]
-		For $n\geq 3$, the cycle, denoted $C_n$, is a connected graph of order $n$ that is a cycle on $n$ vertices.
+		For $n\geq 3$, the \defword{cycle} $C_n$ is a connected graph of order $n$ that is a cycle on $n$ vertices
 	\end{definition}
 	\begin{definition}[{Path $P_n$}]
-		The path, $P_n$, is a connected graph that consists of $n\geq 2$ vertices and $n-1$ edges. Two vertices of $P_n$ have degree 1 and the rest are of degree 2.
+		The \defword{path} $P_n$ is a connected graph that consists of $n\geq 2$ vertices and $n-1$ edges. Two vertices of $P_n$ have degree 1 and the rest are of degree 2
 	\end{definition}
 	\begin{definition}[{Star $S_n$}]
-		The star of order $n$ is the complete bipartite graph $K_{1,n-1}$ (1 vertex of degree $n-1$, and $n-1$ vertices of degree 1). 
+		The \defword{star} of order $n$ is the complete bipartite graph $K_{1,n-1}$ (1 vertex of degree $n-1$ and $n-1$ vertices of degree 1)
 	\end{definition}
 \end{frame}
 
@@ -327,12 +344,13 @@ Note that a complete graph of order $p$ is $(p-1)-$regular
 \begin{frame} \frametitle{Isomorphic graphs} 
 \begin{definition}[Isomorphic graphs]
 Let $G_1=(V(G_1),E(G_1))$ and $G_2=(V(G_2),E(G_2))$ be two graphs.
-$G_1$ and $G_2$ are \textbf{isomorphic} if there exists an isomorphism $\phi$ from $G_1$ to $G_2$, that is defined as an injective mapping $\phi:\; V(G_1) \rightarrow V(G_2)$ such that two vertices $u_1$ and $v_1$ are adjacent in $G_1$ if and only if the vertices $\phi(u_1)$ and $\phi(v_1)$ are adjacent in $G_2$.
+$G_1$ and $G_2$ are \defword{isomorphic} if there exists an isomorphism $\phi$ from $G_1$ to $G_2$, that is defined as an injective mapping $\phi:\; V(G_1) \rightarrow V(G_2)$ such that two vertices $u_1$ and $v_1$ are adjacent in $G_1$ if and only if the vertices $\phi(u_1)$ and $\phi(v_1)$ are adjacent in $G_2$
 \end{definition}
+\vfill
 \begin{definition}[Another formulation of isomorphic graphs]
 Let $G_1=(V(G_1),E(G_1))$ and $G_2=(V(G_2),E(G_2))$ be two graphs;
 $G_1$ and $G_2$ are isomorphic if there exists an isomorphism $\phi$ from $G_1$ to $G_2$, defined as 
-an injective mapping $\phi : \; V(G_1) \rightarrow V(G_2)$ such that $\{u_1,v_1\} \in E(G_1)$ if and only if $\{\phi(u_1),\phi(v_1)\}\in E(G_2)$ for all $u_1, v_1 \in V(G_1)$.
+an injective mapping $\phi : \; V(G_1) \rightarrow V(G_2)$ such that $\{u_1,v_1\} \in E(G_1)$ if and only if $\{\phi(u_1),\phi(v_1)\}\in E(G_2)$ for all $u_1, v_1 \in V(G_1)$
 \end{definition}
 \end{frame}
  
@@ -340,17 +358,18 @@ an injective mapping $\phi : \; V(G_1) \rightarrow V(G_2)$ such that $\{u_1,v_1\
  
 \begin{frame}
 If $\phi$ is an isomorphism from $G_1$ to $G_2$, then the inverse mapping $\phi ^{-1}$ from $V(G_2)$ to $V(G_1)$ also satisfies the definition of an isomorphism.
-
 As a consequence, if $G_1$ and $G_2$ are isomorphic graphs, then
 \begin{itemize}
 \item $G_1$ is isomorphic to $G_2$
 \item $G_2$ is isomorphic to $G_1$
 \end{itemize}
+\vfill
 \begin{theorem}
-The relation ``is isomorphic to'' is an equivalence relation on the set of all graphs.
+The relation ``is isomorphic to'' is an equivalence relation on the set of all graphs
 \end{theorem}
+\vfill
 \begin{theorem}
-If $G_1$ and $G_2$ are isomorphic graphs, then the degrees of vertices of $G_1$ are exactly the degrees of vertices of $G_2$.
+If $G_1$ and $G_2$ are isomorphic graphs, then the degrees of vertices of $G_1$ are exactly the degrees of vertices of $G_2$
 \end{theorem}
 \end{frame}
 
@@ -360,10 +379,11 @@ If $G_1$ and $G_2$ are isomorphic graphs, then the degrees of vertices of $G_1$ 
 \begin{frame}\frametitle{Subgraph}
 \begin{definition}[Subgraph]
 Let $G=(V(G),E(G))$ be a graph.
-A graph $H=(V(H),E(H))$ is a \textbf{subgraph} of $G$ if $V(H)\subseteq V(G)$ and $E(H)\subseteq E(G)$.
+A graph $H=(V(H),E(H))$ is a \defword{subgraph} of $G$ if $V(H)\subseteq V(G)$ and $E(H)\subseteq E(G)$
 \end{definition}
+\vfill
 \begin{definition}[Another definition of subgraph]
-If a graph $F$ is isomorphic to a subgraph $H$ of $G$, then $F$ is also called a subgraph of $G$.
+If a graph $F$ is isomorphic to a subgraph $H$ of $G$, then $F$ is also called a subgraph of $G$
 \end{definition}
 \end{frame}
 
@@ -380,7 +400,7 @@ $G_1\cap G_2=(V_1\cap V_2,E_1\cap E_2)$
 If $G_1\cap G_2=(\emptyset,\emptyset)= \emptyset$ (empty graph) then $G_1$ and $G_2$ are disjoint.
 \end{definition}
 \begin{definition}[{Complement of $G_1$}]
-The complement $\bar G_1$ of $G_1$ is the graph on $V_1$, with the edge set $E(\bar G_1)=[V_1]^2\backslash E_1$ ($e\in E(\bar G_1)$ iff $e\not \in E_1$).
+The complement $\bar G_1$ of $G_1$ is the graph on $V_1$, with the edge set $E(\bar G_1)=[V_1]^2\backslash E_1$ ($e\in E(\bar G_1)$ iff $e\not \in E_1$)
 \end{definition}
 \end{frame}
 
@@ -389,74 +409,81 @@ The complement $\bar G_1$ of $G_1$ is the graph on $V_1$, with the edge set $E(\
 
 
 \begin{frame}\frametitle{Walk}
-Let $G=(V,E)$ be a graph.
 \begin{definition}[{Walk}]
-A \textbf{walk}\index{walk, graph} in a graph $G$ is a non-empty alternating sequence $v_0 e_0 v_1 e_1 v_2 \dots e_{k-1} v_k$ of vertices and edges in $G$ such that $e_i=\{v_i, v_{i+1}\}$ for all $i<k$. 
-This walk begins with $v_0$ and ends with $v_k$.
+A \defword{walk}\index{walk, graph} in a graph $G=(V,E)$ is a non-empty alternating sequence $v_0 e_0 v_1 e_1 v_2 \dots e_{k-1} v_k$ of vertices and edges in $G$ such that $e_i=\{v_i, v_{i+1}\}$ for all $i<k$. 
+This walk begins with $v_0$ and ends with $v_k$
 \end{definition}
+\vfill
 \begin{definition}[Length of a walk]
-The length of a walk is equal to the number of edges in the walk.
+The \defword{length} of a walk is equal to the number of edges in the walk
 \end{definition}
+\vfill
 \begin{definition}[{Closed walk}]
-If $v_0=v_k$, the walk is closed.
+If $v_0=v_k$, the walk is \defword{closed}
 \end{definition}
 \end{frame}
 
 
 \begin{frame}\frametitle{Trail and path}
-Let $G=(V,E)$ be a graph.
 \begin{definition}[{Trail}]
-If the edges in the walk are all distinct, it defines a \defword{trail} in $G$.
+If the edges in the walk are all distinct, it defines a \defword{trail} in $G=(V,E)$
 \end{definition}
+\vfill
 \begin{definition}[{Path}]
-If the vertices in the walk are all distinct, it defines a \defword{path} in $G$.
+If the vertices in the walk are all distinct, it defines a \defword{path} in $G$
 \end{definition}
-The sets of vertices and edges determined by a trail is a subgraph.
+\vfill
+The sets of vertices and edges determined by a trail is a subgraph
 \end{frame}
 
 
 \begin{frame}\frametitle{Distance between two vertices}
-Let $G=(V,E)$ be a graph.
 \begin{definition}[{Distance between two vertices}]
-The distance $d(u,v)$ in $G$ between two vertices $u$ and $v$ is the length of the shortest path linking $u$ and $v$ in $G$. If no such path exists, we assume $d(u,v)=\infty$.
+The distance $d(u,v)$ in $G=(V,E)$ between two vertices $u$ and $v$ is the length of the shortest path linking $u$ and $v$ in $G$. If no such path exists, we assume $d(u,v)=\infty$
 \end{definition}
 \end{frame}
 
 
 \begin{frame}\frametitle{Circuit and cycle}
-\begin{definition}[{Circuit}]
-A trail linking $u$ to $v$, containing at least 3 edges and in which $u=v$, is a \defword{circuit}.
+\begin{definition}[Circuit]
+A trail linking $u$ to $v$, containing at least 3 edges and in which $u=v$, is a \defword{circuit}
 \end{definition}
-\begin{definition}[{Cycle}]
-A circuit which does not repeat any vertices (except the first and the last) is a \defword{cycle} (or \textbf{simple circuit}).
+\vfill
+\begin{definition}[Cycle]
+A circuit which does not repeat any vertices (except the first and the last) is a \defword{cycle} (or \defword{simple circuit})
 \end{definition}
-\begin{definition}[{Length of a cycle}]
-The \defword{length of a cycle} is its number of edges.
+\vfill
+\begin{definition}[Length of a cycle]
+The \defword{length of a cycle} is its number of edges
 \end{definition}
 \end{frame}
 
 
 \begin{frame}
 \begin{definition}[{Eulerian trail}]
-	A trail containing all the vertices and edges of a multigraph $M$ is called a Eulerian trail of $M$.
+	A trail containing all the vertices and edges of a multigraph $M$ is a \defword{Eulerian trail} of $M$
 \end{definition}
+\vfill
 \begin{definition}[{Traversable graph}]
-	If a graph $G$ has a Eulerian trail, then $G$ is called a \defword{traversable graph}.
+	If a graph $G$ has a Eulerian trail, then $G$ is a \defword{traversable graph}
 \end{definition}
+\vfill
 \begin{definition}[{Eulerian circuit}]
-	A circuit containing all the vertices and edges of a multigraph $M$ is called a Eulerian circuit of $M$.
+	A circuit containing all the vertices and edges of a multigraph $M$ is a \defword{Eulerian circuit} of $M$
 \end{definition}
+\vfill
 \begin{definition}[{Eulerian graph}]
-	A graph (resp. multigraph) containing an Eulerian circuit is called a Eulerian graph (resp. multigraph).
+	A graph (resp. multigraph) containing an Eulerian circuit is a \defword{Eulerian graph} (resp. \defword{Eulerian multigraph})
 \end{definition}
 \end{frame}
 
 \begin{frame}
 \begin{theorem}
-	A multigraph $M$ is traversable if and only if $M$ is connected and has exactly two odd vertices. Furthermore, any Eulerian trail of $M$ begins at one of the odd vertices and ends at the other odd vertex.
+	A multigraph $M$ is traversable if and only if $M$ is connected and has exactly two odd vertices. Furthermore, any Eulerian trail of $M$ begins at one of the odd vertices and ends at the other odd vertex
 \end{theorem}
+\vfill
 \begin{theorem}
-	A multigraph $M$ is Eulerian if and only if $M$ is connected and every vertex of $M$ is even.
+	A multigraph $M$ is Eulerian $\iff$ $M$ is connected and every vertex of $M$ is even
 \end{theorem}
 \end{frame}
 
@@ -489,26 +516,30 @@ RESULT: a Eulerian trail
 
 \begin{frame}\frametitle{}
 \begin{definition}[{Hamiltonian path}]
-	A path containing all vertices of a graph $G$ is called a \defword{Hamiltonian path} of $G$.
+	A path containing all vertices of a graph $G$ is a \defword{Hamiltonian path} of $G$
 \end{definition}
+\vfill
 \begin{definition}[{Traceable graph}]
-	If a graph $G$ has an Hamiltonian path, then $G$ is called a traceable graph.
+	If a graph $G$ has an Hamiltonian path, then $G$ is a \defword{traceable graph}
 \end{definition}
+\vfill
 \begin{definition}[{Hamiltonian cycle}]
-	A cycle containing all vertices of a graph $G$ is called a Hamiltonian cycle of $G$.
+	A cycle containing all vertices of a graph $G$ is a \defword{Hamiltonian cycle} of $G$
 \end{definition}
+\vfill
 \begin{definition}[{Hamiltonian graph}]
-	A graph containing a Hamiltonian cycle is called a \defword{Hamiltonian graph}.
+	A graph containing a Hamiltonian cycle is a \defword{Hamiltonian graph}
 \end{definition}
 \end{frame}
 
 \begin{frame}
 \begin{theorem}[Dirac's theorem]
-	If $G$ is a graph of order $p\geq 3$ such that $deg(v)\geq p/2$ for every vertex $v$ of $G$, then $G$ is Hamiltonian.
+	If $G$ is a graph of order $p\geq 3$ such that $deg(v)\geq p/2$ for every vertex $v$ of $G$, then $G$ is Hamiltonian
 \end{theorem}
+\vfill
 \begin{theorem}[Ore's theorem]
 	If $G$ is a graph of order $p\geq 3$ such that for all distinct nonadjacent vertices $u$ and $v$ of $G$, $$deg(u)+deg(v)\geq p,$$ 
-	then $G$ is Hamiltonian.
+	then $G$ is Hamiltonian
 \end{theorem}
 \end{frame}
 
@@ -519,18 +550,20 @@ RESULT: a Eulerian trail
 
 \begin{frame}\frametitle{Connected vertices and graph, components}
 \begin{definition}[{Connected vertices}]
-Two vertices $u$ and $v$ in a graph $G$ are \textbf{connected}\index{connected vertices} if $u=v$, or if $u\not =v$ and there exists a path in $G$ that links $u$ and $v$.
+Two vertices $u$ and $v$ in a graph $G$ are \defword{connected}\index{connected vertices} if $u=v$, or if $u\not =v$ and there exists a path in $G$ that links $u$ and $v$
 \end{definition}
+\vfill
 \begin{definition}[{Connected graph}]
-A graph is \textbf{connected}\index{connected graph} if every two vertices of $G$ are connected; otherwise, $G$ is \textbf{disconnected}\index{disconnected graph}.
+A graph is \defword{connected}\index{connected graph} if every two vertices of $G$ are connected; otherwise, $G$ is \defword{disconnected}\index{disconnected graph}
 \end{definition}
 \end{frame}
 
 \begin{frame}\frametitle{A necessary condition for connectedness}
 	\begin{theorem}
-		A connected graph on $p$ vertices has at least $p-1$ edges.
+		A connected graph on $p$ vertices has at least $p-1$ edges
 	\end{theorem}
-	In other words, a connected graph $G$ of order $p$ has $\text{size}(G)\geq p-1$.
+	\vfill
+	In other words, a connected graph $G$ of order $p$ has $\text{size}(G)\geq p-1$
 \end{frame}
 
 \begin{frame}{Connectedness is an equivalence relation}
@@ -540,33 +573,38 @@ A graph is \textbf{connected}\index{connected graph} if every two vertices of $G
 		\item $x\equiv y\implies y\equiv x$ \hfill[symmetry]
 		\item $x\equiv y, y\equiv z\implies x\equiv z$ \hfill[transitivity]
 	\end{enumerate}
+	\vfill
 	\begin{definition}[Connected component of a graph]
-		The classes of the equivalence relation $\equiv$ partition $X$ into connected sub-graphs of $G$ called \defword{connected components} (or \textbf{components} for short) of $G$. 
+		The classes of the equivalence relation $\equiv$ partition $X$ into connected sub-graphs of $G$ called \defword{connected components} (or \defword{components} for short) of $G$
 	\end{definition}
-	A connected subgraph $H$ of a graph $G$ is a component of $G$ if $H$ is not contained in any connected subgraph of $G$ having more vertices or edges than $H$.
+	\vfill
+	A connected subgraph $H$ of a graph $G$ is a component of $G$ if $H$ is not contained in any connected subgraph of $G$ having more vertices or edges than $H$
 \end{frame}
 
 
 
 \begin{frame}{Vertex deletion \& cut vertices}
 \begin{definition}[{Vertex deletion}]
-If $v$ is a vertex of $G$, the graph $G-v$ is the graph formed from $G$ by removing $v$ and all edges incident with $v$.
+If $v$ is a vertex of $G$, the graph $G-v$ is the graph formed from $G$ by removing $v$ and all edges incident with $v$
 \end{definition}
+\vfill
 \begin{definition}[{Cut-vertices}]
-	If $v$ is a cut-vertex of a connected graph $G$, then $G-v$ is disconnected.
+	If $v$ is a cut-vertex of a connected graph $G$, then $G-v$ is disconnected
 \end{definition}
 \end{frame}
 
 
 \begin{frame}{Edge deletion \& bridges}
 \begin{definition}[{Edge deletion}]
-	If $e$ is an edge of $G$, the graph $G-e$ is the graph formed from $G$ by removing $e$ from $G$.
+	If $e$ is an edge of $G$, the graph $G-e$ is the graph formed from $G$ by removing $e$ from $G$
 \end{definition}
+\vfill
 \begin{definition}[{Bridge}]
-An edge $e$ in a connected graph $G$ is called a bridge if $G-e$ is disconnected.
+An edge $e$ in a connected graph $G$ is called a bridge if $G-e$ is disconnected
 \end{definition}
+\vfill
 \begin{theorem}
-Let $G$ be a connected graph. An edge $e$ of $G$ is a bridge of $G$ if and only if $e$ does not lie on any cycle of $G$.
+Let $G$ be a connected graph. An edge $e$ of $G$ is a bridge of $G$ if and only if $e$ does not lie on any cycle of $G$
 \end{theorem}
 \end{frame}
 
@@ -582,28 +620,29 @@ Let $G$ be a connected graph. An edge $e$ of $G$ is a bridge of $G$ if and only 
 \subsection{Planar graphs}
 \begin{frame}\frametitle{Planar graph}
 \begin{definition}[Planar graph]
-A graph is planar if it can be drawn in the plane with no crossing edges. Otherwise it is nonplanar.
+A graph is \defword{planar} if it can be drawn in the plane with no crossing edges. Otherwise it is nonplanar
 \end{definition}
-
+\vfill
 \begin{definition}[{Plane graph}]
-A plane graph is a graph that is drawn in the plane with no crossing edges. (This is only possible if the graph is planar.)
+A \defword{plane graph} is a graph that is drawn in the plane with no crossing edges. (This is only possible if the graph is planar)
 \end{definition}
 \end{frame}
 
 
 
 \begin{frame}
-Let $G$ be a plane graph.
+Let $G$ be a plane graph
 \begin{itemize}
-\item the connected parts of the plane are called {\bf regions}.
-\item vertices and edges that are incident with a region $R$ make up a {\bf boundary} of $R$.
+\item the connected parts of the plane are called \defword{regions}
+\item vertices and edges that are incident with a region $R$ make up a \defword{boundary} of $R$
 \end{itemize}
-
+\vfill
 \begin{theorem}[{Euler's formula}]
-Let $G$ be a connected plane graph with $p$ vertices, $q$ edges, and $r$ regions, then $$p-q+r=2.$$
+Let $G$ be a connected plane graph with $p$ vertices, $q$ edges, and $r$ regions, then $$p-q+r=2$$
 \end{theorem}
+\vfill
 \begin{corollary}
-Let $G$ be a plane graph with $p$ vertices, $q$ edges, $r$ regions, and $k$ connected components, then $$p-q+r=k+1.$$
+Let $G$ be a plane graph with $p$ vertices, $q$ edges, $r$ regions, and $k$ connected components, then $$p-q+r=k+1$$
 \end{corollary}
 \end{frame}
 
@@ -611,101 +650,101 @@ Let $G$ be a plane graph with $p$ vertices, $q$ edges, $r$ regions, and $k$ conn
 \begin{frame}
 \begin{theorem}
 Let $G$ be a connected planar graph with $p$ vertices and $q$ edges, where $p\geq 3$, then $$q\leq 3p-6.$$
-({\it a maximal connected planar graph with $p$ vertices has $q=3p-6$ edges.})
+(a maximal connected planar graph with $p$ vertices has $q=3p-6$ edges)
 \end{theorem}
+\vfill
 \begin{corollary}
 If $G$ is a planar graph, then $\delta(G)\leq 5,$
 where $\delta(G)$ is the minimal degree of $G$.
-({\it every planar graph contains a vertex of degree less than 6})
+(every planar graph contains a vertex of degree less than 6)
 \end{corollary}
 \end{frame}
 
 
 \begin{frame}{Two well-known non-planar graphs}
-$K_{3,3}$ is non-planar.
-
-$K_5$ is non-planar.
-
+$K_{3,3}$ is nonplanar
+\vfill
+$K_5$ is nonplanar
+\vfill
 As a matter of fact, a graph having a subgraph that is $K_{3,3}$ or $K_5$ is a sufficient condition for non-planarity, as we see later.
 \end{frame}
 
 
 \begin{frame}
 \begin{definition}[{Subdivision of $G$}]
-Given a graph $G$, a subdivision of $G$ is a graph that can be obtained by inserting any number of vertices of degree 2 along a edges of $G$.
+Given a graph $G$, a subdivision of $G$ is a graph that can be obtained by inserting any number of vertices of degree 2 along a edges of $G$
 \end{definition}
+\vfill
 \begin{theorem}[{Kuratowski Theorem}]
-A graph $G$ i planar if and only if it contains no subgraph isomorphic to $K_5$ or $K_{3,3}$ or any subdivision of $K_5$ or $K_{3,3}$.
+A graph $G$ i planar if and only if it contains no subgraph isomorphic to $K_5$ or $K_{3,3}$ or any subdivision of $K_5$ or $K_{3,3}$
 \end{theorem}
-{\bf Note:} If a graph $G$ is nonplanar and $G$ is a subgraph of $G'$, then $G'$ is also nonplanar.
+\vfill
+\textbf{Note:} If a graph $G$ is nonplanar and $G$ is a subgraph of $G'$, then $G'$ is also nonplanar
 \end{frame}
 
 
 \begin{frame}
-\begin{definition}[{Coloring of a graph $G$}]
-\begin{itemize}
-\item assignment elements (colors) of some sets to vertices of $G$.
-\item one color to each vertex so that adjacent vertices are assigned to different colors.
-\end{itemize}
-(A coloring of a graph $G$ is an assignment of colors to the vertices of $G$ such that adjacent vertices have different colors.)
+\begin{definition}[{Colouring of a graph $G$}]
+A \defword{colouring} of a graph $G$ is an assignment of colours to the vertices of $G$ such that adjacent vertices have different colours
 \end{definition}
-
-\begin{definition}[{$n-$coloring of $G$}]
-A $n-$coloring is a coloring of $G$ using $n$ colors.
+\vfill
+\begin{definition}[{$n$-colouring of $G$}]
+A \defword{$n$-colouring} is a colouring of $G$ using $n$ colours
 \end{definition}
-
-\begin{definition}[{$n-$colorable}]
-$G$ is $n-$colorable if there exists a coloring of
-$G$ which uses $n$ colors.
+\vfill
+\begin{definition}[{$n$-colourable}]
+$G$ is \defword{$n$-colourable} if there exists a colouring of $G$ that uses $n$ colours
 \end{definition}
 \end{frame}
 
 
 \begin{frame}
 \begin{definition}[{Chromatic number}]
-The chromatic number of a graph $G$ is the minimal value $n$ for which an $n-$coloring of $G$ exists.
-$\chi (G)=$ chromatic number.
+The \defword{chromatic number} $\chi (G)=$ of a graph $G$ is the minimal value $n$ for which an $n$-colouring of $G$ exists
 \end{definition}
+\vfill
 \begin{theorem}[{Some properties}]
 \begin{itemize}
-\item $\chi (G)=1$ if and only if $G$ have no edges.
-\item If $G=K_{n,m}$, then $\chi(G)=2$.
-\item If $G=K_n$, then $\chi(G)=n$.
+\item $\chi (G)=1$ if and only if $G$ have no edges
+\item If $G=K_{n,m}$, then $\chi(G)=2$
+\item If $G=K_n$, then $\chi(G)=n$
 \item For any graph $G$, $$\chi (G)\leq 1+ \Delta (G)$$
-where $\Delta (G)$ is the maximum degree of $G$.
-\item If $G$ is a planar graph, then $\chi(G) \leq 4$.
-\item If $G$ is a planar graph, then $\chi(G) \leq 5$.
+where $\Delta (G)$ is the maximum degree of $G$
+\item If $G$ is a planar graph, then $\chi(G) \leq 4$
+\item If $G$ is a planar graph, then $\chi(G) \leq 5$
 \end{itemize}
 \end{theorem}
 \end{frame}
 
 
-\begin{frame}\frametitle{Welch-Powell algorithm for coloring a graph $G$}
+\begin{frame}\frametitle{Welch-Powell algorithm for colouring a graph $G$}
 \begin{enumerate}
-\item Order the vertices of $G$ in decreasing degree. (Such an ordering may not be unique
-since some vertices may have the same degree.)
-\item Use one color to paint the first vertex and to paint, in sequential order, each vertex
-on the list that is not adjacent to a vertex previously painted with this color.
-\item Start again at the top of the list and repeat the process painting previously unpainted
-vertices using a second color.
-\item Continue repeating with additional colors until all the vertices have been painted.
+\item Order the vertices of $G$ in decreasing degree. (Such an ordering may not be unique since some vertices may have the same degree)
+\vfill
+\item Use one colour to paint the first vertex and to paint, in sequential order, each vertex on the list that is not adjacent to a vertex previously painted with this colour
+\vfill
+\item Start again at the top of the list and repeat the process painting previously unpainted vertices using a second colour
+\vfill
+\item Continue repeating with additional colours until all the vertices have been painted
 \end{enumerate}\end{frame}
 
 \begin{frame}\frametitle{``Real life'' problem}
 What is the minimal number of colors to color all counties in the map?
 (two adjacent counties must have different colors)
 \begin{center}
-\includegraphics[width=.5\textwidth]{FIGS_slides/california}
+\includegraphics[width=.55\textwidth]{FIGS_slides/california}
 \end{center}\end{frame}
 
 \begin{frame}\frametitle{``Real life'' problem}
 What is the minimal number of colors to color all counties in the map?
 (two adjacent counties must have different colors)
+\vfill
 Mathematical representation:
 \begin{itemize}
 \item vertices correspond to the counties
 \item two vertices are linked iff the two counties are adjacent.
 \end{itemize}
+\vfill
 \begin{block}{Mathematical problem}
 What is the chromatic number of the graph associated to the map?
 \end{block}
@@ -743,9 +782,9 @@ $A$ is the arc set of the digraph $G$, also noted $A(G)$.
 
 
 \begin{frame}\frametitle{Digraph and binary relation}
-A digraph $D$ can be defined in term of a vertex set $V$ and an irreflexive relation $R$ over $V$.
-
-The defining relation $R$ of the digraph $G$ need not be symmetric.
+A digraph $D$ can be defined in term of a vertex set $V$ and an irreflexive relation $R$ over $V$
+\vfill
+The defining relation $R$ of the digraph $G$ need not be symmetric
 \end{frame}
 
 
@@ -756,7 +795,7 @@ A directed network is a digraph together with a function $f$,
 f: A \rightarrow \mathbb{R},
 \]
 which maps the arc set $A$ into the set of real number. 
-The value of the arc $uv \in A$ is $f(uv)$.
+The value of the arc $uv \in A$ is $f(uv)$
 \end{definition}
 \end{frame}
 
@@ -781,17 +820,18 @@ The value of the arc $uv \in A$ is $f(uv)$.
 
 \begin{frame}{Loops \& Multiple arcs}
 	\begin{definition}[{Loop}]
-	A \textbf{loop} is an arc with both the same ends; \emph{e.g.} $(u,u)$ is a loop.
+	A \defword{loop} is an arc with both the same ends; \emph{e.g.} $(u,u)$ is a loop.
 \end{definition}
+\vfill
 	\begin{definition}[{Multiple arcs}]
 	\defword{Multiple arcs} (or multi-arcs) are two or more arcs connecting the same two vertices.
 	\end{definition}
 \end{frame}
-
 \begin{frame}{Multidigraph/Digraph}
 	\begin{definition}[{Multidigraph}]
 	A \defword{multidigraph} is a digraph which allows repetition of arcs or loops.
 	\end{definition}
+	\vfill
 	\begin{definition}[{Digraph}]
 	In a digraph, no more than one arc can join any pair of vertices.
 \end{definition}
@@ -799,7 +839,7 @@ The value of the arc $uv \in A$ is $f(uv)$.
 
 \begin{frame}{Examples}
 	\def\skip{2.75cm}
-	\begin{tikzpicture}[scale=0.75, 
+	\begin{tikzpicture}[scale=0.7, 
 		every node/.style={transform shape},
 		auto,
 		cloud/.style={minimum width={width("N-1")+2pt},
@@ -822,7 +862,7 @@ The value of the arc $uv \in A$ is $f(uv)$.
 		\path [line, thick, bend right] (d) to node [midway, above] (TextNode) {9} (c);
 		\path [line, thick, looseness=5] (d) to node [midway, above] (TextNode) {10} (d);
 	\end{tikzpicture}
-	\begin{tikzpicture}[scale=0.75, 
+	\begin{tikzpicture}[scale=0.7, 
 		every node/.style={transform shape},
 		auto,
 		cloud/.style={minimum width={width("N-1")+2pt},
@@ -869,22 +909,22 @@ The value of the arc $uv \in A$ is $f(uv)$.
 	\begin{definition}[{Directed away - Directed towards}]
 		If $a=(u,v)\in A(G)$ is an arc of $G$, then
 		\begin{itemize}
-			\item the arc $a$ is said to be directed away from $u$,
-			\item the arc $a$ is said to be directed towards $v$.
+			\item the arc $a$ is said to be \defword{directed away} from $u$
+			\item the arc $a$ is said to be \defword{directed towards} $v$
 		\end{itemize}
 	\end{definition}
-	
+	\vfill
 	\begin{definition}[{Source - Sink}]
 		\begin{itemize}
-			\item Any vertex which has no arcs directed towards it is a \defword{source}.
-			\item Any vertex which has no arcs directed away from it is a \defword{sink}.
+			\item Any vertex which has no arcs directed towards it is a \defword{source}
+			\item Any vertex which has no arcs directed away from it is a \defword{sink}
 		\end{itemize}
 	\end{definition}
 \end{frame}
 
 \begin{frame}{Adjacent arcs}
 	\begin{definition}[Adjacent arcs]
-		Two arcs are \textbf{adjacent} if they have at least one endpoint in common.
+		Two arcs are \defword{adjacent} if they have at least one endpoint in common.
 	\end{definition}
 \end{frame}
 
@@ -902,7 +942,7 @@ The value of the arc $uv \in A$ is $f(uv)$.
 \begin{frame}
 	\begin{definition}[Symmetric graph]
 		If $m_G^+(x,y)=m_G^-(x,y)$ for all $x,y\in X$, the graph $G$ is
-		\textbf{symmetric}. A 1-graph $G=(X,U)$ is symmetric if, and only if,
+		\defword{symmetric}. A 1-graph $G=(X,U)$ is symmetric if, and only if,
 		\[
 		(x,y)\in U\implies (y,x)\in U
 		\]
@@ -913,7 +953,7 @@ The value of the arc $uv \in A$ is $f(uv)$.
 		\[
 		m_G^+(x,y)+m_G^-(x,y)\leq 1
 		\]
-		then the graph $G$ is \textbf{anti-symmetric}. A 1-graph $G=(X,U)$ is anti-symmetric if, and only if,
+		then the graph $G$ is \defword{anti-symmetric}. A 1-graph $G=(X,U)$ is anti-symmetric if, and only if,
 		\[
 		(x,y)\in U\implies (y,x)\not\in U
 		\]
@@ -923,7 +963,7 @@ The value of the arc $uv \in A$ is $f(uv)$.
 
 \begin{frame}
 	\begin{definition}[Subgraph of $G$ generated by $A\subset X$]
-		The \textbf{subgraph} of $G$ generated by $A$ is the graph with $A$ as its vertex set and with all the arcs in $G$ that have both their endpoints in $A$. If $G=(X,\Gamma)$ is a 1-graph, then the subgraph generated by $A$ is the 1-graph $G_A=(A,\Gamma_A)$ where
+		The \defword{subgraph} of $G$ generated by $A$ is the graph with $A$ as its vertex set and with all the arcs in $G$ that have both their endpoints in $A$. If $G=(X,\Gamma)$ is a 1-graph, then the subgraph generated by $A$ is the 1-graph $G_A=(A,\Gamma_A)$ where
 		\[
 		\Gamma_A(x)=\Gamma(x)\cap A\qquad (x\in A)
 		\]
@@ -954,7 +994,7 @@ The value of the arc $uv \in A$ is $f(uv)$.
 	The number of arcs directed towards a vertex $v$, in a digraph is called the \defword{indegree} of $v$ and is written $d^-(v)$ or $indeg(v)$.
 	\end{definition}
 	\begin{definition}[{Degree}]
-	For any vertex $v$ in a digraph, the \textbf{degree}\index{degree, digraph} of $v$ is defined as $d(v)=d^+(v)+d^-(v)$.
+	For any vertex $v$ in a digraph, the \defword{degree}\index{degree, digraph} of $v$ is defined as $d(v)=d^+(v)+d^-(v)$.
 	\end{definition}
 \end{frame}
 
@@ -1071,9 +1111,9 @@ The value of the arc $uv \in A$ is $f(uv)$.
 	\omega(A)=\omega^+(A)\cup\omega^-(A)
 	\]
 	\vfill
-	A \textbf{cocycle} is a nonempty set of arcs of the form $\omega(A)$, partitioned into two sets $\omega^+(A)$ and $\omega^-(A)$
+	A \defword{cocycle} is a nonempty set of arcs of the form $\omega(A)$, partitioned into two sets $\omega^+(A)$ and $\omega^-(A)$
 	\vfill
-	An \textbf{elementary cocycle} is the set of arcs joining two connected subgraphs $A_1$ and $A_2$ s.t. 
+	An \defword{elementary cocycle} is the set of arcs joining two connected subgraphs $A_1$ and $A_2$ s.t. 
 	\begin{itemize}
 		\item $A_1,A_2\neq\emptyset$
 		\item $A_1\cap A_2=\emptyset$
@@ -1097,19 +1137,19 @@ The value of the arc $uv \in A$ is $f(uv)$.
 \end{frame}
 
 \begin{frame}{Independent cycles and cycle bases}
-	Consider cycles $\bmu^1,\bmu^2,\ldots,\bmu^k$. The cycles are \textbf{independent} if
+	Consider cycles $\bmu^1,\bmu^2,\ldots,\bmu^k$. The cycles are \defword{independent} if
 	\begin{multline*}
 		c_1\bmu^1+c_2\bmu^2+\cdots+c_k\bmu^k=\b0 \\
 		\iff
 		c_1=c_2=\cdots=c_k=0
 	\end{multline*}
-	A \textbf{cycle basis} is an independent set $\{\bmu^1,\bmu^2,\ldots,\bmu^k\}$ of cycles such that any cycle $\bmu$ can be written as
+	A \defword{cycle basis} is an independent set $\{\bmu^1,\bmu^2,\ldots,\bmu^k\}$ of cycles such that any cycle $\bmu$ can be written as
 	\[
 	\bmu= c_1\bmu^1+c_2\bmu^2+\cdots+c_k\bmu^k
 	\]
 	for $c_1,\ldots,c_k\in\IR$
 	\vfill
-	The constant $k$ is the \textbf{cyclomatic number} of $G$, denoted $\nu(G)$
+	The constant $k$ is the \defword{cyclomatic number} of $G$, denoted $\nu(G)$
 \end{frame}
 
 
@@ -1182,7 +1222,7 @@ The value of the arc $uv \in A$ is $f(uv)$.
 
 
 	\begin{definition}[{Disconnected digraph}]
-	A digraph is said to be \textbf{disconnected}\index{disconnected digraph} if it is not weakly connected.
+	A digraph is said to be \defword{disconnected}\index{disconnected digraph} if it is not weakly connected.
 	\end{definition}
 \end{frame}
 
@@ -1200,7 +1240,7 @@ Denote $x\equiv y$ the relation  ``$x=y$, or $x\neq y$ and there exists a direct
 	A(x_0)=\{x:x\in X, x\equiv x_0\}	
 	\]
 	are equivalence classes. 
-	They partition $X$ into strongly connected sub-digraphs of $G$ called \defword{strongly connected components} (or \textbf{strong components}) of $G$.
+	They partition $X$ into strongly connected sub-digraphs of $G$ called \defword{strongly connected components} (or \defword{strong components}) of $G$.
 \end{definition}
 A strong component in $G$ is a maximal strongly connected subdigraph of $G$.
 \end{frame}
@@ -1249,7 +1289,7 @@ A strong component in $G$ is a maximal strongly connected subdigraph of $G$.
 
 \begin{frame} 
 	\begin{definition}[Articulation set]
-		For a connected graph, a set $A$ of vertices is called an \textbf{articulation set} (or a \textbf{cutset}) if the subgraph of $G$ generated by $X-A$ is not connected
+		For a connected graph, a set $A$ of vertices is called an \defword{articulation set} (or a \defword{cutset}) if the subgraph of $G$ generated by $X-A$ is not connected
 	\end{definition}
 	\vfill
 	\begin{definition}[Stable set]
@@ -1276,7 +1316,7 @@ If the resulting digraph is strongly connected the orientation is called a \defw
  
 \begin{frame}\frametitle{Orientable graph}
 \begin{definition}[Orientable graph]
-A connected graph $G$ is called \textbf{orientable} if it is possible to assign a direction to each edge of $G$ to produce a strongly connected digraph $D$.
+A connected graph $G$ is called \defword{orientable} if it is possible to assign a direction to each edge of $G$ to produce a strongly connected digraph $D$.
 (If there exists a strong orientation of a connected graph, then the graph is orientable.)
 \end{definition}
 
@@ -1318,7 +1358,7 @@ A connected graph $G$ is orientable (has a strong orientation) if and only if $G
 
 \begin{frame}\frametitle{Spanning tree}
 	\begin{definition}[Spanning tree]
-	A \textbf{spanning tree} of a connected graph $G$ is a subgraph of $G$ that contains all the vertices of $G$ and is a tree.
+	A \defword{spanning tree} of a connected graph $G$ is a subgraph of $G$ that contains all the vertices of $G$ and is a tree.
 	\end{definition}
 	A graph may have many spanning trees.
 \end{frame}
@@ -1326,12 +1366,12 @@ A connected graph $G$ is orientable (has a strong orientation) if and only if $G
 
 \begin{frame}\frametitle{Minimal spanning tree}
 	\begin{definition}[{Value of a spanning tree}]
-	The \textbf{value of a spanning tree} $T$ of order $p$ is
+	The \defword{value of a spanning tree} $T$ of order $p$ is
 	$$\sum_{i=1}^{p-1}f(e_i)$$
 	where $f$ is the function that maps the edge set into the set of real number.
 	\end{definition}
 	\begin{definition}[{Minimal spanning tree}]
-	Let $G$ be an undirected network, and let $T$ be a \textbf{minimal spanning tree} of $G$. Then $T$ is a spanning tree whose the value is minimum.
+	Let $G$ be an undirected network, and let $T$ be a \defword{minimal spanning tree} of $G$. Then $T$ is a spanning tree whose the value is minimum.
 	\end{definition}
 \end{frame}
 
@@ -1442,7 +1482,7 @@ $\qed$
 
 \begin{frame}
 \begin{definition}[Pendant vertex]
-A vertex is \textbf{pendant} if it is adjacent to exactly one other vertex
+A vertex is \defword{pendant} if it is adjacent to exactly one other vertex
 \end{definition}
 \vfill
 \begin{theorem}
@@ -1479,7 +1519,7 @@ Suppose $G$ connected. Look for an arc whose removal does not disconnect $G$
 \end{frame}
 
 \begin{frame}{Spanning tree}
-The procedure in the proof of Theorem~\ref{th:partial_graph_tree_G_connected} gives a \textbf{spanning tree}
+The procedure in the proof of Theorem~\ref{th:partial_graph_tree_G_connected} gives a \defword{spanning tree}
 \vfill
 Can also build a spanning tree as follows:
 \begin{itemize}
@@ -1541,19 +1581,19 @@ If $G$ is a strongly connected graph of order $n$, then $G$ has a cycle basis of
 \begin{definition}[Node, anti-node, branch]
 $G=(X,U)$ strongly connected without loops and $>1$ vertex. For each $x\in X$, there is a path from it and a path to it so $x$ has at least 2 incident arcs. Specifically,
 \begin{itemize}
-\item $x\in X$ with $>2$ incident arcs is a \textbf{node}
-\item $x\in X$ with $2$ incident arcs is an \textbf{anti-node}
+\item $x\in X$ with $>2$ incident arcs is a \defword{node}
+\item $x\in X$ with $2$ incident arcs is an \defword{anti-node}
 \end{itemize}
-A path whose only nodes are its endpoints is a \textbf{branch}
+A path whose only nodes are its endpoints is a \defword{branch}
 \end{definition}
 \vfill
 \begin{definition}[Minimally connected graph]
-$G$ is \textbf{minimally connected} if it is strongly connected and removal of any arc destroys strong-connectedness
+$G$ is \defword{minimally connected} if it is strongly connected and removal of any arc destroys strong-connectedness
 \end{definition}
 A minimally connected graph is 1-graph without loops
 \vfill
 \begin{definition}[Contraction]
-$G=(X,U)$. The \textbf{contraction} of the set $A\subset X$ of vertices consists in replacing $A$ by a single vertex $a$ and replacing each arc into (resp. out of) $A$ by an arc with same index into (resp. out of) $a$
+$G=(X,U)$. The \defword{contraction} of the set $A\subset X$ of vertices consists in replacing $A$ by a single vertex $a$ and replacing each arc into (resp. out of) $A$ by an arc with same index into (resp. out of) $a$
 \end{definition}
 \end{frame}
 
@@ -1595,12 +1635,12 @@ $G=(X,U)$. Then the graph $C'$ obtained by contracting each strongly connected c
 
 \begin{frame}{Arborescences}
 \begin{definition}[Root]
-Vertex $a\in X$ in $G=(X,U)$ is a \textbf{root} if all vertices of $G$ can be reached by paths \emph{starting} from $a$
+Vertex $a\in X$ in $G=(X,U)$ is a \defword{root} if all vertices of $G$ can be reached by paths \emph{starting} from $a$
 \end{definition}
 Not all graphs have roots
 \vfill
 \begin{definition}[Quasi-strong connectedness]
-$G$ is \textbf{quasi-strongly connected} if $\forall x,y\in X$, exists $z\in X$ (denoted $z(x,y)$ to emphasize dependence on $x,y$) from which there is a path to $x$ and a path to $y$
+$G$ is \defword{quasi-strongly connected} if $\forall x,y\in X$, exists $z\in X$ (denoted $z(x,y)$ to emphasize dependence on $x,y$) from which there is a path to $x$ and a path to $y$
 \end{definition}
 Strongly connected $\implies$ quasi-strongly connected (take $z(x,y)=x$); converse not true
 
@@ -1609,7 +1649,7 @@ Quasi-strongly connected $\implies$ connected
 
 \begin{frame}{Arborescence}
 \begin{definition}[Arborescence]
-An \textbf{arborescence} is a tree that has a root
+An \defword{arborescence} is a tree that has a root
 \end{definition}
 \vfill
 \begin{lemma}
@@ -1743,7 +1783,7 @@ There is a whole industry of similar results (as well as for arborescences), but
 
 \begin{frame}
 	\begin{definition}[Multiplicity of a pair]
-		The \textbf{multiplicity} of a pair $x,y$ is the number $m_G^+(x,y)$ of arcs with initial endpoint $x$ and terminal endpoint $y$. Let
+		The \defword{multiplicity} of a pair $x,y$ is the number $m_G^+(x,y)$ of arcs with initial endpoint $x$ and terminal endpoint $y$. Let
 		\begin{align*}
 			m_G^-(x,y) &= m_G^+(y,x) \\
 			m_G(x,y) &= m_G^+(x,y)+m_G^-(x,y)
@@ -1758,14 +1798,14 @@ There is a whole industry of similar results (as well as for arborescences), but
 
 \begin{frame}{Adjacency matrix of a multigraph}
 \begin{definition}[Matrix associated with $G$]
-	If $G$ has vertices $x_1,x_2,\ldots,x_n$, then the \textbf{matrix associated} with $G$ is 
+	If $G$ has vertices $x_1,x_2,\ldots,x_n$, then the \defword{matrix associated} with $G$ is 
 	\[
 	a_{ij}=m_G^+(x_i,x_j)
 	\]
 \end{definition}
 \vfill
 \begin{definition}[Adjacency matrix]
-	The matrix $a_{ij}+a_{ji}$ is the \textbf{adjacency matrix} associated with $G$
+	The matrix $a_{ij}+a_{ji}$ is the \defword{adjacency matrix} associated with $G$
 \end{definition}
 \end{frame}
 
@@ -1812,7 +1852,7 @@ There is a whole industry of similar results (as well as for arborescences), but
 \begin{frame}{Adjacency matrix}
 	We have already seen adjacency matrices, let us recall the definition here
 	\begin{definition}[Adjacency matrix]
-		$G$ a 1-graph, then the \textbf{adjacency matrix} $A=[a_{ij}]$ is defined as follows
+		$G$ a 1-graph, then the \defword{adjacency matrix} $A=[a_{ij}]$ is defined as follows
 		\[
 		a_{ij} = \begin{cases}
 			1 & \text{if arc } (i,j)\in U\\
@@ -1886,7 +1926,7 @@ There is a whole industry of similar results (as well as for arborescences), but
 
 \begin{frame}{Incidence matrix}
 	\begin{definition}[Incidence matrix -- Undirected case]
-		$G=(X,E)$ an undirected graph of order $n$ with $p$ edges. The \textbf{incidence} matrix of $G$ is an $n\times p$ matrix with vertices as rows and edges as columns and where $B=[b_{ij}]$ satisfies
+		$G=(X,E)$ an undirected graph of order $n$ with $p$ edges. The \defword{incidence} matrix of $G$ is an $n\times p$ matrix with vertices as rows and edges as columns and where $B=[b_{ij}]$ satisfies
 		\[
 		b_{ij} = \begin{cases}
 			1 & \text{if edge }j\text{ is incident to vertex }i \\
@@ -1896,7 +1936,7 @@ There is a whole industry of similar results (as well as for arborescences), but
 	\end{definition}
 	\vfill
 	\begin{definition}[Incidence matrix -- Directed case]
-		$G=(X,U)$ a directed graph of order $n$ with $p$ arcs. The \textbf{incidence} matrix of $G$ is an $n\times p$ matrix with vertices as rows and edges as columns and where $B=[b_{ij}]$ satisfies
+		$G=(X,U)$ a directed graph of order $n$ with $p$ arcs. The \defword{incidence} matrix of $G$ is an $n\times p$ matrix with vertices as rows and edges as columns and where $B=[b_{ij}]$ satisfies
 		\[
 		b_{ij} = \begin{cases}
 			1 & \text{if arc }j\text{ ``enters'' vertex }i \\
@@ -1914,7 +1954,7 @@ There is a whole industry of similar results (as well as for arborescences), but
 	We will come back to this later, but for now..
 	\vfill
 	\begin{definition}[Spectrum of a graph]
-		The \textbf{spectrum} of a graph $G$ is the spectrum (set of eigenvalues) of its associated adjacency matrix $A(G)$
+		The \defword{spectrum} of a graph $G$ is the spectrum (set of eigenvalues) of its associated adjacency matrix $A(G)$
 	\end{definition}
 	\vfill
 	This is regardless of the type of adjacency matrix or graph
@@ -1926,7 +1966,7 @@ There is a whole industry of similar results (as well as for arborescences), but
 
 \begin{frame}{Degree matrix}
 	\begin{definition}[Degree matrix]
-		The \textbf{degree} matrix $D=[d_{ij}]$ for $G$ is a $n \times n$ diagonal matrix defined as
+		The \defword{degree} matrix $D=[d_{ij}]$ for $G$ is a $n \times n$ diagonal matrix defined as
 		\[
 			d_{ij} = \begin{cases}
 				d_G(v_i) & \text{if } i = j \\
@@ -1942,7 +1982,7 @@ In a directed graph, the term ``degree'' may refer either to indegree (the numbe
 
 \begin{frame}{Laplacian matrix}
 \begin{definition}
-	$G=(X,U)$ a simple graph with $n$ vertices. The \textbf{Laplacian} matrix is 
+	$G=(X,U)$ a simple graph with $n$ vertices. The \defword{Laplacian} matrix is 
 	\[
 		L=D(G)-A(G)
 	\]
@@ -1997,7 +2037,7 @@ Elements of $L$ are given by
 	\vfill
 	This provides an interesting connection with linear algebra
 	\begin{definition}[Irreducible matrix]
-		A matrix $A\in\M_n$ is \textbf{reducible} if $\exists P\in\M_n$, permutation matrix, s.t. $P^TAP$ can be written in block triangular form. If no such $P$ exists, $A$ is \textbf{irreducible}
+		A matrix $A\in\M_n$ is \defword{reducible} if $\exists P\in\M_n$, permutation matrix, s.t. $P^TAP$ can be written in block triangular form. If no such $P$ exists, $A$ is \defword{irreducible}
 	\end{definition}
 	\vfill
 	\begin{theorem}
@@ -2021,11 +2061,11 @@ Elements of $L$ are given by
 
 \begin{frame}{Perron-Frobenius theorem}
 \vfill
-$A=[a_{ij}]\in\M_n(\IR)$ \textbf{nonnegative} if $a_{ij}\geq 0$ $\forall i,j=1,\ldots,n$; $\bv\in\IR^n$ nonnegative if $v_i\geq 0$ $\forall i=1,\ldots,n$.  \textbf{Spectral radius} of $A$
+$A=[a_{ij}]\in\M_n(\IR)$ \defword{nonnegative} if $a_{ij}\geq 0$ $\forall i,j=1,\ldots,n$; $\bv\in\IR^n$ nonnegative if $v_i\geq 0$ $\forall i=1,\ldots,n$.  \defword{Spectral radius} of $A$
 \[
 \rho(A) = \max_{\lambda\in\mathsf{Sp}(A)}\{|\lambda|\}
 \]
-$\mathsf{Sp}(A)$ the \textbf{spectrum} of $A$
+$\mathsf{Sp}(A)$ the \defword{spectrum} of $A$
 \vfill
 \begin{theorem}[PF -- Nonnegative case]
 $0\leq A\in\M_n(\IR)$. Then $\exists\bv\geq\b0$ s.t. 
@@ -2050,12 +2090,12 @@ $0\leq A\in\M_n(\IR)$. Then $\exists\bv\geq\b0$ s.t.
 
 \begin{frame}{Primitive matrices}
 \begin{definition}
-$0\leq A\in\M_n(\IR)$ \textbf{primitive} (with \textbf{primitivity index} $k\in \IN_{+}^{*}$) if $\exists k\in \IN_{+}^{*}$ s.t.
+$0\leq A\in\M_n(\IR)$ \defword{primitive} (with \defword{primitivity index} $k\in \IN_{+}^{*}$) if $\exists k\in \IN_{+}^{*}$ s.t.
 \[
 A^k>0,
 \]
 with $k$ the smallest integer for which this is true.
-$A$ \textbf{imprimitive} if it is not primitive
+$A$ \defword{imprimitive} if it is not primitive
 \end{definition}
 \vfill
 $A$ primitive $\implies$ $A$ irreducible; converse false
@@ -2191,9 +2231,9 @@ $0\leq A\in \M_n$ primitive $\iff$ $A^{n^2-2n+2}>0$
 %%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%
-\section{Index of terms used}
-\begin{frame}{Index}
-	\printindex
-\end{frame}
+% \section{Index of terms used}
+% \begin{frame}{Index}
+% 	\printindex
+% \end{frame}
 
 \end{document}
