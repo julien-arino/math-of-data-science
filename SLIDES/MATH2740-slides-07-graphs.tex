@@ -19,7 +19,7 @@
 %%%%%%%%%%%%%%%%%%%%%
 
 
-
+\section{Why use graphs/networks?}
 \begin{frame}{Graphs versus networks}
 	Mostly a terminology difference:
 	\begin{itemize}
@@ -30,19 +30,6 @@
 	I will mostly say \emph{graphs} (this is a math course) but might oscillate
 	\vfill
 	Beware: language is not consistent, so make sure you read the definitions at the start of whatever source you are using
-\end{frame}
-
-\begin{frame}{Graphs vs digraphs vs multigraphs vs multidigraphs vs ...}
-	Name-wise and notation-wise, this domain is a bit of a mess. We see definitions later, but as far as possible, in these notes:
-	\begin{itemize}
-		\item The vertex set $V$ is essentially the only constant in what follows
-		\item An undirected graph is denoted $G=(V,E)$, where $E$ are the \emph{edges}
-		\item An undirected multigraph is denoted $G_M=(V,E)$. We will not be using these much
-		\item A \emph{directed graph} (or \emph{digraph}) is denoted $G=(V,A)$, where $A$ are the \emph{arcs}
-		\item A \emph{directed multigraph} (or \emph{multidigraph}) is denoted $G_M=(V,A)$
-		\item Any of the above is called a \emph{graph} and is denoted $G=(V,X)$, when we seek generality
-	\end{itemize}
-And just to confuse the whole thing more: we often say \emph{graph} for \emph{unoriented graph}.
 \end{frame}
 
 \begin{frame}{The bridges of K\"onigsberg}
@@ -86,6 +73,25 @@ And just to confuse the whole thing more: we often say \emph{graph} for \emph{un
 \end{frame}
 
 
+\begin{frame}{Graphs/networks encode relations}
+	Graphs are used in a variety of contexts because they encode \emph{relations} between objects
+\end{frame}
+
+
+
+\begin{frame}{Graphs vs digraphs vs multigraphs vs multidigraphs vs ...}
+	Name-wise and notation-wise, this domain is a bit of a mess. We see definitions later, but as far as possible, in these notes:
+	\begin{itemize}
+		\item The vertex set $V$ is essentially the only constant in what follows
+		\item An undirected graph is denoted $G=(V,E)$, where $E$ are the \emph{edges}
+		\item An undirected multigraph is denoted $G_M=(V,E)$. We will not be using these much
+		\item A \emph{directed graph} (or \emph{digraph}) is denoted $G=(V,A)$, where $A$ are the \emph{arcs}
+		\item A \emph{directed multigraph} (or \emph{multidigraph}) is denoted $G_M=(V,A)$
+		\item Any of the above is called a \emph{graph} and is denoted $G=(V,X)$, when we seek generality
+	\end{itemize}
+And just to confuse the whole thing more: we often say \emph{graph} for \emph{unoriented graph}.
+\end{frame}
+
 %%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%
@@ -98,7 +104,7 @@ And just to confuse the whole thing more: we often say \emph{graph} for \emph{un
 	\item A \defword{binary relation} is an arbitrary association of elements of one set with elements of another (maybe the same) set
 	\item  A binary relation over the sets $X$ and $Y$ is defined as a subset of the Cartesian product $X\times Y =\{(x,y)| x\in X , y\in Y\}$
 	\item $(x,y)\in R$ is read ``$x$ is $R$-related to $y$'' and is denoted $xRy$
-	\item If $(x,y)\not\in R$, we write not $x R y$
+	\item If $(x,y)\not\in R$, we write ``not $x R y$'' or $x\not{R} y$
 	\end{itemize}
 	\end{definition}
 \end{frame}
