@@ -32,17 +32,29 @@
 	Beware: language is not consistent, so make sure you read the definitions at the start of whatever source you are using
 \end{frame}
 
-\begin{frame}{The bridges of K\"onigsberg}
-	A ``real life'' problem from Euler: is it possible to cross the seven bridges in a continuous walk without recrossing any of them?
+\begin{frame}{The genesis of graphs -- Euler's bridges of K\"onigsberg}
+	Cross the 7 bridges in a single walk without recrossing any of them?
 	\begin{center}
-	\includegraphics[angle=90,width=.49\textwidth]{FIGS_slides/bridge_color}
-	\includegraphics[angle=90,width=.49\textwidth]{FIGS_slides/graph_bridge}
+	\includegraphics[angle=90,width=.9\textwidth]{FIGS_slides/bridge_color}
 	\end{center}
-	\begin{block}{Mathematical problem}
-	Is it possible to find a trail containing all edges of the graph?
-	\end{block}
 \end{frame}
 
+\begin{frame}{The genesis of graphs -- Euler's bridges of K\"onigsberg}
+	Cross the 7 bridges in a single walk without recrossing any of them?
+	\begin{center}
+	\includegraphics[width=.9\textwidth]{FIGS_slides/bridge_color_with_graph}
+	\end{center}
+\end{frame}
+
+\begin{frame}{The genesis of graphs -- Euler's bridges of K\"onigsberg}
+	Cross the 7 bridges in a single walk without recrossing any of them?
+	\begin{center}
+		\includegraphics[width=.7\textwidth]{FIGS_slides/bridge_color_with_graph}
+		\end{center}
+	\begin{block}{Mathematical problem}
+	Is it possible to find a \emph{trail} containing all \emph{edges} of the graph?
+	\end{block}
+\end{frame}
 
 \begin{frame}{Finding a cycle with all vertices}
 	A salesperson must visit a couple of cities for their job. Is it possible for them to plan a round trip using highways enabling tehm to visit each specified city exactly once?
@@ -75,6 +87,10 @@
 
 \begin{frame}{Graphs/networks encode relations}
 	Graphs are used in a variety of contexts because they encode \emph{relations} between objects
+	\vfill
+	Many objects in the world have relations... so graphs are quite easy to find
+	\vfill
+	We will see many examples later, for now we cover the mathematical background
 \end{frame}
 
 
@@ -127,15 +143,15 @@ And just to confuse the whole thing more: we often say \emph{graph} for \emph{un
 	
 \begin{frame} 
 	\begin{definition}[Equivalence relation]
-	 A relation which is reflexive, symmetric and transitive is called an \defword{equivalence relation}
+	 A relation that is reflexive ($\forall x\in X$, $xRx$), symmetric ($xRy \Rightarrow yRx$) and transitive ($xRy$ and $yRz$ $\Rightarrow$  $xRz$) is an \defword{equivalence relation}
 	\end{definition}
 	\vfill
 	\begin{definition}[Partial order]
-	 A relation which is reflexive, antisymmetric and transitive is called a \defword{partial order}
+	 A relation that is reflexive ($\forall x\in X$, $xRx$), antisymmetric ($xRy$ and $yRx$ $\Rightarrow$ $x=y$) and transitive ($xRy$ and $yRz$ $\Rightarrow$  $xRz$) is a \defword{partial order}
 	\end{definition}
 	\vfill
 	\begin{definition}[Total order]
-	A partial order which is total is called a \defword{total order}
+	A partial order that is total ($\forall x, y\in X$, $x R y$ or $y R x$) is a \defword{total order}
 	\end{definition}
 \end{frame}
 	
@@ -403,10 +419,10 @@ $G_1\cup G_2=(V_1\cup V_2,E_1\cup E_2)$
 $G_1\cap G_2=(V_1\cap V_2,E_1\cap E_2)$
 \end{definition}
 \begin{definition}[{Disjoint graphs}]
-If $G_1\cap G_2=(\emptyset,\emptyset)= \emptyset$ (empty graph) then $G_1$ and $G_2$ are disjoint.
+If $G_1\cap G_2=(\emptyset,\emptyset)= \emptyset$ (empty graph) then $G_1$ and $G_2$ are disjoint
 \end{definition}
 \begin{definition}[{Complement of $G_1$}]
-The complement $\bar G_1$ of $G_1$ is the graph on $V_1$, with the edge set $E(\bar G_1)=[V_1]^2\backslash E_1$ ($e\in E(\bar G_1)$ iff $e\not \in E_1$)
+The complement $\bar G_1$ of $G_1$ is the graph on $V_1$, with the edge set $E(\bar G_1)=[V_1]^2\backslash E_1$ ($e\in E(\bar G_1)$ $\iff$ $e\not \in E_1$)
 \end{definition}
 \end{frame}
 
@@ -482,6 +498,25 @@ The \defword{length of a cycle} is its number of edges
 	A graph (resp. multigraph) containing an Eulerian circuit is a \defword{Eulerian graph} (resp. \defword{Eulerian multigraph})
 \end{definition}
 \end{frame}
+
+\begin{frame}{Remember Euler's bridges of K\"onigsberg?}
+	Cross the 7 bridges in a single walk without recrossing any of them?
+	\begin{center}
+	\includegraphics[width=.9\textwidth]{FIGS_slides/bridge_color_with_graph}
+	\end{center}
+\end{frame}
+
+\begin{frame}{The genesis of graphs -- Euler's bridges of K\"onigsberg}
+	A ``real life'' problem from Euler: is it possible to cross the seven bridges in a continuous walk without recrossing any of them?
+	\begin{center}
+	\includegraphics[angle=90,width=.49\textwidth]{FIGS_slides/bridge_color}
+	\includegraphics[angle=90,width=.49\textwidth]{FIGS_slides/graph_bridge}
+	\end{center}
+	\begin{block}{Mathematical problem}
+	Is it possible to find a \emph{trail} containing all \emph{edges} of the graph?
+	\end{block}
+\end{frame}
+
 
 \begin{frame}
 \begin{theorem}
