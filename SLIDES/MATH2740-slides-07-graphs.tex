@@ -283,15 +283,15 @@ And just to confuse the whole thing more: we often say \emph{graph} for \emph{un
 
 \begin{frame}
 \begin{definition}[{Odd vertex}]
-A vertex is an \defword{odd vertex} is its degree is odd.
+A vertex is an \defword{odd vertex} is its degree is odd
 \end{definition}
 \vfill
 \begin{definition}[{Even vertex}]
-A vertex is called \defword{even vertex} is its degree is even.
+A vertex is called \defword{even vertex} is its degree is even
 \end{definition}
 \vfill
 \begin{theorem}
-Every graph contains an even number of odd vertices.
+Every graph contains an even number of odd vertices
 \end{theorem}
 \end{frame}
 
@@ -303,76 +303,15 @@ Every graph contains an even number of odd vertices.
 
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Complete, bipartite and other notable graphs}
-\begin{frame}
-\begin{definition}[{Complete graph}]
-A graph is complete if every two of its vertices are adjacent
-\end{definition}
-\vfill
-\begin{definition}[$n$-clique]
-	A simple, complete graph on $n$ vertices is called an $n$-\defword{clique} and is often denoted $K_n$
-\end{definition}
-\vfill
-Note that a complete graph of order $p$ is $(p-1)-$regular
-\end{frame}
 
-\begin{frame}\frametitle{Bipartite graph}
-	\begin{definition}[Bipartite graph]
-		A graph $G=(V,E)$ is called \defword{bipartite} if it is possible to partition the vertex set of $G$ into two subsets, say $V_1$ and $V_2$ so that every edge of $G$ joins a vertex of $V_1$ with a vertex of $V_2$ and no vertex joins another vertex of its own set
-	\end{definition}
-	\vfill
-	\begin{definition}[Bipartite graph]
-		A graph is \defword{bipartite} if its vertices can be partitioned into two sets $X_1$ and $X_2$, s.t. no two vertices in the same set are adjacent.
-		This graph may be written $G=(X_1,X_2,U)$
-	\end{definition}
-\end{frame}
-
-
-\begin{frame}\frametitle{Complete Bipartite graph}
-	\begin{definition}[Complete bipartite graph]
-		A bipartite graph in which every two vertices from the 2 different partitions are adjacent is called a complete bipartite graph
-	\end{definition}
-	\vfill
-	\begin{definition}[Complete bipartite graph]
-		If $\forall x_1\in X_1, \forall x_2\in X$, we have $m_G(x_1,x_2)\geq 1$, then $G=(X_1,X_2,U)$ is a \defword{complete bipartite} graph
-		\vskip0.25cm
-		A simple, complete bipartite graph with $|X_1|=p$ and $|X_2|=q$ is often denoted $K_{p,q}$
-	\end{definition}
-\end{frame}
-
-\begin{frame}\frametitle{Some specific graphs}
-	\begin{definition}[{Tree}]
-		Any connected graph that has no cycles is a \defword{tree}
-	\end{definition}
-	\begin{definition}[{Cycle $C_n$}]
-		For $n\geq 3$, the \defword{cycle} $C_n$ is a connected graph of order $n$ that is a cycle on $n$ vertices
-	\end{definition}
-	\begin{definition}[{Path $P_n$}]
-		The \defword{path} $P_n$ is a connected graph that consists of $n\geq 2$ vertices and $n-1$ edges. Two vertices of $P_n$ have degree 1 and the rest are of degree 2
-	\end{definition}
-	\begin{definition}[{Star $S_n$}]
-		The \defword{star} of order $n$ is the complete bipartite graph $K_{1,n-1}$ (1 vertex of degree $n-1$ and $n-1$ vertices of degree 1)
-	\end{definition}
-\end{frame}
-
-
-
-
-
+%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Isomorphic graphs}
 
 \begin{frame} \frametitle{Isomorphic graphs} 
 \begin{definition}[Isomorphic graphs]
 Let $G_1=(V(G_1),E(G_1))$ and $G_2=(V(G_2),E(G_2))$ be two graphs.
 $G_1$ and $G_2$ are \defword{isomorphic} if there exists an isomorphism $\phi$ from $G_1$ to $G_2$, that is defined as an injective mapping $\phi:\; V(G_1) \rightarrow V(G_2)$ such that two vertices $u_1$ and $v_1$ are adjacent in $G_1$ if and only if the vertices $\phi(u_1)$ and $\phi(v_1)$ are adjacent in $G_2$
-\end{definition}
-\vfill
-\begin{definition}[Another formulation of isomorphic graphs]
-Let $G_1=(V(G_1),E(G_1))$ and $G_2=(V(G_2),E(G_2))$ be two graphs;
-$G_1$ and $G_2$ are isomorphic if there exists an isomorphism $\phi$ from $G_1$ to $G_2$, defined as 
-an injective mapping $\phi : \; V(G_1) \rightarrow V(G_2)$ such that $\{u_1,v_1\} \in E(G_1)$ if and only if $\{\phi(u_1),\phi(v_1)\}\in E(G_2)$ for all $u_1, v_1 \in V(G_1)$
 \end{definition}
 \end{frame}
  
@@ -396,16 +335,15 @@ If $G_1$ and $G_2$ are isomorphic graphs, then the degrees of vertices of $G_1$ 
 \end{frame}
 
 
+
+%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Subgraphs, unions of graphs}
 
 \begin{frame}\frametitle{Subgraph}
 \begin{definition}[Subgraph]
 Let $G=(V(G),E(G))$ be a graph.
 A graph $H=(V(H),E(H))$ is a \defword{subgraph} of $G$ if $V(H)\subseteq V(G)$ and $E(H)\subseteq E(G)$
-\end{definition}
-\vfill
-\begin{definition}[Another definition of subgraph]
-If a graph $F$ is isomorphic to a subgraph $H$ of $G$, then $F$ is also called a subgraph of $G$
 \end{definition}
 \end{frame}
 
@@ -427,6 +365,81 @@ The complement $\bar G_1$ of $G_1$ is the graph on $V_1$, with the edge set $E(\
 \end{frame}
 
 
+
+%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Connectedness}
+
+\begin{frame}\frametitle{Connected vertices and graph, components}
+\begin{definition}[{Connected vertices}]
+Two vertices $u$ and $v$ in a graph $G$ are \defword{connected}\index{connected vertices} if $u=v$, or if $u\not =v$ and there exists a path in $G$ that links $u$ and $v$
+\end{definition}
+\vfill
+\begin{definition}[{Connected graph}]
+A graph is \defword{connected}\index{connected graph} if every two vertices of $G$ are connected; otherwise, $G$ is \defword{disconnected}\index{disconnected graph}
+\end{definition}
+\end{frame}
+
+\begin{frame}\frametitle{A necessary condition for connectedness}
+	\begin{theorem}
+		A connected graph on $p$ vertices has at least $p-1$ edges
+	\end{theorem}
+	\vfill
+	In other words, a connected graph $G$ of order $p$ has $\text{size}(G)\geq p-1$
+\end{frame}
+
+\begin{frame}{Connectedness is an equivalence relation}
+	Denote $x\equiv y$ the relation  ``$x=y$, or $x\neq y$ and there exists a path in $G$ connecting $x$ and $y$''. $\equiv$ is an equivalence relation since
+	\begin{enumerate}
+		\item $x\equiv y$ \hfill[reflexivity]
+		\item $x\equiv y\implies y\equiv x$ \hfill[symmetry]
+		\item $x\equiv y, y\equiv z\implies x\equiv z$ \hfill[transitivity]
+	\end{enumerate}
+	\vfill
+	\begin{definition}[Connected component of a graph]
+		The classes of the equivalence relation $\equiv$ partition $X$ into connected sub-graphs of $G$ called \defword{connected components} (or \defword{components} for short) of $G$
+	\end{definition}
+	\vfill
+	A connected subgraph $H$ of a graph $G$ is a component of $G$ if $H$ is not contained in any connected subgraph of $G$ having more vertices or edges than $H$
+\end{frame}
+
+
+
+\begin{frame}{Vertex deletion \& cut vertices}
+\begin{definition}[{Vertex deletion}]
+If $v$ is a vertex of $G$, the graph $G-v$ is the graph formed from $G$ by removing $v$ and all edges incident with $v$
+\end{definition}
+\vfill
+\begin{definition}[{Cut-vertices}]
+	If $v$ is a cut-vertex of a connected graph $G$, then $G-v$ is disconnected
+\end{definition}
+\end{frame}
+
+
+\begin{frame}{Edge deletion \& bridges}
+\begin{definition}[{Edge deletion}]
+	If $e$ is an edge of $G$, the graph $G-e$ is the graph formed from $G$ by removing $e$ from $G$
+\end{definition}
+\vfill
+\begin{definition}[{Bridge}]
+An edge $e$ in a connected graph $G$ is called a bridge if $G-e$ is disconnected
+\end{definition}
+\vfill
+\begin{theorem}
+Let $G$ be a connected graph. An edge $e$ of $G$ is a bridge of $G$ if and only if $e$ does not lie on any cycle of $G$
+\end{theorem}
+\end{frame}
+
+
+%\begin{frame}\frametitle{Undirected network}
+%\begin{definition}{Definition}
+%A undirected network is a graph together with a function which maps the edge set into the set of real number.
+%\end{definition}\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Walks, trails, paths}
 
 
@@ -502,20 +515,12 @@ The \defword{length of a cycle} is its number of edges
 \begin{frame}{Remember Euler's bridges of K\"onigsberg?}
 	Cross the 7 bridges in a single walk without recrossing any of them?
 	\begin{center}
-	\includegraphics[width=.9\textwidth]{FIGS_slides/bridge_color_with_graph}
-	\end{center}
-\end{frame}
-
-\begin{frame}{The genesis of graphs -- Euler's bridges of K\"onigsberg}
-	A ``real life'' problem from Euler: is it possible to cross the seven bridges in a continuous walk without recrossing any of them?
-	\begin{center}
-	\includegraphics[angle=90,width=.49\textwidth]{FIGS_slides/bridge_color}
-	\includegraphics[angle=90,width=.49\textwidth]{FIGS_slides/graph_bridge}
+	\includegraphics[width=.7\textwidth]{FIGS_slides/bridge_color_with_graph}
 	\end{center}
 	\begin{block}{Mathematical problem}
-	Is it possible to find a \emph{trail} containing all \emph{edges} of the graph?
+		Is it possible to find a \emph{trail} containing all \emph{edges} of the graph?
 	\end{block}
-\end{frame}
+	\end{frame}
 
 
 \begin{frame}
@@ -584,76 +589,52 @@ RESULT: a Eulerian trail
 \end{theorem}
 \end{frame}
 
-
-%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Connectedness}
-
-\begin{frame}\frametitle{Connected vertices and graph, components}
-\begin{definition}[{Connected vertices}]
-Two vertices $u$ and $v$ in a graph $G$ are \defword{connected}\index{connected vertices} if $u=v$, or if $u\not =v$ and there exists a path in $G$ that links $u$ and $v$
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Complete, bipartite and other notable graphs}
+\begin{frame}
+\begin{definition}[{Complete graph}]
+A graph is complete if every two of its vertices are adjacent
 \end{definition}
 \vfill
-\begin{definition}[{Connected graph}]
-A graph is \defword{connected}\index{connected graph} if every two vertices of $G$ are connected; otherwise, $G$ is \defword{disconnected}\index{disconnected graph}
+\begin{definition}[$n$-clique]
+	A simple, complete graph on $n$ vertices is called an $n$-\defword{clique} and is often denoted $K_n$
 \end{definition}
+\vfill
+Note that a complete graph of order $p$ is $(p-1)-$regular
 \end{frame}
 
-\begin{frame}\frametitle{A necessary condition for connectedness}
-	\begin{theorem}
-		A connected graph on $p$ vertices has at least $p-1$ edges
-	\end{theorem}
-	\vfill
-	In other words, a connected graph $G$ of order $p$ has $\text{size}(G)\geq p-1$
-\end{frame}
-
-\begin{frame}{Connectedness is an equivalence relation}
-	Denote $x\equiv y$ the relation  ``$x=y$, or $x\neq y$ and there exists a path in $G$ connecting $x$ and $y$''. $\equiv$ is an equivalence relation since
-	\begin{enumerate}
-		\item $x\equiv y$ \hfill[reflexivity]
-		\item $x\equiv y\implies y\equiv x$ \hfill[symmetry]
-		\item $x\equiv y, y\equiv z\implies x\equiv z$ \hfill[transitivity]
-	\end{enumerate}
-	\vfill
-	\begin{definition}[Connected component of a graph]
-		The classes of the equivalence relation $\equiv$ partition $X$ into connected sub-graphs of $G$ called \defword{connected components} (or \defword{components} for short) of $G$
+\begin{frame}\frametitle{Bipartite graph}
+	\begin{definition}[Bipartite graph]
+		A graph is \defword{bipartite} if its vertices can be partitioned into two sets $X_1$ and $X_2$, s.t. no two vertices in the same set are adjacent.
+		This graph may be written $G=(X_1,X_2,U)$
 	\end{definition}
 	\vfill
-	A connected subgraph $H$ of a graph $G$ is a component of $G$ if $H$ is not contained in any connected subgraph of $G$ having more vertices or edges than $H$
+	\begin{definition}[Complete bipartite graph]
+		A bipartite graph in which every two vertices from the 2 different partitions are adjacent is called a \defword{complete bipartite graph}
+		\vskip0.25cm
+		A simple, complete bipartite graph with $|X_1|=p$ and $|X_2|=q$ is often denoted $K_{p,q}$
+	\end{definition}
+\end{frame}
+
+\begin{frame}\frametitle{Some specific graphs}
+	\begin{definition}[{Tree}]
+		Any connected graph that has no cycles is a \defword{tree}
+	\end{definition}
+	\begin{definition}[{Cycle $C_n$}]
+		For $n\geq 3$, the \defword{cycle} $C_n$ is a connected graph of order $n$ that is a cycle on $n$ vertices
+	\end{definition}
+	\begin{definition}[{Path $P_n$}]
+		The \defword{path} $P_n$ is a connected graph that consists of $n\geq 2$ vertices and $n-1$ edges. Two vertices of $P_n$ have degree 1 and the rest are of degree 2
+	\end{definition}
+	\begin{definition}[{Star $S_n$}]
+		The \defword{star} of order $n$ is the complete bipartite graph $K_{1,n-1}$ (1 vertex of degree $n-1$ and $n-1$ vertices of degree 1)
+	\end{definition}
 \end{frame}
 
 
 
-\begin{frame}{Vertex deletion \& cut vertices}
-\begin{definition}[{Vertex deletion}]
-If $v$ is a vertex of $G$, the graph $G-v$ is the graph formed from $G$ by removing $v$ and all edges incident with $v$
-\end{definition}
-\vfill
-\begin{definition}[{Cut-vertices}]
-	If $v$ is a cut-vertex of a connected graph $G$, then $G-v$ is disconnected
-\end{definition}
-\end{frame}
 
-
-\begin{frame}{Edge deletion \& bridges}
-\begin{definition}[{Edge deletion}]
-	If $e$ is an edge of $G$, the graph $G-e$ is the graph formed from $G$ by removing $e$ from $G$
-\end{definition}
-\vfill
-\begin{definition}[{Bridge}]
-An edge $e$ in a connected graph $G$ is called a bridge if $G-e$ is disconnected
-\end{definition}
-\vfill
-\begin{theorem}
-Let $G$ be a connected graph. An edge $e$ of $G$ is a bridge of $G$ if and only if $e$ does not lie on any cycle of $G$
-\end{theorem}
-\end{frame}
-
-
-%\begin{frame}\frametitle{Undirected network}
-%\begin{definition}{Definition}
-%A undirected network is a graph together with a function which maps the edge set into the set of real number.
-%\end{definition}\end{frame}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%
