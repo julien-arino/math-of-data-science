@@ -311,7 +311,7 @@ Every graph contains an even number of odd vertices
 \begin{frame} \frametitle{Isomorphic graphs} 
 \begin{definition}[Isomorphic graphs]
 Let $G_1=(V(G_1),E(G_1))$ and $G_2=(V(G_2),E(G_2))$ be two graphs.
-$G_1$ and $G_2$ are \defword{isomorphic} if there exists an isomorphism $\phi$ from $G_1$ to $G_2$, that is defined as an injective mapping $\phi:\; V(G_1) \rightarrow V(G_2)$ such that two vertices $u_1$ and $v_1$ are adjacent in $G_1$ if and only if the vertices $\phi(u_1)$ and $\phi(v_1)$ are adjacent in $G_2$
+$G_1$ and $G_2$ are \defword{isomorphic} if there exists an isomorphism $\phi$ from $G_1$ to $G_2$, that is defined as an injective mapping $\phi:\; V(G_1) \rightarrow V(G_2)$ such that two vertices $u_1$ and $v_1$ are adjacent in $G_1$ $\iff$ the vertices $\phi(u_1)$ and $\phi(v_1)$ are adjacent in $G_2$
 \end{definition}
 \end{frame}
  
@@ -407,11 +407,11 @@ A graph is \defword{connected}\index{connected graph} if every two vertices of $
 
 \begin{frame}{Vertex deletion \& cut vertices}
 \begin{definition}[{Vertex deletion}]
-If $v$ is a vertex of $G$, the graph $G-v$ is the graph formed from $G$ by removing $v$ and all edges incident with $v$
+If $v\in V(G)$ is a vertex of $G$, the graph $G-v$ is the graph formed from $G$ by removing $v$ and all edges incident with $v$
 \end{definition}
 \vfill
 \begin{definition}[{Cut-vertices}]
-	If $v$ is a cut-vertex of a connected graph $G$, then $G-v$ is disconnected
+	Let $G$ be a connected graph. Then $v$ is a \defword{cut-vertex} $G$ if $G-v$ is disconnected
 \end{definition}
 \end{frame}
 
@@ -422,12 +422,13 @@ If $v$ is a vertex of $G$, the graph $G-v$ is the graph formed from $G$ by remov
 \end{definition}
 \vfill
 \begin{definition}[{Bridge}]
-An edge $e$ in a connected graph $G$ is called a bridge if $G-e$ is disconnected
+An edge $e$ in a connected graph $G$ is a \defword{bridge} if $G-e$ is disconnected
 \end{definition}
 \vfill
 \begin{theorem}
-Let $G$ be a connected graph. An edge $e$ of $G$ is a bridge of $G$ if and only if $e$ does not lie on any cycle of $G$
+Let $G$ be a connected graph. An edge $e$ of $G$ is a bridge of $G$ $\iff$ $e$ does not lie on any cycle of $G$
 \end{theorem}
+(For \emph{cycle}, see Definition~\ref{def:cycle} later)
 \end{frame}
 
 
@@ -484,7 +485,7 @@ The distance $d(u,v)$ in $G=(V,E)$ between two vertices $u$ and $v$ is the lengt
 A trail linking $u$ to $v$, containing at least 3 edges and in which $u=v$, is a \defword{circuit}
 \end{definition}
 \vfill
-\begin{definition}[Cycle]
+\begin{definition}[Cycle]\label{def:cycle}
 A circuit which does not repeat any vertices (except the first and the last) is a \defword{cycle} (or \defword{simple circuit})
 \end{definition}
 \vfill
@@ -496,7 +497,7 @@ The \defword{length of a cycle} is its number of edges
 
 \begin{frame}
 \begin{definition}[{Eulerian trail}]
-	A trail containing all the vertices and edges of a multigraph $M$ is a \defword{Eulerian trail} of $M$
+	A walk in an undirected multigraph $M$ that uses each edge \textbf{exactly once} is a \defword{Eulerian trail} of $M$
 \end{definition}
 \vfill
 \begin{definition}[{Traversable graph}]
@@ -518,14 +519,16 @@ The \defword{length of a cycle} is its number of edges
 	\includegraphics[width=.7\textwidth]{FIGS_slides/bridge_color_with_graph}
 	\end{center}
 	\begin{block}{Mathematical problem}
-		Is it possible to find a \emph{trail} containing all \emph{edges} of the graph?
+		Is the (multi)graph traversable? Eulerian?
 	\end{block}
 	\end{frame}
 
 
 \begin{frame}
 \begin{theorem}
-	A multigraph $M$ is traversable if and only if $M$ is connected and has exactly two odd vertices. Furthermore, any Eulerian trail of $M$ begins at one of the odd vertices and ends at the other odd vertex
+	A multigraph $M$ is traversable $\iff$ $M$ is connected and has exactly two odd vertices
+	\vskip0.2cm
+	Furthermore, any Eulerian trail of $M$ begins at one of the odd vertices and ends at the other odd vertex
 \end{theorem}
 \vfill
 \begin{theorem}
@@ -536,28 +539,31 @@ The \defword{length of a cycle} is its number of edges
 
 
 
-\begin{frame}\frametitle{Fleury's algorithm to find a Eulerian circuit}
-(for a connected graph with no odd vertices)
-
+\begin{frame}
+	\frametitle{Fleury's algorithm to find a Eulerian trail}
+	\framesubtitle{For a connected graph with exactly 2 odd vertices}
 \begin{itemize}
-	\item Pick any vertex as a starting point.
-	\item Marking your path as you move from vertex to vertex, travel along any edges you wish, but DO NOT travel along an edge that is a bridge for the graph formed by the EDGES THAT HAVE YET TO BE TRAVELED -- unless you have to.
-	\item Continue until you return to your starting point.
+	\item Start at one of the odd vertices
+	\item Marking your path as you move from vertex to vertex, travel along any edges you wish, but DO NOT travel along an edge that is a bridge for the graph formed by the EDGES THAT HAVE YET TO BE TRAVELED -- unless you have to
+	\item Continue until every edge has been traveled
+\end{itemize}
+RESULT: a Eulerian trail
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{Fleury's algorithm to find a Eulerian circuit}
+	\framesubtitle{For a connected graph with no odd vertices}
+
+	\begin{itemize}
+	\item Pick any vertex as a starting point
+	\item Marking your path as you move from vertex to vertex, travel along any edges you wish, but DO NOT travel along an edge that is a bridge for the graph formed by the EDGES THAT HAVE YET TO BE TRAVELED -- unless you have to
+	\item Continue until you return to your starting point
 \end{itemize}
 RESULT: a Eulerian circuit
 \end{frame}
 
 
-\begin{frame}\frametitle{Fleury's algorithm to find a Eulerian trail}
-(for a connected graph with exactly 2 odd vertices)
-
-\begin{itemize}
-	\item Start at one of the odd vertices.
-	\item Marking your path as you move from vertex to vertex, travel along any edges you wish, but DO NOT travel along an edge that is a bridge for the graph formed by the EDGES THAT HAVE YET TO BE TRAVELED -- unless you have to.
-	\item Continue until every edge has been traveled.
-\end{itemize}
-RESULT: a Eulerian trail
-\end{frame}
 
 
 \begin{frame}\frametitle{}
@@ -642,12 +648,14 @@ Note that a complete graph of order $p$ is $(p-1)-$regular
 \subsection{Planar graphs}
 \begin{frame}\frametitle{Planar graph}
 \begin{definition}[Planar graph]
-A graph is \defword{planar} if it can be drawn in the plane with no crossing edges. Otherwise it is nonplanar
+A graph is \defword{planar} if it \emph{can be} drawn in the plane with no crossing edges (except at the vertices). Otherwise, it is \defword{nonplanar}
 \end{definition}
 \vfill
 \begin{definition}[{Plane graph}]
-A \defword{plane graph} is a graph that is drawn in the plane with no crossing edges. (This is only possible if the graph is planar)
+A \defword{plane graph} is a graph \emph{that is drawn} in the plane with no crossing edges. (This is only possible if the graph is planar)
 \end{definition}
+\vfill
+(To see the difference, have you ever played \href{https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/untangle.html}{this game}?)
 \end{frame}
 
 
@@ -684,21 +692,10 @@ where $\delta(G)$ is the minimal degree of $G$.
 
 
 \begin{frame}{Two well-known non-planar graphs}
-$K_{3,3}$ is nonplanar
-\vfill
-$K_5$ is nonplanar
-\vfill
-As a matter of fact, a graph having a subgraph that is $K_{3,3}$ or $K_5$ is a sufficient condition for non-planarity, as we see later.
-\end{frame}
-
-
-\begin{frame}
-\begin{definition}[{Subdivision of $G$}]
-Given a graph $G$, a subdivision of $G$ is a graph that can be obtained by inserting any number of vertices of degree 2 along a edges of $G$
-\end{definition}
+$K_{3,3}$ and $K_5$ are nonplanar
 \vfill
 \begin{theorem}[{Kuratowski Theorem}]
-A graph $G$ i planar if and only if it contains no subgraph isomorphic to $K_5$ or $K_{3,3}$ or any subdivision of $K_5$ or $K_{3,3}$
+A graph $G$ i planar $\iff$ it contains no subgraph isomorphic to $K_5$ or $K_{3,3}$ or any subdivision of $K_5$ or $K_{3,3}$
 \end{theorem}
 \vfill
 \textbf{Note:} If a graph $G$ is nonplanar and $G$ is a subgraph of $G'$, then $G'$ is also nonplanar
@@ -727,44 +724,30 @@ The \defword{chromatic number} $\chi (G)=$ of a graph $G$ is the minimal value $
 \vfill
 \begin{theorem}[{Some properties}]
 \begin{itemize}
-\item $\chi (G)=1$ if and only if $G$ have no edges
+\item $\chi (G)=1$ $\iff$ $G$ have no edges
 \item If $G=K_{n,m}$, then $\chi(G)=2$
 \item If $G=K_n$, then $\chi(G)=n$
 \item For any graph $G$, $$\chi (G)\leq 1+ \Delta (G)$$
 where $\Delta (G)$ is the maximum degree of $G$
 \item If $G$ is a planar graph, then $\chi(G) \leq 4$
-\item If $G$ is a planar graph, then $\chi(G) \leq 5$
 \end{itemize}
 \end{theorem}
 \end{frame}
 
 
-\begin{frame}\frametitle{Welch-Powell algorithm for colouring a graph $G$}
-\begin{enumerate}
-\item Order the vertices of $G$ in decreasing degree. (Such an ordering may not be unique since some vertices may have the same degree)
-\vfill
-\item Use one colour to paint the first vertex and to paint, in sequential order, each vertex on the list that is not adjacent to a vertex previously painted with this colour
-\vfill
-\item Start again at the top of the list and repeat the process painting previously unpainted vertices using a second colour
-\vfill
-\item Continue repeating with additional colours until all the vertices have been painted
-\end{enumerate}\end{frame}
-
 \begin{frame}\frametitle{``Real life'' problem}
-What is the minimal number of colors to color all counties in the map?
-(two adjacent counties must have different colors)
+What is the minimal number of colours to colour all states in the map so that two adjacent states have different colours?
 \begin{center}
-\includegraphics[width=.55\textwidth]{FIGS_slides/california}
+\includegraphics[width=.85\textwidth]{FIGS_slides/USA-4-colours}
 \end{center}\end{frame}
 
 \begin{frame}\frametitle{``Real life'' problem}
-What is the minimal number of colors to color all counties in the map?
-(two adjacent counties must have different colors)
-\vfill
+	What is the minimal number of colours to colour all states in the map so that two adjacent states have different colours?
+	\vfill
 Mathematical representation:
 \begin{itemize}
-\item vertices correspond to the counties
-\item two vertices are linked iff the two counties are adjacent.
+\item vertices correspond to the states
+\item vertices are adjacent $\iff$ the two states are adjacent (sharing an isolated point such as the ``Four Corners'' does not count)
 \end{itemize}
 \vfill
 \begin{block}{Mathematical problem}
@@ -772,7 +755,18 @@ What is the chromatic number of the graph associated to the map?
 \end{block}
 \end{frame}
 
-
+\begin{frame}\frametitle{Welch-Powell algorithm for colouring a graph $G$}
+	\begin{enumerate}
+	\item Order the vertices of $G$ by decreasing degree. (Such an ordering may not be unique since some vertices may have the same degree)
+	\vfill
+	\item Use one colour to paint the first vertex and to paint, in sequential order, each vertex on the list that is not adjacent to a vertex previously painted with this colour
+	\vfill
+	\item Start again at the top of the list and repeat the process, painting previously unpainted vertices using a second colour
+	\vfill
+	\item Repeat with additional colours until all vertices have been painted
+\end{enumerate}\end{frame}
+	
+	
 
 
 %%%%%%%%%%%%%%%%%%%
@@ -1343,7 +1337,7 @@ A connected graph $G$ is called \defword{orientable} if it is possible to assign
 \end{definition}
 
 \begin{theorem}
-A connected graph $G$ is orientable (has a strong orientation) if and only if $G$ contains no bridges; that is every edge is contained in a cycle.
+A connected graph $G$ is orientable (has a strong orientation) $\iff$ $G$ contains no bridges; that is every edge is contained in a cycle.
 \end{theorem}
 \end{frame}
  
@@ -2070,12 +2064,12 @@ Elements of $L$ are given by
 \begin{frame}
 	\begin{theorem}
 		Let $A$ be the adjacency matrix of a graph $G$ on $p$ vertices. 
-		A graph $G$ on $p$ vertices is connected if and only if $$I+A+A^2+\dots+A^{p-1}=C$$
+		A graph $G$ on $p$ vertices is connected $\iff$ $$I+A+A^2+\dots+A^{p-1}=C$$
 		has no zero entries.
 	\end{theorem}
 	\begin{theorem}
 		Let $M$ be the adjacency matrix of a digraph $D$ on $p$ vertices. 
-		A digraph $D$ on $p$ vertices is strongly connected if and only if $$I+M+M^2+\dots+M^{p-1}=C$$
+		A digraph $D$ on $p$ vertices is strongly connected $\iff$ $$I+M+M^2+\dots+M^{p-1}=C$$
 		has no zero entries.
 	\end{theorem}
 \end{frame}
