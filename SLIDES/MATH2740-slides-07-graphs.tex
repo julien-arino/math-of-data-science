@@ -120,7 +120,7 @@ And just to confuse the whole thing more: we often say \emph{graph} for \emph{un
 	\item A \defword{binary relation} is an arbitrary association of elements of one set with elements of another (maybe the same) set
 	\item  A binary relation over the sets $X$ and $Y$ is defined as a subset of the Cartesian product $X\times Y =\{(x,y)| x\in X , y\in Y\}$
 	\item $(x,y)\in R$ is read ``$x$ is $R$-related to $y$'' and is denoted $xRy$
-	\item If $(x,y)\not\in R$, we write ``not $x R y$'' or $x\not{R} y$
+	\item If $(x,y)\not\in R$, we write ``not $x R y$'' or $x\cancel{R} y$
 	\end{itemize}
 	\end{definition}
 \end{frame}
@@ -132,7 +132,7 @@ And just to confuse the whole thing more: we often say \emph{graph} for \emph{un
 	\item \defword{Reflexive} if $\forall x\in X$, $xRx$
 	\item \defword{Irreflexive} if there does not exist $x\in X$ such that $xRx$
 	\item \defword{Symmetric} if $xRy \Rightarrow yRx$
-	\item \defword{Asymmetric} if $xRy \Rightarrow $ not $y R x$
+	\item \defword{Asymmetric} if $xRy \Rightarrow $ $y\cancel R x$
 	\item \defword{Antisymmetric} if $xRy$ and $yRx$ $\Rightarrow$ $x=y$
 	\item \defword{Transitive} if $xRy$ and $yRz$ $\Rightarrow$  $xRz$
 	\item \defword{Total} (or \defword{complete}) if $\forall x, y\in X$, $x R y$ or $y R x$
@@ -782,16 +782,16 @@ What is the chromatic number of the graph associated to the map?
 A directed graph (or \defword{digraph}) is a pair $G=(V,A)$ of sets such that
 \begin{itemize}
 \item $V$ is a set of points:  $V=\{v_1,v_2,v_3,..,v_p\}$
-\item $A$ is a set of ordered pairs of $V$: $A=\{(v_i,v_j),(v_i,v_k),\dots,(v_n,v_p)\}$, also noted $A=\{v_iv_j,v_iv_k,\dots,v_nv_p\}$.
+\item $A$ is a set of ordered pairs of $V$: $A=\{(v_i,v_j),(v_i,v_k),\dots,(v_n,v_p)\}$, also noted $A=\{v_iv_j,v_iv_k,\dots,v_nv_p\}$
 \end{itemize}
 \end{definition}
 \begin{definition}[{Vertex}]
-The elements of $V$ are the vertices of the digraph $G$.
-$V$ is the vertex set of the digraph $G$, also noted $V(G)$.
+The elements of $V$ are the vertices of the digraph $G$
+$V$ is the vertex set of the digraph $G$, also noted $V(G)$
 \end{definition}
 \begin{definition}[{Arc}]
 The elements of $A$ are the \defword{arcs} (directed edges) of the digraph $G$.
-$A$ is the arc set of the digraph $G$, also noted $A(G)$.
+$A$ is the arc set of the digraph $G$, also noted $A(G)$
 \end{definition}
 \end{frame}
 
@@ -836,20 +836,20 @@ The value of the arc $uv \in A$ is $f(uv)$
 
 \begin{frame}{Loops \& Multiple arcs}
 	\begin{definition}[{Loop}]
-	A \defword{loop} is an arc with both the same ends; \emph{e.g.} $(u,u)$ is a loop.
+	A \defword{loop} is an arc with both the same ends; \emph{e.g.} $(u,u)$ is a loop
 \end{definition}
 \vfill
 	\begin{definition}[{Multiple arcs}]
-	\defword{Multiple arcs} (or multi-arcs) are two or more arcs connecting the same two vertices.
+	\defword{Multiple arcs} (or multi-arcs) are two or more arcs connecting the same two vertices
 	\end{definition}
 \end{frame}
 \begin{frame}{Multidigraph/Digraph}
 	\begin{definition}[{Multidigraph}]
-	A \defword{multidigraph} is a digraph which allows repetition of arcs or loops.
+	A \defword{multidigraph} is a digraph which allows repetition of arcs or loops
 	\end{definition}
 	\vfill
 	\begin{definition}[{Digraph}]
-	In a digraph, no more than one arc can join any pair of vertices.
+	In a digraph, no more than one arc can join any pair of vertices
 \end{definition}
 \end{frame}
 
@@ -904,19 +904,19 @@ The value of the arc $uv \in A$ is $f(uv)$
 \end{frame}
 
 \begin{frame}
-	Let $G=(V,A)$ be a digraph.
+	Let $G=(V,A)$ be a digraph
 	\begin{definition}[Arc endpoints]
 	For an arc $u=(x,y)$, vertex $x$ is the \defword{initial endpoint}, and vertex $y$ is the \defword{terminal endpoint}
 	\end{definition}
 	\begin{definition}[{Predecessor - Successor}]
 		If $(u,v)\in A(G)$ is an arc of $G$, then
 		\begin{itemize}
-			\item  $u$ is a \defword{predecessor} of $v$,
-			\item  $v$ is a \defword{successor} of $u$.
+			\item  $u$ is a \defword{predecessor} of $v$
+			\item  $v$ is a \defword{successor} of $u$
 		\end{itemize}
 	\end{definition}
 	\begin{definition}[Neighbours of a vertex]
-	Let $x\in V$ be a vertex. The \defword{neighbours} of $x$ is the set $\Gamma(x) = \Gamma^+_G(x)\cup\Gamma^-_G(x)$, where $\Gamma^+_G(x)$ and $\Gamma^-_G(x)$ are, respectively, the set of successors and predecessors of $v$.
+	Let $x\in V$ be a vertex. The \defword{neighbours} of $x$ is the set $\Gamma(x) = \Gamma^+_G(x)\cup\Gamma^-_G(x)$, where $\Gamma^+_G(x)$ and $\Gamma^-_G(x)$ are, respectively, the set of successors and predecessors of $v$
 	\end{definition}
 \end{frame}
 	
@@ -940,7 +940,7 @@ The value of the arc $uv \in A$ is $f(uv)$
 
 \begin{frame}{Adjacent arcs}
 	\begin{definition}[Adjacent arcs]
-		Two arcs are \defword{adjacent} if they have at least one endpoint in common.
+		Two arcs are \defword{adjacent} if they have at least one endpoint in common
 	\end{definition}
 \end{frame}
 
