@@ -944,13 +944,15 @@ The value of the arc $uv \in A$ is $f(uv)$
 	\end{definition}
 \end{frame}
 
-\begin{frame}{Arc incident out of a subset of arcs}
-	\begin{definition}[Arc incident out of $A\subset X$]
-		If the initial endpoint of an arc $u$ belongs to $A$, and if the terminal endpoint of arc $u$ does not belong to $A$, then $u$ is said to be incident out of $A$, and we write $u\in\omega^+(A)$.
-		Similarly, we define an arc incident into $A$, and the set $\omega^-(A)$.
-		Finally, the set of arcs incident to $A$ is denoted
+\begin{frame}{Arcs incident to a subset of arcs}
+	\begin{definition}[Arc incident out of $X\subset A(G)$]
+		If the initial endpoint of an arc $u$ belongs to $X\subset A(G)$ and if the terminal endpoint of arc $u$ does not belong to $X$, then $u$ is said to be \defword{incident out of} $X$; we write $u\in\omega^+(X)$
+		\vskip0.2cm
+		Similarly, we define an \defword{arc incident into} $X$ and the set $\omega^-(X)$
+		\vskip0.2cm
+		Finally, the set of arcs \defword{incident to} $X$ is denoted
 		\[
-		\omega(A) = \omega^+(A)\cup\omega^-(A).
+		\omega(X) = \omega^+(X)\cup\omega^-(X)
 		\]
 	\end{definition}
 \end{frame}
@@ -1002,15 +1004,18 @@ The value of the arc $uv \in A$ is $f(uv)$
 %%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Degrees in digraphs}
 \begin{frame}{Degree}
-	Let $v$ be a vertex of a digraph $G=(V,A)$.
+	Let $v$ be a vertex of a digraph $G=(V,A)$
 	\begin{definition}[{Outdegree of a vertex}]
-	The number of arcs directed away from a vertex $v$, in a digraph is called the \defword{outdegree} of $v$ and is written $d^+(v)$ or $outdeg(v)$.
+	The number of arcs directed away from a vertex $v$, in a digraph is called the \defword{outdegree} of $v$ and is written $d^+_G(v)$
 	\end{definition}
 	\begin{definition}[{Indegree of a vertex}]
-	The number of arcs directed towards a vertex $v$, in a digraph is called the \defword{indegree} of $v$ and is written $d^-(v)$ or $indeg(v)$.
+	The number of arcs directed towards a vertex $v$, in a digraph is called the \defword{indegree} of $v$ and is written $d^-_G(v)$
 	\end{definition}
 	\begin{definition}[{Degree}]
-	For any vertex $v$ in a digraph, the \defword{degree}\index{degree, digraph} of $v$ is defined as $d(v)=d^+(v)+d^-(v)$.
+	For any vertex $v$ in a digraph, the \defword{degree}\index{degree, digraph} of $v$ is defined as 
+	\[
+		d_G(v)=d^+_G(v)+d^-_G(v)
+	\]
 	\end{definition}
 \end{frame}
 
@@ -1018,19 +1023,19 @@ The value of the arc $uv \in A$ is $f(uv)$
 
 \begin{frame}
 	\begin{theorem}
-		For any (di)graph, the sum of the degrees of the vertices equals twice the number of edges (arcs).
+		For any (di)graph, the sum of the degrees of the vertices equals twice the number of edges (arcs)
 	\end{theorem}
 	\begin{corollary}
-		In any (di)graph, the sum of the degrees of the vertices is a nonnegative even integer.
+		In any (di)graph, the sum of the degrees of the vertices is a nonnegative even integer
 	\end{corollary}
 	\begin{theorem}
-		If $G$ is a digraph with a vertex set $V(G)=\{v_1, \dots , v_p\}$ and having $q$ arcs then $$\sum_{i=1}^p d^+(v_i)=\sum_{i=1}^p d^-(v_i)=q.$$
+		If $G$ is a digraph with vertex set $V(G)=\{v_1, \dots , v_p\}$ and $q$ arcs, then $$\sum_{i=1}^p d^+_G(v_i)=\sum_{i=1}^p d^-_G(v_i)=q$$
 	\end{theorem}
 \end{frame}
 
 \begin{frame}
 	\begin{definition}[{Regular digraph}]
-		A digraph $G$ is $r-$regular if $indeg(v)=outdeg(v)=r$ for each vertex $v$ of $G$.
+		A digraph $G$ is $r$-regular if $d_G^+(v)=d_G^-(v)=r$ for all $v\in V(G)$
 \end{definition}\end{frame}
 
 
