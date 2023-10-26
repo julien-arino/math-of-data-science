@@ -788,16 +788,16 @@ What is the chromatic number of the graph associated to the map?
 A directed graph (or \defword{digraph}) is a pair $G=(V,A)$ of sets such that
 \begin{itemize}
 \item $V$ is a set of points:  $V=\{v_1,v_2,v_3,..,v_p\}$
-\item $A$ is a set of ordered pairs of $V$: $A=\{(v_i,v_j),(v_i,v_k),\dots,(v_n,v_p)\}$, also noted $A=\{v_iv_j,v_iv_k,\dots,v_nv_p\}$
+\item $A$ is a set of ordered pairs of $V$: $A=\{(v_i,v_j),(v_i,v_k),\dots,(v_n,v_p)\}$ or $A=\{v_iv_j,v_iv_k,\dots,v_nv_p\}$
 \end{itemize}
 \end{definition}
 \begin{definition}[{Vertex}]
-The elements of $V$ are the vertices of the digraph $G$
-$V$ is the vertex set of the digraph $G$, also noted $V(G)$
+The elements of $V$ are the vertices of the digraph $G$.
+$V$ or $V(G)$ is the vertex set of the digraph $G$
 \end{definition}
 \begin{definition}[{Arc}]
 The elements of $A$ are the \defword{arcs} (directed edges) of the digraph $G$.
-$A$ is the arc set of the digraph $G$, also noted $A(G)$
+$A$ or $A(G)$ is the arc set of the digraph $G$
 \end{definition}
 \end{frame}
 
@@ -1496,13 +1496,10 @@ Elements of $L$ are given by
 \subsection{Linking graphs and linear algebra}
 
 \begin{frame}{Counting paths}
-	To count paths between vertices $x$ and $y$ in a graph, we use the adjacency matrix
-	\vfill
 	\begin{theorem}
 		$G$ a digraph and $M_A(G)$ its adjacency matrix. Denote $P=[p_{ij}]$ the matrix $P=M_A^k$. Then $p_{ij}$ is the number of distinct paths of length $k$ from $i$ to $j$ in $G$
 	\end{theorem}
 	\vfill
-	This provides an interesting connection with linear algebra
 	\begin{definition}[Irreducible matrix]
 		A matrix $A\in\M_n$ is \defword{reducible} if $\exists P\in\M_n$, permutation matrix, s.t. $P^TAP$ can be written in block triangular form. If no such $P$ exists, $A$ is \defword{irreducible}
 	\end{definition}
@@ -1516,12 +1513,13 @@ Elements of $L$ are given by
 	\begin{theorem}
 		Let $A$ be the adjacency matrix of a graph $G$ on $p$ vertices. 
 		A graph $G$ on $p$ vertices is connected $\iff$ $$I+A+A^2+\dots+A^{p-1}=C$$
-		has no zero entries.
+		has no zero entries
 	\end{theorem}
+	\vfill
 	\begin{theorem}
 		Let $M$ be the adjacency matrix of a digraph $D$ on $p$ vertices. 
 		A digraph $D$ on $p$ vertices is strongly connected $\iff$ $$I+M+M^2+\dots+M^{p-1}=C$$
-		has no zero entries.
+		has no zero entries
 	\end{theorem}
 \end{frame}
 
@@ -1707,19 +1705,25 @@ $0\leq A\in \M_n$ primitive $\iff$ $A^{n^2-2n+2}>0$
 \begin{frame}\frametitle{Trees}
 	\begin{definition}[Forest, trees and branches]
 	\begin{itemize}
-	\item A connected graph with no cycle is a \defword{tree}.
-	\item A tree is a connected acyclic graph, its edges are called \defword{branches}.
-	\item A graph (connected or not) without any cycle is a \defword{forest}. Each component is a tree. (A forest is a graph whose connected components are trees)
+	\item A connected graph with no cycle is a \defword{tree}
+	\item A tree is a connected acyclic graph, its edges are called \defword{branches}
+	\item A graph (connected or not) without any cycle is a \defword{forest}. Each component is a tree
 	\end{itemize}
 	\end{definition}
+	\vfill
+	(A forest is a graph whose connected components are trees)
+\end{frame}
 
-	\begin{theorem}[{Properties}]
+\begin{frame}
+	\begin{property}
 	\begin{itemize}
-	\item Every edge of a tree is a bridge (the deletion of any edge of a tree diconnects it)
-	\item Given two vertices $u $ and $v$ of a tree, there is an unique path linking $u$ to $v$.
-	\item A tree with $p$ vertices and $q$ edges satisfies $q=p-1$. Thus, a tree is minimally connected. 
+	\item Every edge of a tree is a bridge
+	\item Given two vertices $u $ and $v$ of a tree, there is an unique path linking $u$ to $v$
+	\item A tree with $p$ vertices and $q$ edges satisfies $q=p-1$. Thus, a tree is minimally connected
 	\end{itemize}
-	\end{theorem}
+	\end{property}
+	\vfill
+	(First property: the deletion of any edge of a tree diconnects it)
 \end{frame}
 
 
@@ -1727,7 +1731,8 @@ $0\leq A\in \M_n$ primitive $\iff$ $A^{n^2-2n+2}>0$
 	\begin{definition}[Spanning tree]
 	A \defword{spanning tree} of a connected graph $G$ is a subgraph of $G$ that contains all the vertices of $G$ and is a tree.
 	\end{definition}
-	A graph may have many spanning trees.
+	\vfill
+	A graph may have many spanning trees
 \end{frame}
 
 
@@ -1735,20 +1740,21 @@ $0\leq A\in \M_n$ primitive $\iff$ $A^{n^2-2n+2}>0$
 	\begin{definition}[{Value of a spanning tree}]
 	The \defword{value of a spanning tree} $T$ of order $p$ is
 	$$\sum_{i=1}^{p-1}f(e_i)$$
-	where $f$ is the function that maps the edge set into the set of real number.
+	where $f$ is the function that maps the edge set into $\IR$
 	\end{definition}
+	\vfill
 	\begin{definition}[{Minimal spanning tree}]
-	Let $G$ be an undirected network, and let $T$ be a \defword{minimal spanning tree} of $G$. Then $T$ is a spanning tree whose the value is minimum.
+	Let $G$ be an undirected network, and let $T$ be a \defword{minimal spanning tree} of $G$. Then $T$ is a spanning tree whose the value is minimum
 	\end{definition}
 \end{frame}
 
 \begin{frame}\frametitle{Algorithm to find a minimal spanning tree}
-Let $G=(V(G),E(G))$ be an undirected network, and let $T$ be a minimal spanning tree.
- 
+Let $G=(V(G),E(G))$ be an undirected network and $T$ be a minimal spanning tree 
+\vfill
 \begin{enumerate}
-\item sort the edges of $G$ in increasing order by value
+\item Sort the edges of $G$ in increasing order by value
 \item $T=(V(G),\emptyset)$
-\item for each edge $e$ in sorted order
+\item For each edge $e$ in sorted order
         if the endpoints of $e$ are disconnected in $T$
         add $e$ to $T$
 \end{enumerate}
@@ -1855,7 +1861,9 @@ $G=(V,U)$ strongly connected without loops and $>1$ vertex. For each $x\in V$, t
 \end{itemize}
 A path whose only nodes are its endpoints is a \defword{branch}
 \end{definition}
-\vfill
+\end{frame}
+
+\begin{frame}
 \begin{definition}[Minimally connected graph]
 $G$ is \defword{minimally connected} if it is strongly connected and removal of any arc destroys strong-connectedness
 \end{definition}
