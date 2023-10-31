@@ -96,16 +96,18 @@
 
 
 \begin{frame}{Graphs vs digraphs vs multigraphs vs multidigraphs vs ...}
-	Name-wise and notation-wise, this domain is a bit of a mess. We see definitions later, but as far as possible, in these notes:
+	Name-wise and notation-wise, this domain is a bit of a mess
+	\vfill
 	\begin{itemize}
-		\item The vertex set $V$ is essentially the only constant in what follows
-		\item An undirected graph is denoted $G=(V,E)$, where $E$ are the \emph{edges}
-		\item An undirected multigraph is denoted $G_M=(V,E)$. We will not be using these much
-		\item A \emph{directed graph} (or \emph{digraph}) is denoted $G=(V,A)$, where $A$ are the \emph{arcs}
-		\item A \emph{directed multigraph} (or \emph{multidigraph}) is denoted $G_M=(V,A)$
+		\item The vertex set $V$ is essentially the only constant
+		\item \emph{Undirected graph} $G=(V,E)$, where $E$ are the \emph{edges}
+		\item \emph{Undirected multigraph} $G_M=(V,E)$
+		\item \emph{Directed graph} (or \emph{digraph}) $G=(V,A)$, where $A$ are the \emph{arcs}
+		\item \emph{Directed multigraph} (or \emph{multidigraph}) $G_M=(V,A)$
 		\item Any of the above is called a \emph{graph} and is denoted $G=(V,X)$, when we seek generality
 	\end{itemize}
-And just to confuse the whole thing more: we often say \emph{graph} for \emph{unoriented graph}.
+	\vfill
+And just to confuse the whole thing more: we often say \emph{graph} for \emph{unoriented graph}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%
@@ -181,8 +183,8 @@ And just to confuse the whole thing more: we often say \emph{graph} for \emph{un
 	\begin{definition}[Graph]
 	An \defword{undirected graph} is a pair $G=(V,E)$ of sets such that
 	\begin{itemize}
-	\item $V$ is a set of points:  $V=\{v_1,v_2,v_3,..,v_p\}$
-	\item $E$ is a set of 2-element subsets of $V$: $E=\{\{v_i,v_j\},\{v_i,v_k\},\dots,\{v_n,v_p\}\}$, also noted $E=\{v_iv_j,v_iv_k,\dots,v_nv_p\}$
+	\item $V$ is a set of points:  $V=\{v_1,\ldots,v_p\}$
+	\item $E$ is a set of 2-element subsets of $V$: $E=\{\{v_i,v_j\},\{v_i,v_k\},\ldots,\{v_n,v_p\}\}$ or $E=\{v_iv_j,v_iv_k,\ldots,v_nv_p\}$
 	\end{itemize}
 	\end{definition}
 	\begin{definition}[Vertex]
@@ -251,13 +253,15 @@ And just to confuse the whole thing more: we often say \emph{graph} for \emph{un
 
 
 \begin{frame}\frametitle{Graph and binary relations}
-	A (simple) graph $G$ can be defined in term of a vertex set $V$ and an irreflexive and symmetric binary relation over $V$
-	\vfill
-	$R$ is symmetric if $(u,v)\in R$ $\Rightarrow$ $(v,u)\in R$  (or, in other words, $uRv\implies vRu$)
-	\vfill
-	Hence, $\{(u,v),(v,u)\}\in E(G)$ ($\{(u,v),(v,u)\}$ is an edge)
+	A simple graph $G$ can be defined in term of a vertex set $V$ and a binary relation over $V$ that is
+	\begin{itemize}
+		\item irreflexive ($\forall u\in V$, $u\cancel Ru$)
+		\item symmetric ($\forall u,v\in V$, $uRv\implies vRu$)
+	\end{itemize}
 	\vfill
 	The set of edges $E(G)$ is the set of symmetric pairs in $R$
+	\vfill
+	If $R$ is not irreflexive, the graph is not simple
 \end{frame}
 
 
@@ -342,14 +346,14 @@ If $G_1$ and $G_2$ are isomorphic graphs, then the degrees of vertices of $G_1$ 
 
 \begin{frame}\frametitle{Subgraph}
 \begin{definition}[Subgraph]
-Let $G=(V(G),E(G))$ be a graph.
-A graph $H=(V(H),E(H))$ is a \defword{subgraph} of $G$ if $V(H)\subseteq V(G)$ and $E(H)\subseteq E(G)$
+Let $G=(V,E)$ be a graph.
+A graph $H=(V(H),E(H))$ is a \defword{subgraph} of $G$ if $V(H)\subseteq V$ and $E(H)\subseteq E$
 \end{definition}
 \end{frame}
 
 
 \begin{frame}
-Let $G_1=(V_1,E_1)$ and $G_2=(V_2,E_2)$ be two graphs.
+Let $G_1=(V_1,E_1)$ and $G_2=(V_2,E_2)$ be two graphs
 \begin{definition}[{Union of $G_1$ and $G_2$}]
 $G_1\cup G_2=(V_1\cup V_2,E_1\cup E_2)$
 \end{definition}
@@ -357,10 +361,10 @@ $G_1\cup G_2=(V_1\cup V_2,E_1\cup E_2)$
 $G_1\cap G_2=(V_1\cap V_2,E_1\cap E_2)$
 \end{definition}
 \begin{definition}[{Disjoint graphs}]
-If $G_1\cap G_2=(\emptyset,\emptyset)= \emptyset$ (empty graph) then $G_1$ and $G_2$ are disjoint
+If $G_1\cap G_2=(\emptyset,\emptyset)= \emptyset$ (empty graph) then $G_1$ and $G_2$ are \defword{disjoint}
 \end{definition}
 \begin{definition}[{Complement of $G_1$}]
-The complement $\bar G_1$ of $G_1$ is the graph on $V_1$, with the edge set $E(\bar G_1)=[V_1]^2\backslash E_1$ ($e\in E(\bar G_1)$ $\iff$ $e\not \in E_1$)
+The \defword{complement} $\bar G_1$ of $G_1$ is the graph on $V_1$, with the edge set $E(\bar G_1)=[V_1]^2\backslash E_1$ ($e\in E(\bar G_1)$ $\iff$ $e\not \in E_1$)
 \end{definition}
 \end{frame}
 
@@ -397,7 +401,7 @@ A graph is \defword{connected}\index{connected graph} if every two vertices of $
 	\end{enumerate}
 	\vfill
 	\begin{definition}[Connected component of a graph]
-		The classes of the equivalence relation $\equiv$ partition $X$ into connected sub-graphs of $G$ called \defword{connected components} (or \defword{components} for short) of $G$
+		The classes of the equivalence relation $\equiv$ partition $V$ into connected sub-graphs of $G$ called \defword{connected components} (or \defword{components} for short) of $G$
 	\end{definition}
 	\vfill
 	A connected subgraph $H$ of a graph $G$ is a component of $G$ if $H$ is not contained in any connected subgraph of $G$ having more vertices or edges than $H$
@@ -475,7 +479,9 @@ The sets of vertices and edges determined by a trail is a subgraph
 
 \begin{frame}\frametitle{Distance between two vertices}
 \begin{definition}[{Distance between two vertices}]
-The distance $d(u,v)$ in $G=(V,E)$ between two vertices $u$ and $v$ is the length of the shortest path linking $u$ and $v$ in $G$. If no such path exists, we assume $d(u,v)=\infty$
+The \defword{distance} $d(u,v)$ in $G=(V,E)$ between two vertices $u$ and $v$ is the length of the shortest path linking $u$ and $v$ in $G$
+\vskip0.2cm
+If no such path exists, we assume $d(u,v)=\infty$
 \end{definition}
 \end{frame}
 
@@ -607,19 +613,19 @@ A graph is complete if every two of its vertices are adjacent
 	A simple, complete graph on $n$ vertices is called an $n$-\defword{clique} and is often denoted $K_n$
 \end{definition}
 \vfill
-Note that a complete graph of order $p$ is $(p-1)-$regular
+Note that a complete graph of order $p$ is $(p-1)$-regular
 \end{frame}
 
 \begin{frame}\frametitle{Bipartite graph}
 	\begin{definition}[Bipartite graph]
-		A graph is \defword{bipartite} if its vertices can be partitioned into two sets $X_1$ and $X_2$, s.t. no two vertices in the same set are adjacent.
-		This graph may be written $G=(X_1,X_2,U)$
+		A graph is \defword{bipartite} if its vertices can be partitioned into two sets $V_1$ and $V_2$, such that no two vertices in the same set are adjacent.
+		This graph may be written $G=(V_1,V_2,E)$
 	\end{definition}
 	\vfill
 	\begin{definition}[Complete bipartite graph]
 		A bipartite graph in which every two vertices from the 2 different partitions are adjacent is called a \defword{complete bipartite graph}
-		\vskip0.25cm
-		A simple, complete bipartite graph with $|X_1|=p$ and $|X_2|=q$ is often denoted $K_{p,q}$
+		\vskip0.2cm
+		We often denote $K_{p,q}$ a simple, complete bipartite graph with $|V_1|=p$ and $|V_2|=q$
 	\end{definition}
 \end{frame}
 
@@ -719,10 +725,10 @@ $G$ is \defword{$n$-colourable} if there exists a colouring of $G$ that uses $n$
 
 \begin{frame}
 \begin{definition}[{Chromatic number}]
-The \defword{chromatic number} $\chi (G)=$ of a graph $G$ is the minimal value $n$ for which an $n$-colouring of $G$ exists
+The \defword{chromatic number} $\chi (G)$ of a graph $G$ is the minimal value $n$ for which an $n$-colouring of $G$ exists
 \end{definition}
 \vfill
-\begin{theorem}[{Some properties}]
+\begin{property}
 \begin{itemize}
 \item $\chi (G)=1$ $\iff$ $G$ have no edges
 \item If $G=K_{n,m}$, then $\chi(G)=2$
@@ -731,7 +737,7 @@ The \defword{chromatic number} $\chi (G)=$ of a graph $G$ is the minimal value $
 where $\Delta (G)$ is the maximum degree of $G$
 \item If $G$ is a planar graph, then $\chi(G) \leq 4$
 \end{itemize}
-\end{theorem}
+\end{property}
 \end{frame}
 
 
@@ -782,16 +788,16 @@ What is the chromatic number of the graph associated to the map?
 A directed graph (or \defword{digraph}) is a pair $G=(V,A)$ of sets such that
 \begin{itemize}
 \item $V$ is a set of points:  $V=\{v_1,v_2,v_3,..,v_p\}$
-\item $A$ is a set of ordered pairs of $V$: $A=\{(v_i,v_j),(v_i,v_k),\dots,(v_n,v_p)\}$, also noted $A=\{v_iv_j,v_iv_k,\dots,v_nv_p\}$
+\item $A$ is a set of ordered pairs of $V$: $A=\{(v_i,v_j),(v_i,v_k),\dots,(v_n,v_p)\}$ or $A=\{v_iv_j,v_iv_k,\dots,v_nv_p\}$
 \end{itemize}
 \end{definition}
 \begin{definition}[{Vertex}]
-The elements of $V$ are the vertices of the digraph $G$
-$V$ is the vertex set of the digraph $G$, also noted $V(G)$
+The elements of $V$ are the vertices of the digraph $G$.
+$V$ or $V(G)$ is the vertex set of the digraph $G$
 \end{definition}
 \begin{definition}[{Arc}]
 The elements of $A$ are the \defword{arcs} (directed edges) of the digraph $G$.
-$A$ is the arc set of the digraph $G$, also noted $A(G)$
+$A$ or $A(G)$ is the arc set of the digraph $G$
 \end{definition}
 \end{frame}
 
@@ -958,8 +964,8 @@ The value of the arc $uv \in A$ is $f(uv)$
 \end{frame}
 
 \begin{frame}
-	\begin{definition}[Subgraph of $G$ generated by $A\subset X$]
-		The \defword{subgraph} of $G$ generated by $A$ is the graph with $A$ as its vertex set and with all the arcs in $G$ that have both their endpoints in $A$. If $G=(X,\Gamma)$ is a 1-graph, then the subgraph generated by $A$ is the 1-graph $G_A=(A,\Gamma_A)$ where
+	\begin{definition}[Subgraph of $G$ generated by $A\subset V$]
+		The \defword{subgraph} of $G$ generated by $A$ is the graph with $A$ as its vertex set and with all the arcs in $G$ that have both their endpoints in $A$. If $G=(V,\Gamma)$ is a 1-graph, then the subgraph generated by $A$ is the 1-graph $G_A=(A,\Gamma_A)$ where
 		\[
 		\Gamma_A(x)=\Gamma(x)\cap A\qquad (x\in A)
 		\]
@@ -1043,13 +1049,13 @@ The value of the arc $uv \in A$ is $f(uv)$
 	Let $G=(V,A)$ be a digraph.
 	\begin{definition}[Directed walk]
 	A \defword{directed walk} in a digraph $G$ is a non-empty alternating sequence $v_0 a_0 v_1 a_1 v_2 \dots a_{k-1} v_k$ of vertices and arcs in $G$ such that $a_i=(v_i, v_{i+1})$ for all $i<k$. 
-	This walk begins with $v_0$ and ends with $v_k$.
+	This walk begins with $v_0$ and ends with $v_k$
 	\end{definition}
 	\begin{definition}[{Length of a directed walk}]
-	The length of a directed walk is equal to the number of arcs in the directed walk.
+	The length of a directed walk is equal to the number of arcs in the directed walk
 	\end{definition}
 	\begin{definition}[{Closed walk}]
-	If $v_0=v_k$, the walk is closed.
+	If $v_0=v_k$, the walk is closed
 	\end{definition}
 \end{frame}
 
@@ -1057,13 +1063,13 @@ The value of the arc $uv \in A$ is $f(uv)$
 \begin{frame}\frametitle{Trails}
 	Let $G=(V,A)$ be a digraph.
 	\begin{definition}[{Directed trail}]
-	A directed walk in $G$ in which all arcs are distinct is a \defword{directed trail} in $G$.
+	A directed walk in $G$ in which all arcs are distinct is a \defword{directed trail} in $G$
 	\end{definition}
 	\begin{definition}[Directed path]
-	A directed walk in $G$ in which all vertices are distinct is a \defword{directed path} in $G$.
+	A directed walk in $G$ in which all vertices are distinct is a \defword{directed path} in $G$
 	\end{definition}
 	\begin{definition}[{Directed cycle}]
-	A closed walk is a \defword{directed cycle} if it contains at least three vertices and all its vertices are distinct except for $v_0=v_k$.
+	A closed walk is a \defword{directed cycle} if it contains at least three vertices and all its vertices are distinct except for $v_0=v_k$
 	\end{definition}
 \end{frame}
 
@@ -1104,119 +1110,6 @@ The value of the arc $uv \in A$ is $f(uv)$
 	\end{minipage}
 \end{frame}
 
-\begin{frame}
-	Given a cycle $\mu$, denote $\mu^+$ the set of all arcs in $\mu$ that are in the direction that the cycle is traversed and $\mu^-$ the set of all the other arcs in $\mu$
-	\vfill
-	Number the arcs in $G$ as $1,2,\ldots,m$, then the cycle $\mu$ is the vector
-	\[
-	\bm{\mu}=(\mu_1,\ldots,\mu_m)
-	\]
-	where
-	\[
-	\mu_i = \begin{cases}
-		0 & \textrm{if }i\not\in\mu^+\cup\mu^- \\
-		+1 & \textrm{if }i\in\mu^+ \\
-		-1 & \textrm{if }i\in\mu^-
-	\end{cases}
-	\]
-\end{frame}
-
-
-\begin{frame}{Cocycles}
-	Let $A\subset X$ be nonempty and denote $\omega^+(A)$ the set of arcs that have only their initial endpoint in $A$ and $\omega^-(A)$ the set of arcs that have only their terminal endpoint in $A$. Let
-	\[
-	\omega(A)=\omega^+(A)\cup\omega^-(A)
-	\]
-	\vfill
-	A \defword{cocycle} is a nonempty set of arcs of the form $\omega(A)$, partitioned into two sets $\omega^+(A)$ and $\omega^-(A)$
-	\vfill
-	An \defword{elementary cocycle} is the set of arcs joining two connected subgraphs $A_1$ and $A_2$ s.t. 
-	\begin{itemize}
-		\item $A_1,A_2\neq\emptyset$
-		\item $A_1\cap A_2=\emptyset$
-		\item $A_1\cup A_2=C$, with $C$ a connected component of the graph
-	\end{itemize}
-\end{frame}
-
-
-\begin{frame}{A colouring lemma}
-	\begin{lemma}[Arc colouring Lemma]\label{lemma:arc_colouring_lemma}
-		Consider $G$ with arcs $1,\ldots,m$. Colour arc 1 black and arbitrarily colour the remaining arcs red, black or green. Then exactly one of the following holds true:
-		\begin{enumerate}
-			\item there is an elementary cycle containing arc 1 and only red and black
-			arcs with the property that all black arcs in the cycle have the same
-			direction
-			\item there is an elementary cocycle containing arc 1 and only green and black
-			arcs, with the property that all black arcs in the cocycle have the same
-			direction
-		\end{enumerate}
-	\end{lemma}
-\end{frame}
-
-\begin{frame}{Independent cycles and cycle bases}
-	Consider cycles $\bmu^1,\bmu^2,\ldots,\bmu^k$. The cycles are \defword{independent} if
-	\begin{multline*}
-		c_1\bmu^1+c_2\bmu^2+\cdots+c_k\bmu^k=\b0 \\
-		\iff
-		c_1=c_2=\cdots=c_k=0
-	\end{multline*}
-	A \defword{cycle basis} is an independent set $\{\bmu^1,\bmu^2,\ldots,\bmu^k\}$ of cycles such that any cycle $\bmu$ can be written as
-	\[
-	\bmu= c_1\bmu^1+c_2\bmu^2+\cdots+c_k\bmu^k
-	\]
-	for $c_1,\ldots,c_k\in\IR$
-	\vfill
-	The constant $k$ is the \defword{cyclomatic number} of $G$, denoted $\nu(G)$
-\end{frame}
-
-
-\begin{frame}{Example}
-	\begin{minipage}{0.45\textwidth}
-		\centering
-		\def\skip{2.75cm}
-		\begin{tikzpicture}[scale=1, 
-			every node/.style={transform shape},
-			auto,
-			cloud/.style={minimum width={width("N-1")+2pt},
-				draw, ellipse},
-			connected/.style={dotted,-}]
-			%% Vertices
-			\node [cloud] at (0,0) (a) {$a$};
-			\node [cloud] at (1*\skip,0) (b) {$b$};
-			\node [cloud] at (0.5*\skip,1*\skip) (c) {$c$};
-			\node [cloud] at (1.5*\skip,1*\skip) (d) {$d$};
-			%% Arcs
-			\path [line, thick] (a) to node [midway, above] (TextNode) {1} (b);
-			\path [line, thick, bend left] (a) to node [midway, above] (TextNode) {2} (c);
-			\path [line, thick] (b) to node [midway, above] (TextNode) {6} (c);
-			\path [line, thick] (b) to node [midway, above] (TextNode) {4} (d);
-			\path [line, thick, bend left] (c) to node [midway, above] (TextNode) {3} (a);
-			\path [line, thick] (c) to node [midway, above] (TextNode) {5} (d);
-		\end{tikzpicture}
-	\end{minipage}
-	\begin{minipage}{0.45\textwidth}
-	Elementary cycles:
-	\begin{itemize}
-		\item $\bmu^1=(1,6,2)=[abca]$
-		\item $\bmu^2=(1,6,3)=[abca]$
-		\item $\bmu^3=(2,3)=[aca]$
-		\item $\bmu^4=(1,4,5,2)=[abdca]$
-		\item $\bmu^5=(6,5,4)=[acdb]$
-		\item $\bmu^6=(1,4,5,3)=[abdca]$
-	\end{itemize}
-	We have $\bmu^1-\bmu^2+\bmu^3=\b0$
-	\end{minipage} 
-\end{frame}
-
-\begin{frame}{An important result}
-	\begin{importanttheorem}\label{th:cyclomatic_nb}
-		Let $G$ be a graph with $n$ vertices, $m$ arcs and $p$ connected components. Then the cyclomatic number of $G$ is
-		\[
-		\nu(G)=m-n+p
-		\]
-	\end{importanttheorem}
-\end{frame}
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1251,10 +1144,10 @@ Denote $x\equiv y$ the relation  ``$x=y$, or $x\neq y$ and there exists a direct
 	\label{def:strong_components}
 	Sets of the form 
 	\[
-	A(x_0)=\{x:x\in X, x\equiv x_0\}	
+	A(x_0)=\{x:x\in V, x\equiv x_0\}	
 	\]
 	are equivalence classes. 
-	They partition $X$ into strongly connected sub-digraphs of $G$ called \defword{strongly connected components} (or \defword{strong components}) of $G$
+	They partition $V$ into strongly connected sub-digraphs of $G$ called \defword{strongly connected components} (or \defword{strong components}) of $G$
 \end{definition}
 A strong component in $G$ is a maximal strongly connected subdigraph of $G$
 \end{frame}
@@ -1274,8 +1167,8 @@ A strong component in $G$ is a maximal strongly connected subdigraph of $G$
 
 \begin{frame}\frametitle{Algorithm for determining strongly connected components in $G=(V,A)$}
 	\begin{itemize}
-	\item Determine the strongly connected component $C(v)$ containing the vertex $v$; if $V-C(v)$ is non-empty, re-do the same operation on the sub-digraph $G'=(V-C(v),A')$.
-	\item To determine $C(v)$, the strongly connected component containing $v$: let $v$ be a vertex of a digraph , which is not already in any strongly connected component. 
+	\item Determine the strongly connected component $C(v)$ containing the vertex $v$; if $V-C(v)$ is non-empty, re-do the same operation on the sub-digraph $G'=(V-C(v),A')$
+	\item To determine $C(v)$, the strongly connected component containing $v$: let $v$ be a vertex of a digraph , which is not already in any strongly connected component
 	%Set $C(v)=\{v\}$ the strongly connected component containing $v$.
 	%
 	%
@@ -1289,7 +1182,7 @@ A strong component in $G$ is a maximal strongly connected subdigraph of $G$
 	\item Mark with $-$ all predecessors (not already marked with $-$) of a vertex marked with $-$
 	\item Repeat until no more possible marking with $+$ or $-$
 	\end{enumerate}
-	All vertices marked with $\pm$ belong to the same strongly connected component $C(v)$ containing the vertex $v$.
+	All vertices marked with $\pm$ belong to the same strongly connected component $C(v)$ containing the vertex $v$
 	\end{itemize}
 \end{frame}
 
@@ -1302,7 +1195,7 @@ A strong component in $G$ is a maximal strongly connected subdigraph of $G$
 
 \begin{frame} 
 	\begin{definition}[Articulation set]
-		For a connected graph, a set $X$ of vertices is called an \defword{articulation set} (or a \defword{cutset}) if the subgraph of $G$ generated by $A-X$ is not connected
+		For a connected graph, a set $X$ of vertices is called an \defword{articulation set} (or a \defword{cutset}) if the subgraph of $G$ generated by $V-X$ is not connected
 	\end{definition}
 	\vfill
 	\begin{definition}[Stable set]
@@ -1363,9 +1256,9 @@ A connected graph $G=(V,E)$ is orientable $\iff$ $G$ contains no bridges
 
 
 \begin{frame}\frametitle{Adjacency matrix (undirected case)}
-	Let $G=(V,E)$ be a graph of order $p$ and size $q$, with vertices $v_1, v_2, \dots , v_p$ and edges $e_1, e_2, \dots , e_q$
+	Let $G=(V,E)$ be a graph of order $p$ and size $q$, with vertices $v_1, \ldots, v_p$ and edges $e_1, \dots , e_q$
 	\begin{definition}[{Adjacency matrix}]
-		The adjacency matrix is $$M_A=M_A(G)=[m_{ij}]$$ is a $p\times p$ matrix in which
+		The \defword{adjacency matrix} is $$M_A=M_A(G)=[m_{ij}]$$ is a $p\times p$ matrix in which
 		$$m_{ij}=\left \{ 
 		\begin{array}{cc}
 			1 & \textrm{if } v_i \textrm{ and } v_j \textrm{ are adjacent}\\
@@ -1380,40 +1273,18 @@ A connected graph $G=(V,E)$ is orientable $\iff$ $G$ contains no bridges
 	\begin{theorem}[{Adjacency matrix and degree}]
 		The sum of the entries in row $i$ of the adjacency matrix is the degree of $v_i$ in the graph
 	\end{theorem}
+	\vfill
+	We often write $A(G)$ and, reciprocally, if $A$ is an adjacency matrix, $G(A)$ the corresponding graph
+	\vfill
+	$G$ undirected $\implies$ $A(G)$ symmetric
+	\vfill
+	$A(G)$ has nonzero diagonal entries if $G$ is not simple
 \end{frame}
 
-\begin{frame}
-	\begin{definition}[Multiplicity of a pair]
-		The \defword{multiplicity} of a pair $x,y$ is the number $m_G^+(x,y)$ of arcs with initial endpoint $x$ and terminal endpoint $y$. Let
-		\begin{align*}
-			m_G^-(x,y) &= m_G^+(y,x) \\
-			m_G(x,y) &= m_G^+(x,y)+m_G^-(x,y)
-		\end{align*}
-		If $x\neq y$, then $m_G(x,y)$ is number of arcs with both $x$ and $y$ as endpoints. If $x=y$, then $m_G(x,y)$ equals twice the number of loops attached to vertex $x$. If $A,B\subset X$, $A\neq B$, let
-		\begin{align*}
-			m_G^+(A,B) &= \{u:u\in U, u=(x,y),x\in A,y\in B\} \\
-			m_G(A,B) &= m_G^+(A,B)+m_G^+(A,B)
-		\end{align*}
-	\end{definition}
-\end{frame}
-
-\begin{frame}{Adjacency matrix of a multigraph}
-\begin{definition}[Matrix associated with $G$]
-	If $G$ has vertices $x_1,x_2,\ldots,x_n$, then the \defword{matrix associated} with $G$ is 
-	\[
-	a_{ij}=m_G^+(x_i,x_j)
-	\]
-\end{definition}
-\vfill
-\begin{definition}[Adjacency matrix]
-	The matrix $a_{ij}+a_{ji}$ is the \defword{adjacency matrix} associated with $G$
-\end{definition}
-\end{frame}
-
-\begin{frame}\frametitle{Adjacency matrix}
-	Let $D=(V,A)$ be a digraph of order $p$ with vertices $v_1,\ldots,v_p$
+\begin{frame}\frametitle{Adjacency matrix (directed case)}
+	Let $G=(V,A)$ be a digraph of order $p$ with vertices $v_1,\ldots,v_p$
 	\begin{definition}[Adjacency matrix]
-	The \defword{adjacency matrix} $M=M(D)=[m_{ij}]$ is a $p\times p$ matrix in which
+	The \defword{adjacency matrix} $M=M(G)=[m_{ij}]$ is a $p\times p$ matrix in which
 	$$m_{ij}=\left \{ 
 	\begin{array}{cl}
 	1 & \textrm{if arc } v_iv_j \in A\\
@@ -1435,41 +1306,32 @@ A connected graph $G=(V,E)$ is orientable $\iff$ $G$ contains no bridges
 	\end{theorem}
 \end{frame}
 	
-\begin{frame}\frametitle{Incidence matrix}
-	Let $D=(V,A)$ be a digraph of order $p$, and size $q$, with vertices denoted by $v_1, v_2, \dots , v_p$, and arcs denoted $a_1, a_2, \dots , a_q$
-	\begin{definition}{Definition}
-	The incidence matrix $B=B(D)=[b_{ij}]$ is a $p\times q$ matrix in which
-	$$b_{ij}=\left \{ 
-	\begin{array}{cl}
-	1 & \textrm{if arc } a_j  \textrm{ is directed away from a vertex } v_i\\
-	-1 & \textrm{if arc } a_j  \textrm{ is directed towards a vertex } v_i\\
-	0 & \textrm{otherwise}
-	\end{array}
-	\right .
-	$$
+\begin{frame}
+	\begin{definition}[Multiplicity of a pair]
+		The \defword{multiplicity} of a pair $x,y$ is the number $m_G^+(x,y)$ of arcs with initial endpoint $x$ and terminal endpoint $y$. Let
+		\begin{align*}
+			m_G^-(x,y) &= m_G^+(y,x) \\
+			m_G(x,y) &= m_G^+(x,y)+m_G^-(x,y)
+		\end{align*}
+		If $x\neq y$, then $m_G(x,y)$ is number of arcs with both $x$ and $y$ as endpoints. If $x=y$, then $m_G(x,y)$ equals twice the number of loops attached to vertex $x$. If $A,B\subset V$, $A\neq B$, let
+		\begin{align*}
+			m_G^+(A,B) &= \{u:u\in U, u=(x,y),x\in A,y\in B\} \\
+			m_G(A,B) &= m_G^+(A,B)+m_G^+(A,B)
+		\end{align*}
 	\end{definition}
 \end{frame}
-	
-	
-	
-	
-\begin{frame}{Adjacency matrix}
-	We have already seen adjacency matrices, let us recall the definition here
-	\begin{definition}[Adjacency matrix]
-		$G$ a 1-graph, then the \defword{adjacency matrix} $A=[a_{ij}]$ is defined as follows
-		\[
-		a_{ij} = \begin{cases}
-			1 & \text{if arc } (i,j)\in U\\
-			0 & \text{otherwise}
-		\end{cases}
-		\]
-	\end{definition}
-	\vfill
-	We often write $A(G)$ and, reciprocally, if $A$ is an adjacency matrix, $G(A)$ the corresponding graph
-	\vfill
-	$G$ undirected $\implies$ $A(G)$ symmetric
-	\vfill
-	$A(G)$ has nonzero diagonal entries if $G$ is not simple
+
+\begin{frame}{Adjacency matrix of a multigraph}
+\begin{definition}[Matrix associated with $G$]
+	If $G$ has vertices $x_1,x_2,\ldots,x_n$, then the \defword{matrix associated} with $G$ is 
+	\[
+	a_{ij}=m_G^+(x_i,x_j)
+	\]
+\end{definition}
+\vfill
+\begin{definition}[Adjacency matrix]
+	The matrix $a_{ij}+a_{ji}$ is the \defword{adjacency matrix} associated with $G$
+\end{definition}
 \end{frame}
 
 \begin{frame}{Adjacency matrix (multigraph case)}
@@ -1509,10 +1371,13 @@ A connected graph $G=(V,E)$ is orientable $\iff$ $G$ contains no bridges
 	\end{itemize}
 \end{frame}
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Other matrices associated to a graph/digraph}
 
-\begin{frame}\frametitle{Incidence matrix}
-	Let $G=(V,E)$ be a graph of order $p$, and size $q$, with vertices denoted by $v_1, v_2, \dots , v_p$, and edges denoted $e_1, e_2, \dots , e_q$.
+\begin{frame}\frametitle{Incidence matrix (undirected case)}
+	Let $G=(V,E)$ be a graph of order $p$, and size $q$, with vertices $v_1, \ldots , v_p$, and edges $e_1, \ldots , e_q$
 	\begin{definition}[{Incidence matrix}]
 		The incidence matrix is $$B=B(G)=[b_{ij}]$$ is that $p\times q$ matrix in which
 		$$b_{ij}=\left \{ 
@@ -1524,33 +1389,26 @@ A connected graph $G=(V,E)$ is orientable $\iff$ $G$ contains no bridges
 		$$
 	\end{definition}
 	\begin{theorem}[{Incidence matrix and degrees}]
-		The sum of the entries in row $i$ of the incidence matrix is the degree of $v_i$ in the graph.
+		The sum of the entries in row $i$ of the incidence matrix is the degree of $v_i$ in the graph
 	\end{theorem}
 \end{frame}
 
-\begin{frame}{Incidence matrix}
-	\begin{definition}[Incidence matrix -- Undirected case]
-		$G=(X,E)$ an undirected graph of order $n$ with $p$ edges. The \defword{incidence} matrix of $G$ is an $n\times p$ matrix with vertices as rows and edges as columns and where $B=[b_{ij}]$ satisfies
-		\[
-		b_{ij} = \begin{cases}
-			1 & \text{if edge }j\text{ is incident to vertex }i \\
-			0 & \text{otherwise}
-		\end{cases}
-		\]
-	\end{definition}
-	\vfill
-	\begin{definition}[Incidence matrix -- Directed case]
-		$G=(X,U)$ a directed graph of order $n$ with $p$ arcs. The \defword{incidence} matrix of $G$ is an $n\times p$ matrix with vertices as rows and edges as columns and where $B=[b_{ij}]$ satisfies
-		\[
-		b_{ij} = \begin{cases}
-			1 & \text{if arc }j\text{ ``enters'' vertex }i \\
-			-1 & \text{if arc }j\text{ ``leaves'' vertex }i \\
-			0 & \text{otherwise}
-		\end{cases}
-		\]
+
+\begin{frame}\frametitle{Incidence matrix (directed case)}
+	Let $G=(V,A)$ be a digraph of order $p$ and size $q$, with vertices $v_1, \ldots , v_p$ and arcs $a_1, \ldots , a_q$
+	\begin{definition}[Incidence matrix]
+	The \defword{incidence matrix} $B=B(G)=[b_{ij}]$ is a $p\times q$ matrix in which
+	$$b_{ij}=\left \{ 
+	\begin{array}{cl}
+	1 & \textrm{if arc } a_j  \textrm{ is directed away from a vertex } v_i\\
+	-1 & \textrm{if arc } a_j  \textrm{ is directed towards a vertex } v_i\\
+	0 & \textrm{otherwise}
+	\end{array}
+	\right .
+	$$
 	\end{definition}
 \end{frame}
-
+	
 
 
 
@@ -1558,7 +1416,7 @@ A connected graph $G=(V,E)$ is orientable $\iff$ $G$ contains no bridges
 	We will come back to this later, but for now..
 	\vfill
 	\begin{definition}[Spectrum of a graph]
-		The \defword{spectrum} of a graph $G$ is the spectrum (set of eigenvalues) of its associated adjacency matrix $A(G)$
+		The \defword{spectrum} of a graph $G$ is the spectrum (set of eigenvalues) of its associated adjacency matrix $M(G)$
 	\end{definition}
 	\vfill
 	This is regardless of the type of adjacency matrix or graph
@@ -1585,14 +1443,17 @@ In a directed graph, the term ``degree'' may refer either to indegree (the numbe
 \end{frame}
 
 \begin{frame}{Laplacian matrix}
-\begin{definition}
-	$G=(X,U)$ a simple graph with $n$ vertices. The \defword{Laplacian} matrix is 
+\begin{definition}[Laplacian matrix]
+	$G=(V,A)$ a simple graph with $n$ vertices. The \defword{Laplacian} matrix is 
 	\[
-		L=D(G)-A(G)
+		L=D(G)-M(G)
 	\]
-	where $D(G)$ is the degree matrix and $A(G)$ is the adjacency matrix
+	where $D(G)$ is the degree matrix and $M(G)$ is the adjacency matrix
 \end{definition}
-$G$ simple graph $\implies$ $A(G)$ only contains 1 or 0 and its diagonal elements are all 0
+\end{frame}
+
+\begin{frame}{Laplacian matrix (continued)}
+$G$ simple graph $\implies$ $M(G)$ only contains 1 or 0 and its diagonal elements are all 0
 \vfill
 For directed graphs, either the indegree or outdegree is used, depending on the application
 \vfill
@@ -1609,23 +1470,25 @@ Elements of $L$ are given by
 
 
 \begin{frame}\frametitle{Distance matrix}
-	Let $G$ be a graph of order $p$ with vertices denoted by $v_1, v_2, \dots , v_p$.
+	Let $G$ be a graph of order $p$ with vertices $v_1, \ldots , v_p$
 	\begin{definition}[Distance matrix]
-	The distance matrix $DIST=DIST(D)=[d_{ij}]$ is a $p\times p$ matrix in which
-	$$d_{ij}=
-	dist(v_i,v_j).
+	The distance matrix $\Delta(G)=[d_{ij}]$ is a $p\times p$ matrix in which
+	$$\delta_{ij}=
+	d_G(v_i,v_j)
 	$$
-	Note $d_{ii}=0$ for $i=1,\cdots, p$.
+	Note $\delta_{ii}=0$ for $i=1,\ldots, p$
 	\end{definition}
+\end{frame}
 
-	\begin{definition}{Properties}
+\begin{frame}
+	\begin{property}
 		\begin{itemize}
-		\item $M$ is not necessarily symmetric.
+		\item $M$ is not necessarily symmetric
 		\item The sum of any column of $M$ is equal to the number of arcs directed towards $v_j$
-		\item The sum of the entries in row $i$ is equal to the number of arcs directed away from vertex $v_i$.
-		\item The $(i,j)-$entry of $M^n$ is equal to the number of walks of length $n$ from vertex $v_i$ to $v_j$.
+		\item The sum of the entries in row $i$ is equal to the number of arcs directed away from vertex $v_i$
+		\item The $(i,j)-$entry of $M^n$ is equal to the number of walks of length $n$ from vertex $v_i$ to $v_j$
 		\end{itemize}
-	\end{definition}
+	\end{property}
 \end{frame}
 
 
@@ -1633,13 +1496,10 @@ Elements of $L$ are given by
 \subsection{Linking graphs and linear algebra}
 
 \begin{frame}{Counting paths}
-	To count paths between vertices $x$ and $y$ in a graph, we use the adjacency matrix
-	\vfill
 	\begin{theorem}
-		$G$ a graph and $A(G)$ its adjacency matrix. Denote $P=[p_{ij}]$ the matrix $P=A^k$. Then $p_{ij}$ is the number of distinct paths of length $k$ from $i$ to $j$ in $G$
+		$G$ a digraph and $M_A(G)$ its adjacency matrix. Denote $P=[p_{ij}]$ the matrix $P=M_A^k$. Then $p_{ij}$ is the number of distinct paths of length $k$ from $i$ to $j$ in $G$
 	\end{theorem}
 	\vfill
-	This provides an interesting connection with linear algebra
 	\begin{definition}[Irreducible matrix]
 		A matrix $A\in\M_n$ is \defword{reducible} if $\exists P\in\M_n$, permutation matrix, s.t. $P^TAP$ can be written in block triangular form. If no such $P$ exists, $A$ is \defword{irreducible}
 	\end{definition}
@@ -1653,24 +1513,27 @@ Elements of $L$ are given by
 	\begin{theorem}
 		Let $A$ be the adjacency matrix of a graph $G$ on $p$ vertices. 
 		A graph $G$ on $p$ vertices is connected $\iff$ $$I+A+A^2+\dots+A^{p-1}=C$$
-		has no zero entries.
+		has no zero entries
 	\end{theorem}
+	\vfill
 	\begin{theorem}
 		Let $M$ be the adjacency matrix of a digraph $D$ on $p$ vertices. 
 		A digraph $D$ on $p$ vertices is strongly connected $\iff$ $$I+M+M^2+\dots+M^{p-1}=C$$
-		has no zero entries.
+		has no zero entries
 	\end{theorem}
 \end{frame}
 
 
-\begin{frame}{Perron-Frobenius theorem}
+\begin{frame}{Nonnegative matrix}
 \vfill
 $A=[a_{ij}]\in\M_n(\IR)$ \defword{nonnegative} if $a_{ij}\geq 0$ $\forall i,j=1,\ldots,n$; $\bv\in\IR^n$ nonnegative if $v_i\geq 0$ $\forall i=1,\ldots,n$.  \defword{Spectral radius} of $A$
 \[
 \rho(A) = \max_{\lambda\in\mathsf{Sp}(A)}\{|\lambda|\}
 \]
 $\mathsf{Sp}(A)$ the \defword{spectrum} of $A$
-\vfill
+\end{frame}
+
+\begin{frame}{Perron-Frobenius (PF) theorem}
 \begin{theorem}[PF -- Nonnegative case]
 $0\leq A\in\M_n(\IR)$. Then $\exists\bv\geq\b0$ s.t. 
 \[
@@ -1678,7 +1541,6 @@ $0\leq A\in\M_n(\IR)$. Then $\exists\bv\geq\b0$ s.t.
 \]
 \end{theorem}
 \vfill
-
 \begin{theorem}[PF -- Irreducible case]
 	\label{th:PF}
 	Let $0\leq A\in \M_n(\IR)$ irreducible. Then $\exists\bv>\b0$ s.t.
@@ -1702,8 +1564,10 @@ with $k$ the smallest integer for which this is true.
 $A$ \defword{imprimitive} if it is not primitive
 \end{definition}
 \vfill
-$A$ primitive $\implies$ $A$ irreducible; converse false
-\vfill
+$A$ primitive $\implies$ $A$ irreducible; the converse is false
+\end{frame}
+
+\begin{frame}
 \begin{theorem}
 	$A\in\M_n(\IR)$ irreducible and $\exists i=1,\ldots,n$ s.t. $a_{ii}>0$ $\implies$ $A$ primitive
 \end{theorem}
@@ -1769,30 +1633,31 @@ gcd of lengths of closed walks is 1 $\implies$ $A$ primitive
 \end{frame}
 
 \begin{frame}
+	Let $\b0\leq A\in \M_n$
 \begin{theorem}
-$0\leq A\in \M_n$. $A$ primitive $\implies$ $A^k>0$ for some $0<k\leq (n-1)n^n$
+$A$ primitive $\implies$ $\exists\ 0<k\leq (n-1)n^n$ such that $A^k>0$
 \end{theorem}
 \vfill
 \begin{theorem}
-$A\geq 0$ primtive. Suppose the shortest simple directed cycle in $G(A)$ has length $s$, then primitivity index is $\leq n+s(n-1)$
+If $A$ is primtive and the shortest simple directed cycle in $G(A)$ has length $s$, then the primitivity index is $\leq n+s(n-1)$
 \end{theorem}
 \vfill
 \begin{theorem}
-$0\leq A\in \M_n$ primitive $\iff$ $A^{n^2-2n+2}>0$
+$A$ primitive $\iff$ $A^{n^2-2n+2}>\b0$
 \end{theorem}
 \vfill
 \begin{theorem}
-	$0\leq A\in \M_n$ irreducible. $A$ has $d$ positive entries on the diagonal $\implies$ primitivity index $\leq 2n-d-1$
+	If $A$ is irreducible and has $d$ positive entries on the diagonal, then the primitivity index $\leq 2n-d-1$
 \end{theorem}
 \end{frame}
 
 
 \begin{frame}
 \begin{theorem}\label{th:PF_allCases}
-	$0\leq A\in\M_n$, $\lambda_P=\rho(A)$ the Perron root of $A$, $\bv_P$ and $\bw_P$ the corresponding right and left Perron vectors of $A$, respectively, $d$ the index of imprimitivity of $A$ (with $d=1$ when $A$ is primitive) and $\lambda_j\in\sigma(A)$ the spectrum of $A$, with $j=2,\ldots,n$ unless otherwise specified (assuming $\lambda_1=\lambda_P$) 
+	$\b0\leq A\in\M_n$, $\lambda_P=\rho(A)$ the Perron root of $A$, $\bv_P$ and $\bw_P$ the corresponding right and left Perron vectors of $A$, respectively, $d$ the index of imprimitivity of $A$ (with $d=1$ when $A$ is primitive) and $\lambda_j\in\sigma(A)$ the spectrum of $A$, with $j=2,\ldots,n$ unless otherwise specified (assuming $\lambda_1=\lambda_P$) 
 	\vskip0.5cm
 	{\centering
-		\begin{tikzpicture}[scale=0.75, every node/.style={transform shape},
+		\begin{tikzpicture}[scale=0.62, every node/.style={transform shape},
 			auto,
 		cloud/.style={minimum width={width("N-1")+2pt},
 			draw, rectangle}]
@@ -1841,19 +1706,25 @@ $0\leq A\in \M_n$ primitive $\iff$ $A^{n^2-2n+2}>0$
 \begin{frame}\frametitle{Trees}
 	\begin{definition}[Forest, trees and branches]
 	\begin{itemize}
-	\item A connected graph with no cycle is a \defword{tree}.
-	\item A tree is a connected acyclic graph, its edges are called \defword{branches}.
-	\item A graph (connected or not) without any cycle is a \defword{forest}. Each component is a tree. (A forest is a graph whose connected components are trees)
+	\item A connected graph with no cycle is a \defword{tree}
+	\item A tree is a connected acyclic graph, its edges are called \defword{branches}
+	\item A graph (connected or not) without any cycle is a \defword{forest}. Each component is a tree
 	\end{itemize}
 	\end{definition}
+	\vfill
+	(A forest is a graph whose connected components are trees)
+\end{frame}
 
-	\begin{theorem}[{Properties}]
+\begin{frame}
+	\begin{property}
 	\begin{itemize}
-	\item Every edge of a tree is a bridge (the deletion of any edge of a tree diconnects it)
-	\item Given two vertices $u $ and $v$ of a tree, there is an unique path linking $u$ to $v$.
-	\item A tree with $p$ vertices and $q$ edges satisfies $q=p-1$. Thus, a tree is minimally connected. 
+	\item Every edge of a tree is a bridge
+	\item Given two vertices $u $ and $v$ of a tree, there is an unique path linking $u$ to $v$
+	\item A tree with $p$ vertices and $q$ edges satisfies $q=p-1$. Thus, a tree is minimally connected
 	\end{itemize}
-	\end{theorem}
+	\end{property}
+	\vfill
+	(First property: the deletion of any edge of a tree diconnects it)
 \end{frame}
 
 
@@ -1861,7 +1732,8 @@ $0\leq A\in \M_n$ primitive $\iff$ $A^{n^2-2n+2}>0$
 	\begin{definition}[Spanning tree]
 	A \defword{spanning tree} of a connected graph $G$ is a subgraph of $G$ that contains all the vertices of $G$ and is a tree.
 	\end{definition}
-	A graph may have many spanning trees.
+	\vfill
+	A graph may have many spanning trees
 \end{frame}
 
 
@@ -1869,20 +1741,21 @@ $0\leq A\in \M_n$ primitive $\iff$ $A^{n^2-2n+2}>0$
 	\begin{definition}[{Value of a spanning tree}]
 	The \defword{value of a spanning tree} $T$ of order $p$ is
 	$$\sum_{i=1}^{p-1}f(e_i)$$
-	where $f$ is the function that maps the edge set into the set of real number.
+	where $f$ is the function that maps the edge set into $\IR$
 	\end{definition}
+	\vfill
 	\begin{definition}[{Minimal spanning tree}]
-	Let $G$ be an undirected network, and let $T$ be a \defword{minimal spanning tree} of $G$. Then $T$ is a spanning tree whose the value is minimum.
+	Let $G$ be an undirected network, and let $T$ be a \defword{minimal spanning tree} of $G$. Then $T$ is a spanning tree whose the value is minimum
 	\end{definition}
 \end{frame}
 
 \begin{frame}\frametitle{Algorithm to find a minimal spanning tree}
-Let $G=(V(G),E(G))$ be an undirected network, and let $T$ be a minimal spanning tree.
- 
+Let $G=(V(G),E(G))$ be an undirected network and $T$ be a minimal spanning tree 
+\vfill
 \begin{enumerate}
-\item sort the edges of $G$ in increasing order by value
+\item Sort the edges of $G$ in increasing order by value
 \item $T=(V(G),\emptyset)$
-\item for each edge $e$ in sorted order
+\item For each edge $e$ in sorted order
         if the endpoints of $e$ are disconnected in $T$
         add $e$ to $T$
 \end{enumerate}
@@ -1905,7 +1778,7 @@ an undirected network $G$
 
 \begin{frame}
 \begin{theorem}[Characterisation of trees]\label{th:characterisation_tree}
-$H=(X,U)$ a graph of order $|X|=n>2$. The following are equivalent and all characterise a tree :
+$H=(V,U)$ a graph of order $|V|=n>2$. The following are equivalent and all characterise a tree :
 \begin{enumerate}
 \item $H$ connected and has no cycles
 \item $H$ has $n-1$ arcs and no cycles
@@ -1919,67 +1792,6 @@ connected
 \end{frame}
 
 
-\begin{frame}{Proof of Theorem~\ref{th:characterisation_tree}}
-We make abundant use of Theorem~\ref{th:cyclomatic_nb}
-\vfill
-[$\mathbf{1\implies 2}$] 
-Let $p$ be the number of connected components, $m$ the number of arcs and $\nu(H)$ the cyclomatic number. Since $H$ connected, $p=1$. Since $H$ has no cycles, $\nu(H)=m-n+p=0$
-
-$\implies$ $m=n-p=n-1$
-\vfill
-
-[$\mathbf{2\implies 3}$] 
-Assume $H$ has no cycles ($\nu(H)=0$) and has $n-1$ arcs ($m=n-1$). Then, since
-\[
-\nu(H)=m-n+p
-\]
-$p=\nu(H)-m+n=0-(n-1)-n=1$, i.e., $H$ is connected
-\end{frame}
-
-\begin{frame}{Proof of Theorem~\ref{th:characterisation_tree} (cont.)}
-[$\mathbf{3\implies 4}$]
-Assume $H$ connected ($p=1$) and contains exactly $n-1$ arcs ($m=n-1$). Then
-\[
-\nu(H)=m-n+p=(n-1)-n+1=0
-\]
-and $H$ has no cycles
-\vskip0.5cm
-Now add an arc, i.e., suppose $m=n$. Then $\nu(H)=m-n+p=n-n+1=1$ and there is one cycle in the new graph
-\end{frame}
-
-
-\begin{frame}{Proof of Theorem~\ref{th:characterisation_tree} (cont.)}
-[$\mathbf{4\implies 5}$]
-Assume $H$ has no cycles ($\nu(H)=0$) and that addition of an arc to $H$ creates exactly one cycle
-\vskip0.5cm
-Suppose $H$ not connected. Then there are two vertices, say $a$ and $b$, that are not connected and adding the arc $(a,b)$ does not create a cycle, a contradiction with ``addition of an arc to $H$ creates exactly one cycle'' 
-
-$\implies$ $p=1$. Since $\nu(H)=0$, this implies that $m=n-1$
-\vskip0.5cm
-Now suppose we remove an arc. We obtain graph $H'$ with
-\[
-m'=n'-2\quad\text{and}\quad \nu(H')=0
-\]
-So
-\[
-p'=\nu(H')-m'+n'=2
-\]
-$\implies$ $H'$ not connected
-\end{frame}
-
-\begin{frame}{Proof of Theorem~\ref{th:characterisation_tree} (cont.)}
-[$\mathbf{5\implies 6}$]
-Assume $H$ connected and if any arc is removed, the remaining graph is not connected
-\vskip0.5cm
-Any vertices $a,b\in X$ are connected by a chain (since $H$ connected). That chain is unique: suppose there is a second chain connecting $a$ to $b$; then removing an arc from that chain does not disconnect the graph, since there is still the original chain connecting $a$ and $b$
-\vfill
-[$\mathbf{6\implies 1}$]
-Assume every pair of vertices of $H$ is connected by one and only one chain
-
-Now assume $H$ has a cycle. Then at least one pair of vertices would be connected by two distinct chains, a contradiction
-$\qed$
-\end{frame}
-
 
 \begin{frame}
 \begin{definition}[Pendant vertex]
@@ -1989,34 +1801,14 @@ A vertex is \defword{pendant} if it is adjacent to exactly one other vertex
 \begin{theorem}
 A tree of order $n\geq 2$ has at least two pendant vertices
 \end{theorem}
-\vfill
-\textbf{Proof:} 
-Suppose $H$ tree of order $n\geq 2$ with 0 or 1 pendant vertices
-\vskip0.5cm
-Consider a traveller traversing the graph edges starting from a pendant vertex (if there is one) or anywhere if there is no pendant vertex
-\vskip0.5cm
-If he does not allow himself to use same edge twice, he cannot go to the same vertex twice ($H$ has no cycle)
-\vskip0.5cm
-If he arrives at vertex $x$, he can depart $x$ using a new edge ($x$ is not a pendant vertex as there are 0 or 1 pendant vertex and if there is 1, that's where he started)
-\vskip0.5cm
-So the trip continues without end, which is impossible as $H$ finite $\qed$
 \end{frame}
 
 \begin{frame}
 \begin{theorem}\label{th:partial_graph_tree_G_connected}
-A graph $G=(X,U)$ has a partial graph that is a tree $\iff$ $G$ connected
+A graph $G=(V,U)$ has a partial graph that is a tree $\iff$ $G$ connected
 \end{theorem}
 \vfill
 Recall that a partial graph is a graph generated by a subset of the arcs (Definition~\ref{def:partial_graph} slide~\pageref{def:partial_graph})
-\vfill
-\textbf{Proof:}
-Suppose $G$ not connected. Then no partial graph of $G$ is connected $\implies$ there is no partial graph of $G$ that is a tree [we want to show $P\iff Q$, we start with $\wedge Q\implies \wedge P$ (which $\iff$ $P\implies Q$)]
-\vskip1cm
-Suppose $G$ connected. Look for an arc whose removal does not disconnect $G$
-\begin{itemize}
-\item if there is none, $G$ is a tree by Theorem~\ref{th:characterisation_tree}(5)
-\item if there is, remove it and look for another one, etc. When no more arcs can be removed, the remaining graph is a tree with vertex set $X$ $\qed$
-\end{itemize}
 \end{frame}
 
 \begin{frame}{Spanning tree}
@@ -2044,23 +1836,6 @@ $G$ connected graph with $\geq 1$ arc. TFAE
 \item $G$ contains no cocircuits
 \end{enumerate}
 \end{theorem}
-\vfill
-\textbf{Proof:}
-[$\mathbf{1\implies 2}$]
-$(x,y)$ an arc of $G$; there is a path from $y$ to $x$ ($G$ strongly connected), so arc $(x,y)$ is contained in a circuit of $G$
-
-[$\mathbf{2\implies 3}$]
-Suppose $G$ has a cocircuit containing arc $(x,y)$; then $G$ cannot have
-a circuit containing this arc by the Arc Colouring Lemma (Lemma~\ref{lemma:arc_colouring_lemma} slide~\pageref{lemma:arc_colouring_lemma}) with
-all arcs coloured black. This contradicts (2)
-
-[$\mathbf{3\implies 1}$]
-Assume $G$ connected graph without cocircuits, but $G$ not strongly connected.
-Since $G$ not strongly connected, it has $>1$ strongly
-connected component. 
-Since $G$ connected, there exist two distinct strongly connected components that are joined by an arc $(a,b)$. Arc $(a,b)$ is not contained in any circuit because otherwise $a$ and $b$ would be in the same strongly connected component. 
-By Lemma~\ref{lemma:arc_colouring_lemma}, arc $(a,b)$ is contained in some co-
-circuit. This contradicts (3)\qed
 \end{frame}
 
 
@@ -2080,40 +1855,31 @@ If $G$ is a strongly connected graph of order $n$, then $G$ has a cycle basis of
 
 \begin{frame}
 \begin{definition}[Node, anti-node, branch]
-$G=(X,U)$ strongly connected without loops and $>1$ vertex. For each $x\in X$, there is a path from it and a path to it so $x$ has at least 2 incident arcs. Specifically,
+$G=(V,U)$ strongly connected without loops and $>1$ vertex. For each $x\in V$, there is a path from it and a path to it so $x$ has at least 2 incident arcs. Specifically,
 \begin{itemize}
-\item $x\in X$ with $>2$ incident arcs is a \defword{node}
-\item $x\in X$ with $2$ incident arcs is an \defword{anti-node}
+\item $x\in V$ with $>2$ incident arcs is a \defword{node}
+\item $x\in V$ with $2$ incident arcs is an \defword{anti-node}
 \end{itemize}
 A path whose only nodes are its endpoints is a \defword{branch}
 \end{definition}
-\vfill
+\end{frame}
+
+\begin{frame}
 \begin{definition}[Minimally connected graph]
 $G$ is \defword{minimally connected} if it is strongly connected and removal of any arc destroys strong-connectedness
 \end{definition}
 A minimally connected graph is 1-graph without loops
 \vfill
 \begin{definition}[Contraction]
-$G=(X,U)$. The \defword{contraction} of the set $A\subset X$ of vertices consists in replacing $A$ by a single vertex $a$ and replacing each arc into (resp. out of) $A$ by an arc with same index into (resp. out of) $a$
+$G=(V,U)$. The \defword{contraction} of the set $A\subset V$ of vertices consists in replacing $A$ by a single vertex $a$ and replacing each arc into (resp. out of) $A$ by an arc with same index into (resp. out of) $a$
 \end{definition}
 \end{frame}
 
 
 \begin{frame}
 \begin{theorem}
-$G$ minimally connected, $A\subset X$ generating a strongly connected subgraph of $G$. Then the contraction of $A$ gives a minimally connected graph
+$G$ minimally connected, $A\subset V$ generating a strongly connected subgraph of $G$. Then the contraction of $A$ gives a minimally connected graph
 \end{theorem}
-\vfill
-\textbf{Proof:}
-First, show that contraction of $A$ yields a 1-graph. 
-If this were not the case, there would exist $x\not\in A$ and $a,a'\in A$ s.t. $(x,a),(x,a')\in U$ (or, with $(a,x),(a',x)\in U$ but this would not
-change the proof). 
-If one of these arcs is removed, the graph remains strongly
-connected. Thus, $G$ is not minimally connected, a contradiction
-
-\vskip1cm
-Now show that the contraction of $A$ yields a graph $G'$ that is minimally connected. Clearly, $G'$ strongly connected. If an arc $u$ is removed, the remaining graph is not strongly connected, since the graph
-$(X,U-\{u\})$ not strongly connected \qed
 \end{frame}
 
 \begin{frame} 
@@ -2129,19 +1895,19 @@ $G$ minimally connected of order $n\geq 2$ $\implies$ $G$ has $\geq 2$ anti-node
 \end{theorem}
 \vfill
 \begin{theorem}
-$G=(X,U)$. Then the graph $C'$ obtained by contracting each strongly connected component of $G$ contains no circuits
+$G=(V,U)$. Then the graph $C'$ obtained by contracting each strongly connected component of $G$ contains no circuits
 \end{theorem}
 \end{frame}
 
 
 \begin{frame}{Arborescences}
 \begin{definition}[Root]
-Vertex $a\in X$ in $G=(X,U)$ is a \defword{root} if all vertices of $G$ can be reached by paths \emph{starting} from $a$
+Vertex $a\in V$ in $G=(V,U)$ is a \defword{root} if all vertices of $G$ can be reached by paths \emph{starting} from $a$
 \end{definition}
 Not all graphs have roots
 \vfill
 \begin{definition}[Quasi-strong connectedness]
-$G$ is \defword{quasi-strongly connected} if $\forall x,y\in X$, exists $z\in X$ (denoted $z(x,y)$ to emphasize dependence on $x,y$) from which there is a path to $x$ and a path to $y$
+$G$ is \defword{quasi-strongly connected} if $\forall x,y\in V$, exists $z\in V$ (denoted $z(x,y)$ to emphasize dependence on $x,y$) from which there is a path to $x$ and a path to $y$
 \end{definition}
 Strongly connected $\implies$ quasi-strongly connected (take $z(x,y)=x$); converse not true
 
@@ -2154,7 +1920,7 @@ An \defword{arborescence} is a tree that has a root
 \end{definition}
 \vfill
 \begin{lemma}
-$G=(X,U)$ has a root $\iff$ $G$ quasi-strongly connected
+$G=(V,U)$ has a root $\iff$ $G$ quasi-strongly connected
 \end{lemma}
 \end{frame}
 
@@ -2165,14 +1931,14 @@ $H$ graph of order $n>1$. TFAE (and all characterise an arborescence)
 \item $H$ quasi-strongly connected without cycles
 \item $H$ quasi-strongly connected with $n-1$ arcs
 \item $H$ tree having a root $a$
-\item $\exists a\in X$ s.t. all other vertices are connected with $a$ by 1 and only 1 path from $a$
+\item $\exists a\in V$ s.t. all other vertices are connected with $a$ by 1 and only 1 path from $a$
 \item $H$ quasi-strongly connected and loses quasi-strong connectedness if any arc is removed
-\item $H$ quasi-strongly connected and $\exists a\in X$ s.t.
+\item $H$ quasi-strongly connected and $\exists a\in V$ s.t.
 \begin{align*}
 d_H^-(a)&=0 \\
 d_H^-(x)&=1\qquad \forall x\neq a
 \end{align*}
-\item $H$ has no cycles and $\exists a\in X$ s.t.
+\item $H$ has no cycles and $\exists a\in V$ s.t.
 \begin{align*}
 d_H^-(a)&=0 \\
 d_H^-(x)&=1\qquad \forall x\neq a
@@ -2188,7 +1954,7 @@ $G$ has a partial graph that is an arborescence $\iff$ $G$ quasi-strongly connec
 \end{theorem}
 \vfill
 \begin{theorem}
-$G=(X,E)$ simple connected graph and $x_1\in X$. It is possible to direct all edges of $E$ so that the resulting graph $G_0=(X,U)$ has a spanning tree $H$ s.t.
+$G=(V,E)$ simple connected graph and $x_1\in V$. It is possible to direct all edges of $E$ so that the resulting graph $G_0=(V,U)$ has a spanning tree $H$ s.t.
 \begin{enumerate}
 	\item $H$ is an arborescence with root $x_1$
 	\item The cycles associated with $H$ are circuits
