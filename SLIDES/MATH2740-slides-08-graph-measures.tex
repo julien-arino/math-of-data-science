@@ -76,6 +76,37 @@ To compare graphs, understand their properties, we need ways to describe their s
 	So in the following, I will assume that we have used the command \code{library(igraph)}
 \end{frame}
 
+\begin{frame}{\code{igraph} documentation}
+	These days, there is an issue with the \code{igraph} documentation site, whereas normally it is quite good
+	\vfill
+	You can find it \href{https://igraph.org/r/doc/}{here}
+	\vfill
+	Do read the \href{https://cran.r-project.org/web/packages/igraph/vignettes/igraph.html}{R vignette}, though, as well as \href{https://cran.r-project.org/web/packages/igraph/igraph.pdf}{the manual}
+\end{frame}
+
+\begin{frame}{Setting up a graph}
+	There are multiple ways to set up a graph in \code{igraph}. Of course, you will need \code{library(igraph)}
+	\vfill
+	Two main mechanisms:
+	\begin{enumerate}
+		\item Use a function to create a \emph{known} graph 
+		\item Implement your own graph, describing the vertices and the edges/arcs
+	\end{enumerate}
+\end{frame}
+
+\begin{frame}{Known graphs (a few)}
+	\begin{itemize}
+		\item \code{make\_lattice}
+		\item \code{make\_ring}
+		\item \code{make\_star}
+		\item \code{make\_tree}
+		\item \code{make\_line\_graph}
+		\item \code{make\_full\_graph}
+		\item \code{make\_bipartite\_graph}
+		\item \code{make\_empty\_graph}
+	\end{itemize}
+\end{frame}
+
 
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
