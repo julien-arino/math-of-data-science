@@ -374,6 +374,7 @@ The complement $\bar G_1$ of $G_1$ is the graph on $V_1$, with the edge set $E(\
 \begin{definition}[{Connected vertices}]
 Two vertices $u$ and $v$ in a graph $G$ are \defword{connected}\index{connected vertices} if $u=v$, or if $u\not =v$ and there exists a path in $G$ that links $u$ and $v$
 \end{definition}
+(For \emph{path}, see Definition~\ref{def:path} later)
 \vfill
 \begin{definition}[{Connected graph}]
 A graph is \defword{connected}\index{connected graph} if every two vertices of $G$ are connected; otherwise, $G$ is \defword{disconnected}\index{disconnected graph}
@@ -465,7 +466,7 @@ If $v_0=v_k$, the walk is \defword{closed}
 If the edges in the walk are all distinct, it defines a \defword{trail} in $G=(V,E)$
 \end{definition}
 \vfill
-\begin{definition}[{Path}]
+\begin{definition}[{Path}]\label{def:path}
 If the vertices in the walk are all distinct, it defines a \defword{path} in $G$
 \end{definition}
 \vfill
@@ -590,7 +591,7 @@ RESULT: a Eulerian circuit
 \end{theorem}
 \vfill
 \begin{theorem}[Ore's theorem]
-	If $G$ is a graph of order $p\geq 3$ such that for all distinct nonadjacent vertices $u$ and $v$ of $G$, $$deg(u)+deg(v)\geq p,$$ 
+	If $G$ is a graph of order $p\geq 3$ such that for all distinct nonadjacent vertices $u$ and $v$ of $G$, $$deg(u)+deg(v)\geq p$$ 
 	then $G$ is Hamiltonian
 \end{theorem}
 \end{frame}
@@ -695,7 +696,7 @@ where $\delta(G)$ is the minimal degree of $G$.
 $K_{3,3}$ and $K_5$ are nonplanar
 \vfill
 \begin{theorem}[{Kuratowski Theorem}]
-A graph $G$ i planar $\iff$ it contains no subgraph isomorphic to $K_5$ or $K_{3,3}$ or any subdivision of $K_5$ or $K_{3,3}$
+A graph $G$ is planar $\iff$ it contains no subgraph isomorphic to $K_5$ or $K_{3,3}$ or any subdivision of $K_5$ or $K_{3,3}$
 \end{theorem}
 \vfill
 \textbf{Note:} If a graph $G$ is nonplanar and $G$ is a subgraph of $G'$, then $G'$ is also nonplanar
