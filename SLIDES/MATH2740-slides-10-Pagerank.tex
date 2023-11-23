@@ -1,8 +1,7 @@
 %\PassOptionsToPackage{landscape}{geometry}
 \documentclass[aspectratio=169]{beamer}
 
-%\input{nonLightBoard_slides.tex}
-\input{slides_setup_nonLightBoard.tex}
+\input{slides_setup_nonLightBoard_whiteBG.tex}
 
 \title{Markov chains, Eigenvector centrality \& PageRank}
 \date{}
@@ -31,7 +30,8 @@
 	\vfill
 	Recursive definition: the importance of a page refers back to the importance of other pages that link to it
 	\vfill
-	\textbf{Random surfer} model: a random surfer on the web follows links from page to page. Page rank $\simeq$ $\mathbb{P}$ random surfer lands on a particular page. Popular page $\implies$ higher probability to go there
+	\textbf{Random surfer} model: a random surfer on the web follows links from page to page. Page rank $\simeq$ $\mathbb{P}$ random surfer lands on a particular page. Popular page $\implies$ higher probability to go there.  
+	($\IP$ stands for ``probability'')
 	\vfill Example of a Markov chain
 \end{frame}
 
@@ -51,36 +51,36 @@
 
 
 \begin{frame}
-Conduct an experiment with a set of $r$ possible outcomes
+Conduct an experiment with a set of $n$ possible outcomes
 \[
-S=\{S_1,\dots, S_r\}
+S=\{S_1,\dots, S_n\}
 \]
 \vfill
-Experiment repeated $n$ times (with $n$ large, potentially infinite)
+Experiment repeated $t$ times (with $t$ large, potentially infinite)
 \vfill 
 System has \emph{no memory}: the next state depends only on the present state
 \vfill
-Probability of $S_j$ occurring on the next step, given that $S_i$ occurred on the last step, is
+Probability of $S_i$ occurring on the next step, given that $S_j$ occurred on the last step, is
 \[
-p_{ij}=p(S_j|S_i)
+p_{ij}=p(S_i|S_j)
 \]
 \end{frame}
 
 
 \begin{frame} 
-Suppose that $S_i$ is the current state, then one of $S_1, \ldots,S_r$ must be the next state; so
+Suppose that $S_i$ is the current state, then one of $S_1, \ldots,S_n$ must be the next state; so
 \[
-p_{i1}+p_{i2}+\cdots+p_{ir}=1, \quad 1\leq i\leq r
+p_{1i}+p_{2i}+\cdots+p_{ni}=1, \quad 1\leq i\leq n
 \]
-(Some of the $p_{ij}$ can be zero, all that is needed is that $\sum_{j=1}^r p_{ij}=1$ for all $i$)
+(Some of the $p_{ij}$ can be zero, all that is needed is that $\sum_{j=1}^n p_{ij}=1$ for all $i$)
 \vfill
 \begin{definition}
-An experiment with finite number of possible outcomes $S_1,\ldots,S_r$ is repeated. The sequence of outcomes is a \textbf{Markov chain} if there is a set of $r^2$ numbers $\{p_{ij}\}$ such that the conditional probability of outcome $S_j$ on any experiment given outcome $S_i$ on the previous experiment is $p_{ij}$, i.e., for $1\leq i,j\leq r$, $n=1,\ldots$,
-\begin{multline*}
-	p_{ij}=\mathsf{Pr}(S_j\textrm{ on experiment }n+1\;|\; \\
-	S_i\textrm{ on experiment }n)	
-\end{multline*}
-Outcomes $S_1,\ldots,S_r$ are \textbf{states} and $p_{ij}$ are \textbf{transition probabilities}. $P=[p_{ij}]$ the \textbf{transition matrix}
+An experiment with finite number of possible outcomes $S_1,\ldots,S_n$ is repeated. The sequence of outcomes is a \textbf{Markov chain} if there is a set of $n^2$ numbers $\{p_{ij}\}$ such that the conditional probability of outcome $S_i$ on any experiment given outcome $S_j$ on the previous experiment is $p_{ij}$, i.e., for $1\leq i,j\leq n$, $t=1,\ldots$,
+\[
+	p_{ij}=\IP(S_i\textrm{ on experiment }t+1\;|\;
+	S_j\textrm{ on experiment }t)	
+\]
+Outcomes $S_1,\ldots,S_n$ are \textbf{states} and $p_{ij}$ are \textbf{transition probabilities}. $P=[p_{ij}]$ the \textbf{transition matrix}
 \end{definition}
 \end{frame}
 
@@ -100,13 +100,13 @@ has
 \begin{itemize}
 \item nonnegative entries, $p_{ij}\geq 0$
 \item entries less than 1, $p_{ij}\leq 1$
-\item row sum 1, which we write
+\item column sum 1, which we write
 \[
-\sum_{j=1}^r p_{ij}=1,\quad i=1,\ldots,r
+\sum_{i=1}^n p_{ij}=1,\quad j=1,\ldots,n
 \]
 or, using the notation $\nbOne^T=(1,\ldots,1)$,
 \[
-P\nbOne=\nbOne
+\nbOne^TP=\nbOne^T
 \]
 \end{itemize}
 \end{frame}
@@ -116,7 +116,7 @@ P\nbOne=\nbOne
 %%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%
-\section{Running example -- Mendelian inheritance}
+\subsection{Running example -- Mendelian inheritance}
 \begin{frame}{(super simple) Mendelian genetics}
 A \emph{phenotypic trait} (eye colour, hair colour, etc.) is determined by a specific pair of alleles, each of which may be two types, say G and g
 \vfill
@@ -150,7 +150,7 @@ This determines probability of occurrence of each type of offspring. The offspri
 Suppose one parent GG and the other Gg
 \vfill
 \begin{center}
-	\includegraphics[width=\textwidth]{FIGS_slides/dominant_hybrid}
+	\includegraphics[width=0.9\textwidth]{FIGS_slides/dominant_hybrid}
 \end{center}
 \begin{center}
 \begin{tabular}{c|c}
@@ -212,22 +212,22 @@ $\implies$ offspring have probability
 %%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%
-\section{Repetition of the process}
+\subsection{Repetition of the process}
 \begin{frame}{General case}
-$p_i(n)$: probability that state $S_i$ occurs on the $n^{th}$ repetition of the experiment, $1\leq i\leq r$
+$p_i(t)$: probability that state $S_i$ occurs on the $t^{th}$ repetition of the experiment, $1\leq i\leq n$
 \vfill
-Since one the states $S_i$ must occur on the $n^{th}$ repetition
+Since one the states $S_i$ must occur on the $t^{th}$ repetition
 \[
-p_1(n)+p_2(n)+\cdots+p_r(n)=1
+p_1(t)+p_2(t)+\cdots+p_n(t)=1
 \]
-$p_i(n+1)$: probability that state $S_i$, $1\leq i\leq r$, occurs on $(n+1)^{th}$ repetition of the experiment
+$p_i(t+1)$: probability that state $S_i$, $1\leq i\leq r$, occurs on $(t+1)^{th}$ repetition of the experiment
 \vfill
-$r$ ways to be in state $S_i$ at step $n+1$:
+$n$ ways to be in state $S_i$ at step $t+1$:
 \begin{enumerate}
-\item Step $n$ is $S_1$. Probability of getting $S_1$ on $n^{th}$ step is $p_1(n)$, and probability of having $S_i$ after $S_1$ is $p_{1i}$. Therefore $P(S_i|S_1)=p_{1i}p_1(n)$
-\item We get $S_2$ on step $n$ and $S_i$ on step $(n+1)$. Then $P(S_i|S_2)=p_{2i}p_2(n)$
+\item Step $t$ is $S_1$. Probability of getting $S_1$ on $t^{th}$ step is $p_1(t)$, and probability of having $S_i$ after $S_1$ is $p_{i1}$. Therefore $P(S_i|S_1)=p_{i1}p_1(t)$
+\item We get $S_2$ on step $t$ and $S_i$ on step $(t+1)$. Then $P(S_i|S_2)=p_{2i}p_2(t)$
 \item[..]
-\item[r.] Probability of occurrence of $S_i$ at step $n+1$ if $S_r$ at step $n$ is $P(S_i|S_r)=p_{ri}p_r(n)$
+\item[n.] Probability of occurrence of $S_i$ at step $t+1$ if $S_n$ at step $t$ is $P(S_i|S_n)=p_{in}p_n(t)$
 \end{enumerate}
 \end{frame}
 
@@ -235,21 +235,21 @@ $r$ ways to be in state $S_i$ at step $n+1$:
 \begin{frame}
 \begin{align*}
 \implies
-p_i(n+1) &= P(S_i|S_1)+\cdots+P(S_i|S_r) \\
-&= p_{1i}p_1(n)+\cdots+p_{ri}p_r(n)
+p_i(t+1) &= P(S_i|S_1)+\cdots+P(S_i|S_n) \\
+&= p_{i1}p_1(t)+\cdots+p_{in}p_n(t)
 \end{align*}
 Therefore,
 \begin{align*}
-p_1(n+1) &= p_{11}p_1(n)+p_{21}p_2(n)+\dots+p_{r1}p_r(n) \\
+p_1(t+1) &= p_{11}p_1(t)+p_{12}p_2(t)+\dots+p_{1n}p_n(t) \\
 & \;\;\vdots\\
-p_r(n+1) &= p_{1r}p_1(n)+p_{2r}p_2(n)+\dots+p_{rr}p_r(n)
+p_n(t+1) &= p_{n1}p_1(t)+p_{n2}p_2(t)+\dots+p_{nn}p_n(t)
 \end{align*}
 \vfill
 In matrix form
 \[
-p(n+1)=p(n)P, \quad n=1,2,3,\dots
+p(t+1)=Pp(t), \quad n=1,2,3,\dots
 \]
-where $p(n)=(p_1(n),p_{2}(n),\dots , p_r(n))$ is a (row) probability vector and $P=(p_{ij})$ is a $r\times r$ \emph{transition matrix},
+where $p(t)=(p_1(t),p_{2}(t),\dots , p_n(t))^T$ is a probability vector and $P=(p_{ij})$ is an $n\times n$ \emph{transition matrix},
 \[
 P=
 \begin{pmatrix}
@@ -264,17 +264,21 @@ p_{r1} & p_{r2} & \cdots & p_{rr}
 
 \begin{frame}
 So
-\begin{multline*}
-(p_1(n+1),\ldots,p_r(n+1))  \\
+\[
+\begin{pmatrix}
+	p_1(t+1)\\ \vdots\\ p_n(t+1)
+\end{pmatrix}
 =
-(p_1(n),\ldots,p_r(n)) 
 \begin{pmatrix}
 p_{11} & p_{12} & \cdots & p_{1r} \\
 p_{21} & p_{22} & \cdots & p_{2r} \\
 &&& \\
 p_{r1} & p_{r2} & \cdots & p_{rr}
 \end{pmatrix}
-\end{multline*}
+\begin{pmatrix}
+	p_1(t)\\ \vdots\\ p_n(t)
+\end{pmatrix}
+\]
 \vfill
 Easy to check that this gives the same expression as before
 \end{frame}
@@ -283,10 +287,12 @@ Easy to check that this gives the same expression as before
 
 \begin{frame}{Stochastic matrices}
 \begin{definition}[Stochastic matrix]
-The nonnegative $r\times r$ matrix $M$ is \textbf{stochastic} if $\sum_{j=1}^ra_{ij}=1$ for all $i=1,2,\dots, r$
+The nonnegative $n\times n$ matrix $M$ is \textbf{row-stochastic} (resp. \textbf{column-stochastic}) if $\sum_{j=1}^na_{ij}=1$ for all $i=1,\dots,n$ (resp. $\sum_{i=1}^na_{ij}=1$ for all $j=1,\dots,n$)
 \end{definition}
 \vfill
-If each row sum and each column sum equals one, the matrix is \textbf{doubly stochastic}
+We often say \textbf{stochastic} and let the context determine whether we mean row- or column-stochastic
+\vfill
+If it is both row- and column-stochastic, the matrix is \textbf{doubly stochastic}
 \vfill
 \begin{theorem}\label{th:spectrum_stochastic_matrix}
 Let $M$ be a stochastic matrix. Then all eigenvalues $\lambda$ of $M$ are such that $|\lambda|\leq 1$. 
@@ -295,24 +301,24 @@ Furthermore, $\lambda =1$ is an eigenvalue of $M$
 \end{frame}
 
 \begin{frame}{Long time behaviour}
-Let $p(0)$ be the initial distribution (row) vector. Then
+Let $p(0)$ be the initial distribution vector. Then
 \begin{align*}
-p(1) &= p(0)P \\
-p(2) &= p(1)P\\
-&= (p(0)P)P \\
-&= p(0)P^2
+p(1) &= Pp(0) \\
+p(2) &= Pp(1)\\
+&= P(Pp(0)) \\
+&= P^2p(0)
 \end{align*}
 \vfill
-Iterating, we get, for any $n$,
+Iterating, we get, for any $t$,
 \[
-p(n)=p(0)P^n
+p(t)=P^tp(0)
 \]
 \vfill
 Therefore, 
 \begin{align*}
-\lim_{n\rightarrow +\infty}p(n) &=
-\lim_{n\rightarrow +\infty}p(0)P^n \\
-&=p(0)\lim_{n\rightarrow +\infty}P^n
+\lim_{t\rightarrow +\infty}p(t) &=
+\lim_{t\rightarrow +\infty}P^tp(0) \\
+&=\left(\lim_{t\rightarrow +\infty}P^t\right)p(0)
 \end{align*}
 if this limit exists
 \end{frame}
@@ -320,8 +326,8 @@ if this limit exists
 
 \begin{frame}
 \[
-\lim_{n\rightarrow +\infty}p(n) = 
-p(0)\lim_{n\rightarrow +\infty}P^n
+\lim_{n\rightarrow +\infty}p(t) = 
+\left(\lim_{t\rightarrow +\infty}P^t\right)p(0)
 \]
 Does the limit exist?
 \vfill
@@ -329,14 +335,14 @@ Does the limit exist?
 If $M,N$ are nonsingular stochastic matrices, then $MN$ is a stochastic matrix
 \end{theorem}
 \vfill
-So the product of any number of stochastic matrices is also stochastic
-\vfill
 \begin{corollary}
 If $M$ is a nonsingular stochastic matrix, then for any $k\in\IN$, $M^k$ is a stochastic matrix
 \end{corollary}
+\vfill
+So $P^t$ above is stochastic
 \end{frame}
 
-\section{Regular Markov chains}
+\subsection{Regular Markov chains}
 \begin{frame}{Regular Markov chains}
 \begin{definition}[Regular Markov chain]
 A \textbf{regular} Markov chain has $P^k$ (entry-wise) positive for some integer $k>0$, i.e., $P^k$ has only positive entries
@@ -355,38 +361,34 @@ Markov chain regular $\iff$ transition matrix $P$ primitive
 \begin{theorem}
 If $P$ is the transition matrix of a regular Markov chain, then
 \begin{enumerate}
-\item the powers $P^n$ approach a stochastic matrix $W$
-\item each row of $W$ is the same (row) vector $w=(w_1,\ldots,w_r)$
+\item the powers $P^t$ approach a stochastic matrix $W$
+\item each column of $W$ is the same (column) vector $w=(w_1,\ldots,w_n)^T$
 \item the components of $w$ are positive
 \end{enumerate}
 \end{theorem}
 \vfill
 So if the Markov chain is regular
 \[
-\lim_{n\rightarrow +\infty}p(n)=p(0)\lim_{n\rightarrow +\infty}P^n
-=p(0)W
+\lim_{t\rightarrow +\infty}p(t)=\lim_{t\rightarrow +\infty}P^tp(0)
+=Wp(0)
 \]
 \end{frame}
 
 
 \begin{frame}{Computing $W$}
-If $p(n)$ converges, then $p(n+1)=p(n)P$, so $w$ is a \textbf{fixed point} of the system. Write
+If $p(t)$ converges, then $p(t+1)=Pp(t)$ at the limit, so $w=\lim_{t\to\infty}p(t)$ is a \textbf{fixed point} of the system. Write
 \[
-wP=w
+w=Pw
 \]
-and solve for $w$, i.e., find $w$ as left eigenvector corresponding to the eigenvalue 1
-or as (right) eigenvector associated to eigenvalue 1 for the transpose of $P$
-\[
-P^Tw^T=w^T
-\]
+and solve for $w$, i.e., find $w$ as a (right) eigenvector corresponding to the eigenvalue 1
 \vfill
-$w$ might have to be normalized (you want a probability vector). Check that the norm $\|w\|$ defined by
+$w$ might have to be normalized (you want a probability vector). Check that the norm $\|w\|_1$ defined by
 \[
-\|w\|=w_1+\cdots+w_r
+\|w\|_1=|w_1|+\cdots+|w_n|=w_1+\cdots+w_n
 \]
-is equal to one. If not, use
+(since $w\geq 0$) is equal to one. If not, use
 \[
-\frac{w}{\|w\|}
+\tilde w = \frac{w}{\|w\|_1}
 \]
 \end{frame}
 
@@ -414,20 +416,20 @@ $\implies$ consider MC with states GG, Gg and gg
 \vfill
 \begin{center}
 \begin{tabular}{c|ccc}
-$\nearrow$ & GG & Gg & gg \\
+$\swarrow$ & GG & Gg & gg \\
 \hline
-GG & 0.5 & 0.5 & 0 \\
-Gg & 0.25 & 0.5 & 0.25 \\
-gg & 0 & 0.5 & 0.5
+GG & 0.5 & 0.25 & 0 \\
+Gg & 0.5 & 0.5 & 0.5 \\
+gg & 0 & 0.25 & 0.5
 \end{tabular}
 \end{center}
 \vfill
 The transition probabilities are thus
 \[
 P=\begin{pmatrix}
-\dfrac 12 & \dfrac 12 & 0 \\[10pt]
-\dfrac 14 & \dfrac 12 & \dfrac 14 \\[10pt]
-0 & \dfrac 12 & \dfrac 12
+\dfrac 12 & \dfrac 14 & 0 \\[10pt]
+\dfrac 12 & \dfrac 12 & \dfrac 12 \\[10pt]
+0 & \dfrac 14 & \dfrac 12
 \end{pmatrix}
 \]
 \end{frame}
@@ -435,17 +437,17 @@ P=\begin{pmatrix}
 \begin{frame}
 \[
 P=\begin{pmatrix}
-\dfrac 12 & \dfrac 12 & 0 \\[10pt]
-\dfrac 14 & \dfrac 12 & \dfrac 14 \\[10pt]
-0 & \dfrac 12 & \dfrac 12
+	\dfrac 12 & \dfrac 14 & 0 \\[10pt]
+	\dfrac 12 & \dfrac 12 & \dfrac 12 \\[10pt]
+	0 & \dfrac 14 & \dfrac 12
 \end{pmatrix}
 \]
 so
 \[
 P^2=\begin{pmatrix}
-\dfrac 38 & \dfrac 12 & \dfrac 18 \\[10pt]
-\dfrac 14 & \dfrac 12 & \dfrac 14 \\[10pt]
-\dfrac 18 & \dfrac 12 & \dfrac 38
+\dfrac 38 & \dfrac 14 & \dfrac 18 \\[10pt]
+\dfrac 12 & \dfrac 12 & \dfrac 12 \\[10pt]
+\dfrac 18 & \dfrac 14 & \dfrac 38
 \end{pmatrix}
 \]
 \vfill
@@ -478,15 +480,20 @@ This is checked directly on the transition graph
 \end{frame}
 
 \begin{frame}
-Compute left eigenvector associated to 1
+Compute (right) eigenvector associated to 1
 \[
-(w_1,w_2,w_3)
 \begin{pmatrix}
-\frac 12 & \frac 12 & 0 \\
-\frac 14 & \frac 12 & \frac 14 \\
-0 & \frac 12 & \frac 12
+	1/2 & 1/4 & 0 \\
+	1/2 & 1/2 & 1/2 \\
+	0 & 1/4 & 1/2
 \end{pmatrix}
-=(w_1,w_2,w_3)
+\begin{pmatrix}
+	w_1\\w_2\\w_3
+\end{pmatrix}
+=
+\begin{pmatrix}
+	w_1\\w_2\\w_3
+\end{pmatrix}
 \]
 \begin{align*}
 \frac 12 w_1+\frac 14 w_2 &= w_1 \\
@@ -510,7 +517,7 @@ that is, $w_2=w_2$, i.e., $w_2$ can take any value
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Absorbing Markov chains}
+\subsection{Absorbing Markov chains}
 
 \begin{frame}{Changing the setting of the genetic experiment}
 Suppose now the same type of experiment, but mate each new generation with a GG individual instead of a Gg individual
@@ -532,20 +539,20 @@ Suppose now the same type of experiment, but mate each new generation with a GG 
 \begin{minipage}{0.45\textwidth}
 	\begin{center}
 		\begin{tabular}{c|ccc}
-		$\nearrow$ & GG & Gg & gg \\
+		$\swarrow$ & GG & Gg & gg \\
 		\hline
-		GG & 1 & 0 & 0 \\
-		Gg & 0.5 & 0.5 & 0 \\
-		gg & 0 & 1 & 0
+		GG & 1 & 0.5 & 0 \\
+		Gg & 0 & 0.5 & 1 \\
+		gg & 0 & 0 & 0
 		\end{tabular}
 	\end{center}
 \end{minipage}
 \begin{minipage}{0.45\textwidth}
 	\[
 		P=\begin{pmatrix}
-		1 & 0 & 0 \\[2pt]
-		\dfrac 12 & \dfrac 12 & 0 \\[7pt]
-		0 & 1 & 0
+		1 & 1/2 & 0 \\[5pt]
+		0 & 1/2 & 1 \\[5pt]
+		0 & 0 & 0
 		\end{pmatrix}
 	\]
 \end{minipage}
@@ -559,7 +566,7 @@ Suppose now the same type of experiment, but mate each new generation with a GG 
 
 \begin{frame}{Absorbing Markov chains}
 \begin{definition}[Absorbing state]
-A state $S_i$ in a Markov chain is \textbf{absorbing} if whenever it occurs on the $n^{th}$ generation of the experiment, it then occurs on every subsequent step. In other words, $S_i$ is absorbing if $p_{ii}=1$ and $p_{ij}=0$ for $i\neq j$
+A state $S_i$ in a Markov chain is \textbf{absorbing} if whenever it occurs on the $t^{th}$ generation of the experiment, it then occurs on every subsequent step. In other words, $S_i$ is absorbing if $p_{ii}=1$ and $p_{ij}=0$ for $i\neq j$
 \end{definition}
 \vfill
 \begin{definition}[Absorbing chain]
@@ -618,24 +625,24 @@ To answer the other questions, write the transition matrix in \textbf{standard} 
 For an absorbing chain with $k$ absorbing states and $r-k$ transient states, write transition matrix as
 \[
 P=\begin{pmatrix}
-\mathbb{I}_k & \mathbf{0} \\
-R & Q
+\mathbb{I}_k & R \\
+\b0 & Q
 \end{pmatrix}
 \]
 with following meaning
 \begin{center}\footnotesize
 \begin{tabular}{ccc}
 & Absorbing states & Transient states \\
-Absorbing states & $\mathbb{I}_k$ & $\mathbf{0}$ \\
-Transient states & $R$ & $Q$
+Absorbing states & $\mathbb{I}_k$ & $R$ \\
+Transient states & $\b0$ & $Q$
 \end{tabular}
 \end{center}
-with $\mathbb{I}_k$ the $k\times k$ identity matrix, $\mathbf{0}$ an $k\times(r-k)$ matrix of zeros, $R$ an $(r-k)\times k$ matrix and $Q$ an $(r-k)\times(r-k)$ matrix.
+with $\mathbb{I}_k$ the $k\times k$ identity matrix, $\mathbf{0}$ an $(r-k)\times k$ matrix of zeros, $R$ an $k\times (r-k)$ matrix and $Q$ an $(r-k)\times(r-k)$ matrix.
 The matrix $\mathbb{I}_{r-k}-Q$ is invertible. Let
 \begin{itemize}
 \item $N=(\mathbb{I}_{r-k}-Q)^{-1}$ the \textbf{fundamental matrix} of the MC
 \item $T_i$ sum of the entries on row $i$ of $N$
-\item $B=NR$
+\item $B=RN$
 \end{itemize}
 \end{frame}
 
@@ -648,7 +655,7 @@ Answers to our remaining questions:
 \vfill
 \item $T_i$ average number of steps before the process enters an absorbing state if it starts in the $i$th transient state
 \vfill
-\item $B_{ij}$ probability of eventually entering the $j$th absorbing state if the process starts in the $i$th transient state
+\item $B_{ij}$ probability of eventually entering the $i$th absorbing state if the process starts in the $j$th transient state
 \end{enumerate}
 \vfill
 \end{frame}
@@ -656,26 +663,26 @@ Answers to our remaining questions:
 \begin{frame}{Back to the genetic example}
 The matrix is already in standard form
 \[
-P=\left (
-\begin{array}{ccc}
-1 & 0 & 0 \\
-\frac 12 & \frac 12 & 0 \\
-0 & 1 & 0
-\end{array}\right)
+P=
+\begin{pmatrix}
+1 & \frac 12 & 0 \\
+0 & \frac 12 & 1 \\
+0 & 0 & 0
+\end{pmatrix}
 =\begin{pmatrix}
-\mathbb{I}_1 & \mathbf{0} \\
-R & Q
+\mathbb{I}_1 & R \\
+\b0 & Q
 \end{pmatrix}
 \]
-with $\mathbb{I}_1=1$, $\mathbf{0}=(0\;\; 0)$ and
+with $\mathbb{I}_1=1$, $\mathbf{0}=(0\;\; 0)^T$ and
 \[
 R=\begin{pmatrix}
-\frac 12\\ 0
+\frac 12 & 0
 \end{pmatrix}
 \qquad
 Q=\begin{pmatrix}
-\frac 12 & 0\\
-1 & 0
+\frac 12 & 1\\
+0 & 0
 \end{pmatrix}
 \]
 We have
@@ -685,27 +692,39 @@ We have
 0 & 1
 \end{pmatrix}
 -\begin{pmatrix}
-\frac 12 & 0\\
-1 & 0
+\frac 12 & 1\\
+0 & 0
 \end{pmatrix}
 =\begin{pmatrix}
-\frac 12 & 0\\
--1 & 1
+\frac 12 & -1\\
+0 & 1
 \end{pmatrix}
 \]
 so
 \[
 N=(\mathbb{I}_2-Q)^{-1}=
 2\begin{pmatrix}
-1 & 0 \\
-1 & \frac 12
+1 & 1 \\
+0 & \frac 12
 \end{pmatrix}=
 \begin{pmatrix}
 2 & 0 \\
 2 & 1
 \end{pmatrix}
 \]
-Then
+\end{frame}
+
+
+\begin{frame}
+We have
+\[
+N=
+\begin{pmatrix}
+	2 & 0 \\
+	2 & 1
+\end{pmatrix}
+\]
+So
 \[
 T=N\nbOne=\begin{pmatrix}
 2\\
@@ -714,17 +733,17 @@ T=N\nbOne=\begin{pmatrix}
 \]
 and
 \[
-B=NR=
+B=RN=
 \begin{pmatrix}
-2 & 0 \\
-2 & 1
+	\frac 12 & 0
 \end{pmatrix}
 \begin{pmatrix}
-\frac 12\\ 0
+	2 & 0 \\
+	2 & 1
 \end{pmatrix}
 =
 \begin{pmatrix}
-1\\ 1
+1 & 1
 \end{pmatrix}
 \]
 \end{frame}
@@ -750,11 +769,11 @@ T=\begin{pmatrix}
 \end{pmatrix}
 \]
 \vfill
-\item $B_{ij}$ probability of eventually entering the $j$th absorbing state if the process starts in the $i$th transient state
+\item $B_{ij}$ probability of eventually entering the $i$th absorbing state if the process starts in the $j$th transient state
 \[
-B
+B=
 \begin{pmatrix}
-1\\ 1
+	1 & 1
 \end{pmatrix}
 \]
 \end{enumerate}

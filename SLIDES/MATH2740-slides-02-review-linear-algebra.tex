@@ -1,148 +1,6 @@
-\documentclass{beamer}
-%\documentclass[handout]{beamer}
+\documentclass[aspectratio=169]{beamer}
 
-%\usepackage{graphics}
-\usepackage{graphicx}
-\usepackage{amsmath,amssymb,amsthm}
-%\usepackage{subfigure}
-
-%% To make 4 per page
-%\usepackage{pgfpages}
-%\mode<handout>{\setbeamercolor{background canvas}{bg=white}}
-%\pgfpagesuselayout{4 on 1}[letterpaper,landscape]%,border shrink=5mm]
-
-
-
-
-\def\IC{\mathbb{C}}
-\def\IF{\mathbb{F}}
-\def\II{\mathbb{I}}
-\def\IM{\mathbb{M}}
-\def\IN{\mathbb{N}}
-\def\IP{\mathbb{P}}
-\def\IR{\mathbb{R}}
-\def\IZ{\mathbb{Z}}
-
-\def\ba{\mathbf{a}}
-\def\bb{\mathbf{b}}
-\def\bc{\mathbf{c}}
-\def\be{\mathbf{e}}
-\def\bh{\mathbf{h}}
-\def\bi{\mathbf{i}}
-\def\bj{\mathbf{j}}
-\def\bk{\mathbf{k}}
-\def\bn{\mathbf{n}}
-\def\bp{\mathbf{p}}
-\def\br{\mathbf{r}}
-\def\bs{\mathbf{s}}
-\def\bu{\mathbf{u}}
-\def\bv{\mathbf{v}}
-\def\bw{\mathbf{w}}
-\def\bx{\mathbf{x}}
-\def\by{\mathbf{y}}
-\def\bz{\mathbf{z}}
-
-\def\bB{\mathbf{B}}
-\def\bD{\mathbf{D}}
-\def\bF{\mathbf{F}}
-\def\bG{\mathbf{G}}
-\def\bN{\mathbf{N}}
-\def\bR{\mathbf{R}}
-\def\bS{\mathbf{S}}
-\def\bT{\mathbf{T}}
-\def\b0{\mathbf{0}}
-
-\def\A{\mathcal{A}}
-\def\B{\mathcal{B}}
-\def\C{\mathcal{C}}
-\def\D{\mathcal{D}}
-\def\E{\mathcal{E}}
-\def\F{\mathcal{F}}
-\def\G{\mathcal{G}}
-\def\I{\mathcal{I}}
-\def\L{\mathcal{L}}
-\def\M{\mathcal{M}}
-\def\P{\mathcal{P}}
-\def\R{\mathcal{R}}
-\def\S{\mathcal{S}}
-\def\T{\mathcal{T}}
-\def\U{\mathcal{U}}
-\def\V{\mathcal{V}}
-
-\newcommand{\range}{\ensuremath{\mathsf{range}}}
-%\renewcommand{\null}{\ensuremath{\mathsf{null}}}
-\newcommand{\diag}{\ensuremath{\mathsf{diag}}}
-\newcommand{\tr}{\ensuremath{\mathsf{tr}}}
-\renewcommand{\det}{\ensuremath{\mathsf{det}}}
-\newcommand{\sgn}{\ensuremath{\mathsf{sgn}}}
-\renewcommand{\span}{\ensuremath{\mathsf{span}}}
-\newcommand{\imply}{$\Rightarrow$}
-\def\restrictTo#1#2{\left.#1\right|_{#2}}
-
-\newcommand{\parallelsum}{\mathbin{\!/\mkern-5mu/\!}}
-
-\def\Im{\textrm{Im}\;}
-\def\Re{\textrm{Re}\;}
-
-\newtheorem{proposition}[theorem]{Proposition}
-\newtheorem{property}[theorem]{Property}
-\newtheorem{importantproperty}[theorem]{Property}
-\newtheorem{importanttheorem}[theorem]{Theorem}
-%\newtheorem{lemma}[theorem]{Lemma}
-
-
-
-\setbeamertemplate{navigation symbols}{}
-\setbeamertemplate{footline}
-{%
-	\quad\insertsection\hfill p. \insertpagenumber\quad\mbox{}\vskip2pt
-}
-\usecolortheme{orchid}
-\setbeamertemplate{theorems}[numbered]
-
-
-%%%%%%% 
-%% Definitions in yellow boxes
-\usepackage{etoolbox}
-\setbeamercolor{block title}{use=structure,fg=structure.fg,bg=structure.fg!20!bg}
-\setbeamercolor{block body}{parent=normal text,use=block title,bg=block title.bg!50!bg}
-
-\BeforeBeginEnvironment{definition}{%
-\setbeamercolor{block title}{fg=black,bg=yellow!50!white}
-\setbeamercolor{block body}{fg=black, bg=yellow!30!white}
-}
-\AfterEndEnvironment{definition}{
-\setbeamercolor{block title}{use=structure,fg=structure.fg,bg=structure.fg!20!bg}
-\setbeamercolor{block body}{parent=normal text,use=block title,bg=block title.bg!50!bg, fg=black}
-}
-\BeforeBeginEnvironment{importanttheorem}{%
-\setbeamercolor{block title}{fg=black,bg=red!50!white}
-\setbeamercolor{block body}{fg=black, bg=red!30!white}
-}
-\AfterEndEnvironment{importanttheorem}{
-\setbeamercolor{block title}{use=structure,fg=structure.fg,bg=structure.fg!20!bg}
-\setbeamercolor{block body}{parent=normal text,use=block title,bg=block title.bg!50!bg, fg=black}
-}
-\BeforeBeginEnvironment{importantproperty}{%
-\setbeamercolor{block title}{fg=black,bg=red!50!white}
-\setbeamercolor{block body}{fg=black, bg=red!30!white}
-}
-\AfterEndEnvironment{importantproperty}{
-\setbeamercolor{block title}{use=structure,fg=structure.fg,bg=structure.fg!20!bg}
-\setbeamercolor{block body}{parent=normal text,use=block title,bg=block title.bg!50!bg, fg=black}
-}
-
-
-
-
-\AtBeginSection[]
-{
-	\begin{frame}[noframenumbering,plain]
-		\tableofcontents[currentsection,currentsubsection]
-	\end{frame}
-	%\addtocounter{framenumber}{-1}
-}
-
+\input{slides_setup_nonLightBoard_whiteBG.tex}
 
 \title{Review of first-year linear algebra}
 \date{}
@@ -1034,7 +892,7 @@ For $P^{-1}AP=D$: in $P$, put the linearly independent eigenvectors as columns a
 	\begin{definition}[Span]
 		The set of all linear combinations of a set of vectors $\bv_1,\ldots,\bv_k$ is the \textbf{span} of $\{\bv_1,\ldots,\bv_k\}$,
 		\[
-		\span(\bv_1,\ldots,\bv_k)=
+		\Span(\bv_1,\ldots,\bv_k)=
 		\left\{
 		c_1\bv_1+\cdots+c_k\bv_k:c_1,\ldots,c_k\in\IF
 		\right\}
@@ -1049,7 +907,7 @@ For $P^{-1}AP=D$: in $P$, put the linearly independent eigenvectors as columns a
 	\end{theorem}
 	\vfill
 	\begin{definition}[Set of vectors spanning a space]
-		If $\span(\bv_1,\ldots,\bv_k)=V$, we say $\bv_1,\ldots,\bv_k$ \textbf{spans} $V$
+		If $\Span(\bv_1,\ldots,\bv_k)=V$, we say $\bv_1,\ldots,\bv_k$ \textbf{spans} $V$
 	\end{definition}
 	\vfill
 	\begin{definition}[Dimension of a vector space]
@@ -1106,8 +964,8 @@ E.g., in $\IR^3$, a set with 4 or more vectors is automatically linearly depende
 	\begin{theorem}[Plus/Minus Theorem]
 		$S$ a nonempty set of vectors in vector space $V$
 		\begin{itemize}
-			\item If $S$ is linearly independent and $V\ni\bv\not\in \span(S)$, then $S\cup\{\bv\}$ is linearly independent
-			\item If $\bv\in S$ is linear combination of other vectors in $S$, then $\span(S)=\span(S-\{\bv\})$
+			\item If $S$ is linearly independent and $V\ni\bv\not\in \Span(S)$, then $S\cup\{\bv\}$ is linearly independent
+			\item If $\bv\in S$ is linear combination of other vectors in $S$, then $\Span(S)=\Span(S-\{\bv\})$
 		\end{itemize}
 	\end{theorem}
 \end{frame}

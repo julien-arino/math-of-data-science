@@ -1,0 +1,332 @@
+# Another PCA example: fingerprints
+
+We get the data from [here](https://repository.lboro.ac.uk/articles/dataset/Height_weight_and_fingerprint_measurements_collected_from_200_participants/7539206). This time, we first download the data, then open the file. The file is an excel table, so we need to use a library for doing that. (You may need to install that library using `install.packages("openxlsx")`.)
+
+
+```R
+if (!require("openxlsx")) {
+    install.packages("openxlsx")
+    library(openxlsx)
+}
+
+download.file(url = "https://repository.lboro.ac.uk/ndownloader/files/14015774",
+             destfile = "fingerprint_data.xlsx")
+data = openxlsx::read.xlsx("fingerprint_data.xlsx")
+head(data)
+```
+
+
+<table class="dataframe">
+<caption>A data.frame: 6 × 11</caption>
+<thead>
+	<tr><th></th><th scope=col>Participant.Number</th><th scope=col>Gender</th><th scope=col>Age</th><th scope=col>Dominant.Hand</th><th scope=col>Height.(cm).(average.of.3.measurments)</th><th scope=col>Weight.(kg).(average.of.3.measurements)</th><th scope=col>Fingertip.Temperature.(°C)</th><th scope=col>Fingerprint.Height.(mm)</th><th scope=col>Fingerprint.Width.(mm)</th><th scope=col>Fingerprint.Area.(mm2)</th><th scope=col>Fingerprint.Circumference.(mm)</th></tr>
+	<tr><th></th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><th scope=row>1</th><td>101</td><td>Male</td><td>NA</td><td>Right</td><td>174.0000</td><td>70.00000</td><td>34</td><td>19.8</td><td>13.7</td><td>240.6</td><td>57.7</td></tr>
+	<tr><th scope=row>2</th><td>102</td><td>Male</td><td>NA</td><td>Right</td><td>202.0000</td><td>99.00000</td><td>30</td><td>24.0</td><td>14.1</td><td>278.8</td><td>62.7</td></tr>
+	<tr><th scope=row>3</th><td>103</td><td>Male</td><td>NA</td><td>Right</td><td>182.3333</td><td>82.00000</td><td>29</td><td>20.0</td><td>13.7</td><td>223.8</td><td>55.5</td></tr>
+	<tr><th scope=row>4</th><td>104</td><td>Male</td><td>NA</td><td>Right</td><td>184.0000</td><td>75.00000</td><td>29</td><td>23.2</td><td>14.0</td><td>281.8</td><td>63.3</td></tr>
+	<tr><th scope=row>5</th><td>105</td><td>Male</td><td>18</td><td>Right</td><td>180.6667</td><td>80.33333</td><td>29</td><td>22.7</td><td>15.0</td><td>286.7</td><td>62.7</td></tr>
+	<tr><th scope=row>6</th><td>106</td><td>Male</td><td>20</td><td>Right</td><td>180.0000</td><td>59.00000</td><td>32</td><td>24.3</td><td>14.0</td><td>299.0</td><td>65.6</td></tr>
+</tbody>
+</table>
+
+
+
+Let us rework the names of columns a bit, for convenience. Let us also get rid of a few columns we are not really useful.
+
+
+```R
+data = data[,2:dim(data)[2]]
+colnames(data) = c("gender", "age", "handedness", "height", "weight",
+                  "fing_temp", "fing_height", "fing_width",
+                  "fing_area", "fing_circ")
+head(data)
+```
+
+
+<table class="dataframe">
+<caption>A data.frame: 6 × 10</caption>
+<thead>
+	<tr><th></th><th scope=col>gender</th><th scope=col>age</th><th scope=col>handedness</th><th scope=col>height</th><th scope=col>weight</th><th scope=col>fing_temp</th><th scope=col>fing_height</th><th scope=col>fing_width</th><th scope=col>fing_area</th><th scope=col>fing_circ</th></tr>
+	<tr><th></th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><th scope=row>1</th><td>Male</td><td>NA</td><td>Right</td><td>174.0000</td><td>70.00000</td><td>34</td><td>19.8</td><td>13.7</td><td>240.6</td><td>57.7</td></tr>
+	<tr><th scope=row>2</th><td>Male</td><td>NA</td><td>Right</td><td>202.0000</td><td>99.00000</td><td>30</td><td>24.0</td><td>14.1</td><td>278.8</td><td>62.7</td></tr>
+	<tr><th scope=row>3</th><td>Male</td><td>NA</td><td>Right</td><td>182.3333</td><td>82.00000</td><td>29</td><td>20.0</td><td>13.7</td><td>223.8</td><td>55.5</td></tr>
+	<tr><th scope=row>4</th><td>Male</td><td>NA</td><td>Right</td><td>184.0000</td><td>75.00000</td><td>29</td><td>23.2</td><td>14.0</td><td>281.8</td><td>63.3</td></tr>
+	<tr><th scope=row>5</th><td>Male</td><td>18</td><td>Right</td><td>180.6667</td><td>80.33333</td><td>29</td><td>22.7</td><td>15.0</td><td>286.7</td><td>62.7</td></tr>
+	<tr><th scope=row>6</th><td>Male</td><td>20</td><td>Right</td><td>180.0000</td><td>59.00000</td><td>32</td><td>24.3</td><td>14.0</td><td>299.0</td><td>65.6</td></tr>
+</tbody>
+</table>
+
+
+
+Plotting all these variables is complicated, so we forgo this for the time being.
+
+Let us centre the data. To make things easy, we list the columns to centre and loop on this. Note that there are some `NA` values, so we remove them using the function `complete.cases`, which identifies rows where at least one of the variables is `NA`. (We could also beware and just use `na.rm = TRUE` when taking the average to remove these values.) We make new columns with the prefix `.c`, just to still have the initial data handy if need be.
+
+
+```R
+data = data[complete.cases(data),]
+to_centre = c("age", "height", 
+              "weight", "fing_temp", 
+              "fing_height", "fing_width",
+              "fing_area", "fing_circ")
+for (c in to_centre) {
+    new_c = sprintf("%s.c", c)
+    data[[new_c]] = data[[c]] - mean(data[[c]], na.rm = TRUE)
+}
+head(data)
+```
+
+
+<table class="dataframe">
+<caption>A data.frame: 6 × 18</caption>
+<thead>
+	<tr><th></th><th scope=col>gender</th><th scope=col>age</th><th scope=col>handedness</th><th scope=col>height</th><th scope=col>weight</th><th scope=col>fing_temp</th><th scope=col>fing_height</th><th scope=col>fing_width</th><th scope=col>fing_area</th><th scope=col>fing_circ</th><th scope=col>age.c</th><th scope=col>height.c</th><th scope=col>weight.c</th><th scope=col>fing_temp.c</th><th scope=col>fing_height.c</th><th scope=col>fing_width.c</th><th scope=col>fing_area.c</th><th scope=col>fing_circ.c</th></tr>
+	<tr><th></th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><th scope=row>5</th><td>Male  </td><td>18</td><td>Right</td><td>180.6667</td><td>80.33333</td><td>29</td><td>22.7</td><td>15.0</td><td>286.7</td><td>62.7</td><td>-3.256098</td><td> 7.711382</td><td>  7.38008130</td><td> 0.2865854</td><td> 2.3445122</td><td> 1.4518293</td><td> 52.50732</td><td> 6.088415</td></tr>
+	<tr><th scope=row>6</th><td>Male  </td><td>20</td><td>Right</td><td>180.0000</td><td>59.00000</td><td>32</td><td>24.3</td><td>14.0</td><td>299.0</td><td>65.6</td><td>-1.256098</td><td> 7.044715</td><td>-13.95325203</td><td> 3.2865854</td><td> 3.9445122</td><td> 0.4518293</td><td> 64.80732</td><td> 8.988415</td></tr>
+	<tr><th scope=row>12</th><td>Male  </td><td>18</td><td>Right</td><td>180.6667</td><td>68.00000</td><td>27</td><td>21.1</td><td>15.6</td><td>286.1</td><td>62.4</td><td>-3.256098</td><td> 7.711382</td><td> -4.95325203</td><td>-1.7134146</td><td> 0.7445122</td><td> 2.0518293</td><td> 51.90732</td><td> 5.788415</td></tr>
+	<tr><th scope=row>23</th><td>Male  </td><td>18</td><td>Right</td><td>188.6667</td><td>73.00000</td><td>29</td><td>23.0</td><td>14.0</td><td>264.0</td><td>61.0</td><td>-3.256098</td><td>15.711382</td><td>  0.04674797</td><td> 0.2865854</td><td> 2.6445122</td><td> 0.4518293</td><td> 29.80732</td><td> 4.388415</td></tr>
+	<tr><th scope=row>24</th><td>Female</td><td>19</td><td>Right</td><td>166.0000</td><td>65.00000</td><td>27</td><td>18.4</td><td>11.1</td><td>171.4</td><td>49.3</td><td>-2.256098</td><td>-6.955285</td><td> -7.95325203</td><td>-1.7134146</td><td>-1.9554878</td><td>-2.4481707</td><td>-62.79268</td><td>-7.311585</td></tr>
+	<tr><th scope=row>25</th><td>Female</td><td>18</td><td>Right</td><td>163.0000</td><td>73.00000</td><td>31</td><td>18.3</td><td>11.9</td><td>192.8</td><td>52.1</td><td>-3.256098</td><td>-9.955285</td><td>  0.04674797</td><td> 2.2865854</td><td>-2.0554878</td><td>-1.6481707</td><td>-41.39268</td><td>-4.511585</td></tr>
+</tbody>
+</table>
+
+
+
+Let us compute the sample covariance matrix.
+
+
+```R
+# Select X as the matrix we want to process
+X = as.matrix(data[, to_centre])
+S = 1/(dim(X)[1]-1)*t(X) %*% X
+S
+```
+
+
+<table class="dataframe">
+<caption>A matrix: 8 × 8 of type dbl</caption>
+<thead>
+	<tr><th></th><th scope=col>age</th><th scope=col>height</th><th scope=col>weight</th><th scope=col>fing_temp</th><th scope=col>fing_height</th><th scope=col>fing_width</th><th scope=col>fing_area</th><th scope=col>fing_circ</th></tr>
+</thead>
+<tbody>
+	<tr><th scope=row>age</th><td> 478.9939</td><td> 3692.562</td><td> 1579.172</td><td> 614.2393</td><td> 435.6270</td><td> 290.1264</td><td> 5013.139</td><td> 1210.8221</td></tr>
+	<tr><th scope=row>height</th><td>3692.5624</td><td>30183.706</td><td>12766.541</td><td>4994.7669</td><td>3553.3620</td><td>2364.9380</td><td>41006.579</td><td> 9882.9540</td></tr>
+	<tr><th scope=row>weight</th><td>1579.1718</td><td>12766.541</td><td> 5598.505</td><td>2118.0613</td><td>1505.3519</td><td>1006.2624</td><td>17504.745</td><td> 4190.9405</td></tr>
+	<tr><th scope=row>fing_temp</th><td> 614.2393</td><td> 4994.767</td><td> 2118.061</td><td> 840.9141</td><td> 588.5436</td><td> 392.2006</td><td> 6781.800</td><td> 1636.9264</td></tr>
+	<tr><th scope=row>fing_height</th><td> 435.6270</td><td> 3553.362</td><td> 1505.352</td><td> 588.5436</td><td> 420.9758</td><td> 279.4357</td><td> 4875.698</td><td> 1169.4310</td></tr>
+	<tr><th scope=row>fing_width</th><td> 290.1264</td><td> 2364.938</td><td> 1006.262</td><td> 392.2006</td><td> 279.4357</td><td> 186.8359</td><td> 3249.257</td><td>  778.0915</td></tr>
+	<tr><th scope=row>fing_area</th><td>5013.1387</td><td>41006.579</td><td>17504.745</td><td>6781.8000</td><td>4875.6983</td><td>3249.2573</td><td>57053.656</td><td>13563.3565</td></tr>
+	<tr><th scope=row>fing_circ</th><td>1210.8221</td><td> 9882.954</td><td> 4190.940</td><td>1636.9264</td><td>1169.4310</td><td> 778.0915</td><td>13563.357</td><td> 3252.2678</td></tr>
+</tbody>
+</table>
+
+
+
+
+```R
+ev = eigen(S)
+ev$values
+```
+
+
+<style>
+.list-inline {list-style: none; margin:0; padding: 0}
+.list-inline>li {display: inline-block}
+.list-inline>li:not(:last-child)::after {content: "\00b7"; padding: 0 .5ex}
+</style>
+<ol class=list-inline><li>97308.6724525886</li><li>498.298581425034</li><li>166.917432567699</li><li>25.6563454245633</li><li>13.4993146935864</li><li>2.00824196751143</li><li>0.645780345846735</li><li>0.155981866469654</li></ol>
+
+
+
+The result of a call to `eigen` will not necessarily be well ordered. (Here, they are.) So we order the eigenvalues in decreasing order and apply the same ordering to the eigenvectors. (As the eigenvectors are the columns of `ev$vectors`, we order the columns.
+
+
+```R
+idx_order = order(ev$values, decreasing = TRUE)
+ev$values = ev$values[idx_order]
+ev$vectors = ev$vectors[, idx_order]
+```
+
+Let us add the singular values to `ev`.
+
+
+```R
+ev$sing_values = sqrt(ev$values)
+```
+
+Now do things "properly".
+
+
+```R
+#install.packages("pracma")
+GS = pracma::gramSchmidt(A = ev$vectors)
+GS$Q
+# Just to check that Q is indeed with normalised columns
+colSums(GS$Q[,1:dim(GS$Q)[2]]^2)
+GS$Q[,1] %*% GS$Q[,2]
+```
+
+
+<table class="dataframe">
+<caption>A matrix: 8 × 8 of type dbl</caption>
+<tbody>
+	<tr><td>-0.06785926</td><td>-0.10703810</td><td>-0.074771554</td><td> 0.959199870</td><td>-0.21608682</td><td> 0.10065233</td><td>-0.030350587</td><td>-0.023178128</td></tr>
+	<tr><td>-0.55435636</td><td>-0.72869902</td><td> 0.290626700</td><td>-0.152379696</td><td>-0.15804372</td><td> 0.15956105</td><td>-0.058350355</td><td>-0.012688619</td></tr>
+	<tr><td>-0.23625691</td><td>-0.18581742</td><td>-0.946363825</td><td>-0.106759855</td><td>-0.00455192</td><td>-0.05122393</td><td> 0.002219217</td><td> 0.001694049</td></tr>
+	<tr><td>-0.09173610</td><td>-0.13238200</td><td> 0.016673068</td><td> 0.178396675</td><td> 0.95749120</td><td> 0.13389150</td><td>-0.077869385</td><td>-0.034295121</td></tr>
+	<tr><td>-0.06566056</td><td>-0.02693052</td><td> 0.041586794</td><td> 0.053196632</td><td> 0.02950635</td><td>-0.48055924</td><td>-0.517957328</td><td> 0.700226031</td></tr>
+	<tr><td>-0.04374434</td><td>-0.01430565</td><td> 0.004070984</td><td> 0.027623399</td><td> 0.04800455</td><td> 0.17002750</td><td> 0.735576268</td><td> 0.651779046</td></tr>
+	<tr><td>-0.76437249</td><td> 0.63185800</td><td> 0.060301062</td><td> 0.007078515</td><td>-0.00675132</td><td> 0.10275359</td><td>-0.044815268</td><td>-0.013840031</td></tr>
+	<tr><td>-0.18265026</td><td>-0.07289060</td><td> 0.093169759</td><td> 0.099246954</td><td> 0.09109287</td><td>-0.82064226</td><td> 0.422190555</td><td>-0.287747776</td></tr>
+</tbody>
+</table>
+
+
+
+
+<style>
+.list-inline {list-style: none; margin:0; padding: 0}
+.list-inline>li {display: inline-block}
+.list-inline>li:not(:last-child)::after {content: "\00b7"; padding: 0 .5ex}
+</style>
+<ol class=list-inline><li>1</li><li>1</li><li>1</li><li>1</li><li>1</li><li>1</li><li>1</li><li>1</li></ol>
+
+
+
+
+<table class="dataframe">
+<caption>A matrix: 1 × 1 of type dbl</caption>
+<tbody>
+	<tr><td>-3.295975e-17</td></tr>
+</tbody>
+</table>
+
+
+
+So `Q` is indeed an orthogonal matrix.
+
+Now recall we saw a theorem that told us how to construct a new basis..
+
+
+```R
+# Make an identity matrix
+Id = diag(dim(GS$Q)[1])
+# Make the augmented matrix
+A = cbind(GS$Q, Id)
+# Compute the RREF and extract the relevant matrix
+P = pracma::rref(A)[,(dim(GS$Q)[2]+1):dim(A)[2]]
+X.new = X %*% t(P)
+```
+
+Now we use the built in function.
+
+
+```R
+data.pca = prcomp(data[, to_centre], 
+                  center = TRUE, scale = TRUE)
+summary(data.pca)
+```
+
+
+    Importance of components:
+                              PC1    PC2    PC3     PC4    PC5     PC6     PC7
+    Standard deviation     2.0974 1.0942 0.9954 0.86216 0.6165 0.50797 0.15814
+    Proportion of Variance 0.5499 0.1497 0.1239 0.09292 0.0475 0.03225 0.00313
+    Cumulative Proportion  0.5499 0.6996 0.8234 0.91632 0.9638 0.99608 0.99921
+                               PC8
+    Standard deviation     0.07959
+    Proportion of Variance 0.00079
+    Cumulative Proportion  1.00000
+
+
+The "proportion of variance" information is actually the proportion (and then cumulative proportion) represented by the singular value associated to each principal component. We check this (approximately) by comparing with the singular values we computed.
+
+
+```R
+ev$sing_values/(sum(ev$sing_values))
+cumsum(ev$sing_values)/(sum(ev$sing_values))
+```
+
+
+
+
+
+
+
+
+
+
+```R
+str(data.pca)
+```
+
+    List of 5
+     $ sdev    : num [1:8] 2.097 1.094 0.995 0.862 0.616 ...
+     $ rotation: num [1:8, 1:8] 0.0202 0.354 0.2875 0.0657 0.4268 ...
+      ..- attr(*, "dimnames")=List of 2
+      .. ..$ : chr [1:8] "age" "height" "weight" "fing_temp" ...
+      .. ..$ : chr [1:8] "PC1" "PC2" "PC3" "PC4" ...
+     $ center  : Named num [1:8] 21.3 173 73 28.7 20.4 ...
+      ..- attr(*, "names")= chr [1:8] "age" "height" "weight" "fing_temp" ...
+     $ scale   : Named num [1:8] 4.94 9.31 15.61 3.38 2.02 ...
+      ..- attr(*, "names")= chr [1:8] "age" "height" "weight" "fing_temp" ...
+     $ x       : num [1:164, 1:8] 2.43 2.51 1.96 1.98 -2.88 ...
+      ..- attr(*, "dimnames")=List of 2
+      .. ..$ : chr [1:164] "5" "6" "12" "23" ...
+      .. ..$ : chr [1:8] "PC1" "PC2" "PC3" "PC4" ...
+     - attr(*, "class")= chr "prcomp"
+
+
+
+```R
+#library(devtools)
+#install_github("vqv/ggbiplot")
+library(ggbiplot)
+```
+
+
+```R
+ggbiplot(data.pca, groups = data$handedness)
+```
+
+
+    
+![png](output_24_0.png)
+    
+
+
+Not that it makes much difference, but here we realise that handedness is badly encoded, in the sense that there are some individuals with lowercase handedness and others where the word starts with a capital letter. Let us fix this and plot again.
+
+
+```R
+data$handedness = tolower(data$handedness)
+ggbiplot(data.pca, groups = data$handedness)
+```
+
+
+    
+![png](output_26_0.png)
+    
+
+
+Something else you can plot: ellipses containing most elements in a group, for the groups we have selected (here, handedness).
+
+
+```R
+ggbiplot(data.pca, groups = data$handedness, ellipse = TRUE)
+```
+
+
+    
+![png](output_28_0.png)
+    
+
