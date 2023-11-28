@@ -794,21 +794,40 @@ B=
 	\]
 	(Recall that $A$ symmetric since $G$ nondirected.)
 	Then the matrix $AD^{-1}$ is column stochastic
-	\vfill
-	Indeed, let $\nbOne=(1,\ldots,1)^T$, then
-	\begin{align*}
-		\nbOne^TAD^{-1} = 
-	\end{align*}
 \end{frame}
 
+\begin{frame}
+	Indeed, write entries in $D^{-1}$ as $d_{ij}^{-1}$. Of course, $d_{ii}^{-1} = 1/d_{ii}$, $1\leq i\leq n$ and $d_{ij}^{-1} = 0$ if $i\neq j$
+	\vfill
+	Then
+	\begin{align*}
+		AD^{-1} &= \sum_{k=1}^n a_{ik}d_{kj}^{-1}
+		= a_{ij}d_{jj}^{-1}
+		,\quad i,j=1,\ldots,n
+	\end{align*}
+	So the sum of column $j$ of $AD^{-1}$ is 
+	\begin{align*}
+		\sum_{i=1}^n a_{ij}d_{jj}^{-1} 
+		&= d_{jj}^{-1} \sum_{i=1}^n a_{ij} \\
+		&= d_{jj}^{-1} \sum_{i=1}^n a_{ji} \\
+		&= d_{jj}^{-1} d_{jj} \\
+		&= 1
+	\end{align*}
+	and the matrix is column-stochastic
+\end{frame}
+	
 \begin{frame}{Eigenvector centrality (undirected graph)}
-Let $\bx$ be an eigenvector corresponding to the largest eigenvalue $\lambda$ of the non-negative adjacency matrix $A$ of the undirected graph $G = (V, E)$. (We often call $\lambda$ the \textbf{Perron root} of $A$ and $\bx$ a \textbf{Perron eigenvector}.)
+Let $\bx$ be an eigenvector corresponding to the largest eigenvalue $\lambda$ of the non-negative adjacency matrix $A$ of the undirected graph $G = (V, E)$
+\vfill
+(We often call $\lambda$ the \textbf{Perron root} of $A$ and $\bx$ a \textbf{Perron eigenvector})
 \vfill
 The \textbf{eigenvector centrality} (or \textbf{prestige score}) of vertex $i$ is the $i$th component of the eigenvector $\bx$ of the (column) stochastic matrix $N := AD^{-1}$ corresponding to the eigenvalue 1:
 \[
 	N\bx = \bx
 \]
-\vfill
+\end{frame}
+
+\begin{frame}
 Consider a particular vertex $i$ with its neighbouring vertices $\N(i)$:
 \[
 	x_i = \sum_{j\in\N(i)} x_j 
@@ -821,14 +840,14 @@ The eigenvector centrality defined this way depends both on the number of neighb
 \begin{frame}
 	Let $A = (a_{ij})$ be the adjacency matrix of a graph. The eigenvector centrality $x_{i}$ of vertex $i$ is given by
 	$$
-	x_i = \frac{1}{\lambda} \sum_k a_{k,i} \, x_k
+	x_i = \frac{1}{\lambda} \sum_k a_{ki} \, x_k
 	$$ 
 	where $\lambda \neq 0$ is a constant. In matrix form
 	$$
 	\bx^T A=\lambda\bx^T
 	$$
-
-Hence the centrality vector $\bx$ is the left eigenvector of the adjacency matrix $A$ associated with the eigenvalue $\lambda$. 
+\vfill
+Hence the centrality vector $\bx$ is the left eigenvector of the adjacency matrix $A$ associated with the eigenvalue $\lambda$
 \end{frame}
 
 
@@ -838,7 +857,10 @@ The power method can be used to solve the eigenvector centrality problem. Let $m
 repeatedly compute $x^{(k)} = x^{(k-1)} A$;
 normalize $x^{(k)} = x^{(k)} / m(x^{(k)})$;
 until the desired precision is achieved. It follows that $x^{(k)}$ converges to the dominant eigenvector of $A$ and $m(x^{(k)})$ converges to the dominant eigenvalue of $A$. If matrix $A$ is sparse, each vector-matrix product can be performed in linear time in the size of the graph.
+\end{frame}
 
+
+\begin{frame}
 The method converges when the dominant (largest) and the sub-dominant (second largest) eigenvalues of $A$, respectively denoted by $\lambda_1$ and $\lambda_2$, are separated, that is they are different in absolute value, hence when $|\lambda_1| > |\lambda_2|$. The rate of convergence is the rate at which $(\lambda_2 / \lambda_1)^k$ goes to $0$. Hence, if the sub-dominant eigenvalue is small compared to the dominant one, then the method quickly converges.
 \end{frame}
 
@@ -850,6 +872,7 @@ The method converges when the dominant (largest) and the sub-dominant (second la
 	\vfill
 	Furthermore, if the graph is strongly connected, the matrix is irreducible and the eigenvector corresponding to the dominant eigenvalue is \emph{positive}
 \end{frame}
+
 
 
 %%%%%%%%%%%%%%%%%%%%
@@ -871,6 +894,101 @@ The PageRank centrality of node i is equal to the
 eigenvector xi of matrix N (The leading eigenvalue is 1):
 x = Nx
 \end{itemize}
+\end{frame}
+
+
+\begin{frame}{}
+	Problem: Given n interlinked webpages, rank them in order of
+“importance”.
+Assign the pages importance scores $x_1, x_2,\ldots, x_n\geq 0$.
+Key insight: use the existing link structure of the web to
+determine importance. A link to a page is like a vote for its
+importance.
+How does this help with web searches?
+Working example: n = 4. Page 1 links to 2, 3, and 4. Page 2
+links to 3 and 4. Page 3 links to 1. Page 4 links to 1 and 3.
+\end{frame}
+
+
+\begin{frame}{}
+	First attempt: let xk equal the number of links to page k.
+Do this in example.
+Criticism: a link from an “important” page (like Yahoo)
+should carry more weight than a link from some random blog!
+\end{frame}
+
+\begin{frame}{}
+	Second attempt: let xk equal the sum of the importance
+	scores of all pages linking to page k.
+	Do this in example; obtain a linear system.
+	Criticism 1: a webpage gets more “votes” (exerts more
+	influence) if it has many outgoing links.
+	Criticism 2: this system only has the trivial solution!	
+\end{frame}
+
+
+\begin{frame}{}
+	Third attempt (Brin and Page, late 90s): let xk equal the sum
+	of xj/nj
+	, where
+	the sum is taken over all the pages j that link to page k, and
+	nj
+	is the number of outoing links on page j.
+	That is, a page’s number of votes is its importance score, and
+	it gets split evenly among the pages it links to.
+	Do example.
+	Write in matrix form.
+	Solve, and rank the pages by importance	
+\end{frame}
+
+\begin{frame}{}
+	Summary: given a web with n pages, construct an n × n
+	matrix A as:
+	aij =
+	(
+	1/nj
+	, if page j links to page i
+	0, otherwise
+	,
+	where nj
+	is the number of outgoing links on page j.
+	Sum of jth column is nj/nj = 1, so A is a Markov matrix.
+	The ranking vector ~x solves A~x = ~x.
+	Possible issues:
+	Existence of solution with nonnegative entries?
+	Non-unique solutions?	
+\end{frame}
+
+
+\begin{frame}{}
+	PF Theorem guarantees a unique steady-state vector if the
+entries of A are strictly positive.
+Brin–Page: replace A with
+B = 0.85A + 0.15(matrix with every entry 1/n).
+B is a Markov matrix.
+PF Theorem says B has a unique steady-state vector, ~x.
+So ~x can be used for rankings!
+\end{frame}
+
+\begin{frame}{}
+	What does this have to do with Markov chains?
+Brin and Page considered web surfing as a stochastic process:
+Quote
+PageRank can be thought of as a model of user behavior. We
+assume there is a “random surfer” who is given a web page at
+random and keeps clicking on links, never hitting “back” but
+eventually gets bored and starts on another random page.
+i.e., surfer clicks on a link on the current page with probability
+0.85; opens up a random page with probability 0.15.
+A page’s rank is the probability the random user will end up
+on that page, OR, equivalently
+the fraction of time the random user spends on that page in
+the long run.
+\end{frame}
+
+
+\begin{frame}{}
+	
 \end{frame}
 
 \end{document}
