@@ -851,17 +851,26 @@ Hence the centrality vector $\bx$ is the left eigenvector of the adjacency matri
 \end{frame}
 
 
-\begin{frame} 
-The power method can be used to solve the eigenvector centrality problem. Let $m(v)$ denote the signed component of maximal magnitude of vector $v$. If there is more than one maximal component, let $m(v)$ be the first one. For instance, $m(-3,3,2) = -3$. Let $x^{(0)}$ be an arbitrary vector. For $k \geq 1$:
-
-repeatedly compute $x^{(k)} = x^{(k-1)} A$;
-normalize $x^{(k)} = x^{(k)} / m(x^{(k)})$;
-until the desired precision is achieved. It follows that $x^{(k)}$ converges to the dominant eigenvector of $A$ and $m(x^{(k)})$ converges to the dominant eigenvalue of $A$. If matrix $A$ is sparse, each vector-matrix product can be performed in linear time in the size of the graph.
+\begin{frame}{Power method to solve eigenvector centrality}
+$m(v)$: signed component of maximal magnitude of vector $v$; if more than one maximal component, let $m(v)$ be the first one. E.g., $m(-3,3,2) = -3$
+\vfill
+Let $x^{(0)}$ be an arbitrary vector. For $k \geq 1$
+\begin{itemize}
+	\item repeatedly compute $x^{(k)} = x^{(k-1)} A$
+	\item normalize $x^{(k)} = x^{(k)} / m(x^{(k)})$
+\end{itemize}
+until desired precision is achieved
+\vfill
+Then $x^{(k)}$ converges to the dominant eigenvector of $A$ and $m(x^{(k)})$ converges to the dominant eigenvalue of $A$
+\vfill
+If matrix $A$ is sparse, each vector-matrix product can be performed in linear time in the size of the graph.
 \end{frame}
 
 
 \begin{frame}
-The method converges when the dominant (largest) and the sub-dominant (second largest) eigenvalues of $A$, respectively denoted by $\lambda_1$ and $\lambda_2$, are separated, that is they are different in absolute value, hence when $|\lambda_1| > |\lambda_2|$. The rate of convergence is the rate at which $(\lambda_2 / \lambda_1)^k$ goes to $0$. Hence, if the sub-dominant eigenvalue is small compared to the dominant one, then the method quickly converges.
+Power method converges when the dominant (largest) and the sub-dominant (second largest) eigenvalues of $A$ $\lambda_1$ and $\lambda_2$ are separated, i.e., are different in absolute value, i.e., when $|\lambda_1| > |\lambda_2|$
+\vfill
+Rate of convergence is rate at which $(\lambda_2 / \lambda_1)^k$ goes to $0$. Hence, if the sub-dominant eigenvalue is small compared to the dominant one, the method converges quickly
 \end{frame}
 
 
@@ -897,98 +906,93 @@ x = Nx
 \end{frame}
 
 
-\begin{frame}{}
-	Problem: Given n interlinked webpages, rank them in order of
-“importance”.
-Assign the pages importance scores $x_1, x_2,\ldots, x_n\geq 0$.
-Key insight: use the existing link structure of the web to
-determine importance. A link to a page is like a vote for its
-importance.
+\begin{frame}
+	\begin{block}{Problem}
+		Given n interlinked webpages, rank them in order of ``importance''
+	\end{block}
+	\vfill
+Assign the pages importance scores $x_1, x_2,\ldots, x_n\geq 0$
+\vfill
+Key insight: use the existing link structure of the web to determine importance. A link to a page ``is'' a vote for its importance
+\vfill
 How does this help with web searches?
-Working example: n = 4. Page 1 links to 2, 3, and 4. Page 2
-links to 3 and 4. Page 3 links to 1. Page 4 links to 1 and 3.
 \end{frame}
 
 
 \begin{frame}{}
-	First attempt: let xk equal the number of links to page k.
-Do this in example.
-Criticism: a link from an “important” page (like Yahoo)
-should carry more weight than a link from some random blog!
+	First attempt: let $x_k$ equal the number of links to page $k$
+\vfill
+	Criticism: a link from an ``important'' page (like Google) should carry more weight than a link from some random blog!
 \end{frame}
 
 \begin{frame}{}
-	Second attempt: let xk equal the sum of the importance
-	scores of all pages linking to page k.
-	Do this in example; obtain a linear system.
-	Criticism 1: a webpage gets more “votes” (exerts more
-	influence) if it has many outgoing links.
+	Second attempt: let $x_k$ equal the sum of the importance scores of all pages linking to page $k$
+	\vfill
+	Criticism 1: a webpage gets more ``votes'' (exerts more influence) if it has many outgoing links
+	\vfill
 	Criticism 2: this system only has the trivial solution!	
 \end{frame}
 
 
 \begin{frame}{}
-	Third attempt (Brin and Page, late 90s): let xk equal the sum
-	of xj/nj
-	, where
-	the sum is taken over all the pages j that link to page k, and
-	nj
-	is the number of outoing links on page j.
-	That is, a page’s number of votes is its importance score, and
-	it gets split evenly among the pages it links to.
-	Do example.
-	Write in matrix form.
-	Solve, and rank the pages by importance	
+	Third attempt (Brin and Page, late 90s): let $x_k$ equal the sum of $x_j/n_j$, where
+	the sum is taken over all the pages $j$ that link to page $k$, and $n_j$ is the number of outgoing links on page $j$
+	\vfill
+	A page's number of votes is then its importance score, and gets split evenly among the pages it links to
 \end{frame}
 
 \begin{frame}{}
-	Summary: given a web with n pages, construct an n × n
-	matrix A as:
-	aij =
-	(
-	1/nj
-	, if page j links to page i
-	0, otherwise
-	,
-	where nj
-	is the number of outgoing links on page j.
-	Sum of jth column is nj/nj = 1, so A is a Markov matrix.
-	The ranking vector ~x solves A~x = ~x.
-	Possible issues:
-	Existence of solution with nonnegative entries?
-	Non-unique solutions?	
+	Summary: given a web with $n$ pages, construct an $n\times n$ matrix $A$ as
+	\[
+	a_{ij} =
+	\begin{cases}
+		1/n_j & \text{if page $j$ links to page $i$} \\
+		0 & \text{otherwise}
+	\end{cases}
+	\]
+	where $n_j$ is number of outgoing links on page $j$
+	\vfill
+	Sum of $j$th column is $n_j/n_j = 1$, so $A$ is a stochastic matrix
+	\vfill
+	The ranking vector $\tilde x$ solves $A\tilde x = \tilde x$
 \end{frame}
 
 
 \begin{frame}{}
-	PF Theorem guarantees a unique steady-state vector if the
-entries of A are strictly positive.
-Brin–Page: replace A with
-B = 0.85A + 0.15(matrix with every entry 1/n).
-B is a Markov matrix.
+	Possible issues: existence of solution with nonnegative entries? Non-unique solutions?	
+	\vfill
+	PF Theorem guarantees a unique steady-state vector if entries of $A$ are strictly positive or $A$ irreducible. But irreducible $\cancel{\Rightarrow}$ $\lambda_1$ and $\lambda_2$ separated, so make it primitive
+	\vfill
+	Brin-Page: replace $A$ with
+	\[
+		B = 0.85A + \frac{0.15}{n}\IJ
+	\]
+	where $\IJ$ is the matrix of all ones
+\vfill
+$B>0$ is primitive $\implies$
 PF Theorem says B has a unique steady-state vector, ~x.
 So ~x can be used for rankings!
 \end{frame}
 
-\begin{frame}{}
-	What does this have to do with Markov chains?
-Brin and Page considered web surfing as a stochastic process:
-Quote
-PageRank can be thought of as a model of user behavior. We
-assume there is a “random surfer” who is given a web page at
-random and keeps clicking on links, never hitting “back” but
-eventually gets bored and starts on another random page.
-i.e., surfer clicks on a link on the current page with probability
-0.85; opens up a random page with probability 0.15.
-A page’s rank is the probability the random user will end up
-on that page, OR, equivalently
-the fraction of time the random user spends on that page in
-the long run.
+\begin{frame}{The Random Surfer}
+	Why Markov chains?
+	\vfill
+\begin{block}{Brin and Page}
+	PageRank can be thought of as a model of user behavior. We assume there is a ``random surfer'' who is given a web page at random and keeps clicking on links, never hitting ``back'' but eventually gets bored and starts on another random page
+\end{block}
+\vfill
+Surfer clicks on a link on the current page with probability 0.85; opens up a random page with probability 0.15
+\vfill
+A page's rank is the probability the random user will end up on that page, OR, equivalently the fraction of time the random user spends on that page in the long run
 \end{frame}
 
 
-\begin{frame}{}
-	
+\begin{frame}{In practice}
+	Estimates of the number of web pages vary.. $4.77\times 10^9$ to more than $50\times 10^9$
+	\vfill 
+	Computing stationary distribution is \textbf{hard} computationally
+	\vfill
+	Instead, use power method, i.e., an iterative method, starting with initial distribution $(1/n,\ldots,1/n)$
 \end{frame}
 
 \end{document}
