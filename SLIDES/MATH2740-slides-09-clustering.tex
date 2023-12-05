@@ -166,7 +166,7 @@
 \end{frame}
 
 \begin{frame}   
-    The maximum-margin hyperplane is completely determined by those $\bx_i$ that lie nearest to it. 
+    The maximum-margin hyperplane is completely determined by those $\bx_i$ that lie nearest to it
     \vfill
     These $\bx_i$ are the \textbf{support vectors}
 \end{frame}
@@ -261,7 +261,7 @@
     So we need to consider the so-called Karush-Kuhn-Tucker (KKT) conditions
 \end{frame}
 
-\begin{frame}{Karush–Kuhn–Tucker (KKT) conditions}
+\begin{frame}{Karush-Kuhn-Tucker (KKT) conditions}
     Consider the optimisation problem
     \begin{align*}
         \text{maximize}\ f(x) \\
@@ -273,7 +273,7 @@
         L(\bx,\mu,\lambda) = f(\bx)+\mu^T\bg(\bx)+\lambda^T\bh(\bx)
     \]
     \begin{theorem}
-        If $(\mathbf{x}^{\ast},\mathbf{\mu}^\ast)$ is a [[saddle point]] of $L(\mathbf{x},\mathbf{\mu})$ in $\mathbf{x} \in \mathbf{X}$, $\mathbf{\mu} \geq \mathbf{0}$, then $\mathbf{x}^{\ast}$ is an optimal vector for the above optimization problem. Suppose that $f(\mathbf{x})$ and $g_i(\mathbf{x})$, $i = 1, \ldots, m$, are [[Convex function|convex]] in $\mathbf{x}$ and that there exists $\mathbf{x}_{0} \in \mathbf{X}$ such that $\mathbf{g}(\mathbf{x}_{0}) < 0$. Then with an optimal vector $\mathbf{x}^{\ast}$ for the above optimization problem there is associated a non-negative vector $\mathbf{\mu}^\ast$ such that $L(\mathbf{x}^{\ast},\mathbf{\mu}^\ast)$ is a saddle point of $L(\mathbf{x},\mathbf{\mu})$
+        If $(\mathbf{x}^{\ast},\mathbf{\mu}^\ast)$ is a \emph{saddle point} of $L(\mathbf{x},\mathbf{\mu})$ in $\mathbf{x} \in \mathbf{X}$, $\mathbf{\mu} \geq \mathbf{0}$, then $\mathbf{x}^{\ast}$ is an optimal vector for the above optimization problem. Suppose that $f(\mathbf{x})$ and $g_i(\mathbf{x})$, $i = 1, \ldots, m$, are \emph{convex} in $\mathbf{x}$ and that there exists $\mathbf{x}_{0} \in \mathbf{X}$ such that $\mathbf{g}(\mathbf{x}_{0}) < 0$. Then with an optimal vector $\mathbf{x}^{\ast}$ for the above optimization problem there is associated a non-negative vector $\mathbf{\mu}^\ast$ such that $L(\mathbf{x}^{\ast},\mathbf{\mu}^\ast)$ is a saddle point of $L(\mathbf{x},\mathbf{\mu})$
     \end{theorem}
 \end{frame}
 
@@ -313,35 +313,32 @@
         \lambda \lVert \mathbf{w} \rVert^2 +\left[\frac 1 n \sum_{i=1}^n \max\left(0, 1 - y_i(\mathbf{w}^\mathsf{T} \mathbf{x}_i - b)\right) \right]
     \]
     
-    where the parameter $\lambda > 0$ determines the trade-off between increasing the margin size and ensuring that the $\mathbf{x}_i$ lie on the correct side of the margin. Thus, for sufficiently small values of $\lambda$, it will behave similar to the hard-margin SVM, if the input data are linearly classifiable, but will still learn if a classification rule is viable or not
-    % (This parameter $\lambda$ is often also called $C$, e.g. in ''[[LIBSVM]]'', but usually refers to the inverse of $\lambda$.)
+    where the parameter $\lambda > 0$ determines the trade-off between increasing the margin size and ensuring that the $\mathbf{x}_i$ lie on the correct side of the margin
+    \vfill
+    Thus, for sufficiently small values of $\lambda$, it will behave similar to the hard-margin SVM, if the input data are linearly classifiable, but will still learn if a classification rule is viable or not
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%
-\section{Neural networks}
+\section{Neural networks (the perceptron)}
 
-\begin{frame}{Artificial neural network (ANN)}
-    From \href{https://en.wikipedia.org/wiki/Artificial_neural_network}{Wikipedia}
+\begin{frame}{Artificial neural network (ANN) - from \href{https://en.wikipedia.org/wiki/Artificial_neural_network}{Wikipedia}}
     \begin{quote}
-    \textbf{Artificial neural networks} (ANNs) are computing systems inspired by the biological neural networks that constitute animal brains.
-    
+    \textbf{Artificial neural networks} (ANNs) are computing systems inspired by the biological neural networks that constitute animal brains
+    \vfill
     An ANN is based on a collection of connected units or nodes called \textbf{artificial neurons}, which loosely model the neurons in a biological brain. Each connection, like the synapses in a biological brain, can transmit a signal to other neurons. An artificial neuron receives signals then processes them and can signal neurons connected to it. The ``signal" at a connection is a real number, and the output of each neuron is computed by some non-linear function of the sum of its inputs. The connections are called edges. Neurons and edges typically have a weight that adjusts as learning proceeds. The weight increases or decreases the strength of the signal at a connection. Neurons may have a threshold such that a signal is sent only if the aggregate signal crosses that threshold.
     \end{quote}
 \end{frame}
 
-%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%
-\subsection{Perceptron}
 
 \begin{frame}{The perceptron}
     One of the first neural networks (invented 1943, implemented 1957), made for simple classification tasks, for example recognising letters or numbers
     \vfill
     Two layers: the \emph{input} layer (the \emph{retina}) and the \emph{output} layer
     \vfill
-    Inputs are 0 or 1, and so are outputs
+    Inputs are 0 or 1, so are outputs
 \end{frame}
 
 
@@ -426,9 +423,9 @@
 \end{frame}
 
 \begin{frame}{The activation function}
-    So, we are given $I$ input neurons that take values $0$ or $1$, $O$ output neurons that take values $0$ or $1$, weights $W=[w_{ij}]\in\M_{IO}$ and a threshold function $f$
+    We have $I$ input neurons taking values $0$ or $1$, $O$ output neurons taking values $0$ or $1$, weights $W=[w_{ij}]\in\M_{IO}$ and a threshold function $f$
     \vfill
-    More generally, use a threshold $\theta_j$ for each output neuron,
+    More generally, use a threshold $\theta_j$ for each output neuron
     \[
         o_j= \begin{cases}
             0 & \text{if }a_j\leq \theta_j \\
@@ -436,7 +433,7 @@
         \end{cases}
     \]
     \vfill
-    The thresholds (or \emph{response bias}) and the weights are modifiable by learning. To do that easily for the threshold, consider an input neuron that is always on, say neuron 0, and setting the weights $w_{0j}=-\theta_j$, making the weights matrix an $(I+1)\times O$-matrix
+    The thresholds (or \emph{response bias}) and the weights are modifiable by learning. To do that easily for the threshold, consider an input neuron that is always on, say neuron 0, and set weights $w_{0j}=-\theta_j$, making the weights matrix an $(I+1)\times O$-matrix
 \end{frame}
 
 
@@ -464,7 +461,7 @@
             1 & 1 & $\mapsto$ & 1 \\
         \end{tabular}
     \end{center}
-    So we will have two neurons in the retina and a single output neuron
+    So we have two neurons in the retina and a single output neuron
 \end{frame}
 
 \begin{frame}{Supervised learning}
@@ -478,32 +475,34 @@
     \end{quote}
 \end{frame}
 
-\begin{frame}{Further distinctions in supervised learning}
-    Supervised learning is further divided into methods which use \textbf{reinforcement} or \textbf{error correction} 
-    
+\begin{frame}{Further distinctions in supervised learning methods}
+    Methods with \emph{reinforcement} or \emph{error correction} 
+    \vfill
     \begin{itemize}
-        \item Reinforcement learning is used when after each presentation of an input-output example we only know whether the network
-        produces the desired result or not. The weights are updated based on this
-        information (that is, the Boolean values true or false) so that only the input
-        vector can be used for weight correction
-        \item In learning with error correction, the
-        magnitude of the error, together with the input vector, determines the magnitude of the corrections to the weights, and in many cases we try to eliminate
-        the error in a single correction step
+        \item \textbf{Reinforcement learning}: used when after each presentation of an input-output example, we only know whether the network produces the desired result or not. 
+        Weights are updated based on this information (i.e., the Boolean values true or false), so only the input vector can be used for weight correction
+        \vfill
+        \item In learning with \textbf{error correction}, the
+        magnitude of the error, together with the input vector, determines the magnitude of the corrections to the weights. In many cases, we try to eliminate the error in a single correction step
     \end{itemize}
 \end{frame}
 
 \begin{frame}{A first learning algorithm}
     Suppose the training set consists of two sets of points $P$ and $N$
+    \vfill
     \begin{itemize}
-        \item \textbf{start:} The weight vector w0 is generated randomly, set $t := 0$
+        \item \textbf{start:} Generate random weight vector $w_0$; set $t := 0$
+        \vfill
         \item \textbf{test:} A vector $x\in P\cup N$ is selected randomly
         \begin{itemize}
-            \item if $x\in P$ and $w_t\bullet x > 0$ go to \textbf{test}
-            \item if $x\in P$ and $w_t\bullet x\leq 0$ go to \textbf{add}
-            \item if $x\in N$ and $w_t\bullet x < 0$ go to \textbf{test}
-            \item if $x\in N$ and $w_t\bullet x \geq 0$ go to \textbf{subtract}
+            \item if $x\in P$ and $\langle w_t,x\rangle > 0$ go to \textbf{test}
+            \item if $x\in P$ and $\langle w_t,x\rangle\leq 0$ go to \textbf{add}
+            \item if $x\in N$ and $\langle w_t,x\rangle < 0$ go to \textbf{test}
+            \item if $x\in N$ and $\langle w_t,x\rangle \geq 0$ go to \textbf{subtract}
         \end{itemize}
+        \vfill
         \item \textbf{add:} set $w_{t+1} = w_t + x$ and $t := t + 1$, goto \textbf{test}
+        \vfill
         \item \textbf{subtract:} set $w_{t+1} = w_t - x$ and $t := t + 1$, goto \textbf{test}
     \end{itemize}
 \end{frame}
@@ -595,7 +594,7 @@
 \end{frame}
 
 \begin{frame}{Trying another input}
-    Suppose we now present the first input, i.e., $[1,0,0]$, which should produce a result of 0. Then
+    Suppose we now present the first input $[1,0,0]$. This should produce a result of 0. Then
     \[
         a = \sum_i w_ix_i = (1\times 0.1)+(0\times 0.1)+(0\times 0.1) = 0.1
     \]
