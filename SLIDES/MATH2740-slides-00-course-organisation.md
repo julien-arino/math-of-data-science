@@ -13,7 +13,7 @@ _paginate: false
 
 # <!-- fit --> MATH 2740 Mathematics of Data Science
 
-# Some information about the course (Fall 2023)
+# Some information about the course (Fall 2024)
 
 Julien Arino ([julien.arino@umanitoba.ca](mailto:julien.arino@umanitoba.ca))
 
@@ -43,16 +43,24 @@ In case you want to know, some of the slides in the course are html5 generated f
 
 - There's an entry in the university address book with a phone for me.. don't bother!
 
-- I am physically present on campus on lecture days and some other days, but **do not** come to see me outside of office hours without an appointment!
-    - Office hours: TR 14:00-16:00
-- My office hours are for both courses I teach (MATH 2740 and MATH 4370/7370) and might get busy. If things do get busy, I will limit each person to 10 minutes at a time, so come with your questions prepared!
+---
+
+# Office hours
+
+- Because of the ongoing renovation of Machray Hall, I am sharing an office with 8 other colleagues
+
+- It is therefore not possible, at present, for me to commit to offering office hours, whether in person or by Zoom
+
+- The situation may evolve during the term, I will keep you posted
 
 ---
 
 # Course website - UMLearn
 
 - All information about the course is posted on UMLearn
-- It is your responsibility to check the UMLearn site regularly: all announcements about the course is made there as News items
+
+- It is **your responsibility** to check the UMLearn site regularly: all announcements about the course is made there as News items
+
 - (Remember to hit the link at the top of the page that says *MATH-2740-A01 - Mathematics of Data Science*, sometimes UMLearn takes you directly to Content, which is not where the announcements are)
 
 ---
@@ -125,10 +133,14 @@ In case you want to know, some of the slides in the course are html5 generated f
 
 # Academic dishonesty
 
-- Feel free to discuss work with others, but solutions must be your own !
+- Feel free to discuss work with others, but solutions must be your own!
+
 - Markers will be on the lookout for this
+
 - Paraphrasing my computer code = academic dishonesty !
+
 - [stack overflow](https://stackoverflow.com/) is a fantastic resource but if you use a solution from there, cite it (in a notebook, that's easy)
+
 - ChatGPT, GitHub Copilot, etc. are not your friends in this course..
 
 ---
@@ -136,6 +148,9 @@ In case you want to know, some of the slides in the course are html5 generated f
 # Jupyter notebooks on [syzygy.ca](https://syzygy.ca)
 
 - To facilitate computer work, we will use `R` within `jupyter` notebooks on [syzygy.ca](https://syzygy.ca) 
+
 - I will provide a whole lecture on using jupyter notebooks and [syzygy.ca](https://syzygy.ca), for now just know that this is a development environment that runs on the web and to which you have access as U of M students
+
 - I am also allowing the return of computer assignments as RMarkdown (Rmd) files. The lecture on jupyter will also cover this
+
 - There is a page on UMLearn on how to connect to [syzygy.ca](https://syzygy.ca), how to install `R` or jupyter notebooks on your computer
