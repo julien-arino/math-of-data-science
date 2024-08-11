@@ -27,7 +27,7 @@ NSERC-PHAC EID Modelling Consortium - CANMOD, OMNI/RÉUNIS & MfPH
 
 # Foreword
 
-- "Numerical dates" are in the form YYYY-MM-DD (e.g, today is 2022-09-08)
+- "Numerical dates" are in the form YYYY-MM-DD (e.g, today is 2024-09-05)
 - Times are 24h
 - Units are SI
 
@@ -100,34 +100,56 @@ In case you want to know, some of the slides in the course are html5 generated f
 # Self-declaration of absences
 
 - You can self-declare an absence of less than 120 hours (5 days) instead of providing a doctor's note
+
 - If a self-declared absence overlaps with the due date and time of Friday at 12:00
-    - send me [the form](https://umanitoba.ca/sites/default/files/2022-09/Self%20Declaration%20Fillable%20Form-%20FINAL%20for%20Website.pdf) and submit the [simplified form](https://forms.office.com/r/HSXE50PefN) **prior** to the deadline
-    - I will modify *your* deadline for *that* assignment so you can still submit on time
+    - submit the [simplified form](https://forms.office.com/r/HSXE50PefN) **prior** to the deadline
+    - This modifies *your* deadline for *that* assignment
+
 - **I will not accept self-declarations after the deadline**: if at 12:00 Friday, I have not received a self-declaration form XOR the assignment, you get a mark of zero on that assignment
+
 - Self-declarations are intended for very occasional and unforeseen circumstances $\implies$ I **will not accept more than two** during the term 
+
+---
+
+# Returning assignments (mathematics part)
+
+- The mathematical part of the assignment goes to Crowdmark
+    - Ensure legibility
+    - Answer questions in order
+    - Correct results without explanation will lose marks!
+
+- Not all questions will be marked
+    - the questions that are marked is unknown (to you) until solutions of the assignment are posted
+    - If you don't answer a question that is in the list of marked questions, you will receive no marks for that question
 
 ---
 
 # Computer work
 
 - Being able to use computers is an integral part of being a data scientist, so in this course, we use computers a lot
+
 - The two main languages in data science are `R` and `Python`. Typically, `R` is used more by people in Stats, while `Python` is more CS
+
 - There is great value in both and knowing both is a plus, but for simplicity, here we use `R`. Computer assignments will need to be handed back in `R` (Python $\Rightarrow$ 0)
 
 ---
 
-# Returning assignments
+# Returning assignments (computer part)
 
-- Mathematical part of the assignment goes to Crowdmark
-    - Ensure legibility
-    - Answer questions in order
 - Computer part of the assignment goes to UMLearn
     - `R` language only (Python $\Rightarrow$ 0)
     - Needs to be a jupyter notebook (.ipynb) or an RMarkdown file (.Rmd)
     - Single file
     - Can submit several times but only the latest file will be used
 - In both cases, explain what you are doing. Math or code without explanation will lose marks
-- If an assignment has both a mathematical and a computer part, the assignment is complete if and only if both parts are handed back. Incomplete assignment $\Rightarrow$ 0
+
+---
+
+# Returning assignments
+
+- If an assignment has both a mathematical and a computer part, the assignment is complete if and only if both parts are handed back
+
+- Incomplete assignment $\Rightarrow$ 0
 
 ---
 
