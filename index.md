@@ -36,3 +36,9 @@ Some lecture notes are available [here](lecture-notes/MATH2740.pdf). Beware: the
 ### Videos
 
 The videos for the course are available on YouTube as a [playlist](https://youtube.com/playlist?list=PLfRaznSpWo2vQAn1jVyueTuAiryDaxkH3). Note that the videos are far from perfect.. the slides and the videos will be reworked prior to the next instance of the course (although the latter will hopefully be taught in person).
+
+### Additional slides and videos
+
+The following slides and videos are part of a set of "vignettes" about R (see [here](https://julien-arino.github.io/R-for-modellers/)). They are required reading/watching for the course as they explain some mechanisms that your R assignments will need to use.
+
+- [Installing and loading packages](https://julien-arino.github.io/R-for-modellers/SLIDES/vignette-03-installing-using-packages.html) ([video](https://youtu.be/WPYHU2G7U7Q))
