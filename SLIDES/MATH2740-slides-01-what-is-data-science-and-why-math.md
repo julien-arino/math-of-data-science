@@ -10,15 +10,14 @@ _paginate: false
 <!-- theme: default -->
 <!-- auto-scaling: true -->
 
+![bg opacity:0.1](FIGS_slides/Gemini_Generated_Image_39kvla39kvla39kv.jpeg)
 
 # What is Data Science and why would you care about Mathematics as a data scientist?
 Julien Arino ([julien.arino@umanitoba.ca](mailto:julien.arino@umanitoba.ca))
 
-Department of Mathematics & Data Science Nexus
+Department of Mathematics
 University of Manitoba
 
-Canadian Centre for Disease Modelling
-NSERC-PHAC EID Modelling Consortium - CANMOD, OMNI/RÉUNIS & MfPH
 
 ---
 
@@ -82,22 +81,26 @@ We barely brush the surface here:
 
 - Some techniques from linear algebra
 - Some graph theory ideas
+- A little bit of multivariable calculus
 
 
 There is a lot more to see!!!
 
+---
 
---- 
+# Prerequisites / What you will learn
 
-# Where to go for more information
+- (MATH 1210 or MATH 1220 or MATH 1300) and (MATH 1232 or MATH 1700 or MATH 1710)
 
-Faculty of Science @ U of M has created the Data Science NEXUS ([link](https://sci.umanitoba.ca/data-science-nexus/))
+- $\Rightarrow$ I expect you to **know and be comfortable** with 1st year linear algebra (3 CH) and 1st year calculus (6 CH)
 
-- Education component
-    - Data Science Undergraduate Program (Fall 2021)
-    - Data Science Master’s Program
-    - Master of Business Analytics
+- We need more: some stuff you would learn in 2090 (Linear Algebra 2), some stuff from 2130, 2150 or 2720 (Multivariable Calculus) and some stuff from 2070 (Graph Theory)
 
-- Training (workshops, COOP, internships, etc.)
+---
 
-- Events (conferences, etc.)
+# Focus here is not on mathematical precision
+
+- We won't do complicated proofs. I will show some when they are useful in understanding *why* something works
+- We will cover just enough of the mentioned math topics that you can understand *how* to do things
+- In classic math courses, we work on "small" examples so we can work them by hand (and students are able to do them in tests). Here, you will do small examples by hand, indeed, in assignments and tutorials to understand how things work. But you will do regularly sized examples in computer assignments
+- We'll even do small examples on computers
