@@ -10,6 +10,7 @@ _paginate: false
 <!-- theme: default -->
 <!-- auto-scaling: true -->
 
+![bg opacity:0.1](FIGS_slides/Gemini_Generated_Image_pqj7q8pqj7q8pqj7.jpeg)
 
 # <!-- fit --> MATH 2740 Mathematics of Data Science
 
@@ -17,18 +18,15 @@ _paginate: false
 
 Julien Arino ([julien.arino@umanitoba.ca](mailto:julien.arino@umanitoba.ca))
 
-Department of Mathematics & Data Science Nexus
+Department of Mathematics
 University of Manitoba
-
-Canadian Centre for Disease Modelling
-NSERC-PHAC EID Modelling Consortium - CANMOD, OMNI/RÉUNIS & MfPH
 
 ---
 
 # Foreword
 
 - "Numerical dates" are in the form YYYY-MM-DD (e.g, today is 2024-09-05)
-- Times are 24h
+- Times are 24h (HHMM)
 - Units are SI
 
 In case you want to know, some of the slides in the course are html5 generated from `markdown` files using [marp](https://marp.app/). Others are pure $\LaTeX$. All (including source code) are available on GitHub [here](https://github.com/julien-arino/math2740-of-data-science)
@@ -41,17 +39,17 @@ In case you want to know, some of the slides in the course are html5 generated f
 
 - Please use your `myumanitoba` email address. Use a tag such as `[MATH 2740]` in your subject line, if you want to be read..
 
-- There's an entry in the university address book with a phone for me.. don't bother!
+- There's an entry in the university address book with a phone for me.. don't bother: we don't have office phones anymore! (It will just take several years for this to be reflected in the address book)
 
 ---
 
 # Office hours
 
-- Because of the ongoing renovation of Machray Hall, I am sharing an office with 8 other colleagues
+- Because of the ongoing renovation of Machray Hall, I am sharing an office with 8 other colleagues. Next door are offices shared by another 8 and 4 colleagues
 
-- It is therefore not possible, at present, for me to commit to offering office hours, whether in person or by Zoom
+- It is therefore not possible for me to see you in my office
 
-- The situation may evolve during the term, I will keep you posted
+- I have booked 236 St Paul's College from 1600 to 1700 on Tuesday and Thursday for office hours
 
 ---
 
@@ -59,15 +57,15 @@ In case you want to know, some of the slides in the course are html5 generated f
 
 - All information about the course is posted on UMLearn
 
-- It is **your responsibility** to check the UMLearn site regularly: all announcements about the course is made there as News items
+- It is **your responsibility** to check the UMLearn site regularly: *Announcements* is how I normally communicate with you about the course
 
-- (Remember to hit the link at the top of the page that says *MATH-2740-A01 - Mathematics of Data Science*, sometimes UMLearn takes you directly to Content, which is not where the announcements are)
+- (Remember to hit the link at the top of the page that says *MATH-2740-A01 - Mathematics of Data Science*, sometimes UMLearn takes you directly to Content, which is not where Announcements are)
 
 ---
 
 # Lectures
 
-- TR 11:30-12:45 in 204 Armes
+- TR 1130-1245 in 204 Armes
 
 - Videos for the course as I taught it in 2021 are available on as a [YouTube playlist](https://www.youtube.com/playlist?list=PLfRaznSpWo2vQAn1jVyueTuAiryDaxkH3). There is no guarantee that that the content will be the same this year, but there will be commonalities for sure
 
@@ -81,15 +79,15 @@ In case you want to know, some of the slides in the course are html5 generated f
 
 | Section | Day and time | Location |
 |---------|--------------|----------|
-| B01 | W 8:30-9:20 | 114 St John's College |
-| B02 | W 9:30-10:20 | 315 Buller |
-| B03 | W 11:30-12:20 | 315 Buller |
+| B01 | W 0830-0920 | 301 Biological Sciences |
+| B02 | W 0930-1020 | 301 Biological Sciences |
+| B03 | W 1130-1220 | 301 Biological Sciences |
 
 ---
 
 # Evaluation through assignments only
 - Evaluation is through assignments only (no tests, no final examination!)
-- One assignment per week (posted Friday at 12:00, due the following Friday at 12:00, except Friday before reading week, which is due the Friday after reading week)
+- One assignment per week (posted Friday at 1200, due the following Friday at 1200, except Friday before reading week, which is due the Friday after reading week)
 - Assignments will be mathematical OR (not XOR) computational. If both, (assignment complete $\iff$ **both** parts are handed back)
 - The mark will consist of the average of the marks on the **best 10** assignments
 - In the mathematical part, it is possible that not all questions will be marked. If you do not submit an answer to a question that is marked, you will receive **zero** for that question
@@ -101,11 +99,11 @@ In case you want to know, some of the slides in the course are html5 generated f
 
 - You can self-declare an absence of less than 120 hours (5 days) instead of providing a doctor's note
 
-- If a self-declared absence overlaps with the due date and time of Friday at 12:00
-    - submit the [simplified form](https://forms.office.com/r/HSXE50PefN) **prior** to the deadline
+- If a self-declared absence overlaps with the due date and time of Friday at 1200
+    - submit the [form](https://forms.office.com/r/HSXE50PefN) **prior** to the deadline
     - This modifies *your* deadline for *that* assignment
 
-- **I will not accept self-declarations after the deadline**: if at 12:00 Friday, I have not received a self-declaration form XOR the assignment, you get a mark of zero on that assignment
+- **I will not accept self-declarations after the deadline**: if at 1200 Friday, I have not received a self-declaration form XOR the assignment, you get a mark of zero on that assignment
 
 - Self-declarations are intended for very occasional and unforeseen circumstances $\implies$ I **will not accept more than two** during the term 
 
@@ -134,18 +132,33 @@ In case you want to know, some of the slides in the course are html5 generated f
 
 ---
 
+# CS students, beware! 
+
+- Use Rmarkdown, Sweave or jupyter notebook to generate a **notebook**
+
+- Notebooks mix formatted text and code. They are executable and should be submitted as source, not as pdf or html or whatever. So only files in .Rmd, .Rnw and .ipynb are accepted
+
+- Notebooks are not straight code. Submitting straight R code in a notebook with commented code $\Rightarrow$ 0)
+
+---
+
 # Returning assignments (computer part)
 
 - Computer part of the assignment goes to UMLearn
     - `R` language only (Python $\Rightarrow$ 0)
-    - Needs to be a jupyter notebook (.ipynb) or an RMarkdown file (.Rmd)
+    - Needs to be a jupyter notebook (.ipynb), a RMarkdown file (.Rmd) or a Sweave (.Rnw) file
     - Single file
     - Can submit several times but only the latest file will be used
-- In both cases, explain what you are doing. Math or code without explanation will lose marks
+
+- Your code must run! It must also use the "Be friendly to others" method in [these slides](https://julien-arino.github.io/R-for-modellers/SLIDES/vignette-03-installing-using-packages.html#/be-friendly-to-others)
+
 
 ---
 
 # Returning assignments
+
+
+- In both cases, explain what you are doing. Math or code without explanation will lose marks
 
 - If an assignment has both a mathematical and a computer part, the assignment is complete if and only if both parts are handed back
 
@@ -163,7 +176,9 @@ In case you want to know, some of the slides in the course are html5 generated f
 
 - [stack overflow](https://stackoverflow.com/) is a fantastic resource but if you use a solution from there, cite it (in a notebook, that's easy)
 
-- ChatGPT, GitHub Copilot, etc. are not your friends in this course..
+- ChatGPT, GitHub Copilot, etc. are wonderful tools, but you must use them wisely. Pure unaltered LLM production $\Rightarrow$ AD 
+
+- FYI: my PhD student who is marking your computer code and some of your math has been working with LLMs for quite a while now. Their LLM detection radar is finely tuned
 
 ---
 
@@ -171,7 +186,7 @@ In case you want to know, some of the slides in the course are html5 generated f
 
 - To facilitate computer work, we will use `R` within `jupyter` notebooks on [syzygy.ca](https://syzygy.ca) 
 
-- I will provide a whole lecture on using jupyter notebooks and [syzygy.ca](https://syzygy.ca), for now just know that this is a development environment that runs on the web and to which you have access as U of M students
+- I will provide a whole lecture on using jupyter notebooks and [syzygy.ca](https://syzygy.ca), for now just know that this is a development environment that runs on the web and to which you have access as UM students
 
 - I am also allowing the return of computer assignments as RMarkdown (Rmd) files. The lecture on jupyter will also cover this
 
