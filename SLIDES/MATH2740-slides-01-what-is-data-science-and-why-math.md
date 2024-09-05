@@ -98,7 +98,7 @@ There is a lot more to see!!!
 
 ---
 
-# Focus here is not on mathematical precision
+# Focus here is not on mathematical "precision"
 
 - We won't do complicated proofs. I will show some when they are useful in understanding *why* something works
 - We will cover just enough of the mentioned math topics that you can understand *how* to do things
