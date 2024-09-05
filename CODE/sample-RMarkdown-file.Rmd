@@ -33,7 +33,7 @@ Note that the `echo = FALSE` parameter was added to the code chunk to prevent pr
 
 ## Including mathematical expressions
 
-Markdown is a simple way to format text that includes equations. You can include mathematical expressions both inline: $e^{i\pi} + 1 = 0$, and displayed:
+Markdown is a simple way to format text that includes equations. You can include mathematical expressions both inline $e^{i\pi} + 1 = 0$ and displayed:
 $$
 \int_{-\infty}^\infty e^{-x^2} \, dx = \sqrt{\pi}.
 $$
