@@ -10,7 +10,7 @@ _paginate: false
 <!-- theme: default -->
 <!-- auto-scaling: true -->
 
-![bg opacity:0.1](FIGS_slides/Gemini_Generated_Image_pqj7q8pqj7q8pqj7.jpeg)
+![bg opacity:0.2](FIGS_slides/Gemini_Generated_Image_pqj7q8pqj7q8pqj7.jpeg)
 
 # <!-- fit --> MATH 2740 Mathematics of Data Science
 
