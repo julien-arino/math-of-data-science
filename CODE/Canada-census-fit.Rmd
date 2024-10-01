@@ -264,7 +264,7 @@ if (!require("GA", quietly = TRUE)) {
 GA = ga(type = "real-valued", 
         fitness = function(x) -error(a_0 = x[1], a_1 = x[2], points),
         suggestions = c(a_0 = 2, a_1 = 3),
-        lower = c(0, 0), upper = c(10, 10),
+        lower = c(-10, -10), upper = c(10, 10),
         popSize = 200, maxiter = 150)
 plot(GA)
 GA
