@@ -4,3 +4,10 @@
 .Ruserdata
 .ipynb_checkpoints
 
+*.aux
+*.bbl
+*.log
+*.out
+*.toc
+*-concordance.tex
+*.synctex.gz
