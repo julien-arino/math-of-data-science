@@ -1,0 +1,171 @@
+---
+title: "Canada census - V1.0"
+author: "Julien Arino"
+date: "2024-09-16"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introduction to R and jupyter notebook
+In order to illustrate the use of Rmarkdown, let us prepare for the next lecture using a notebook.
+
+Notebooks uses two types of information. Plain text is formatted using markdown, which is a simple text description language yet has relatively powerful capabilities. See here for details, for instance.
+
+```{r}
+# This, on the other hand, is an R code cell 
+# The sign "#" is used for comments in R, so these lines do nothing
+```
+
+The code above, between the triple backticks, is an R code cell. It is executed by R when you hit Knit.
+
+# Grabing the Canadian census data
+To illustrate the method, we will consider the evolution of the population of Canada through time. For this, we will grab the census data. We search for "canada historical census data csv", since csv (comma separated values) is a very easy format to use with R. Here, we find a csv for 1851 to 1976. We follow the link to Table A2-14, where we find another link, this time to a csv file. This is what we use in R.
+
+The function `read.csv` reads in a file (potentially directly from the web). We assign the result to the variable data. We then use the function head to show the first few lines in the result.
+
+```{r}
+data_old = read.csv("https://www150.statcan.gc.ca/n1/en/pub/11-516-x/sectiona/A2_14-eng.csv?st=L7vSnqio")
+head(data_old)
+```
+
+Obviously, this does not make a lot of sense. This is normal: take a look at the first few lines in the file. They take the form
+
+```csv
+,Series A2-14.,"Population of Canada, by province, census dates, 1851 to 1976",,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,
+,Year,Canada,,Newfound-,Prince,,Nova,New,Quebec,Ontario, Manitoba,,Saskat-,,Alberta,,British,,Yukon,Northwest,,
+,,,,land,Edward,,Scotia,Brunswick,,,,,chewan,,,,Columbia,,Territory,Territories,,
+,,,,,Island,,,,,,,,,,,,,,,,,
+,,2,,3,4,,5,6,7,8,9,,10,,11,,12,,13,14,,
+,,,,,,,,,,,,,,,,,,,,,,
+```
+
+This happens often: the first few lines are here to set the information, they lay out a simple version of the so-called metadata
+
+The first line here does this; it is easy to deal with this: the function read.csv takes the optional argument skip=, which indicates how many lines to skip at the beginning
+The second line is also empty, so let us skip it too
+
+```{r}
+data_old = read.csv("https://www150.statcan.gc.ca/n1/en/pub/11-516-x/sectiona/A2_14-eng.csv?st=L7vSnqio",
+                    skip = 2)
+head(data_old)
+```
+
+Here, there is the further issue that to make things legible, the table authors used 3 rows (from 2 to 4) to encode for long names (e.g., Prince Edward Island is written over 3 rows). Note, however, that `read.csv` has rightly picked up on the first row being the column names.
+
+(You could also use the function `read_csv` from the package `readr` to read in the file. This function is a bit more flexible than `read.csv` and can handle such cases more easily. However, it is not part of the base R package, so you would need to install it first.)
+
+Because we are only interested in the total population of the country and the year, let us simply get rid of the first 4 rows and of all columns except the second (Year) and third (Canada)
+
+```{r}
+data_old = data_old[5:dim(data_old)[1], 2:3]
+data_old
+```
+
+Still not perfect:
+
+- there are some empty rows;
+- the last few rows need to be removed too, they contain remarks about the data;
+- the population counts contain commas;
+- it would be better if years were increasing.
+
+Let us fix these issues.
+
+For 1 and 2, this is easy: remark that the Canada column is empty for both issues. Now remark as well that below Canada (and Year, for that matter), it is written `<chr>`. This means that entries in the column are characters. Looking for empty content therefore means looking for empty character chains.
+
+So to fix 1 and 2, we keep the rows where Canada does not equal the empty chain.
+
+To get rid of commas, we just need to substitute an empty chain for ",".
+
+To sort, we find the order for the years and apply it to the entire table.
+
+Finally, as remarked above, for now, both the year and the population are considered as character chains. This means that in order to plot anything, we will have to indicate that these are numbers, not characters.
+
+```{r}
+data_old = data_old[which(data_old$Canada != ""),]
+data_old$Canada = gsub(",", "", data_old$Canada)
+order_data = order(data_old$Year)
+data_old = data_old[order_data,]
+data_old$Year = as.numeric(data_old$Year)
+data_old$Canada = as.numeric(data_old$Canada)
+data_old
+```
+
+Row numbers are a little weird, so let us fix this.
+
+```{r}
+row.names(data_old) = 1:dim(data_old)[1]
+data_old
+```
+
+Well, that looks about right! Let's see what this looks like in a graph.
+
+```{r}
+plot(data_old$Year, data_old$Canada,
+    type = "b", lwd = 2,
+    xlab = "Year", ylab = "Population")
+```
+
+But wait, this is only to 1976..! Looking around, we find another table here. There's a download csv link in there, let us see where this leads us. The table is 720KB, so surely there must be more to this than just the population. To get a sense of that, we dump the whole data.frame, not just its head.
+
+```{r}
+data_new = read.csv("https://www12.statcan.gc.ca/census-recensement/2011/dp-pd/vc-rv/download-telecharger/download-telecharger.cfm?Lang=eng&CTLG=98-315-XWE2011001&FMT=csv")
+head(data_new, 100)
+```
+
+Haha, this looks quite nice but has way more information than we need: we just want the population of Canada and here we get `r dim(data_new)[1]` rows. Also, the population of Canada is expressed in thousands, so once we selected what we want, we will need to multiply by 1,000.
+
+There are many ways to select rows. Let us proceed as follows: we want the rows where the geography is "Canada" and the characteristic is "Population (in thousands)". Let us find those indices of rows that satisfy the first criterion, those that satisfy the second; if we then intersect these two sets of indices, we will have selected the rows we want.
+
+```{r}
+idx_CAN = which(data_new$GEOGRAPHY.NAME == "Canada")
+idx_char = which(data_new$CHARACTERISTIC == "Population (in thousands)")
+idx_keep = intersect(idx_CAN, idx_char)
+idx_keep
+```
+
+Yes, this looks okay, so let us keep only these.
+
+```{r}
+data_new = data_new[idx_keep,]
+data_new
+```
+
+
+We want to concatenate this data.frame with the one from earlier. To do this, we need the two data frames to have the same number of columns and, actually, the same column names and entry types (notice that YEAR.S. in data_new is a column of characters).
+
+So what remains to do:
+
+- Rename the columns in the pruned old data (data_pruned) to year and population. Personally, I prefer lowercase column names.. and population is more informative than Canada.
+- Keep only the relevant columns in data_new, rename them accordingly and multiply population by 1,000 there.
+- Transform year in data_new to numbers.
+- We already have data up to and including 1976 in data_old, so get rid of that in data_new.
+- Append the rows of data_new to those of data_pruned.
+
+```{r}
+colnames(data_old) = c("year", "population")
+data_new = data_new[,c("YEAR.S.","TOTAL")]
+colnames(data_new) = c("year", "population")
+data_new$year = as.numeric(data_new$year)
+data_new = data_new[which(data_new$year>1976),]
+data_new$population = data_new$population*1000
+
+data = rbind(data_old,data_new)
+```
+
+OK, we are ready now!!
+
+```{r}
+plot(data$year, data$population,
+    type = "b", lwd = 2,
+    xlab = "Year", ylab = "Population")
+```
+
+In case we need the data elsewhere, we can save it.
+
+```{r}
+write.csv(data, file = "Canada_census.csv")
+```
