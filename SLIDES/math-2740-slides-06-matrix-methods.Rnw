@@ -1,11 +1,9 @@
-%\SweaveUTF8
 \documentclass[aspectratio=169]{beamer}
 
 <<set-options,echo=FALSE,warning=FALSE,message=FALSE>>=
 # Load required libraries
 required_packages = c("dplyr", "ggplot2", "knitr", 
-                       "latex2exp", "lhs", "RColorBrewer", 
-                       "sensitivity", "tidyr")
+                       "latex2exp", "readr", "tidyr")
 for (p in required_packages) {
   if (!require(p, character.only = TRUE)) {
     install.packages(p, dependencies = TRUE)
@@ -84,7 +82,7 @@ The function \code{read.csv} reads in a file (potentially directly from the web)
 \vfill
 Assign the result to the variable data. We then use the function head to show the first few lines in the result.
 \vfill
-<<>>=
+<<load-census-csv-1>>=
 data_old = read.csv("https://www150.statcan.gc.ca/n1/en/pub/11-516-x/sectiona/A2_14-eng.csv?st=L7vSnqio")
 head(data_old)
 @
@@ -103,7 +101,7 @@ This happens often: the first few lines are here to set the information, they la
 The first line here does this; it is easy to deal with this: the function read.csv takes the optional argument skip=, which indicates how many lines to skip at the beginning
 The second line is also empty, so let us skip it too
 
-<<>>=
+<<load-census-csv-2>>=
 data_old = read.csv("https://www150.statcan.gc.ca/n1/en/pub/11-516-x/sectiona/A2_14-eng.csv?st=L7vSnqio",
                     skip = 2)
 head(data_old)
@@ -120,7 +118,7 @@ Because we are only interested in the total population of the country and the ye
 
 <<>>=
 data_old = data_old[5:dim(data_old)[1], 2:3]
-data_old
+head(data_old, n=4)
 @
 \end{frame}
 
@@ -201,18 +199,17 @@ There are many ways to select rows. Let us proceed as follows: we want the rows 
 idx_CAN = which(data_new$GEOGRAPHY.NAME == "Canada")
 idx_char = which(data_new$CHARACTERISTIC == "Population (in thousands)")
 idx_keep = intersect(idx_CAN, idx_char)
-idx_keep
+head(idx_keep, n = 8)
 @
 \end{frame}
 
 
 \begin{frame}[fragile]
-
-Yes, this looks okay, so let us keep only these.
+Yes, this looks okay, so let us keep only these
 
 <<>>=
 data_new = data_new[idx_keep,]
-data_new
+head(data_new, n = 8)
 @
 \end{frame}
 
@@ -225,11 +222,11 @@ To do this, we need the two data frames to have the same number of columns and, 
 
 \begin{frame}\frametitle{What remains to do}
 \begin{itemize}
-\item Rename the columns in the pruned old data (data\_pruned) to year and population. Personally, I prefer lowercase column names.. and population is more informative than Canada
-\item Keep only the relevant columns in data\_new, rename them accordingly and multiply population by 1,000 there
-\item Transform year in data\_new to numbers
-\item We already have data up to and including 1976 in data\_old, so get rid of that in data\_new
-\item Append the rows of data_new to those of data\_pruned
+\item Rename the columns in the pruned old data (data\_pruned) to \code{year} and \code{population}. Personally, I prefer lowercase column names.. and \code{population} is more informative than \code{Canada}
+\item Keep only the relevant columns in \code{data\_new}, rename them accordingly and multiply population by 1,000 there
+\item Transform year in \code{data\_new} to numbers
+\item We already have data up to and including 1976 in \code{data\_old}, so get rid of that in \code{data\_new}
+\item Append the rows of \code{data\_new} to those of \code{data\_pruned}
 \end{itemize}
 \end{frame}
 
@@ -248,21 +245,22 @@ data = rbind(data_old,data_new)
 \end{frame}
 
 
-\begin{frame}[fragile]
-OK, we are ready now!!
-<<eval=FALSE>>=
+\begin{frame}[fragile]\frametitle{Let us plot the result}
+<<fig.show='asis',fig.height=3.5>>=
 plot(data$year, data$population,
     type = "b", lwd = 2,
     xlab = "Year", ylab = "Population")
 @
 \end{frame}
 
-\begin{frame}[fragile]
-In case we need the data elsewhere, we save it
+\begin{frame}[fragile]\frametitle{Save the processed data}
+In case we need the data elsewhere, we save the data to a \code{csv} file
 \vfill
 <<>>=
 write.csv(data, file = "../CODE/Canada_census.csv")
 @
+\vfill
+Using \code{readr} saves the data without row numbers (by default), so we can do this instead
 \vfill
 <<>>=
 readr::write_csv(data, file = "../CODE/Canada_census.csv")

@@ -1,4 +1,3 @@
-%\SweaveUTF8
 \documentclass[aspectratio=169]{beamer}\usepackage[]{graphicx}\usepackage[]{xcolor}
 % maxwidth is the original width if it is less than linewidth
 % otherwise use linewidth (to make sure the graphics do not exceed the margin)
@@ -234,61 +233,14 @@ Because we are only interested in the total population of the country and the ye
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hldef{data_old} \hlkwb{=} \hldef{data_old[}\hlnum{5}\hlopt{:}\hlkwd{dim}\hldef{(data_old)[}\hlnum{1}\hldef{],} \hlnum{2}\hlopt{:}\hlnum{3}\hldef{]}
-\hldef{data_old}
+\hlkwd{head}\hldef{(data_old,} \hlkwc{n}\hldef{=}\hlnum{4}\hldef{)}
 \end{alltt}
 \begin{verbatim}
-##                                                                                                                                                                                                                 Year
-## 5                                                                                                                                                                                                               1976
-## 6                                                                                                                                                                                                                   
-## 7                                                                                                                                                                                                               1971
-## 8                                                                                                                                                                                                               1966
-## 9                                                                                                                                                                                                               1961
-## 10                                                                                                                                                                                                              1956
-## 11                                                                                                                                                                                                              1951
-## 12                                                                                                                                                                                                                  
-## 13                                                                                                                                                                                                              1941
-## 14                                                                                                                                                                                                              1931
-## 15                                                                                                                                                                                                              1921
-## 16                                                                                                                                                                                                              1911
-## 17                                                                                                                                                                                                              1901
-## 18                                                                                                                                                                                                                  
-## 19                                                                                                                                                                                                              1891
-## 20                                                                                                                                                                                                              1881
-## 21                                                                                                                                                                                                              1871
-## 22                                                                                                                                                                                                              1861
-## 23                                                                                                                                                                                                              1851
-## 24                                                                                                                                                                                                                  
-## 25                                                                                                                         Includes 485 members of the Royal Canadian Navy whose province of residence is not known.
-## 26                                                                                                                                                                              Included with Northwest Territories.
-## 27 For the discussion of the ambiguities and under-enumeration contained in these figures consult the notes to series A2-14 in original volume. For completeness of enumeration in censuses of 1961 and later years,
-## 28                                                                                                                                                                                       see notes to series A15-53.
-## 29                                                                                                                                                                                                      1848 figure.
-##        Canada
-## 5  22,992,604
-## 6            
-## 7  21,568,311
-## 8  20,014,880
-## 9  18,238,247
-## 10 16,080,791
-## 11 14,009,429
-## 12           
-## 13 11,506,655
-## 14 10,376,786
-## 15  8,787,949
-## 16  7,206,643
-## 17  5,371,315
-## 18           
-## 19  4,833,239
-## 20  4,324,810
-## 21  3,689,257
-## 22  3,229,633
-## 23  2,436,297
-## 24           
-## 25           
-## 26           
-## 27           
-## 28           
-## 29
+##   Year     Canada
+## 5 1976 22,992,604
+## 6                
+## 7 1971 21,568,311
+## 8 1966 20,014,880
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -631,10 +583,10 @@ There are many ways to select rows. Let us proceed as follows: we want the rows 
 \hldef{idx_CAN} \hlkwb{=} \hlkwd{which}\hldef{(data_new}\hlopt{$}\hldef{GEOGRAPHY.NAME} \hlopt{==} \hlsng{"Canada"}\hldef{)}
 \hldef{idx_char} \hlkwb{=} \hlkwd{which}\hldef{(data_new}\hlopt{$}\hldef{CHARACTERISTIC} \hlopt{==} \hlsng{"Population (in thousands)"}\hldef{)}
 \hldef{idx_keep} \hlkwb{=} \hlkwd{intersect}\hldef{(idx_CAN, idx_char)}
-\hldef{idx_keep}
+\hlkwd{head}\hldef{(idx_keep,} \hlkwc{n} \hldef{=} \hlnum{8}\hldef{)}
 \end{alltt}
 \begin{verbatim}
-##  [1]  1  2  3  4  5  6  7  8  9 10 11 12
+## [1] 1 2 3 4 5 6 7 8
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -642,29 +594,24 @@ There are many ways to select rows. Let us proceed as follows: we want the rows 
 
 
 \begin{frame}[fragile]
-
-Yes, this looks okay, so let us keep only these.
+Yes, this looks okay, so let us keep only these
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hldef{data_new} \hlkwb{=} \hldef{data_new[idx_keep,]}
-\hldef{data_new}
+\hlkwd{head}\hldef{(data_new,} \hlkwc{n} \hldef{=} \hlnum{8}\hldef{)}
 \end{alltt}
 \begin{verbatim}
-##    GEOGRAPHY.NAME            CHARACTERISTIC YEAR.S. TOTAL FLAG_TOTAL
-## 1          Canada Population (in thousands)    1956 16081           
-## 2          Canada Population (in thousands)    1961 18238           
-## 3          Canada Population (in thousands)    1966 20015           
-## 4          Canada Population (in thousands)    1971 21568           
-## 5          Canada Population (in thousands)    1976 22993           
-## 6          Canada Population (in thousands)    1981 24343           
-## 7          Canada Population (in thousands)    1986 25309           
-## 8          Canada Population (in thousands)    1991 27297           
-## 9          Canada Population (in thousands)    1996 28847           
-## 10         Canada Population (in thousands)    2001 30007           
-## 11         Canada Population (in thousands)    2006 31613           
-## 12         Canada Population (in thousands)    2011 33477
+##   GEOGRAPHY.NAME            CHARACTERISTIC YEAR.S. TOTAL FLAG_TOTAL
+## 1         Canada Population (in thousands)    1956 16081           
+## 2         Canada Population (in thousands)    1961 18238           
+## 3         Canada Population (in thousands)    1966 20015           
+## 4         Canada Population (in thousands)    1971 21568           
+## 5         Canada Population (in thousands)    1976 22993           
+## 6         Canada Population (in thousands)    1981 24343           
+## 7         Canada Population (in thousands)    1986 25309           
+## 8         Canada Population (in thousands)    1991 27297
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -679,11 +626,11 @@ To do this, we need the two data frames to have the same number of columns and, 
 
 \begin{frame}\frametitle{What remains to do}
 \begin{itemize}
-\item Rename the columns in the pruned old data (data\_pruned) to year and population. Personally, I prefer lowercase column names.. and population is more informative than Canada
-\item Keep only the relevant columns in data\_new, rename them accordingly and multiply population by 1,000 there
-\item Transform year in data\_new to numbers
-\item We already have data up to and including 1976 in data\_old, so get rid of that in data\_new
-\item Append the rows of data_new to those of data\_pruned
+\item Rename the columns in the pruned old data (data\_pruned) to \code{year} and \code{population}. Personally, I prefer lowercase column names.. and \code{population} is more informative than \code{Canada}
+\item Keep only the relevant columns in \code{data\_new}, rename them accordingly and multiply population by 1,000 there
+\item Transform year in \code{data\_new} to numbers
+\item We already have data up to and including 1976 in \code{data\_old}, so get rid of that in \code{data\_new}
+\item Append the rows of \code{data\_new} to those of \code{data\_pruned}
 \end{itemize}
 \end{frame}
 
@@ -706,8 +653,7 @@ To do this, we need the two data frames to have the same number of columns and, 
 \end{frame}
 
 
-\begin{frame}[fragile]
-OK, we are ready now!!
+\begin{frame}[fragile]\frametitle{Let us plot the result}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -716,11 +662,12 @@ OK, we are ready now!!
     \hlkwc{xlab} \hldef{=} \hlsng{"Year"}\hldef{,} \hlkwc{ylab} \hldef{=} \hlsng{"Population"}\hldef{)}
 \end{alltt}
 \end{kframe}
+\includegraphics[width=\maxwidth]{FIGS/matrix-methods-unnamed-chunk-10-1} 
 \end{knitrout}
 \end{frame}
 
-\begin{frame}[fragile]
-In case we need the data elsewhere, we save it
+\begin{frame}[fragile]\frametitle{Save the processed data}
+In case we need the data elsewhere, we save the data to a \code{csv} file
 \vfill
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -729,6 +676,8 @@ In case we need the data elsewhere, we save it
 \end{alltt}
 \end{kframe}
 \end{knitrout}
+\vfill
+Using \code{readr} saves the data without row numbers (by default), so we can do this instead
 \vfill
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
