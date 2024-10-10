@@ -3,28 +3,12 @@
 See this [stackexchange page](https://opendata.stackexchange.com/questions/7793/age-weight-and-height-dataset) for links to height and weight datasets. Let us try something very Canadian..
 
 
-```R
+```{r}
 data = read.csv("https://figshare.com/ndownloader/files/5303173")
 head(data)
 dim(data)
 ```
 
-
-<table class="dataframe">
-<caption>A data.frame: 6 × 13</caption>
-<thead>
-	<tr><th></th><th scope=col>year</th><th scope=col>country</th><th scope=col>no</th><th scope=col>name</th><th scope=col>position</th><th scope=col>side</th><th scope=col>height</th><th scope=col>weight</th><th scope=col>birth</th><th scope=col>club</th><th scope=col>age</th><th scope=col>cohort</th><th scope=col>bmi</th></tr>
-	<tr><th></th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
-</thead>
-<tbody>
-	<tr><th scope=row>1</th><td>2001</td><td>RUS</td><td>10</td><td>tverdovsky oleg    </td><td>D</td><td>L</td><td>185</td><td>84</td><td>1976-05-18</td><td>anaheim mighty ducks   </td><td>24.95277</td><td>1976</td><td>24.54346</td></tr>
-	<tr><th scope=row>2</th><td>2001</td><td>RUS</td><td> 2</td><td>vichnevsky vitali  </td><td>D</td><td>L</td><td>188</td><td>86</td><td>1980-03-18</td><td>anaheim mighty ducks   </td><td>21.11978</td><td>1980</td><td>24.33228</td></tr>
-	<tr><th scope=row>3</th><td>2001</td><td>RUS</td><td>26</td><td>petrochinin evgeni </td><td>D</td><td>L</td><td>182</td><td>95</td><td>1976-02-07</td><td>severstal cherepovetal </td><td>25.22930</td><td>1976</td><td>28.68011</td></tr>
-	<tr><th scope=row>4</th><td>2001</td><td>RUS</td><td>28</td><td>zhdan alexander    </td><td>D</td><td>R</td><td>178</td><td>85</td><td>1971-08-28</td><td>ak bars kazan          </td><td>29.67556</td><td>1971</td><td>26.82742</td></tr>
-	<tr><th scope=row>5</th><td>2001</td><td>RUS</td><td>32</td><td>orekhovsky oleg    </td><td>D</td><td>R</td><td>175</td><td>88</td><td>1977-11-03</td><td>dynamo moscow          </td><td>23.49076</td><td>1977</td><td>28.73469</td></tr>
-	<tr><th scope=row>6</th><td>2001</td><td>RUS</td><td> 4</td><td>zhukov sergei      </td><td>D</td><td>L</td><td>193</td><td>93</td><td>1975-11-23</td><td>lokomotiv yaroslavl    </td><td>25.43737</td><td>1975</td><td>24.96711</td></tr>
-</tbody>
-</table>
 
 
 
@@ -41,7 +25,7 @@ dim(data)
 In case you are wondering, this is a database of ice hockey players at IIHF world championships, 2001-2016, assembled by the dataset's author. See some comments [here](https://ikashnitsky.github.io/2017/ice-hockey-players-height/). As usual, it is a good idea to plot this to get a sense of the lay of the land.
 
 
-```R
+```{r}
 plot(data$height, data$weight,
     pch = 19, col = "dodgerblue4",
     xlab = "Height (cm)", ylab = "Weight (kg)")
@@ -56,7 +40,7 @@ plot(data$height, data$weight,
 The author of the study is interested in the evolution of weights, so it is likely that the same person will be in the dataset several times. Let us check this. First check will be `FALSE` if the number of unique names does not match the
 
 
-```R
+```{r}
 length(unique(data$name)) == dim(data)[1]
 length(unique(data$name))
 ```
@@ -72,7 +56,7 @@ FALSE
 We are not interested in the evolution of weights, so far, so let us simplify things: if we have more than one record for someone, let us take their weight as the average of the weights recorded for them. To be extra careful, we could check as well that there are no major variations on player height, as this could indicate homonymies.
 
 
-```R
+```{r}
 # First, we make a data frame with just the names
 data_simplified = data.frame(name = unique(data$name))
 w = c()
@@ -91,26 +75,8 @@ data = data_simplified
 ```
 
 
-<table class="dataframe">
-<caption>A data.frame: 6 × 3</caption>
-<thead>
-	<tr><th></th><th scope=col>name</th><th scope=col>weight</th><th scope=col>height</th></tr>
-	<tr><th></th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
-</thead>
-<tbody>
-	<tr><th scope=row>1</th><td>tverdovsky oleg    </td><td>84.0</td><td>185.0</td></tr>
-	<tr><th scope=row>2</th><td>vichnevsky vitali  </td><td>86.0</td><td>188.0</td></tr>
-	<tr><th scope=row>3</th><td>petrochinin evgeni </td><td>95.0</td><td>182.0</td></tr>
-	<tr><th scope=row>4</th><td>zhdan alexander    </td><td>85.5</td><td>178.5</td></tr>
-	<tr><th scope=row>5</th><td>orekhovsky oleg    </td><td>88.0</td><td>175.0</td></tr>
-	<tr><th scope=row>6</th><td>zhukov sergei      </td><td>92.5</td><td>193.0</td></tr>
-</tbody>
-</table>
 
-
-
-
-```R
+```{r}
 plot(data$height, data$weight,
     pch = 19, col = "dodgerblue4",
     xlab = "Height (cm)", ylab = "Weight (kg)")
@@ -125,7 +91,7 @@ plot(data$height, data$weight,
 Let us centre the data and plot the result.
 
 
-```R
+```{r}
 data$weight.c = data$weight-mean(data$weight)
 data$height.c = data$height-mean(data$height)
 plot(data$height.c, data$weight.c,
@@ -140,7 +106,7 @@ plot(data$height.c, data$weight.c,
 
 
 
-```R
+```{r}
 mean(data$weight)
 mean(data$height)
 ```
@@ -156,7 +122,7 @@ mean(data$height)
 The function `cov` returns the covariance of two samples. Note that the functions deals equally well with data that is not centred as with data that is centred.
 
 
-```R
+```{r}
 cov(data$height, data$weight)
 cov(data$height.c, data$weight.c)
 ```
@@ -172,7 +138,7 @@ cov(data$height.c, data$weight.c)
 As we could see from plotting the data, there is a positive linear relationship between the two variables. Let us compute the sample covariance matrix.
 
 
-```R
+```{r}
 # Select X as the matrix we want to process
 X = as.matrix(data[,c("height.c", "weight.c")])
 S = 1/(dim(X)[1]-1)*t(X) %*% X
@@ -180,23 +146,10 @@ S
 ```
 
 
-<table class="dataframe">
-<caption>A matrix: 2 × 2 of type dbl</caption>
-<thead>
-	<tr><th></th><th scope=col>height.c</th><th scope=col>weight.c</th></tr>
-</thead>
-<tbody>
-	<tr><th scope=row>height.c</th><td>29.66176</td><td>26.63506</td></tr>
-	<tr><th scope=row>weight.c</th><td>26.63506</td><td>47.81112</td></tr>
-</tbody>
-</table>
-
-
-
 The off-diagonal entries do match the computed covariance. Let us check that the variances are indeed a match too.
 
 
-```R
+```{r}
 var(X[,1])
 var(X[,2])
 ```
@@ -214,7 +167,7 @@ Hey, that works. Is math not cool? ;)
 Okay, joke aside, let us now compute the principal components. For this, we need eigenvalues and eigenvectors.
 
 
-```R
+```{r}
 ev = eigen(S)
 ev
 ```
@@ -234,7 +187,7 @@ ev
 The result of a call to `eigen` will not necessarily be well ordered. (Here, we are in 2D, so chances are good. When we increase the size, things might become more iffy.) So we order the eigenvalues in decreasing order and apply the same ordering to the eigenvectors. (As the eigenvectors are the columns of `ev$vectors`, we order the columns.
 
 
-```R
+```{r}
 idx_order = order(ev$values, decreasing = TRUE)
 ev$values = ev$values[idx_order]
 ev$vectors = ev$vectors[, idx_order]
@@ -256,19 +209,13 @@ ev
 Let us normalise the first eigenvector. This way, we now that the variance of the first principal component will be the corresponding eigenvalue.
 
 
-```R
+```{r}
 ev$vectors[,1] = ev$vectors[,1] / sqrt(sum(ev$vectors[,1]^2))
 ev$vectors[,1]
 sum(ev$vectors[,1]^2)
 ```
 
 
-<style>
-.list-inline {list-style: none; margin:0; padding: 0}
-.list-inline>li {display: inline-block}
-.list-inline>li:not(:last-child)::after {content: "\00b7"; padding: 0 .5ex}
-</style>
-<ol class=list-inline><li>0.582022198525067</li><li>0.813172897005334</li></ol>
 
 
 
@@ -279,7 +226,7 @@ sum(ev$vectors[,1]^2)
 Let us plot this first eigenvector (well, the line carrying this first eigenvector). To use the function `abline`, we need to give the coefficients of the line in the form of (intercept,slope). Intercept is easy, as the line goes through the origin (by construction and because we have centred the data). The slope is also quite simple..
 
 
-```R
+```{r}
 plot(data$height.c, data$weight.c,
     pch = 19, col = "dodgerblue4",
     xlab = "Height (cm)", ylab = "Weight (kg)")
@@ -307,7 +254,7 @@ $$
 So we just use the $\arctan$ of this. (Note that angles are in radians.)
 
 
-```R
+```{r}
 theta = atan(ev$vectors[2,1]/ev$vectors[1,1])
 theta
 R_theta = matrix(c(cos(theta), -sin(theta),
@@ -334,7 +281,7 @@ R_theta
 And now we rotate the points. (In this case, we think of the points as vectors, of course.)
 
 
-```R
+```{r}
 tmp_in = matrix(c(data$weight.c, data$height.c),
                 nc = 2)
 tmp_out = c()
@@ -347,7 +294,7 @@ data$height.c_r = tmp_out[,2]
 ```
 
 
-```R
+```{r}
 plot(data$height.c_r, data$weight.c_r,
     pch = 19, col = "dodgerblue4",
     xlab = "x-axis", ylab = "y-axis")
@@ -362,7 +309,7 @@ plot(data$height.c_r, data$weight.c_r,
 Note that the axes have changed quite a lot, hence the very different aspect. Let us plot with the same range as for the non-rotated data for the y-axis.
 
 
-```R
+```{r}
 plot(data$height.c_r, data$weight.c_r,
     pch = 19, col = "dodgerblue4",
     xlab = "x-axis", ylab = "y-axis",
@@ -379,7 +326,7 @@ abline(h = 0, col = "red", lwd = 2)
 Now do things "properly".
 
 
-```R
+```{r}
 if (!require("pracma")) {
     install.packages("pracma")
     library(pracma)
@@ -391,12 +338,12 @@ if (!require("pracma")) {
 
 
 
-```R
+```{r}
 GS = pracma::gramSchmidt(A = ev$vectors)
 ```
 
 
-```R
+```{r}
 GS
 ```
 
@@ -427,7 +374,7 @@ GS
 Now recall we saw a theorem that told us how to construct a new basis..
 
 
-```R
+```{r}
 A=matrix(c(GS$Q,1,0,0,1), nr = 2)
 A
 pracma::rref(A)

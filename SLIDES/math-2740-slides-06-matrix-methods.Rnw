@@ -171,12 +171,11 @@ Well, that looks about right! Let's see what this looks like in a graph.
 \end{frame}
 
 \begin{frame}[fragile]
-<<>>=
+<<plot-old-Canada-census-data,fig.show='asis',fig.height=3.5>>=
 plot(data_old$Year, data_old$Canada,
     type = "b", lwd = 2,
     xlab = "Year", ylab = "Population")
 @
-
 \end{frame}
 
 
@@ -185,7 +184,7 @@ But wait, this is only to 1976..! Looking around, we find another table here. Th
 
 <<>>=
 data_new = read.csv("https://www12.statcan.gc.ca/census-recensement/2011/dp-pd/vc-rv/download-telecharger/download-telecharger.cfm?Lang=eng&CTLG=98-315-XWE2011001&FMT=csv")
-head(data_new, 100)
+head(data_new, 10)
 @
 \end{frame}
 
@@ -246,7 +245,7 @@ data = rbind(data_old,data_new)
 
 
 \begin{frame}[fragile]\frametitle{Let us plot the result}
-<<fig.show='asis',fig.height=3.5>>=
+<<plot-whole-Canada-census-data,fig.show='asis',fig.height=3.5>>=
 plot(data$year, data$population,
     type = "b", lwd = 2,
     xlab = "Year", ylab = "Population")
@@ -1217,6 +1216,11 @@ Helps reduce a complex dataset to a lower dimensional one
 Non-parametric method: does not assume anything about data distribution (distribution from the statistical point of view)
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\subsection{A crash course on probability}
+\newSubSectionSlide{FIGS/Gemini_Generated_Image_c06eixc06eixc06e.jpeg}
+
 
 \begin{frame}{Brief ``review'' of some probability concepts}
 Proper definition of \emph{probability} requires to use \emph{measure theory}.. will not get into details here
@@ -1322,6 +1326,10 @@ i.e., using the properties of covariance,
 \end{frame}
 
 
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\subsection{A running example: fingerprints}
+\newSubSectionSlide{FIGS/Gemini_Generated_Image_c06eixc06eixc06e.jpeg}
 \begin{frame}{Example of a PCA problem}
 We collect a bunch of information about a bunch of people.. for instance this data from Loughborough University
 \vfill
@@ -1382,6 +1390,10 @@ For this, we are going to project the information in a new basis in which the fi
 In order to do so, we need to learn how to change bases
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\subsection{Change of basis}
+\newSubSectionSlide{FIGS/Gemini_Generated_Image_c06eixc06eixc06e.jpeg}
 \begin{frame}
 	In the following slide, 
 	\[
@@ -1405,7 +1417,7 @@ P_{\C\leftarrow\B}
 [\bu_1]_\C \cdots [\bu_n]_\C
 \right]
 \]
-has columns the coordinate vectors $[\bu_1]_\C,\ldots,[\bu_n]_\C$ of the vectors in $\B$ with respect to $\C$
+has columns the coordinate vectors $[\bu_1]_\C,\ldots,[\bu_n]_\C$ of vectors in $\B$ with respect to $\C$
 \end{definition}
 \vfill
 \begin{theorem}
@@ -1452,6 +1464,10 @@ How do we find what new basis to look at our data in?
 
 
 
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\subsection{Back to PCA}
+\newSubSectionSlide{FIGS/Gemini_Generated_Image_c06eixc06eixc06e.jpeg}
 \begin{frame}{Setting things up}
 I will use notation (mostly) as in Joliffe's \emph{Principal Component Analysis} (PDF of older version available for free from UofM Libraries)
 \vfill
@@ -1647,9 +1663,8 @@ We have
 &\quad +
 (s_{p1}\alpha_{11}+s_{p2}\alpha_{12}+\cdots+s_{pp}\alpha_{1p})\alpha_{1p} 
 \end{align*}
-So
 \begin{align*}
-\frac{\partial}{\partial \alpha_{11}}
+\implies\frac{\partial}{\partial \alpha_{11}}
 \bm{\alpha}_1^T\Sigma\bm{\alpha}_1  
 &= 
 (s_{11}\alpha_{11}+s_{12}\alpha_{12}+\cdots+s_{1p}\alpha_{1p})+s_{11}\alpha_{11} \\
@@ -1772,7 +1787,25 @@ where the data is centred!
 Sometimes you will see $S_X=1/(n-1)XX^T$. This is for matrices with observations in columns and variables in rows. Just remember that you want the covariance matrix to have size the number of variables, not observations, this will give you the order in which to take the product
 \end{frame}
 
-\begin{frame}{A smaller 2D example}
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\subsection{Another example: hockey players}
+\newSubSectionSlide{FIGS/Gemini_Generated_Image_c06eixc06eixc06e.jpeg}
+
+\begin{frame}[fragile]{A 2D example}
+See a dataset \href{https://opendata.stackexchange.com/questions/7793/age-weight-and-height-dataset}{on this page} for a very Canadian dataset: height and weight of some hockey players
+\vfill
+<<load-hockey-data>>=
+# for some reason, the link doesn't work
+data = read.csv("https://figshare.com/ndownloader/files/5303173")
+# data = read.csv("../CODE/hockey_players.csv")
+head(data)
+dim(data)
+@
+\end{frame}
+
+
+\begin{frame}
     \framesubtitle{Hockey players at IIHF world championships 2001-2016}
     \begin{center}
         \includegraphics[height=0.85\textheight]{FIGS_slides/slides-08-hockey_players_raw}
