@@ -1,0 +1,512 @@
+% Slide setup, colour independent
+
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[utf8]{inputenc}
+\usepackage{colortbl}
+\usepackage{bm}
+\usepackage{xcolor}
+\usepackage{dsfont}
+\usepackage{setspace}
+%\usepackage{subfigure}
+% To use \ding{234} and the like
+\usepackage{pifont}
+% To cross reference between slide files
+\usepackage{zref-xr,zref-user}
+% Use something like
+% \zexternaldocument{fileI}
+% in the tex files. And cite using \zref instead of \ref
+\usepackage{booktabs}
+\usepackage{marvosym}
+\usepackage{cancel}
+%\usepackage{transparent}
+
+% Fields and the like
+\def\IC{\mathbb{C}}
+\def\IE{\mathbb{E}}
+\def\IF{\mathbb{F}}
+\def\II{\mathbb{I}}
+\def\IJ{\mathbb{J}}
+\def\IK{\mathbb{K}}
+\def\IM{\mathbb{M}}
+\def\IN{\mathbb{N}}
+\def\IP{\mathbb{P}}
+\def\IR{\mathbb{R}}
+\def\IZ{\mathbb{Z}}
+\def\11{\mathds{1}}
+
+
+% Bold lowercase
+\def\ba{\bm{a}}
+\def\bb{\bm{b}}
+\def\bc{\bm{c}}
+\def\bd{\bm{d}}
+\def\be{\bm{e}}
+\def\bf{\bm{f}}
+\def\bh{\bm{h}}
+\def\bi{\bm{i}}
+\def\bj{\bm{j}}
+\def\bk{\bm{k}}
+\def\bn{\bm{n}}
+\def\bp{\bm{p}}
+\def\br{\bm{r}}
+\def\bs{\bm{s}}
+\def\bu{\bm{u}}
+\def\bv{\bm{v}}
+\def\bw{\bm{w}}
+\def\bx{\bm{x}}
+\def\by{\bm{y}}
+\def\bz{\bm{z}}
+
+% Bold capitals
+\def\bB{\bm{B}}
+\def\bD{\bm{D}}
+\def\bE{\bm{E}}
+\def\bF{\bm{F}}
+\def\bG{\bm{G}}
+\def\bI{\bm{I}}
+\def\bL{\bm{L}}
+\def\bN{\bm{N}}
+\def\bP{\bm{P}}
+\def\bR{\bm{R}}
+\def\bS{\bm{S}}
+\def\bT{\bm{T}}
+\def\bX{\bm{X}}
+
+% Bold numbers
+\def\b0{\bm{0}}
+
+% Bold greek
+\bmdefine{\bmu}{\bm{\mu}}
+\def\bphi{\bm{\phi}}
+\def\bvarphi{\bm{\varphi}}
+\def\bPi{\bm{\Pi}}
+\def\bGamma{\bm{\Gamma}}
+
+% Bold red sentence
+\def\boldred#1{{\color{red}\textbf{#1}}}
+\def\defword#1{{\color{orange}\textbf{#1}}}
+
+% Caligraphic letters
+\def\A{\mathcal{A}}
+\def\B{\mathcal{B}}
+\def\C{\mathcal{C}}
+\def\D{\mathcal{D}}
+\def\E{\mathcal{E}}
+\def\F{\mathcal{F}}
+\def\G{\mathcal{G}}
+\def\H{\mathcal{H}}
+\def\I{\mathcal{I}}
+\def\L{\mathcal{L}}
+\def\M{\mathcal{M}}
+\def\N{\mathcal{N}}
+\def\P{\mathcal{P}}
+\def\R{\mathcal{R}}
+\def\S{\mathcal{S}}
+\def\T{\mathcal{T}}
+\def\U{\mathcal{U}}
+\def\V{\mathcal{V}}
+
+% Adding space for prime (') where needed
+\def\pprime{\,'}
+% Adding space for star (\star) where needed
+\def\pstar{{\,\star}}
+
+% tt font for code
+\def\code#1{{\tt #1}}
+
+% i.e., e.g.
+\def\eg{\emph{e.g.}}
+\def\ie{\emph{i.e.}}
+
+
+% Operators and special symbols
+\def\nbOne{{\mathchoice {\rm 1\mskip-4mu l} {\rm 1\mskip-4mu l}
+{\rm 1\mskip-4.5mu l} {\rm 1\mskip-5mu l}}}
+\def\cov{\ensuremath{\mathsf{cov}}}
+\def\Var{\ensuremath{\mathsf{Var}\ }}
+\def\Im{\textrm{Im}\;}
+\def\Re{\textrm{Re}\;}
+\def\det{\ensuremath{\mathsf{det}}}
+\def\diag{\ensuremath{\mathsf{diag}}}
+\def\nullspace{\ensuremath{\mathsf{null}}}
+\def\nullity{\ensuremath{\mathsf{nullity}}}
+\def\rank{\ensuremath{\mathsf{rank}}}
+\def\range{\ensuremath{\mathsf{range}}}
+\def\sgn{\ensuremath{\mathsf{sgn}}}
+\def\Span{\ensuremath{\mathsf{span}}}
+\def\tr{\ensuremath{\mathsf{tr}}}
+\def\imply{$\Rightarrow$}
+\def\restrictTo#1#2{\left.#1\right|_{#2}}
+\newcommand{\parallelsum}{\mathbin{\!/\mkern-5mu/\!}}
+\def\dsum{\mathop{\displaystyle \sum }}%
+\def\dind#1#2{_{\substack{#1\\ #2}}}
+
+\DeclareMathOperator{\GL}{GL}
+\DeclareMathOperator{\Rel}{Re}
+\def\Nt#1{\left|\!\left|\!\left|#1\right|\!\right|\!\right|}
+\newcommand{\tripbar}{|\! |\! |}
+
+
+
+% The beamer bullet (in base colour)
+\def\bbullet{\leavevmode\usebeamertemplate{itemize item}\ }
+
+% Theorems and the like
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{property}[theorem]{Property}
+\newtheorem{importantproperty}[theorem]{Property}
+\newtheorem{importanttheorem}[theorem]{Theorem}
+%\newtheorem{lemma}[theorem]{Lemma}
+%\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+\setbeamertemplate{theorems}[numbered]
+%\setbeamertemplate{theorems}[ams style]
+
+%
+%\usecolortheme{orchid}
+%\usecolortheme{orchid}
+
+\def\red{\color[rgb]{1,0,0}}
+\def\blue{\color[rgb]{0,0,1}}
+\def\green{\color[rgb]{0,1,0}}
+
+
+% Get rid of navigation stuff
+\setbeamertemplate{navigation symbols}{}
+
+% Set footline/header line
+\setbeamertemplate{footline}
+{%
+\quad p. \insertpagenumber \quad--\quad \insertsection\vskip2pt
+}
+% \setbeamertemplate{headline}
+% {%
+% \quad\insertsection\hfill p. \insertpagenumber\quad\mbox{}\vskip2pt
+% }
+
+
+\makeatletter
+\newlength\beamerleftmargin
+\setlength\beamerleftmargin{\Gm@lmargin}
+\makeatother
+
+% Colours for special pages
+\def\extraContent{yellow!20}
+
+
+%%%%%%%%%%%%%%%%%
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows}
+\usetikzlibrary{positioning}
+\usetikzlibrary{shapes.symbols,shapes.callouts,patterns}
+\usetikzlibrary{calc,fit}
+\usetikzlibrary{backgrounds}
+\usetikzlibrary{decorations.pathmorphing,fit,petri}
+\usetikzlibrary{automata}
+\usetikzlibrary{fadings}
+\usetikzlibrary{patterns,hobby}
+\usetikzlibrary{backgrounds,fit,petri}
+\usetikzlibrary{tikzmark}
+
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.6}
+\pgfplotsset{ticks=none}
+
+\usetikzlibrary{decorations.markings}
+\usetikzlibrary{arrows.meta}
+\tikzset{>=stealth}
+
+% For tikz
+\tikzstyle{cloud} = [draw, ellipse,fill=red!20, node distance=0.87cm,
+minimum height=2em]
+\tikzstyle{line} = [draw, -latex']
+
+
+%%% For max frame images
+\newenvironment{changemargin}[2]{%
+\begin{list}{}{%
+\setlength{\topsep}{0pt}%
+\setlength{\leftmargin}{#1}%
+\setlength{\rightmargin}{#2}%
+\setlength{\listparindent}{\parindent}%
+\setlength{\itemindent}{\parindent}%
+\setlength{\parsep}{\parskip}%
+}%
+\item[]}{\end{list}}
+
+
+% Make one image take up the entire slide content area in beamer,.:
+% centered/centred full-screen image, with title:
+% This uses the whole screen except for the 1cm border around it
+% all. 128x96mm
+\newcommand{\titledFrameImage}[2]{
+\begin{frame}{#1}
+%\begin{changemargin}{-1cm}{-1cm}
+\begin{center}
+\includegraphics[width=108mm,height=\textheight,keepaspectratio]{#2}
+\end{center}
+%\end{changemargin}
+\end{frame}
+}
+
+% Make one image take up the entire slide content area in beamer.:
+% centered/centred full-screen image, no title:
+% This uses the whole screen except for the 1cm border around it
+% all. 128x96mm
+\newcommand{\plainFrameImage}[1]{
+\begin{frame}[plain]
+%\begin{changemargin}{-1cm}{-1cm}
+\begin{center}
+\includegraphics[width=108mm,height=76mm,keepaspectratio]{#1}
+\end{center}
+%\end{changemargin}
+\end{frame}
+}
+
+% Make one image take up the entire slide area, including borders, in beamer.:
+% centered/centred full-screen image, no title:
+% This uses the entire whole screen
+\newcommand{\maxFrameImage}[1]{
+\begin{frame}[plain]
+\begin{changemargin}{-1cm}{-1cm}
+\begin{center}
+\includegraphics[width=\paperwidth,height=\paperheight,keepaspectratio]
+{#1}
+\end{center}
+\end{changemargin}
+\end{frame}
+}
+
+% This uses the entire whole screen (to include in frame)
+\newcommand{\maxFrameImageNoFrame}[1]{
+\begin{changemargin}{-1cm}{-1cm}
+\begin{center}
+\includegraphics[width=\paperwidth,height=0.99\paperheight,keepaspectratio]
+{#1}
+\end{center}
+\end{changemargin}
+}
+
+% Make one image take up the entire slide area, including borders, in beamer.:
+% centered/centred full-screen image, no title:
+% This uses the entire whole screen
+\newcommand{\maxFrameImageColor}[2]{
+\begin{frame}[plain]
+\setbeamercolor{normal text}{bg=#2!20}
+\begin{changemargin}{-1cm}{-1cm}
+\begin{center}
+\includegraphics[width=\paperwidth,height=\paperheight,keepaspectratio]
+{#1}
+\end{center}
+\end{changemargin}
+\end{frame}
+}
+
+
+\usepackage{tikz}
+\usetikzlibrary{patterns,hobby}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.6}
+\pgfplotsset{ticks=none}
+
+\usetikzlibrary{backgrounds}
+\usetikzlibrary{decorations.markings}
+\usetikzlibrary{arrows.meta}
+\tikzset{>=stealth}
+
+\tikzset{
+  clockwise arrows/.style={
+    postaction={
+      decorate,
+      decoration={
+        markings,
+        mark=between positions 0.1 and 0.9 step 40pt with {\arrow{>}},
+   }}}}
+
+
+% Beginning of a section
+\newcommand{\newSectionSlide}[1]{
+\begin{frame}[noframenumbering,plain]
+  \begin{tikzpicture}[remember picture,overlay]
+    \node[above right,inner sep=0pt,opacity=0.2] at (current page.south west)
+    {
+        \includegraphics[height=\paperheight,width=\paperwidth]{#1}
+    };
+  \end{tikzpicture}
+  \setbeamercolor{section in toc}{fg=subsub_header_section}
+  \setbeamerfont{section in toc}{size=\Large,series=\bfseries}
+  \setbeamertemplate{section in toc shaded}[default][60]
+  %\setbeamercolor{background canvas}{bg=section_colour}
+  \tableofcontents[
+    currentsection,
+    sectionstyle=show/shaded,
+    subsectionstyle=show/hide/hide,
+    subsubsectionstyle=hide/hide/hide]
+\end{frame}
+\addtocounter{page}{-1}
+}
+
+% Beginning of a section in which we also show subsections
+\newcommand{\newSectionWithSubsSlide}[1]{
+	\begin{frame}[noframenumbering,plain]
+		\begin{tikzpicture}[remember picture,overlay]
+			\node[above right,inner sep=0pt,opacity=0.2] at (current page.south west)
+			{
+				\includegraphics[height=\paperheight,width=\paperwidth]{#1}
+			};
+		\end{tikzpicture}
+		\setbeamercolor{section in toc}{fg=subsub_header_section}
+		\setbeamerfont{section in toc}{size=\Large,series=\bfseries}
+		\setbeamertemplate{section in toc shaded}[default][60]
+		%\setbeamercolor{background canvas}{bg=section_colour}
+		\tableofcontents[
+		currentsection,
+		sectionstyle=show/hide,
+		subsectionstyle=show/show/hide,
+		subsubsectionstyle=hide/hide/hide]
+	\end{frame}
+	\addtocounter{page}{-1}
+}
+
+% Beginning of a subsection
+\newcommand{\newSubSectionSlide}[1]{
+\begin{frame}[noframenumbering,plain]
+  \begin{tikzpicture}[remember picture,overlay]
+    \node[above right,inner sep=0pt,opacity=0.2] at (current page.south west)
+    {
+        \includegraphics[height=\paperheight,width=\paperwidth]{#1}
+    };
+  \end{tikzpicture}
+  \setbeamercolor{section in toc}{fg=subsub_header_section}
+  \setbeamerfont{section in toc}{size=\Large,series=\bfseries}
+  \setbeamertemplate{section in toc shaded}[default][60]
+  \setbeamerfont{subsection in toc}{series=\bfseries}
+  \setbeamertemplate{subsection in toc shaded}[default][50]
+  %\setbeamercolor{background canvas}{bg=section_colour}
+  \tableofcontents[
+    currentsection,
+    sectionstyle=show/hide,
+    subsectionstyle=show/shaded/hide,
+    subsubsectionstyle=hide/hide/hide]
+\end{frame}
+\addtocounter{page}{-1}
+}
+
+
+% Beginning of a subsubsection
+\newcommand{\newSubSubSectionSlide}[1]{
+\begin{frame}[noframenumbering,plain]
+  \begin{tikzpicture}[remember picture,overlay]
+    \node[above right,inner sep=0pt,opacity=0.2] at (current page.south west)
+    {
+        \includegraphics[height=\paperheight,width=\paperwidth]{#1}
+    };
+  \end{tikzpicture}
+  \setbeamercolor{section in toc}{fg=subsub_header_section}
+  \setbeamerfont{section in toc}{size=\Large,series=\bfseries}
+  \setbeamertemplate{section in toc shaded}[default][60]
+  \setbeamerfont{subsection in toc}{series=\bfseries}
+  \setbeamertemplate{subsection in toc shaded}[default][50]
+  \setbeamertemplate{subsubsection in toc shaded}[default][50]
+  \tableofcontents[
+    currentsection,
+    sectionstyle=show/hide,
+    subsectionstyle=show/hide/hide,
+    subsubsectionstyle=show/shaded/hide]
+\end{frame}
+\addtocounter{page}{-1}
+}
+
+
+   %%%%%%%%%%%
+% To have links to parts in the outline
+\makeatletter
+\AtBeginPart{%
+  \addtocontents{toc}{\protect\beamer@partintoc{\the\c@part}{\beamer@partnameshort}{\the\c@page}}%
+}
+%% number, shortname, page.
+\providecommand\beamer@partintoc[3]{%
+  \ifnum\c@tocdepth=-1\relax
+    % requesting onlyparts.
+    \makebox[6em]{Part #1:} \textcolor{green!30!blue}{\hyperlink{#2}{#2}}
+    \par
+  \fi
+}
+\define@key{beamertoc}{onlyparts}[]{%
+  \c@tocdepth=-1\relax
+}
+\makeatother%
+
+\newcommand{\nameofthepart}{}
+\newcommand{\nupart}[1]%
+    {   \part{#1}%
+        \renewcommand{\nameofthepart}{#1}%
+        {
+          \setbeamercolor{background canvas}{bg=orange!50}
+          \begin{frame}{#1}%\partpage 
+          \hypertarget{\nameofthepart}{}\tableofcontents%
+          \end{frame}
+        }
+    }
+
+
+% The title page with figure
+\newcommand{\titlepagewithfigure}[1]{%
+\begin{frame}[noframenumbering,plain]
+  \begin{tikzpicture}[remember picture,overlay]
+    \node[above right,inner sep=0pt,opacity=0.2] at (current page.south west)
+    {
+        \includegraphics[height=\paperheight,width=\paperwidth]{#1}
+    };
+    \node[anchor=north east,
+    inner sep=5pt,
+    opacity=0.9] at (current page.north east)
+    {
+        \includegraphics[width=0.2\textwidth]{FIGS/UM-logo-horizontal-CMYK.png}
+    };
+    \node[anchor=south, 
+    align=justify, 
+    text=black, 
+    text width=1.1\textwidth,
+    font=\footnotesize]  (land_acknowledgement)
+    at (current page.south) 
+    {The University of Manitoba campuses are located on original lands of Anishinaabeg, Ininew, Anisininew, Dakota and Dene peoples, and on the National Homeland of the Red River Métis.\\
+    We respect the Treaties that were made on these territories, we acknowledge the harms and mistakes of the past, and we dedicate ourselves to move forward in partnership with Indigenous communities in a spirit of Reconciliation and collaboration.};  
+    \node[align=center, anchor=south,
+    above=0.5cm of land_acknowledgement,
+    text=black,
+    font=\bfseries] {Fall 2024};
+\end{tikzpicture}
+  \setbeamercolor{title}{fg=subsub_header_section}
+  \setbeamercolor{author}{fg=subsub_header_section} 
+  \setbeamerfont{title}{size=\Large,series=\bfseries}
+  \setbeamerfont{author}{size=\Large,series=\bfseries}
+  \setbeamerfont{date}{series=\bfseries}
+	\titlepage
+\end{frame}
+\addtocounter{page}{-1}
+}
+
+
+% The outline page, with figure
+\newcommand{\outlinepage}[1]{%
+\begin{frame}[noframenumbering,plain]
+  \begin{tikzpicture}[remember picture,overlay]
+    \node[above right,inner sep=0pt,opacity=0.2] at (current page.south west)
+    {
+        \includegraphics[height=\paperheight,width=\paperwidth]{#1}
+    };
+  \end{tikzpicture}
+  \setbeamercolor{section in toc}{fg=subsub_header_section}
+  \setbeamerfont{section in toc}{size=\Large,series=\bfseries}
+  \frametitle{\textcolor{blue}{\LARGE\bfseries Outline}}
+  \tableofcontents[hideallsubsections]
+\end{frame}
+\addtocounter{page}{-1}
+}
+
+
+%\let\oldsection\section
+%\renewcommand{\section}[2]{\oldsection[#1]\newSectionSlide[#2]}
+
+
