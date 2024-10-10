@@ -6,13 +6,13 @@
 
 *.aux
 *.bbl
+*-concordance.tex
 *.fdb_latexmk
 *.fls
 *.log
 *.nav
 *.out
 *.snm
-*.toc
-*-concordance.tex
 *.synctex.gz
-
+*.toc
+*.vrb
