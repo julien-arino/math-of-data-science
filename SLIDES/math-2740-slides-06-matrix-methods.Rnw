@@ -2,9 +2,16 @@
 
 <<set-options,echo=FALSE,warning=FALSE,message=FALSE>>=
 # Load required libraries
-required_packages = c("dplyr", "ggplot2", "knitr", 
-                      "latex2exp", "openxlsx", "pracma", 
-                      "readr", "tidyr")
+required_packages = c("dplyr", 
+                      "FactoMineR",
+                      "ggbiplot",
+                      "ggplot2", 
+                      "knitr", 
+                      "latex2exp", 
+                      "openxlsx", 
+                      "pracma", 
+                      "readr", 
+                      "tidyr")
 for (p in required_packages) {
   if (!require(p, character.only = TRUE)) {
     install.packages(p, dependencies = TRUE)
@@ -1410,7 +1417,7 @@ In order to do so, we need to learn how to change bases
 \begin{frame}{Change of basis}
 \begin{definition}[Change of basis matrix]
 $\B=\{\bu_1,\ldots,\bu_n\}$ and $\C=\{\bv_1,\ldots,\bv_n\}$ bases of vector space $V$
-\vskip0.2cm
+\vfill
 The \textbf{change of basis matrix} $P_{\C\leftarrow\B}\in\M_n$,
 \[
 P_{\C\leftarrow\B}
@@ -1434,6 +1441,7 @@ $\B=\{\bu_1,\ldots,\bu_n\}$ and $\C=\{\bv_1,\ldots,\bv_n\}$ bases of vector spac
 
 \begin{frame}{Row-reduction method for changing bases}
 \begin{theorem}
+\label{th:change-basis-construction}
 $\B=\{\bu_1,\ldots,\bu_n\}$ and $\C=\{\bv_1,\ldots,\bv_n\}$ bases of vector space $V$. Let $\E$ be any basis for $V$,
 \[
 B = [[\bu_1]_\E,\ldots,[\bu_n]_\E] 
@@ -1931,7 +1939,7 @@ ev
 
 
 
-\begin{frame}[fragile]\frametitle{Principal components}
+\begin{frame}[fragile]\frametitle{First principal component}
 Let us plot this first eigenvector (well, the line carrying this first eigenvector) 
 \vfill
 To use the function \code{abline}, we need to give the coefficients of the line in the form of (intercept,slope). Intercept is easy, as the line goes through the origin (by construction and because we have centred the data). The slope is also quite simple..
@@ -1947,7 +1955,6 @@ abline(a = 0, b = ev$vectors[2,1]/ev$vectors[1,1],
 \end{frame}
 
 \maxFrameImage{\Sexpr{knitr::fig_chunk("plot-hockey-centred-evector", "pdf")}}
-
 
 \begin{frame}[fragile]\frametitle{Rotating the data}
 Let us rotate the data so that the red line becomes the $x$-axis
@@ -2029,6 +2036,62 @@ abline(h = 0, col = "red", lwd = 2)
 
 
 \maxFrameImage{\Sexpr{knitr::fig_chunk("plot-hockey-centred-rotated", "pdf")}}
+
+
+\begin{frame}[fragile]\frametitle{First and second principal components}
+Plot the first and second eigenvectors
+\vfill
+<<plot-hockey-centred-2evectors>>=
+plot(data$height.c, data$weight.c,
+    pch = 19, col = "dodgerblue4",
+    main = "IIHF players 2001-2016 (with first and second components)",
+    xlab = "Height (cm)", ylab = "Weight (kg)")
+abline(a = 0, b = ev$vectors[2,1]/ev$vectors[1,1],
+       col = "red", lwd = 3)
+abline(a = 0, b = ev$vectors[2,2]/ev$vectors[1,2],
+       col = "darkgreen", lwd = 3)
+@
+\end{frame}
+
+\maxFrameImage{\Sexpr{knitr::fig_chunk("plot-hockey-centred-2evectors", "pdf")}}
+
+
+\begin{frame}\frametitle{Proper change of basis}
+Let us change the basis so that, in the new basis, the first component is the $x$-axis and the second component is the $y$-axis
+\vfill
+We want to use Theorem~\ref{th:change-basis-construction}
+\vfill
+We need the coordinates of the new basis in the canonical basis of $\IR^2$
+\vfill
+Since both axes go through the origin, we can just use $y=ax$, with $a$ the slope of the lines and, say, $x=1$, i.e., $(x,y)=(1,a)$
+\end{frame}
+
+
+\begin{frame}[fragile]\frametitle{Proper change of basis}
+<<plot-hockey-proper-changed-basis>>=
+red_line = c(1, ev$vectors[2,1]/ev$vectors[1,1])
+green_line = c(1, ev$vectors[2,2]/ev$vectors[1,2])
+augmented_M = cbind(red_line,green_line, diag(2))
+P = rref(augmented_M)[,3:4]
+
+tmp_in = matrix(c(data$weight.c, data$height.c), nc = 2)
+tmp_out = c()
+for (i in 1:dim(tmp_in)[1]) {
+    tmp_out = rbind(tmp_out, t(P %*% tmp_in[i,]))
+}
+data$weight.c_r2 = tmp_out[,1]
+data$height.c_r2 = tmp_out[,2]
+plot(data$height.c_r2, data$weight.c_r2,
+    pch = 19, col = "dodgerblue4",
+    xlab = "x-axis", ylab = "y-axis",
+    main = "IIHF players 2001-2016 (rotated to first component)",
+    ylim = range(data$weight.c))
+abline(h = 0, col = "red", lwd = 2)
+abline(v = 0, col = "darkgreen", lwd = 2)
+@
+\end{frame}
+
+\maxFrameImage{\Sexpr{knitr::fig_chunk("plot-hockey-proper-changed-basis", "pdf")}}
 
 
 \begin{frame}[fragile]\frametitle{PCA using built-in functions}
@@ -2188,75 +2251,86 @@ X.new = X %*% t(P)
 \end{frame}
 
 
-\begin{frame}[fragile]\frametitle{Some wrangling}
-Now we use the built in function.
-
+\begin{frame}[fragile]\frametitle{Use built-in functions}
+Use the built in function \code{prcomp} or \code{PCA} from the \code{FactoMineR} package
+\vfill
 <<>>=
-data.pca = prcomp(data[, to_centre], 
-                  center = TRUE, scale = TRUE)
+# data.pca = prcomp(X, center = TRUE, scale = TRUE)
+data.pca = PCA(X, scale.unit = TRUE, graph = FALSE)
 summary(data.pca)
 @
 \end{frame}
 
 
-\begin{frame}[fragile]\frametitle{Some wrangling}
-The "proportion of variance" information is actually the proportion (and then cumulative proportion) represented by the singular value associated to each principal component. We check this (approximately) by comparing with the singular values we computed.
-
-
+\begin{frame}[fragile]\frametitle{Percentage of variance}
+The ``proportion of variance'' (or ``percentage of variance'') information is actually the proportion (and then cumulative proportion) represented by the singular value associated to each principal component
+\vfill
+We check this (approximately) by comparing with the singular values we computed
+\vfill
 <<>>=
 ev$sing_values/(sum(ev$sing_values))
 cumsum(ev$sing_values)/(sum(ev$sing_values))
 @
-
 \end{frame}
 
 
 
+% \begin{frame}[fragile]\frametitle{Some wrangling}
+% <<>>=
+% str(data.pca)
+% @
+% 
+% 
+% <<>>=
+% #library(devtools)
+% #install_github("vqv/ggbiplot")
+% library(ggbiplot)
+% @
+% 
+% \end{frame}
+% 
+% 
+% \begin{frame}[fragile]\frametitle{Some wrangling}
+% <<>>=
+% ggbiplot(data.pca, groups = data$handedness)
+% @
+% \end{frame}
 
-
-
-
-\begin{frame}[fragile]\frametitle{Some wrangling}
-<<>>=
-str(data.pca)
-@
-
-
-<<>>=
-#library(devtools)
-#install_github("vqv/ggbiplot")
-library(ggbiplot)
-@
-
-\end{frame}
-
-
-\begin{frame}[fragile]\frametitle{Some wrangling}
-<<>>=
-ggbiplot(data.pca, groups = data$handedness)
-@
-\end{frame}
-
-
-\begin{frame}[fragile]\frametitle{Some wrangling}
-Not that it makes much difference, but here we realise that handedness is badly encoded, in the sense that there are some individuals with lowercase handedness and others where the word starts with a capital letter. Let us fix this and plot again.
-
-
-<<>>=
-data$handedness = tolower(data$handedness)
-ggbiplot(data.pca, groups = data$handedness)
+\begin{frame}[fragile]\frametitle{Plot results}
+<<plot-PCA-1>>=
+plot.PCA(data.pca, axes = c(1,2), choix = "ind", habillage = 4)
 @
 \end{frame}
 
+\maxFrameImage{\Sexpr{knitr::fig_chunk("plot-PCA-1", "pdf")}}
 
-\begin{frame}[fragile]\frametitle{Some wrangling}
-Something else you can plot: ellipses containing most elements in a group, for the groups we have selected (here, handedness).
+% \begin{frame}[fragile]\frametitle{Plot results with ellipses}
+% <<plot-PCA-2>>=
+% plotellipses(data.pca)
+% @
+% \end{frame}
+% 
+% \maxFrameImage{\Sexpr{knitr::fig_chunk("plot-PCA-2", "pdf")}}
 
 
-<<>>=
-ggbiplot(data.pca, groups = data$handedness, ellipse = TRUE)
-@
-\end{frame}
+% \begin{frame}[fragile]\frametitle{Some wrangling}
+% Not that it makes much difference, but here we realise that handedness is badly encoded, in the sense that there are some individuals with lowercase handedness and others where the word starts with a capital letter. Let us fix this and plot again
+% 
+% <<>>=
+% data$handedness = tolower(data$handedness)
+% ggbiplot(data.pca, groups = data$handedness)
+% @
+% \end{frame}
+% 
+% 
+% \begin{frame}[fragile]\frametitle{Some wrangling}
+% Something else you can plot: ellipses containing most elements in a group, for the groups we have selected (here, handedness).
+% 
+% 
+% <<>>=
+% ggbiplot(data.pca, groups = data$handedness, ellipse = TRUE)
+% @
+% \end{frame}
 
 
 

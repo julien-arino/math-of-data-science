@@ -1640,7 +1640,7 @@ In order to do so, we need to learn how to change bases
 \begin{frame}{Change of basis}
 \begin{definition}[Change of basis matrix]
 $\B=\{\bu_1,\ldots,\bu_n\}$ and $\C=\{\bv_1,\ldots,\bv_n\}$ bases of vector space $V$
-\vskip0.2cm
+\vfill
 The \textbf{change of basis matrix} $P_{\C\leftarrow\B}\in\M_n$,
 \[
 P_{\C\leftarrow\B}
@@ -1664,6 +1664,7 @@ $\B=\{\bu_1,\ldots,\bu_n\}$ and $\C=\{\bv_1,\ldots,\bv_n\}$ bases of vector spac
 
 \begin{frame}{Row-reduction method for changing bases}
 \begin{theorem}
+\label{th:change-basis-construction}
 $\B=\{\bu_1,\ldots,\bu_n\}$ and $\C=\{\bv_1,\ldots,\bv_n\}$ bases of vector space $V$. Let $\E$ be any basis for $V$,
 \[
 B = [[\bu_1]_\E,\ldots,[\bu_n]_\E] 
@@ -2256,7 +2257,7 @@ Now compute the principal components. We need eigenvalues and eigenvectors
 
 
 
-\begin{frame}[fragile]\frametitle{Principal components}
+\begin{frame}[fragile]\frametitle{First principal component}
 Let us plot this first eigenvector (well, the line carrying this first eigenvector) 
 \vfill
 To use the function \code{abline}, we need to give the coefficients of the line in the form of (intercept,slope). Intercept is easy, as the line goes through the origin (by construction and because we have centred the data). The slope is also quite simple..
@@ -2276,7 +2277,6 @@ To use the function \code{abline}, we need to give the coefficients of the line 
 \end{frame}
 
 \maxFrameImage{FIGS/matrix-methods-plot-hockey-centred-evector-1.pdf}
-
 
 \begin{frame}[fragile]\frametitle{Rotating the data}
 Let us rotate the data so that the red line becomes the $x$-axis
@@ -2375,6 +2375,70 @@ Let us plot with the same range as for the non-rotated data for the y-axis
 
 
 \maxFrameImage{FIGS/matrix-methods-plot-hockey-centred-rotated-1.pdf}
+
+
+\begin{frame}[fragile]\frametitle{First and second principal components}
+Plot the first and second eigenvectors
+\vfill
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{plot}\hldef{(data}\hlopt{$}\hldef{height.c, data}\hlopt{$}\hldef{weight.c,}
+    \hlkwc{pch} \hldef{=} \hlnum{19}\hldef{,} \hlkwc{col} \hldef{=} \hlsng{"dodgerblue4"}\hldef{,}
+    \hlkwc{main} \hldef{=} \hlsng{"IIHF players 2001-2016 (with first and second components)"}\hldef{,}
+    \hlkwc{xlab} \hldef{=} \hlsng{"Height (cm)"}\hldef{,} \hlkwc{ylab} \hldef{=} \hlsng{"Weight (kg)"}\hldef{)}
+\hlkwd{abline}\hldef{(}\hlkwc{a} \hldef{=} \hlnum{0}\hldef{,} \hlkwc{b} \hldef{= ev}\hlopt{$}\hldef{vectors[}\hlnum{2}\hldef{,}\hlnum{1}\hldef{]}\hlopt{/}\hldef{ev}\hlopt{$}\hldef{vectors[}\hlnum{1}\hldef{,}\hlnum{1}\hldef{],}
+       \hlkwc{col} \hldef{=} \hlsng{"red"}\hldef{,} \hlkwc{lwd} \hldef{=} \hlnum{3}\hldef{)}
+\hlkwd{abline}\hldef{(}\hlkwc{a} \hldef{=} \hlnum{0}\hldef{,} \hlkwc{b} \hldef{= ev}\hlopt{$}\hldef{vectors[}\hlnum{2}\hldef{,}\hlnum{2}\hldef{]}\hlopt{/}\hldef{ev}\hlopt{$}\hldef{vectors[}\hlnum{1}\hldef{,}\hlnum{2}\hldef{],}
+       \hlkwc{col} \hldef{=} \hlsng{"darkgreen"}\hldef{,} \hlkwc{lwd} \hldef{=} \hlnum{3}\hldef{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+\maxFrameImage{FIGS/matrix-methods-plot-hockey-centred-2evectors-1.pdf}
+
+
+\begin{frame}\frametitle{Proper change of basis}
+Let us change the basis so that, in the new basis, the first component is the $x$-axis and the second component is the $y$-axis
+\vfill
+We want to use Theorem~\ref{th:change-basis-construction}
+\vfill
+We need the coordinates of the new basis in the canonical basis of $\IR^2$
+\vfill
+Since both axes go through the origin, we can just use $y=ax$, with $a$ the slope of the lines and, say, $x=1$, i.e., $(x,y)=(1,a)$
+\end{frame}
+
+
+\begin{frame}[fragile]\frametitle{Proper change of basis}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hldef{red_line} \hlkwb{=} \hlkwd{c}\hldef{(}\hlnum{1}\hldef{, ev}\hlopt{$}\hldef{vectors[}\hlnum{2}\hldef{,}\hlnum{1}\hldef{]}\hlopt{/}\hldef{ev}\hlopt{$}\hldef{vectors[}\hlnum{1}\hldef{,}\hlnum{1}\hldef{])}
+\hldef{green_line} \hlkwb{=} \hlkwd{c}\hldef{(}\hlnum{1}\hldef{, ev}\hlopt{$}\hldef{vectors[}\hlnum{2}\hldef{,}\hlnum{2}\hldef{]}\hlopt{/}\hldef{ev}\hlopt{$}\hldef{vectors[}\hlnum{1}\hldef{,}\hlnum{2}\hldef{])}
+\hldef{augmented_M} \hlkwb{=} \hlkwd{cbind}\hldef{(red_line,green_line,} \hlkwd{diag}\hldef{(}\hlnum{2}\hldef{))}
+\hldef{P} \hlkwb{=} \hlkwd{rref}\hldef{(augmented_M)[,}\hlnum{3}\hlopt{:}\hlnum{4}\hldef{]}
+
+\hldef{tmp_in} \hlkwb{=} \hlkwd{matrix}\hldef{(}\hlkwd{c}\hldef{(data}\hlopt{$}\hldef{weight.c, data}\hlopt{$}\hldef{height.c),} \hlkwc{nc} \hldef{=} \hlnum{2}\hldef{)}
+\hldef{tmp_out} \hlkwb{=} \hlkwd{c}\hldef{()}
+\hlkwa{for} \hldef{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlkwd{dim}\hldef{(tmp_in)[}\hlnum{1}\hldef{]) \{}
+    \hldef{tmp_out} \hlkwb{=} \hlkwd{rbind}\hldef{(tmp_out,} \hlkwd{t}\hldef{(P} \hlopt{%*%} \hldef{tmp_in[i,]))}
+\hldef{\}}
+\hldef{data}\hlopt{$}\hldef{weight.c_r2} \hlkwb{=} \hldef{tmp_out[,}\hlnum{1}\hldef{]}
+\hldef{data}\hlopt{$}\hldef{height.c_r2} \hlkwb{=} \hldef{tmp_out[,}\hlnum{2}\hldef{]}
+\hlkwd{plot}\hldef{(data}\hlopt{$}\hldef{height.c_r2, data}\hlopt{$}\hldef{weight.c_r2,}
+    \hlkwc{pch} \hldef{=} \hlnum{19}\hldef{,} \hlkwc{col} \hldef{=} \hlsng{"dodgerblue4"}\hldef{,}
+    \hlkwc{xlab} \hldef{=} \hlsng{"x-axis"}\hldef{,} \hlkwc{ylab} \hldef{=} \hlsng{"y-axis"}\hldef{,}
+    \hlkwc{main} \hldef{=} \hlsng{"IIHF players 2001-2016 (rotated to first component)"}\hldef{,}
+    \hlkwc{ylim} \hldef{=} \hlkwd{range}\hldef{(data}\hlopt{$}\hldef{weight.c))}
+\hlkwd{abline}\hldef{(}\hlkwc{h} \hldef{=} \hlnum{0}\hldef{,} \hlkwc{col} \hldef{=} \hlsng{"red"}\hldef{,} \hlkwc{lwd} \hldef{=} \hlnum{2}\hldef{)}
+\hlkwd{abline}\hldef{(}\hlkwc{v} \hldef{=} \hlnum{0}\hldef{,} \hlkwc{col} \hldef{=} \hlsng{"darkgreen"}\hldef{,} \hlkwc{lwd} \hldef{=} \hlnum{2}\hldef{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+\maxFrameImage{FIGS/matrix-methods-plot-hockey-proper-changed-basis-1.pdf}
 
 
 \begin{frame}[fragile]\frametitle{PCA using built-in functions}
@@ -2712,31 +2776,86 @@ Now recall we saw a theorem that told us how to construct a new basis..
 \end{frame}
 
 
-\begin{frame}[fragile]\frametitle{Some wrangling}
-Now we use the built in function.
-
+\begin{frame}[fragile]\frametitle{Use built-in functions}
+Use the built in function \code{prcomp} or \code{PCA} from the \code{FactoMineR} package
+\vfill
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hldef{data.pca} \hlkwb{=} \hlkwd{prcomp}\hldef{(data[, to_centre],}
-                  \hlkwc{center} \hldef{=} \hlnum{TRUE}\hldef{,} \hlkwc{scale} \hldef{=} \hlnum{TRUE}\hldef{)}
-\end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in La.svd(x, nu, nv): error code 7 from Lapack routine 'dgesdd'}}\begin{alltt}
+\hlcom{# data.pca = prcomp(X, center = TRUE, scale = TRUE)}
+\hldef{data.pca} \hlkwb{=} \hlkwd{PCA}\hldef{(X,} \hlkwc{scale.unit} \hldef{=} \hlnum{TRUE}\hldef{,} \hlkwc{graph} \hldef{=} \hlnum{FALSE}\hldef{)}
 \hlkwd{summary}\hldef{(data.pca)}
 \end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'data.pca' not found}}\end{kframe}
+\begin{verbatim}
+## 
+## Call:
+## PCA(X = X, scale.unit = TRUE, graph = FALSE) 
+## 
+## 
+## Eigenvalues
+##                        Dim.1   Dim.2   Dim.3   Dim.4   Dim.5   Dim.6   Dim.7
+## Variance               4.399   1.197   0.991   0.743   0.380   0.258   0.025
+## % of var.             54.988  14.966  12.386   9.292   4.750   3.225   0.313
+## Cumulative % of var.  54.988  69.955  82.341  91.632  96.383  99.608  99.921
+##                        Dim.8
+## Variance               0.006
+## % of var.              0.079
+## Cumulative % of var. 100.000
+## 
+## Individuals (the 10 first)
+##                 Dist    Dim.1    ctr   cos2    Dim.2    ctr   cos2    Dim.3
+## 5           |  2.554 |  2.436  0.823  0.910 | -0.656  0.219  0.066 |  0.342
+## 6           |  3.393 |  2.522  0.882  0.552 | -0.725  0.268  0.046 |  0.883
+## 12          |  2.501 |  1.970  0.538  0.621 | -1.161  0.687  0.216 | -0.045
+## 23          |  2.511 |  1.988  0.548  0.627 | -1.051  0.563  0.175 |  0.258
+## 24          |  3.015 | -2.891  1.158  0.919 | -0.405  0.084  0.018 | -0.121
+## 25          |  2.453 | -2.098  0.610  0.732 |  0.273  0.038  0.012 |  0.993
+## 26          |  3.189 | -2.801  1.087  0.771 | -0.867  0.383  0.074 | -0.146
+## 27          |  1.212 |  0.112  0.002  0.008 | -0.747  0.284  0.380 |  0.280
+## 28          |  2.444 |  1.823  0.461  0.557 | -0.466  0.111  0.036 |  0.464
+## 29          |  3.127 | -2.576  0.920  0.678 | -1.500  1.145  0.230 | -0.913
+##                ctr   cos2  
+## 5            0.072  0.018 |
+## 6            0.479  0.068 |
+## 12           0.001  0.000 |
+## 23           0.041  0.011 |
+## 24           0.009  0.002 |
+## 25           0.607  0.164 |
+## 26           0.013  0.002 |
+## 27           0.048  0.054 |
+## 28           0.132  0.036 |
+## 29           0.513  0.085 |
+## 
+## Variables
+##                Dim.1    ctr   cos2    Dim.2    ctr   cos2    Dim.3    ctr
+## age         |  0.042  0.041  0.002 |  0.777 50.484  0.604 | -0.549 30.422
+## height      |  0.742 12.530  0.551 | -0.242  4.878  0.058 | -0.084  0.713
+## weight      |  0.603  8.265  0.364 |  0.475 18.807  0.225 | -0.066  0.444
+## fing_temp   |  0.138  0.431  0.019 |  0.523 22.840  0.273 |  0.821 67.998
+## fing_height |  0.895 18.213  0.801 | -0.124  1.276  0.015 | -0.035  0.124
+## fing_width  |  0.882 17.694  0.778 |  0.071  0.423  0.005 |  0.053  0.282
+## fing_area   |  0.976 21.635  0.952 | -0.060  0.303  0.004 |  0.008  0.006
+## fing_circ   |  0.966 21.192  0.932 | -0.109  0.988  0.012 | -0.011  0.011
+##               cos2  
+## age          0.301 |
+## height       0.007 |
+## weight       0.004 |
+## fing_temp    0.674 |
+## fing_height  0.001 |
+## fing_width   0.003 |
+## fing_area    0.000 |
+## fing_circ    0.000 |
+\end{verbatim}
+\end{kframe}
 \end{knitrout}
 \end{frame}
 
 
-\begin{frame}[fragile]\frametitle{Some wrangling}
-The "proportion of variance" information is actually the proportion (and then cumulative proportion) represented by the singular value associated to each principal component. We check this (approximately) by comparing with the singular values we computed.
-
-
+\begin{frame}[fragile]\frametitle{Percentage of variance}
+The ``proportion of variance'' (or ``percentage of variance'') information is actually the proportion (and then cumulative proportion) represented by the singular value associated to each principal component
+\vfill
+We check this (approximately) by comparing with the singular values we computed
+\vfill
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -2755,84 +2874,70 @@ The "proportion of variance" information is actually the proportion (and then cu
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-
 \end{frame}
 
 
 
+% \begin{frame}[fragile]\frametitle{Some wrangling}
+% <<>>=
+% str(data.pca)
+% @
+% 
+% 
+% <<>>=
+% #library(devtools)
+% #install_github("vqv/ggbiplot")
+% library(ggbiplot)
+% @
+% 
+% \end{frame}
+% 
+% 
+% \begin{frame}[fragile]\frametitle{Some wrangling}
+% <<>>=
+% ggbiplot(data.pca, groups = data$handedness)
+% @
+% \end{frame}
 
-
-
-
-\begin{frame}[fragile]\frametitle{Some wrangling}
+\begin{frame}[fragile]\frametitle{Plot results}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{str}\hldef{(data.pca)}
-\end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'data.pca' not found}}\end{kframe}
-\end{knitrout}
-
-
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlcom{#library(devtools)}
-\hlcom{#install_github("vqv/ggbiplot")}
-\hlkwd{library}\hldef{(ggbiplot)}
+\hlkwd{plot.PCA}\hldef{(data.pca,} \hlkwc{axes} \hldef{=} \hlkwd{c}\hldef{(}\hlnum{1}\hldef{,}\hlnum{2}\hldef{),} \hlkwc{choix} \hldef{=} \hlsng{"ind"}\hldef{,} \hlkwc{habillage} \hldef{=} \hlnum{4}\hldef{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
-
 \end{frame}
 
+\maxFrameImage{FIGS/matrix-methods-plot-PCA-1-1.pdf}
 
-\begin{frame}[fragile]\frametitle{Some wrangling}
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlkwd{ggbiplot}\hldef{(data.pca,} \hlkwc{groups} \hldef{= data}\hlopt{$}\hldef{handedness)}
-\end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'data.pca' not found}}\end{kframe}
-\end{knitrout}
-\end{frame}
+% \begin{frame}[fragile]\frametitle{Plot results with ellipses}
+% <<plot-PCA-2>>=
+% plotellipses(data.pca)
+% @
+% \end{frame}
+% 
+% \maxFrameImage{knitr::fig_chunk("plot-PCA-2", "pdf")}
 
 
-\begin{frame}[fragile]\frametitle{Some wrangling}
-Not that it makes much difference, but here we realise that handedness is badly encoded, in the sense that there are some individuals with lowercase handedness and others where the word starts with a capital letter. Let us fix this and plot again.
-
-
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hldef{data}\hlopt{$}\hldef{handedness} \hlkwb{=} \hlkwd{tolower}\hldef{(data}\hlopt{$}\hldef{handedness)}
-\hlkwd{ggbiplot}\hldef{(data.pca,} \hlkwc{groups} \hldef{= data}\hlopt{$}\hldef{handedness)}
-\end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'data.pca' not found}}\end{kframe}
-\end{knitrout}
-\end{frame}
-
-
-\begin{frame}[fragile]\frametitle{Some wrangling}
-Something else you can plot: ellipses containing most elements in a group, for the groups we have selected (here, handedness).
-
-
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlkwd{ggbiplot}\hldef{(data.pca,} \hlkwc{groups} \hldef{= data}\hlopt{$}\hldef{handedness,} \hlkwc{ellipse} \hldef{=} \hlnum{TRUE}\hldef{)}
-\end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'data.pca' not found}}\end{kframe}
-\end{knitrout}
-\end{frame}
+% \begin{frame}[fragile]\frametitle{Some wrangling}
+% Not that it makes much difference, but here we realise that handedness is badly encoded, in the sense that there are some individuals with lowercase handedness and others where the word starts with a capital letter. Let us fix this and plot again
+% 
+% <<>>=
+% data$handedness = tolower(data$handedness)
+% ggbiplot(data.pca, groups = data$handedness)
+% @
+% \end{frame}
+% 
+% 
+% \begin{frame}[fragile]\frametitle{Some wrangling}
+% Something else you can plot: ellipses containing most elements in a group, for the groups we have selected (here, handedness).
+% 
+% 
+% <<>>=
+% ggbiplot(data.pca, groups = data$handedness, ellipse = TRUE)
+% @
+% \end{frame}
 
 
 
