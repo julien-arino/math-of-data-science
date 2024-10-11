@@ -2407,6 +2407,8 @@ We want to use Theorem~\ref{th:change-basis-construction}
 We need the coordinates of the new basis in the canonical basis of $\IR^2$
 \vfill
 Since both axes go through the origin, we can just use $y=ax$, with $a$ the slope of the lines and, say, $x=1$, i.e., $(x,y)=(1,a)$
+\vfill
+We then normalise the resulting vectors
 \end{frame}
 
 
@@ -2415,7 +2417,9 @@ Since both axes go through the origin, we can just use $y=ax$, with $a$ the slop
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hldef{red_line} \hlkwb{=} \hlkwd{c}\hldef{(}\hlnum{1}\hldef{, ev}\hlopt{$}\hldef{vectors[}\hlnum{2}\hldef{,}\hlnum{1}\hldef{]}\hlopt{/}\hldef{ev}\hlopt{$}\hldef{vectors[}\hlnum{1}\hldef{,}\hlnum{1}\hldef{])}
+\hldef{red_line} \hlkwb{=} \hldef{red_line}\hlopt{/}\hlkwd{sqrt}\hldef{(}\hlkwd{sum}\hldef{(red_line}\hlopt{^}\hlnum{2}\hldef{))}
 \hldef{green_line} \hlkwb{=} \hlkwd{c}\hldef{(}\hlnum{1}\hldef{, ev}\hlopt{$}\hldef{vectors[}\hlnum{2}\hldef{,}\hlnum{2}\hldef{]}\hlopt{/}\hldef{ev}\hlopt{$}\hldef{vectors[}\hlnum{1}\hldef{,}\hlnum{2}\hldef{])}
+\hldef{green_line} \hlkwb{=} \hldef{green_line}\hlopt{/}\hlkwd{sqrt}\hldef{(}\hlkwd{sum}\hldef{(green_line}\hlopt{^}\hlnum{2}\hldef{))}
 \hldef{augmented_M} \hlkwb{=} \hlkwd{cbind}\hldef{(red_line,green_line,} \hlkwd{diag}\hldef{(}\hlnum{2}\hldef{))}
 \hldef{P} \hlkwb{=} \hlkwd{rref}\hldef{(augmented_M)[,}\hlnum{3}\hlopt{:}\hlnum{4}\hldef{]}
 
@@ -2426,13 +2430,6 @@ Since both axes go through the origin, we can just use $y=ax$, with $a$ the slop
 \hldef{\}}
 \hldef{data}\hlopt{$}\hldef{weight.c_r2} \hlkwb{=} \hldef{tmp_out[,}\hlnum{1}\hldef{]}
 \hldef{data}\hlopt{$}\hldef{height.c_r2} \hlkwb{=} \hldef{tmp_out[,}\hlnum{2}\hldef{]}
-\hlkwd{plot}\hldef{(data}\hlopt{$}\hldef{height.c_r2, data}\hlopt{$}\hldef{weight.c_r2,}
-    \hlkwc{pch} \hldef{=} \hlnum{19}\hldef{,} \hlkwc{col} \hldef{=} \hlsng{"dodgerblue4"}\hldef{,}
-    \hlkwc{xlab} \hldef{=} \hlsng{"x-axis"}\hldef{,} \hlkwc{ylab} \hldef{=} \hlsng{"y-axis"}\hldef{,}
-    \hlkwc{main} \hldef{=} \hlsng{"IIHF players 2001-2016 (rotated to first component)"}\hldef{,}
-    \hlkwc{ylim} \hldef{=} \hlkwd{range}\hldef{(data}\hlopt{$}\hldef{weight.c))}
-\hlkwd{abline}\hldef{(}\hlkwc{h} \hldef{=} \hlnum{0}\hldef{,} \hlkwc{col} \hldef{=} \hlsng{"red"}\hldef{,} \hlkwc{lwd} \hldef{=} \hlnum{2}\hldef{)}
-\hlkwd{abline}\hldef{(}\hlkwc{v} \hldef{=} \hlnum{0}\hldef{,} \hlkwc{col} \hldef{=} \hlsng{"darkgreen"}\hldef{,} \hlkwc{lwd} \hldef{=} \hlnum{2}\hldef{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}

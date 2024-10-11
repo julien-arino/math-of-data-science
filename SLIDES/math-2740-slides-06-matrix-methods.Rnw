@@ -2064,13 +2064,17 @@ We want to use Theorem~\ref{th:change-basis-construction}
 We need the coordinates of the new basis in the canonical basis of $\IR^2$
 \vfill
 Since both axes go through the origin, we can just use $y=ax$, with $a$ the slope of the lines and, say, $x=1$, i.e., $(x,y)=(1,a)$
+\vfill
+We then normalise the resulting vectors
 \end{frame}
 
 
 \begin{frame}[fragile]\frametitle{Proper change of basis}
-<<plot-hockey-proper-changed-basis>>=
+<<plot-hockey-proper-changed-basis,echo=1:12>>=
 red_line = c(1, ev$vectors[2,1]/ev$vectors[1,1])
+red_line = red_line/sqrt(sum(red_line^2))
 green_line = c(1, ev$vectors[2,2]/ev$vectors[1,2])
+green_line = green_line/sqrt(sum(green_line^2))
 augmented_M = cbind(red_line,green_line, diag(2))
 P = rref(augmented_M)[,3:4]
 
