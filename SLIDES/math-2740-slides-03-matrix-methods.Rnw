@@ -289,16 +289,14 @@ If there were just two points, we could easily "drive" a line through these two 
 We start with a line, giving rise to \defword{linear least squares}
 \end{frame}
 
-\begin{frame}[fragile]\frametitle{Least squares approximation}
-Let us start with a simple case..
-
-<<>>=
+\begin{frame}[fragile]\frametitle{Least squares approximation -- A trivial case}
+<<plot-2-points-and-line,echo=FALSE,fig.show='asis',fig.height=3.5>>=
 points = list()
 points$x = c(1,2)
 points$y = c(3,5) # So the points are (1,3) and (2,5)
 plot(points$x, points$y, 
-     pch = 19, cex = 2, bty = "n",
-    xlim = c(0, 3), ylim = c(0,6), xlab = "x", ylab = "y")
+     pch = 19, cex = 1, bty = "n",
+     xlim = c(0, 3), ylim = c(0,6), xlab = "x", ylab = "y")
 @
 \end{frame}
 
@@ -330,7 +328,7 @@ $$
 \end{frame}
 
 \begin{frame}[fragile]
-We know from the "famous" Linear algebra in a nutshell theorem that this system has a unique solution if the matrix
+We know from the ``famous'' linear algebra in a nutshell theorem that this system has a unique solution if the matrix
 $$
 M=
 \begin{pmatrix}
@@ -338,21 +336,21 @@ M=
 \end{pmatrix}
 $$
 is invertible
-
+\vfill
 $\det(M)=1$, so we are good, we'll find $a$ and $b$ easily..
+\end{frame}
 
-Now let's add another point.
-
-<<>>=
+\begin{frame}[fragile]
+Now let's add another point
+<<plot-3-points-and-line-0>>=
 points = list()
 points$x = c(1,2,3)
 points$y = c(3,5,4) # So the points are (1,3), (2,5) and (3,4)
-plot(points$x, points$y, 
+plot(points$x, points$y,
      pch = 19, cex = 2, bty = "n",
     xlim = c(0, 3.5), ylim = c(0,6), xlab = "x", ylab = "y")
 @
-
-These points are clearly not colinear, so there is not one line going through the 3.
+These points are clearly not colinear, so there is not one line going through the 3
 \end{frame}
 
 \begin{frame}
@@ -386,11 +384,11 @@ We have verified visually that the points are not colinear, so this system has n
 
 So let us instead try to find the line that comes "closest" to the 3 points.
 
-<<>>=
+<<plot-3-points-and-line-1>>=
 A = matrix(c(1,1,1,2), nr = 2, nc = 2, byrow = TRUE)
 rhs = matrix(c(3,5), nr = 2, nc =1)
 coefs = solve(A,rhs) # To invert A, in R, you use solve(A), to solve Ax=b, you use solve(A,b)
-plot(points$x, points$y, 
+plot(points$x, points$y,
      pch = 19, cex = 2, bty = "n",
     xlim = c(0, 3.5), ylim = c(0,6), xlab = "x", ylab = "y")
 abline(coef = coefs, lwd = 2)
@@ -400,15 +398,15 @@ Obviously, not sensational..
 \end{frame}
 
 \begin{frame}[fragile]
-<<>>=
-plot(points$x, points$y, 
+<<plot-3-points-and-line-2>>=
+plot(points$x, points$y,
      pch = 19, cex = 2, bty = "n",
     xlim = c(0, 3.5), ylim = c(0,6), xlab = "x", ylab = "y")
-abline(coef = coefs, lwd = 2) 
+abline(coef = coefs, lwd = 2)
 abline(a = 3, b = 0.5, lwd = 2, col = "red")
 @
 
-How do we find "how far away"? 
+How do we find "how far away"?
 
 - We could use projections onto the line (which we know minimises the distance)
 - However, this will be a problem if we later decide that rather than a straight line, we want to use something more "funky" like a quadratic or an exponential
@@ -458,7 +456,7 @@ my_line(x = c(1,2,3), a_0 = 2, a_1 = 3)
 <<>>=
 a = 3
 b = 0.5 # The line has equation y=a+bx
-plot(points$x, points$y, 
+plot(points$x, points$y,
      pch = 19, cex = 2, bty = "n",
     xlim = c(0, 3.5), ylim = c(0,6), xlab = "x", ylab = "y")
 abline(a = a, b = b, lwd = 2)
@@ -479,7 +477,7 @@ $$
 = (x_1-x_1,y_1-\tilde y_1)
 = (0, y_1-\tilde y_1)
 $$
-Let us call 
+Let us call
 $$
 \varepsilon_1 = y_1-\tilde y_1
 $$
@@ -516,7 +514,7 @@ is minimal, where $\tilde y_i=a+bx_i$, for $i=1,\ldots,n$
 \begin{frame}[fragile]
 Let us first hack a brute force solution! (For the example we have been using this far)
 
-We have our three points in the list `points`, the function `my_line` that computes the value $\tilde y$ given $x$ and $a,b$, so let us make a new function that, given $a,b$, computes $\mathbf{e}$
+We have our three points in the list `points`, the function \code{my\_line} that computes the value $\tilde y$ given $x$ and $a,b$, so let us make a new function that, given $a,b$, computes $\mathbf{e}$
 
 We'll also pass the points `points`
 
@@ -531,7 +529,7 @@ error(a_0 = 3, a_1 = 0.5, points)
 error(a_0 = 3.1, a_1 = 0.48, points)
 @
 
-We can't be doing this by hand.. 
+We can't be doing this by hand..
 \end{frame}
 
 
@@ -554,7 +552,7 @@ if (!require("GA", quietly = TRUE)) {
   install.packages("GA")
   library(GA)
 }
-GA = ga(type = "real-valued", 
+GA = ga(type = "real-valued",
         fitness = function(x) -error(a_0 = x[1], a_1 = x[2], points),
         suggestions = c(a_0 = 2, a_1 = 3),
         lower = c(-10, -10), upper = c(10, 10),
