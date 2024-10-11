@@ -548,10 +548,9 @@ We can't be doing this by hand..
 \end{frame}
 
 
-\begin{frame}
-Let's use something cool: a *genetic algorithm*
+\begin{frame}\frametitle{Genetic algorithms}
+Let's use something cool: a \emph{genetic algorithm}
 
-# Genetic algorithms
 - Genetic algorithms are a stochastic *optimisation* method. There are other types, e.g., gradient descent (deterministic)
 - The idea is to use a mechanism mimicking evolution's drive towards higher fitness
 - The function value is its fitness
@@ -563,7 +562,7 @@ Let's use something cool: a *genetic algorithm*
 
 
 \begin{frame}[fragile]
-<<>>=
+<<run-plot-ga>>=
 if (!require("GA", quietly = TRUE)) {
   install.packages("GA")
   library(GA)
