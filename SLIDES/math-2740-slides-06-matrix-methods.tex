@@ -1899,11 +1899,7 @@ We have
 \bm{\alpha}_1^T\Sigma\bm{\alpha}_1  
 &= 
 (s_{11}\alpha_{11}+s_{12}\alpha_{12}+\cdots+s_{1p}\alpha_{1p})+s_{11}\alpha_{11} \\
-&\quad +
-s_{21}\alpha_{12} \\
-&\quad\;\;\vdots \\
-&\quad +
-s_{p1}\alpha_{1p} \\
+&\quad + s_{21}\alpha_{12} +\cdots + s_{p1}\alpha_{1p} \\
 &= s_{11}\alpha_{11}+s_{12}\alpha_{12}+\cdots+s_{1p}\alpha_{1p} \\
 &\quad+
 s_{11}\alpha_{11}+s_{21}\alpha_{12}+\cdots+s_{p1}\alpha_{1p} \\
@@ -2061,15 +2057,14 @@ As usual, it is a good idea to plot this to get a sense of the lay of the land
 \end{frame}
 
 
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
-\includegraphics[width=\maxwidth]{FIGS/matrix-methods-plot-hockey-1-1} 
-\end{knitrout}
+
 
 \maxFrameImage{FIGS/matrix-methods-plot-hockey-1-1.pdf}
 
 \begin{frame}[fragile]
-The author of the study is interested in the evolution of weights, so it is likely that the same person will be in the dataset several times. Let us check this. First check will be `FALSE` if the number of unique names does not match the number of rows in the dataset
+The author of the study is interested in the evolution of weights, so it is likely that the same person will be in the dataset several times
+\vfill
+Let us check this: first check will be \code{FALSE} if the number of unique names does not match the number of rows in the dataset
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -2090,13 +2085,13 @@ The author of the study is interested in the evolution of weights, so it is like
 \end{frame}
 
 \begin{frame}[fragile]
-We are not interested in the evolution of weights, so far, so let us simplify things: if we have more than one record for someone, let us take their weight as the average of the weights recorded for them. To be extra careful, we could check as well that there are no major variations on player height, as this could indicate homonymies.
-
-
+Not interested in the evolution of weights, so simplify: if more than one record for someone, take average of recorded weights and heights
+\vfill
+To be extra careful, could check as well that there are no major variations on player height (homonymies?)
+\vfill
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcom{# First, we make a data frame with just the names}
 \hldef{data_simplified} \hlkwb{=} \hlkwd{data.frame}\hldef{(}\hlkwc{name} \hldef{=} \hlkwd{unique}\hldef{(data}\hlopt{$}\hldef{name))}
 \hldef{w} \hlkwb{=} \hlkwd{c}\hldef{()}
 \hldef{h} \hlkwb{=} \hlkwd{c}\hldef{()}
@@ -2107,8 +2102,17 @@ We are not interested in the evolution of weights, so far, so let us simplify th
 \hldef{\}}
 \hldef{data_simplified}\hlopt{$}\hldef{weight} \hlkwb{=} \hldef{w}
 \hldef{data_simplified}\hlopt{$}\hldef{height} \hlkwb{=} \hldef{h}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{frame}
 
-\hlkwd{head}\hldef{(data_simplified)}
+\begin{frame}[fragile]
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hldef{data} \hlkwb{=} \hldef{data_simplified}
+\hlkwd{head}\hldef{(data_simplified,} \hlkwc{n} \hldef{=} \hlnum{6}\hldef{)}
 \end{alltt}
 \begin{verbatim}
 ##                  name weight height
@@ -2119,34 +2123,15 @@ We are not interested in the evolution of weights, so far, so let us simplify th
 ## 5    orekhovsky oleg    88.0  175.0
 ## 6      zhukov sergei    92.5  193.0
 \end{verbatim}
-\begin{alltt}
-\hldef{data} \hlkwb{=} \hldef{data_simplified}
-\end{alltt}
 \end{kframe}
 \end{knitrout}
 \end{frame}
 
-\begin{frame}[fragile]
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
-\includegraphics[width=\maxwidth]{FIGS/matrix-methods-plot-hockey-2-1} 
-\end{knitrout}
-\end{frame}
-
-\begin{frame}[fragile]\frametitle{Centre the data and plot the result}
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hldef{data}\hlopt{$}\hldef{weight.c} \hlkwb{=} \hldef{data}\hlopt{$}\hldef{weight}\hlopt{-}\hlkwd{mean}\hldef{(data}\hlopt{$}\hldef{weight)}
-\hldef{data}\hlopt{$}\hldef{height.c} \hlkwb{=} \hldef{data}\hlopt{$}\hldef{height}\hlopt{-}\hlkwd{mean}\hldef{(data}\hlopt{$}\hldef{height)}
-\end{alltt}
-\end{kframe}
-\includegraphics[width=\maxwidth]{FIGS/matrix-methods-plot-hockey-centred-1} 
-\end{knitrout}
-\end{frame}
 
 
-\begin{frame}[fragile]\frametitle{Centre the data and plot the result}
+\maxFrameImage{FIGS/matrix-methods-plot-hockey-2-1.pdf}
+
+\begin{frame}[fragile]\frametitle{Centre the data}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -2161,14 +2146,23 @@ We are not interested in the evolution of weights, so far, so let us simplify th
 \begin{verbatim}
 ## [1] 183.8596
 \end{verbatim}
+\begin{alltt}
+\hldef{data}\hlopt{$}\hldef{weight.c} \hlkwb{=} \hldef{data}\hlopt{$}\hldef{weight}\hlopt{-}\hlkwd{mean}\hldef{(data}\hlopt{$}\hldef{weight)}
+\hldef{data}\hlopt{$}\hldef{height.c} \hlkwb{=} \hldef{data}\hlopt{$}\hldef{height}\hlopt{-}\hlkwd{mean}\hldef{(data}\hlopt{$}\hldef{height)}
+\end{alltt}
 \end{kframe}
 \end{knitrout}
 \end{frame}
 
+\maxFrameImage{FIGS/matrix-methods-plot-hockey-centred-1.pdf}
+
+
+
 \begin{frame}[fragile]\frametitle{Covariance}
-The function `cov` returns the covariance of two samples. Note that the functions deals equally well with data that is not centred as with data that is centred.
-
-
+The function \code{cov} returns the covariance of two samples
+\vfill
+Note that the functions deals equally well with data that is not centred as with data that is centred
+\vfill
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -2189,13 +2183,13 @@ The function `cov` returns the covariance of two samples. Note that the function
 
 
 \begin{frame}[fragile]\frametitle{Covariance matrix}
-As we could see from plotting the data, there is a positive linear relationship between the two variables. Let us compute the sample covariance matrix.
-
-
+As we could see from plotting the data, there is a positive linear relationship between the two variables
+\vfill
+Let us compute the sample covariance matrix
+\vfill
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcom{# Select X as the matrix we want to process}
 \hldef{X} \hlkwb{=} \hlkwd{as.matrix}\hldef{(data[,}\hlkwd{c}\hldef{(}\hlsng{"height.c"}\hldef{,} \hlsng{"weight.c"}\hldef{)])}
 \hldef{S} \hlkwb{=} \hlnum{1}\hlopt{/}\hldef{(}\hlkwd{dim}\hldef{(X)[}\hlnum{1}\hldef{]}\hlopt{-}\hlnum{1}\hldef{)}\hlopt{*}\hlkwd{t}\hldef{(X)} \hlopt{%*%} \hldef{X}
 \hldef{S}
@@ -2236,9 +2230,8 @@ Hey, that works. Is math not cool? ;)
 
 
 \begin{frame}[fragile]\frametitle{Principal components}
-Okay, joke aside, let us now compute the principal components. For this, we need eigenvalues and eigenvectors.
-
-
+Now compute the principal components. We need eigenvalues and eigenvectors
+\vfill
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -2257,93 +2250,56 @@ Okay, joke aside, let us now compute the principal components. For this, we need
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
+\vfill
+(\code{eigen} returns eigenvalues sorted in decreasing order and normalised eigenvectors)
 \end{frame}
 
 
-\begin{frame}[fragile]\frametitle{Principal components}
-The result of a call to `eigen` will not necessarily be well ordered. (Here, we are in 2D, so chances are good. When we increase the size, things might become more iffy.) So we order the eigenvalues in decreasing order and apply the same ordering to the eigenvectors. (As the eigenvectors are the columns of `ev\$vectors`, we order the columns.
-
-
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hldef{idx_order} \hlkwb{=} \hlkwd{order}\hldef{(ev}\hlopt{$}\hldef{values,} \hlkwc{decreasing} \hldef{=} \hlnum{TRUE}\hldef{)}
-\hldef{ev}\hlopt{$}\hldef{values} \hlkwb{=} \hldef{ev}\hlopt{$}\hldef{values[idx_order]}
-\hldef{ev}\hlopt{$}\hldef{vectors} \hlkwb{=} \hldef{ev}\hlopt{$}\hldef{vectors[, idx_order]}
-\hldef{ev}
-\end{alltt}
-\begin{verbatim}
-## eigen() decomposition
-## $values
-## [1] 66.87496 10.59793
-## 
-## $vectors
-##           [,1]       [,2]
-## [1,] 0.5820222 -0.8131729
-## [2,] 0.8131729  0.5820222
-\end{verbatim}
-\end{kframe}
-\end{knitrout}
-\end{frame}
-
 
 \begin{frame}[fragile]\frametitle{Principal components}
-Let us normalise the first eigenvector. This way, we now that the variance of the first principal component will be the corresponding eigenvalue.
-
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hldef{ev}\hlopt{$}\hldef{vectors[,}\hlnum{1}\hldef{]} \hlkwb{=} \hldef{ev}\hlopt{$}\hldef{vectors[,}\hlnum{1}\hldef{]} \hlopt{/} \hlkwd{sqrt}\hldef{(}\hlkwd{sum}\hldef{(ev}\hlopt{$}\hldef{vectors[,}\hlnum{1}\hldef{]}\hlopt{^}\hlnum{2}\hldef{))}
-\hldef{ev}\hlopt{$}\hldef{vectors[,}\hlnum{1}\hldef{]}
-\end{alltt}
-\begin{verbatim}
-## [1] 0.5820222 0.8131729
-\end{verbatim}
-\begin{alltt}
-\hlkwd{sum}\hldef{(ev}\hlopt{$}\hldef{vectors[,}\hlnum{1}\hldef{]}\hlopt{^}\hlnum{2}\hldef{)}
-\end{alltt}
-\begin{verbatim}
-## [1] 1
-\end{verbatim}
-\end{kframe}
-\end{knitrout}
-\end{frame}
-
-
-\begin{frame}[fragile]\frametitle{Principal components}
-Let us plot this first eigenvector (well, the line carrying this first eigenvector). To use the function `abline`, we need to give the coefficients of the line in the form of (intercept,slope). Intercept is easy, as the line goes through the origin (by construction and because we have centred the data). The slope is also quite simple..
-
-
+Let us plot this first eigenvector (well, the line carrying this first eigenvector) 
+\vfill
+To use the function \code{abline}, we need to give the coefficients of the line in the form of (intercept,slope). Intercept is easy, as the line goes through the origin (by construction and because we have centred the data). The slope is also quite simple..
+\vfill
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{plot}\hldef{(data}\hlopt{$}\hldef{height.c, data}\hlopt{$}\hldef{weight.c,}
     \hlkwc{pch} \hldef{=} \hlnum{19}\hldef{,} \hlkwc{col} \hldef{=} \hlsng{"dodgerblue4"}\hldef{,}
+    \hlkwc{main} \hldef{=} \hlsng{"IIHF players 2001-2016 (with first component)"}\hldef{,}
     \hlkwc{xlab} \hldef{=} \hlsng{"Height (cm)"}\hldef{,} \hlkwc{ylab} \hldef{=} \hlsng{"Weight (kg)"}\hldef{)}
 \hlkwd{abline}\hldef{(}\hlkwc{a} \hldef{=} \hlnum{0}\hldef{,} \hlkwc{b} \hldef{= ev}\hlopt{$}\hldef{vectors[}\hlnum{2}\hldef{,}\hlnum{1}\hldef{]}\hlopt{/}\hldef{ev}\hlopt{$}\hldef{vectors[}\hlnum{1}\hldef{,}\hlnum{1}\hldef{],}
        \hlkwc{col} \hldef{=} \hlsng{"red"}\hldef{,} \hlkwc{lwd} \hldef{=} \hlnum{3}\hldef{)}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{FIGS/matrix-methods-plot-hockey-centred-evector-1} 
 \end{knitrout}
 \end{frame}
 
+\maxFrameImage{FIGS/matrix-methods-plot-hockey-centred-evector-1.pdf}
 
-\begin{frame}[fragile]\frametitle{Principal components}
-Let us rotate the data so that the red line becomes the "x-axis". To do that, we use a rotation matrix,
+
+\begin{frame}[fragile]\frametitle{Rotating the data}
+Let us rotate the data so that the red line becomes the $x$-axis
+\vfill
+To do that, we use a rotation matrix
 $$
 R_\theta = \begin{pmatrix}
 \cos\theta & -\sin\theta \\
 \sin\theta & \cos\theta
-\end{pmatrix}.
+\end{pmatrix}
 $$
+\vfill
 To find the angle $\theta$, recall that $\tan\theta$ is equal to opposite length over adjacent length, i.e.,
 $$
 \tan\theta = \frac{\tt ev\$vectors[2,1]}{\tt ev\$vectors[1,1]}
 $$
-So we just use the $\arctan$ of this. (Note that angles are in radians.)
+So we just use the $\arctan$ of this 
+\vfill 
+Note that angles are in radians
+\end{frame}
 
 
+\begin{frame}[fragile]\frametitle{Rotating the data}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -2369,10 +2325,11 @@ So we just use the $\arctan$ of this. (Note that angles are in radians.)
 \end{frame}
 
 
-\begin{frame}[fragile]\frametitle{Principal components}
-And now we rotate the points. (In this case, we think of the points as vectors, of course.)
-
-
+\begin{frame}[fragile]\frametitle{Rotating the data}
+And now we rotate the points
+\vfill
+(In this case, we think of the points as vectors, of course)
+\vfill
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -2391,17 +2348,16 @@ And now we rotate the points. (In this case, we think of the points as vectors, 
 \end{frame}
 
 
-\begin{frame}[fragile]\frametitle{Principal components}
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
-\includegraphics[width=\maxwidth]{FIGS/matrix-methods-plot-hockey-centred-evector-2-1} 
-\end{knitrout}
-\end{frame}
+
+
+\maxFrameImage{FIGS/matrix-methods-plot-hockey-centred-evector-2-1.pdf}
 
 
 \begin{frame}[fragile]\frametitle{Principal components}
-Note that the axes have changed quite a lot, hence the very different aspect. Let us plot with the same range as for the non-rotated data for the y-axis.
-
+Note that the axes have changed quite a lot, hence the very different aspect
+\vfill
+Let us plot with the same range as for the non-rotated data for the y-axis
+\vfill
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -2409,28 +2365,24 @@ Note that the axes have changed quite a lot, hence the very different aspect. Le
 \hlkwd{plot}\hldef{(data}\hlopt{$}\hldef{height.c_r, data}\hlopt{$}\hldef{weight.c_r,}
     \hlkwc{pch} \hldef{=} \hlnum{19}\hldef{,} \hlkwc{col} \hldef{=} \hlsng{"dodgerblue4"}\hldef{,}
     \hlkwc{xlab} \hldef{=} \hlsng{"x-axis"}\hldef{,} \hlkwc{ylab} \hldef{=} \hlsng{"y-axis"}\hldef{,}
+    \hlkwc{main} \hldef{=} \hlsng{"IIHF players 2001-2016 (rotated to first component)"}\hldef{,}
     \hlkwc{ylim} \hldef{=} \hlkwd{range}\hldef{(data}\hlopt{$}\hldef{weight.c))}
 \hlkwd{abline}\hldef{(}\hlkwc{h} \hldef{=} \hlnum{0}\hldef{,} \hlkwc{col} \hldef{=} \hlsng{"red"}\hldef{,} \hlkwc{lwd} \hldef{=} \hlnum{2}\hldef{)}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{FIGS/matrix-methods-plot-hockey-centred-rotated-1} 
 \end{knitrout}
 \end{frame}
 
 
-\begin{frame}[fragile]\frametitle{Principal components}
-Now do things "properly".
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hldef{GS} \hlkwb{=} \hldef{pracma}\hlopt{::}\hlkwd{gramSchmidt}\hldef{(}\hlkwc{A} \hldef{= ev}\hlopt{$}\hldef{vectors)}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
+\maxFrameImage{FIGS/matrix-methods-plot-hockey-centred-rotated-1.pdf}
 
+
+\begin{frame}[fragile]\frametitle{PCA using built-in functions}
+Now do things ``properly''
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
+\hldef{GS} \hlkwb{=} \hldef{pracma}\hlopt{::}\hlkwd{gramSchmidt}\hldef{(}\hlkwc{A} \hldef{= ev}\hlopt{$}\hldef{vectors,} \hlkwc{tol} \hldef{=} \hlnum{1e-10}\hldef{)}
 \hldef{GS}
 \end{alltt}
 \begin{verbatim}
@@ -2440,19 +2392,18 @@ Now do things "properly".
 ## [2,] 0.8131729  0.5820222
 ## 
 ## $R
-##      [,1]          [,2]
-## [1,]    1 -3.510848e-17
-## [2,]    0  1.000000e+00
+##      [,1]         [,2]
+## [1,]    1 1.129638e-17
+## [2,]    0 1.000000e+00
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
 \end{frame}
 
 
-\begin{frame}[fragile]\frametitle{Principal components}
+\begin{frame}[fragile]\frametitle{PCA using built-in functions}
 Now recall we saw a theorem that told us how to construct a new basis..
-
-
+\vfill
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -2472,9 +2423,15 @@ Now recall we saw a theorem that told us how to construct a new basis..
 ## [1,]    1    0  0.5820222 0.8131729
 ## [2,]    0    1 -0.8131729 0.5820222
 \end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{PCA using built-in functions}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hldef{P} \hlkwb{=} \hldef{pracma}\hlopt{::}\hlkwd{rref}\hldef{(A)[,}\hlkwd{c}\hldef{(}\hlnum{3}\hldef{,}\hlnum{4}\hldef{)]}
-\hldef{P}
 \end{alltt}
 \begin{verbatim}
 ##            [,1]      [,2]
@@ -2483,16 +2440,400 @@ Now recall we saw a theorem that told us how to construct a new basis..
 \end{verbatim}
 \begin{alltt}
 \hldef{X.new} \hlkwb{=} \hldef{X} \hlopt{%*%} \hlkwd{t}\hldef{(P)}
-\hlcom{#for (i in 1:dim(X)[1]) \{}
-\hlcom{#    X.new[i,] = P %*% X[i,]}
-\hlcom{#\}}
-\hlkwd{plot}\hldef{(X.new[,}\hlnum{1}\hldef{], X.new[,}\hlnum{2}\hldef{],}
-    \hlkwc{pch} \hldef{=} \hlnum{19}\hldef{,} \hlkwc{col} \hldef{=} \hlsng{"dodgerblue4"}\hldef{)}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{FIGS/matrix-methods-plot-hockey-centred-evector-3-1} 
 \end{knitrout}
 \end{frame}
+
+\maxFrameImage{FIGS/matrix-methods-plot-hockey-centred-evector-3-1.pdf}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\subsection{Back to fingerprints}
+\newSubSectionSlide{FIGS/Gemini_Generated_Image_ut188hut188hut18.jpeg}
+
+
+\begin{frame}
+We get the data from \href{https://repository.lboro.ac.uk/articles/dataset/Height_weight_and_fingerprint_measurements_collected_from_200_participants/7539206}{here}
+\vfill
+This time, we first download the data, then open the file
+\vfill
+The file is an excel table, so we need to use a library for doing that
+\end{frame}
+
+
+\begin{frame}[fragile]\frametitle{Loading the excel fingerprint data}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{download.file}\hldef{(}\hlkwc{url} \hldef{=} \hlsng{"https://repository.lboro.ac.uk/ndownloader/files/14015774"}\hldef{,}
+             \hlkwc{destfile} \hldef{=} \hlsng{"fingerprint_data.xlsx"}\hldef{)}
+\hldef{data} \hlkwb{=} \hldef{openxlsx}\hlopt{::}\hlkwd{read.xlsx}\hldef{(}\hlsng{"fingerprint_data.xlsx"}\hldef{)}
+\hlkwd{head}\hldef{(data,} \hlkwc{n}\hldef{=}\hlnum{3}\hldef{)}
+\end{alltt}
+\begin{verbatim}
+##   Participant.Number Gender Age Dominant.Hand
+## 1                101   Male  NA         Right
+## 2                102   Male  NA         Right
+## 3                103   Male  NA         Right
+##   Height.(cm).(average.of.3.measurments)
+## 1                               174.0000
+## 2                               202.0000
+## 3                               182.3333
+##   Weight.(kg).(average.of.3.measurements) Fingertip.Temperature.(°C)
+## 1                                      70                         34
+## 2                                      99                         30
+## 3                                      82                         29
+##   Fingerprint.Height.(mm) Fingerprint.Width.(mm) Fingerprint.Area.(mm2)
+## 1                    19.8                   13.7                  240.6
+## 2                    24.0                   14.1                  278.8
+## 3                    20.0                   13.7                  223.8
+##   Fingerprint.Circumference.(mm)
+## 1                           57.7
+## 2                           62.7
+## 3                           55.5
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+\begin{frame}[fragile]\frametitle{Some wrangling}
+Let us rework the names of columns a bit, for convenience. Let us also get rid of a few columns we are not using
+\vfill
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hldef{data} \hlkwb{=} \hldef{data[,}\hlnum{2}\hlopt{:}\hlkwd{dim}\hldef{(data)[}\hlnum{2}\hldef{]]}
+\hlkwd{colnames}\hldef{(data)} \hlkwb{=} \hlkwd{c}\hldef{(}\hlsng{"gender"}\hldef{,} \hlsng{"age"}\hldef{,} \hlsng{"handedness"}\hldef{,} \hlsng{"height"}\hldef{,} \hlsng{"weight"}\hldef{,}
+                  \hlsng{"fing_temp"}\hldef{,} \hlsng{"fing_height"}\hldef{,} \hlsng{"fing_width"}\hldef{,}
+                  \hlsng{"fing_area"}\hldef{,} \hlsng{"fing_circ"}\hldef{)}
+\hlkwd{head}\hldef{(data,} \hlkwc{n}\hldef{=}\hlnum{3}\hldef{)}
+\end{alltt}
+\begin{verbatim}
+##   gender age handedness   height weight fing_temp fing_height fing_width
+## 1   Male  NA      Right 174.0000     70        34        19.8       13.7
+## 2   Male  NA      Right 202.0000     99        30        24.0       14.1
+## 3   Male  NA      Right 182.3333     82        29        20.0       13.7
+##   fing_area fing_circ
+## 1     240.6      57.7
+## 2     278.8      62.7
+## 3     223.8      55.5
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+
+\begin{frame}\frametitle{Some wrangling -- Centering}
+Plotting all these variables is complicated, so we forgo this for the time being
+\vfill
+Let us centre the data. That there are some \code{NA} values, so we remove them using the function \code{complete.cases}, which identifies rows where at least one of the variables is \code{NA}
+\vfill
+(We could also use \code{na.rm = TRUE} when taking the average to remove these values.) 
+\vfill
+We make new columns with the prefix \code{.c}, just to still have the initial data handy if need be.
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Some wrangling -- Centering}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hldef{data} \hlkwb{=} \hldef{data[}\hlkwd{complete.cases}\hldef{(data),]}
+\hldef{to_centre} \hlkwb{=} \hlkwd{c}\hldef{(}\hlsng{"age"}\hldef{,} \hlsng{"height"}\hldef{,}
+              \hlsng{"weight"}\hldef{,} \hlsng{"fing_temp"}\hldef{,}
+              \hlsng{"fing_height"}\hldef{,} \hlsng{"fing_width"}\hldef{,}
+              \hlsng{"fing_area"}\hldef{,} \hlsng{"fing_circ"}\hldef{)}
+\hlkwa{for} \hldef{(c} \hlkwa{in} \hldef{to_centre) \{}
+    \hldef{new_c} \hlkwb{=} \hlkwd{sprintf}\hldef{(}\hlsng{"%s.c"}\hldef{, c)}
+    \hldef{data[[new_c]]} \hlkwb{=} \hldef{data[[c]]} \hlopt{-} \hlkwd{mean}\hldef{(data[[c]],} \hlkwc{na.rm} \hldef{=} \hlnum{TRUE}\hldef{)}
+\hldef{\}}
+\hlkwd{head}\hldef{(data)}
+\end{alltt}
+\begin{verbatim}
+##    gender age handedness   height   weight fing_temp fing_height fing_width
+## 5    Male  18      Right 180.6667 80.33333        29        22.7       15.0
+## 6    Male  20      Right 180.0000 59.00000        32        24.3       14.0
+## 12   Male  18      Right 180.6667 68.00000        27        21.1       15.6
+## 23   Male  18      Right 188.6667 73.00000        29        23.0       14.0
+## 24 Female  19      Right 166.0000 65.00000        27        18.4       11.1
+## 25 Female  18      Right 163.0000 73.00000        31        18.3       11.9
+##    fing_area fing_circ     age.c  height.c     weight.c fing_temp.c
+## 5      286.7      62.7 -3.256098  7.711382   7.38008130   0.2865854
+## 6      299.0      65.6 -1.256098  7.044715 -13.95325203   3.2865854
+## 12     286.1      62.4 -3.256098  7.711382  -4.95325203  -1.7134146
+## 23     264.0      61.0 -3.256098 15.711382   0.04674797   0.2865854
+## 24     171.4      49.3 -2.256098 -6.955285  -7.95325203  -1.7134146
+## 25     192.8      52.1 -3.256098 -9.955285   0.04674797   2.2865854
+##    fing_height.c fing_width.c fing_area.c fing_circ.c
+## 5      2.3445122    1.4518293    52.50732    6.088415
+## 6      3.9445122    0.4518293    64.80732    8.988415
+## 12     0.7445122    2.0518293    51.90732    5.788415
+## 23     2.6445122    0.4518293    29.80732    4.388415
+## 24    -1.9554878   -2.4481707   -62.79268   -7.311585
+## 25    -2.0554878   -1.6481707   -41.39268   -4.511585
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+
+\begin{frame}[fragile]\frametitle{Covariance matrix}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hldef{X} \hlkwb{=} \hlkwd{as.matrix}\hldef{(data[, to_centre])}
+\hldef{S} \hlkwb{=} \hlnum{1}\hlopt{/}\hldef{(}\hlkwd{dim}\hldef{(X)[}\hlnum{1}\hldef{]}\hlopt{-}\hlnum{1}\hldef{)}\hlopt{*}\hlkwd{t}\hldef{(X)} \hlopt{%*%} \hldef{X}
+\hldef{S}
+\end{alltt}
+\begin{verbatim}
+##                   age    height    weight fing_temp fing_height fing_width
+## age          478.9939  3692.562  1579.172  614.2393    435.6270   290.1264
+## height      3692.5624 30183.706 12766.541 4994.7669   3553.3620  2364.9380
+## weight      1579.1718 12766.541  5598.505 2118.0613   1505.3519  1006.2624
+## fing_temp    614.2393  4994.767  2118.061  840.9141    588.5436   392.2006
+## fing_height  435.6270  3553.362  1505.352  588.5436    420.9758   279.4357
+## fing_width   290.1264  2364.938  1006.262  392.2006    279.4357   186.8359
+## fing_area   5013.1387 41006.579 17504.745 6781.8000   4875.6983  3249.2573
+## fing_circ   1210.8221  9882.954  4190.940 1636.9264   1169.4310   778.0915
+##             fing_area  fing_circ
+## age          5013.139  1210.8221
+## height      41006.579  9882.9540
+## weight      17504.745  4190.9405
+## fing_temp    6781.800  1636.9264
+## fing_height  4875.698  1169.4310
+## fing_width   3249.257   778.0915
+## fing_area   57053.656 13563.3565
+## fing_circ   13563.357  3252.2678
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]\frametitle{Eigenvalues}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hldef{ev} \hlkwb{=} \hlkwd{eigen}\hldef{(S)}
+\hldef{ev}\hlopt{$}\hldef{values}
+\end{alltt}
+\begin{verbatim}
+## [1] 9.730867e+04 4.982986e+02 1.669174e+02 2.565635e+01 1.349931e+01
+## [6] 2.008242e+00 6.457803e-01 1.559819e-01
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\vfill
+Let us add the singular values to \code{ev}
+\vfill
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hldef{ev}\hlopt{$}\hldef{sing_values} \hlkwb{=} \hlkwd{sqrt}\hldef{(ev}\hlopt{$}\hldef{values)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+
+\begin{frame}[fragile]\frametitle{Use built-in functions}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hldef{GS} \hlkwb{=} \hldef{pracma}\hlopt{::}\hlkwd{gramSchmidt}\hldef{(}\hlkwc{A} \hldef{= ev}\hlopt{$}\hldef{vectors)}
+\hldef{GS}\hlopt{$}\hldef{Q}
+\end{alltt}
+\begin{verbatim}
+##             [,1]        [,2]         [,3]         [,4]        [,5]        [,6]
+## [1,] -0.06785926 -0.10703810 -0.074771554  0.959199870 -0.21608682  0.10065233
+## [2,] -0.55435636 -0.72869902  0.290626700 -0.152379696 -0.15804372  0.15956105
+## [3,] -0.23625691 -0.18581742 -0.946363825 -0.106759855 -0.00455192 -0.05122393
+## [4,] -0.09173610 -0.13238200  0.016673068  0.178396675  0.95749120  0.13389150
+## [5,] -0.06566056 -0.02693052  0.041586794  0.053196632  0.02950635 -0.48055924
+## [6,] -0.04374434 -0.01430565  0.004070984  0.027623399  0.04800455  0.17002750
+## [7,] -0.76437249  0.63185800  0.060301062  0.007078515 -0.00675132  0.10275359
+## [8,] -0.18265026 -0.07289060  0.093169759  0.099246954  0.09109287 -0.82064226
+##              [,7]         [,8]
+## [1,] -0.030350587 -0.023178128
+## [2,] -0.058350355 -0.012688619
+## [3,]  0.002219217  0.001694049
+## [4,] -0.077869385 -0.034295121
+## [5,] -0.517957328  0.700226031
+## [6,]  0.735576268  0.651779046
+## [7,] -0.044815268 -0.013840031
+## [8,]  0.422190555 -0.287747776
+\end{verbatim}
+\begin{alltt}
+\hlcom{# Just to check that Q is indeed with normalised columns}
+\hlkwd{colSums}\hldef{(GS}\hlopt{$}\hldef{Q[,}\hlnum{1}\hlopt{:}\hlkwd{dim}\hldef{(GS}\hlopt{$}\hldef{Q)[}\hlnum{2}\hldef{]]}\hlopt{^}\hlnum{2}\hldef{)}
+\end{alltt}
+\begin{verbatim}
+## [1] 1 1 1 1 1 1 1 1
+\end{verbatim}
+\begin{alltt}
+\hldef{GS}\hlopt{$}\hldef{Q[,}\hlnum{1}\hldef{]} \hlopt{%*%} \hldef{GS}\hlopt{$}\hldef{Q[,}\hlnum{2}\hldef{]}
+\end{alltt}
+\begin{verbatim}
+##               [,1]
+## [1,] -2.168101e-18
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+So \code{Q} is indeed an orthogonal matrix
+\end{frame}
+
+
+
+\begin{frame}[fragile]\frametitle{Some wrangling}
+Now recall we saw a theorem that told us how to construct a new basis..
+
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# Make an identity matrix}
+\hldef{Id} \hlkwb{=} \hlkwd{diag}\hldef{(}\hlkwd{dim}\hldef{(GS}\hlopt{$}\hldef{Q)[}\hlnum{1}\hldef{])}
+\hlcom{# Make the augmented matrix}
+\hldef{A} \hlkwb{=} \hlkwd{cbind}\hldef{(GS}\hlopt{$}\hldef{Q, Id)}
+\hlcom{# Compute the RREF and extract the relevant matrix}
+\hldef{P} \hlkwb{=} \hldef{pracma}\hlopt{::}\hlkwd{rref}\hldef{(A)[,(}\hlkwd{dim}\hldef{(GS}\hlopt{$}\hldef{Q)[}\hlnum{2}\hldef{]}\hlopt{+}\hlnum{1}\hldef{)}\hlopt{:}\hlkwd{dim}\hldef{(A)[}\hlnum{2}\hldef{]]}
+\hldef{X.new} \hlkwb{=} \hldef{X} \hlopt{%*%} \hlkwd{t}\hldef{(P)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+\begin{frame}[fragile]\frametitle{Some wrangling}
+Now we use the built in function.
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hldef{data.pca} \hlkwb{=} \hlkwd{prcomp}\hldef{(data[, to_centre],}
+                  \hlkwc{center} \hldef{=} \hlnum{TRUE}\hldef{,} \hlkwc{scale} \hldef{=} \hlnum{TRUE}\hldef{)}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in La.svd(x, nu, nv): error code 7 from Lapack routine 'dgesdd'}}\begin{alltt}
+\hlkwd{summary}\hldef{(data.pca)}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'data.pca' not found}}\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+\begin{frame}[fragile]\frametitle{Some wrangling}
+The "proportion of variance" information is actually the proportion (and then cumulative proportion) represented by the singular value associated to each principal component. We check this (approximately) by comparing with the singular values we computed.
+
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hldef{ev}\hlopt{$}\hldef{sing_values}\hlopt{/}\hldef{(}\hlkwd{sum}\hldef{(ev}\hlopt{$}\hldef{sing_values))}
+\end{alltt}
+\begin{verbatim}
+## [1] 0.870036273 0.062259612 0.036033997 0.014127294 0.010247489 0.003952479
+## [7] 0.002241321 0.001101536
+\end{verbatim}
+\begin{alltt}
+\hlkwd{cumsum}\hldef{(ev}\hlopt{$}\hldef{sing_values)}\hlopt{/}\hldef{(}\hlkwd{sum}\hldef{(ev}\hlopt{$}\hldef{sing_values))}
+\end{alltt}
+\begin{verbatim}
+## [1] 0.8700363 0.9322959 0.9683299 0.9824572 0.9927047 0.9966571 0.9988985
+## [8] 1.0000000
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+
+
+
+
+
+
+\begin{frame}[fragile]\frametitle{Some wrangling}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{str}\hldef{(data.pca)}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'data.pca' not found}}\end{kframe}
+\end{knitrout}
+
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{#library(devtools)}
+\hlcom{#install_github("vqv/ggbiplot")}
+\hlkwd{library}\hldef{(ggbiplot)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+
+\begin{frame}[fragile]\frametitle{Some wrangling}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{ggbiplot}\hldef{(data.pca,} \hlkwc{groups} \hldef{= data}\hlopt{$}\hldef{handedness)}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'data.pca' not found}}\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+\begin{frame}[fragile]\frametitle{Some wrangling}
+Not that it makes much difference, but here we realise that handedness is badly encoded, in the sense that there are some individuals with lowercase handedness and others where the word starts with a capital letter. Let us fix this and plot again.
+
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hldef{data}\hlopt{$}\hldef{handedness} \hlkwb{=} \hlkwd{tolower}\hldef{(data}\hlopt{$}\hldef{handedness)}
+\hlkwd{ggbiplot}\hldef{(data.pca,} \hlkwc{groups} \hldef{= data}\hlopt{$}\hldef{handedness)}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'data.pca' not found}}\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+\begin{frame}[fragile]\frametitle{Some wrangling}
+Something else you can plot: ellipses containing most elements in a group, for the groups we have selected (here, handedness).
+
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{ggbiplot}\hldef{(data.pca,} \hlkwc{groups} \hldef{= data}\hlopt{$}\hldef{handedness,} \hlkwc{ellipse} \hldef{=} \hlnum{TRUE}\hldef{)}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'data.pca' not found}}\end{kframe}
+\end{knitrout}
+\end{frame}
+
 
 
 

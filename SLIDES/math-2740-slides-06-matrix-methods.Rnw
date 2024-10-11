@@ -3,8 +3,8 @@
 <<set-options,echo=FALSE,warning=FALSE,message=FALSE>>=
 # Load required libraries
 required_packages = c("dplyr", "ggplot2", "knitr", 
-                      "latex2exp", "pracma", "readr", 
-                      "tidyr")
+                      "latex2exp", "openxlsx", "pracma", 
+                      "readr", "tidyr")
 for (p in required_packages) {
   if (!require(p, character.only = TRUE)) {
     install.packages(p, dependencies = TRUE)
@@ -1669,11 +1669,7 @@ We have
 \bm{\alpha}_1^T\Sigma\bm{\alpha}_1  
 &= 
 (s_{11}\alpha_{11}+s_{12}\alpha_{12}+\cdots+s_{1p}\alpha_{1p})+s_{11}\alpha_{11} \\
-&\quad +
-s_{21}\alpha_{12} \\
-&\quad\;\;\vdots \\
-&\quad +
-s_{p1}\alpha_{1p} \\
+&\quad + s_{21}\alpha_{12} +\cdots + s_{p1}\alpha_{1p} \\
 &= s_{11}\alpha_{11}+s_{12}\alpha_{12}+\cdots+s_{1p}\alpha_{1p} \\
 &\quad+
 s_{11}\alpha_{11}+s_{21}\alpha_{12}+\cdots+s_{p1}\alpha_{1p} \\
@@ -1812,16 +1808,19 @@ As usual, it is a good idea to plot this to get a sense of the lay of the land
 \end{frame}
 
 
-<<plot-hockey-1,echo=FALSE,fig.show='hold'>>=
+<<plot-hockey-1,echo=FALSE>>=
 plot(data$height, data$weight,
     pch = 19, col = "dodgerblue4",
+    main = "IIHF players 2001-2016 (unprocessed)",
     xlab = "Height (cm)", ylab = "Weight (kg)")
 @
 
 \maxFrameImage{\Sexpr{knitr::fig_chunk("plot-hockey-1", "pdf")}}
 
 \begin{frame}[fragile]
-The author of the study is interested in the evolution of weights, so it is likely that the same person will be in the dataset several times. Let us check this. First check will be `FALSE` if the number of unique names does not match the number of rows in the dataset
+The author of the study is interested in the evolution of weights, so it is likely that the same person will be in the dataset several times
+\vfill
+Let us check this: first check will be \code{FALSE} if the number of unique names does not match the number of rows in the dataset
 
 <<>>=
 length(unique(data$name)) == dim(data)[1]
@@ -1830,11 +1829,11 @@ length(unique(data$name))
 \end{frame}
 
 \begin{frame}[fragile]
-We are not interested in the evolution of weights, so far, so let us simplify things: if we have more than one record for someone, let us take their weight as the average of the weights recorded for them. To be extra careful, we could check as well that there are no major variations on player height, as this could indicate homonymies.
-
-
+Not interested in the evolution of weights, so simplify: if more than one record for someone, take average of recorded weights and heights
+\vfill
+To be extra careful, could check as well that there are no major variations on player height (homonymies?)
+\vfill
 <<>>=
-# First, we make a data frame with just the names
 data_simplified = data.frame(name = unique(data$name))
 w = c()
 h = c()
@@ -1845,42 +1844,47 @@ for (n in data_simplified$name) {
 }
 data_simplified$weight = w
 data_simplified$height = h
-
-head(data_simplified)
-data = data_simplified
 @
 \end{frame}
 
 \begin{frame}[fragile]
-<<plot-hockey-2,echo=FALSE,fig.show='asis'>>=
-plot(data$height, data$weight,
-    pch = 19, col = "dodgerblue4",
-    xlab = "Height (cm)", ylab = "Weight (kg)")
+<<>>=
+data = data_simplified
+head(data_simplified, n = 6)
 @
 \end{frame}
 
-\begin{frame}[fragile]\frametitle{Centre the data and plot the result}
-<<plot-hockey-centred,echo=1:2,fig.show='asis'>>=
+<<plot-hockey-2,echo=FALSE>>=
+plot(data$height, data$weight,
+    pch = 19, col = "dodgerblue4",
+    main = "IIHF players 2001-2016 (uniqued)",
+    xlab = "Height (cm)", ylab = "Weight (kg)")
+@
+
+\maxFrameImage{\Sexpr{knitr::fig_chunk("plot-hockey-2", "pdf")}}
+
+\begin{frame}[fragile]\frametitle{Centre the data}
+<<plot-hockey-centred,echo=1:4>>=
+mean(data$weight)
+mean(data$height)
 data$weight.c = data$weight-mean(data$weight)
 data$height.c = data$height-mean(data$height)
 plot(data$height.c, data$weight.c,
     pch = 19, col = "dodgerblue4",
+    main = "IIHF players 2001-2016 (centred)",
     xlab = "Height (cm)", ylab = "Weight (kg)")
 @
 \end{frame}
 
+\maxFrameImage{\Sexpr{knitr::fig_chunk("plot-hockey-centred", "pdf")}}
 
-\begin{frame}[fragile]\frametitle{Centre the data and plot the result}
-<<>>=
-mean(data$weight)
-mean(data$height)
-@
-\end{frame}
+
 
 \begin{frame}[fragile]\frametitle{Covariance}
-The function `cov` returns the covariance of two samples. Note that the functions deals equally well with data that is not centred as with data that is centred.
-
-
+The function \code{cov} returns the covariance of two samples
+\vfill
+Note that the functions deals equally well with data that is not centred as with data that is centred
+\vfill
 <<>>=
 cov(data$height, data$weight)
 cov(data$height.c, data$weight.c)
@@ -1889,11 +1893,11 @@ cov(data$height.c, data$weight.c)
 
 
 \begin{frame}[fragile]\frametitle{Covariance matrix}
-As we could see from plotting the data, there is a positive linear relationship between the two variables. Let us compute the sample covariance matrix.
-
-
+As we could see from plotting the data, there is a positive linear relationship between the two variables
+\vfill
+Let us compute the sample covariance matrix
+\vfill
 <<>>=
-# Select X as the matrix we want to process
 X = as.matrix(data[,c("height.c", "weight.c")])
 S = 1/(dim(X)[1]-1)*t(X) %*% X
 S
@@ -1915,69 +1919,58 @@ Hey, that works. Is math not cool? ;)
 
 
 \begin{frame}[fragile]\frametitle{Principal components}
-Okay, joke aside, let us now compute the principal components. For this, we need eigenvalues and eigenvectors.
-
-
+Now compute the principal components. We need eigenvalues and eigenvectors
+\vfill
 <<>>=
 ev = eigen(S)
 ev
 @
+\vfill
+(\code{eigen} returns eigenvalues sorted in decreasing order and normalised eigenvectors)
 \end{frame}
 
 
-\begin{frame}[fragile]\frametitle{Principal components}
-The result of a call to `eigen` will not necessarily be well ordered. (Here, we are in 2D, so chances are good. When we increase the size, things might become more iffy.) So we order the eigenvalues in decreasing order and apply the same ordering to the eigenvectors. (As the eigenvectors are the columns of `ev\$vectors`, we order the columns.
-
-
-<<>>=
-idx_order = order(ev$values, decreasing = TRUE)
-ev$values = ev$values[idx_order]
-ev$vectors = ev$vectors[, idx_order]
-ev
-@
-\end{frame}
-
 
 \begin{frame}[fragile]\frametitle{Principal components}
-Let us normalise the first eigenvector. This way, we now that the variance of the first principal component will be the corresponding eigenvalue.
-
-<<>>=
-ev$vectors[,1] = ev$vectors[,1] / sqrt(sum(ev$vectors[,1]^2))
-ev$vectors[,1]
-sum(ev$vectors[,1]^2)
-@
-\end{frame}
-
-
-\begin{frame}[fragile]\frametitle{Principal components}
-Let us plot this first eigenvector (well, the line carrying this first eigenvector). To use the function `abline`, we need to give the coefficients of the line in the form of (intercept,slope). Intercept is easy, as the line goes through the origin (by construction and because we have centred the data). The slope is also quite simple..
-
-
-<<plot-hockey-centred-evector,fig.show='asis'>>=
+Let us plot this first eigenvector (well, the line carrying this first eigenvector) 
+\vfill
+To use the function \code{abline}, we need to give the coefficients of the line in the form of (intercept,slope). Intercept is easy, as the line goes through the origin (by construction and because we have centred the data). The slope is also quite simple..
+\vfill
+<<plot-hockey-centred-evector>>=
 plot(data$height.c, data$weight.c,
     pch = 19, col = "dodgerblue4",
+    main = "IIHF players 2001-2016 (with first component)",
     xlab = "Height (cm)", ylab = "Weight (kg)")
 abline(a = 0, b = ev$vectors[2,1]/ev$vectors[1,1],
        col = "red", lwd = 3)
 @
 \end{frame}
 
+\maxFrameImage{\Sexpr{knitr::fig_chunk("plot-hockey-centred-evector", "pdf")}}
 
-\begin{frame}[fragile]\frametitle{Principal components}
-Let us rotate the data so that the red line becomes the "x-axis". To do that, we use a rotation matrix,
+
+\begin{frame}[fragile]\frametitle{Rotating the data}
+Let us rotate the data so that the red line becomes the $x$-axis
+\vfill
+To do that, we use a rotation matrix
 $$
 R_\theta = \begin{pmatrix}
 \cos\theta & -\sin\theta \\
 \sin\theta & \cos\theta
-\end{pmatrix}.
+\end{pmatrix}
 $$
+\vfill
 To find the angle $\theta$, recall that $\tan\theta$ is equal to opposite length over adjacent length, i.e.,
 $$
 \tan\theta = \frac{\tt ev\$vectors[2,1]}{\tt ev\$vectors[1,1]}
 $$
-So we just use the $\arctan$ of this. (Note that angles are in radians.)
+So we just use the $\arctan$ of this 
+\vfill 
+Note that angles are in radians
+\end{frame}
 
 
+\begin{frame}[fragile]\frametitle{Rotating the data}
 <<>>=
 theta = atan(ev$vectors[2,1]/ev$vectors[1,1])
 theta
@@ -1989,10 +1982,11 @@ R_theta
 \end{frame}
 
 
-\begin{frame}[fragile]\frametitle{Principal components}
-And now we rotate the points. (In this case, we think of the points as vectors, of course.)
-
-
+\begin{frame}[fragile]\frametitle{Rotating the data}
+And now we rotate the points
+\vfill
+(In this case, we think of the points as vectors, of course)
+\vfill
 <<>>=
 tmp_in = matrix(c(data$weight.c, data$height.c),
                 nc = 2)
@@ -2007,59 +2001,263 @@ data$height.c_r = tmp_out[,2]
 \end{frame}
 
 
-\begin{frame}[fragile]\frametitle{Principal components}
-<<plot-hockey-centred-evector-2,echo=FALSE,fig.show='asis'>>=
+<<plot-hockey-centred-evector-2,echo=FALSE>>=
 plot(data$height.c_r, data$weight.c_r,
     pch = 19, col = "dodgerblue4",
+    main = "IIHF players 2001-2016 (rotated to first component)",
     xlab = "x-axis", ylab = "y-axis")
 @
-\end{frame}
+
+\maxFrameImage{\Sexpr{knitr::fig_chunk("plot-hockey-centred-evector-2", "pdf")}}
 
 
 \begin{frame}[fragile]\frametitle{Principal components}
-Note that the axes have changed quite a lot, hence the very different aspect. Let us plot with the same range as for the non-rotated data for the y-axis.
+Note that the axes have changed quite a lot, hence the very different aspect
+\vfill
+Let us plot with the same range as for the non-rotated data for the y-axis
+\vfill
 
-
-<<plot-hockey-centred-rotated,fig.show='asis'>>=
+<<plot-hockey-centred-rotated>>=
 plot(data$height.c_r, data$weight.c_r,
     pch = 19, col = "dodgerblue4",
     xlab = "x-axis", ylab = "y-axis",
+    main = "IIHF players 2001-2016 (rotated to first component)",
     ylim = range(data$weight.c))
 abline(h = 0, col = "red", lwd = 2)
 @
 \end{frame}
 
 
-\begin{frame}[fragile]\frametitle{Principal components}
-Now do things "properly".
-<<>>=
-GS = pracma::gramSchmidt(A = ev$vectors)
-@
+\maxFrameImage{\Sexpr{knitr::fig_chunk("plot-hockey-centred-rotated", "pdf")}}
 
+
+\begin{frame}[fragile]\frametitle{PCA using built-in functions}
+Now do things ``properly''
 <<>>=
+GS = pracma::gramSchmidt(A = ev$vectors, tol = 1e-10)
 GS
 @
 \end{frame}
 
 
-\begin{frame}[fragile]\frametitle{Principal components}
+\begin{frame}[fragile]\frametitle{PCA using built-in functions}
 Now recall we saw a theorem that told us how to construct a new basis..
-
-
-<<plot-hockey-centred-evector-3,fig.show='asis'>>=
+\vfill
+<<pca-built-in-functions>>=
 A=matrix(c(GS$Q,1,0,0,1), nr = 2)
 A
 pracma::rref(A)
+@
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{PCA using built-in functions}
+<<plot-hockey-centred-evector-3,echo=c(1,3,4)>>=
 P = pracma::rref(A)[,c(3,4)]
 P
 X.new = X %*% t(P)
-#for (i in 1:dim(X)[1]) {
-#    X.new[i,] = P %*% X[i,]
-#}
+
 plot(X.new[,1], X.new[,2],
-    pch = 19, col = "dodgerblue4")
+     xlab = "x-axis", ylab = "y-axis",
+     main = "IIHF players 2001-2016 (rotated to first component)",
+     pch = 19, col = "dodgerblue4")
 @
 \end{frame}
+
+\maxFrameImage{\Sexpr{knitr::fig_chunk("plot-hockey-centred-evector-3", "pdf")}}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\subsection{Back to fingerprints}
+\newSubSectionSlide{FIGS/Gemini_Generated_Image_ut188hut188hut18.jpeg}
+
+
+\begin{frame}
+We get the data from \href{https://repository.lboro.ac.uk/articles/dataset/Height_weight_and_fingerprint_measurements_collected_from_200_participants/7539206}{here}
+\vfill
+This time, we first download the data, then open the file
+\vfill
+The file is an excel table, so we need to use a library for doing that
+\end{frame}
+
+
+\begin{frame}[fragile]\frametitle{Loading the excel fingerprint data}
+<<open-file>>=
+download.file(url = "https://repository.lboro.ac.uk/ndownloader/files/14015774",
+             destfile = "fingerprint_data.xlsx")
+data = openxlsx::read.xlsx("fingerprint_data.xlsx")
+head(data, n=3)
+@
+\end{frame}
+
+
+\begin{frame}[fragile]\frametitle{Some wrangling}
+Let us rework the names of columns a bit, for convenience. Let us also get rid of a few columns we are not using
+\vfill
+<<start-wrangling>>=
+data = data[,2:dim(data)[2]]
+colnames(data) = c("gender", "age", "handedness", "height", "weight",
+                  "fing_temp", "fing_height", "fing_width",
+                  "fing_area", "fing_circ")
+head(data, n=3)
+@
+\end{frame}
+
+
+
+\begin{frame}\frametitle{Some wrangling -- Centering}
+Plotting all these variables is complicated, so we forgo this for the time being
+\vfill
+Let us centre the data. That there are some \code{NA} values, so we remove them using the function \code{complete.cases}, which identifies rows where at least one of the variables is \code{NA}
+\vfill
+(We could also use \code{na.rm = TRUE} when taking the average to remove these values.) 
+\vfill
+We make new columns with the prefix \code{.c}, just to still have the initial data handy if need be.
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Some wrangling -- Centering}
+<<center-the-data>>=
+data = data[complete.cases(data),]
+to_centre = c("age", "height", 
+              "weight", "fing_temp", 
+              "fing_height", "fing_width",
+              "fing_area", "fing_circ")
+for (c in to_centre) {
+    new_c = sprintf("%s.c", c)
+    data[[new_c]] = data[[c]] - mean(data[[c]], na.rm = TRUE)
+}
+head(data)
+@
+\end{frame}
+
+
+
+\begin{frame}[fragile]\frametitle{Covariance matrix}
+<<compute-sample-covariance-matrix>>=
+X = as.matrix(data[, to_centre])
+S = 1/(dim(X)[1]-1)*t(X) %*% X
+S
+@
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]\frametitle{Eigenvalues}
+<<>>=
+ev = eigen(S)
+ev$values
+@
+\vfill
+Let us add the singular values to \code{ev}
+\vfill
+<<>>=
+ev$sing_values = sqrt(ev$values)
+@
+\end{frame}
+
+
+
+\begin{frame}[fragile]\frametitle{Use built-in functions}
+<<>>=
+GS = pracma::gramSchmidt(A = ev$vectors)
+GS$Q
+# Just to check that Q is indeed with normalised columns
+colSums(GS$Q[,1:dim(GS$Q)[2]]^2)
+GS$Q[,1] %*% GS$Q[,2]
+@
+So \code{Q} is indeed an orthogonal matrix
+\end{frame}
+
+
+
+\begin{frame}[fragile]\frametitle{Some wrangling}
+Now recall we saw a theorem that told us how to construct a new basis..
+
+
+<<>>=
+# Make an identity matrix
+Id = diag(dim(GS$Q)[1])
+# Make the augmented matrix
+A = cbind(GS$Q, Id)
+# Compute the RREF and extract the relevant matrix
+P = pracma::rref(A)[,(dim(GS$Q)[2]+1):dim(A)[2]]
+X.new = X %*% t(P)
+@
+\end{frame}
+
+
+\begin{frame}[fragile]\frametitle{Some wrangling}
+Now we use the built in function.
+
+<<>>=
+data.pca = prcomp(data[, to_centre], 
+                  center = TRUE, scale = TRUE)
+summary(data.pca)
+@
+\end{frame}
+
+
+\begin{frame}[fragile]\frametitle{Some wrangling}
+The "proportion of variance" information is actually the proportion (and then cumulative proportion) represented by the singular value associated to each principal component. We check this (approximately) by comparing with the singular values we computed.
+
+
+<<>>=
+ev$sing_values/(sum(ev$sing_values))
+cumsum(ev$sing_values)/(sum(ev$sing_values))
+@
+
+\end{frame}
+
+
+
+
+
+
+
+\begin{frame}[fragile]\frametitle{Some wrangling}
+<<>>=
+str(data.pca)
+@
+
+
+<<>>=
+#library(devtools)
+#install_github("vqv/ggbiplot")
+library(ggbiplot)
+@
+
+\end{frame}
+
+
+\begin{frame}[fragile]\frametitle{Some wrangling}
+<<>>=
+ggbiplot(data.pca, groups = data$handedness)
+@
+\end{frame}
+
+
+\begin{frame}[fragile]\frametitle{Some wrangling}
+Not that it makes much difference, but here we realise that handedness is badly encoded, in the sense that there are some individuals with lowercase handedness and others where the word starts with a capital letter. Let us fix this and plot again.
+
+
+<<>>=
+data$handedness = tolower(data$handedness)
+ggbiplot(data.pca, groups = data$handedness)
+@
+\end{frame}
+
+
+\begin{frame}[fragile]\frametitle{Some wrangling}
+Something else you can plot: ellipses containing most elements in a group, for the groups we have selected (here, handedness).
+
+
+<<>>=
+ggbiplot(data.pca, groups = data$handedness, ellipse = TRUE)
+@
+\end{frame}
+
 
 
 
