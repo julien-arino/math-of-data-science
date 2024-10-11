@@ -572,7 +572,7 @@ GA = ga(type = "real-valued",
         suggestions = c(a_0 = 2, a_1 = 3),
         lower = c(-10, -10), upper = c(10, 10),
         popSize = 200, maxiter = 150)
-plot(GA)
+# plot(GA)
 GA
 GA@solution
 -GA@fitnessValue
