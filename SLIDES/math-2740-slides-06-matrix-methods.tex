@@ -81,7 +81,7 @@
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
 \subsection{Setting up the problem}
-\newSubSectionSlide{FIGS/Gemini_Generated_Image_c06eixc06eixc06e.jpeg}
+\newSubSectionSlide{FIGS/Gemini_Generated_Image_gc7vxngc7vxngc7v.jpeg}
 
 \begin{frame}\frametitle{Grabing the Canadian census data}
 We want to consider the evolution of the population of Canada through time
@@ -96,15 +96,14 @@ We follow the link to Table A2-14, where we find another link, this time to a cs
 
 
 \begin{frame}[fragile]\frametitle{Grabing the Canadian census data}
-The function \code{read.csv} reads in a file (potentially directly from the web)
-\vfill
-Assign the result to the variable data. We then use the function head to show the first few lines in the result.
+The function \code{read.csv} reads in a file (potentially directly from the web).
+Assign the result to the variable data. Then use the function \code{head} to show the first few lines in the result.
 \vfill
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hldef{data_old} \hlkwb{=} \hlkwd{read.csv}\hldef{(}\hlsng{"https://www150.statcan.gc.ca/n1/en/pub/11-516-x/sectiona/A2_14-eng.csv?st=L7vSnqio"}\hldef{)}
-\hlkwd{head}\hldef{(data_old)}
+\hlkwd{head}\hldef{(data_old,} \hlkwc{n}\hldef{=}\hlnum{4}\hldef{)}
 \end{alltt}
 \begin{verbatim}
 ##    X Series.A2.14.
@@ -112,40 +111,32 @@ Assign the result to the variable data. We then use the function head to show th
 ## 2 NA          Year
 ## 3 NA              
 ## 4 NA              
-## 5 NA              
-## 6 NA              
 ##   Population.of.Canada..by.province..census.dates..1851.to.1976 X.1       X.2
 ## 1                                                                NA          
 ## 2                                                        Canada  NA Newfound-
 ## 3                                                                NA      land
 ## 4                                                                NA          
-## 5                                                             2  NA         3
-## 6                                                                NA          
 ##      X.3 X.4    X.5       X.6    X.7     X.8       X.9 X.10    X.11 X.12
 ## 1         NA                                             NA           NA
 ## 2 Prince  NA   Nova       New Quebec Ontario  Manitoba   NA Saskat-   NA
 ## 3 Edward  NA Scotia Brunswick                            NA  chewan   NA
 ## 4 Island  NA                                             NA           NA
-## 5      4  NA      5         6      7       8         9   NA      10   NA
-## 6         NA                                             NA           NA
 ##      X.13 X.14     X.15 X.16      X.17        X.18 X.19 X.20
 ## 1           NA            NA                         NA   NA
 ## 2 Alberta   NA  British   NA     Yukon   Northwest   NA   NA
 ## 3           NA Columbia   NA Territory Territories   NA   NA
 ## 4           NA            NA                         NA   NA
-## 5      11   NA       12   NA        13          14   NA   NA
-## 6           NA            NA                         NA   NA
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
 \end{frame}
 
 \begin{frame}[fragile]
-Obviously, this does not make a lot of sense. This is normal: take a look at the first few lines in the file. They take the form
+Obviously, this does not make a lot of sense. The first few lines in the file are here to describe the table (give \emph{metadata})
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{head}\hldef{(data_old)}
+\hlkwd{head}\hldef{(data_old,} \hlkwc{n}\hldef{=}\hlnum{4}\hldef{)}
 \end{alltt}
 \begin{verbatim}
 ##    X Series.A2.14.
@@ -153,38 +144,28 @@ Obviously, this does not make a lot of sense. This is normal: take a look at the
 ## 2 NA          Year
 ## 3 NA              
 ## 4 NA              
-## 5 NA              
-## 6 NA              
 ##   Population.of.Canada..by.province..census.dates..1851.to.1976 X.1       X.2
 ## 1                                                                NA          
 ## 2                                                        Canada  NA Newfound-
 ## 3                                                                NA      land
 ## 4                                                                NA          
-## 5                                                             2  NA         3
-## 6                                                                NA          
 ##      X.3 X.4    X.5       X.6    X.7     X.8       X.9 X.10    X.11 X.12
 ## 1         NA                                             NA           NA
 ## 2 Prince  NA   Nova       New Quebec Ontario  Manitoba   NA Saskat-   NA
 ## 3 Edward  NA Scotia Brunswick                            NA  chewan   NA
 ## 4 Island  NA                                             NA           NA
-## 5      4  NA      5         6      7       8         9   NA      10   NA
-## 6         NA                                             NA           NA
 ##      X.13 X.14     X.15 X.16      X.17        X.18 X.19 X.20
 ## 1           NA            NA                         NA   NA
 ## 2 Alberta   NA  British   NA     Yukon   Northwest   NA   NA
 ## 3           NA Columbia   NA Territory Territories   NA   NA
 ## 4           NA            NA                         NA   NA
-## 5      11   NA       12   NA        13          14   NA   NA
-## 6           NA            NA                         NA   NA
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-\vfill
-This happens often: the first few lines are here to set the information, they lay out a simple version of the so-called metadata
 \end{frame}
 
 \begin{frame}[fragile]
-The first line here does this; it is easy to deal with this: the function read.csv takes the optional argument skip=, which indicates how many lines to skip at the beginning
+The function \code{read.csv} takes the optional argument \code{skip=}, which indicates how many lines to skip at the beginning.
 The second line is also empty, so let us skip it too
 
 \begin{knitrout}
@@ -192,7 +173,7 @@ The second line is also empty, so let us skip it too
 \begin{alltt}
 \hldef{data_old} \hlkwb{=} \hlkwd{read.csv}\hldef{(}\hlsng{"https://www150.statcan.gc.ca/n1/en/pub/11-516-x/sectiona/A2_14-eng.csv?st=L7vSnqio"}\hldef{,}
                     \hlkwc{skip} \hldef{=} \hlnum{2}\hldef{)}
-\hlkwd{head}\hldef{(data_old)}
+\hlkwd{head}\hldef{(data_old,} \hlkwc{n}\hldef{=}\hlnum{5}\hldef{)}
 \end{alltt}
 \begin{verbatim}
 ##    X Year     Canada X.1 Newfound.  Prince X.2    Nova       New    Quebec
@@ -201,34 +182,33 @@ The second line is also empty, so let us skip it too
 ## 3 NA               2  NA         3       4  NA       5         6         7
 ## 4 NA                  NA                    NA                            
 ## 5 NA 1976 22,992,604  NA   557,725 118,229  NA 828,571   677,250 6,234,445
-## 6 NA                  NA                    NA                            
 ##     Ontario  Manitoba X.3 Saskat. X.4   Alberta X.5   British X.6     Yukon
 ## 1                      NA  chewan  NA            NA  Columbia  NA Territory
 ## 2                      NA          NA            NA            NA          
 ## 3         8         9  NA      10  NA        11  NA        12  NA        13
 ## 4                      NA          NA            NA            NA          
 ## 5 8,264,465 1,021,506  NA 921,323  NA 1,838,037  NA 2,466,608  NA    21,836
-## 6                      NA          NA            NA            NA          
 ##     Northwest X.7 X.8
 ## 1 Territories  NA  NA
 ## 2              NA  NA
 ## 3          14  NA  NA
 ## 4              NA  NA
 ## 5      42,609  NA  NA
-## 6              NA  NA
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
 \end{frame}
 
 
-\begin{frame}[fragile]
-Here, there is the further issue that to make things legible, the table authors used 3 rows (from 2 to 4) to encode for long names (e.g., Prince Edward Island is written over 3 rows). Note, however, that `read.csv` has rightly picked up on the first row being the column names.
-
-(You could also use the function `read\_csv` from the package `readr` to read in the file. This function is a bit more flexible than `read.csv` and can handle such cases more easily. However, it is not part of the base R package, so you would need to install it first.)
-
+\begin{frame}
+To make things legible, the table authors used 3 rows (from 2 to 4) to encode for long names (e.g., Prince Edward Island is written over 3 rows). Note, however, that \code{read.csv} has rightly picked up on the first row being the column names
+\vfill
+(You could also use the function \code{read\_csv} from the package \code{readr} to read in the file. This function is a bit more flexible than \code{read.csv} and can handle such cases more easily. However, it is not part of the base \code{R} package, so you will need to install it first)
+\vfill
 Because we are only interested in the total population of the country and the year, let us simply get rid of the first 4 rows and of all columns except the second (Year) and third (Canada)
+\end{frame}
 
+\begin{frame}[fragile]
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -242,34 +222,48 @@ Because we are only interested in the total population of the country and the ye
 ## 7 1971 21,568,311
 ## 8 1966 20,014,880
 \end{verbatim}
+\begin{alltt}
+\hlkwd{tail}\hldef{(data_old,} \hlkwc{n}\hldef{=}\hlnum{4}\hldef{)}
+\end{alltt}
+\begin{verbatim}
+##                                                                                                                                                                                                                 Year
+## 26                                                                                                                                                                              Included with Northwest Territories.
+## 27 For the discussion of the ambiguities and under-enumeration contained in these figures consult the notes to series A2-14 in original volume. For completeness of enumeration in censuses of 1961 and later years,
+## 28                                                                                                                                                                                       see notes to series A15-53.
+## 29                                                                                                                                                                                                      1848 figure.
+##    Canada
+## 26       
+## 27       
+## 28       
+## 29
+\end{verbatim}
 \end{kframe}
 \end{knitrout}
 \end{frame}
 
 
-\begin{frame}
-Still not perfect:
+\begin{frame}\frametitle{Not done yet}
+\begin{enumerate}
+\item there are some empty rows
+\item the last few rows need to be removed too, they contain remarks about the data
+\item the population counts contain commas
+\item it would be better if years were increasing
+\end{enumerate}
+\end{frame}
 
-- there are some empty rows;
-- the last few rows need to be removed too, they contain remarks about the data;
-- the population counts contain commas;
-- it would be better if years were increasing.
-
-Let us fix these issues.
-
-For 1 and 2, this is easy: remark that the Canada column is empty for both issues. Now remark as well that below Canada (and Year, for that matter), it is written \code{<chr>}. This means that entries in the column are characters. Looking for empty content therefore means looking for empty character chains.
-
+\begin{frame}\frametitle{Still wrangling}
+For 1 and 2, easy: remark that the Canada column is empty for both issues. Now remark as well that below Canada (and Year, for that matter), it is written \code{<chr>}. This means that entries in the column are characters. Looking for empty content therefore means looking for empty character chains.
+\vfill
 So to fix 1 and 2, we keep the rows where Canada does not equal the empty chain.
-
+\vfill
 To get rid of commas, we just need to substitute an empty chain for ",".
-
+\vfill
 To sort, we find the order for the years and apply it to the entire table.
-
+\vfill
 Finally, as remarked above, for now, both the year and the population are considered as character chains. This means that in order to plot anything, we will have to indicate that these are numbers, not characters.
 \end{frame}
 
 \begin{frame}[fragile]
-
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -279,7 +273,16 @@ Finally, as remarked above, for now, both the year and the population are consid
 \hldef{data_old} \hlkwb{=} \hldef{data_old[order_data,]}
 \hldef{data_old}\hlopt{$}\hldef{Year} \hlkwb{=} \hlkwd{as.numeric}\hldef{(data_old}\hlopt{$}\hldef{Year)}
 \hldef{data_old}\hlopt{$}\hldef{Canada} \hlkwb{=} \hlkwd{as.numeric}\hldef{(data_old}\hlopt{$}\hldef{Canada)}
-\hldef{data_old}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+\begin{frame}[fragile]
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{head}\hldef{(data_old,} \hlkwc{n}\hldef{=}\hlnum{10}\hldef{)}
 \end{alltt}
 \begin{verbatim}
 ##    Year   Canada
@@ -293,27 +296,20 @@ Finally, as remarked above, for now, both the year and the population are consid
 ## 15 1921  8787949
 ## 14 1931 10376786
 ## 13 1941 11506655
-## 11 1951 14009429
-## 10 1956 16080791
-## 9  1961 18238247
-## 8  1966 20014880
-## 7  1971 21568311
-## 5  1976 22992604
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-
 \end{frame}
 
 
 \begin{frame}[fragile]
-Row numbers are a little weird, so let us fix this.
+Row numbers are the original labelling when the file was read. This is not important but easy to fix
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{row.names}\hldef{(data_old)} \hlkwb{=} \hlnum{1}\hlopt{:}\hlkwd{dim}\hldef{(data_old)[}\hlnum{1}\hldef{]}
-\hldef{data_old}
+\hlkwd{head}\hldef{(data_old,} \hlkwc{n}\hldef{=}\hlnum{10}\hldef{)}
 \end{alltt}
 \begin{verbatim}
 ##    Year   Canada
@@ -327,31 +323,33 @@ Row numbers are a little weird, so let us fix this.
 ## 8  1921  8787949
 ## 9  1931 10376786
 ## 10 1941 11506655
-## 11 1951 14009429
-## 12 1956 16080791
-## 13 1961 18238247
-## 14 1966 20014880
-## 15 1971 21568311
-## 16 1976 22992604
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
 
-Well, that looks about right! Let's see what this looks like in a graph.
+Well, that looks about right! Let's see what this looks like
 \end{frame}
 
-\begin{frame}[fragile]
+\begin{frame}[fragile]\frametitle{Plotting the data}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{plot}\hldef{(data_old}\hlopt{$}\hldef{Year, data_old}\hlopt{$}\hldef{Canada,}
     \hlkwc{type} \hldef{=} \hlsng{"b"}\hldef{,} \hlkwc{lwd} \hldef{=} \hlnum{2}\hldef{,}
+    \hlkwc{main} \hldef{=} \hlsng{"Canada population 1851-1976"}\hldef{,}
     \hlkwc{xlab} \hldef{=} \hlsng{"Year"}\hldef{,} \hlkwc{ylab} \hldef{=} \hlsng{"Population"}\hldef{)}
 \end{alltt}
 \end{kframe}
-\includegraphics[width=\maxwidth]{FIGS/matrix-methods-plot-old-Canada-census-data-1} 
 \end{knitrout}
+\vfill
+\code{type="b"} indicates that we want \emph{both} points and lines
+\vfill
+\code{lwd=2} makes the lines a bit thicker
+\vfill
+\code{main}, \code{xlab} and \code{ylab} are the titles of the plot, the $x$ and $y$ axis, respectively
 \end{frame}
+
+\maxFrameImage{FIGS/matrix-methods-plot-old-Canada-census-data-1.pdf}
 
 
 \begin{frame}[fragile]
@@ -392,10 +390,10 @@ There are many ways to select rows. Let us proceed as follows: we want the rows 
 \hldef{idx_CAN} \hlkwb{=} \hlkwd{which}\hldef{(data_new}\hlopt{$}\hldef{GEOGRAPHY.NAME} \hlopt{==} \hlsng{"Canada"}\hldef{)}
 \hldef{idx_char} \hlkwb{=} \hlkwd{which}\hldef{(data_new}\hlopt{$}\hldef{CHARACTERISTIC} \hlopt{==} \hlsng{"Population (in thousands)"}\hldef{)}
 \hldef{idx_keep} \hlkwb{=} \hlkwd{intersect}\hldef{(idx_CAN, idx_char)}
-\hlkwd{head}\hldef{(idx_keep,} \hlkwc{n} \hldef{=} \hlnum{8}\hldef{)}
+\hldef{idx_keep}
 \end{alltt}
 \begin{verbatim}
-## [1] 1 2 3 4 5 6 7 8
+##  [1]  1  2  3  4  5  6  7  8  9 10 11 12
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -462,18 +460,9 @@ To do this, we need the two data frames to have the same number of columns and, 
 \end{frame}
 
 
-\begin{frame}[fragile]\frametitle{Let us plot the result}
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlkwd{plot}\hldef{(data}\hlopt{$}\hldef{year, data}\hlopt{$}\hldef{population,}
-    \hlkwc{type} \hldef{=} \hlsng{"b"}\hldef{,} \hlkwc{lwd} \hldef{=} \hlnum{2}\hldef{,}
-    \hlkwc{xlab} \hldef{=} \hlsng{"Year"}\hldef{,} \hlkwc{ylab} \hldef{=} \hlsng{"Population"}\hldef{)}
-\end{alltt}
-\end{kframe}
-\includegraphics[width=\maxwidth]{FIGS/matrix-methods-plot-whole-Canada-census-data-1} 
-\end{knitrout}
-\end{frame}
+
+\maxFrameImage{FIGS/matrix-methods-plot-whole-Canada-census-data-1.pdf}
+
 
 \begin{frame}[fragile]\frametitle{Save the processed data}
 In case we need the data elsewhere, we save the data to a \code{csv} file
@@ -2453,9 +2442,9 @@ Now do things ``properly''
 ## [2,] 0.8131729  0.5820222
 ## 
 ## $R
-##      [,1]         [,2]
-## [1,]    1 1.129638e-17
-## [2,]    0 1.000000e+00
+##      [,1] [,2]
+## [1,]    1    0
+## [2,]    0    1
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -2744,7 +2733,7 @@ Let us add the singular values to \code{ev}
 \end{alltt}
 \begin{verbatim}
 ##               [,1]
-## [1,] -2.168101e-18
+## [1,] -3.295975e-17
 \end{verbatim}
 \end{kframe}
 \end{knitrout}

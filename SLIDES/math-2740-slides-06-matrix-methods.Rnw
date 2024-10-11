@@ -71,7 +71,7 @@ cat(input_setup)
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
 \subsection{Setting up the problem}
-\newSubSectionSlide{FIGS/Gemini_Generated_Image_c06eixc06eixc06e.jpeg}
+\newSubSectionSlide{FIGS/Gemini_Generated_Image_gc7vxngc7vxngc7v.jpeg}
 
 \begin{frame}\frametitle{Grabing the Canadian census data}
 We want to consider the evolution of the population of Canada through time
@@ -86,74 +86,73 @@ We follow the link to Table A2-14, where we find another link, this time to a cs
 
 
 \begin{frame}[fragile]\frametitle{Grabing the Canadian census data}
-The function \code{read.csv} reads in a file (potentially directly from the web)
-\vfill
-Assign the result to the variable data. We then use the function head to show the first few lines in the result.
+The function \code{read.csv} reads in a file (potentially directly from the web).
+Assign the result to the variable data. Then use the function \code{head} to show the first few lines in the result.
 \vfill
 <<load-census-csv-1>>=
 data_old = read.csv("https://www150.statcan.gc.ca/n1/en/pub/11-516-x/sectiona/A2_14-eng.csv?st=L7vSnqio")
-head(data_old)
+head(data_old, n=4)
 @
 \end{frame}
 
 \begin{frame}[fragile]
-Obviously, this does not make a lot of sense. This is normal: take a look at the first few lines in the file. They take the form
+Obviously, this does not make a lot of sense. The first few lines in the file are here to describe the table (give \emph{metadata})
 <<>>=
-head(data_old)
+head(data_old, n=4)
 @
-\vfill
-This happens often: the first few lines are here to set the information, they lay out a simple version of the so-called metadata
 \end{frame}
 
 \begin{frame}[fragile]
-The first line here does this; it is easy to deal with this: the function read.csv takes the optional argument skip=, which indicates how many lines to skip at the beginning
+The function \code{read.csv} takes the optional argument \code{skip=}, which indicates how many lines to skip at the beginning.
 The second line is also empty, so let us skip it too
 
 <<load-census-csv-2>>=
 data_old = read.csv("https://www150.statcan.gc.ca/n1/en/pub/11-516-x/sectiona/A2_14-eng.csv?st=L7vSnqio",
                     skip = 2)
-head(data_old)
-@
-\end{frame}
-
-
-\begin{frame}[fragile]
-Here, there is the further issue that to make things legible, the table authors used 3 rows (from 2 to 4) to encode for long names (e.g., Prince Edward Island is written over 3 rows). Note, however, that `read.csv` has rightly picked up on the first row being the column names.
-
-(You could also use the function `read\_csv` from the package `readr` to read in the file. This function is a bit more flexible than `read.csv` and can handle such cases more easily. However, it is not part of the base R package, so you would need to install it first.)
-
-Because we are only interested in the total population of the country and the year, let us simply get rid of the first 4 rows and of all columns except the second (Year) and third (Canada)
-
-<<>>=
-data_old = data_old[5:dim(data_old)[1], 2:3]
-head(data_old, n=4)
+head(data_old, n=5)
 @
 \end{frame}
 
 
 \begin{frame}
-Still not perfect:
-
-- there are some empty rows;
-- the last few rows need to be removed too, they contain remarks about the data;
-- the population counts contain commas;
-- it would be better if years were increasing.
-
-Let us fix these issues.
-
-For 1 and 2, this is easy: remark that the Canada column is empty for both issues. Now remark as well that below Canada (and Year, for that matter), it is written \code{<chr>}. This means that entries in the column are characters. Looking for empty content therefore means looking for empty character chains.
-
-So to fix 1 and 2, we keep the rows where Canada does not equal the empty chain.
-
-To get rid of commas, we just need to substitute an empty chain for ",".
-
-To sort, we find the order for the years and apply it to the entire table.
-
-Finally, as remarked above, for now, both the year and the population are considered as character chains. This means that in order to plot anything, we will have to indicate that these are numbers, not characters.
+To make things legible, the table authors used 3 rows (from 2 to 4) to encode for long names (e.g., Prince Edward Island is written over 3 rows). Note, however, that \code{read.csv} has rightly picked up on the first row being the column names
+\vfill
+(You could also use the function \code{read\_csv} from the package \code{readr} to read in the file. This function is a bit more flexible than \code{read.csv} and can handle such cases more easily. However, it is not part of the base \code{R} package, so you will need to install it first)
+\vfill
+Because we are only interested in the total population of the country and the year, let us simply get rid of the first 4 rows and of all columns except the second (Year) and third (Canada)
 \end{frame}
 
 \begin{frame}[fragile]
+<<>>=
+data_old = data_old[5:dim(data_old)[1], 2:3]
+head(data_old, n=4)
+tail(data_old, n=4)
+@
+\end{frame}
 
+
+\begin{frame}\frametitle{Not done yet}
+\begin{enumerate}
+\item there are some empty rows
+\item the last few rows need to be removed too, they contain remarks about the data
+\item the population counts contain commas
+\item it would be better if years were increasing
+\end{enumerate}
+\end{frame}
+
+\begin{frame}\frametitle{Still wrangling}
+For 1 and 2, easy: remark that the Canada column is empty for both issues. Now remark as well that below Canada (and Year, for that matter), it is written \code{<chr>}. This means that entries in the column are characters. Looking for empty content therefore means looking for empty character chains
+\vfill
+So to fix 1 and 2, we keep the rows where Canada does not equal the empty chain
+\vfill
+To get rid of commas, we just need to substitute an empty chain for ","
+\vfill
+To sort, we find the order for the years and apply it to the entire table
+\vfill
+Finally, as remarked above, for now, both the year and the population are considered as character chains. This means that in order to plot anything, we will have to indicate that these are numbers, not characters
+\end{frame}
+
+\begin{frame}[fragile]
 <<>>=
 data_old = data_old[which(data_old$Canada != ""),]
 data_old$Canada = gsub(",", "", data_old$Canada)
@@ -161,30 +160,43 @@ order_data = order(data_old$Year)
 data_old = data_old[order_data,]
 data_old$Year = as.numeric(data_old$Year)
 data_old$Canada = as.numeric(data_old$Canada)
-data_old
 @
+\end{frame}
 
+\begin{frame}[fragile]
+<<>>=
+head(data_old, n=10)
+@
 \end{frame}
 
 
 \begin{frame}[fragile]
-Row numbers are a little weird, so let us fix this.
+Row numbers are the original labelling when the file was read. This is not important but easy to fix
 
 <<>>=
 row.names(data_old) = 1:dim(data_old)[1]
-data_old
+head(data_old, n=10)
 @
 
-Well, that looks about right! Let's see what this looks like in a graph.
+Well, that looks about right! Let's see what this looks like
 \end{frame}
 
-\begin{frame}[fragile]
-<<plot-old-Canada-census-data,fig.show='asis',fig.height=3.5>>=
+\begin{frame}[fragile]\frametitle{Plotting the data}
+<<plot-old-Canada-census-data>>=
 plot(data_old$Year, data_old$Canada,
     type = "b", lwd = 2,
+    main = "Canada population 1851-1976",
     xlab = "Year", ylab = "Population")
 @
+\vfill
+\code{type="b"} indicates that we want \emph{both} points and lines
+\vfill
+\code{lwd=2} makes the lines a bit thicker
+\vfill
+\code{main}, \code{xlab} and \code{ylab} are the titles of the plot, the $x$ and $y$ axis, respectively
 \end{frame}
+
+\maxFrameImage{\Sexpr{knitr::fig_chunk("plot-old-Canada-census-data", "pdf")}}
 
 
 \begin{frame}[fragile]
@@ -206,7 +218,7 @@ There are many ways to select rows. Let us proceed as follows: we want the rows 
 idx_CAN = which(data_new$GEOGRAPHY.NAME == "Canada")
 idx_char = which(data_new$CHARACTERISTIC == "Population (in thousands)")
 idx_keep = intersect(idx_CAN, idx_char)
-head(idx_keep, n = 8)
+idx_keep
 @
 \end{frame}
 
@@ -251,14 +263,15 @@ data = rbind(data_old,data_new)
 @
 \end{frame}
 
-
-\begin{frame}[fragile]\frametitle{Let us plot the result}
-<<plot-whole-Canada-census-data,fig.show='asis',fig.height=3.5>>=
+<<plot-whole-Canada-census-data,echo=FALSE>>=
 plot(data$year, data$population,
     type = "b", lwd = 2,
+    main = "Canada population 1851-2011",
     xlab = "Year", ylab = "Population")
 @
-\end{frame}
+
+\maxFrameImage{\Sexpr{knitr::fig_chunk("plot-whole-Canada-census-data", "pdf")}}
+
 
 \begin{frame}[fragile]\frametitle{Save the processed data}
 In case we need the data elsewhere, we save the data to a \code{csv} file
