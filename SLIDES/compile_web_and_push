@@ -5,6 +5,14 @@
 # web connection)
 # Does pull and push, so beware..
 
+npx @marp-team/marp-cli@latest  --bespoke.progress --html math-2740-slides-*.md
+for f in math-2740-slides-*.Rnw
+do
+  Rscript -e "library(knitr); knit('$f.Rnw')"
+  pdflatex $f.tex
+done
+
+
 npx @marp-team/marp-cli@latest  --bespoke.progress --html MATH2740-slides-*.md
 for f in MATH2740-slides-*.tex 
 do

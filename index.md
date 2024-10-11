@@ -10,6 +10,28 @@ On the [GitHub version](https://github.com/julien-arino/math-of-data-science/) o
 
 Feel free to use the material in these slides or in the folders. If you find this useful, I will be happy to know.
 
+### Slides (new version)
+(`.ipynb` files need to be run in a jupyter notebook.)
+
+<ul>
+{% for file in site.static_files %}
+  {% if file.path contains 'SLIDES' %}
+    {% if file.path contains 'math-2740' %}
+      {% if file.path contains 'html' %}
+        <li><a href="https://julien-arino.github.io/math-of-data-science/SLIDES/{{ file.basename }}.html">{{ file.basename }}</a></li>
+      {% endif %}
+      {% if file.path contains 'pdf' %}
+        {% unless file.path contains 'LightBoard' %}
+          <li><a href="https://julien-arino.github.io/math-of-data-science/SLIDES/{{ file.basename }}.pdf">{{ file.basename }}</a></li>
+        {% endunless %}
+      {% endif %}
+    {% endif %}
+  {% endif %}
+{% endfor %}
+</ul>
+
+
+
 ### Slides
 (`.ipynb` files need to be run in a jupyter notebook.)
 
