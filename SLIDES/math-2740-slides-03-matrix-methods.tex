@@ -80,8 +80,8 @@
 
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
-\subsection{Setting up the problem}
-\newSubSectionSlide{FIGS/Gemini_Generated_Image_c06eixc06eixc06e.jpeg}
+\subsection{Getting the Canadian census data}
+\newSubSectionSlide{FIGS/Gemini_Generated_Image_5srris5srris5srr.jpeg}
 
 \begin{frame}\frametitle{Grabing the Canadian census data}
 We want to consider the evolution of the population of Canada through time
@@ -500,7 +500,7 @@ Using \code{readr} saves the data without row numbers (by default), so we can do
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
 \subsection{Least squares problem -- Initial considerations}
-\newSubSectionSlide{FIGS/Gemini_Generated_Image_c06eixc06eixc06e.jpeg}
+\newSubSectionSlide{FIGS/Gemini_Generated_Image_gc7vxngc7vxngc7v.jpeg}
 
 \begin{frame}
 We just collected the census data for Canada
@@ -853,7 +853,7 @@ Let's use something cool: a \emph{genetic algorithm}
 \end{alltt}
 \begin{verbatim}
 ##            x1        x2
-## [1,] 2.999793 0.5000947
+## [1,] 2.999681 0.5001501
 \end{verbatim}
 \begin{alltt}
 \hlopt{-}\hldef{GA}\hlopt{@}\hlkwc{fitnessValue}
@@ -873,7 +873,7 @@ Let's use something cool: a \emph{genetic algorithm}
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
 \subsection{Least squares problem}
-\newSubSectionSlide{FIGS/Gemini_Generated_Image_c06eixc06eixc06e.jpeg}
+\newSubSectionSlide{FIGS/Gemini_Generated_Image_skqdtfskqdtfskqd.jpeg}
 
 \begin{frame}{The least squares problem (simplest version)}
 	\begin{definition}
@@ -1038,8 +1038,10 @@ We have seen 1 and 2, we will not show 3 (it is not hard)
 \end{frame}
 
 
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
 \subsection{Fitting something more complicated}
-\newSubSectionSlide{FIGS/Gemini_Generated_Image_c06eixc06eixc06e.jpeg}
+\newSubSectionSlide{FIGS/Gemini_Generated_Image_jvdz0zjvdz0zjvdz.jpeg}
 
 \begin{frame}{Suppose we want to fit something a bit more complicated..}
 For instance, instead of the affine function
@@ -1450,6 +1452,10 @@ A^TA\tilde\bx= A^T\bb &\implies (QR)^TQR\tilde\bx = (QR)^T\bb \\
 The singular value decomposition (known mostly by its acronym, SVD) is yet another type of factorisation/decomposition..
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\subsection{Singular values}
+\newSubSectionSlide{FIGS/Gemini_Generated_Image_c06eixc06eixc06e.jpeg}
 
 \begin{frame}{Singular values}
 \begin{definition}[Singular value]
@@ -1564,6 +1570,10 @@ Let $\bw=A\bv$, we thus have $AA^T\bw=\lambda\bw$; in other words, $A\bv$ is an 
 The reverse works the same way.. \qed
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\subsection{The SVD}
+\newSubSectionSlide{FIGS/Gemini_Generated_Image_c06eixc06eixc06e.jpeg}
 
 \begin{frame}{The singular value decomposition (SVD)}
 \begin{importanttheorem}[SVD]\label{th:SVD}
@@ -1733,6 +1743,11 @@ When you are done, be back on your merry way to step 6 in the case where eigenva
 I am caricaturing a little here: there can be cases that do not work exactly like this, but this is general enough..
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\subsection{Applications of the SVD -- Least squares}
+\newSubSectionSlide{FIGS/Gemini_Generated_Image_c06eixc06eixc06e.jpeg}
+
 \begin{frame}{Applications of the SVD}
 Many applications of the SVD, both theoretical and practical..
 \vfill
@@ -1778,6 +1793,12 @@ D^{-1} & 0 \\ 0 & 0
 \]
 \end{definition}
 \end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\subsection{Applications of the SVD -- Compressing images}
+\newSubSectionSlide{FIGS/Gemini_Generated_Image_c06eixc06eixc06e.jpeg}
 
 
 \begin{frame}{Compressing images}
