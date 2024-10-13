@@ -853,7 +853,7 @@ Let's use something cool: a \emph{genetic algorithm}
 \end{alltt}
 \begin{verbatim}
 ##            x1        x2
-## [1,] 2.999681 0.5001501
+## [1,] 2.999977 0.5000062
 \end{verbatim}
 \begin{alltt}
 \hlopt{-}\hldef{GA}\hlopt{@}\hlkwc{fitnessValue}
@@ -1746,7 +1746,7 @@ I am caricaturing a little here: there can be cases that do not work exactly lik
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
 \subsection{Applications of the SVD -- Least squares}
-\newSubSectionSlide{FIGS/Gemini_Generated_Image_c06eixc06eixc06e.jpeg}
+\newSubSectionSlide{FIGS/Gemini_Generated_Image_38bqnt38bqnt38bq.jpeg}
 
 \begin{frame}{Applications of the SVD}
 Many applications of the SVD, both theoretical and practical..
@@ -1798,7 +1798,7 @@ D^{-1} & 0 \\ 0 & 0
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
 \subsection{Applications of the SVD -- Compressing images}
-\newSubSectionSlide{FIGS/Gemini_Generated_Image_c06eixc06eixc06e.jpeg}
+\newSubSectionSlide{FIGS/Gemini_Generated_Image_6dnw706dnw706dnw.jpeg}
 
 
 \begin{frame}{Compressing images}
@@ -1812,6 +1812,275 @@ A_k = \sigma_1\bu_1\bv_1^T+\cdots+\sigma_k\bu_k\bv_k^T
 \]
 (so for $k=r$ we get the usual outer product form)
 \end{frame}
+
+\begin{frame}[fragile]
+Load the image using \code{bmp::read.bmp}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hldef{my_image} \hlkwb{=} \hldef{bmp}\hlopt{::}\hlkwd{read.bmp}\hldef{(}\hlsng{"../CODE/Julien_and_friend_1000x800.bmp"}\hldef{)}
+\hldef{my_image_g} \hlkwb{=} \hldef{pixmap}\hlopt{::}\hlkwd{pixmapGrey}\hldef{(my_image)}
+\hldef{my_image_g}
+\end{alltt}
+\begin{verbatim}
+## Pixmap image
+##   Type          : pixmapGrey 
+##   Size          : 800x1000 
+##   Resolution    : 1x1 
+##   Bounding box  : 0 0 1000 800
+\end{verbatim}
+\begin{alltt}
+\hldef{pixmap}\hlopt{::}\hlkwd{plot}\hldef{(my_image_g)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+\maxFrameImage{FIGS/matrix-methods-load-bmp-svd-1.pdf}
+
+\begin{frame}[fragile]\frametitle{Doing the computations ``by hand''}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hldef{M} \hlkwb{=} \hldef{my_image_g}\hlopt{@}\hlkwc{grey}
+\hldef{MTM} \hlkwb{=} \hlkwd{t}\hldef{(M)} \hlopt{%*%} \hldef{M}
+\hlcom{# Ensure matrix is symmetric}
+\hldef{MTM} \hlkwb{=} \hldef{(MTM}\hlopt{+}\hlkwd{t}\hldef{(MTM))}\hlopt{/}\hlnum{2}
+\hldef{ev} \hlkwb{=} \hlkwd{eigen}\hldef{(MTM)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\vfill
+Given the size and nature of the entries, the matrix $M^TM$ is symmetric only to \code{1e-5} precision, so we use a little trick to make it symmetric no matter what: take the average of $M^TM$ and its transpose $MM^T$
+\end{frame}
+
+
+\begin{frame}[fragile]\frametitle{Which version of the algorithm to use?}
+Make zero the eigenvalues that are close to zero (200 out of 1000)
+\vfill
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hldef{ev}\hlopt{$}\hldef{values} \hlkwb{=} \hldef{ev}\hlopt{$}\hldef{values}\hlopt{*}\hldef{(ev}\hlopt{$}\hldef{values}\hlopt{>}\hlnum{1e-10}\hldef{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\vfill
+Can we use the algorithm for all eigenvalues being distinct or do we have repeated ones?
+\vfill
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{any}\hldef{(}\hlkwd{duplicated}\hldef{(ev}\hlopt{$}\hldef{values[ev}\hlopt{$}\hldef{values}\hlopt{>}\hlnum{1e-10}\hldef{]))}
+\end{alltt}
+\begin{verbatim}
+## [1] FALSE
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\vfill
+So we can use the standard algorithm
+\end{frame}
+
+
+\begin{frame}[fragile]\frametitle{Computing the SVD}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hldef{idx_positive_ev} \hlkwb{=} \hlkwd{which}\hldef{(ev}\hlopt{$}\hldef{values}\hlopt{>}\hlnum{1e-10}\hldef{)}
+\hldef{sv} \hlkwb{=} \hlkwd{sqrt}\hldef{(ev}\hlopt{$}\hldef{values[idx_positive_ev])}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+\begin{frame}[fragile]\frametitle{Computing the SVD}
+Then $D=\mathsf{diag}(\sigma_1,\ldots,\sigma_r)$, $V$ is the matrix of normalised eigenvectors in the same order as the $\sigma_i$ and for $i=1,\ldots,r$
+$$
+\mathbf{u}_i = \frac{1}{\sigma_i}A\mathbf{v}_i
+$$
+ensuring that $\|\mathbf{u}_i\|=1$
+\vfill
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hldef{D} \hlkwb{=} \hlkwd{diag}\hldef{(sv)}
+\hldef{V} \hlkwb{=} \hldef{ev}\hlopt{$}\hldef{vectors[idx_positive_ev, idx_positive_ev]}
+\hldef{c1} \hlkwb{=} \hlkwd{colSums}\hldef{(V)}
+\hlkwa{for} \hldef{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlkwd{dim}\hldef{(V)[}\hlnum{2}\hldef{]) \{}
+    \hldef{V[,i]} \hlkwb{=} \hldef{V[,i]}\hlopt{/}\hldef{c1[i]}
+\hldef{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+\begin{frame}[fragile]\frametitle{Computing the SVD}
+Finally, we compute the $\bu_i$'s
+\vfill
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hldef{U} \hlkwb{=} \hldef{M} \hlopt{%*%} \hldef{V} \hlopt{%*%} \hlkwd{diag}\hldef{(}\hlnum{1}\hlopt{/}\hldef{sv)}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in M \%*\% V: non-conformable arguments}}\begin{alltt}
+\hldef{r} \hlkwb{=} \hlkwd{length}\hldef{(sv)}
+\hldef{im} \hlkwb{=} \hlkwd{list}\hldef{(}\hlkwc{u}\hldef{=U,} \hlkwc{d}\hldef{=sv,} \hlkwc{v}\hldef{=V)}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'U' not found}}\end{kframe}
+\end{knitrout}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Using built-in functions}
+We can also use the built-in function \code{svd} to compute the SVD of $M$
+\vfill
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hldef{M.svd} \hlkwb{=} \hlkwd{svd}\hldef{(M)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\vfill
+The results are stored in a list with components \code{u}, \code{d} and \code{v}
+\end{frame}
+
+\begin{frame}\frametitle{Make function to recreate an image from the SVD}
+Given the SVD \code{im} of an image and a number of singular values to keep \code{n}, we can recreate the image using the function \code{compress\_image}
+\vfill
+We output the new image, but also, the amount of information required to encode this new image, as a percentage of the original image size
+\end{frame}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hldef{compress_image} \hlkwb{=} \hlkwa{function}\hldef{(}\hlkwc{im}\hldef{,} \hlkwc{n}\hldef{) \{}
+  \hlkwa{if} \hldef{(n} \hlopt{>} \hlkwd{length}\hldef{(im}\hlopt{$}\hldef{d)) \{}
+    \hlcom{# Check that we gave a value of n within range, otherwise }
+    \hlcom{# just set to the max}
+    \hldef{n} \hlkwb{=} \hlkwd{length}\hldef{(im}\hlopt{$}\hldef{d)}
+  \hldef{\}}
+  \hldef{d_tmp} \hlkwb{=} \hldef{im}\hlopt{$}\hldef{d[}\hlnum{1}\hlopt{:}\hldef{n]}
+  \hldef{u_tmp} \hlkwb{=} \hldef{im}\hlopt{$}\hldef{u[,}\hlnum{1}\hlopt{:}\hldef{n]}
+  \hldef{v_tmp} \hlkwb{=} \hldef{im}\hlopt{$}\hldef{v[,}\hlnum{1}\hlopt{:}\hldef{n]}
+  \hlcom{# We store the results in a list (so we can return other information)}
+    \hldef{out} \hlkwb{=} \hlkwd{list}\hldef{()}
+    \hlcom{# First, compute the resulting image}
+    \hldef{out}\hlopt{$}\hldef{img} \hlkwb{=} \hlkwd{mat.or.vec}\hldef{(}\hlkwc{nr} \hldef{=} \hlkwd{dim}\hldef{(im}\hlopt{$}\hldef{u)[}\hlnum{1}\hldef{],} \hlkwc{nc} \hldef{=} \hlkwd{dim}\hldef{(im}\hlopt{$}\hldef{v)[}\hlnum{1}\hldef{])}
+    \hlkwa{for} \hldef{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hldef{n) \{}
+        \hldef{out}\hlopt{$}\hldef{img} \hlkwb{=} \hldef{out}\hlopt{$}\hldef{img} \hlopt{+} \hldef{d_tmp[i]} \hlopt{*} \hldef{u_tmp[,i]} \hlopt{%*%} \hlkwd{t}\hldef{(v_tmp[,i])}
+    \hldef{\}}
+
+
+    \hlcom{# Values of the "colours" must be between 0 and 1, so we shift and rescale}
+    \hlkwa{if} \hldef{(}\hlkwd{min}\hldef{(}\hlkwd{min}\hldef{(out}\hlopt{$}\hldef{img))} \hlopt{<} \hlnum{0} \hldef{) \{}
+        \hldef{out}\hlopt{$}\hldef{img} \hlkwb{=} \hldef{out}\hlopt{$}\hldef{img} \hlopt{-} \hlkwd{min}\hldef{(}\hlkwd{min}\hldef{(out}\hlopt{$}\hldef{img))}
+    \hldef{\}}
+    \hldef{out}\hlopt{$}\hldef{img} \hlkwb{=} \hldef{out}\hlopt{$}\hldef{img} \hlopt{/} \hlkwd{max}\hldef{(}\hlkwd{max}\hldef{(out}\hlopt{$}\hldef{img))}
+    \hlcom{# Store some information: number of points needed and percentage of the original required}
+    \hldef{out}\hlopt{$}\hldef{nb_pixels_original} \hlkwb{=} \hlkwd{dim}\hldef{(im}\hlopt{$}\hldef{u)[}\hlnum{1}\hldef{]} \hlopt{*} \hlkwd{dim}\hldef{(im}\hlopt{$}\hldef{v)[}\hlnum{2}\hldef{]}
+    \hldef{out}\hlopt{$}\hldef{nb_pixels_compressed} \hlkwb{=} \hlkwd{length}\hldef{(d_tmp)} \hlopt{+} \hlkwd{dim}\hldef{(u_tmp)[}\hlnum{1}\hldef{]}\hlopt{*}\hlkwd{dim}\hldef{(u_tmp)[}\hlnum{2}\hldef{]} \hlopt{+} \hlkwd{dim}\hldef{(v_tmp)[}\hlnum{1}\hldef{]}\hlopt{*}\hlkwd{dim}\hldef{(v_tmp)[}\hlnum{2}\hldef{]}
+    \hldef{out}\hlopt{$}\hldef{pct_of_original} \hlkwb{=} \hldef{out}\hlopt{$}\hldef{nb_pixels_compressed} \hlopt{/} \hldef{out}\hlopt{$}\hldef{nb_pixels_original} \hlopt{*} \hlnum{100}
+    \hlcom{# Return the result}
+    \hlkwd{return}\hldef{(out)}
+\hldef{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+
+\begin{frame}[fragile]\frametitle{Recreating the image}
+We can now recreate the image using the function \code{compress\_image}
+\vfill
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hldef{new_image} \hlkwb{=} \hldef{my_image_g}
+\hldef{M.svd} \hlkwb{=} \hlkwd{svd}\hldef{(M)}
+\hldef{M_tmp} \hlkwb{=} \hlkwd{compress_image}\hldef{(M.svd,} \hlnum{2}\hldef{)}
+\hldef{new_image}\hlopt{@}\hlkwc{grey} \hlkwb{=} \hldef{M_tmp}\hlopt{$}\hldef{img}
+\hlkwd{plot}\hldef{(new_image)}
+\hlkwd{write.pnm}\hldef{(new_image,} \hlkwc{file} \hldef{=} \hlsng{"FIGS/matrix-methods-image-svd-n2-1.pgm"}\hldef{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+\begin{frame}\frametitle{Using $n=2$ singular values}
+\begin{center}
+\includegraphics[width=0.45\textwidth]{FIGS/matrix-methods-load-bmp-svd-1.pdf}
+\includegraphics[width=0.45\textwidth]{FIGS/matrix-methods-plot-image-svd-n2-1.pdf}
+\end{center}
+\vfill
+Uses 0.56\% of the original information
+\end{frame}
+
+
+\begin{frame}\frametitle{Using $n=2$ singular values}
+\begin{center}
+\includegraphics[width=0.45\textwidth]{FIGS/matrix-methods-load-bmp-svd-1.pdf}
+\includegraphics[width=0.45\textwidth]{FIGS/matrix-methods-plot-image-svd-n2-1.pgm}
+\end{center}
+\vfill
+Uses 0.56\% of the original information
+\end{frame}
+
+
+
+\begin{frame}\frametitle{Using $n=5$ singular values}
+\begin{center}
+\includegraphics[width=0.45\textwidth]{FIGS/matrix-methods-load-bmp-svd-1.pdf}
+\includegraphics[width=0.45\textwidth]{FIGS/matrix-methods-plot-image-svd-n5-1.pdf}
+\end{center}
+\vfill
+Uses 1.41\% of the original information
+\end{frame}
+
+
+
+
+\begin{frame}\frametitle{Using $n=10$ singular values}
+\begin{center}
+\includegraphics[width=0.45\textwidth]{FIGS/matrix-methods-load-bmp-svd-1.pdf}
+\includegraphics[width=0.45\textwidth]{FIGS/matrix-methods-plot-image-svd-n10-1.pdf}
+\end{center}
+\vfill
+Uses 2.81\% of the original information
+\end{frame}
+
+
+
+
+
+\begin{frame}\frametitle{Using $n=20$ singular values}
+\begin{center}
+\includegraphics[width=0.45\textwidth]{FIGS/matrix-methods-load-bmp-svd-1.pdf}
+\includegraphics[width=0.45\textwidth]{FIGS/matrix-methods-plot-image-svd-n20-1.pdf}
+\end{center}
+\vfill
+Uses 5.63\% of the original information
+\end{frame}
+
+
+
+
+
+\begin{frame}\frametitle{Using $n=50$ singular values}
+\begin{center}
+\includegraphics[width=0.45\textwidth]{FIGS/matrix-methods-load-bmp-svd-1.pdf}
+\includegraphics[width=0.45\textwidth]{FIGS/matrix-methods-plot-image-svd-n50-1.pdf}
+\end{center}
+\vfill
+Uses 14.07\% of the original information
+\end{frame}
+
+
 
 
 %%%%%%%%%%%%%%%%%%%%%
@@ -2845,9 +3114,9 @@ Now do things ``properly''
 ## [2,] 0.8131729  0.5820222
 ## 
 ## $R
-##      [,1] [,2]
-## [1,]    1    0
-## [2,]    0    1
+##      [,1]          [,2]
+## [1,]    1 -1.101171e-17
+## [2,]    0  1.000000e+00
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -3136,7 +3405,7 @@ Let us add the singular values to \code{ev}
 \end{alltt}
 \begin{verbatim}
 ##               [,1]
-## [1,] -3.295975e-17
+## [1,] -5.551115e-17
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
