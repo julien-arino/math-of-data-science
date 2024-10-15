@@ -2689,8 +2689,8 @@ The file is an excel table, so we need to use a library for doing that
 \begin{frame}[fragile]\frametitle{Loading the excel fingerprint data}
 <<open-file>>=
 download.file(url = "https://repository.lboro.ac.uk/ndownloader/files/14015774",
-             destfile = "fingerprint_data.xlsx")
-data = openxlsx::read.xlsx("fingerprint_data.xlsx")
+             destfile = "../CODE/fingerprint_data.xlsx")
+data = openxlsx::read.xlsx("../CODE/fingerprint_data.xlsx")
 head(data, n=3)
 @
 \end{frame}

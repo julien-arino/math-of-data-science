@@ -856,7 +856,7 @@ Let's use something cool: a \emph{genetic algorithm}
 \end{alltt}
 \begin{verbatim}
 ##            x1        x2
-## [1,] 3.000759 0.4996076
+## [1,] 2.998472 0.5007692
 \end{verbatim}
 \begin{alltt}
 \hlopt{-}\hldef{GA}\hlopt{@}\hlkwc{fitnessValue}
@@ -3181,8 +3181,8 @@ The file is an excel table, so we need to use a library for doing that
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{download.file}\hldef{(}\hlkwc{url} \hldef{=} \hlsng{"https://repository.lboro.ac.uk/ndownloader/files/14015774"}\hldef{,}
-             \hlkwc{destfile} \hldef{=} \hlsng{"fingerprint_data.xlsx"}\hldef{)}
-\hldef{data} \hlkwb{=} \hldef{openxlsx}\hlopt{::}\hlkwd{read.xlsx}\hldef{(}\hlsng{"fingerprint_data.xlsx"}\hldef{)}
+             \hlkwc{destfile} \hldef{=} \hlsng{"../CODE/fingerprint_data.xlsx"}\hldef{)}
+\hldef{data} \hlkwb{=} \hldef{openxlsx}\hlopt{::}\hlkwd{read.xlsx}\hldef{(}\hlsng{"../CODE/fingerprint_data.xlsx"}\hldef{)}
 \hlkwd{head}\hldef{(data,} \hlkwc{n}\hldef{=}\hlnum{3}\hldef{)}
 \end{alltt}
 \begin{verbatim}
