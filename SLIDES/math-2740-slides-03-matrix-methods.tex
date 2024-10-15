@@ -853,13 +853,13 @@ Let's use something cool: a \emph{genetic algorithm}
 \end{alltt}
 \begin{verbatim}
 ##            x1        x2
-## [1,] 2.998265 0.5008776
+## [1,] 2.999751 0.5001056
 \end{verbatim}
 \begin{alltt}
 \hlopt{-}\hldef{GA}\hlopt{@}\hlkwc{fitnessValue}
 \end{alltt}
 \begin{verbatim}
-## [1] 1.224746
+## [1] 1.224745
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1839,10 +1839,13 @@ Load the image using \code{bmp::read.bmp}
 \end{knitrout}
 \end{frame}
 
-% \maxFrameImage{FIGS/matrix-methods-plot-image-svd-original-1.bmp}
-\begin{frame}
-	\XeTeXpicfile FIGS/matrix-methods-plot-image-svd-original-1.bmp width 10cm
-\end{frame}
+\maxFrameImage{FIGS/matrix-methods-plot-image-svd-original-1.pdf}
+
+% \begin{frame}
+% \centerline{%
+% \XeTeXpicfile "knitr::fig_chunk("plot-image-svd-original", "bmp")" width 8cm
+% }
+% \end{frame}
 
 \begin{frame}[fragile]\frametitle{Doing the computations ``by hand''}
 \begin{knitrout}
@@ -2027,8 +2030,8 @@ We can now recreate the image using the function \code{compress\_image}
 
 \begin{frame}\frametitle{Using $n=2$ singular values}
 \begin{center}
-\includegraphics[width=0.45\textwidth]{FIGS/matrix-methods-plot-image-svd-original-1.bmp}
-\includegraphics[width=0.45\textwidth]{FIGS/matrix-methods-plot-image-svd-n2-1.bmp}
+\includegraphics[width=0.45\textwidth]{FIGS/matrix-methods-plot-image-svd-original-1.pdf}
+\includegraphics[width=0.45\textwidth]{FIGS/matrix-methods-plot-image-svd-n2-1.pdf}
 \end{center}
 \vfill
 Uses 0.56\% of the original information
@@ -2045,8 +2048,8 @@ Uses 0.56\% of the original information
 
 \begin{frame}\frametitle{Using $n=5$ singular values}
 \begin{center}
-\includegraphics[width=0.45\textwidth]{FIGS/matrix-methods-plot-image-svd-original-1.bmp}
-\includegraphics[width=0.45\textwidth]{FIGS/matrix-methods-plot-image-svd-n5-1.bmp}
+\includegraphics[width=0.45\textwidth]{FIGS/matrix-methods-plot-image-svd-original-1.pdf}
+\includegraphics[width=0.45\textwidth]{FIGS/matrix-methods-plot-image-svd-n5-1.pdf}
 \end{center}
 \vfill
 Uses 1.41\% of the original information
@@ -2064,8 +2067,8 @@ Uses 1.41\% of the original information
 
 \begin{frame}\frametitle{Using $n=10$ singular values}
 \begin{center}
-\includegraphics[width=0.45\textwidth]{FIGS/matrix-methods-plot-image-svd-original-1.bmp}
-\includegraphics[width=0.45\textwidth]{FIGS/matrix-methods-plot-image-svd-n10-1.bmp}
+\includegraphics[width=0.45\textwidth]{FIGS/matrix-methods-plot-image-svd-original-1.pdf}
+\includegraphics[width=0.45\textwidth]{FIGS/matrix-methods-plot-image-svd-n10-1.pdf}
 \end{center}
 \vfill
 Uses 2.81\% of the original information
@@ -2084,8 +2087,8 @@ Uses 2.81\% of the original information
 
 \begin{frame}\frametitle{Using $n=20$ singular values}
 \begin{center}
-\includegraphics[width=0.45\textwidth]{FIGS/matrix-methods-plot-image-svd-original-1.bmp}
-\includegraphics[width=0.45\textwidth]{FIGS/matrix-methods-plot-image-svd-n20-1.bmp}
+\includegraphics[width=0.45\textwidth]{FIGS/matrix-methods-plot-image-svd-original-1.pdf}
+\includegraphics[width=0.45\textwidth]{FIGS/matrix-methods-plot-image-svd-n20-1.pdf}
 \end{center}
 \vfill
 Uses 5.63\% of the original information
@@ -2104,8 +2107,8 @@ Uses 5.63\% of the original information
 
 \begin{frame}\frametitle{Using $n=50$ singular values}
 \begin{center}
-\includegraphics[width=0.45\textwidth]{FIGS/matrix-methods-plot-image-svd-original-1.bmp}
-\includegraphics[width=0.45\textwidth]{FIGS/matrix-methods-plot-image-svd-n50-1.bmp}
+\includegraphics[width=0.45\textwidth]{FIGS/matrix-methods-plot-image-svd-original-1.pdf}
+\includegraphics[width=0.45\textwidth]{FIGS/matrix-methods-plot-image-svd-n50-1.pdf}
 \end{center}
 \vfill
 Uses 14.07\% of the original information
@@ -3145,9 +3148,9 @@ Now do things ``properly''
 ## [2,] 0.8131729  0.5820222
 ## 
 ## $R
-##      [,1] [,2]
-## [1,]    1    0
-## [2,]    0    1
+##      [,1]          [,2]
+## [1,]    1 -1.101171e-17
+## [2,]    0  1.000000e+00
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -3436,7 +3439,7 @@ Let us add the singular values to \code{ev}
 \end{alltt}
 \begin{verbatim}
 ##               [,1]
-## [1,] -3.295975e-17
+## [1,] -5.551115e-17
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
