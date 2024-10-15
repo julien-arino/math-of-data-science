@@ -852,8 +852,8 @@ Let's use something cool: a \emph{genetic algorithm}
 \hldef{GA}\hlopt{@}\hlkwc{solution}
 \end{alltt}
 \begin{verbatim}
-##            x1        x2
-## [1,] 2.999751 0.5001056
+##            x1       x2
+## [1,] 2.999678 0.500084
 \end{verbatim}
 \begin{alltt}
 \hlopt{-}\hldef{GA}\hlopt{@}\hlkwc{fitnessValue}
@@ -1617,9 +1617,9 @@ $V\in\M_n$ orthogonal matrix with columns the eigenvectors of $A^TA$
 $A\in\M_{mn}$ with singular values $\sigma_1\geq\cdots\geq\sigma_r>0$ and $\sigma_{r+1}=\cdots=\sigma_n=0$, $\bu_1,\ldots,\bu_r$ and $\bv_1,\ldots,\bv_r$, respectively, left and right singular vectors of $A$ corresponding to these singular values
 \vskip0.5cm
 Then 
-\[
+\begin{equation}\label{eq:outer-product-form-SVD}
 A=\sigma_1\bu_1\bv_1^T+\cdots+\sigma_r\bu_r\bv_r^T
-\]
+\end{equation}
 \end{theorem}
 \end{frame}
 
@@ -1810,7 +1810,8 @@ Suppose $A$  has $r$ nonzero singular values. For $k\leq r$, let
 \[
 A_k = \sigma_1\bu_1\bv_1^T+\cdots+\sigma_k\bu_k\bv_k^T
 \]
-(so for $k=r$ we get the usual outer product form)
+\vfill
+For $k=r$ we get the usual outer product form \eqref{eq:outer-product-form-SVD}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -1829,23 +1830,11 @@ Load the image using \code{bmp::read.bmp}
 ##   Resolution    : 1x1 
 ##   Bounding box  : 0 0 1000 800
 \end{verbatim}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'M\_tmp' not found}}\begin{verbatim}
-## null device 
-##           1
-\end{verbatim}
 \end{kframe}
 \end{knitrout}
 \end{frame}
 
-\maxFrameImage{FIGS/matrix-methods-plot-image-svd-original-1.pdf}
-
-% \begin{frame}
-% \centerline{%
-% \XeTeXpicfile "knitr::fig_chunk("plot-image-svd-original", "bmp")" width 8cm
-% }
-% \end{frame}
+\maxFrameImage{FIGS/matrix-methods-plot-image-svd-original-1.png}
 
 \begin{frame}[fragile]\frametitle{Doing the computations ``by hand''}
 \begin{knitrout}
@@ -2014,61 +2003,39 @@ We can now recreate the image using the function \code{compress\_image}
 \hldef{M.svd} \hlkwb{=} \hlkwd{svd}\hldef{(M)}
 \hldef{M_tmp} \hlkwb{=} \hlkwd{compress_image}\hldef{(M.svd,} \hlnum{2}\hldef{)}
 \hldef{new_image}\hlopt{@}\hlkwc{grey} \hlkwb{=} \hldef{M_tmp}\hlopt{$}\hldef{img}
-\hlkwd{bmp}\hldef{(}\hlkwc{file} \hldef{=} \hlsng{"FIGS/matrix-methods-image-svd-n2-1.bmp"}\hldef{,}
-    \hlkwc{width} \hldef{=} \hlkwd{dim}\hldef{(M_tmp}\hlopt{$}\hldef{img)[}\hlnum{1}\hldef{],} \hlkwc{height} \hldef{=} \hlkwd{dim}\hldef{(M_tmp}\hlopt{$}\hldef{img)[}\hlnum{2}\hldef{],}
-    \hlkwc{units} \hldef{=} \hlsng{"px"}\hldef{)}
 \hlkwd{plot}\hldef{(new_image)}
-\hlkwd{dev.off}\hldef{()}
 \end{alltt}
-\begin{verbatim}
-## pdf 
-##   2
-\end{verbatim}
 \end{kframe}
 \end{knitrout}
 \end{frame}
 
 \begin{frame}\frametitle{Using $n=2$ singular values}
 \begin{center}
-\includegraphics[width=0.45\textwidth]{FIGS/matrix-methods-plot-image-svd-original-1.pdf}
-\includegraphics[width=0.45\textwidth]{FIGS/matrix-methods-plot-image-svd-n2-1.pdf}
+\includegraphics[width=0.45\textwidth]{FIGS/matrix-methods-plot-image-svd-original-1.png}
+\includegraphics[width=0.45\textwidth]{FIGS/matrix-methods-plot-image-svd-n2-1.png}
 \end{center}
 \vfill
 Uses 0.56\% of the original information
 \end{frame}
 
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{verbatim}
-## pdf 
-##   2
-\end{verbatim}
-\end{kframe}
-\end{knitrout}
+
 
 \begin{frame}\frametitle{Using $n=5$ singular values}
 \begin{center}
-\includegraphics[width=0.45\textwidth]{FIGS/matrix-methods-plot-image-svd-original-1.pdf}
-\includegraphics[width=0.45\textwidth]{FIGS/matrix-methods-plot-image-svd-n5-1.pdf}
+\includegraphics[width=0.45\textwidth]{FIGS/matrix-methods-plot-image-svd-original-1.png}
+\includegraphics[width=0.45\textwidth]{FIGS/matrix-methods-plot-image-svd-n5-1.png}
 \end{center}
 \vfill
 Uses 1.41\% of the original information
 \end{frame}
 
 
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{verbatim}
-## pdf 
-##   2
-\end{verbatim}
-\end{kframe}
-\end{knitrout}
+
 
 \begin{frame}\frametitle{Using $n=10$ singular values}
 \begin{center}
-\includegraphics[width=0.45\textwidth]{FIGS/matrix-methods-plot-image-svd-original-1.pdf}
-\includegraphics[width=0.45\textwidth]{FIGS/matrix-methods-plot-image-svd-n10-1.pdf}
+\includegraphics[width=0.45\textwidth]{FIGS/matrix-methods-plot-image-svd-original-1.png}
+\includegraphics[width=0.45\textwidth]{FIGS/matrix-methods-plot-image-svd-n10-1.png}
 \end{center}
 \vfill
 Uses 2.81\% of the original information
@@ -2076,19 +2043,12 @@ Uses 2.81\% of the original information
 
 
 
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{verbatim}
-## pdf 
-##   2
-\end{verbatim}
-\end{kframe}
-\end{knitrout}
+
 
 \begin{frame}\frametitle{Using $n=20$ singular values}
 \begin{center}
-\includegraphics[width=0.45\textwidth]{FIGS/matrix-methods-plot-image-svd-original-1.pdf}
-\includegraphics[width=0.45\textwidth]{FIGS/matrix-methods-plot-image-svd-n20-1.pdf}
+\includegraphics[width=0.45\textwidth]{FIGS/matrix-methods-plot-image-svd-original-1.png}
+\includegraphics[width=0.45\textwidth]{FIGS/matrix-methods-plot-image-svd-n20-1.png}
 \end{center}
 \vfill
 Uses 5.63\% of the original information
@@ -2096,19 +2056,12 @@ Uses 5.63\% of the original information
 
 
 
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{verbatim}
-## pdf 
-##   2
-\end{verbatim}
-\end{kframe}
-\end{knitrout}
+
 
 \begin{frame}\frametitle{Using $n=50$ singular values}
 \begin{center}
-\includegraphics[width=0.45\textwidth]{FIGS/matrix-methods-plot-image-svd-original-1.pdf}
-\includegraphics[width=0.45\textwidth]{FIGS/matrix-methods-plot-image-svd-n50-1.pdf}
+\includegraphics[width=0.45\textwidth]{FIGS/matrix-methods-plot-image-svd-original-1.png}
+\includegraphics[width=0.45\textwidth]{FIGS/matrix-methods-plot-image-svd-n50-1.png}
 \end{center}
 \vfill
 Uses 14.07\% of the original information

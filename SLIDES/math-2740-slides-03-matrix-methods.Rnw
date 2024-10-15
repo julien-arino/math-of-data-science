@@ -26,14 +26,12 @@ for (p in required_packages) {
 opts_chunk$set(echo = TRUE, 
                warning = FALSE, 
                message = FALSE, 
+               dev = c("pdf", "png"),
                fig.width = 6, 
                fig.height = 4, 
                fig.path = "FIGS/matrix-methods-",
                fig.keep = "high",
                fig.show = "hide")
-# knitr_options_pdf(fig_width = 6,
-#                   fig_height = 4,
-#                   fig_crop = TRUE)
 knitr::knit_hooks$set(crop = knitr::hook_pdfcrop)
 @
 
@@ -1324,9 +1322,9 @@ $V\in\M_n$ orthogonal matrix with columns the eigenvectors of $A^TA$
 $A\in\M_{mn}$ with singular values $\sigma_1\geq\cdots\geq\sigma_r>0$ and $\sigma_{r+1}=\cdots=\sigma_n=0$, $\bu_1,\ldots,\bu_r$ and $\bv_1,\ldots,\bv_r$, respectively, left and right singular vectors of $A$ corresponding to these singular values
 \vskip0.5cm
 Then 
-\[
+\begin{equation}\label{eq:outer-product-form-SVD}
 A=\sigma_1\bu_1\bv_1^T+\cdots+\sigma_r\bu_r\bv_r^T
-\]
+\end{equation}
 \end{theorem}
 \end{frame}
 
@@ -1517,30 +1515,21 @@ Suppose $A$  has $r$ nonzero singular values. For $k\leq r$, let
 \[
 A_k = \sigma_1\bu_1\bv_1^T+\cdots+\sigma_k\bu_k\bv_k^T
 \]
-(so for $k=r$ we get the usual outer product form)
+\vfill
+For $k=r$ we get the usual outer product form \eqref{eq:outer-product-form-SVD}
 \end{frame}
 
 \begin{frame}[fragile]
 Load the image using \code{bmp::read.bmp}
-<<plot-image-svd-original,crop=TRUE,echo=c(1:3,7)>>=
+<<plot-image-svd-original,echo=c(1:3,7)>>=
 my_image = bmp::read.bmp("../CODE/Julien_and_friend_1000x800.bmp")
 my_image_g = pixmap::pixmapGrey(my_image)
 my_image_g
-bmp(file = "FIGS/matrix-methods-plot-image-svd-original-1.bmp", 
-    width = dim(M_tmp$img)[1], height = dim(M_tmp$img)[2], 
-    units = "px")
 pixmap::plot(my_image_g)
-dev.off()
 @
 \end{frame}
 
-\maxFrameImage{\Sexpr{knitr::fig_chunk("plot-image-svd-original", "pdf")}}
-
-% \begin{frame}
-% \centerline{%
-% \XeTeXpicfile "\Sexpr{knitr::fig_chunk("plot-image-svd-original", "bmp")}" width 8cm
-% }
-% \end{frame}
+\maxFrameImage{\Sexpr{knitr::fig_chunk("plot-image-svd-original", "png")}}
 
 \begin{frame}[fragile]\frametitle{Doing the computations ``by hand''}
 <<image-compression-svd-compute-MTM>>=
@@ -1661,62 +1650,50 @@ compress_image = function(im, n) {
 \begin{frame}[fragile]\frametitle{Recreating the image}
 We can now recreate the image using the function \code{compress\_image}
 \vfill
-<<plot-image-svd-n2,crop=TRUE>>=
+<<plot-image-svd-n2>>=
 new_image = my_image_g
 M.svd = svd(M)
 M_tmp = compress_image(M.svd, 2)
 new_image@grey = M_tmp$img
-bmp(file = "FIGS/matrix-methods-image-svd-n2-1.bmp", 
-    width = dim(M_tmp$img)[1], height = dim(M_tmp$img)[2], 
-    units = "px")
 plot(new_image)
-dev.off()
 @
 \end{frame}
 
 \begin{frame}\frametitle{Using $n=2$ singular values}
 \begin{center}
-\includegraphics[width=0.45\textwidth]{\Sexpr{knitr::fig_chunk("plot-image-svd-original", "pdf")}}
-\includegraphics[width=0.45\textwidth]{\Sexpr{knitr::fig_chunk("plot-image-svd-n2", "pdf")}}
+\includegraphics[width=0.45\textwidth]{\Sexpr{knitr::fig_chunk("plot-image-svd-original", "png")}}
+\includegraphics[width=0.45\textwidth]{\Sexpr{knitr::fig_chunk("plot-image-svd-n2", "png")}}
 \end{center}
 \vfill
 Uses \Sexpr{round(M_tmp$pct_of_original, 2)}\% of the original information
 \end{frame}
 
-<<plot-image-svd-n5,echo=FALSE,crop=TRUE>>=
+<<plot-image-svd-n5,echo=FALSE>>=
 M_tmp = compress_image(M.svd, 5)
 new_image@grey = M_tmp$img
-bmp(file = "FIGS/matrix-methods-image-svd-n5-1.bmp", 
-    width = dim(M_tmp$img)[1], height = dim(M_tmp$img)[2], 
-    units = "px")
 plot(new_image)
-dev.off()
 @
 
 \begin{frame}\frametitle{Using $n=5$ singular values}
 \begin{center}
-\includegraphics[width=0.45\textwidth]{\Sexpr{knitr::fig_chunk("plot-image-svd-original", "pdf")}}
-\includegraphics[width=0.45\textwidth]{\Sexpr{knitr::fig_chunk("plot-image-svd-n5", "pdf")}}
+\includegraphics[width=0.45\textwidth]{\Sexpr{knitr::fig_chunk("plot-image-svd-original", "png")}}
+\includegraphics[width=0.45\textwidth]{\Sexpr{knitr::fig_chunk("plot-image-svd-n5", "png")}}
 \end{center}
 \vfill
 Uses \Sexpr{round(M_tmp$pct_of_original, 2)}\% of the original information
 \end{frame}
 
 
-<<plot-image-svd-n10,echo=FALSE,crop=TRUE>>=
+<<plot-image-svd-n10,echo=FALSE>>=
 M_tmp = compress_image(M.svd, 10)
 new_image@grey = M_tmp$img
-bmp(file = "FIGS/matrix-methods-image-svd-n10-1.bmp", 
-    width = dim(M_tmp$img)[1], height = dim(M_tmp$img)[2], 
-    units = "px")
 plot(new_image)
-dev.off()
 @
 
 \begin{frame}\frametitle{Using $n=10$ singular values}
 \begin{center}
-\includegraphics[width=0.45\textwidth]{\Sexpr{knitr::fig_chunk("plot-image-svd-original", "pdf")}}
-\includegraphics[width=0.45\textwidth]{\Sexpr{knitr::fig_chunk("plot-image-svd-n10", "pdf")}}
+\includegraphics[width=0.45\textwidth]{\Sexpr{knitr::fig_chunk("plot-image-svd-original", "png")}}
+\includegraphics[width=0.45\textwidth]{\Sexpr{knitr::fig_chunk("plot-image-svd-n10", "png")}}
 \end{center}
 \vfill
 Uses \Sexpr{round(M_tmp$pct_of_original, 2)}\% of the original information
@@ -1724,20 +1701,16 @@ Uses \Sexpr{round(M_tmp$pct_of_original, 2)}\% of the original information
 
 
 
-<<plot-image-svd-n20,echo=FALSE,crop=TRUE>>=
+<<plot-image-svd-n20,echo=FALSE>>=
 M_tmp = compress_image(M.svd, 20)
 new_image@grey = M_tmp$img
-bmp(file = "FIGS/matrix-methods-image-svd-n20-1.bmp", 
-    width = dim(M_tmp$img)[1], height = dim(M_tmp$img)[2], 
-    units = "px")
 plot(new_image)
-dev.off()
 @
 
 \begin{frame}\frametitle{Using $n=20$ singular values}
 \begin{center}
-\includegraphics[width=0.45\textwidth]{\Sexpr{knitr::fig_chunk("plot-image-svd-original", "pdf")}}
-\includegraphics[width=0.45\textwidth]{\Sexpr{knitr::fig_chunk("plot-image-svd-n20", "pdf")}}
+\includegraphics[width=0.45\textwidth]{\Sexpr{knitr::fig_chunk("plot-image-svd-original", "png")}}
+\includegraphics[width=0.45\textwidth]{\Sexpr{knitr::fig_chunk("plot-image-svd-n20", "png")}}
 \end{center}
 \vfill
 Uses \Sexpr{round(M_tmp$pct_of_original, 2)}\% of the original information
@@ -1745,20 +1718,16 @@ Uses \Sexpr{round(M_tmp$pct_of_original, 2)}\% of the original information
 
 
 
-<<plot-image-svd-n50,echo=FALSE,crop=TRUE>>=
+<<plot-image-svd-n50,echo=FALSE>>=
 M_tmp = compress_image(M.svd, 50)
 new_image@grey = M_tmp$img
-bmp(file = "FIGS/matrix-methods-image-svd-n50-1.bmp", 
-    width = dim(M_tmp$img)[1], height = dim(M_tmp$img)[2], 
-    units = "px")
 plot(new_image)
-dev.off()
 @
 
 \begin{frame}\frametitle{Using $n=50$ singular values}
 \begin{center}
-\includegraphics[width=0.45\textwidth]{\Sexpr{knitr::fig_chunk("plot-image-svd-original", "pdf")}}
-\includegraphics[width=0.45\textwidth]{\Sexpr{knitr::fig_chunk("plot-image-svd-n50", "pdf")}}
+\includegraphics[width=0.45\textwidth]{\Sexpr{knitr::fig_chunk("plot-image-svd-original", "png")}}
+\includegraphics[width=0.45\textwidth]{\Sexpr{knitr::fig_chunk("plot-image-svd-n50", "png")}}
 \end{center}
 \vfill
 Uses \Sexpr{round(M_tmp$pct_of_original, 2)}\% of the original information
