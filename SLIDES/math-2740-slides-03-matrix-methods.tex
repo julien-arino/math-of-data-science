@@ -491,28 +491,31 @@ Using \code{readr} saves the data without row numbers (by default), so we can do
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hldef{readr}\hlopt{::}\hlkwd{write_csv}\hldef{(data,} \hlkwc{file} \hldef{=} \hlsng{"../CODE/Canada_census.csv"}\hldef{)}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
-\end{frame}
+readr::\hlkwd{write_csv}(data, file = \hlsng{"../CODE/Canada_census.csv"})
+% @
+\textbackslash{}end\{frame\}
 
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
-\subsection{Least squares problem -- Initial considerations}
-\newSubSectionSlide{FIGS/Gemini_Generated_Image_gc7vxngc7vxngc7v.jpeg}
+\textbackslash{}subsection\{Least squares problem -- Initial considerations\}
+\textbackslash{}newSubSectionSlide\{FIGS/Gemini_Generated_Image_gc7vxngc7vxngc7v.jpeg\}
 
-\begin{frame}
+\textbackslash{}begin\{frame\}
 We just collected the census data for Canada
-\vfill
+\textbackslash{}vfill
 Suppose we want to predict the population of Canada in 20 years given the historical population growth seen in the previous plot. What can we do?
-\vfill
-If there were just two points, we could easily "drive" a line through these two points. However, we have much more than two points, so we will use \emph{fitting}, \emph{i.e.}, try to make a curve come as close to possible to the points
-\vfill
-We start with a line, giving rise to \defword{linear least squares}
-\end{frame}
+\textbackslash{}vfill
+If there were just two points, we could easily \hlsng{"drive"} a line through these two points. However, we have much more than two points, so we will use \textbackslash{}emph\{fitting\}, \textbackslash{}emph\{i.e.\}, try to make a curve come as close to possible to the points
+\textbackslash{}vfill
+We start with a line, giving rise to \textbackslash{}defword\{linear least squares\}
+\textbackslash{}end\{frame\}
 
-\begin{frame}[fragile]\frametitle{Least squares approximation -- A trivial case}
+\textbackslash{}begin\{frame\}[fragile]\textbackslash{}frametitle\{Least squares approximation -- A trivial case\}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: <text>:2:1: unexpected input\\\#\# 1: readr::write\_csv(data, file = "{}../CODE/Canada\_census.csv"{})\\\#\# 2: \% @\\\#\# \ \ \ \textasciicircum{}}}\end{kframe}
+\end{knitrout}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
 \includegraphics[width=\maxwidth]{FIGS/matrix-methods-plot-2-points-and-line-1} 
@@ -852,8 +855,8 @@ Let's use something cool: a \emph{genetic algorithm}
 \hldef{GA}\hlopt{@}\hlkwc{solution}
 \end{alltt}
 \begin{verbatim}
-##            x1       x2
-## [1,] 2.999678 0.500084
+##            x1        x2
+## [1,] 3.000759 0.4996076
 \end{verbatim}
 \begin{alltt}
 \hlopt{-}\hldef{GA}\hlopt{@}\hlkwc{fitnessValue}
@@ -3101,9 +3104,9 @@ Now do things ``properly''
 ## [2,] 0.8131729  0.5820222
 ## 
 ## $R
-##      [,1]          [,2]
-## [1,]    1 -1.101171e-17
-## [2,]    0  1.000000e+00
+##      [,1] [,2]
+## [1,]    1    0
+## [2,]    0    1
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -3392,7 +3395,7 @@ Let us add the singular values to \code{ev}
 \end{alltt}
 \begin{verbatim}
 ##               [,1]
-## [1,] -5.551115e-17
+## [1,] -3.295975e-17
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
