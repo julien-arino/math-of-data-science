@@ -853,13 +853,13 @@ Let's use something cool: a \emph{genetic algorithm}
 \end{alltt}
 \begin{verbatim}
 ##            x1        x2
-## [1,] 2.999977 0.5000062
+## [1,] 2.998265 0.5008776
 \end{verbatim}
 \begin{alltt}
 \hlopt{-}\hldef{GA}\hlopt{@}\hlkwc{fitnessValue}
 \end{alltt}
 \begin{verbatim}
-## [1] 1.224745
+## [1] 1.224746
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1829,14 +1829,20 @@ Load the image using \code{bmp::read.bmp}
 ##   Resolution    : 1x1 
 ##   Bounding box  : 0 0 1000 800
 \end{verbatim}
-\begin{alltt}
-\hldef{pixmap}\hlopt{::}\hlkwd{plot}\hldef{(my_image_g)}
-\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'M\_tmp' not found}}\begin{verbatim}
+## null device 
+##           1
+\end{verbatim}
 \end{kframe}
 \end{knitrout}
 \end{frame}
 
-\maxFrameImage{FIGS/matrix-methods-load-bmp-svd-1.pdf}
+% \maxFrameImage{FIGS/matrix-methods-plot-image-svd-original-1.bmp}
+\begin{frame}
+	\XeTeXpicfile FIGS/matrix-methods-plot-image-svd-original-1.bmp width 10cm
+\end{frame}
 
 \begin{frame}[fragile]\frametitle{Doing the computations ``by hand''}
 \begin{knitrout}
@@ -2005,50 +2011,61 @@ We can now recreate the image using the function \code{compress\_image}
 \hldef{M.svd} \hlkwb{=} \hlkwd{svd}\hldef{(M)}
 \hldef{M_tmp} \hlkwb{=} \hlkwd{compress_image}\hldef{(M.svd,} \hlnum{2}\hldef{)}
 \hldef{new_image}\hlopt{@}\hlkwc{grey} \hlkwb{=} \hldef{M_tmp}\hlopt{$}\hldef{img}
+\hlkwd{bmp}\hldef{(}\hlkwc{file} \hldef{=} \hlsng{"FIGS/matrix-methods-image-svd-n2-1.bmp"}\hldef{,}
+    \hlkwc{width} \hldef{=} \hlkwd{dim}\hldef{(M_tmp}\hlopt{$}\hldef{img)[}\hlnum{1}\hldef{],} \hlkwc{height} \hldef{=} \hlkwd{dim}\hldef{(M_tmp}\hlopt{$}\hldef{img)[}\hlnum{2}\hldef{],}
+    \hlkwc{units} \hldef{=} \hlsng{"px"}\hldef{)}
 \hlkwd{plot}\hldef{(new_image)}
-\hlkwd{write.pnm}\hldef{(new_image,} \hlkwc{file} \hldef{=} \hlsng{"FIGS/matrix-methods-image-svd-n2-1.pgm"}\hldef{)}
+\hlkwd{dev.off}\hldef{()}
 \end{alltt}
+\begin{verbatim}
+## pdf 
+##   2
+\end{verbatim}
 \end{kframe}
 \end{knitrout}
 \end{frame}
 
 \begin{frame}\frametitle{Using $n=2$ singular values}
 \begin{center}
-\includegraphics[width=0.45\textwidth]{FIGS/matrix-methods-load-bmp-svd-1.pdf}
-\includegraphics[width=0.45\textwidth]{FIGS/matrix-methods-plot-image-svd-n2-1.pdf}
+\includegraphics[width=0.45\textwidth]{FIGS/matrix-methods-plot-image-svd-original-1.bmp}
+\includegraphics[width=0.45\textwidth]{FIGS/matrix-methods-plot-image-svd-n2-1.bmp}
 \end{center}
 \vfill
 Uses 0.56\% of the original information
 \end{frame}
 
-
-\begin{frame}\frametitle{Using $n=2$ singular values}
-\begin{center}
-\includegraphics[width=0.45\textwidth]{FIGS/matrix-methods-load-bmp-svd-1.pdf}
-\includegraphics[width=0.45\textwidth]{FIGS/matrix-methods-plot-image-svd-n2-1.pgm}
-\end{center}
-\vfill
-Uses 0.56\% of the original information
-\end{frame}
-
-
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{verbatim}
+## pdf 
+##   2
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
 
 \begin{frame}\frametitle{Using $n=5$ singular values}
 \begin{center}
-\includegraphics[width=0.45\textwidth]{FIGS/matrix-methods-load-bmp-svd-1.pdf}
-\includegraphics[width=0.45\textwidth]{FIGS/matrix-methods-plot-image-svd-n5-1.pdf}
+\includegraphics[width=0.45\textwidth]{FIGS/matrix-methods-plot-image-svd-original-1.bmp}
+\includegraphics[width=0.45\textwidth]{FIGS/matrix-methods-plot-image-svd-n5-1.bmp}
 \end{center}
 \vfill
 Uses 1.41\% of the original information
 \end{frame}
 
 
-
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{verbatim}
+## pdf 
+##   2
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
 
 \begin{frame}\frametitle{Using $n=10$ singular values}
 \begin{center}
-\includegraphics[width=0.45\textwidth]{FIGS/matrix-methods-load-bmp-svd-1.pdf}
-\includegraphics[width=0.45\textwidth]{FIGS/matrix-methods-plot-image-svd-n10-1.pdf}
+\includegraphics[width=0.45\textwidth]{FIGS/matrix-methods-plot-image-svd-original-1.bmp}
+\includegraphics[width=0.45\textwidth]{FIGS/matrix-methods-plot-image-svd-n10-1.bmp}
 \end{center}
 \vfill
 Uses 2.81\% of the original information
@@ -2056,12 +2073,19 @@ Uses 2.81\% of the original information
 
 
 
-
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{verbatim}
+## pdf 
+##   2
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
 
 \begin{frame}\frametitle{Using $n=20$ singular values}
 \begin{center}
-\includegraphics[width=0.45\textwidth]{FIGS/matrix-methods-load-bmp-svd-1.pdf}
-\includegraphics[width=0.45\textwidth]{FIGS/matrix-methods-plot-image-svd-n20-1.pdf}
+\includegraphics[width=0.45\textwidth]{FIGS/matrix-methods-plot-image-svd-original-1.bmp}
+\includegraphics[width=0.45\textwidth]{FIGS/matrix-methods-plot-image-svd-n20-1.bmp}
 \end{center}
 \vfill
 Uses 5.63\% of the original information
@@ -2069,12 +2093,19 @@ Uses 5.63\% of the original information
 
 
 
-
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{verbatim}
+## pdf 
+##   2
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
 
 \begin{frame}\frametitle{Using $n=50$ singular values}
 \begin{center}
-\includegraphics[width=0.45\textwidth]{FIGS/matrix-methods-load-bmp-svd-1.pdf}
-\includegraphics[width=0.45\textwidth]{FIGS/matrix-methods-plot-image-svd-n50-1.pdf}
+\includegraphics[width=0.45\textwidth]{FIGS/matrix-methods-plot-image-svd-original-1.bmp}
+\includegraphics[width=0.45\textwidth]{FIGS/matrix-methods-plot-image-svd-n50-1.bmp}
 \end{center}
 \vfill
 Uses 14.07\% of the original information
@@ -3114,9 +3145,9 @@ Now do things ``properly''
 ## [2,] 0.8131729  0.5820222
 ## 
 ## $R
-##      [,1]          [,2]
-## [1,]    1 -1.101171e-17
-## [2,]    0  1.000000e+00
+##      [,1] [,2]
+## [1,]    1    0
+## [2,]    0    1
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -3405,7 +3436,7 @@ Let us add the singular values to \code{ev}
 \end{alltt}
 \begin{verbatim}
 ##               [,1]
-## [1,] -5.551115e-17
+## [1,] -3.295975e-17
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
