@@ -4,6 +4,7 @@
 # Load required libraries
 required_packages = c("bmp",
                       "dplyr", 
+                      "e1071",
                       "FactoMineR",
                       "ggbiplot",
                       "ggplot2", 
@@ -51,7 +52,7 @@ if (plot_blackBG) {
 cat(input_setup)
 @
 
-\title[Matrix methods]{MATH 2740 -- 06\\ Matrix methods}
+\title[Matrix methods]{MATH 2740 -- 03\\ Matrix methods}
 \author{\texorpdfstring{Julien Arino\newline University of Manitoba\newline\url{julien.arino@umanitoba.ca}}{Julien Arino}}
 \date{}
 
@@ -277,7 +278,7 @@ Using \code{readr} saves the data without row numbers (by default), so we can do
 \vfill
 <<>>=
 readr::write_csv(data, file = "../CODE/Canada_census.csv")
-% @
+@
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%
@@ -3151,7 +3152,65 @@ plot.PCA(data.pca, axes = c(1,2), choix = "ind", habillage = 4)
 \end{frame}
 
 
-    
+\begin{frame}[fragile]\frametitle{Numerical example}
+Example from \href{https://www.datacamp.com/tutorial/support-vector-machines-r}{here}
+\vfill
+<<plot-svm-example>>=
+set.seed(10111)
+x = matrix(rnorm(40), 20, 2)
+y = rep(c(-1, 1), c(10, 10))
+x[y == 1,] = x[y == 1,] + 1
+plot(x, col = y + 3, pch = 19)
+@
+\end{frame}
+
+\maxFrameImage{\Sexpr{knitr::fig_chunk("plot-svm-example", "pdf")}}
+
+\begin{frame}[fragile]
+<<plot-svm-example-result>>=
+dat = data.frame(x, y = as.factor(y))
+svmfit = svm(y ~ ., data = dat, kernel = "linear", cost = 10, scale = FALSE)
+print(svmfit)
+plot(svmfit, dat)
+@
+\end{frame}
+
+\maxFrameImage{\Sexpr{knitr::fig_chunk("plot-svm-example-result", "pdf")}}
+
+
+\begin{frame}[fragile]
+<<plot-svm-example-result-2>>=
+make.grid = function(x, n = 75) {
+  grange = apply(x, 2, range)
+  x1 = seq(from = grange[1,1], to = grange[2,1], length = n)
+  x2 = seq(from = grange[1,2], to = grange[2,2], length = n)
+  expand.grid(X1 = x1, X2 = x2)
+}
+xgrid = make.grid(x)
+ygrid = predict(svmfit, xgrid)
+plot(xgrid, col = c("red","blue")[as.numeric(ygrid)], pch = 20, cex = .2)
+points(x, col = y + 3, pch = 19)
+points(x[svmfit$index,], pch = 5, cex = 2)
+@
+\end{frame}
+
+\maxFrameImage{\Sexpr{knitr::fig_chunk("plot-svm-example-result-2", "pdf")}}
+
+\begin{frame}[fragile]
+<<plot-svm-example-result-3>>=
+beta = drop(t(svmfit$coefs)%*%x[svmfit$index,])
+beta0 = svmfit$rho
+plot(xgrid, col = c("red", "blue")[as.numeric(ygrid)], pch = 20, cex = .2)
+points(x, col = y + 3, pch = 19)
+points(x[svmfit$index,], pch = 5, cex = 2)
+abline(beta0 / beta[2], -beta[1] / beta[2])
+abline((beta0 - 1) / beta[2], -beta[1] / beta[2], lty = 2)
+abline((beta0 + 1) / beta[2], -beta[1] / beta[2], lty = 2)
+@
+\end{frame}
+
+\maxFrameImage{\Sexpr{knitr::fig_chunk("plot-svm-example-result-3", "pdf")}}
+
 \begin{frame}{Soft-margin SVM}
     To extend SVM to cases in which the data are not linearly separable, the \textbf{hinge loss} function is helpful
     \[

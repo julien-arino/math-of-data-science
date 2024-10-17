@@ -1,25 +1,74 @@
-%\PassOptionsToPackage{landscape}{geometry}
 \documentclass[aspectratio=169]{beamer}
 
-\input{slides_setup_nonLightBoard_whiteBG.tex}
+<<set-options,echo=FALSE,warning=FALSE,message=FALSE>>=
+# Load required libraries
+required_packages = c("dplyr", 
+                      "ggplot2",
+                      "igraph",
+                      "knitr", 
+                      "latex2exp",
+                      "magick",
+                      "pracma", 
+                      "readr", 
+                      "tidyr")
+for (p in required_packages) {
+  if (!require(p, character.only = TRUE)) {
+    install.packages(p, dependencies = TRUE)
+    require(p, character.only = TRUE)
+  }
+}
+# Knitr options
+opts_chunk$set(echo = TRUE, 
+               warning = FALSE, 
+               message = FALSE, 
+               dev = c("pdf", "png"),
+               fig.width = 6, 
+               fig.height = 4, 
+               fig.path = "FIGS/matrix-methods-",
+               fig.keep = "high",
+               fig.show = "hide")
+knitr::knit_hooks$set(crop = knitr::hook_pdfcrop)
+@
+
+
+<<set-slide-background,echo=FALSE,results='asis'>>=
+# Are we plotting for a dark background?
+plot_blackBG = FALSE
+if (plot_blackBG) {
+  bg_color = "black"
+  fg_color = "white"
+  input_setup = "\\input{slides-setup-blackBG.tex}"
+} else {
+  bg_color = "white"
+  fg_color = "black"
+  input_setup = "\\input{slides-setup-whiteBG.tex}"
+}
+cat(input_setup)
+@
 
 \title{Graphs -- Introduction (theory)}
+\author{\texorpdfstring{Julien Arino\newline University of Manitoba\newline\url{julien.arino@umanitoba.ca}}{Julien Arino}}
 \date{}
 
 \begin{document}
-\DeclareFontShape{OT1}{cmss}{b}{n}{<->ssub * cmss/bx/n}{} 
-\begin{frame}
-	\titlepage
-\end{frame}
 
-%\stretchon
-%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% TITLE AND OUTLINE
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\titlepagewithfigure{FIGS/Gemini_Generated_Image_awgymvawgymvawgy.jpeg}
+\outlinepage{FIGS/Gemini_Generated_Image_duutxqduutxqduut.jpeg}
 
 
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
 \section{Why use graphs/networks?}
+\newSectionSlide{FIGS/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
+
+
 \begin{frame}{Graphs versus networks}
 	Mostly a terminology difference:
 	\begin{itemize}
@@ -35,21 +84,21 @@
 \begin{frame}{The genesis of graphs -- Euler's bridges of K\"onigsberg}
 	Cross the 7 bridges in a single walk without recrossing any of them?
 	\begin{center}
-	\includegraphics[angle=90,width=.9\textwidth]{FIGS_slides/bridge_color}
+	\includegraphics[angle=90,height=.75\textheight]{FIGS_slides/bridge_color}
 	\end{center}
 \end{frame}
 
 \begin{frame}{The genesis of graphs -- Euler's bridges of K\"onigsberg}
 	Cross the 7 bridges in a single walk without recrossing any of them?
 	\begin{center}
-	\includegraphics[width=.9\textwidth]{FIGS_slides/bridge_color_with_graph}
+	\includegraphics[height=.75\textheight]{FIGS_slides/bridge_color_with_graph}
 	\end{center}
 \end{frame}
 
 \begin{frame}{The genesis of graphs -- Euler's bridges of K\"onigsberg}
 	Cross the 7 bridges in a single walk without recrossing any of them?
 	\begin{center}
-		\includegraphics[width=.7\textwidth]{FIGS_slides/bridge_color_with_graph}
+		\includegraphics[height=.5\textheight]{FIGS_slides/bridge_color_with_graph}
 		\end{center}
 	\begin{block}{Mathematical problem}
 	Is it possible to find a \emph{trail} containing all \emph{edges} of the graph?
