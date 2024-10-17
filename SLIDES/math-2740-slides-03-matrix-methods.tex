@@ -13,10 +13,10 @@
 
 \definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
 \newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
-\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlsng}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
 \newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
 \newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
-\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hldef}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
 \newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
 \newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
 \newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
@@ -55,7 +55,7 @@
 
 \input{slides-setup-whiteBG.tex}
 
-\title[Matrix methods]{MATH 2740 -- 06\\ Matrix methods}
+\title[Matrix methods]{MATH 2740 -- 03\\ Matrix methods}
 \author{\texorpdfstring{Julien Arino\newline University of Manitoba\newline\url{julien.arino@umanitoba.ca}}{Julien Arino}}
 \date{}
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
@@ -103,8 +103,8 @@ Assign the result to the variable data. We then use the function head to show th
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{data_old} \hlkwb{=} \hlkwd{read.csv}\hlstd{(}\hlstr{"https://www150.statcan.gc.ca/n1/en/pub/11-516-x/sectiona/A2_14-eng.csv?st=L7vSnqio"}\hlstd{)}
-\hlkwd{head}\hlstd{(data_old)}
+\hldef{data_old} \hlkwb{=} \hlkwd{read.csv}\hldef{(}\hlsng{"https://www150.statcan.gc.ca/n1/en/pub/11-516-x/sectiona/A2_14-eng.csv?st=L7vSnqio"}\hldef{)}
+\hlkwd{head}\hldef{(data_old)}
 \end{alltt}
 \begin{verbatim}
 ##    X Series.A2.14.
@@ -145,7 +145,7 @@ Obviously, this does not make a lot of sense. This is normal: take a look at the
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{head}\hlstd{(data_old)}
+\hlkwd{head}\hldef{(data_old)}
 \end{alltt}
 \begin{verbatim}
 ##    X Series.A2.14.
@@ -190,9 +190,9 @@ The second line is also empty, so let us skip it too
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{data_old} \hlkwb{=} \hlkwd{read.csv}\hlstd{(}\hlstr{"https://www150.statcan.gc.ca/n1/en/pub/11-516-x/sectiona/A2_14-eng.csv?st=L7vSnqio"}\hlstd{,}
-                    \hlkwc{skip} \hlstd{=} \hlnum{2}\hlstd{)}
-\hlkwd{head}\hlstd{(data_old)}
+\hldef{data_old} \hlkwb{=} \hlkwd{read.csv}\hldef{(}\hlsng{"https://www150.statcan.gc.ca/n1/en/pub/11-516-x/sectiona/A2_14-eng.csv?st=L7vSnqio"}\hldef{,}
+                    \hlkwc{skip} \hldef{=} \hlnum{2}\hldef{)}
+\hlkwd{head}\hldef{(data_old)}
 \end{alltt}
 \begin{verbatim}
 ##    X Year     Canada X.1 Newfound.  Prince X.2    Nova       New    Quebec
@@ -232,8 +232,8 @@ Because we are only interested in the total population of the country and the ye
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{data_old} \hlkwb{=} \hlstd{data_old[}\hlnum{5}\hlopt{:}\hlkwd{dim}\hlstd{(data_old)[}\hlnum{1}\hlstd{],} \hlnum{2}\hlopt{:}\hlnum{3}\hlstd{]}
-\hlkwd{head}\hlstd{(data_old,} \hlkwc{n}\hlstd{=}\hlnum{4}\hlstd{)}
+\hldef{data_old} \hlkwb{=} \hldef{data_old[}\hlnum{5}\hlopt{:}\hlkwd{dim}\hldef{(data_old)[}\hlnum{1}\hldef{],} \hlnum{2}\hlopt{:}\hlnum{3}\hldef{]}
+\hlkwd{head}\hldef{(data_old,} \hlkwc{n}\hldef{=}\hlnum{4}\hldef{)}
 \end{alltt}
 \begin{verbatim}
 ##   Year     Canada
@@ -273,13 +273,13 @@ Finally, as remarked above, for now, both the year and the population are consid
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{data_old} \hlkwb{=} \hlstd{data_old[}\hlkwd{which}\hlstd{(data_old}\hlopt{$}\hlstd{Canada} \hlopt{!=} \hlstr{""}\hlstd{),]}
-\hlstd{data_old}\hlopt{$}\hlstd{Canada} \hlkwb{=} \hlkwd{gsub}\hlstd{(}\hlstr{","}\hlstd{,} \hlstr{""}\hlstd{, data_old}\hlopt{$}\hlstd{Canada)}
-\hlstd{order_data} \hlkwb{=} \hlkwd{order}\hlstd{(data_old}\hlopt{$}\hlstd{Year)}
-\hlstd{data_old} \hlkwb{=} \hlstd{data_old[order_data,]}
-\hlstd{data_old}\hlopt{$}\hlstd{Year} \hlkwb{=} \hlkwd{as.numeric}\hlstd{(data_old}\hlopt{$}\hlstd{Year)}
-\hlstd{data_old}\hlopt{$}\hlstd{Canada} \hlkwb{=} \hlkwd{as.numeric}\hlstd{(data_old}\hlopt{$}\hlstd{Canada)}
-\hlstd{data_old}
+\hldef{data_old} \hlkwb{=} \hldef{data_old[}\hlkwd{which}\hldef{(data_old}\hlopt{$}\hldef{Canada} \hlopt{!=} \hlsng{""}\hldef{),]}
+\hldef{data_old}\hlopt{$}\hldef{Canada} \hlkwb{=} \hlkwd{gsub}\hldef{(}\hlsng{","}\hldef{,} \hlsng{""}\hldef{, data_old}\hlopt{$}\hldef{Canada)}
+\hldef{order_data} \hlkwb{=} \hlkwd{order}\hldef{(data_old}\hlopt{$}\hldef{Year)}
+\hldef{data_old} \hlkwb{=} \hldef{data_old[order_data,]}
+\hldef{data_old}\hlopt{$}\hldef{Year} \hlkwb{=} \hlkwd{as.numeric}\hldef{(data_old}\hlopt{$}\hldef{Year)}
+\hldef{data_old}\hlopt{$}\hldef{Canada} \hlkwb{=} \hlkwd{as.numeric}\hldef{(data_old}\hlopt{$}\hldef{Canada)}
+\hldef{data_old}
 \end{alltt}
 \begin{verbatim}
 ##    Year   Canada
@@ -312,8 +312,8 @@ Row numbers are a little weird, so let us fix this.
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{row.names}\hlstd{(data_old)} \hlkwb{=} \hlnum{1}\hlopt{:}\hlkwd{dim}\hlstd{(data_old)[}\hlnum{1}\hlstd{]}
-\hlstd{data_old}
+\hlkwd{row.names}\hldef{(data_old)} \hlkwb{=} \hlnum{1}\hlopt{:}\hlkwd{dim}\hldef{(data_old)[}\hlnum{1}\hldef{]}
+\hldef{data_old}
 \end{alltt}
 \begin{verbatim}
 ##    Year   Canada
@@ -344,9 +344,9 @@ Well, that looks about right! Let's see what this looks like in a graph.
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{plot}\hlstd{(data_old}\hlopt{$}\hlstd{Year, data_old}\hlopt{$}\hlstd{Canada,}
-    \hlkwc{type} \hlstd{=} \hlstr{"b"}\hlstd{,} \hlkwc{lwd} \hlstd{=} \hlnum{2}\hlstd{,}
-    \hlkwc{xlab} \hlstd{=} \hlstr{"Year"}\hlstd{,} \hlkwc{ylab} \hlstd{=} \hlstr{"Population"}\hlstd{)}
+\hlkwd{plot}\hldef{(data_old}\hlopt{$}\hldef{Year, data_old}\hlopt{$}\hldef{Canada,}
+    \hlkwc{type} \hldef{=} \hlsng{"b"}\hldef{,} \hlkwc{lwd} \hldef{=} \hlnum{2}\hldef{,}
+    \hlkwc{xlab} \hldef{=} \hlsng{"Year"}\hldef{,} \hlkwc{ylab} \hldef{=} \hlsng{"Population"}\hldef{)}
 \end{alltt}
 \end{kframe}
 \includegraphics[width=\maxwidth]{FIGS/matrix-methods-plot-old-Canada-census-data-1} 
@@ -360,8 +360,8 @@ But wait, this is only to 1976..! Looking around, we find another table here. Th
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{data_new} \hlkwb{=} \hlkwd{read.csv}\hlstd{(}\hlstr{"https://www12.statcan.gc.ca/census-recensement/2011/dp-pd/vc-rv/download-telecharger/download-telecharger.cfm?Lang=eng&CTLG=98-315-XWE2011001&FMT=csv"}\hlstd{)}
-\hlkwd{head}\hlstd{(data_new,} \hlnum{10}\hlstd{)}
+\hldef{data_new} \hlkwb{=} \hlkwd{read.csv}\hldef{(}\hlsng{"https://www12.statcan.gc.ca/census-recensement/2011/dp-pd/vc-rv/download-telecharger/download-telecharger.cfm?Lang=eng&CTLG=98-315-XWE2011001&FMT=csv"}\hldef{)}
+\hlkwd{head}\hldef{(data_new,} \hlnum{10}\hldef{)}
 \end{alltt}
 \begin{verbatim}
 ##    GEOGRAPHY.NAME            CHARACTERISTIC YEAR.S. TOTAL FLAG_TOTAL
@@ -389,10 +389,10 @@ There are many ways to select rows. Let us proceed as follows: we want the rows 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{idx_CAN} \hlkwb{=} \hlkwd{which}\hlstd{(data_new}\hlopt{$}\hlstd{GEOGRAPHY.NAME} \hlopt{==} \hlstr{"Canada"}\hlstd{)}
-\hlstd{idx_char} \hlkwb{=} \hlkwd{which}\hlstd{(data_new}\hlopt{$}\hlstd{CHARACTERISTIC} \hlopt{==} \hlstr{"Population (in thousands)"}\hlstd{)}
-\hlstd{idx_keep} \hlkwb{=} \hlkwd{intersect}\hlstd{(idx_CAN, idx_char)}
-\hlkwd{head}\hlstd{(idx_keep,} \hlkwc{n} \hlstd{=} \hlnum{8}\hlstd{)}
+\hldef{idx_CAN} \hlkwb{=} \hlkwd{which}\hldef{(data_new}\hlopt{$}\hldef{GEOGRAPHY.NAME} \hlopt{==} \hlsng{"Canada"}\hldef{)}
+\hldef{idx_char} \hlkwb{=} \hlkwd{which}\hldef{(data_new}\hlopt{$}\hldef{CHARACTERISTIC} \hlopt{==} \hlsng{"Population (in thousands)"}\hldef{)}
+\hldef{idx_keep} \hlkwb{=} \hlkwd{intersect}\hldef{(idx_CAN, idx_char)}
+\hlkwd{head}\hldef{(idx_keep,} \hlkwc{n} \hldef{=} \hlnum{8}\hldef{)}
 \end{alltt}
 \begin{verbatim}
 ## [1] 1 2 3 4 5 6 7 8
@@ -408,8 +408,8 @@ Yes, this looks okay, so let us keep only these
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{data_new} \hlkwb{=} \hlstd{data_new[idx_keep,]}
-\hlkwd{head}\hlstd{(data_new,} \hlkwc{n} \hlstd{=} \hlnum{8}\hlstd{)}
+\hldef{data_new} \hlkwb{=} \hldef{data_new[idx_keep,]}
+\hlkwd{head}\hldef{(data_new,} \hlkwc{n} \hldef{=} \hlnum{8}\hldef{)}
 \end{alltt}
 \begin{verbatim}
 ##   GEOGRAPHY.NAME            CHARACTERISTIC YEAR.S. TOTAL FLAG_TOTAL
@@ -448,14 +448,14 @@ To do this, we need the two data frames to have the same number of columns and, 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{colnames}\hlstd{(data_old)} \hlkwb{=} \hlkwd{c}\hlstd{(}\hlstr{"year"}\hlstd{,} \hlstr{"population"}\hlstd{)}
-\hlstd{data_new} \hlkwb{=} \hlstd{data_new[,}\hlkwd{c}\hlstd{(}\hlstr{"YEAR.S."}\hlstd{,}\hlstr{"TOTAL"}\hlstd{)]}
-\hlkwd{colnames}\hlstd{(data_new)} \hlkwb{=} \hlkwd{c}\hlstd{(}\hlstr{"year"}\hlstd{,} \hlstr{"population"}\hlstd{)}
-\hlstd{data_new}\hlopt{$}\hlstd{year} \hlkwb{=} \hlkwd{as.numeric}\hlstd{(data_new}\hlopt{$}\hlstd{year)}
-\hlstd{data_new} \hlkwb{=} \hlstd{data_new[}\hlkwd{which}\hlstd{(data_new}\hlopt{$}\hlstd{year}\hlopt{>}\hlnum{1976}\hlstd{),]}
-\hlstd{data_new}\hlopt{$}\hlstd{population} \hlkwb{=} \hlstd{data_new}\hlopt{$}\hlstd{population}\hlopt{*}\hlnum{1000}
+\hlkwd{colnames}\hldef{(data_old)} \hlkwb{=} \hlkwd{c}\hldef{(}\hlsng{"year"}\hldef{,} \hlsng{"population"}\hldef{)}
+\hldef{data_new} \hlkwb{=} \hldef{data_new[,}\hlkwd{c}\hldef{(}\hlsng{"YEAR.S."}\hldef{,}\hlsng{"TOTAL"}\hldef{)]}
+\hlkwd{colnames}\hldef{(data_new)} \hlkwb{=} \hlkwd{c}\hldef{(}\hlsng{"year"}\hldef{,} \hlsng{"population"}\hldef{)}
+\hldef{data_new}\hlopt{$}\hldef{year} \hlkwb{=} \hlkwd{as.numeric}\hldef{(data_new}\hlopt{$}\hldef{year)}
+\hldef{data_new} \hlkwb{=} \hldef{data_new[}\hlkwd{which}\hldef{(data_new}\hlopt{$}\hldef{year}\hlopt{>}\hlnum{1976}\hldef{),]}
+\hldef{data_new}\hlopt{$}\hldef{population} \hlkwb{=} \hldef{data_new}\hlopt{$}\hldef{population}\hlopt{*}\hlnum{1000}
 
-\hlstd{data} \hlkwb{=} \hlkwd{rbind}\hlstd{(data_old,data_new)}
+\hldef{data} \hlkwb{=} \hlkwd{rbind}\hldef{(data_old,data_new)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -466,9 +466,9 @@ To do this, we need the two data frames to have the same number of columns and, 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{plot}\hlstd{(data}\hlopt{$}\hlstd{year, data}\hlopt{$}\hlstd{population,}
-    \hlkwc{type} \hlstd{=} \hlstr{"b"}\hlstd{,} \hlkwc{lwd} \hlstd{=} \hlnum{2}\hlstd{,}
-    \hlkwc{xlab} \hlstd{=} \hlstr{"Year"}\hlstd{,} \hlkwc{ylab} \hlstd{=} \hlstr{"Population"}\hlstd{)}
+\hlkwd{plot}\hldef{(data}\hlopt{$}\hldef{year, data}\hlopt{$}\hldef{population,}
+    \hlkwc{type} \hldef{=} \hlsng{"b"}\hldef{,} \hlkwc{lwd} \hldef{=} \hlnum{2}\hldef{,}
+    \hlkwc{xlab} \hldef{=} \hlsng{"Year"}\hldef{,} \hlkwc{ylab} \hldef{=} \hlsng{"Population"}\hldef{)}
 \end{alltt}
 \end{kframe}
 \includegraphics[width=\maxwidth]{FIGS/matrix-methods-plot-whole-Canada-census-data-1} 
@@ -481,7 +481,7 @@ In case we need the data elsewhere, we save the data to a \code{csv} file
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{write.csv}\hlstd{(data,} \hlkwc{file} \hlstd{=} \hlstr{"../CODE/Canada_census.csv"}\hlstd{)}
+\hlkwd{write.csv}\hldef{(data,} \hlkwc{file} \hldef{=} \hlsng{"../CODE/Canada_census.csv"}\hldef{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -491,7 +491,7 @@ Using \code{readr} saves the data without row numbers (by default), so we can do
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{readr}\hlopt{::}\hlkwd{write_csv}\hlstd{(data,} \hlkwc{file} \hlstd{=} \hlstr{"../CODE/Canada_census.csv"}\hlstd{)}
+\hldef{readr}\hlopt{::}\hlkwd{write_csv}\hldef{(data,} \hlkwc{file} \hldef{=} \hlsng{"../CODE/Canada_census.csv"}\hldef{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -564,12 +564,12 @@ Now let's add another point
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{points} \hlkwb{=} \hlkwd{list}\hlstd{()}
-\hlstd{points}\hlopt{$}\hlstd{x} \hlkwb{=} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{2}\hlstd{,}\hlnum{3}\hlstd{)}
-\hlstd{points}\hlopt{$}\hlstd{y} \hlkwb{=} \hlkwd{c}\hlstd{(}\hlnum{3}\hlstd{,}\hlnum{5}\hlstd{,}\hlnum{4}\hlstd{)} \hlcom{# So the points are (1,3), (2,5) and (3,4)}
-\hlkwd{plot}\hlstd{(points}\hlopt{$}\hlstd{x, points}\hlopt{$}\hlstd{y,}
-     \hlkwc{pch} \hlstd{=} \hlnum{19}\hlstd{,} \hlkwc{cex} \hlstd{=} \hlnum{2}\hlstd{,} \hlkwc{bty} \hlstd{=} \hlstr{"n"}\hlstd{,}
-    \hlkwc{xlim} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,} \hlnum{3.5}\hlstd{),} \hlkwc{ylim} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{6}\hlstd{),} \hlkwc{xlab} \hlstd{=} \hlstr{"x"}\hlstd{,} \hlkwc{ylab} \hlstd{=} \hlstr{"y"}\hlstd{)}
+\hldef{points} \hlkwb{=} \hlkwd{list}\hldef{()}
+\hldef{points}\hlopt{$}\hldef{x} \hlkwb{=} \hlkwd{c}\hldef{(}\hlnum{1}\hldef{,}\hlnum{2}\hldef{,}\hlnum{3}\hldef{)}
+\hldef{points}\hlopt{$}\hldef{y} \hlkwb{=} \hlkwd{c}\hldef{(}\hlnum{3}\hldef{,}\hlnum{5}\hldef{,}\hlnum{4}\hldef{)} \hlcom{# So the points are (1,3), (2,5) and (3,4)}
+\hlkwd{plot}\hldef{(points}\hlopt{$}\hldef{x, points}\hlopt{$}\hldef{y,}
+     \hlkwc{pch} \hldef{=} \hlnum{19}\hldef{,} \hlkwc{cex} \hldef{=} \hlnum{2}\hldef{,} \hlkwc{bty} \hldef{=} \hlsng{"n"}\hldef{,}
+    \hlkwc{xlim} \hldef{=} \hlkwd{c}\hldef{(}\hlnum{0}\hldef{,} \hlnum{3.5}\hldef{),} \hlkwc{ylim} \hldef{=} \hlkwd{c}\hldef{(}\hlnum{0}\hldef{,}\hlnum{6}\hldef{),} \hlkwc{xlab} \hldef{=} \hlsng{"x"}\hldef{,} \hlkwc{ylab} \hldef{=} \hlsng{"y"}\hldef{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -610,13 +610,13 @@ So let us instead try to find the line that comes "closest" to the 3 points.
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{A} \hlkwb{=} \hlkwd{matrix}\hlstd{(}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{1}\hlstd{,}\hlnum{1}\hlstd{,}\hlnum{2}\hlstd{),} \hlkwc{nr} \hlstd{=} \hlnum{2}\hlstd{,} \hlkwc{nc} \hlstd{=} \hlnum{2}\hlstd{,} \hlkwc{byrow} \hlstd{=} \hlnum{TRUE}\hlstd{)}
-\hlstd{rhs} \hlkwb{=} \hlkwd{matrix}\hlstd{(}\hlkwd{c}\hlstd{(}\hlnum{3}\hlstd{,}\hlnum{5}\hlstd{),} \hlkwc{nr} \hlstd{=} \hlnum{2}\hlstd{,} \hlkwc{nc} \hlstd{=}\hlnum{1}\hlstd{)}
-\hlstd{coefs} \hlkwb{=} \hlkwd{solve}\hlstd{(A,rhs)} \hlcom{# To invert A, in R, you use solve(A), to solve Ax=b, you use solve(A,b)}
-\hlkwd{plot}\hlstd{(points}\hlopt{$}\hlstd{x, points}\hlopt{$}\hlstd{y,}
-     \hlkwc{pch} \hlstd{=} \hlnum{19}\hlstd{,} \hlkwc{cex} \hlstd{=} \hlnum{2}\hlstd{,} \hlkwc{bty} \hlstd{=} \hlstr{"n"}\hlstd{,}
-    \hlkwc{xlim} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,} \hlnum{3.5}\hlstd{),} \hlkwc{ylim} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{6}\hlstd{),} \hlkwc{xlab} \hlstd{=} \hlstr{"x"}\hlstd{,} \hlkwc{ylab} \hlstd{=} \hlstr{"y"}\hlstd{)}
-\hlkwd{abline}\hlstd{(}\hlkwc{coef} \hlstd{= coefs,} \hlkwc{lwd} \hlstd{=} \hlnum{2}\hlstd{)}
+\hldef{A} \hlkwb{=} \hlkwd{matrix}\hldef{(}\hlkwd{c}\hldef{(}\hlnum{1}\hldef{,}\hlnum{1}\hldef{,}\hlnum{1}\hldef{,}\hlnum{2}\hldef{),} \hlkwc{nr} \hldef{=} \hlnum{2}\hldef{,} \hlkwc{nc} \hldef{=} \hlnum{2}\hldef{,} \hlkwc{byrow} \hldef{=} \hlnum{TRUE}\hldef{)}
+\hldef{rhs} \hlkwb{=} \hlkwd{matrix}\hldef{(}\hlkwd{c}\hldef{(}\hlnum{3}\hldef{,}\hlnum{5}\hldef{),} \hlkwc{nr} \hldef{=} \hlnum{2}\hldef{,} \hlkwc{nc} \hldef{=}\hlnum{1}\hldef{)}
+\hldef{coefs} \hlkwb{=} \hlkwd{solve}\hldef{(A,rhs)} \hlcom{# To invert A, in R, you use solve(A), to solve Ax=b, you use solve(A,b)}
+\hlkwd{plot}\hldef{(points}\hlopt{$}\hldef{x, points}\hlopt{$}\hldef{y,}
+     \hlkwc{pch} \hldef{=} \hlnum{19}\hldef{,} \hlkwc{cex} \hldef{=} \hlnum{2}\hldef{,} \hlkwc{bty} \hldef{=} \hlsng{"n"}\hldef{,}
+    \hlkwc{xlim} \hldef{=} \hlkwd{c}\hldef{(}\hlnum{0}\hldef{,} \hlnum{3.5}\hldef{),} \hlkwc{ylim} \hldef{=} \hlkwd{c}\hldef{(}\hlnum{0}\hldef{,}\hlnum{6}\hldef{),} \hlkwc{xlab} \hldef{=} \hlsng{"x"}\hldef{,} \hlkwc{ylab} \hldef{=} \hlsng{"y"}\hldef{)}
+\hlkwd{abline}\hldef{(}\hlkwc{coef} \hldef{= coefs,} \hlkwc{lwd} \hldef{=} \hlnum{2}\hldef{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -628,11 +628,11 @@ Obviously, not sensational..
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{plot}\hlstd{(points}\hlopt{$}\hlstd{x, points}\hlopt{$}\hlstd{y,}
-     \hlkwc{pch} \hlstd{=} \hlnum{19}\hlstd{,} \hlkwc{cex} \hlstd{=} \hlnum{2}\hlstd{,} \hlkwc{bty} \hlstd{=} \hlstr{"n"}\hlstd{,}
-    \hlkwc{xlim} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,} \hlnum{3.5}\hlstd{),} \hlkwc{ylim} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{6}\hlstd{),} \hlkwc{xlab} \hlstd{=} \hlstr{"x"}\hlstd{,} \hlkwc{ylab} \hlstd{=} \hlstr{"y"}\hlstd{)}
-\hlkwd{abline}\hlstd{(}\hlkwc{coef} \hlstd{= coefs,} \hlkwc{lwd} \hlstd{=} \hlnum{2}\hlstd{)}
-\hlkwd{abline}\hlstd{(}\hlkwc{a} \hlstd{=} \hlnum{3}\hlstd{,} \hlkwc{b} \hlstd{=} \hlnum{0.5}\hlstd{,} \hlkwc{lwd} \hlstd{=} \hlnum{2}\hlstd{,} \hlkwc{col} \hlstd{=} \hlstr{"red"}\hlstd{)}
+\hlkwd{plot}\hldef{(points}\hlopt{$}\hldef{x, points}\hlopt{$}\hldef{y,}
+     \hlkwc{pch} \hldef{=} \hlnum{19}\hldef{,} \hlkwc{cex} \hldef{=} \hlnum{2}\hldef{,} \hlkwc{bty} \hldef{=} \hlsng{"n"}\hldef{,}
+    \hlkwc{xlim} \hldef{=} \hlkwd{c}\hldef{(}\hlnum{0}\hldef{,} \hlnum{3.5}\hldef{),} \hlkwc{ylim} \hldef{=} \hlkwd{c}\hldef{(}\hlnum{0}\hldef{,}\hlnum{6}\hldef{),} \hlkwc{xlab} \hldef{=} \hlsng{"x"}\hldef{,} \hlkwc{ylab} \hldef{=} \hlsng{"y"}\hldef{)}
+\hlkwd{abline}\hldef{(}\hlkwc{coef} \hldef{= coefs,} \hlkwc{lwd} \hldef{=} \hlnum{2}\hldef{)}
+\hlkwd{abline}\hldef{(}\hlkwc{a} \hldef{=} \hlnum{3}\hldef{,} \hlkwc{b} \hldef{=} \hlnum{0.5}\hldef{,} \hlkwc{lwd} \hldef{=} \hlnum{2}\hldef{,} \hlkwc{col} \hldef{=} \hlsng{"red"}\hldef{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -670,9 +670,9 @@ For future use, let us create a function for $y = a_0 + a_1x$.
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{my_line} \hlkwb{=} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{,} \hlkwc{a_0}\hlstd{,} \hlkwc{a_1}\hlstd{)\{}
-    \hlkwd{return}\hlstd{(a_0} \hlopt{+} \hlstd{a_1}\hlopt{*}\hlstd{x)}
-\hlstd{\}}
+\hldef{my_line} \hlkwb{=} \hlkwa{function}\hldef{(}\hlkwc{x}\hldef{,} \hlkwc{a_0}\hldef{,} \hlkwc{a_1}\hldef{)\{}
+    \hlkwd{return}\hldef{(a_0} \hlopt{+} \hldef{a_1}\hlopt{*}\hldef{x)}
+\hldef{\}}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -682,19 +682,19 @@ Functions are super useful when programming
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{my_line}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{2}\hlstd{,}\hlnum{3}\hlstd{)}
+\hlkwd{my_line}\hldef{(}\hlnum{1}\hldef{,}\hlnum{2}\hldef{,}\hlnum{3}\hldef{)}
 \end{alltt}
 \begin{verbatim}
 ## [1] 5
 \end{verbatim}
 \begin{alltt}
-\hlkwd{my_line}\hlstd{(}\hlkwc{a_0} \hlstd{=} \hlnum{2}\hlstd{,} \hlkwc{a_1} \hlstd{=} \hlnum{3}\hlstd{,} \hlkwc{x} \hlstd{=} \hlnum{1}\hlstd{)}
+\hlkwd{my_line}\hldef{(}\hlkwc{a_0} \hldef{=} \hlnum{2}\hldef{,} \hlkwc{a_1} \hldef{=} \hlnum{3}\hldef{,} \hlkwc{x} \hldef{=} \hlnum{1}\hldef{)}
 \end{alltt}
 \begin{verbatim}
 ## [1] 5
 \end{verbatim}
 \begin{alltt}
-\hlkwd{my_line}\hlstd{(}\hlkwc{x} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{2}\hlstd{,}\hlnum{3}\hlstd{),} \hlkwc{a_0} \hlstd{=} \hlnum{2}\hlstd{,} \hlkwc{a_1} \hlstd{=} \hlnum{3}\hlstd{)}
+\hlkwd{my_line}\hldef{(}\hlkwc{x} \hldef{=} \hlkwd{c}\hldef{(}\hlnum{1}\hldef{,}\hlnum{2}\hldef{,}\hlnum{3}\hldef{),} \hlkwc{a_0} \hldef{=} \hlnum{2}\hldef{,} \hlkwc{a_1} \hldef{=} \hlnum{3}\hldef{)}
 \end{alltt}
 \begin{verbatim}
 ## [1]  5  8 11
@@ -708,15 +708,15 @@ Functions are super useful when programming
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{a} \hlkwb{=} \hlnum{3}
-\hlstd{b} \hlkwb{=} \hlnum{0.5} \hlcom{# The line has equation y=a+bx}
-\hlkwd{plot}\hlstd{(points}\hlopt{$}\hlstd{x, points}\hlopt{$}\hlstd{y,}
-     \hlkwc{pch} \hlstd{=} \hlnum{19}\hlstd{,} \hlkwc{cex} \hlstd{=} \hlnum{2}\hlstd{,} \hlkwc{bty} \hlstd{=} \hlstr{"n"}\hlstd{,}
-    \hlkwc{xlim} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,} \hlnum{3.5}\hlstd{),} \hlkwc{ylim} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{6}\hlstd{),} \hlkwc{xlab} \hlstd{=} \hlstr{"x"}\hlstd{,} \hlkwc{ylab} \hlstd{=} \hlstr{"y"}\hlstd{)}
-\hlkwd{abline}\hlstd{(}\hlkwc{a} \hlstd{= a,} \hlkwc{b} \hlstd{= b,} \hlkwc{lwd} \hlstd{=} \hlnum{2}\hlstd{)}
-\hlkwd{abline}\hlstd{(}\hlkwc{v} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{2}\hlstd{,}\hlnum{3}\hlstd{))}  \hlcom{# If we used abline(h=c(0,1)), we would get horizontal lines at y=0 and y=1}
-\hlstd{p} \hlkwb{=} \hlkwd{my_line}\hlstd{(}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{2}\hlstd{,}\hlnum{3}\hlstd{), a, b)}
-\hlkwd{points}\hlstd{(}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{2}\hlstd{,}\hlnum{3}\hlstd{), p,} \hlkwc{pch} \hlstd{=} \hlnum{19}\hlstd{,} \hlkwc{cex} \hlstd{=} \hlnum{2}\hlstd{,} \hlkwc{col} \hlstd{=} \hlstr{"red"}\hlstd{)}
+\hldef{a} \hlkwb{=} \hlnum{3}
+\hldef{b} \hlkwb{=} \hlnum{0.5} \hlcom{# The line has equation y=a+bx}
+\hlkwd{plot}\hldef{(points}\hlopt{$}\hldef{x, points}\hlopt{$}\hldef{y,}
+     \hlkwc{pch} \hldef{=} \hlnum{19}\hldef{,} \hlkwc{cex} \hldef{=} \hlnum{2}\hldef{,} \hlkwc{bty} \hldef{=} \hlsng{"n"}\hldef{,}
+    \hlkwc{xlim} \hldef{=} \hlkwd{c}\hldef{(}\hlnum{0}\hldef{,} \hlnum{3.5}\hldef{),} \hlkwc{ylim} \hldef{=} \hlkwd{c}\hldef{(}\hlnum{0}\hldef{,}\hlnum{6}\hldef{),} \hlkwc{xlab} \hldef{=} \hlsng{"x"}\hldef{,} \hlkwc{ylab} \hldef{=} \hlsng{"y"}\hldef{)}
+\hlkwd{abline}\hldef{(}\hlkwc{a} \hldef{= a,} \hlkwc{b} \hldef{= b,} \hlkwc{lwd} \hldef{=} \hlnum{2}\hldef{)}
+\hlkwd{abline}\hldef{(}\hlkwc{v} \hldef{=} \hlkwd{c}\hldef{(}\hlnum{1}\hldef{,}\hlnum{2}\hldef{,}\hlnum{3}\hldef{))}  \hlcom{# If we used abline(h=c(0,1)), we would get horizontal lines at y=0 and y=1}
+\hldef{p} \hlkwb{=} \hlkwd{my_line}\hldef{(}\hlkwd{c}\hldef{(}\hlnum{1}\hldef{,}\hlnum{2}\hldef{,}\hlnum{3}\hldef{), a, b)}
+\hlkwd{points}\hldef{(}\hlkwd{c}\hldef{(}\hlnum{1}\hldef{,}\hlnum{2}\hldef{,}\hlnum{3}\hldef{), p,} \hlkwc{pch} \hldef{=} \hlnum{19}\hldef{,} \hlkwc{cex} \hldef{=} \hlnum{2}\hldef{,} \hlkwc{col} \hldef{=} \hlsng{"red"}\hldef{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -777,24 +777,24 @@ We'll also pass the points `points`
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{error} \hlkwb{=} \hlkwa{function}\hlstd{(}\hlkwc{a_0}\hlstd{,} \hlkwc{a_1}\hlstd{,} \hlkwc{points}\hlstd{) \{}
-    \hlstd{y_tilde} \hlkwb{=} \hlkwd{my_line}\hlstd{(points}\hlopt{$}\hlstd{x,} \hlkwc{a_0} \hlstd{= a_0,} \hlkwc{a_1} \hlstd{= a_1)}
-    \hlstd{e} \hlkwb{=} \hlstd{points}\hlopt{$}\hlstd{y} \hlopt{-} \hlstd{y_tilde}
-    \hlkwd{return}\hlstd{(}\hlkwd{sqrt}\hlstd{(}\hlkwd{sum}\hlstd{(e}\hlopt{^}\hlnum{2}\hlstd{)))}
-\hlstd{\}}
-\hlkwd{error}\hlstd{(}\hlkwc{a_0} \hlstd{=} \hlnum{2}\hlstd{,} \hlkwc{a_1} \hlstd{=} \hlnum{3}\hlstd{, points)}
+\hldef{error} \hlkwb{=} \hlkwa{function}\hldef{(}\hlkwc{a_0}\hldef{,} \hlkwc{a_1}\hldef{,} \hlkwc{points}\hldef{) \{}
+    \hldef{y_tilde} \hlkwb{=} \hlkwd{my_line}\hldef{(points}\hlopt{$}\hldef{x,} \hlkwc{a_0} \hldef{= a_0,} \hlkwc{a_1} \hldef{= a_1)}
+    \hldef{e} \hlkwb{=} \hldef{points}\hlopt{$}\hldef{y} \hlopt{-} \hldef{y_tilde}
+    \hlkwd{return}\hldef{(}\hlkwd{sqrt}\hldef{(}\hlkwd{sum}\hldef{(e}\hlopt{^}\hlnum{2}\hldef{)))}
+\hldef{\}}
+\hlkwd{error}\hldef{(}\hlkwc{a_0} \hldef{=} \hlnum{2}\hldef{,} \hlkwc{a_1} \hldef{=} \hlnum{3}\hldef{, points)}
 \end{alltt}
 \begin{verbatim}
 ## [1] 7.874008
 \end{verbatim}
 \begin{alltt}
-\hlkwd{error}\hlstd{(}\hlkwc{a_0} \hlstd{=} \hlnum{3}\hlstd{,} \hlkwc{a_1} \hlstd{=} \hlnum{0.5}\hlstd{, points)}
+\hlkwd{error}\hldef{(}\hlkwc{a_0} \hldef{=} \hlnum{3}\hldef{,} \hlkwc{a_1} \hldef{=} \hlnum{0.5}\hldef{, points)}
 \end{alltt}
 \begin{verbatim}
 ## [1] 1.224745
 \end{verbatim}
 \begin{alltt}
-\hlkwd{error}\hlstd{(}\hlkwc{a_0} \hlstd{=} \hlnum{3.1}\hlstd{,} \hlkwc{a_1} \hlstd{=} \hlnum{0.48}\hlstd{, points)}
+\hlkwd{error}\hldef{(}\hlkwc{a_0} \hldef{=} \hlnum{3.1}\hldef{,} \hlkwc{a_1} \hldef{=} \hlnum{0.48}\hldef{, points)}
 \end{alltt}
 \begin{verbatim}
 ## [1] 1.229471
@@ -823,17 +823,17 @@ Let's use something cool: a \emph{genetic algorithm}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwa{if} \hlstd{(}\hlopt{!}\hlkwd{require}\hlstd{(}\hlstr{"GA"}\hlstd{,} \hlkwc{quietly} \hlstd{=} \hlnum{TRUE}\hlstd{)) \{}
-  \hlkwd{install.packages}\hlstd{(}\hlstr{"GA"}\hlstd{)}
-  \hlkwd{library}\hlstd{(GA)}
-\hlstd{\}}
-\hlstd{GA} \hlkwb{=} \hlkwd{ga}\hlstd{(}\hlkwc{type} \hlstd{=} \hlstr{"real-valued"}\hlstd{,}
-        \hlkwc{fitness} \hlstd{=} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{)} \hlopt{-}\hlkwd{error}\hlstd{(}\hlkwc{a_0} \hlstd{= x[}\hlnum{1}\hlstd{],} \hlkwc{a_1} \hlstd{= x[}\hlnum{2}\hlstd{], points),}
-        \hlkwc{suggestions} \hlstd{=} \hlkwd{c}\hlstd{(}\hlkwc{a_0} \hlstd{=} \hlnum{2}\hlstd{,} \hlkwc{a_1} \hlstd{=} \hlnum{3}\hlstd{),}
-        \hlkwc{lower} \hlstd{=} \hlkwd{c}\hlstd{(}\hlopt{-}\hlnum{10}\hlstd{,} \hlopt{-}\hlnum{10}\hlstd{),} \hlkwc{upper} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{10}\hlstd{,} \hlnum{10}\hlstd{),}
-        \hlkwc{popSize} \hlstd{=} \hlnum{200}\hlstd{,} \hlkwc{maxiter} \hlstd{=} \hlnum{150}\hlstd{)}
+\hlkwa{if} \hldef{(}\hlopt{!}\hlkwd{require}\hldef{(}\hlsng{"GA"}\hldef{,} \hlkwc{quietly} \hldef{=} \hlnum{TRUE}\hldef{)) \{}
+  \hlkwd{install.packages}\hldef{(}\hlsng{"GA"}\hldef{)}
+  \hlkwd{library}\hldef{(GA)}
+\hldef{\}}
+\hldef{GA} \hlkwb{=} \hlkwd{ga}\hldef{(}\hlkwc{type} \hldef{=} \hlsng{"real-valued"}\hldef{,}
+        \hlkwc{fitness} \hldef{=} \hlkwa{function}\hldef{(}\hlkwc{x}\hldef{)} \hlopt{-}\hlkwd{error}\hldef{(}\hlkwc{a_0} \hldef{= x[}\hlnum{1}\hldef{],} \hlkwc{a_1} \hldef{= x[}\hlnum{2}\hldef{], points),}
+        \hlkwc{suggestions} \hldef{=} \hlkwd{c}\hldef{(}\hlkwc{a_0} \hldef{=} \hlnum{2}\hldef{,} \hlkwc{a_1} \hldef{=} \hlnum{3}\hldef{),}
+        \hlkwc{lower} \hldef{=} \hlkwd{c}\hldef{(}\hlopt{-}\hlnum{10}\hldef{,} \hlopt{-}\hlnum{10}\hldef{),} \hlkwc{upper} \hldef{=} \hlkwd{c}\hldef{(}\hlnum{10}\hldef{,} \hlnum{10}\hldef{),}
+        \hlkwc{popSize} \hldef{=} \hlnum{200}\hldef{,} \hlkwc{maxiter} \hldef{=} \hlnum{150}\hldef{)}
 \hlcom{# plot(GA)}
-\hlstd{GA}
+\hldef{GA}
 \end{alltt}
 \begin{verbatim}
 ## An object of class "ga"
@@ -849,14 +849,14 @@ Let's use something cool: a \emph{genetic algorithm}
 ## [21] "solution"
 \end{verbatim}
 \begin{alltt}
-\hlstd{GA}\hlopt{@}\hlkwc{solution}
+\hldef{GA}\hlopt{@}\hlkwc{solution}
 \end{alltt}
 \begin{verbatim}
-##            x1        x2
-## [1,] 3.000317 0.4999021
+##            x1       x2
+## [1,] 2.999713 0.500133
 \end{verbatim}
 \begin{alltt}
-\hlopt{-}\hlstd{GA}\hlopt{@}\hlkwc{fitnessValue}
+\hlopt{-}\hldef{GA}\hlopt{@}\hlkwc{fitnessValue}
 \end{alltt}
 \begin{verbatim}
 ## [1] 1.224745
@@ -1819,9 +1819,9 @@ Load the image using \code{bmp::read.bmp}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{my_image} \hlkwb{=} \hlstd{bmp}\hlopt{::}\hlkwd{read.bmp}\hlstd{(}\hlstr{"../CODE/Julien_and_friend_1000x800.bmp"}\hlstd{)}
-\hlstd{my_image_g} \hlkwb{=} \hlstd{pixmap}\hlopt{::}\hlkwd{pixmapGrey}\hlstd{(my_image)}
-\hlstd{my_image_g}
+\hldef{my_image} \hlkwb{=} \hldef{bmp}\hlopt{::}\hlkwd{read.bmp}\hldef{(}\hlsng{"../CODE/Julien_and_friend_1000x800.bmp"}\hldef{)}
+\hldef{my_image_g} \hlkwb{=} \hldef{pixmap}\hlopt{::}\hlkwd{pixmapGrey}\hldef{(my_image)}
+\hldef{my_image_g}
 \end{alltt}
 \begin{verbatim}
 ## Pixmap image
@@ -1840,11 +1840,11 @@ Load the image using \code{bmp::read.bmp}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{M} \hlkwb{=} \hlstd{my_image_g}\hlopt{@}\hlkwc{grey}
-\hlstd{MTM} \hlkwb{=} \hlkwd{t}\hlstd{(M)} \hlopt{%*%} \hlstd{M}
+\hldef{M} \hlkwb{=} \hldef{my_image_g}\hlopt{@}\hlkwc{grey}
+\hldef{MTM} \hlkwb{=} \hlkwd{t}\hldef{(M)} \hlopt{%*%} \hldef{M}
 \hlcom{# Ensure matrix is symmetric}
-\hlstd{MTM} \hlkwb{=} \hlstd{(MTM}\hlopt{+}\hlkwd{t}\hlstd{(MTM))}\hlopt{/}\hlnum{2}
-\hlstd{ev} \hlkwb{=} \hlkwd{eigen}\hlstd{(MTM)}
+\hldef{MTM} \hlkwb{=} \hldef{(MTM}\hlopt{+}\hlkwd{t}\hldef{(MTM))}\hlopt{/}\hlnum{2}
+\hldef{ev} \hlkwb{=} \hlkwd{eigen}\hldef{(MTM)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -1859,7 +1859,7 @@ Make zero the eigenvalues that are close to zero (200 out of 1000)
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{ev}\hlopt{$}\hlstd{values} \hlkwb{=} \hlstd{ev}\hlopt{$}\hlstd{values}\hlopt{*}\hlstd{(ev}\hlopt{$}\hlstd{values}\hlopt{>}\hlnum{1e-10}\hlstd{)}
+\hldef{ev}\hlopt{$}\hldef{values} \hlkwb{=} \hldef{ev}\hlopt{$}\hldef{values}\hlopt{*}\hldef{(ev}\hlopt{$}\hldef{values}\hlopt{>}\hlnum{1e-10}\hldef{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -1869,7 +1869,7 @@ Can we use the algorithm for all eigenvalues being distinct or do we have repeat
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{any}\hlstd{(}\hlkwd{duplicated}\hlstd{(ev}\hlopt{$}\hlstd{values[ev}\hlopt{$}\hlstd{values}\hlopt{>}\hlnum{1e-10}\hlstd{]))}
+\hlkwd{any}\hldef{(}\hlkwd{duplicated}\hldef{(ev}\hlopt{$}\hldef{values[ev}\hlopt{$}\hldef{values}\hlopt{>}\hlnum{1e-10}\hldef{]))}
 \end{alltt}
 \begin{verbatim}
 ## [1] FALSE
@@ -1885,8 +1885,8 @@ So we can use the standard algorithm
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{idx_positive_ev} \hlkwb{=} \hlkwd{which}\hlstd{(ev}\hlopt{$}\hlstd{values}\hlopt{>}\hlnum{1e-10}\hlstd{)}
-\hlstd{sv} \hlkwb{=} \hlkwd{sqrt}\hlstd{(ev}\hlopt{$}\hlstd{values[idx_positive_ev])}
+\hldef{idx_positive_ev} \hlkwb{=} \hlkwd{which}\hldef{(ev}\hlopt{$}\hldef{values}\hlopt{>}\hlnum{1e-10}\hldef{)}
+\hldef{sv} \hlkwb{=} \hlkwd{sqrt}\hldef{(ev}\hlopt{$}\hldef{values[idx_positive_ev])}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -1903,12 +1903,12 @@ ensuring that $\|\mathbf{u}_i\|=1$
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{D} \hlkwb{=} \hlkwd{diag}\hlstd{(sv)}
-\hlstd{V} \hlkwb{=} \hlstd{ev}\hlopt{$}\hlstd{vectors[idx_positive_ev, idx_positive_ev]}
-\hlstd{c1} \hlkwb{=} \hlkwd{colSums}\hlstd{(V)}
-\hlkwa{for} \hlstd{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlkwd{dim}\hlstd{(V)[}\hlnum{2}\hlstd{]) \{}
-    \hlstd{V[,i]} \hlkwb{=} \hlstd{V[,i]}\hlopt{/}\hlstd{c1[i]}
-\hlstd{\}}
+\hldef{D} \hlkwb{=} \hlkwd{diag}\hldef{(sv)}
+\hldef{V} \hlkwb{=} \hldef{ev}\hlopt{$}\hldef{vectors[idx_positive_ev, idx_positive_ev]}
+\hldef{c1} \hlkwb{=} \hlkwd{colSums}\hldef{(V)}
+\hlkwa{for} \hldef{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlkwd{dim}\hldef{(V)[}\hlnum{2}\hldef{]) \{}
+    \hldef{V[,i]} \hlkwb{=} \hldef{V[,i]}\hlopt{/}\hldef{c1[i]}
+\hldef{\}}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -1921,13 +1921,13 @@ Finally, we compute the $\bu_i$'s
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{U} \hlkwb{=} \hlstd{M} \hlopt{%*%} \hlstd{V} \hlopt{%*%} \hlkwd{diag}\hlstd{(}\hlnum{1}\hlopt{/}\hlstd{sv)}
+\hldef{U} \hlkwb{=} \hldef{M} \hlopt{%*%} \hldef{V} \hlopt{%*%} \hlkwd{diag}\hldef{(}\hlnum{1}\hlopt{/}\hldef{sv)}
 \end{alltt}
 
 
 {\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in M \%*\% V: non-conformable arguments}}\begin{alltt}
-\hlstd{r} \hlkwb{=} \hlkwd{length}\hlstd{(sv)}
-\hlstd{im} \hlkwb{=} \hlkwd{list}\hlstd{(}\hlkwc{u}\hlstd{=U,} \hlkwc{d}\hlstd{=sv,} \hlkwc{v}\hlstd{=V)}
+\hldef{r} \hlkwb{=} \hlkwd{length}\hldef{(sv)}
+\hldef{im} \hlkwb{=} \hlkwd{list}\hldef{(}\hlkwc{u}\hldef{=U,} \hlkwc{d}\hldef{=sv,} \hlkwc{v}\hldef{=V)}
 \end{alltt}
 
 
@@ -1941,7 +1941,7 @@ We can also use the built-in function \code{svd} to compute the SVD of $M$
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{M.svd} \hlkwb{=} \hlkwd{svd}\hlstd{(M)}
+\hldef{M.svd} \hlkwb{=} \hlkwd{svd}\hldef{(M)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -1958,36 +1958,36 @@ We output the new image, but also, the amount of information required to encode 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{compress_image} \hlkwb{=} \hlkwa{function}\hlstd{(}\hlkwc{im}\hlstd{,} \hlkwc{n}\hlstd{) \{}
-  \hlkwa{if} \hlstd{(n} \hlopt{>} \hlkwd{length}\hlstd{(im}\hlopt{$}\hlstd{d)) \{}
+\hldef{compress_image} \hlkwb{=} \hlkwa{function}\hldef{(}\hlkwc{im}\hldef{,} \hlkwc{n}\hldef{) \{}
+  \hlkwa{if} \hldef{(n} \hlopt{>} \hlkwd{length}\hldef{(im}\hlopt{$}\hldef{d)) \{}
     \hlcom{# Check that we gave a value of n within range, otherwise }
     \hlcom{# just set to the max}
-    \hlstd{n} \hlkwb{=} \hlkwd{length}\hlstd{(im}\hlopt{$}\hlstd{d)}
-  \hlstd{\}}
-  \hlstd{d_tmp} \hlkwb{=} \hlstd{im}\hlopt{$}\hlstd{d[}\hlnum{1}\hlopt{:}\hlstd{n]}
-  \hlstd{u_tmp} \hlkwb{=} \hlstd{im}\hlopt{$}\hlstd{u[,}\hlnum{1}\hlopt{:}\hlstd{n]}
-  \hlstd{v_tmp} \hlkwb{=} \hlstd{im}\hlopt{$}\hlstd{v[,}\hlnum{1}\hlopt{:}\hlstd{n]}
+    \hldef{n} \hlkwb{=} \hlkwd{length}\hldef{(im}\hlopt{$}\hldef{d)}
+  \hldef{\}}
+  \hldef{d_tmp} \hlkwb{=} \hldef{im}\hlopt{$}\hldef{d[}\hlnum{1}\hlopt{:}\hldef{n]}
+  \hldef{u_tmp} \hlkwb{=} \hldef{im}\hlopt{$}\hldef{u[,}\hlnum{1}\hlopt{:}\hldef{n]}
+  \hldef{v_tmp} \hlkwb{=} \hldef{im}\hlopt{$}\hldef{v[,}\hlnum{1}\hlopt{:}\hldef{n]}
   \hlcom{# We store the results in a list (so we can return other information)}
-    \hlstd{out} \hlkwb{=} \hlkwd{list}\hlstd{()}
+    \hldef{out} \hlkwb{=} \hlkwd{list}\hldef{()}
     \hlcom{# First, compute the resulting image}
-    \hlstd{out}\hlopt{$}\hlstd{img} \hlkwb{=} \hlkwd{mat.or.vec}\hlstd{(}\hlkwc{nr} \hlstd{=} \hlkwd{dim}\hlstd{(im}\hlopt{$}\hlstd{u)[}\hlnum{1}\hlstd{],} \hlkwc{nc} \hlstd{=} \hlkwd{dim}\hlstd{(im}\hlopt{$}\hlstd{v)[}\hlnum{1}\hlstd{])}
-    \hlkwa{for} \hlstd{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlstd{n) \{}
-        \hlstd{out}\hlopt{$}\hlstd{img} \hlkwb{=} \hlstd{out}\hlopt{$}\hlstd{img} \hlopt{+} \hlstd{d_tmp[i]} \hlopt{*} \hlstd{u_tmp[,i]} \hlopt{%*%} \hlkwd{t}\hlstd{(v_tmp[,i])}
-    \hlstd{\}}
+    \hldef{out}\hlopt{$}\hldef{img} \hlkwb{=} \hlkwd{mat.or.vec}\hldef{(}\hlkwc{nr} \hldef{=} \hlkwd{dim}\hldef{(im}\hlopt{$}\hldef{u)[}\hlnum{1}\hldef{],} \hlkwc{nc} \hldef{=} \hlkwd{dim}\hldef{(im}\hlopt{$}\hldef{v)[}\hlnum{1}\hldef{])}
+    \hlkwa{for} \hldef{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hldef{n) \{}
+        \hldef{out}\hlopt{$}\hldef{img} \hlkwb{=} \hldef{out}\hlopt{$}\hldef{img} \hlopt{+} \hldef{d_tmp[i]} \hlopt{*} \hldef{u_tmp[,i]} \hlopt{%*%} \hlkwd{t}\hldef{(v_tmp[,i])}
+    \hldef{\}}
 
 
     \hlcom{# Values of the "colours" must be between 0 and 1, so we shift and rescale}
-    \hlkwa{if} \hlstd{(}\hlkwd{min}\hlstd{(}\hlkwd{min}\hlstd{(out}\hlopt{$}\hlstd{img))} \hlopt{<} \hlnum{0} \hlstd{) \{}
-        \hlstd{out}\hlopt{$}\hlstd{img} \hlkwb{=} \hlstd{out}\hlopt{$}\hlstd{img} \hlopt{-} \hlkwd{min}\hlstd{(}\hlkwd{min}\hlstd{(out}\hlopt{$}\hlstd{img))}
-    \hlstd{\}}
-    \hlstd{out}\hlopt{$}\hlstd{img} \hlkwb{=} \hlstd{out}\hlopt{$}\hlstd{img} \hlopt{/} \hlkwd{max}\hlstd{(}\hlkwd{max}\hlstd{(out}\hlopt{$}\hlstd{img))}
+    \hlkwa{if} \hldef{(}\hlkwd{min}\hldef{(}\hlkwd{min}\hldef{(out}\hlopt{$}\hldef{img))} \hlopt{<} \hlnum{0} \hldef{) \{}
+        \hldef{out}\hlopt{$}\hldef{img} \hlkwb{=} \hldef{out}\hlopt{$}\hldef{img} \hlopt{-} \hlkwd{min}\hldef{(}\hlkwd{min}\hldef{(out}\hlopt{$}\hldef{img))}
+    \hldef{\}}
+    \hldef{out}\hlopt{$}\hldef{img} \hlkwb{=} \hldef{out}\hlopt{$}\hldef{img} \hlopt{/} \hlkwd{max}\hldef{(}\hlkwd{max}\hldef{(out}\hlopt{$}\hldef{img))}
     \hlcom{# Store some information: number of points needed and percentage of the original required}
-    \hlstd{out}\hlopt{$}\hlstd{nb_pixels_original} \hlkwb{=} \hlkwd{dim}\hlstd{(im}\hlopt{$}\hlstd{u)[}\hlnum{1}\hlstd{]} \hlopt{*} \hlkwd{dim}\hlstd{(im}\hlopt{$}\hlstd{v)[}\hlnum{2}\hlstd{]}
-    \hlstd{out}\hlopt{$}\hlstd{nb_pixels_compressed} \hlkwb{=} \hlkwd{length}\hlstd{(d_tmp)} \hlopt{+} \hlkwd{dim}\hlstd{(u_tmp)[}\hlnum{1}\hlstd{]}\hlopt{*}\hlkwd{dim}\hlstd{(u_tmp)[}\hlnum{2}\hlstd{]} \hlopt{+} \hlkwd{dim}\hlstd{(v_tmp)[}\hlnum{1}\hlstd{]}\hlopt{*}\hlkwd{dim}\hlstd{(v_tmp)[}\hlnum{2}\hlstd{]}
-    \hlstd{out}\hlopt{$}\hlstd{pct_of_original} \hlkwb{=} \hlstd{out}\hlopt{$}\hlstd{nb_pixels_compressed} \hlopt{/} \hlstd{out}\hlopt{$}\hlstd{nb_pixels_original} \hlopt{*} \hlnum{100}
+    \hldef{out}\hlopt{$}\hldef{nb_pixels_original} \hlkwb{=} \hlkwd{dim}\hldef{(im}\hlopt{$}\hldef{u)[}\hlnum{1}\hldef{]} \hlopt{*} \hlkwd{dim}\hldef{(im}\hlopt{$}\hldef{v)[}\hlnum{2}\hldef{]}
+    \hldef{out}\hlopt{$}\hldef{nb_pixels_compressed} \hlkwb{=} \hlkwd{length}\hldef{(d_tmp)} \hlopt{+} \hlkwd{dim}\hldef{(u_tmp)[}\hlnum{1}\hldef{]}\hlopt{*}\hlkwd{dim}\hldef{(u_tmp)[}\hlnum{2}\hldef{]} \hlopt{+} \hlkwd{dim}\hldef{(v_tmp)[}\hlnum{1}\hldef{]}\hlopt{*}\hlkwd{dim}\hldef{(v_tmp)[}\hlnum{2}\hldef{]}
+    \hldef{out}\hlopt{$}\hldef{pct_of_original} \hlkwb{=} \hldef{out}\hlopt{$}\hldef{nb_pixels_compressed} \hlopt{/} \hldef{out}\hlopt{$}\hldef{nb_pixels_original} \hlopt{*} \hlnum{100}
     \hlcom{# Return the result}
-    \hlkwd{return}\hlstd{(out)}
-\hlstd{\}}
+    \hlkwd{return}\hldef{(out)}
+\hldef{\}}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -1999,11 +1999,11 @@ We can now recreate the image using the function \code{compress\_image}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{new_image} \hlkwb{=} \hlstd{my_image_g}
-\hlstd{M.svd} \hlkwb{=} \hlkwd{svd}\hlstd{(M)}
-\hlstd{M_tmp} \hlkwb{=} \hlkwd{compress_image}\hlstd{(M.svd,} \hlnum{2}\hlstd{)}
-\hlstd{new_image}\hlopt{@}\hlkwc{grey} \hlkwb{=} \hlstd{M_tmp}\hlopt{$}\hlstd{img}
-\hlkwd{plot}\hlstd{(new_image)}
+\hldef{new_image} \hlkwb{=} \hldef{my_image_g}
+\hldef{M.svd} \hlkwb{=} \hlkwd{svd}\hldef{(M)}
+\hldef{M_tmp} \hlkwb{=} \hlkwd{compress_image}\hldef{(M.svd,} \hlnum{2}\hldef{)}
+\hldef{new_image}\hlopt{@}\hlkwc{grey} \hlkwb{=} \hldef{M_tmp}\hlopt{$}\hldef{img}
+\hlkwd{plot}\hldef{(new_image)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -2674,8 +2674,8 @@ See a dataset \href{https://opendata.stackexchange.com/questions/7793/age-weight
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{data} \hlkwb{=} \hlkwd{read.csv}\hlstd{(}\hlstr{"https://figshare.com/ndownloader/files/5303173"}\hlstd{)}
-\hlkwd{head}\hlstd{(data,} \hlkwc{n}\hlstd{=}\hlnum{3}\hlstd{)}
+\hldef{data} \hlkwb{=} \hlkwd{read.csv}\hldef{(}\hlsng{"https://figshare.com/ndownloader/files/5303173"}\hldef{)}
+\hlkwd{head}\hldef{(data,} \hlkwc{n}\hldef{=}\hlnum{3}\hldef{)}
 \end{alltt}
 \begin{verbatim}
 ##   year country no                name position side height weight      birth
@@ -2688,7 +2688,7 @@ See a dataset \href{https://opendata.stackexchange.com/questions/7793/age-weight
 ## 3 severstal cherepovetal  25.22930   1976 28.68011
 \end{verbatim}
 \begin{alltt}
-\hlkwd{dim}\hlstd{(data)}
+\hlkwd{dim}\hldef{(data)}
 \end{alltt}
 \begin{verbatim}
 ## [1] 6292   13
@@ -2718,13 +2718,13 @@ Let us check this: first check will be \code{FALSE} if the number of unique name
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{length}\hlstd{(}\hlkwd{unique}\hlstd{(data}\hlopt{$}\hlstd{name))} \hlopt{==} \hlkwd{dim}\hlstd{(data)[}\hlnum{1}\hlstd{]}
+\hlkwd{length}\hldef{(}\hlkwd{unique}\hldef{(data}\hlopt{$}\hldef{name))} \hlopt{==} \hlkwd{dim}\hldef{(data)[}\hlnum{1}\hldef{]}
 \end{alltt}
 \begin{verbatim}
 ## [1] FALSE
 \end{verbatim}
 \begin{alltt}
-\hlkwd{length}\hlstd{(}\hlkwd{unique}\hlstd{(data}\hlopt{$}\hlstd{name))}
+\hlkwd{length}\hldef{(}\hlkwd{unique}\hldef{(data}\hlopt{$}\hldef{name))}
 \end{alltt}
 \begin{verbatim}
 ## [1] 3278
@@ -2741,16 +2741,16 @@ To be extra careful, could check as well that there are no major variations on p
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{data_simplified} \hlkwb{=} \hlkwd{data.frame}\hlstd{(}\hlkwc{name} \hlstd{=} \hlkwd{unique}\hlstd{(data}\hlopt{$}\hlstd{name))}
-\hlstd{w} \hlkwb{=} \hlkwd{c}\hlstd{()}
-\hlstd{h} \hlkwb{=} \hlkwd{c}\hlstd{()}
-\hlkwa{for} \hlstd{(n} \hlkwa{in} \hlstd{data_simplified}\hlopt{$}\hlstd{name) \{}
-    \hlstd{tmp} \hlkwb{=} \hlstd{data[}\hlkwd{which}\hlstd{(data}\hlopt{$}\hlstd{name} \hlopt{==} \hlstd{n),]}
-    \hlstd{h} \hlkwb{=} \hlkwd{c}\hlstd{(h,} \hlkwd{mean}\hlstd{(tmp}\hlopt{$}\hlstd{height))}
-    \hlstd{w} \hlkwb{=} \hlkwd{c}\hlstd{(w,} \hlkwd{mean}\hlstd{(tmp}\hlopt{$}\hlstd{weight))}
-\hlstd{\}}
-\hlstd{data_simplified}\hlopt{$}\hlstd{weight} \hlkwb{=} \hlstd{w}
-\hlstd{data_simplified}\hlopt{$}\hlstd{height} \hlkwb{=} \hlstd{h}
+\hldef{data_simplified} \hlkwb{=} \hlkwd{data.frame}\hldef{(}\hlkwc{name} \hldef{=} \hlkwd{unique}\hldef{(data}\hlopt{$}\hldef{name))}
+\hldef{w} \hlkwb{=} \hlkwd{c}\hldef{()}
+\hldef{h} \hlkwb{=} \hlkwd{c}\hldef{()}
+\hlkwa{for} \hldef{(n} \hlkwa{in} \hldef{data_simplified}\hlopt{$}\hldef{name) \{}
+    \hldef{tmp} \hlkwb{=} \hldef{data[}\hlkwd{which}\hldef{(data}\hlopt{$}\hldef{name} \hlopt{==} \hldef{n),]}
+    \hldef{h} \hlkwb{=} \hlkwd{c}\hldef{(h,} \hlkwd{mean}\hldef{(tmp}\hlopt{$}\hldef{height))}
+    \hldef{w} \hlkwb{=} \hlkwd{c}\hldef{(w,} \hlkwd{mean}\hldef{(tmp}\hlopt{$}\hldef{weight))}
+\hldef{\}}
+\hldef{data_simplified}\hlopt{$}\hldef{weight} \hlkwb{=} \hldef{w}
+\hldef{data_simplified}\hlopt{$}\hldef{height} \hlkwb{=} \hldef{h}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -2760,8 +2760,8 @@ To be extra careful, could check as well that there are no major variations on p
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{data} \hlkwb{=} \hlstd{data_simplified}
-\hlkwd{head}\hlstd{(data_simplified,} \hlkwc{n} \hlstd{=} \hlnum{6}\hlstd{)}
+\hldef{data} \hlkwb{=} \hldef{data_simplified}
+\hlkwd{head}\hldef{(data_simplified,} \hlkwc{n} \hldef{=} \hlnum{6}\hldef{)}
 \end{alltt}
 \begin{verbatim}
 ##                  name weight height
@@ -2784,20 +2784,20 @@ To be extra careful, could check as well that there are no major variations on p
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{mean}\hlstd{(data}\hlopt{$}\hlstd{weight)}
+\hlkwd{mean}\hldef{(data}\hlopt{$}\hldef{weight)}
 \end{alltt}
 \begin{verbatim}
 ## [1] 87.71555
 \end{verbatim}
 \begin{alltt}
-\hlkwd{mean}\hlstd{(data}\hlopt{$}\hlstd{height)}
+\hlkwd{mean}\hldef{(data}\hlopt{$}\hldef{height)}
 \end{alltt}
 \begin{verbatim}
 ## [1] 183.8596
 \end{verbatim}
 \begin{alltt}
-\hlstd{data}\hlopt{$}\hlstd{weight.c} \hlkwb{=} \hlstd{data}\hlopt{$}\hlstd{weight}\hlopt{-}\hlkwd{mean}\hlstd{(data}\hlopt{$}\hlstd{weight)}
-\hlstd{data}\hlopt{$}\hlstd{height.c} \hlkwb{=} \hlstd{data}\hlopt{$}\hlstd{height}\hlopt{-}\hlkwd{mean}\hlstd{(data}\hlopt{$}\hlstd{height)}
+\hldef{data}\hlopt{$}\hldef{weight.c} \hlkwb{=} \hldef{data}\hlopt{$}\hldef{weight}\hlopt{-}\hlkwd{mean}\hldef{(data}\hlopt{$}\hldef{weight)}
+\hldef{data}\hlopt{$}\hldef{height.c} \hlkwb{=} \hldef{data}\hlopt{$}\hldef{height}\hlopt{-}\hlkwd{mean}\hldef{(data}\hlopt{$}\hldef{height)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -2815,13 +2815,13 @@ Note that the functions deals equally well with data that is not centred as with
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{cov}\hlstd{(data}\hlopt{$}\hlstd{height, data}\hlopt{$}\hlstd{weight)}
+\hlkwd{cov}\hldef{(data}\hlopt{$}\hldef{height, data}\hlopt{$}\hldef{weight)}
 \end{alltt}
 \begin{verbatim}
 ## [1] 26.63506
 \end{verbatim}
 \begin{alltt}
-\hlkwd{cov}\hlstd{(data}\hlopt{$}\hlstd{height.c, data}\hlopt{$}\hlstd{weight.c)}
+\hlkwd{cov}\hldef{(data}\hlopt{$}\hldef{height.c, data}\hlopt{$}\hldef{weight.c)}
 \end{alltt}
 \begin{verbatim}
 ## [1] 26.63506
@@ -2839,9 +2839,9 @@ Let us compute the sample covariance matrix
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{X} \hlkwb{=} \hlkwd{as.matrix}\hlstd{(data[,}\hlkwd{c}\hlstd{(}\hlstr{"height.c"}\hlstd{,} \hlstr{"weight.c"}\hlstd{)])}
-\hlstd{S} \hlkwb{=} \hlnum{1}\hlopt{/}\hlstd{(}\hlkwd{dim}\hlstd{(X)[}\hlnum{1}\hlstd{]}\hlopt{-}\hlnum{1}\hlstd{)}\hlopt{*}\hlkwd{t}\hlstd{(X)} \hlopt{%*%} \hlstd{X}
-\hlstd{S}
+\hldef{X} \hlkwb{=} \hlkwd{as.matrix}\hldef{(data[,}\hlkwd{c}\hldef{(}\hlsng{"height.c"}\hldef{,} \hlsng{"weight.c"}\hldef{)])}
+\hldef{S} \hlkwb{=} \hlnum{1}\hlopt{/}\hldef{(}\hlkwd{dim}\hldef{(X)[}\hlnum{1}\hldef{]}\hlopt{-}\hlnum{1}\hldef{)}\hlopt{*}\hlkwd{t}\hldef{(X)} \hlopt{%*%} \hldef{X}
+\hldef{S}
 \end{alltt}
 \begin{verbatim}
 ##          height.c weight.c
@@ -2859,13 +2859,13 @@ The off-diagonal entries do match the computed covariance. Let us check that the
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{var}\hlstd{(X[,}\hlnum{1}\hlstd{])}
+\hlkwd{var}\hldef{(X[,}\hlnum{1}\hldef{])}
 \end{alltt}
 \begin{verbatim}
 ## [1] 29.66176
 \end{verbatim}
 \begin{alltt}
-\hlkwd{var}\hlstd{(X[,}\hlnum{2}\hlstd{])}
+\hlkwd{var}\hldef{(X[,}\hlnum{2}\hldef{])}
 \end{alltt}
 \begin{verbatim}
 ## [1] 47.81112
@@ -2884,8 +2884,8 @@ Now compute the principal components. We need eigenvalues and eigenvectors
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{ev} \hlkwb{=} \hlkwd{eigen}\hlstd{(S)}
-\hlstd{ev}
+\hldef{ev} \hlkwb{=} \hlkwd{eigen}\hldef{(S)}
+\hldef{ev}
 \end{alltt}
 \begin{verbatim}
 ## eigen() decomposition
@@ -2913,12 +2913,12 @@ To use the function \code{abline}, we need to give the coefficients of the line 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{plot}\hlstd{(data}\hlopt{$}\hlstd{height.c, data}\hlopt{$}\hlstd{weight.c,}
-    \hlkwc{pch} \hlstd{=} \hlnum{19}\hlstd{,} \hlkwc{col} \hlstd{=} \hlstr{"dodgerblue4"}\hlstd{,}
-    \hlkwc{main} \hlstd{=} \hlstr{"IIHF players 2001-2016 (with first component)"}\hlstd{,}
-    \hlkwc{xlab} \hlstd{=} \hlstr{"Height (cm)"}\hlstd{,} \hlkwc{ylab} \hlstd{=} \hlstr{"Weight (kg)"}\hlstd{)}
-\hlkwd{abline}\hlstd{(}\hlkwc{a} \hlstd{=} \hlnum{0}\hlstd{,} \hlkwc{b} \hlstd{= ev}\hlopt{$}\hlstd{vectors[}\hlnum{2}\hlstd{,}\hlnum{1}\hlstd{]}\hlopt{/}\hlstd{ev}\hlopt{$}\hlstd{vectors[}\hlnum{1}\hlstd{,}\hlnum{1}\hlstd{],}
-       \hlkwc{col} \hlstd{=} \hlstr{"red"}\hlstd{,} \hlkwc{lwd} \hlstd{=} \hlnum{3}\hlstd{)}
+\hlkwd{plot}\hldef{(data}\hlopt{$}\hldef{height.c, data}\hlopt{$}\hldef{weight.c,}
+    \hlkwc{pch} \hldef{=} \hlnum{19}\hldef{,} \hlkwc{col} \hldef{=} \hlsng{"dodgerblue4"}\hldef{,}
+    \hlkwc{main} \hldef{=} \hlsng{"IIHF players 2001-2016 (with first component)"}\hldef{,}
+    \hlkwc{xlab} \hldef{=} \hlsng{"Height (cm)"}\hldef{,} \hlkwc{ylab} \hldef{=} \hlsng{"Weight (kg)"}\hldef{)}
+\hlkwd{abline}\hldef{(}\hlkwc{a} \hldef{=} \hlnum{0}\hldef{,} \hlkwc{b} \hldef{= ev}\hlopt{$}\hldef{vectors[}\hlnum{2}\hldef{,}\hlnum{1}\hldef{]}\hlopt{/}\hldef{ev}\hlopt{$}\hldef{vectors[}\hlnum{1}\hldef{,}\hlnum{1}\hldef{],}
+       \hlkwc{col} \hldef{=} \hlsng{"red"}\hldef{,} \hlkwc{lwd} \hldef{=} \hlnum{3}\hldef{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -2951,17 +2951,17 @@ Note that angles are in radians
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{theta} \hlkwb{=} \hlkwd{atan}\hlstd{(ev}\hlopt{$}\hlstd{vectors[}\hlnum{2}\hlstd{,}\hlnum{1}\hlstd{]}\hlopt{/}\hlstd{ev}\hlopt{$}\hlstd{vectors[}\hlnum{1}\hlstd{,}\hlnum{1}\hlstd{])}
-\hlstd{theta}
+\hldef{theta} \hlkwb{=} \hlkwd{atan}\hldef{(ev}\hlopt{$}\hldef{vectors[}\hlnum{2}\hldef{,}\hlnum{1}\hldef{]}\hlopt{/}\hldef{ev}\hlopt{$}\hldef{vectors[}\hlnum{1}\hldef{,}\hlnum{1}\hldef{])}
+\hldef{theta}
 \end{alltt}
 \begin{verbatim}
 ## [1] 0.949583
 \end{verbatim}
 \begin{alltt}
-\hlstd{R_theta} \hlkwb{=} \hlkwd{matrix}\hlstd{(}\hlkwd{c}\hlstd{(}\hlkwd{cos}\hlstd{(theta),} \hlopt{-}\hlkwd{sin}\hlstd{(theta),}
-                  \hlkwd{sin}\hlstd{(theta),} \hlkwd{cos}\hlstd{(theta)),}
-                \hlkwc{nr} \hlstd{=} \hlnum{2}\hlstd{,} \hlkwc{byrow} \hlstd{=} \hlnum{TRUE}\hlstd{)}
-\hlstd{R_theta}
+\hldef{R_theta} \hlkwb{=} \hlkwd{matrix}\hldef{(}\hlkwd{c}\hldef{(}\hlkwd{cos}\hldef{(theta),} \hlopt{-}\hlkwd{sin}\hldef{(theta),}
+                  \hlkwd{sin}\hldef{(theta),} \hlkwd{cos}\hldef{(theta)),}
+                \hlkwc{nr} \hldef{=} \hlnum{2}\hldef{,} \hlkwc{byrow} \hldef{=} \hlnum{TRUE}\hldef{)}
+\hldef{R_theta}
 \end{alltt}
 \begin{verbatim}
 ##           [,1]       [,2]
@@ -2981,15 +2981,15 @@ And now we rotate the points
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{tmp_in} \hlkwb{=} \hlkwd{matrix}\hlstd{(}\hlkwd{c}\hlstd{(data}\hlopt{$}\hlstd{weight.c, data}\hlopt{$}\hlstd{height.c),}
-                \hlkwc{nc} \hlstd{=} \hlnum{2}\hlstd{)}
-\hlstd{tmp_out} \hlkwb{=} \hlkwd{c}\hlstd{()}
-\hlkwa{for} \hlstd{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlkwd{dim}\hlstd{(tmp_in)[}\hlnum{1}\hlstd{]) \{}
-    \hlstd{tmp_out} \hlkwb{=} \hlkwd{rbind}\hlstd{(tmp_out,}
-                    \hlkwd{t}\hlstd{(R_theta} \hlopt{%*%} \hlstd{tmp_in[i,]))}
-\hlstd{\}}
-\hlstd{data}\hlopt{$}\hlstd{weight.c_r} \hlkwb{=} \hlstd{tmp_out[,}\hlnum{1}\hlstd{]}
-\hlstd{data}\hlopt{$}\hlstd{height.c_r} \hlkwb{=} \hlstd{tmp_out[,}\hlnum{2}\hlstd{]}
+\hldef{tmp_in} \hlkwb{=} \hlkwd{matrix}\hldef{(}\hlkwd{c}\hldef{(data}\hlopt{$}\hldef{weight.c, data}\hlopt{$}\hldef{height.c),}
+                \hlkwc{nc} \hldef{=} \hlnum{2}\hldef{)}
+\hldef{tmp_out} \hlkwb{=} \hlkwd{c}\hldef{()}
+\hlkwa{for} \hldef{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlkwd{dim}\hldef{(tmp_in)[}\hlnum{1}\hldef{]) \{}
+    \hldef{tmp_out} \hlkwb{=} \hlkwd{rbind}\hldef{(tmp_out,}
+                    \hlkwd{t}\hldef{(R_theta} \hlopt{%*%} \hldef{tmp_in[i,]))}
+\hldef{\}}
+\hldef{data}\hlopt{$}\hldef{weight.c_r} \hlkwb{=} \hldef{tmp_out[,}\hlnum{1}\hldef{]}
+\hldef{data}\hlopt{$}\hldef{height.c_r} \hlkwb{=} \hldef{tmp_out[,}\hlnum{2}\hldef{]}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -3010,12 +3010,12 @@ Let us plot with the same range as for the non-rotated data for the y-axis
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{plot}\hlstd{(data}\hlopt{$}\hlstd{height.c_r, data}\hlopt{$}\hlstd{weight.c_r,}
-    \hlkwc{pch} \hlstd{=} \hlnum{19}\hlstd{,} \hlkwc{col} \hlstd{=} \hlstr{"dodgerblue4"}\hlstd{,}
-    \hlkwc{xlab} \hlstd{=} \hlstr{"x-axis"}\hlstd{,} \hlkwc{ylab} \hlstd{=} \hlstr{"y-axis"}\hlstd{,}
-    \hlkwc{main} \hlstd{=} \hlstr{"IIHF players 2001-2016 (rotated to first component)"}\hlstd{,}
-    \hlkwc{ylim} \hlstd{=} \hlkwd{range}\hlstd{(data}\hlopt{$}\hlstd{weight.c))}
-\hlkwd{abline}\hlstd{(}\hlkwc{h} \hlstd{=} \hlnum{0}\hlstd{,} \hlkwc{col} \hlstd{=} \hlstr{"red"}\hlstd{,} \hlkwc{lwd} \hlstd{=} \hlnum{2}\hlstd{)}
+\hlkwd{plot}\hldef{(data}\hlopt{$}\hldef{height.c_r, data}\hlopt{$}\hldef{weight.c_r,}
+    \hlkwc{pch} \hldef{=} \hlnum{19}\hldef{,} \hlkwc{col} \hldef{=} \hlsng{"dodgerblue4"}\hldef{,}
+    \hlkwc{xlab} \hldef{=} \hlsng{"x-axis"}\hldef{,} \hlkwc{ylab} \hldef{=} \hlsng{"y-axis"}\hldef{,}
+    \hlkwc{main} \hldef{=} \hlsng{"IIHF players 2001-2016 (rotated to first component)"}\hldef{,}
+    \hlkwc{ylim} \hldef{=} \hlkwd{range}\hldef{(data}\hlopt{$}\hldef{weight.c))}
+\hlkwd{abline}\hldef{(}\hlkwc{h} \hldef{=} \hlnum{0}\hldef{,} \hlkwc{col} \hldef{=} \hlsng{"red"}\hldef{,} \hlkwc{lwd} \hldef{=} \hlnum{2}\hldef{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -3031,14 +3031,14 @@ Plot the first and second eigenvectors
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{plot}\hlstd{(data}\hlopt{$}\hlstd{height.c, data}\hlopt{$}\hlstd{weight.c,}
-    \hlkwc{pch} \hlstd{=} \hlnum{19}\hlstd{,} \hlkwc{col} \hlstd{=} \hlstr{"dodgerblue4"}\hlstd{,}
-    \hlkwc{main} \hlstd{=} \hlstr{"IIHF players 2001-2016 (with first and second components)"}\hlstd{,}
-    \hlkwc{xlab} \hlstd{=} \hlstr{"Height (cm)"}\hlstd{,} \hlkwc{ylab} \hlstd{=} \hlstr{"Weight (kg)"}\hlstd{)}
-\hlkwd{abline}\hlstd{(}\hlkwc{a} \hlstd{=} \hlnum{0}\hlstd{,} \hlkwc{b} \hlstd{= ev}\hlopt{$}\hlstd{vectors[}\hlnum{2}\hlstd{,}\hlnum{1}\hlstd{]}\hlopt{/}\hlstd{ev}\hlopt{$}\hlstd{vectors[}\hlnum{1}\hlstd{,}\hlnum{1}\hlstd{],}
-       \hlkwc{col} \hlstd{=} \hlstr{"red"}\hlstd{,} \hlkwc{lwd} \hlstd{=} \hlnum{3}\hlstd{)}
-\hlkwd{abline}\hlstd{(}\hlkwc{a} \hlstd{=} \hlnum{0}\hlstd{,} \hlkwc{b} \hlstd{= ev}\hlopt{$}\hlstd{vectors[}\hlnum{2}\hlstd{,}\hlnum{2}\hlstd{]}\hlopt{/}\hlstd{ev}\hlopt{$}\hlstd{vectors[}\hlnum{1}\hlstd{,}\hlnum{2}\hlstd{],}
-       \hlkwc{col} \hlstd{=} \hlstr{"darkgreen"}\hlstd{,} \hlkwc{lwd} \hlstd{=} \hlnum{3}\hlstd{)}
+\hlkwd{plot}\hldef{(data}\hlopt{$}\hldef{height.c, data}\hlopt{$}\hldef{weight.c,}
+    \hlkwc{pch} \hldef{=} \hlnum{19}\hldef{,} \hlkwc{col} \hldef{=} \hlsng{"dodgerblue4"}\hldef{,}
+    \hlkwc{main} \hldef{=} \hlsng{"IIHF players 2001-2016 (with first and second components)"}\hldef{,}
+    \hlkwc{xlab} \hldef{=} \hlsng{"Height (cm)"}\hldef{,} \hlkwc{ylab} \hldef{=} \hlsng{"Weight (kg)"}\hldef{)}
+\hlkwd{abline}\hldef{(}\hlkwc{a} \hldef{=} \hlnum{0}\hldef{,} \hlkwc{b} \hldef{= ev}\hlopt{$}\hldef{vectors[}\hlnum{2}\hldef{,}\hlnum{1}\hldef{]}\hlopt{/}\hldef{ev}\hlopt{$}\hldef{vectors[}\hlnum{1}\hldef{,}\hlnum{1}\hldef{],}
+       \hlkwc{col} \hldef{=} \hlsng{"red"}\hldef{,} \hlkwc{lwd} \hldef{=} \hlnum{3}\hldef{)}
+\hlkwd{abline}\hldef{(}\hlkwc{a} \hldef{=} \hlnum{0}\hldef{,} \hlkwc{b} \hldef{= ev}\hlopt{$}\hldef{vectors[}\hlnum{2}\hldef{,}\hlnum{2}\hldef{]}\hlopt{/}\hldef{ev}\hlopt{$}\hldef{vectors[}\hlnum{1}\hldef{,}\hlnum{2}\hldef{],}
+       \hlkwc{col} \hldef{=} \hlsng{"darkgreen"}\hldef{,} \hlkwc{lwd} \hldef{=} \hlnum{3}\hldef{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -3064,20 +3064,20 @@ We then normalise the resulting vectors
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{red_line} \hlkwb{=} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{, ev}\hlopt{$}\hlstd{vectors[}\hlnum{2}\hlstd{,}\hlnum{1}\hlstd{]}\hlopt{/}\hlstd{ev}\hlopt{$}\hlstd{vectors[}\hlnum{1}\hlstd{,}\hlnum{1}\hlstd{])}
-\hlstd{red_line} \hlkwb{=} \hlstd{red_line}\hlopt{/}\hlkwd{sqrt}\hlstd{(}\hlkwd{sum}\hlstd{(red_line}\hlopt{^}\hlnum{2}\hlstd{))}
-\hlstd{green_line} \hlkwb{=} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{, ev}\hlopt{$}\hlstd{vectors[}\hlnum{2}\hlstd{,}\hlnum{2}\hlstd{]}\hlopt{/}\hlstd{ev}\hlopt{$}\hlstd{vectors[}\hlnum{1}\hlstd{,}\hlnum{2}\hlstd{])}
-\hlstd{green_line} \hlkwb{=} \hlstd{green_line}\hlopt{/}\hlkwd{sqrt}\hlstd{(}\hlkwd{sum}\hlstd{(green_line}\hlopt{^}\hlnum{2}\hlstd{))}
-\hlstd{augmented_M} \hlkwb{=} \hlkwd{cbind}\hlstd{(red_line,green_line,} \hlkwd{diag}\hlstd{(}\hlnum{2}\hlstd{))}
-\hlstd{P} \hlkwb{=} \hlkwd{rref}\hlstd{(augmented_M)[,}\hlnum{3}\hlopt{:}\hlnum{4}\hlstd{]}
+\hldef{red_line} \hlkwb{=} \hlkwd{c}\hldef{(}\hlnum{1}\hldef{, ev}\hlopt{$}\hldef{vectors[}\hlnum{2}\hldef{,}\hlnum{1}\hldef{]}\hlopt{/}\hldef{ev}\hlopt{$}\hldef{vectors[}\hlnum{1}\hldef{,}\hlnum{1}\hldef{])}
+\hldef{red_line} \hlkwb{=} \hldef{red_line}\hlopt{/}\hlkwd{sqrt}\hldef{(}\hlkwd{sum}\hldef{(red_line}\hlopt{^}\hlnum{2}\hldef{))}
+\hldef{green_line} \hlkwb{=} \hlkwd{c}\hldef{(}\hlnum{1}\hldef{, ev}\hlopt{$}\hldef{vectors[}\hlnum{2}\hldef{,}\hlnum{2}\hldef{]}\hlopt{/}\hldef{ev}\hlopt{$}\hldef{vectors[}\hlnum{1}\hldef{,}\hlnum{2}\hldef{])}
+\hldef{green_line} \hlkwb{=} \hldef{green_line}\hlopt{/}\hlkwd{sqrt}\hldef{(}\hlkwd{sum}\hldef{(green_line}\hlopt{^}\hlnum{2}\hldef{))}
+\hldef{augmented_M} \hlkwb{=} \hlkwd{cbind}\hldef{(red_line,green_line,} \hlkwd{diag}\hldef{(}\hlnum{2}\hldef{))}
+\hldef{P} \hlkwb{=} \hlkwd{rref}\hldef{(augmented_M)[,}\hlnum{3}\hlopt{:}\hlnum{4}\hldef{]}
 
-\hlstd{tmp_in} \hlkwb{=} \hlkwd{matrix}\hlstd{(}\hlkwd{c}\hlstd{(data}\hlopt{$}\hlstd{weight.c, data}\hlopt{$}\hlstd{height.c),} \hlkwc{nc} \hlstd{=} \hlnum{2}\hlstd{)}
-\hlstd{tmp_out} \hlkwb{=} \hlkwd{c}\hlstd{()}
-\hlkwa{for} \hlstd{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlkwd{dim}\hlstd{(tmp_in)[}\hlnum{1}\hlstd{]) \{}
-    \hlstd{tmp_out} \hlkwb{=} \hlkwd{rbind}\hlstd{(tmp_out,} \hlkwd{t}\hlstd{(P} \hlopt{%*%} \hlstd{tmp_in[i,]))}
-\hlstd{\}}
-\hlstd{data}\hlopt{$}\hlstd{weight.c_r2} \hlkwb{=} \hlstd{tmp_out[,}\hlnum{1}\hlstd{]}
-\hlstd{data}\hlopt{$}\hlstd{height.c_r2} \hlkwb{=} \hlstd{tmp_out[,}\hlnum{2}\hlstd{]}
+\hldef{tmp_in} \hlkwb{=} \hlkwd{matrix}\hldef{(}\hlkwd{c}\hldef{(data}\hlopt{$}\hldef{weight.c, data}\hlopt{$}\hldef{height.c),} \hlkwc{nc} \hldef{=} \hlnum{2}\hldef{)}
+\hldef{tmp_out} \hlkwb{=} \hlkwd{c}\hldef{()}
+\hlkwa{for} \hldef{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlkwd{dim}\hldef{(tmp_in)[}\hlnum{1}\hldef{]) \{}
+    \hldef{tmp_out} \hlkwb{=} \hlkwd{rbind}\hldef{(tmp_out,} \hlkwd{t}\hldef{(P} \hlopt{%*%} \hldef{tmp_in[i,]))}
+\hldef{\}}
+\hldef{data}\hlopt{$}\hldef{weight.c_r2} \hlkwb{=} \hldef{tmp_out[,}\hlnum{1}\hldef{]}
+\hldef{data}\hlopt{$}\hldef{height.c_r2} \hlkwb{=} \hldef{tmp_out[,}\hlnum{2}\hldef{]}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -3091,8 +3091,8 @@ Now do things ``properly''
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{GS} \hlkwb{=} \hlstd{pracma}\hlopt{::}\hlkwd{gramSchmidt}\hlstd{(}\hlkwc{A} \hlstd{= ev}\hlopt{$}\hlstd{vectors,} \hlkwc{tol} \hlstd{=} \hlnum{1e-10}\hlstd{)}
-\hlstd{GS}
+\hldef{GS} \hlkwb{=} \hldef{pracma}\hlopt{::}\hlkwd{gramSchmidt}\hldef{(}\hlkwc{A} \hldef{= ev}\hlopt{$}\hldef{vectors,} \hlkwc{tol} \hldef{=} \hlnum{1e-10}\hldef{)}
+\hldef{GS}
 \end{alltt}
 \begin{verbatim}
 ## $Q
@@ -3116,8 +3116,8 @@ Now recall we saw a theorem that told us how to construct a new basis..
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{A}\hlkwb{=}\hlkwd{matrix}\hlstd{(}\hlkwd{c}\hlstd{(GS}\hlopt{$}\hlstd{Q,}\hlnum{1}\hlstd{,}\hlnum{0}\hlstd{,}\hlnum{0}\hlstd{,}\hlnum{1}\hlstd{),} \hlkwc{nr} \hlstd{=} \hlnum{2}\hlstd{)}
-\hlstd{A}
+\hldef{A}\hlkwb{=}\hlkwd{matrix}\hldef{(}\hlkwd{c}\hldef{(GS}\hlopt{$}\hldef{Q,}\hlnum{1}\hldef{,}\hlnum{0}\hldef{,}\hlnum{0}\hldef{,}\hlnum{1}\hldef{),} \hlkwc{nr} \hldef{=} \hlnum{2}\hldef{)}
+\hldef{A}
 \end{alltt}
 \begin{verbatim}
 ##           [,1]       [,2] [,3] [,4]
@@ -3125,7 +3125,7 @@ Now recall we saw a theorem that told us how to construct a new basis..
 ## [2,] 0.8131729  0.5820222    0    1
 \end{verbatim}
 \begin{alltt}
-\hlstd{pracma}\hlopt{::}\hlkwd{rref}\hlstd{(A)}
+\hldef{pracma}\hlopt{::}\hlkwd{rref}\hldef{(A)}
 \end{alltt}
 \begin{verbatim}
 ##      [,1] [,2]       [,3]      [,4]
@@ -3140,7 +3140,7 @@ Now recall we saw a theorem that told us how to construct a new basis..
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{P} \hlkwb{=} \hlstd{pracma}\hlopt{::}\hlkwd{rref}\hlstd{(A)[,}\hlkwd{c}\hlstd{(}\hlnum{3}\hlstd{,}\hlnum{4}\hlstd{)]}
+\hldef{P} \hlkwb{=} \hldef{pracma}\hlopt{::}\hlkwd{rref}\hldef{(A)[,}\hlkwd{c}\hldef{(}\hlnum{3}\hldef{,}\hlnum{4}\hldef{)]}
 \end{alltt}
 \begin{verbatim}
 ##            [,1]      [,2]
@@ -3148,7 +3148,7 @@ Now recall we saw a theorem that told us how to construct a new basis..
 ## [2,] -0.8131729 0.5820222
 \end{verbatim}
 \begin{alltt}
-\hlstd{X.new} \hlkwb{=} \hlstd{X} \hlopt{%*%} \hlkwd{t}\hlstd{(P)}
+\hldef{X.new} \hlkwb{=} \hldef{X} \hlopt{%*%} \hlkwd{t}\hldef{(P)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -3177,10 +3177,10 @@ The file is an excel table, so we need to use a library for doing that
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{download.file}\hlstd{(}\hlkwc{url} \hlstd{=} \hlstr{"https://repository.lboro.ac.uk/ndownloader/files/14015774"}\hlstd{,}
-             \hlkwc{destfile} \hlstd{=} \hlstr{"../CODE/fingerprint_data.xlsx"}\hlstd{)}
-\hlstd{data} \hlkwb{=} \hlstd{openxlsx}\hlopt{::}\hlkwd{read.xlsx}\hlstd{(}\hlstr{"../CODE/fingerprint_data.xlsx"}\hlstd{)}
-\hlkwd{head}\hlstd{(data,} \hlkwc{n}\hlstd{=}\hlnum{3}\hlstd{)}
+\hlkwd{download.file}\hldef{(}\hlkwc{url} \hldef{=} \hlsng{"https://repository.lboro.ac.uk/ndownloader/files/14015774"}\hldef{,}
+             \hlkwc{destfile} \hldef{=} \hlsng{"../CODE/fingerprint_data.xlsx"}\hldef{)}
+\hldef{data} \hlkwb{=} \hldef{openxlsx}\hlopt{::}\hlkwd{read.xlsx}\hldef{(}\hlsng{"../CODE/fingerprint_data.xlsx"}\hldef{)}
+\hlkwd{head}\hldef{(data,} \hlkwc{n}\hldef{=}\hlnum{3}\hldef{)}
 \end{alltt}
 \begin{verbatim}
 ##   Participant.Number Gender Age Dominant.Hand
@@ -3215,11 +3215,11 @@ Let us rework the names of columns a bit, for convenience. Let us also get rid o
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{data} \hlkwb{=} \hlstd{data[,}\hlnum{2}\hlopt{:}\hlkwd{dim}\hlstd{(data)[}\hlnum{2}\hlstd{]]}
-\hlkwd{colnames}\hlstd{(data)} \hlkwb{=} \hlkwd{c}\hlstd{(}\hlstr{"gender"}\hlstd{,} \hlstr{"age"}\hlstd{,} \hlstr{"handedness"}\hlstd{,} \hlstr{"height"}\hlstd{,} \hlstr{"weight"}\hlstd{,}
-                  \hlstr{"fing_temp"}\hlstd{,} \hlstr{"fing_height"}\hlstd{,} \hlstr{"fing_width"}\hlstd{,}
-                  \hlstr{"fing_area"}\hlstd{,} \hlstr{"fing_circ"}\hlstd{)}
-\hlkwd{head}\hlstd{(data,} \hlkwc{n}\hlstd{=}\hlnum{3}\hlstd{)}
+\hldef{data} \hlkwb{=} \hldef{data[,}\hlnum{2}\hlopt{:}\hlkwd{dim}\hldef{(data)[}\hlnum{2}\hldef{]]}
+\hlkwd{colnames}\hldef{(data)} \hlkwb{=} \hlkwd{c}\hldef{(}\hlsng{"gender"}\hldef{,} \hlsng{"age"}\hldef{,} \hlsng{"handedness"}\hldef{,} \hlsng{"height"}\hldef{,} \hlsng{"weight"}\hldef{,}
+                  \hlsng{"fing_temp"}\hldef{,} \hlsng{"fing_height"}\hldef{,} \hlsng{"fing_width"}\hldef{,}
+                  \hlsng{"fing_area"}\hldef{,} \hlsng{"fing_circ"}\hldef{)}
+\hlkwd{head}\hldef{(data,} \hlkwc{n}\hldef{=}\hlnum{3}\hldef{)}
 \end{alltt}
 \begin{verbatim}
 ##   gender age handedness   height weight fing_temp fing_height fing_width
@@ -3251,16 +3251,16 @@ We make new columns with the prefix \code{.c}, just to still have the initial da
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{data} \hlkwb{=} \hlstd{data[}\hlkwd{complete.cases}\hlstd{(data),]}
-\hlstd{to_centre} \hlkwb{=} \hlkwd{c}\hlstd{(}\hlstr{"age"}\hlstd{,} \hlstr{"height"}\hlstd{,}
-              \hlstr{"weight"}\hlstd{,} \hlstr{"fing_temp"}\hlstd{,}
-              \hlstr{"fing_height"}\hlstd{,} \hlstr{"fing_width"}\hlstd{,}
-              \hlstr{"fing_area"}\hlstd{,} \hlstr{"fing_circ"}\hlstd{)}
-\hlkwa{for} \hlstd{(c} \hlkwa{in} \hlstd{to_centre) \{}
-    \hlstd{new_c} \hlkwb{=} \hlkwd{sprintf}\hlstd{(}\hlstr{"%s.c"}\hlstd{, c)}
-    \hlstd{data[[new_c]]} \hlkwb{=} \hlstd{data[[c]]} \hlopt{-} \hlkwd{mean}\hlstd{(data[[c]],} \hlkwc{na.rm} \hlstd{=} \hlnum{TRUE}\hlstd{)}
-\hlstd{\}}
-\hlkwd{head}\hlstd{(data)}
+\hldef{data} \hlkwb{=} \hldef{data[}\hlkwd{complete.cases}\hldef{(data),]}
+\hldef{to_centre} \hlkwb{=} \hlkwd{c}\hldef{(}\hlsng{"age"}\hldef{,} \hlsng{"height"}\hldef{,}
+              \hlsng{"weight"}\hldef{,} \hlsng{"fing_temp"}\hldef{,}
+              \hlsng{"fing_height"}\hldef{,} \hlsng{"fing_width"}\hldef{,}
+              \hlsng{"fing_area"}\hldef{,} \hlsng{"fing_circ"}\hldef{)}
+\hlkwa{for} \hldef{(c} \hlkwa{in} \hldef{to_centre) \{}
+    \hldef{new_c} \hlkwb{=} \hlkwd{sprintf}\hldef{(}\hlsng{"%s.c"}\hldef{, c)}
+    \hldef{data[[new_c]]} \hlkwb{=} \hldef{data[[c]]} \hlopt{-} \hlkwd{mean}\hldef{(data[[c]],} \hlkwc{na.rm} \hldef{=} \hlnum{TRUE}\hldef{)}
+\hldef{\}}
+\hlkwd{head}\hldef{(data)}
 \end{alltt}
 \begin{verbatim}
 ##    gender age handedness   height   weight fing_temp fing_height fing_width
@@ -3295,9 +3295,9 @@ We make new columns with the prefix \code{.c}, just to still have the initial da
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{X} \hlkwb{=} \hlkwd{as.matrix}\hlstd{(data[, to_centre])}
-\hlstd{S} \hlkwb{=} \hlnum{1}\hlopt{/}\hlstd{(}\hlkwd{dim}\hlstd{(X)[}\hlnum{1}\hlstd{]}\hlopt{-}\hlnum{1}\hlstd{)}\hlopt{*}\hlkwd{t}\hlstd{(X)} \hlopt{%*%} \hlstd{X}
-\hlstd{S}
+\hldef{X} \hlkwb{=} \hlkwd{as.matrix}\hldef{(data[, to_centre])}
+\hldef{S} \hlkwb{=} \hlnum{1}\hlopt{/}\hldef{(}\hlkwd{dim}\hldef{(X)[}\hlnum{1}\hldef{]}\hlopt{-}\hlnum{1}\hldef{)}\hlopt{*}\hlkwd{t}\hldef{(X)} \hlopt{%*%} \hldef{X}
+\hldef{S}
 \end{alltt}
 \begin{verbatim}
 ##                   age    height    weight fing_temp fing_height fing_width
@@ -3330,8 +3330,8 @@ We make new columns with the prefix \code{.c}, just to still have the initial da
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{ev} \hlkwb{=} \hlkwd{eigen}\hlstd{(S)}
-\hlstd{ev}\hlopt{$}\hlstd{values}
+\hldef{ev} \hlkwb{=} \hlkwd{eigen}\hldef{(S)}
+\hldef{ev}\hlopt{$}\hldef{values}
 \end{alltt}
 \begin{verbatim}
 ## [1] 9.730867e+04 4.982986e+02 1.669174e+02 2.565635e+01 1.349931e+01
@@ -3345,7 +3345,7 @@ Let us add the singular values to \code{ev}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{ev}\hlopt{$}\hlstd{sing_values} \hlkwb{=} \hlkwd{sqrt}\hlstd{(ev}\hlopt{$}\hlstd{values)}
+\hldef{ev}\hlopt{$}\hldef{sing_values} \hlkwb{=} \hlkwd{sqrt}\hldef{(ev}\hlopt{$}\hldef{values)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -3357,8 +3357,8 @@ Let us add the singular values to \code{ev}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{GS} \hlkwb{=} \hlstd{pracma}\hlopt{::}\hlkwd{gramSchmidt}\hlstd{(}\hlkwc{A} \hlstd{= ev}\hlopt{$}\hlstd{vectors)}
-\hlstd{GS}\hlopt{$}\hlstd{Q}
+\hldef{GS} \hlkwb{=} \hldef{pracma}\hlopt{::}\hlkwd{gramSchmidt}\hldef{(}\hlkwc{A} \hldef{= ev}\hlopt{$}\hldef{vectors)}
+\hldef{GS}\hlopt{$}\hldef{Q}
 \end{alltt}
 \begin{verbatim}
 ##             [,1]        [,2]         [,3]         [,4]        [,5]        [,6]
@@ -3382,13 +3382,13 @@ Let us add the singular values to \code{ev}
 \end{verbatim}
 \begin{alltt}
 \hlcom{# Just to check that Q is indeed with normalised columns}
-\hlkwd{colSums}\hlstd{(GS}\hlopt{$}\hlstd{Q[,}\hlnum{1}\hlopt{:}\hlkwd{dim}\hlstd{(GS}\hlopt{$}\hlstd{Q)[}\hlnum{2}\hlstd{]]}\hlopt{^}\hlnum{2}\hlstd{)}
+\hlkwd{colSums}\hldef{(GS}\hlopt{$}\hldef{Q[,}\hlnum{1}\hlopt{:}\hlkwd{dim}\hldef{(GS}\hlopt{$}\hldef{Q)[}\hlnum{2}\hldef{]]}\hlopt{^}\hlnum{2}\hldef{)}
 \end{alltt}
 \begin{verbatim}
 ## [1] 1 1 1 1 1 1 1 1
 \end{verbatim}
 \begin{alltt}
-\hlstd{GS}\hlopt{$}\hlstd{Q[,}\hlnum{1}\hlstd{]} \hlopt{%*%} \hlstd{GS}\hlopt{$}\hlstd{Q[,}\hlnum{2}\hlstd{]}
+\hldef{GS}\hlopt{$}\hldef{Q[,}\hlnum{1}\hldef{]} \hlopt{%*%} \hldef{GS}\hlopt{$}\hldef{Q[,}\hlnum{2}\hldef{]}
 \end{alltt}
 \begin{verbatim}
 ##               [,1]
@@ -3409,12 +3409,12 @@ Now recall we saw a theorem that told us how to construct a new basis..
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlcom{# Make an identity matrix}
-\hlstd{Id} \hlkwb{=} \hlkwd{diag}\hlstd{(}\hlkwd{dim}\hlstd{(GS}\hlopt{$}\hlstd{Q)[}\hlnum{1}\hlstd{])}
+\hldef{Id} \hlkwb{=} \hlkwd{diag}\hldef{(}\hlkwd{dim}\hldef{(GS}\hlopt{$}\hldef{Q)[}\hlnum{1}\hldef{])}
 \hlcom{# Make the augmented matrix}
-\hlstd{A} \hlkwb{=} \hlkwd{cbind}\hlstd{(GS}\hlopt{$}\hlstd{Q, Id)}
+\hldef{A} \hlkwb{=} \hlkwd{cbind}\hldef{(GS}\hlopt{$}\hldef{Q, Id)}
 \hlcom{# Compute the RREF and extract the relevant matrix}
-\hlstd{P} \hlkwb{=} \hlstd{pracma}\hlopt{::}\hlkwd{rref}\hlstd{(A)[,(}\hlkwd{dim}\hlstd{(GS}\hlopt{$}\hlstd{Q)[}\hlnum{2}\hlstd{]}\hlopt{+}\hlnum{1}\hlstd{)}\hlopt{:}\hlkwd{dim}\hlstd{(A)[}\hlnum{2}\hlstd{]]}
-\hlstd{X.new} \hlkwb{=} \hlstd{X} \hlopt{%*%} \hlkwd{t}\hlstd{(P)}
+\hldef{P} \hlkwb{=} \hldef{pracma}\hlopt{::}\hlkwd{rref}\hldef{(A)[,(}\hlkwd{dim}\hldef{(GS}\hlopt{$}\hldef{Q)[}\hlnum{2}\hldef{]}\hlopt{+}\hlnum{1}\hldef{)}\hlopt{:}\hlkwd{dim}\hldef{(A)[}\hlnum{2}\hldef{]]}
+\hldef{X.new} \hlkwb{=} \hldef{X} \hlopt{%*%} \hlkwd{t}\hldef{(P)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -3428,8 +3428,8 @@ Use the built in function \code{prcomp} or \code{PCA} from the \code{FactoMineR}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlcom{# data.pca = prcomp(X, center = TRUE, scale = TRUE)}
-\hlstd{data.pca} \hlkwb{=} \hlkwd{PCA}\hlstd{(X,} \hlkwc{scale.unit} \hlstd{=} \hlnum{TRUE}\hlstd{,} \hlkwc{graph} \hlstd{=} \hlnum{FALSE}\hlstd{)}
-\hlkwd{summary}\hlstd{(data.pca)}
+\hldef{data.pca} \hlkwb{=} \hlkwd{PCA}\hldef{(X,} \hlkwc{scale.unit} \hldef{=} \hlnum{TRUE}\hldef{,} \hlkwc{graph} \hldef{=} \hlnum{FALSE}\hldef{)}
+\hlkwd{summary}\hldef{(data.pca)}
 \end{alltt}
 \begin{verbatim}
 ## 
@@ -3504,14 +3504,14 @@ We check this (approximately) by comparing with the singular values we computed
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{ev}\hlopt{$}\hlstd{sing_values}\hlopt{/}\hlstd{(}\hlkwd{sum}\hlstd{(ev}\hlopt{$}\hlstd{sing_values))}
+\hldef{ev}\hlopt{$}\hldef{sing_values}\hlopt{/}\hldef{(}\hlkwd{sum}\hldef{(ev}\hlopt{$}\hldef{sing_values))}
 \end{alltt}
 \begin{verbatim}
 ## [1] 0.870036273 0.062259612 0.036033997 0.014127294 0.010247489 0.003952479
 ## [7] 0.002241321 0.001101536
 \end{verbatim}
 \begin{alltt}
-\hlkwd{cumsum}\hlstd{(ev}\hlopt{$}\hlstd{sing_values)}\hlopt{/}\hlstd{(}\hlkwd{sum}\hlstd{(ev}\hlopt{$}\hlstd{sing_values))}
+\hlkwd{cumsum}\hldef{(ev}\hlopt{$}\hldef{sing_values)}\hlopt{/}\hldef{(}\hlkwd{sum}\hldef{(ev}\hlopt{$}\hldef{sing_values))}
 \end{alltt}
 \begin{verbatim}
 ## [1] 0.8700363 0.9322959 0.9683299 0.9824572 0.9927047 0.9966571 0.9988985
@@ -3548,7 +3548,7 @@ We check this (approximately) by comparing with the singular values we computed
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{plot.PCA}\hlstd{(data.pca,} \hlkwc{axes} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{2}\hlstd{),} \hlkwc{choix} \hlstd{=} \hlstr{"ind"}\hlstd{,} \hlkwc{habillage} \hlstd{=} \hlnum{4}\hlstd{)}
+\hlkwd{plot.PCA}\hldef{(data.pca,} \hlkwc{axes} \hldef{=} \hlkwd{c}\hldef{(}\hlnum{1}\hldef{,}\hlnum{2}\hldef{),} \hlkwc{choix} \hldef{=} \hlsng{"ind"}\hldef{,} \hlkwc{habillage} \hldef{=} \hlnum{4}\hldef{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -3868,11 +3868,11 @@ Example from \href{https://www.datacamp.com/tutorial/support-vector-machines-r}{
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{set.seed}\hlstd{(}\hlnum{10111}\hlstd{)}
-\hlstd{x} \hlkwb{=} \hlkwd{matrix}\hlstd{(}\hlkwd{rnorm}\hlstd{(}\hlnum{40}\hlstd{),} \hlnum{20}\hlstd{,} \hlnum{2}\hlstd{)}
-\hlstd{y} \hlkwb{=} \hlkwd{rep}\hlstd{(}\hlkwd{c}\hlstd{(}\hlopt{-}\hlnum{1}\hlstd{,} \hlnum{1}\hlstd{),} \hlkwd{c}\hlstd{(}\hlnum{10}\hlstd{,} \hlnum{10}\hlstd{))}
-\hlstd{x[y} \hlopt{==} \hlnum{1}\hlstd{,]} \hlkwb{=} \hlstd{x[y} \hlopt{==} \hlnum{1}\hlstd{,]} \hlopt{+} \hlnum{1}
-\hlkwd{plot}\hlstd{(x,} \hlkwc{col} \hlstd{= y} \hlopt{+} \hlnum{3}\hlstd{,} \hlkwc{pch} \hlstd{=} \hlnum{19}\hlstd{)}
+\hlkwd{set.seed}\hldef{(}\hlnum{10111}\hldef{)}
+\hldef{x} \hlkwb{=} \hlkwd{matrix}\hldef{(}\hlkwd{rnorm}\hldef{(}\hlnum{40}\hldef{),} \hlnum{20}\hldef{,} \hlnum{2}\hldef{)}
+\hldef{y} \hlkwb{=} \hlkwd{rep}\hldef{(}\hlkwd{c}\hldef{(}\hlopt{-}\hlnum{1}\hldef{,} \hlnum{1}\hldef{),} \hlkwd{c}\hldef{(}\hlnum{10}\hldef{,} \hlnum{10}\hldef{))}
+\hldef{x[y} \hlopt{==} \hlnum{1}\hldef{,]} \hlkwb{=} \hldef{x[y} \hlopt{==} \hlnum{1}\hldef{,]} \hlopt{+} \hlnum{1}
+\hlkwd{plot}\hldef{(x,} \hlkwc{col} \hldef{= y} \hlopt{+} \hlnum{3}\hldef{,} \hlkwc{pch} \hldef{=} \hlnum{19}\hldef{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -3884,9 +3884,9 @@ Example from \href{https://www.datacamp.com/tutorial/support-vector-machines-r}{
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{dat} \hlkwb{=} \hlkwd{data.frame}\hlstd{(x,} \hlkwc{y} \hlstd{=} \hlkwd{as.factor}\hlstd{(y))}
-\hlstd{svmfit} \hlkwb{=} \hlkwd{svm}\hlstd{(y} \hlopt{~} \hlstd{.,} \hlkwc{data} \hlstd{= dat,} \hlkwc{kernel} \hlstd{=} \hlstr{"linear"}\hlstd{,} \hlkwc{cost} \hlstd{=} \hlnum{10}\hlstd{,} \hlkwc{scale} \hlstd{=} \hlnum{FALSE}\hlstd{)}
-\hlkwd{print}\hlstd{(svmfit)}
+\hldef{dat} \hlkwb{=} \hlkwd{data.frame}\hldef{(x,} \hlkwc{y} \hldef{=} \hlkwd{as.factor}\hldef{(y))}
+\hldef{svmfit} \hlkwb{=} \hlkwd{svm}\hldef{(y} \hlopt{~} \hldef{.,} \hlkwc{data} \hldef{= dat,} \hlkwc{kernel} \hldef{=} \hlsng{"linear"}\hldef{,} \hlkwc{cost} \hldef{=} \hlnum{10}\hldef{,} \hlkwc{scale} \hldef{=} \hlnum{FALSE}\hldef{)}
+\hlkwd{print}\hldef{(svmfit)}
 \end{alltt}
 \begin{verbatim}
 ## 
@@ -3902,7 +3902,7 @@ Example from \href{https://www.datacamp.com/tutorial/support-vector-machines-r}{
 ## Number of Support Vectors:  6
 \end{verbatim}
 \begin{alltt}
-\hlkwd{plot}\hlstd{(svmfit, dat)}
+\hlkwd{plot}\hldef{(svmfit, dat)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -3915,33 +3915,17 @@ Example from \href{https://www.datacamp.com/tutorial/support-vector-machines-r}{
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{make.grid} \hlkwb{=} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{,} \hlkwc{n} \hlstd{=} \hlnum{75}\hlstd{) \{}
-  \hlstd{grange} \hlkwb{=} \hlkwd{apply}\hlstd{(x,} \hlnum{2}\hlstd{, range)}
-  \hlstd{x1} \hlkwb{=} \hlkwd{seq}\hlstd{(}\hlkwc{from} \hlstd{= grange[}\hlnum{1}\hlstd{,}\hlnum{1}\hlstd{],} \hlkwc{to} \hlstd{= grange[}\hlnum{2}\hlstd{,}\hlnum{1}\hlstd{],} \hlkwc{length} \hlstd{= n)}
-  \hlstd{x2} \hlkwb{=} \hlkwd{seq}\hlstd{(}\hlkwc{from} \hlstd{= grange[}\hlnum{1}\hlstd{,}\hlnum{2}\hlstd{],} \hlkwc{to} \hlstd{= grange[}\hlnum{2}\hlstd{,}\hlnum{2}\hlstd{],} \hlkwc{length} \hlstd{= n)}
-  \hlkwd{expand.grid}\hlstd{(}\hlkwc{X1} \hlstd{= x1,} \hlkwc{X2} \hlstd{= x2)}
-\hlstd{\}}
-\hlstd{xgrid} \hlkwb{=} \hlkwd{make.grid}\hlstd{(x)}
-\hlstd{xgrid[}\hlnum{1}\hlopt{:}\hlnum{10}\hlstd{,]}
-\end{alltt}
-\begin{verbatim}
-##            X1         X2
-## 1  -1.3406379 -0.5400074
-## 2  -1.2859572 -0.5400074
-## 3  -1.2312766 -0.5400074
-## 4  -1.1765959 -0.5400074
-## 5  -1.1219153 -0.5400074
-## 6  -1.0672346 -0.5400074
-## 7  -1.0125540 -0.5400074
-## 8  -0.9578733 -0.5400074
-## 9  -0.9031927 -0.5400074
-## 10 -0.8485120 -0.5400074
-\end{verbatim}
-\begin{alltt}
-\hlstd{ygrid} \hlkwb{=} \hlkwd{predict}\hlstd{(svmfit, xgrid)}
-\hlkwd{plot}\hlstd{(xgrid,} \hlkwc{col} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"red"}\hlstd{,}\hlstr{"blue"}\hlstd{)[}\hlkwd{as.numeric}\hlstd{(ygrid)],} \hlkwc{pch} \hlstd{=} \hlnum{20}\hlstd{,} \hlkwc{cex} \hlstd{=} \hlnum{.2}\hlstd{)}
-\hlkwd{points}\hlstd{(x,} \hlkwc{col} \hlstd{= y} \hlopt{+} \hlnum{3}\hlstd{,} \hlkwc{pch} \hlstd{=} \hlnum{19}\hlstd{)}
-\hlkwd{points}\hlstd{(x[svmfit}\hlopt{$}\hlstd{index,],} \hlkwc{pch} \hlstd{=} \hlnum{5}\hlstd{,} \hlkwc{cex} \hlstd{=} \hlnum{2}\hlstd{)}
+\hldef{make.grid} \hlkwb{=} \hlkwa{function}\hldef{(}\hlkwc{x}\hldef{,} \hlkwc{n} \hldef{=} \hlnum{75}\hldef{) \{}
+  \hldef{grange} \hlkwb{=} \hlkwd{apply}\hldef{(x,} \hlnum{2}\hldef{, range)}
+  \hldef{x1} \hlkwb{=} \hlkwd{seq}\hldef{(}\hlkwc{from} \hldef{= grange[}\hlnum{1}\hldef{,}\hlnum{1}\hldef{],} \hlkwc{to} \hldef{= grange[}\hlnum{2}\hldef{,}\hlnum{1}\hldef{],} \hlkwc{length} \hldef{= n)}
+  \hldef{x2} \hlkwb{=} \hlkwd{seq}\hldef{(}\hlkwc{from} \hldef{= grange[}\hlnum{1}\hldef{,}\hlnum{2}\hldef{],} \hlkwc{to} \hldef{= grange[}\hlnum{2}\hldef{,}\hlnum{2}\hldef{],} \hlkwc{length} \hldef{= n)}
+  \hlkwd{expand.grid}\hldef{(}\hlkwc{X1} \hldef{= x1,} \hlkwc{X2} \hldef{= x2)}
+\hldef{\}}
+\hldef{xgrid} \hlkwb{=} \hlkwd{make.grid}\hldef{(x)}
+\hldef{ygrid} \hlkwb{=} \hlkwd{predict}\hldef{(svmfit, xgrid)}
+\hlkwd{plot}\hldef{(xgrid,} \hlkwc{col} \hldef{=} \hlkwd{c}\hldef{(}\hlsng{"red"}\hldef{,}\hlsng{"blue"}\hldef{)[}\hlkwd{as.numeric}\hldef{(ygrid)],} \hlkwc{pch} \hldef{=} \hlnum{20}\hldef{,} \hlkwc{cex} \hldef{=} \hlnum{.2}\hldef{)}
+\hlkwd{points}\hldef{(x,} \hlkwc{col} \hldef{= y} \hlopt{+} \hlnum{3}\hldef{,} \hlkwc{pch} \hldef{=} \hlnum{19}\hldef{)}
+\hlkwd{points}\hldef{(x[svmfit}\hlopt{$}\hldef{index,],} \hlkwc{pch} \hldef{=} \hlnum{5}\hldef{,} \hlkwc{cex} \hldef{=} \hlnum{2}\hldef{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -3953,14 +3937,14 @@ Example from \href{https://www.datacamp.com/tutorial/support-vector-machines-r}{
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{beta} \hlkwb{=} \hlkwd{drop}\hlstd{(}\hlkwd{t}\hlstd{(svmfit}\hlopt{$}\hlstd{coefs)}\hlopt{%*%}\hlstd{x[svmfit}\hlopt{$}\hlstd{index,])}
-\hlstd{beta0} \hlkwb{=} \hlstd{svmfit}\hlopt{$}\hlstd{rho}
-\hlkwd{plot}\hlstd{(xgrid,} \hlkwc{col} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"red"}\hlstd{,} \hlstr{"blue"}\hlstd{)[}\hlkwd{as.numeric}\hlstd{(ygrid)],} \hlkwc{pch} \hlstd{=} \hlnum{20}\hlstd{,} \hlkwc{cex} \hlstd{=} \hlnum{.2}\hlstd{)}
-\hlkwd{points}\hlstd{(x,} \hlkwc{col} \hlstd{= y} \hlopt{+} \hlnum{3}\hlstd{,} \hlkwc{pch} \hlstd{=} \hlnum{19}\hlstd{)}
-\hlkwd{points}\hlstd{(x[svmfit}\hlopt{$}\hlstd{index,],} \hlkwc{pch} \hlstd{=} \hlnum{5}\hlstd{,} \hlkwc{cex} \hlstd{=} \hlnum{2}\hlstd{)}
-\hlkwd{abline}\hlstd{(beta0} \hlopt{/} \hlstd{beta[}\hlnum{2}\hlstd{],} \hlopt{-}\hlstd{beta[}\hlnum{1}\hlstd{]} \hlopt{/} \hlstd{beta[}\hlnum{2}\hlstd{])}
-\hlkwd{abline}\hlstd{((beta0} \hlopt{-} \hlnum{1}\hlstd{)} \hlopt{/} \hlstd{beta[}\hlnum{2}\hlstd{],} \hlopt{-}\hlstd{beta[}\hlnum{1}\hlstd{]} \hlopt{/} \hlstd{beta[}\hlnum{2}\hlstd{],} \hlkwc{lty} \hlstd{=} \hlnum{2}\hlstd{)}
-\hlkwd{abline}\hlstd{((beta0} \hlopt{+} \hlnum{1}\hlstd{)} \hlopt{/} \hlstd{beta[}\hlnum{2}\hlstd{],} \hlopt{-}\hlstd{beta[}\hlnum{1}\hlstd{]} \hlopt{/} \hlstd{beta[}\hlnum{2}\hlstd{],} \hlkwc{lty} \hlstd{=} \hlnum{2}\hlstd{)}
+\hldef{beta} \hlkwb{=} \hlkwd{drop}\hldef{(}\hlkwd{t}\hldef{(svmfit}\hlopt{$}\hldef{coefs)}\hlopt{%*%}\hldef{x[svmfit}\hlopt{$}\hldef{index,])}
+\hldef{beta0} \hlkwb{=} \hldef{svmfit}\hlopt{$}\hldef{rho}
+\hlkwd{plot}\hldef{(xgrid,} \hlkwc{col} \hldef{=} \hlkwd{c}\hldef{(}\hlsng{"red"}\hldef{,} \hlsng{"blue"}\hldef{)[}\hlkwd{as.numeric}\hldef{(ygrid)],} \hlkwc{pch} \hldef{=} \hlnum{20}\hldef{,} \hlkwc{cex} \hldef{=} \hlnum{.2}\hldef{)}
+\hlkwd{points}\hldef{(x,} \hlkwc{col} \hldef{= y} \hlopt{+} \hlnum{3}\hldef{,} \hlkwc{pch} \hldef{=} \hlnum{19}\hldef{)}
+\hlkwd{points}\hldef{(x[svmfit}\hlopt{$}\hldef{index,],} \hlkwc{pch} \hldef{=} \hlnum{5}\hldef{,} \hlkwc{cex} \hldef{=} \hlnum{2}\hldef{)}
+\hlkwd{abline}\hldef{(beta0} \hlopt{/} \hldef{beta[}\hlnum{2}\hldef{],} \hlopt{-}\hldef{beta[}\hlnum{1}\hldef{]} \hlopt{/} \hldef{beta[}\hlnum{2}\hldef{])}
+\hlkwd{abline}\hldef{((beta0} \hlopt{-} \hlnum{1}\hldef{)} \hlopt{/} \hldef{beta[}\hlnum{2}\hldef{],} \hlopt{-}\hldef{beta[}\hlnum{1}\hldef{]} \hlopt{/} \hldef{beta[}\hlnum{2}\hldef{],} \hlkwc{lty} \hldef{=} \hlnum{2}\hldef{)}
+\hlkwd{abline}\hldef{((beta0} \hlopt{+} \hlnum{1}\hldef{)} \hlopt{/} \hldef{beta[}\hlnum{2}\hldef{],} \hlopt{-}\hldef{beta[}\hlnum{1}\hldef{]} \hlopt{/} \hldef{beta[}\hlnum{2}\hldef{],} \hlkwc{lty} \hldef{=} \hlnum{2}\hldef{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}

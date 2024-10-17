@@ -108,7 +108,7 @@ cat(input_setup)
 \begin{frame}{Finding a cycle with all vertices}
 	A salesperson must visit a couple of cities for their job. Is it possible for them to plan a round trip using highways enabling tehm to visit each specified city exactly once?
 	\begin{center}
-	\includegraphics[angle=90,width=.35\textwidth]{FIGS_slides/florida}
+	\includegraphics[angle=90,width=.3\textwidth]{FIGS_slides/florida}
 	\end{center}
 	\begin{itemize}
 	\item vertices correspond to cities
@@ -122,7 +122,7 @@ cat(input_setup)
 \begin{frame}{How far is it to drive through $n$ cities?}
 	What is the minimal length of driving needed to drive through $n$ cities?
 	\begin{center}
-	\includegraphics[angle=90,width=.4\textwidth]{FIGS_slides/florida}
+	\includegraphics[angle=90,width=.35\textwidth]{FIGS_slides/florida}
 	\end{center}
 	\begin{itemize}
 	\item vertices correspond to the cities
@@ -164,6 +164,8 @@ And just to confuse the whole thing more: we often say \emph{graph} for \emph{un
 %%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%
 \section{Binary relations}
+\newSectionSlide{FIGS/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
+
 
 \begin{frame}\frametitle{Binary relation}
 	\begin{definition}[Binary relation]
@@ -214,9 +216,11 @@ And just to confuse the whole thing more: we often say \emph{graph} for \emph{un
 %%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%
 \section{Undirected graphs}
+\newSectionSlide{FIGS/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
 
 
 \subsection{Undirected graph}
+\newSubSectionSlide{FIGS/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
 
 
 \begin{frame}{Graph}
@@ -360,6 +364,7 @@ Every graph contains an even number of odd vertices
 %%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Isomorphic graphs}
+\newSubSectionSlide{FIGS/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
 
 \begin{frame} \frametitle{Isomorphic graphs} 
 \begin{definition}[Isomorphic graphs]
@@ -392,6 +397,7 @@ If $G_1$ and $G_2$ are isomorphic graphs, then the degrees of vertices of $G_1$ 
 %%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Subgraphs, unions of graphs}
+\newSubSectionSlide{FIGS/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
 
 \begin{frame}\frametitle{Subgraph}
 \begin{definition}[Subgraph]
@@ -422,6 +428,7 @@ The \defword{complement} $\bar G_1$ of $G_1$ is the graph on $V_1$, with the edg
 %%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%
 \subsection{Connectedness}
+\newSubSectionSlide{FIGS/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
 
 \begin{frame}\frametitle{Connected vertices and graph, components}
 \begin{definition}[{Connected vertices}]
@@ -496,6 +503,7 @@ Let $G$ be a connected graph. An edge $e$ of $G$ is a bridge of $G$ $\iff$ $e$ d
 %%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%
 \subsection{Walks, trails, paths}
+\newSubSectionSlide{FIGS/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
 
 
 \begin{frame}\frametitle{Walk}
@@ -654,6 +662,9 @@ RESULT: a Eulerian circuit
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Complete, bipartite and other notable graphs}
+\newSubSectionSlide{FIGS/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
+
+
 \begin{frame}
 \begin{definition}[{Complete graph}]
 A graph is complete if every two of its vertices are adjacent
@@ -702,6 +713,10 @@ Note that a complete graph of order $p$ is $(p-1)$-regular
 %%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Planar graphs}
+\newSubSectionSlide{FIGS/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
+
+
+
 \begin{frame}\frametitle{Planar graph}
 \begin{definition}[Planar graph]
 A graph is \defword{planar} if it \emph{can be} drawn in the plane with no crossing edges (except at the vertices). Otherwise, it is \defword{nonplanar}
@@ -830,6 +845,7 @@ What is the chromatic number of the graph associated to the map?
 %%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%
 \section{Directed graphs}
+\newSectionSlide{FIGS/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
 
 
 \subsection{Directed graph}
@@ -910,6 +926,7 @@ The value of the arc $uv \in A$ is $f(uv)$
 \end{frame}
 
 \begin{frame}{Examples}
+  \centering
 	\def\skip{2.75cm}
 	\begin{tikzpicture}[scale=0.7, 
 		every node/.style={transform shape},
