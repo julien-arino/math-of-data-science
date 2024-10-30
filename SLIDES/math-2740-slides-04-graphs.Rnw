@@ -17,17 +17,19 @@ for (p in required_packages) {
     require(p, character.only = TRUE)
   }
 }
+# Prepare figure crop hook
+knitr::knit_hooks$set(crop = knitr::hook_pdfcrop)
 # Knitr options
 opts_chunk$set(echo = TRUE, 
                warning = FALSE, 
-               message = FALSE, 
+               message = FALSE,
+               crop = TRUE,
                dev = c("pdf", "png"),
                fig.width = 6, 
                fig.height = 4, 
-               fig.path = "FIGS/matrix-methods-",
+               fig.path = "FIGS/graphs-",
                fig.keep = "high",
                fig.show = "hide")
-knitr::knit_hooks$set(crop = knitr::hook_pdfcrop)
 @
 
 
@@ -219,6 +221,15 @@ And just to confuse the whole thing more: we often say \emph{graph} for \emph{un
 \newSectionSlide{FIGS/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
 
 
+\begin{frame}\frametitle{The \code{igraph} library}
+Throughout these slides, we use the package \code{igraph}
+\vfill
+I illustrate the functions that can be used to study some of the mathematical notions I introduce
+\vfill
+I use mostly examples from the \code{igraph} documentation
+\end{frame}
+
+
 \subsection{Undirected graph}
 \newSubSectionSlide{FIGS/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
 
@@ -250,6 +261,19 @@ And just to confuse the whole thing more: we often say \emph{graph} for \emph{un
 	\end{definition}
 \end{frame}
 
+
+\begin{frame}[fragile]\frametitle{Setting up graphs in \code{igraph}}
+<<setup-graph-1>>=
+G <- make_empty_graph()
+G <- make_graph(edges = c(1, 2, 1, 5), n = 10, 
+                directed = FALSE)
+G <- make_graph("Zachary")
+plot(G, main = "Data on a Karate club")
+@
+\end{frame}
+
+\maxFrameImage{\Sexpr{knitr::fig_chunk("setup-graph-1", "pdf")}}
+
 \begin{frame}\frametitle{Order and Size}
 	\begin{definition}[Order of a graph]
 	The number of vertices in $G$ is the \defword{order} of $G$. Using the notation $|V(G)|$ for the \emph{cardinality} of $V(G)$,
@@ -267,7 +291,16 @@ And just to confuse the whole thing more: we often say \emph{graph} for \emph{un
 	\end{itemize}
 \end{frame}
 
-\begin{frame}\frametitle{Adjacent - Incident}
+\begin{frame}[fragile]\frametitle{Some simple measures}
+<<graph-measures-1>>=
+V(G)
+head(E(G))
+gorder(G)
+gsize(G)
+@
+\end{frame}
+
+\begin{frame}\frametitle{Incident -- Adjacent}
 	\begin{definition}[Incident]
 	\begin{itemize}
 	\item A vertex $v$ is \defword{incident} with an edge $e$ if $v\in e$; then $e$ is an edge at $v$
@@ -283,6 +316,21 @@ And just to confuse the whole thing more: we often say \emph{graph} for \emph{un
 	\item If $uv$ and $uw$ are distinct edges (i.e. $v\not=w$) of a graph $G$, then $uv$ and $uw$ are adjacent edges
 	\end{itemize}
 	\end{definition}
+\end{frame}
+
+
+\begin{frame}[fragile]\frametitle{Incident vertices}
+<<incident-vertices>>=
+incident(G, 1)
+incident_edges(G, c(1, 2))
+@
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Adjacent vertices}
+<<adjacent-vertices>>=
+adjacent_vertices(G, v = 1)
+adjacent_vertices(G, v = c(1, 2))
+@
 \end{frame}
 
 
@@ -305,8 +353,18 @@ And just to confuse the whole thing more: we often say \emph{graph} for \emph{un
 \end{frame}
 
 
+\begin{frame}[fragile]\frametitle{Testing for these properties}
+<<multiple-loop-simple-multigraph>>=
+any_multiple(G)
+any_loop(G)
+is_simple(G)
+@
+\end{frame}
+
+
+
 \begin{frame}\frametitle{Graph and binary relations}
-	A simple graph $G$ can be defined in term of a vertex set $V$ and a binary relation over $V$ that is
+A simple graph $G$ can be defined in term of a vertex set $V$ and a binary relation over $V$ that is
 	\begin{itemize}
 		\item irreflexive ($\forall u\in V$, $u\cancel Ru$)
 		\item symmetric ($\forall u,v\in V$, $uRv\implies vRu$)
@@ -319,6 +377,7 @@ And just to confuse the whole thing more: we often say \emph{graph} for \emph{un
 
 
 \subsection{Degree of a vertex}
+\newSubSectionSlide{FIGS/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
 
 \begin{frame}
 	\begin{definition}[Degree of a vertex]
@@ -330,13 +389,28 @@ And just to confuse the whole thing more: we often say \emph{graph} for \emph{un
 	\end{itemize}
 	\end{definition}
 	\vfill
-	\begin{theorem}
+	\begin{theorem}\label{th:sum-degrees}
 	Let $G$ be a $(p,q)-$graph with vertices $v_1$, $\dots$, $v_p$, then
 	\[
 		\sum_{i=1}^{p}d_G(v_i)=2q
 	\]
 	\end{theorem}
 \end{frame}
+
+\begin{frame}[fragile]\frametitle{Degree}
+<<vertex-degrees-undirected>>=
+degree(G)
+degree_distribution(G)
+plot(degree_distribution(G),
+     type = "b",
+     xlab = "Degree", ylab = "Frequency",
+     main = "Degree distribution of the Karate graph")
+@
+\end{frame}
+
+\maxFrameImage{\Sexpr{knitr::fig_chunk("vertex-degrees-undirected", "pdf")}}
+
+
 
 \begin{frame}
 \begin{definition}[{Odd vertex}]
@@ -347,15 +421,32 @@ A vertex is an \defword{odd vertex} is its degree is odd
 A vertex is called \defword{even vertex} is its degree is even
 \end{definition}
 \vfill
-\begin{theorem}
+\begin{theorem}\label{th:even-nb-odd-vertices}
 Every graph contains an even number of odd vertices
 \end{theorem}
 \end{frame}
 
-\begin{frame}{Regular graph}
+\begin{frame}[fragile]\frametitle{Illustration of recent results}
+Theorem~\ref{th:sum-degrees} states that a $(p,q)-$graph has $\sum_{i=1}^{p}d_G(v_i)=2q$
+<<checking-sum-degrees>>=
+sum(degree(G)) == 2*length(E(G))
+@
+\vfill
+Theorem~\ref{th:even-nb-odd-vertices} states that every graph contains an even number of odd vertices
+<<checking-even-nb-odd-degrees>>=
+sum(pracma::mod(degree(G),2))
+@
+(\code{mode(x,2)} returns 1 if $x$ is odd so \code{sum} counts how many are odd)
+\end{frame}
+
+\begin{frame}[fragile]{Regular graph}
 \begin{definition}[{Regular graph}]
 	If all the vertices of $G$ have the same degree $k$, then the graph $G$ is $k$-regular
 \end{definition}
+\vfill
+<<check-karate-graph-regular>>=
+length(unique(degree(G))) == 1
+@
 \end{frame}
 
 
@@ -392,6 +483,16 @@ If $G_1$ and $G_2$ are isomorphic graphs, then the degrees of vertices of $G_1$ 
 \end{theorem}
 \end{frame}
 
+\begin{frame}[fragile]\frametitle{Testing isomorphicity}
+Create two isomorphic graphs by permuting the vertices of the first, then test if they are isomorphic
+\vfill
+<<two-isomorphic-graphs>>=
+g1 <- sample_pa(30, m = 2, directed = FALSE)
+g2 <- permute(g1, sample(vcount(g1)))
+# should be TRUE
+isomorphic(g1, g2)
+@
+\end{frame}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%
@@ -773,6 +874,9 @@ A graph $G$ is planar $\iff$ it contains no subgraph isomorphic to $K_5$ or $K_{
 \end{frame}
 
 
+\subsection{Graph colouring}
+\newSubSectionSlide{FIGS/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
+
 \begin{frame}
 \begin{definition}[{Colouring of a graph $G$}]
 A \defword{colouring} of a graph $G$ is an assignment of colours to the vertices of $G$ such that adjacent vertices have different colours
@@ -848,7 +952,6 @@ What is the chromatic number of the graph associated to the map?
 \newSectionSlide{FIGS/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
 
 
-\subsection{Directed graph}
 \begin{frame} \frametitle{Definitions} 
 \begin{definition}[{Digraph}]
 A directed graph (or \defword{digraph}) is a pair $G=(V,A)$ of sets such that
@@ -1054,6 +1157,8 @@ The value of the arc $uv \in A$ is $f(uv)$
 %%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Degrees in digraphs}
+\newSubSectionSlide{FIGS/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
+
 \begin{frame}{Degree}
 	Let $v$ be a vertex of a digraph $G=(V,A)$
 	\begin{definition}[{Outdegree of a vertex}]
@@ -1112,6 +1217,8 @@ The value of the arc $uv \in A$ is $f(uv)$
 %%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%
 \subsection{Walks, paths, etc.}
+\newSubSectionSlide{FIGS/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
+
 \begin{frame}\frametitle{Walks}
 	Let $G=(V,A)$ be a digraph.
 	\begin{definition}[Directed walk]
@@ -1181,6 +1288,8 @@ The value of the arc $uv \in A$ is $f(uv)$
 %%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Connectivity in digraphs}
+\newSubSectionSlide{FIGS/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
+
 \begin{frame}\frametitle{Definitions}
 	%Let $D=(V,A)$ be a digraph.
 	\begin{definition}[{Underlying graph}]
@@ -1277,6 +1386,8 @@ A strong component in $G$ is a maximal strongly connected subdigraph of $G$
 %%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%
 \subsection{Orientable graphs}
+\newSubSectionSlide{FIGS/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
+
 \begin{frame}\frametitle{Orientation}
 \begin{definition}[Orienting a graph]
 Given a connected \emph{graph}, we describe the act of assigning a direction to each edge (edge $\rightarrow$ arc) as \defword{orienting the graph}
@@ -1320,6 +1431,7 @@ A connected graph $G=(V,E)$ is orientable $\iff$ $G$ contains no bridges
 \end{frame}
 
 \subsection{Adjacency matrices}
+\newSubSectionSlide{FIGS/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
 
 
 \begin{frame}\frametitle{Adjacency matrix (undirected case)}
@@ -1442,6 +1554,7 @@ A connected graph $G=(V,E)$ is orientable $\iff$ $G$ contains no bridges
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Other matrices associated to a graph/digraph}
+\newSubSectionSlide{FIGS/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
 
 \begin{frame}\frametitle{Incidence matrix (undirected case)}
 	Let $G=(V,E)$ be a graph of order $p$, and size $q$, with vertices $v_1, \ldots , v_p$, and edges $e_1, \ldots , e_q$
@@ -1561,6 +1674,7 @@ Elements of $L$ are given by
 
 
 \subsection{Linking graphs and linear algebra}
+\newSubSectionSlide{FIGS/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
 
 \begin{frame}{Counting paths}
 	\begin{theorem}

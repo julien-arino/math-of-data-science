@@ -852,8 +852,8 @@ Let's use something cool: a \emph{genetic algorithm}
 \hldef{GA}\hlopt{@}\hlkwc{solution}
 \end{alltt}
 \begin{verbatim}
-##            x1       x2
-## [1,] 2.999713 0.500133
+##            x1        x2
+## [1,] 3.000573 0.4997367
 \end{verbatim}
 \begin{alltt}
 \hlopt{-}\hldef{GA}\hlopt{@}\hlkwc{fitnessValue}
@@ -1931,7 +1931,7 @@ Finally, we compute the $\bu_i$'s
 \end{alltt}
 
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'U' not found}}\end{kframe}
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: object 'U' not found}}\end{kframe}
 \end{knitrout}
 \end{frame}
 
@@ -3429,69 +3429,15 @@ Use the built in function \code{prcomp} or \code{PCA} from the \code{FactoMineR}
 \begin{alltt}
 \hlcom{# data.pca = prcomp(X, center = TRUE, scale = TRUE)}
 \hldef{data.pca} \hlkwb{=} \hlkwd{PCA}\hldef{(X,} \hlkwc{scale.unit} \hldef{=} \hlnum{TRUE}\hldef{,} \hlkwc{graph} \hldef{=} \hlnum{FALSE}\hldef{)}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in PCA(X, scale.unit = TRUE, graph = FALSE): could not find function "{}PCA"{}}}\begin{alltt}
 \hlkwd{summary}\hldef{(data.pca)}
 \end{alltt}
-\begin{verbatim}
-## 
-## Call:
-## PCA(X = X, scale.unit = TRUE, graph = FALSE) 
-## 
-## 
-## Eigenvalues
-##                        Dim.1   Dim.2   Dim.3   Dim.4   Dim.5   Dim.6   Dim.7
-## Variance               4.399   1.197   0.991   0.743   0.380   0.258   0.025
-## % of var.             54.988  14.966  12.386   9.292   4.750   3.225   0.313
-## Cumulative % of var.  54.988  69.955  82.341  91.632  96.383  99.608  99.921
-##                        Dim.8
-## Variance               0.006
-## % of var.              0.079
-## Cumulative % of var. 100.000
-## 
-## Individuals (the 10 first)
-##                 Dist    Dim.1    ctr   cos2    Dim.2    ctr   cos2    Dim.3
-## 5           |  2.554 |  2.436  0.823  0.910 | -0.656  0.219  0.066 |  0.342
-## 6           |  3.393 |  2.522  0.882  0.552 | -0.725  0.268  0.046 |  0.883
-## 12          |  2.501 |  1.970  0.538  0.621 | -1.161  0.687  0.216 | -0.045
-## 23          |  2.511 |  1.988  0.548  0.627 | -1.051  0.563  0.175 |  0.258
-## 24          |  3.015 | -2.891  1.158  0.919 | -0.405  0.084  0.018 | -0.121
-## 25          |  2.453 | -2.098  0.610  0.732 |  0.273  0.038  0.012 |  0.993
-## 26          |  3.189 | -2.801  1.087  0.771 | -0.867  0.383  0.074 | -0.146
-## 27          |  1.212 |  0.112  0.002  0.008 | -0.747  0.284  0.380 |  0.280
-## 28          |  2.444 |  1.823  0.461  0.557 | -0.466  0.111  0.036 |  0.464
-## 29          |  3.127 | -2.576  0.920  0.678 | -1.500  1.145  0.230 | -0.913
-##                ctr   cos2  
-## 5            0.072  0.018 |
-## 6            0.479  0.068 |
-## 12           0.001  0.000 |
-## 23           0.041  0.011 |
-## 24           0.009  0.002 |
-## 25           0.607  0.164 |
-## 26           0.013  0.002 |
-## 27           0.048  0.054 |
-## 28           0.132  0.036 |
-## 29           0.513  0.085 |
-## 
-## Variables
-##                Dim.1    ctr   cos2    Dim.2    ctr   cos2    Dim.3    ctr
-## age         |  0.042  0.041  0.002 |  0.777 50.484  0.604 | -0.549 30.422
-## height      |  0.742 12.530  0.551 | -0.242  4.878  0.058 | -0.084  0.713
-## weight      |  0.603  8.265  0.364 |  0.475 18.807  0.225 | -0.066  0.444
-## fing_temp   |  0.138  0.431  0.019 |  0.523 22.840  0.273 |  0.821 67.998
-## fing_height |  0.895 18.213  0.801 | -0.124  1.276  0.015 | -0.035  0.124
-## fing_width  |  0.882 17.694  0.778 |  0.071  0.423  0.005 |  0.053  0.282
-## fing_area   |  0.976 21.635  0.952 | -0.060  0.303  0.004 |  0.008  0.006
-## fing_circ   |  0.966 21.192  0.932 | -0.109  0.988  0.012 | -0.011  0.011
-##               cos2  
-## age          0.301 |
-## height       0.007 |
-## weight       0.004 |
-## fing_temp    0.674 |
-## fing_height  0.001 |
-## fing_width   0.003 |
-## fing_area    0.000 |
-## fing_circ    0.000 |
-\end{verbatim}
-\end{kframe}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in h(simpleError(msg, call)): error in evaluating the argument 'object' in selecting a method for function 'summary': object 'data.pca' not found}}\end{kframe}
 \end{knitrout}
 \end{frame}
 
@@ -3550,7 +3496,9 @@ We check this (approximately) by comparing with the singular values we computed
 \begin{alltt}
 \hlkwd{plot.PCA}\hldef{(data.pca,} \hlkwc{axes} \hldef{=} \hlkwd{c}\hldef{(}\hlnum{1}\hldef{,}\hlnum{2}\hldef{),} \hlkwc{choix} \hldef{=} \hlsng{"ind"}\hldef{,} \hlkwc{habillage} \hldef{=} \hlnum{4}\hldef{)}
 \end{alltt}
-\end{kframe}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in plot.PCA(data.pca, axes = c(1, 2), choix = "{}ind"{}, habillage = 4): could not find function "{}plot.PCA"{}}}\end{kframe}
 \end{knitrout}
 \end{frame}
 
