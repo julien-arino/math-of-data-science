@@ -2284,7 +2284,7 @@ Let $a_1,\ldots,a_p\in\IR$ be $p$ real numbers, then
 \end{frame}
 
 
-\begin{frame}
+\begin{frame} 
 \begin{theorem}
 Denote $T(n;d_1,\ldots,d_n)$ the number of distinct trees $H$ with vertices $x_1,\ldots,x_n$ and with degrees $d_H(x_1)=d_1,\ldots,d_H(x_n)=d_n$. Then
 \[
