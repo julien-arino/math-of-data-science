@@ -507,6 +507,29 @@ A graph $H=(V(H),E(H))$ is a \defword{subgraph} of $G$ if $V(H)\subseteq V$ and 
 \end{definition}
 \end{frame}
 
+\begin{frame}[fragile]\frametitle{Extracting a subgraph}
+<<extract-subgraph>>=
+G_sub = induced_subgraph(G, c(1:5, 11:14))
+plot(G_sub, main = "A subgraph of the Karate graph")
+@
+\end{frame}
+
+\maxFrameImage{\Sexpr{knitr::fig_chunk("extract-subgraph", "pdf")}}
+
+\begin{frame}[fragile]\frametitle{Naming vertices}
+Note that vertices (and as a consequence, edges) will be relabelled, so \code{G\_sub} has vertices labelled 1 to 9
+\vfill
+You can name vertices if you want to avoid this
+<<subgraph-named-vertices>>=
+V(G)$name = 1:length(V(G))
+G_sub = induced_subgraph(G, c(1:5, 11:14))
+plot(G_sub, labels = V(G)$name,
+     main = "Subgraph of the Karate graph preserving names")
+@
+\end{frame}
+
+\maxFrameImage{\Sexpr{knitr::fig_chunk("subgraph-named-vertices", "pdf")}}
+
 
 \begin{frame}
 Let $G_1=(V_1,E_1)$ and $G_2=(V_2,E_2)$ be two graphs
@@ -525,6 +548,51 @@ The \defword{complement} $\bar G_1$ of $G_1$ is the graph on $V_1$, with the edg
 \end{frame}
 
 
+\begin{frame}[fragile]\frametitle{Union}
+<<>>=
+net1 <- graph_from_literal(
+  D - A:B:F:G, A - C - F - A, B - E - G - B, A - B, F - G,
+  H - F:G, H - I - J
+)
+net2 <- graph_from_literal(D - A:F:Y, B - A - X - F - H - Z, F - Y)
+print_all(net1 %u% net2)
+@
+\end{frame}
+
+<<plot-union-graphs-net1,echo=FALSE>>=
+plot(net1)
+@
+<<plot-union-graphs-net2,echo=FALSE>>=
+plot(net2)
+@
+<<plot-union-graphs-net1Unet2,echo=FALSE>>=
+plot(net1 %u% net2)
+@
+
+\begin{frame}
+\centering
+\includegraphics[width=0.25\textwidth]{\Sexpr{knitr::fig_chunk("plot-union-graphs-net1", "pdf")}}
+$\bigcup$
+\includegraphics[width=0.25\textwidth]{\Sexpr{knitr::fig_chunk("plot-union-graphs-net2", "pdf")}}
+$\implies$
+\includegraphics[width=0.3\textwidth]{\Sexpr{knitr::fig_chunk("plot-union-graphs-net1Unet2", "pdf")}}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Intersection of two graphs}
+<<plot-intersection-graphs-net1Nnet2>>=
+G_inter = net1 %s% net2
+plot(G_inter)
+@
+\end{frame}
+
+\begin{frame}
+\centering
+\includegraphics[width=0.25\textwidth]{\Sexpr{knitr::fig_chunk("plot-union-graphs-net1", "pdf")}}
+$\bigcap$
+\includegraphics[width=0.25\textwidth]{\Sexpr{knitr::fig_chunk("plot-union-graphs-net2", "pdf")}}
+$\implies$
+\includegraphics[width=0.3\textwidth]{\Sexpr{knitr::fig_chunk("plot-intersection-graphs-net1Nnet2", "pdf")}}
+\end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%
@@ -1883,6 +1951,7 @@ $A$ primitive $\iff$ $A^{n^2-2n+2}>\b0$
 %%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%
 \section{Trees}
+\newSectionSlide{FIGS/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
 
 \begin{frame}\frametitle{Trees}
 	\begin{definition}[Forest, trees and branches]
@@ -1896,6 +1965,31 @@ $A$ primitive $\iff$ $A^{n^2-2n+2}>\b0$
 	(A forest is a graph whose connected components are trees)
 \end{frame}
 
+\begin{frame}[fragile]\frametitle{Is the ``Karate graph'' a tree?}
+<<>>=
+is_acyclic(G)
+is_tree(G)
+@
+\vfill
+So we need friend to play with!
+\vfill
+<<make-trees, echo=1:2, fig.keep='all'>>=
+G_tu <- make_tree(7, 2, mode = "undirected")
+G_td <- make_tree(7, 2)
+plot(G_tu, main = "An undirected tree")
+plot(G_td, main = "A (out) directed tree")
+@
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\includegraphics[width=0.45\textwidth]{\Sexpr{knitr::fig_chunk("make-trees", "pdf", 1)}}
+\quad
+\includegraphics[width=0.45\textwidth]{\Sexpr{knitr::fig_chunk("make-trees", "pdf", 2)}}
+\end{center}
+\end{frame}
+
+
 \begin{frame}
 	\begin{property}
 	\begin{itemize}
@@ -1906,6 +2000,14 @@ $A$ primitive $\iff$ $A^{n^2-2n+2}>\b0$
 	\end{property}
 	\vfill
 	(First property: the deletion of any edge of a tree diconnects it)
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Every edge of a tree is a bridge}
+<<>>=
+E(G_tu)
+bridges(G_tu)
+all(sort(E(G_tu)) == sort(bridges(G_tu)))
+@
 \end{frame}
 
 
@@ -1941,6 +2043,17 @@ Let $G=(V(G),E(G))$ be an undirected network and $T$ be a minimal spanning tree
         add $e$ to $T$
 \end{enumerate}
 \end{frame}
+
+
+\begin{frame}[fragile]\frametitle{Finding a minimal spanning tree of the Karate graph}
+The function \code{mst} finds minimal spanning trees, using distances if no edge weights are provided
+<<minimal-spanning-tree-Karate-graph, echo=1>>=
+G_mst = mst(G)
+plot(G_mst, main = "A minimal spanning tree of the Karate graph")
+@
+\end{frame}
+
+\maxFrameImage{\Sexpr{knitr::fig_chunk("minimal-spanning-tree-Karate-graph", "pdf")}}
 
 \begin{frame}\frametitle{Minimal connector problem}
 \begin{itemize}
@@ -2171,7 +2284,7 @@ Let $a_1,\ldots,a_p\in\IR$ be $p$ real numbers, then
 \end{frame}
 
 
-\begin{frame}
+\begin{frame} 
 \begin{theorem}
 Denote $T(n;d_1,\ldots,d_n)$ the number of distinct trees $H$ with vertices $x_1,\ldots,x_n$ and with degrees $d_H(x_1)=d_1,\ldots,d_H(x_n)=d_n$. Then
 \[
