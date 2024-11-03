@@ -59,8 +59,8 @@ cat(input_setup)
 %% TITLE AND OUTLINE
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\titlepagewithfigure{FIGS/Gemini_Generated_Image_awgymvawgymvawgy.jpeg}
-\outlinepage{FIGS/Gemini_Generated_Image_duutxqduutxqduut.jpeg}
+\titlepagewithfigure{FIGS-transitions/Gemini_Generated_Image_awgymvawgymvawgy.jpeg}
+\outlinepage{FIGS-transitions/Gemini_Generated_Image_duutxqduutxqduut.jpeg}
 
 
 %%%%%%%%%%%%%%%%%%%%%
@@ -68,7 +68,7 @@ cat(input_setup)
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
 \section{Why use graphs/networks?}
-\newSectionSlide{FIGS/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
+\newSectionSlide{FIGS-transitions/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
 
 
 \begin{frame}{Graphs versus networks}
@@ -166,7 +166,7 @@ And just to confuse the whole thing more: we often say \emph{graph} for \emph{un
 %%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%
 \section{Binary relations}
-\newSectionSlide{FIGS/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
+\newSectionSlide{FIGS-transitions/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
 
 
 \begin{frame}\frametitle{Binary relation}
@@ -218,7 +218,7 @@ And just to confuse the whole thing more: we often say \emph{graph} for \emph{un
 %%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%
 \section{Undirected graphs}
-\newSectionSlide{FIGS/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
+\newSectionSlide{FIGS-transitions/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
 
 
 \begin{frame}\frametitle{The \code{igraph} library}
@@ -231,7 +231,7 @@ I use mostly examples from the \code{igraph} documentation
 
 
 \subsection{Undirected graph}
-\newSubSectionSlide{FIGS/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
+\newSubSectionSlide{FIGS-transitions/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
 
 
 \begin{frame}{Graph}
@@ -377,7 +377,7 @@ A simple graph $G$ can be defined in term of a vertex set $V$ and a binary relat
 
 
 \subsection{Degree of a vertex}
-\newSubSectionSlide{FIGS/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
+\newSubSectionSlide{FIGS-transitions/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
 
 \begin{frame}
 	\begin{definition}[Degree of a vertex]
@@ -455,7 +455,7 @@ length(unique(degree(G))) == 1
 %%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Isomorphic graphs}
-\newSubSectionSlide{FIGS/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
+\newSubSectionSlide{FIGS-transitions/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
 
 \begin{frame} \frametitle{Isomorphic graphs} 
 \begin{definition}[Isomorphic graphs]
@@ -498,7 +498,7 @@ isomorphic(g1, g2)
 %%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Subgraphs, unions of graphs}
-\newSubSectionSlide{FIGS/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
+\newSubSectionSlide{FIGS-transitions/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
 
 \begin{frame}\frametitle{Subgraph}
 \begin{definition}[Subgraph]
@@ -597,7 +597,7 @@ $\implies$
 %%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%
 \subsection{Connectedness}
-\newSubSectionSlide{FIGS/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
+\newSubSectionSlide{FIGS-transitions/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
 
 \begin{frame}\frametitle{Connected vertices and graph, components}
 \begin{definition}[{Connected vertices}]
@@ -672,7 +672,7 @@ Let $G$ be a connected graph. An edge $e$ of $G$ is a bridge of $G$ $\iff$ $e$ d
 %%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%
 \subsection{Walks, trails, paths}
-\newSubSectionSlide{FIGS/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
+\newSubSectionSlide{FIGS-transitions/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
 
 
 \begin{frame}\frametitle{Walk}
@@ -831,7 +831,7 @@ RESULT: a Eulerian circuit
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Complete, bipartite and other notable graphs}
-\newSubSectionSlide{FIGS/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
+\newSubSectionSlide{FIGS-transitions/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
 
 
 \begin{frame}
@@ -882,7 +882,7 @@ Note that a complete graph of order $p$ is $(p-1)$-regular
 %%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Planar graphs}
-\newSubSectionSlide{FIGS/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
+\newSubSectionSlide{FIGS-transitions/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
 
 
 
@@ -943,7 +943,7 @@ A graph $G$ is planar $\iff$ it contains no subgraph isomorphic to $K_5$ or $K_{
 
 
 \subsection{Graph colouring}
-\newSubSectionSlide{FIGS/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
+\newSubSectionSlide{FIGS-transitions/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
 
 \begin{frame}
 \begin{definition}[{Colouring of a graph $G$}]
@@ -1017,7 +1017,7 @@ What is the chromatic number of the graph associated to the map?
 %%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%
 \section{Directed graphs}
-\newSectionSlide{FIGS/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
+\newSectionSlide{FIGS-transitions/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
 
 
 \begin{frame} \frametitle{Definitions} 
@@ -1225,7 +1225,7 @@ The value of the arc $uv \in A$ is $f(uv)$
 %%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Degrees in digraphs}
-\newSubSectionSlide{FIGS/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
+\newSubSectionSlide{FIGS-transitions/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
 
 \begin{frame}{Degree}
 	Let $v$ be a vertex of a digraph $G=(V,A)$
@@ -1285,7 +1285,7 @@ The value of the arc $uv \in A$ is $f(uv)$
 %%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%
 \subsection{Walks, paths, etc.}
-\newSubSectionSlide{FIGS/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
+\newSubSectionSlide{FIGS-transitions/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
 
 \begin{frame}\frametitle{Walks}
 	Let $G=(V,A)$ be a digraph.
@@ -1356,7 +1356,7 @@ The value of the arc $uv \in A$ is $f(uv)$
 %%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Connectivity in digraphs}
-\newSubSectionSlide{FIGS/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
+\newSubSectionSlide{FIGS-transitions/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
 
 \begin{frame}\frametitle{Definitions}
 	%Let $D=(V,A)$ be a digraph.
@@ -1454,7 +1454,7 @@ A strong component in $G$ is a maximal strongly connected subdigraph of $G$
 %%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%
 \subsection{Orientable graphs}
-\newSubSectionSlide{FIGS/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
+\newSubSectionSlide{FIGS-transitions/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
 
 \begin{frame}\frametitle{Orientation}
 \begin{definition}[Orienting a graph]
@@ -1499,7 +1499,7 @@ A connected graph $G=(V,E)$ is orientable $\iff$ $G$ contains no bridges
 \end{frame}
 
 \subsection{Adjacency matrices}
-\newSubSectionSlide{FIGS/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
+\newSubSectionSlide{FIGS-transitions/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
 
 
 \begin{frame}\frametitle{Adjacency matrix (undirected case)}
@@ -1622,7 +1622,7 @@ A connected graph $G=(V,E)$ is orientable $\iff$ $G$ contains no bridges
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Other matrices associated to a graph/digraph}
-\newSubSectionSlide{FIGS/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
+\newSubSectionSlide{FIGS-transitions/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
 
 \begin{frame}\frametitle{Incidence matrix (undirected case)}
 	Let $G=(V,E)$ be a graph of order $p$, and size $q$, with vertices $v_1, \ldots , v_p$, and edges $e_1, \ldots , e_q$
@@ -1742,7 +1742,7 @@ Elements of $L$ are given by
 
 
 \subsection{Linking graphs and linear algebra}
-\newSubSectionSlide{FIGS/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
+\newSubSectionSlide{FIGS-transitions/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
 
 \begin{frame}{Counting paths}
 	\begin{theorem}
@@ -1951,7 +1951,7 @@ $A$ primitive $\iff$ $A^{n^2-2n+2}>\b0$
 %%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%
 \section{Trees}
-\newSectionSlide{FIGS/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
+\newSectionSlide{FIGS-transitions/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
 
 \begin{frame}\frametitle{Trees}
 	\begin{definition}[Forest, trees and branches]
