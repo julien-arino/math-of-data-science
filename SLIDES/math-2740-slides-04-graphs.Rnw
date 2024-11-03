@@ -705,7 +705,7 @@ The \defword{length of a cycle} is its number of edges
 
 
 \begin{frame}
-	\frametitle{Fleury's algorithm to find a Eulerian trail}
+	\frametitle{Fleury's algorithm to find a Eulerian \emph{trail}}
 	\framesubtitle{For a connected graph with exactly 2 odd vertices}
 \begin{itemize}
 	\item Start at one of the odd vertices
@@ -717,7 +717,7 @@ RESULT: a Eulerian trail
 
 
 \begin{frame}
-	\frametitle{Fleury's algorithm to find a Eulerian circuit}
+	\frametitle{Fleury's algorithm to find a Eulerian \emph{circuit}}
 	\framesubtitle{For a connected graph with no odd vertices}
 
 	\begin{itemize}
