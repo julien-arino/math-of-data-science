@@ -5,19 +5,23 @@ date: "2024-11-05"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
-## Installing/loading the required libraries
-Set the variable `INSTALL` to `TRUE` to install the libraries, set to `FALSE` once this has been done.
-
-
-```{r load-install-libraries}
-required_libs = c("dplyr", "readr", "sqldf", "igraph", "ggraph", "raster")
+```{r setup, include=TRUE, message=FALSE, echo=FALSE}
+# By default, we won't show code chunks, just use echo=TRUE or specific lines
+# to show them when needed
+knitr::opts_chunk$set(echo = FALSE, message = FALSE)
+# Load/install required libraries. Note the use of Ncpus to speed up the process,
+# when compiling packages is required (typically linux)
+required_libs = c("dplyr", 
+                  "geodata", 
+                  "ggraph", 
+                  "igraph",
+                  "kableExtra",
+                  "knitr",
+                  "readr", 
+                  "sqldf")
 for (l in required_libs) {
     if (!require(l, character.only = TRUE)) {
-        install.packages(l, Ncpus = (paralllel::detectCores()-1))
+        install.packages(l, Ncpus = (parallel::detectCores()-1))
         library(l, character.only = TRUE)
     }
 }
@@ -26,47 +30,49 @@ for (l in required_libs) {
 # Load the data
 We load two data files: `air_travel_MB.csv` contains the network description and `airport_codes_CAN.csv`, which has some information about all airfields in Canada.
 
-The data in air_travel_MB is pre-processed. It represents an extreme simplification of a much more complete dataset (Rows: 2,757,430; Columns: 19) giving, for a given time period, the total number of travellers between 3734 airports worldwide along trips including up to 5 intermediate stops. 
+The data in air_travel_MB is pre-processed. It represents an extreme simplification of a much more complete dataset giving, for a given time period, the total number of travellers between 3734 airports worldwide along trips including up to 5 intermediate stops. 
 
 What I did is to keep only the airports in Manitoba. Any airport outside of Manitoba is set as `RoW` (rest of the world). Also, the existing multi-leg trips within Manitoba are "decomposed": if the data had 10 people flying, say, YWG$\to$YQD$\to$YTH (Winnipeg to The Pas to Thompson), these would appear as 10 people flying from YWG to YQD and 10 people flying from YQD to YTH. 
 
 Flights to and from RoW are decomposed the same way as flights within Manitoba, increasing the number of trips between RoW and YWG. Indeed, 5 passengers flying RoW$\to$YWG$\to$YQD and 5 passengers flying RoW$\to$YWG$\to$YBR (Brandon) will show as 10 passengers flying RoW to YWG, together with 5 passengers flying YWG$\to$YQD and 5 passengers flying YWG$\to$YBR.
 
+First, here is what the flight data looks like. (I am using `knitr::kable` to make the table more readable.)
 
-```{r}
+```{r load-air-travel-file}
 air_travel_MB <- read_delim("air_travel_MB.csv", 
-                     delim = ",", escape_double = FALSE,
-                               trim_ws = TRUE)
-airport_codes_MB <- read_csv("airport_codes_CAN.csv") %>%
-  filter(ISO_Region == "CA-MB")
-head(air_travel_MB)
-head(airport_codes_MB)
+                            delim = ",", escape_double = FALSE,
+                            trim_ws = TRUE)
+knitr::kable(head(air_travel_MB))
 ```
 
+The airport data, filtered to only retain MB locations, looks as follows.
 
-
+```{r load-airports-file}
+airport_codes_MB <- read_csv("airport_codes_CAN.csv") %>%
+  filter(ISO_Region == "CA-MB")
+knitr::kable(head(airport_codes_MB)) %>%
+  kable_styling("striped", full_width = F) %>% 
+ scroll_box(width = "500px", height = "200px")
+```
 
 
 # Data wrangling remark
 Note that there is an alternative to `dplyr` (the package that allows us to use the pipe `%>%`); it is indeed possible to treat data frames as SQL tables and run SQL queries on them. This may make more sense to some of you. For illustration, to create the table of movements, I used the following command (which can run, since it is not destructive of what we have already done).
 
 
-```{r}
-query = 
-"SELECT orig,dest,SUM(vol) AS vol
+```{r example-sqldf, echo=TRUE}
+query = "SELECT orig,dest,SUM(vol) AS vol
 FROM air_travel_MB
 GROUP BY orig,dest
 ORDER BY orig,dest"
-
 air_travel_MB = sqldf::sqldf(query)
 ```
 
-Finish preparing the data: we want to record the latitude and longitudes for all the airports in the `air_travel_MB` data set. Note that we give `RoW` a location: we will show it as an additional vertex in the graph. (I picked somewhere close to but not in Manitoba.)
+Finish preparing the data: the following code (chunk not shown) adds the latitude and longitudes of all the airports in the `air_travel_MB` data set. Note that we give `RoW` a location: we will show it as an additional vertex in the graph. (I picked somewhere in Ontario, close to but not in Manitoba.)
 
-
-```{r}
-IATA_codes_MB_in_data = data.frame(IATA = sort(unique(union(air_travel_MB$orig,
-                                                            air_travel_MB$dest))))
+```{r add-lat-lon-info-to-airports}
+IATA_codes_MB_in_data = 
+  data.frame(IATA = sort(unique(union(air_travel_MB$orig, air_travel_MB$dest))))
 lon = c()
 lat = c()
 for (i in 1:dim(IATA_codes_MB_in_data)[1]) {
@@ -81,8 +87,7 @@ for (i in 1:dim(IATA_codes_MB_in_data)[1]) {
 }
 IATA_codes_MB_in_data$lon = lon
 IATA_codes_MB_in_data$lat = lat
-
-head(IATA_codes_MB_in_data)
+kable(head(IATA_codes_MB_in_data))
 ```
 
 
@@ -99,12 +104,6 @@ V(G)$y = lat
 plot(G, edge.arrow.size = 0.5, edge.arrow.width = 0.75)
 ```
 
-
-    
-![png](output_9_0.png)
-    
-
-
 We also make a subgraph without `RoW` to focus on the properties really specific to Manitoba.
 
 
@@ -112,12 +111,6 @@ We also make a subgraph without `RoW` to focus on the properties really specific
 G_MB = induced_subgraph(G, V(G)$name[V(G)$name != "RoW"])
 plot(G_MB, edge.arrow.size = 0.5, edge.arrow.width = 0.75)
 ```
-
-
-    
-![png](output_11_0.png)
-    
-
 
 # Making nicer plots
 Before we explore the properties of the graph, let us spend a little time on visualisation. This is not to be neglected: nice plots help more than you think.
@@ -132,19 +125,12 @@ The next piece of code does the following:
 
 ```{r}
 options(repr.plot.width=15, repr.plot.height=15)
-Canada <- getData('GADM', country='CAN', level=1)
+Canada <- geodata::gadm(country='CAN', level=1, path = ".")
 MB <- Canada[Canada$NAME_1 == "Manitoba",]
 plot(MB)
 plot(G, add = TRUE, rescale = FALSE,
     edge.arrow.size = 0.5, edge.arrow.width = 0.75)
 ```
-
-
-
-
-    
-![png](output_13_1.png)
-    
 
 
 Let us add the degree information as the size of the vertices.
@@ -157,25 +143,12 @@ plot(G, add = TRUE, rescale = FALSE,
     edge.arrow.size = 0.5, edge.arrow.width = 0.75)
 ```
 
-
-    
-![png](output_15_0.png)
-    
-
-
-
 ```{r}
 plot(MB)
 V(G_MB)$size = degree(G_MB)*5
 plot(G_MB, add = TRUE, rescale = FALSE,
     edge.arrow.size = 0.5, edge.arrow.width = 0.75)
 ```
-
-
-    
-![png](output_16_0.png)
-    
-
 
 Now let us take a look at the arcs. Maybe change their thickness to reflect the volumes along the arcs?
 
@@ -188,18 +161,12 @@ plot(G_MB, add = TRUE, rescale = FALSE, edge.width = E(G_MB)$vol,
 ```
 
 
-    
-![png](output_18_0.png)
-    
-
-
 My guess: some of the arcs are so massive that this is all we can see. So let us renormalise the values of the weights. First, what do they look like now?
 
 
 ```{r}
 sort(E(G)$vol)
 ```
-
 
 
 So, yes, clearly a bit too much variation. If we scale linearly by multiplying by a constant, we will most likely lose the information on the small weights. Just to check that we are intuiting correctly, though, let us try once doing this.
@@ -212,24 +179,12 @@ plot(G, add = TRUE, rescale = FALSE, edge.width = E(G)$vol*0.001,
     edge.arrow.size = 0.5, edge.arrow.width = 0.75)
 ```
 
-
-    
-![png](output_22_0.png)
-    
-
-
-
 ```{r}
 plot(MB)
 V(G)$size = degree(G)*5
 plot(G, add = TRUE, rescale = FALSE, edge.width = E(G)$vol*0.0005,
     edge.arrow.size = 0.5, edge.arrow.width = 0.75)
 ```
-
-
-    
-![png](output_23_0.png)
-    
 
 
 What we suspected, indeed: to make the arcs with the largest volume not too large, we had to essentially get rid of the weight of the arcs with small volumes. So what we want to do is to process the values through a function that would make the smaller values larger relative to the larger ones or the larger values closer to the smaller one, then scale the result. For this, it is good to look at what the values look like.
@@ -239,12 +194,6 @@ What we suspected, indeed: to make the arcs with the largest volume not too larg
 options(repr.plot.width=10, repr.plot.height=10)
 plot(sort(E(G)$vol), type = "b")
 ```
-
-
-    
-![png](output_25_0.png)
-    
-
 
 One way around this could be to use a so-called sigmoid function. This is a function of the following form:
 $$
@@ -277,12 +226,6 @@ for (c in values_c) {
 }
 ```
 
-
-    
-![png](output_27_0.png)
-    
-
-
 That last one looks quite nice. We most likely will have to multiply by a factor, so we compute the values in advance.
 
 
@@ -297,12 +240,6 @@ plot(G, add = TRUE, rescale = FALSE,
     edge.arrow.size = 0.5, edge.arrow.width = 0.75)
 ```
 
-
-    
-![png](output_29_0.png)
-    
-
-
 Well, after all this, I am not convinced we achieved between than we had done above but just a linear scaling. So when we want a a good plot, we'll come back to that solution.
 
 
@@ -314,12 +251,6 @@ plot(G, add = TRUE, rescale = FALSE, edge.width = E(G)$vol*0.0005,
 ```
 
 
-    
-![png](output_31_0.png)
-    
-
-
-
 ```{r}
 plot(MB)
 V(G_MB)$size = degree(G_MB)*5
@@ -327,11 +258,6 @@ plot(G_MB, add = TRUE, rescale = FALSE,
      edge.width = E(G_MB)$vol*0.001,
     edge.arrow.size = 0.5, edge.arrow.width = 0.75)
 ```
-
-
-    
-![png](output_32_0.png)
-    
 
 
 ## Eccentricities and related measures
@@ -385,11 +311,6 @@ plot(G_MB, add = TRUE, rescale = FALSE,
      edge.width = E(G_MB)$vol*0.001,
     edge.arrow.size = 0.5, edge.arrow.width = 0.75)
 ```
-
-
-    
-![png](output_38_4.png)
-    
 
 
 ## Girth
@@ -453,11 +374,6 @@ plot(G_disconnected, add = TRUE, rescale = FALSE,
 ```
 
 
-    
-![png](output_48_1.png)
-    
-
-
 # Cliques
 
 
@@ -475,11 +391,6 @@ plot(G_MB, add = TRUE, rescale = FALSE,
      edge.width = E(G_disconnected)$vol*0.001,
     edge.arrow.size = 0.5, edge.arrow.width = 0.75)
 ```
-
-
-![png](output_50_2.png)
-    
-
 
 # Centrality
 ## Degree-centrality
@@ -510,12 +421,6 @@ plot(distrib_degree, type = "b", lwd = 2, col = "black", ylim = c(0, y_max))
 points(distrib_outdegree, type = "b", lwd = 2, col = "blue")
 points(distrib_indegree, type = "b", lwd = 2, col = "red")
 ```
-
-
-    
-![png](output_53_0.png)
-    
-
 
 # K-nearest neighbours
 For info, the return values of the function `knn` are
@@ -554,11 +459,6 @@ DescTools::ColorLegend(x = "right", col = colbar,
 ```
 
 
-    
-![png](output_57_0.png)
-    
-
-
 # Coreness
 
 
@@ -589,11 +489,6 @@ legend("bottomright",
        box.lty=0,
        col = colbar[sort(unique(cores))])
 ```
-
-
-    
-![png](output_61_0.png)
-    
 
 
 # Betweenness
@@ -627,11 +522,6 @@ DescTools::ColorLegend(x = "right", col = colbar,
 ```
 
 
-    
-![png](output_64_0.png)
-    
-
-
 # Closeness
 First, the unweighted case, i.e., using the geodesic distance.
 
@@ -641,34 +531,6 @@ round(closeness(G_MB, mode = "all"),5)
 round(closeness(G_MB, mode = "in"),5)
 round(closeness(G_MB, mode = "out"),5)
 ```
-
-
-<style>
-.dl-inline {width: auto; margin:0; padding: 0}
-.dl-inline>dt, .dl-inline>dd {float: none; width: auto; display: inline-block}
-.dl-inline>dt::after {content: ":\0020"; padding-right: .5ex}
-.dl-inline>dt:not(:first-of-type) {padding-left: .5ex}
-</style><dl class=dl-inline><dt>XLB</dt><dd>0.02</dd><dt>XSI</dt><dd>0.01961</dd><dt>XTL</dt><dd>0.02</dd><dt>YBR</dt><dd>0.02128</dd><dt>YBT</dt><dd>0.01961</dd><dt>YBV</dt><dd>0.02083</dd><dt>YCR</dt><dd>0.02128</dd><dt>YDN</dt><dd>0.02128</dd><dt>YFO</dt><dd>0.02439</dd><dt>YGO</dt><dd>0.025</dd><dt>YGX</dt><dd>0.02381</dd><dt>YIV</dt><dd>0.02174</dd><dt>YNE</dt><dd>0.02128</dd><dt>YOH</dt><dd>0.025</dd><dt>YQD</dt><dd>0.02439</dd><dt>YRS</dt><dd>0.02222</dd><dt>YST</dt><dd>0.02128</dd><dt>YTH</dt><dd>0.03333</dd><dt>YWG</dt><dd>0.03704</dd><dt>YYQ</dt><dd>0.02381</dd><dt>ZAC</dt><dd>0.01961</dd><dt>ZGI</dt><dd>0.02564</dd><dt>ZTM</dt><dd>0.02439</dd></dl>
-
-
-
-
-<style>
-.dl-inline {width: auto; margin:0; padding: 0}
-.dl-inline>dt, .dl-inline>dd {float: none; width: auto; display: inline-block}
-.dl-inline>dt::after {content: ":\0020"; padding-right: .5ex}
-.dl-inline>dt:not(:first-of-type) {padding-left: .5ex}
-</style><dl class=dl-inline><dt>XLB</dt><dd>0.02</dd><dt>XSI</dt><dd>0.01961</dd><dt>XTL</dt><dd>0.02</dd><dt>YBR</dt><dd>0.02128</dd><dt>YBT</dt><dd>0.01961</dd><dt>YBV</dt><dd>0.02083</dd><dt>YCR</dt><dd>0.02128</dd><dt>YDN</dt><dd>0.02128</dd><dt>YFO</dt><dd>0.02439</dd><dt>YGO</dt><dd>0.025</dd><dt>YGX</dt><dd>0.02381</dd><dt>YIV</dt><dd>0.02174</dd><dt>YNE</dt><dd>0.02128</dd><dt>YOH</dt><dd>0.025</dd><dt>YQD</dt><dd>0.02439</dd><dt>YRS</dt><dd>0.02222</dd><dt>YST</dt><dd>0.02083</dd><dt>YTH</dt><dd>0.03333</dd><dt>YWG</dt><dd>0.03704</dd><dt>YYQ</dt><dd>0.02381</dd><dt>ZAC</dt><dd>0.01961</dd><dt>ZGI</dt><dd>0.02564</dd><dt>ZTM</dt><dd>0.02439</dd></dl>
-
-
-
-
-<style>
-.dl-inline {width: auto; margin:0; padding: 0}
-.dl-inline>dt, .dl-inline>dd {float: none; width: auto; display: inline-block}
-.dl-inline>dt::after {content: ":\0020"; padding-right: .5ex}
-.dl-inline>dt:not(:first-of-type) {padding-left: .5ex}
-</style><dl class=dl-inline><dt>XLB</dt><dd>0.02</dd><dt>XSI</dt><dd>0.01961</dd><dt>XTL</dt><dd>0.02</dd><dt>YBR</dt><dd>0.02128</dd><dt>YBT</dt><dd>0.01961</dd><dt>YBV</dt><dd>0.02083</dd><dt>YCR</dt><dd>0.02128</dd><dt>YDN</dt><dd>0.02128</dd><dt>YFO</dt><dd>0.02439</dd><dt>YGO</dt><dd>0.025</dd><dt>YGX</dt><dd>0.02381</dd><dt>YIV</dt><dd>0.02128</dd><dt>YNE</dt><dd>0.02128</dd><dt>YOH</dt><dd>0.025</dd><dt>YQD</dt><dd>0.02439</dd><dt>YRS</dt><dd>0.02222</dd><dt>YST</dt><dd>0.02128</dd><dt>YTH</dt><dd>0.03333</dd><dt>YWG</dt><dd>0.03704</dd><dt>YYQ</dt><dd>0.02381</dd><dt>ZAC</dt><dd>0.01961</dd><dt>ZGI</dt><dd>0.02564</dd><dt>ZTM</dt><dd>0.02439</dd></dl>
 
 
 
@@ -685,22 +547,9 @@ cl_MB_W
 ```
 
 
-<style>
-.dl-inline {width: auto; margin:0; padding: 0}
-.dl-inline>dt, .dl-inline>dd {float: none; width: auto; display: inline-block}
-.dl-inline>dt::after {content: ":\0020"; padding-right: .5ex}
-.dl-inline>dt:not(:first-of-type) {padding-left: .5ex}
-</style><dl class=dl-inline><dt>XLB</dt><dd>0.02</dd><dt>XSI</dt><dd>0.0196078431372549</dd><dt>XTL</dt><dd>0.02</dd><dt>YBR</dt><dd>0.0212765957446809</dd><dt>YBT</dt><dd>0.0196078431372549</dd><dt>YBV</dt><dd>0.0208333333333333</dd><dt>YCR</dt><dd>0.0212765957446809</dd><dt>YDN</dt><dd>0.0212765957446809</dd><dt>YFO</dt><dd>0.024390243902439</dd><dt>YGO</dt><dd>0.025</dd><dt>YGX</dt><dd>0.0238095238095238</dd><dt>YIV</dt><dd>0.0212765957446809</dd><dt>YNE</dt><dd>0.0212765957446809</dd><dt>YOH</dt><dd>0.025</dd><dt>YQD</dt><dd>0.024390243902439</dd><dt>YRS</dt><dd>0.0222222222222222</dd><dt>YST</dt><dd>0.0212765957446809</dd><dt>YTH</dt><dd>0.0333333333333333</dd><dt>YWG</dt><dd>0.037037037037037</dd><dt>YYQ</dt><dd>0.0238095238095238</dd><dt>ZAC</dt><dd>0.0196078431372549</dd><dt>ZGI</dt><dd>0.0256410256410256</dd><dt>ZTM</dt><dd>0.024390243902439</dd></dl>
 
 
 
-
-<style>
-.dl-inline {width: auto; margin:0; padding: 0}
-.dl-inline>dt, .dl-inline>dd {float: none; width: auto; display: inline-block}
-.dl-inline>dt::after {content: ":\0020"; padding-right: .5ex}
-.dl-inline>dt:not(:first-of-type) {padding-left: .5ex}
-</style><dl class=dl-inline><dt>XLB</dt><dd>3.55606130649692e-05</dd><dt>XSI</dt><dd>4.17188151856487e-05</dd><dt>XTL</dt><dd>3.78845279587816e-05</dd><dt>YBR</dt><dd>4.0256028340244e-05</dd><dt>YBT</dt><dd>3.98914951332376e-05</dd><dt>YBV</dt><dd>2.92817194225645e-05</dd><dt>YCR</dt><dd>3.76293508936971e-05</dd><dt>YDN</dt><dd>3.72689326177698e-05</dd><dt>YFO</dt><dd>3.60516259283294e-05</dd><dt>YGO</dt><dd>5.86063412061185e-05</dd><dt>YGX</dt><dd>2.42072137496974e-05</dd><dt>YIV</dt><dd>3.33555703802535e-05</dd><dt>YNE</dt><dd>2.98632264229827e-05</dd><dt>YOH</dt><dd>6.46663217796172e-05</dd><dt>YQD</dt><dd>4.28320555103439e-05</dd><dt>YRS</dt><dd>5.35188654000535e-05</dd><dt>YST</dt><dd>2.24749404414078e-05</dd><dt>YTH</dt><dd>6.413134098634e-05</dd><dt>YWG</dt><dd>5.21893429361724e-05</dd><dt>YYQ</dt><dd>4.67573759760602e-05</dd><dt>ZAC</dt><dd>4.3813529617946e-05</dd><dt>ZGI</dt><dd>6.56857593273778e-05</dd><dt>ZTM</dt><dd>5.54938956714761e-05</dd></dl>
 
 
 
@@ -717,37 +566,6 @@ plot(sort(cl_MB_W))
 ```
 
 
-<style>
-.list-inline {list-style: none; margin:0; padding: 0}
-.list-inline>li {display: inline-block}
-.list-inline>li:not(:last-child)::after {content: "\00b7"; padding: 0 .5ex}
-</style>
-<ol class=list-inline><li>0.0196078431372549</li><li>0.037037037037037</li></ol>
-
-
-
-
-<style>
-.list-inline {list-style: none; margin:0; padding: 0}
-.list-inline>li {display: inline-block}
-.list-inline>li:not(:last-child)::after {content: "\00b7"; padding: 0 .5ex}
-</style>
-<ol class=list-inline><li>2.24749404414078e-05</li><li>6.56857593273778e-05</li></ol>
-
-
-
-
-    
-![png](output_70_2.png)
-    
-
-
-
-    
-![png](output_70_3.png)
-    
-
-
 So if we multiply the first values by 10,000 and the second ones by 1e7, we should get good ranges of variation.
 
 
@@ -755,24 +573,6 @@ So if we multiply the first values by 10,000 and the second ones by 1e7, we shou
 range(cl_MB_U * 1e4)
 range(cl_MB_W * 1e7)
 ```
-
-
-<style>
-.list-inline {list-style: none; margin:0; padding: 0}
-.list-inline>li {display: inline-block}
-.list-inline>li:not(:last-child)::after {content: "\00b7"; padding: 0 .5ex}
-</style>
-<ol class=list-inline><li>196.078431372549</li><li>370.37037037037</li></ol>
-
-
-
-
-<style>
-.list-inline {list-style: none; margin:0; padding: 0}
-.list-inline>li {display: inline-block}
-.list-inline>li:not(:last-child)::after {content: "\00b7"; padding: 0 .5ex}
-</style>
-<ol class=list-inline><li>224.749404414078</li><li>656.857593273778</li></ol>
 
 
 
@@ -801,12 +601,6 @@ DescTools::ColorLegend(x = "right", col = colbar,
 ```
 
 
-    
-![png](output_74_0.png)
-    
-
-
-
 ```{r}
 cl_MB_W_tmp = cl_MB_W * 1e7
 Delta_cl = ceiling(max(cl_MB_W_tmp)-min(cl_MB_W_tmp))
@@ -825,12 +619,6 @@ DescTools::ColorLegend(x = "right", col = colbar,
                        width = 0.5, inset = 0.1,
                        labels = colbar_str)
 ```
-
-
-    
-![png](output_75_0.png)
-    
-
 
 One interesting remark here: closeness radically changes when considering the unweighted and weighted version. Just to confirm this, let us plot the two graphs side by side.
 
@@ -864,12 +652,6 @@ plot(G_MB, add = TRUE, rescale = FALSE,
      edge.arrow.size = 0.5, 
      edge.arrow.width = 0.75)
 ```
-
-
-    
-![png](output_77_0.png)
-    
-
 
 So Thompson (YTH) is has higher closeness centrality than Winnipeg (YWG) when passenger volumes are considered. Does the situation change if we recall that Winnipeg is quite connected to the rest of the world? We prepare the computations and the plots as we had done earlier.
 
@@ -947,10 +729,6 @@ plot(G, add = TRUE, rescale = FALSE,
      edge.arrow.width = 0.75)
 ```
 
-
-    
-![png](output_81_0.png)
-    
 
 
 Actually, things do not change, except that RoW becomes important as well.
