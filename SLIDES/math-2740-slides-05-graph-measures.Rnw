@@ -1,24 +1,78 @@
-%\PassOptionsToPackage{landscape}{geometry}
 \documentclass[aspectratio=169]{beamer}
 
-\input{slides-setup-whiteBG.tex}
+<<set-options,echo=FALSE,warning=FALSE,message=FALSE>>=
+# Load required libraries
+required_packages = c("dplyr", 
+                      "ggplot2",
+                      "igraph",
+                      "knitr", 
+                      "latex2exp",
+                      "magick",
+                      "pracma", 
+                      "readr", 
+                      "tidyr")
+for (p in required_packages) {
+  if (!require(p, character.only = TRUE)) {
+    install.packages(p, dependencies = TRUE)
+    require(p, character.only = TRUE)
+  }
+}
+# Prepare figure crop hook
+knitr::knit_hooks$set(crop = knitr::hook_pdfcrop)
+# Knitr options
+opts_chunk$set(echo = TRUE, 
+               warning = FALSE, 
+               message = FALSE,
+               crop = TRUE,
+               dev = c("pdf", "png"),
+               fig.width = 6, 
+               fig.height = 4, 
+               fig.path = "FIGS/graphs-",
+               fig.keep = "high",
+               fig.show = "hide")
+@
+
+
+<<set-slide-background,echo=FALSE,results='asis'>>=
+# Are we plotting for a dark background?
+plot_blackBG = FALSE
+if (plot_blackBG) {
+  bg_color = "black"
+  fg_color = "white"
+  input_setup = "\\input{slides-setup-blackBG.tex}"
+} else {
+  bg_color = "white"
+  fg_color = "black"
+  input_setup = "\\input{slides-setup-whiteBG.tex}"
+}
+cat(input_setup)
+@
 
 \title{Characteristing graphs}
+\author{\texorpdfstring{Julien Arino\newline University of Manitoba\newline\url{julien.arino@umanitoba.ca}}{Julien Arino}}
 \date{}
 
 \begin{document}
-\DeclareFontShape{OT1}{cmss}{b}{n}{<->ssub * cmss/bx/n}{} 
-\begin{frame}
-	\titlepage
-\end{frame}
 
-%\stretchon
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% TITLE AND OUTLINE
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\titlepagewithfigure{FIGS-transitions/a_robot_using_an_easel_to_paint_a_desolate_tree_in_the_style_of_HR_Giger.png}
+\outlinepage{FIGS-transitions/a_robot_looking_at_a_desolate_tree_as_if_they_were_about_to_paint_the_tree.png}
+
 
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
 \section{Why characterise graphs?}
+\newSectionSlide{FIGS-transitions/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
+
+
 \begin{frame}{Why characterise a graph}
 Graphs are everywhere!
 \vfill
@@ -37,7 +91,7 @@ To compare graphs, understand their properties, we need ways to describe their s
 	\bigskip
 	{\centering
 		\hspace*{-\beamerleftmargin}
-		\includegraphics[width=\paperwidth]{FIGS_slides/Cauchemez_etal_H1N1}
+		\includegraphics[height=0.75\paperheight]{FIGS_slides/Cauchemez_etal_H1N1}
 	}
 	\vskip0pt plus 1filll
 	\tiny
@@ -45,7 +99,7 @@ To compare graphs, understand their properties, we need ways to describe their s
 \end{frame}
 
 \begin{frame}{Example of spread of MERS}
-	\begin{minipage}{0.8\textwidth}
+	\begin{minipage}{0.7\textwidth}
 		\hspace*{-\beamerleftmargin}
 		\includegraphics[height=\paperheight]{FIGS_slides/YangJung2015SouthKoreaMERS}
 	\end{minipage}
@@ -53,6 +107,10 @@ To compare graphs, understand their properties, we need ways to describe their s
 	\tiny
 	Topological dynamics of the 2015 South Korea MERS-CoV spread-on-contact networks, Yang \& Jung, Scientific Reports \textbf{10}:4327 (2020)
 	\end{minipage}
+\end{frame}
+
+\begin{frame}{More disease transmission trees}
+\href{https://outbreaktrees.ecology.uga.edu/}{Outbreak Trees} has an extensive database of disease transmission trees
 \end{frame}
 
 
@@ -68,6 +126,9 @@ To compare graphs, understand their properties, we need ways to describe their s
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
 \section{A few \code{R} preliminaries}
+\newSectionSlide{FIGS-transitions/a_robot_looking_at_a_desolate_tree_in_the_style_of_Dali.png}
+
+
 \begin{frame}{\code{R} packages for analysing graphs}
 	Two main packages: \href{https://cran.r-project.org/web/packages/network/index.html}{\code{network}} and \href{https://r.igraph.org/}{\code{igraph}}
 	\vfill
@@ -113,10 +174,14 @@ To compare graphs, understand their properties, we need ways to describe their s
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
 \section{Measures specific to vertices}
+\newSectionSlide{FIGS-transitions/Gemini_Generated_Image_4pxjh4pxjh4pxjh4.jpeg}
+
 
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
 \subsection{Centre of a graph}
+\newSubSectionSlide{FIGS-transitions/Gemini_Generated_Image_ga57rcga57rcga57.jpeg}
+
 
 \begin{frame}{Geodesic distance}
 \begin{definition}[Geodesic distance]
@@ -335,6 +400,8 @@ Radius is 3, $x_2$ is a central point (the only one) and the centre is $\{x_2\}$
 %%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%
 \subsection{Centrality -- Betweenness and closeness}
+\newSubSectionSlide{FIGS-transitions/Gemini_Generated_Image_6yeslm6yeslm6yes.jpeg}
+
 \begin{frame}{How \emph{central} is a vertex?}
 	\emph{Centrality} tries to answer the question: what are the most influent vertices? 
 	\vfill
@@ -553,6 +620,8 @@ In other words
 %%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%
 \subsection{Periphery of a graph}
+\newSubSectionSlide{FIGS-transitions/Gemini_Generated_Image_rzto8rzto8rzto8r.jpeg}
+
 \begin{frame}{Diametre and periphery of a graph}
 \begin{definition}[Diametre of a graph]
 The \defword{diametre} of $G$ is 
@@ -626,6 +695,8 @@ $\delta(G)<\infty$ $\iff$ $G$ strongly connected
 %%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Degree distribution}
+\newSubSectionSlide{FIGS-transitions/Gemini_Generated_Image_jkiuvcjkiuvcjkiu.jpeg}
+
 
 \begin{frame}{Degree distribution}
 	\begin{definition}[Arc incident to a vertex]
@@ -806,9 +877,13 @@ $\delta(G)<\infty$ $\iff$ $G$ strongly connected
 %%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%
 \section{Measures at the graph level}
+\newSectionSlide{FIGS-transitions/Gemini_Generated_Image_hfenashfenashfen.jpeg}
+
 %%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Circumference \& Girth}
+\newSubSectionSlide{FIGS-transitions/Gemini_Generated_Image_a36uz1a36uz1a36u.jpeg}
+
 
 \begin{frame}{Circumference}
 \begin{definition}[Circumference]
@@ -881,6 +956,8 @@ $\delta(G)<\infty$ $\iff$ $G$ strongly connected
 %%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Graph density}
+\newSubSectionSlide{FIGS-transitions/Gemini_Generated_Image_m4586wm4586wm458.jpeg}
+
 
 \begin{frame}{Completeness}
 	\begin{definition}[{Complete undirected graph}]
@@ -958,6 +1035,8 @@ or
 %%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Graph connectivity}
+\newSubSectionSlide{FIGS-transitions/Gemini_Generated_Image_q8u933q8u933q8u9.jpeg}
+
 
 \begin{frame}{Connectedness}
 We have already seen connectedness (quasi- or strong in the oriented case)
@@ -1121,6 +1200,8 @@ $G=(V,U)$ is weakly connected if there is a single weak component
 %%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Cliques}
+\newSubSectionSlide{FIGS-transitions/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
+
 
 \begin{frame}{Cliques}
 	\begin{definition}[Clique in undirected graphs]
@@ -1203,6 +1284,8 @@ $G=(V,U)$ is weakly connected if there is a single weak component
 %%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%
 \subsection{$k$-cores}
+\newSubSectionSlide{FIGS-transitions/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
+
 
 \begin{frame}{$k$-core}
 	\begin{definition}[$k$-core of a graph]
