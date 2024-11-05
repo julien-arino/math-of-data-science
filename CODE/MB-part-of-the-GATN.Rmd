@@ -8,7 +8,10 @@ output: html_document
 ```{r setup, include=TRUE, message=FALSE, echo=FALSE}
 # By default, we won't show code chunks, just use echo=TRUE or specific lines
 # to show them when needed
-knitr::opts_chunk$set(echo = FALSE, message = FALSE)
+knitr::opts_chunk$set(echo = FALSE,
+                      message = FALSE,
+                      fig.width = 10,
+                      fig.height = 8)
 # Load/install required libraries. Note the use of Ncpus to speed up the process,
 # when compiling packages is required (typically linux)
 required_libs = c("dplyr", 
@@ -50,9 +53,9 @@ The airport data, filtered to only retain MB locations, looks as follows.
 ```{r load-airports-file}
 airport_codes_MB <- read_csv("airport_codes_CAN.csv") %>%
   filter(ISO_Region == "CA-MB")
-knitr::kable(head(airport_codes_MB)) %>%
+knitr::kable(airport_codes_MB) %>%
   kable_styling("striped", full_width = F) %>% 
- scroll_box(width = "500px", height = "200px")
+ scroll_box(width = "800px", height = "400px")
 ```
 
 
@@ -96,7 +99,7 @@ kable(head(IATA_codes_MB_in_data))
 We are now in a position to make the graph and plot it in simple form. We add the volume as the weight of the arcs.
 
 
-```{r}
+```{r plot-graph-1}
 G = graph_from_data_frame(air_travel_MB)
 V(G)$x = lon
 V(G)$y = lat
@@ -107,7 +110,7 @@ plot(G, edge.arrow.size = 0.5, edge.arrow.width = 0.75)
 We also make a subgraph without `RoW` to focus on the properties really specific to Manitoba.
 
 
-```{r}
+```{r plot-MB-graph-without-RoW-1}
 G_MB = induced_subgraph(G, V(G)$name[V(G)$name != "RoW"])
 plot(G_MB, edge.arrow.size = 0.5, edge.arrow.width = 0.75)
 ```
@@ -116,20 +119,28 @@ plot(G_MB, edge.arrow.size = 0.5, edge.arrow.width = 0.75)
 Before we explore the properties of the graph, let us spend a little time on visualisation. This is not to be neglected: nice plots help more than you think.
 
 The next piece of code does the following:
+
 - Redefine the output size (does it once for all, need to modify if need be)
-- Uses the library `raster` to read in the shape file for Canada
+- Uses the library `geodata` to read in the shape file for Canada
 - Selects Manitoba from the Canada shape file
 - Plots Manitoba
 - Plots the graph
 
 
-```{r}
-options(repr.plot.width=15, repr.plot.height=15)
+```{r plot-graph-with-MB-shape}
 Canada <- geodata::gadm(country='CAN', level=1, path = ".")
 MB <- Canada[Canada$NAME_1 == "Manitoba",]
 plot(MB)
 plot(G, add = TRUE, rescale = FALSE,
-    edge.arrow.size = 0.5, edge.arrow.width = 0.75)
+     edge.arrow.size = 0.5, edge.arrow.width = 0.75)
+```
+
+That box around the plot is a little distracting, let's remove it.
+
+```{r plot-graph-with-MB-shape-2}
+plot(MB, box = FALSE, axes = FALSE)
+plot(G, add = TRUE, rescale = FALSE,
+     edge.arrow.size = 0.5, edge.arrow.width = 0.75)
 ```
 
 
@@ -137,14 +148,14 @@ Let us add the degree information as the size of the vertices.
 
 
 ```{r}
-plot(MB)
+plot(MB, box = FALSE, axes = FALSE)
 V(G)$size = degree(G, mode = "out")*10
 plot(G, add = TRUE, rescale = FALSE,
     edge.arrow.size = 0.5, edge.arrow.width = 0.75)
 ```
 
 ```{r}
-plot(MB)
+plot(MB, box = FALSE, axes = FALSE)
 V(G_MB)$size = degree(G_MB)*5
 plot(G_MB, add = TRUE, rescale = FALSE,
     edge.arrow.size = 0.5, edge.arrow.width = 0.75)
@@ -154,7 +165,7 @@ Now let us take a look at the arcs. Maybe change their thickness to reflect the 
 
 
 ```{r}
-plot(MB)
+plot(MB, box = FALSE, axes = FALSE)
 V(G_MB)$size = degree(G_MB)*5
 plot(G_MB, add = TRUE, rescale = FALSE, edge.width = E(G_MB)$vol,
     edge.arrow.size = 0.5, edge.arrow.width = 0.75)
@@ -173,14 +184,14 @@ So, yes, clearly a bit too much variation. If we scale linearly by multiplying b
 
 
 ```{r}
-plot(MB)
+plot(MB, box = FALSE, axes = FALSE)
 V(G)$size = degree(G)*5
 plot(G, add = TRUE, rescale = FALSE, edge.width = E(G)$vol*0.001,
     edge.arrow.size = 0.5, edge.arrow.width = 0.75)
 ```
 
 ```{r}
-plot(MB)
+plot(MB, box = FALSE, axes = FALSE)
 V(G)$size = degree(G)*5
 plot(G, add = TRUE, rescale = FALSE, edge.width = E(G)$vol*0.0005,
     edge.arrow.size = 0.5, edge.arrow.width = 0.75)
@@ -191,7 +202,6 @@ What we suspected, indeed: to make the arcs with the largest volume not too larg
 
 
 ```{r}
-options(repr.plot.width=10, repr.plot.height=10)
 plot(sort(E(G)$vol), type = "b")
 ```
 
@@ -233,18 +243,18 @@ That last one looks quite nice. We most likely will have to multiply by a factor
 options(repr.plot.width=15, repr.plot.height=15)
 edge_widths = 2*sigmoid(E(G)$vol, 0.1)
 
-plot(MB)
+plot(MB, box = FALSE, axes = FALSE)
 V(G)$size = degree(G)*5
 plot(G, add = TRUE, rescale = FALSE, 
      edge.width = edge_widths, type = "b",
     edge.arrow.size = 0.5, edge.arrow.width = 0.75)
 ```
 
-Well, after all this, I am not convinced we achieved between than we had done above but just a linear scaling. So when we want a a good plot, we'll come back to that solution.
+Well, after all this, I am not convinced we achieved better than we had done above with just a linear scaling. So when we want a a good plot, we'll come back to that solution.
 
 
 ```{r}
-plot(MB)
+plot(MB, box = FALSE, axes = FALSE)
 V(G)$size = degree(G)*5
 plot(G, add = TRUE, rescale = FALSE, edge.width = E(G)$vol*0.0005,
     edge.arrow.size = 0.5, edge.arrow.width = 0.75)
@@ -252,7 +262,7 @@ plot(G, add = TRUE, rescale = FALSE, edge.width = E(G)$vol*0.0005,
 
 
 ```{r}
-plot(MB)
+plot(MB, box = FALSE, axes = FALSE)
 V(G_MB)$size = degree(G_MB)*5
 plot(G_MB, add = TRUE, rescale = FALSE, 
      edge.width = E(G_MB)$vol*0.001,
@@ -305,7 +315,7 @@ writeLines("Periphery:")
 V(G_MB)[which(e_out == max(e_out))]$name
 V(G_MB)[which(e_out == max(e_out))]$color = "blue"
 
-plot(MB)
+plot(MB, box = FALSE, axes = FALSE)
 V(G_MB)$size = degree(G_MB)*5
 plot(G_MB, add = TRUE, rescale = FALSE, 
      edge.width = E(G_MB)$vol*0.001,
@@ -366,7 +376,7 @@ comps <- components(G_disconnected)$membership
 colbar <- rainbow(max(comps)+1)
 V(G_disconnected)$color <- colbar[comps+1]
 
-plot(MB)
+plot(MB, box = FALSE, axes = FALSE)
 V(G_disconnected)$size = rep(50,length(V(G_disconnected)))
 plot(G_disconnected, add = TRUE, rescale = FALSE, 
      edge.width = E(G_disconnected)$vol*0.001,
@@ -385,7 +395,7 @@ vert_largest_clique = lc[[1]]
 V(G_MB)$color = "blue"
 V(G_MB)[vert_largest_clique]$color = "red"
 
-plot(MB)
+plot(MB, box = FALSE, axes = FALSE)
 V(G_MB)$size = rep(50,length(V(G_MB)))
 plot(G_MB, add = TRUE, rescale = FALSE, 
      edge.width = E(G_disconnected)$vol*0.001,
@@ -447,7 +457,7 @@ knn_in_bar = sort(unique(round(knn_in)))
 colbar <- viridis::viridis(max(ceiling(knn_in)))
 V(G_MB)$color <- colbar[round(knn_in)]
 
-plot(MB)
+plot(MB, box = FALSE, axes = FALSE)
 V(G_MB)$size = rep(75,length(V(G_MB)))
 plot(G_MB, add = TRUE, rescale = FALSE, 
      edge.width = E(G_MB)$vol*0.001,
@@ -476,7 +486,7 @@ cores = coreness(G_MB, "out")
 colbar <- viridis::viridis(max(cores))
 V(G_MB)$color <- colbar[cores]
 
-plot(MB)
+plot(MB, box = FALSE, axes = FALSE)
 V(G_MB)$size = rep(75,length(V(G_MB)))
 plot(G_MB, add = TRUE, rescale = FALSE, 
      edge.width = E(G_MB)$vol*0.001,
@@ -510,7 +520,7 @@ V(G_MB)$color <- colbar[round(betweenness_MB)+1]
 # For the label of the colour bar
 colbar_str = sprintf("%d", range(unique(round(betweenness_MB))))
 
-plot(MB)
+plot(MB, box = FALSE, axes = FALSE)
 V(G_MB)$size = rep(75,length(V(G_MB)))
 plot(G_MB, add = TRUE, rescale = FALSE, 
      edge.width = E(G_MB)$vol*0.001,
@@ -589,7 +599,7 @@ V(G_MB)$color <- colbar[round(cl_MB_U_tmp-min(cl_MB_U_tmp))+1]
 # For the label of the colour bar
 colbar_str = sprintf("%f", range(cl_MB_U_tmp))
 
-plot(MB)
+plot(MB, box = FALSE, axes = FALSE)
 V(G_MB)$size = rep(75,length(V(G_MB)))
 plot(G_MB, add = TRUE, rescale = FALSE, 
      edge.width = E(G_MB)$vol*0.001,
@@ -609,7 +619,7 @@ V(G_MB)$color <- colbar[round(cl_MB_W_tmp-min(cl_MB_W_tmp))+1]
 # For the label of the colour bar
 colbar_str = sprintf("%f", range(cl_MB_W_tmp))
 
-plot(MB)
+plot(MB, box = FALSE, axes = FALSE)
 V(G_MB)$size = rep(75,length(V(G_MB)))
 plot(G_MB, add = TRUE, rescale = FALSE, 
      edge.width = E(G_MB)$vol*0.001,
@@ -632,7 +642,7 @@ colbar <- viridis::viridis(Delta_cl+1)
 V(G_MB)$color <- colbar[round(cl_MB_U_tmp-min(cl_MB_U_tmp))+1]
 # For the label of the colour bar
 colbar_str = sprintf("%f", range(cl_MB_U_tmp))
-plot(MB)
+plot(MB, box = FALSE, axes = FALSE)
 V(G_MB)$size = rep(75,length(V(G_MB)))
 plot(G_MB, add = TRUE, rescale = FALSE, 
      edge.width = E(G_MB)$vol*0.001,
@@ -645,7 +655,7 @@ colbar <- viridis::viridis(Delta_cl+1)
 V(G_MB)$color <- colbar[round(cl_MB_W_tmp-min(cl_MB_W_tmp))+1]
 # For the label of the colour bar
 colbar_str = sprintf("%f", range(cl_MB_W_tmp))
-plot(MB)
+plot(MB, box = FALSE, axes = FALSE)
 V(G_MB)$size = rep(75,length(V(G_MB)))
 plot(G_MB, add = TRUE, rescale = FALSE, 
      edge.width = E(G_MB)$vol*0.001,
@@ -682,7 +692,7 @@ colbar <- viridis::viridis(Delta_cl+1)
 V(G_MB)$color <- colbar[round(cl_MB_U_tmp-min(cl_MB_U_tmp))+1]
 # For the label of the colour bar
 colbar_str = sprintf("%f", range(cl_MB_U_tmp))
-plot(MB)
+plot(MB, box = FALSE, axes = FALSE)
 V(G_MB)$size = rep(75,length(V(G_MB)))
 plot(G_MB, add = TRUE, rescale = FALSE, 
      edge.width = E(G_MB)$vol*0.001,
@@ -695,7 +705,7 @@ colbar <- viridis::viridis(Delta_cl+1)
 V(G_MB)$color <- colbar[round(cl_MB_W_tmp-min(cl_MB_W_tmp))+1]
 # For the label of the colour bar
 colbar_str = sprintf("%f", range(cl_MB_W_tmp))
-plot(MB)
+plot(MB, box = FALSE, axes = FALSE)
 V(G_MB)$size = rep(75,length(V(G_MB)))
 plot(G_MB, add = TRUE, rescale = FALSE, 
      edge.width = E(G_MB)$vol*0.001,
@@ -708,7 +718,7 @@ colbar <- viridis::viridis(Delta_cl+1)
 V(G)$color <- colbar[round(cl_MB_RoW_U_tmp-min(cl_MB_RoW_U_tmp))+1]
 # For the label of the colour bar
 colbar_str = sprintf("%f", range(cl_MB_RoW_U_tmp))
-plot(MB)
+plot(MB, box = FALSE, axes = FALSE)
 V(G)$size = rep(75,length(V(G)))
 plot(G, add = TRUE, rescale = FALSE, 
      edge.width = E(G)$vol*0.0001,
@@ -721,7 +731,7 @@ colbar <- viridis::viridis(Delta_cl+1)
 V(G)$color <- colbar[round(cl_MB_RoW_W_tmp-min(cl_MB_RoW_W_tmp))+1]
 # For the label of the colour bar
 colbar_str = sprintf("%f", range(cl_MB_RoW_W_tmp))
-plot(MB)
+plot(MB, box = FALSE, axes = FALSE)
 V(G)$size = rep(75,length(V(G)))
 plot(G, add = TRUE, rescale = FALSE, 
      edge.width = E(G)$vol*0.0001,
