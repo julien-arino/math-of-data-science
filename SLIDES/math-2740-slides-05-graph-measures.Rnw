@@ -61,8 +61,8 @@ cat(input_setup)
 %% TITLE AND OUTLINE
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\titlepagewithfigure{FIGS/Gemini_Generated_Image_awgymvawgymvawgy.jpeg}
-\outlinepage{FIGS/Gemini_Generated_Image_duutxqduutxqduut.jpeg}
+\titlepagewithfigure{FIGS-transitions/a_robot_using_an_easel_to_paint_a_desolate_tree_in_the_style_of_HR_Giger.png}
+\outlinepage{FIGS-transitions/a_robot_looking_at_a_desolate_tree_as_if_they_were_about_to_paint_the_tree.png}
 
 
 %%%%%%%%%%%%%%%%%%%%%
@@ -70,7 +70,7 @@ cat(input_setup)
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
 \section{Why characterise graphs?}
-\newSectionSlide{FIGS/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
+\newSectionSlide{FIGS-transitions/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
 
 
 \begin{frame}{Why characterise a graph}
@@ -126,7 +126,7 @@ To compare graphs, understand their properties, we need ways to describe their s
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
 \section{A few \code{R} preliminaries}
-\newSectionSlide{FIGS/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
+\newSectionSlide{FIGS-transitions/a_robot_looking_at_a_desolate_tree_in_the_style_of_Dali.png}
 
 
 \begin{frame}{\code{R} packages for analysing graphs}
@@ -174,13 +174,13 @@ To compare graphs, understand their properties, we need ways to describe their s
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
 \section{Measures specific to vertices}
-\newSectionSlide{FIGS/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
+\newSectionSlide{FIGS-transitions/Gemini_Generated_Image_4pxjh4pxjh4pxjh4.jpeg}
 
 
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
 \subsection{Centre of a graph}
-\newSubSectionSlide{FIGS/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
+\newSubSectionSlide{FIGS-transitions/Gemini_Generated_Image_ga57rcga57rcga57.jpeg}
 
 
 \begin{frame}{Geodesic distance}
@@ -400,7 +400,7 @@ Radius is 3, $x_2$ is a central point (the only one) and the centre is $\{x_2\}$
 %%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%
 \subsection{Centrality -- Betweenness and closeness}
-\newSubSectionSlide{FIGS/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
+\newSubSectionSlide{FIGS-transitions/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
 
 \begin{frame}{How \emph{central} is a vertex?}
 	\emph{Centrality} tries to answer the question: what are the most influent vertices? 
@@ -620,7 +620,7 @@ In other words
 %%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%
 \subsection{Periphery of a graph}
-\newSubSectionSlide{FIGS/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
+\newSubSectionSlide{FIGS-transitions/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
 
 \begin{frame}{Diametre and periphery of a graph}
 \begin{definition}[Diametre of a graph]
@@ -695,7 +695,7 @@ $\delta(G)<\infty$ $\iff$ $G$ strongly connected
 %%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Degree distribution}
-\newSubSectionSlide{FIGS/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
+\newSubSectionSlide{FIGS-transitions/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
 
 
 \begin{frame}{Degree distribution}
@@ -877,12 +877,12 @@ $\delta(G)<\infty$ $\iff$ $G$ strongly connected
 %%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%
 \section{Measures at the graph level}
-\newSectionSlide{FIGS/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
+\newSectionSlide{FIGS-transitions/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
 
 %%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Circumference \& Girth}
-\newSubSectionSlide{FIGS/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
+\newSubSectionSlide{FIGS-transitions/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
 
 
 \begin{frame}{Circumference}
@@ -956,7 +956,7 @@ $\delta(G)<\infty$ $\iff$ $G$ strongly connected
 %%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Graph density}
-\newSubSectionSlide{FIGS/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
+\newSubSectionSlide{FIGS-transitions/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
 
 
 \begin{frame}{Completeness}
@@ -1035,7 +1035,7 @@ or
 %%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Graph connectivity}
-\newSubSectionSlide{FIGS/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
+\newSubSectionSlide{FIGS-transitions/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
 
 
 \begin{frame}{Connectedness}
@@ -1200,7 +1200,7 @@ $G=(V,U)$ is weakly connected if there is a single weak component
 %%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Cliques}
-\newSubSectionSlide{FIGS/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
+\newSubSectionSlide{FIGS-transitions/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
 
 
 \begin{frame}{Cliques}
@@ -1284,7 +1284,7 @@ $G=(V,U)$ is weakly connected if there is a single weak component
 %%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%
 \subsection{$k$-cores}
-\newSubSectionSlide{FIGS/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
+\newSubSectionSlide{FIGS-transitions/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
 
 
 \begin{frame}{$k$-core}
