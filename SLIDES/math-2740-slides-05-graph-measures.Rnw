@@ -400,7 +400,7 @@ Radius is 3, $x_2$ is a central point (the only one) and the centre is $\{x_2\}$
 %%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%
 \subsection{Centrality -- Betweenness and closeness}
-\newSubSectionSlide{FIGS-transitions/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
+\newSubSectionSlide{FIGS-transitions/Gemini_Generated_Image_6yeslm6yeslm6yes.jpeg}
 
 \begin{frame}{How \emph{central} is a vertex?}
 	\emph{Centrality} tries to answer the question: what are the most influent vertices? 
@@ -620,7 +620,7 @@ In other words
 %%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%
 \subsection{Periphery of a graph}
-\newSubSectionSlide{FIGS-transitions/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
+\newSubSectionSlide{FIGS-transitions/Gemini_Generated_Image_rzto8rzto8rzto8r.jpeg}
 
 \begin{frame}{Diametre and periphery of a graph}
 \begin{definition}[Diametre of a graph]
@@ -695,7 +695,7 @@ $\delta(G)<\infty$ $\iff$ $G$ strongly connected
 %%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Degree distribution}
-\newSubSectionSlide{FIGS-transitions/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
+\newSubSectionSlide{FIGS-transitions/Gemini_Generated_Image_jkiuvcjkiuvcjkiu.jpeg}
 
 
 \begin{frame}{Degree distribution}
@@ -877,12 +877,12 @@ $\delta(G)<\infty$ $\iff$ $G$ strongly connected
 %%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%
 \section{Measures at the graph level}
-\newSectionSlide{FIGS-transitions/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
+\newSectionSlide{FIGS-transitions/Gemini_Generated_Image_hfenashfenashfen.jpeg}
 
 %%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Circumference \& Girth}
-\newSubSectionSlide{FIGS-transitions/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
+\newSubSectionSlide{FIGS-transitions/Gemini_Generated_Image_a36uz1a36uz1a36u.jpeg}
 
 
 \begin{frame}{Circumference}
@@ -956,7 +956,7 @@ $\delta(G)<\infty$ $\iff$ $G$ strongly connected
 %%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Graph density}
-\newSubSectionSlide{FIGS-transitions/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
+\newSubSectionSlide{FIGS-transitions/Gemini_Generated_Image_m4586wm4586wm458.jpeg}
 
 
 \begin{frame}{Completeness}
@@ -1035,7 +1035,7 @@ or
 %%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Graph connectivity}
-\newSubSectionSlide{FIGS-transitions/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
+\newSubSectionSlide{FIGS-transitions/Gemini_Generated_Image_q8u933q8u933q8u9.jpeg}
 
 
 \begin{frame}{Connectedness}
