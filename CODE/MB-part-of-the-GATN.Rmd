@@ -17,7 +17,7 @@ Set the variable `INSTALL` to `TRUE` to install the libraries, set to `FALSE` on
 required_libs = c("dplyr", "readr", "sqldf", "igraph", "ggraph", "raster")
 for (l in required_libs) {
     if (!require(l, character.only = TRUE)) {
-        install.packages(l)
+        install.packages(l, Ncpus = (paralllel::detectCores()-1))
         library(l, character.only = TRUE)
     }
 }
