@@ -1,328 +1,77 @@
-%\PassOptionsToPackage{landscape}{geometry}
 \documentclass[aspectratio=169]{beamer}
 
-%\input{nonLightBoard_slides.tex}
-\input{slides_setup_nonLightBoard.tex}
+<<set-options,echo=FALSE,warning=FALSE,message=FALSE>>=
+# Load required libraries
+required_packages = c("dplyr", 
+                      "ggplot2",
+                      "igraph",
+                      "knitr", 
+                      "latex2exp",
+                      "magick",
+                      "pracma", 
+                      "readr", 
+                      "tidyr")
+for (p in required_packages) {
+  if (!require(p, character.only = TRUE)) {
+    install.packages(p, dependencies = TRUE)
+    require(p, character.only = TRUE)
+  }
+}
+# Prepare figure crop hook
+knitr::knit_hooks$set(crop = knitr::hook_pdfcrop)
+# Knitr options
+opts_chunk$set(echo = TRUE, 
+               warning = FALSE, 
+               message = FALSE,
+               crop = TRUE,
+               dev = c("pdf", "png"),
+               fig.width = 6, 
+               fig.height = 4, 
+               fig.path = "FIGS/graphs-",
+               fig.keep = "high",
+               fig.show = "hide")
+@
 
-\title{Clustering \& Classification}
+
+<<set-slide-background,echo=FALSE,results='asis'>>=
+# Are we plotting for a dark background?
+plot_blackBG = FALSE
+if (plot_blackBG) {
+  bg_color = "black"
+  fg_color = "white"
+  input_setup = "\\input{slides-setup-blackBG.tex}"
+} else {
+  bg_color = "white"
+  fg_color = "black"
+  input_setup = "\\input{slides-setup-whiteBG.tex}"
+}
+cat(input_setup)
+@
+
+\title{Clustering \& Classification using ANNs}
+\author{\texorpdfstring{Julien Arino\newline University of Manitoba\newline\url{julien.arino@umanitoba.ca}}{Julien Arino}}
 \date{}
 
 \begin{document}
-\DeclareFontShape{OT1}{cmss}{b}{n}{<->ssub * cmss/bx/n}{} 
-\begin{frame}
-	\titlepage
-\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% TITLE AND OUTLINE
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\titlepagewithfigure{FIGS-transitions/a_robot_using_an_easel_to_paint_a_desolate_tree_in_the_style_of_HR_Giger.png}
+\outlinepage{FIGS-transitions/a_robot_looking_at_a_desolate_tree_as_if_they_were_about_to_paint_the_tree.png}
 
 %%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%
-\section{What are clustering and classification ?}
-
-\begin{frame}{Clustering vs classification}
-    Clustering is partitioning an unlabelled dataset into groups of similar objects
-    \vfill
-    Classification sorts data into specific categories using a labelled dataset
-\end{frame}
-
-\begin{frame}{Clustering}
-    From \href{https://en.wikipedia.org/wiki/Cluster_analysis}{Wikipedia}
-    \begin{quote}
-        \textbf{Cluster analysis} or \textbf{clustering} is the task of grouping a set of objects in such a way that objects in the same group (called a \textbf{cluster}) are more similar (in some sense) to each other than to those in other groups (clusters).
-    \end{quote}
-    \vfill
-    There are a myriad of ways to do clustering, this is an extremely active field of research and application. See the Wikipedia page for leads
-\end{frame}
-
-
-\begin{frame}{We have done clustering already}
-    We have seen some clustering:
-    \begin{itemize}
-        \item when we sought strongly connected components
-        \item when we sought cliques
-        \item to some extent, with PCA
-    \end{itemize}   
-\end{frame}
-
-
-\begin{frame}{Classification}
-    From \href{https://en.wikipedia.org/wiki/Statistical_classification}{Wikipedia}
-    \begin{quote}
-        In statistics, \textbf{classification} is the problem of identifying which of a set of categories (sub-populations) an observation (or observations) belongs to. Examples are assigning a given email to the "spam" or "non-spam" class, and assigning a diagnosis to a given patient based on observed characteristics of the patient (sex, blood pressure, presence or absence of certain symptoms, etc.).
-    \end{quote}
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%
-\section{Support vector machines}
-
-\begin{frame}{Support vector machines (SVM)}
-    We are given a training dataset of $n$ points of the form
-    \[ 
-        (\bx_1, y_1), \ldots, (\bx_n, y_n)
-    \]
-    where $\bx_i\in\IR^p$ and $y_i=\{-1,1\}$. The value of $y_i$ indicates the class to which the point $\bx_i $ belongs
-    \vfill
-    We want to find a \textbf{surface} $\S$ in $\IR^p$ that divides the group of points into two subgroups
-    \vfill
-    Once we have this surface $\S$, any additional point that is added to the set can then be \emph{classified} as belonging to either one of the sets depending on where it is with respect to the surface $\S$
-\end{frame}
-
-\begin{frame}{Linear SVM}
-    We are given a training dataset of $n$ points of the form
-    \[ 
-        (\bx_1, y_1), \ldots, (\bx_n, y_n)
-    \]
-    where $\bx_i\in\IR^p$ and $y_i=\{-1,1\}$. The value of $y_i$ indicates the class to which the point $\bx_i $ belongs
-    \vfill
-    \begin{quote}\textbf{Linear SVM --}
-        Find the ``maximum-margin hyperplane'' that divides the group of points $\bx_i$ for which $y_i = 1$ from the group of points for which $y_i = -1$, which is such that the distance between the hyperplane and the nearest point $\bx_i$ from either group is maximized.
-    \end{quote}
-\end{frame}
-
-\begin{frame}
-    \begin{minipage}{0.7\textwidth}
-        \includegraphics[height=\textheight]{FIGS_slides/SVM_margin}
-    \end{minipage}
-    \begin{minipage}{0.28\textwidth}
-        Maximum-margin hyperplane and margins for an SVM trained with samples from two classes. Samples on the margin are the \textbf{support vectors}
-    \end{minipage}
-\end{frame}
-
-\begin{frame}
-    Any \textbf{hyperplane} can be written as the set of points $\mathbf{x}$ satisfying
-    \[
-        \bw^\mathsf{T} \bx - b = 0
-    \]
-    where $\bw$ is the (not necessarily normalized) \textbf{normal vector} to the hyperplane (if the hyperplane has equation $a_1z_1+\cdots+a_pz_p=c$, then $(a_1,\ldots,a_n)$ is normal to the hyperplane)
-    % \vfill
-    % This is much like \textbf{Hesse normal form}, except that $\mathbf{w}$ is not necessarily a unit vector
-    \vfill
-    The parameter $b/\|\bw\|$ determines the offset of the hyperplane from the origin along the normal vector $\bw$
-    \vfill
-    Remark: a hyperplane defined thusly is not a subspace of $\IR^p$ unless $b=0$. We can of course transform the data so that it is...
-\end{frame}
-
-\begin{frame}{Linearly separable points}
-    Let $X_1$ and $X_2$ be two sets of points in $\IR^p$ 
-    \vfill
-    Then $X_1$ and $X_2$ are \textbf{linearly separable} if there exist $w_{1}, w_{2},..,w_{p}, k\in\IR$ such that 
-    \begin{itemize}
-        \item every point $x \in X_1$ satisfies $\sum^{p}_{i=1} w_{i}x_{i} > k$ 
-        \item every point $x \in X_2$ satisfies $\sum^{p}_{i=1} w_{i}x_{i} < k$
-    \end{itemize}
-    where $x_{i}$ is the $i$th component of $x$
-\end{frame}
-
-\begin{frame}{Hard-margin SVM}
-    If the training data is \textbf{linearly separable}, we can select two parallel hyperplanes that separate the two classes of data, so that the distance between them is as large as possible 
-    \vfill
-    The region bounded by these two hyperplanes is called the ``margin'', and the maximum-margin hyperplane is the hyperplane that lies halfway between them
-    \vfill
-    With a normalized or standardized dataset, these hyperplanes can be described by the equations
-    \begin{itemize}
-        \item $\mathbf{w}^\mathsf{T} \mathbf{x} - b = 1$ (anything on or above this boundary is of one class, with label 1) 
-        \item $\mathbf{w}^\mathsf{T} \mathbf{x} - b = -1$ (anything on or below this boundary is of the other class, with label -1)
-    \end{itemize}
-\end{frame}
-
-\begin{frame}
-    Distance between these two hyperplanes is $2/\|\bw\|$
-    \vfill
-    $\Rightarrow$ to maximize the distance between the planes we want to minimize $\|\bw\|$
-    \vfill
-    The distance is computed using the distance from a point to a plane equation
-    \vfill
-    We must also prevent data points from falling into the margin, so we add the following constraint: for each $i$ either
-    \[
-        \mathbf{w}^\mathsf{T} \mathbf{x}_i - b \ge 1 \, , \text{ if } y_i = 1
-    \]
-    or
-    \[
-        \mathbf{w}^\mathsf{T} \mathbf{x}_i - b \le -1 \, , \text{ if } y_i = -1
-    \]
-    \vfill
-    (Each data point must lie on the correct side of the margin)
-\end{frame}
-
-\begin{frame}
-    This can be rewritten as
-    \[
-        y_i(\mathbf{w}^\mathsf{T} \mathbf{x}_i - b) \ge 1, \quad \text{ for all } 1 \le i \le n
-    \]
-    or
-    \[
-        y_i(\mathbf{w}^\mathsf{T} \mathbf{x}_i - b)-1\geq 0, \quad \text{ for all } 1 \le i \le n
-    \]
-    \vfill
-    We get the optimization problem:
-    \begin{quote}
-        Minimize $\|\mathbf{w}\|$ subject to $y_i(\mathbf{w}^\mathsf{T} \mathbf{x}_i - b)-1 \ge 0$ for $i = 1, \ldots, n$
-    \end{quote}
-    \vfill
-    The $\mathbf{w}$ and $b$ that solve this problem determine the classifier, $\mathbf{x} \mapsto \sgn(\mathbf{w}^\mathsf{T} \mathbf{x} - b)$ where $\sgn(\cdot)$ is the \textbf{sign function}.
-\end{frame}
-
-\begin{frame}   
-    The maximum-margin hyperplane is completely determined by those $\bx_i$ that lie nearest to it
-    \vfill
-    These $\bx_i$ are the \textbf{support vectors}
-\end{frame}
-
-\begin{frame}{Writing the goal in terms of Lagrange multipliers}
-    Recall that our goal is to
-    \begin{quote}
-        minimize $\|\mathbf{w}\|$ subject to $y_i(\mathbf{w}^\mathsf{T} \mathbf{x}_i - b)-1 \ge 0$ for $i = 1, \ldots, n$
-    \end{quote}
-    \vfill
-    Using Lagrange multipliers $\lambda_1,\ldots,\lambda_n$, we have the function
-    \[
-        L_P:=F(\bw,b\lambda_1,\ldots,\lambda_n) =
-        \frac 12\|\bw\|^2 -\sum_{i=1}^n \lambda_iy_i(\bx_i\bw+b)
-        +\sum_{i=1}^n\lambda_i
-    \]
-    \vfill
-    Note that we have as many Lagrange multipliers as there are data points. Indeed, there are that many inequalities that must be satisfied
-    \vfill 
-    The aim is to minimise $L_p$ with respect to $\bw$ and $b$ while the derivatives of $L_p$ w.r.t. $\lambda_i$ vanish and the $\lambda_i\geq 0$, $i=1,\ldots,n$
-\end{frame}
-
-\begin{frame}{Lagrange multipliers}
-    We have already seen Lagrange multipliers, when we were studying PCA
-    \vfill
-\end{frame}
-
-\begin{frame}{Maximisation using Lagrange multipliers (V1.0)}
-    We want the max of $f(x_1,\ldots,x_n)$ under the constraint $g(x_1,\ldots,x_n)=k$
-    \begin{enumerate}
-    \item Solve
-    \begin{align*}
-    \nabla f(x_1,\ldots,x_n) &= \lambda\nabla g(x_1,\ldots,x_n) \\
-    g(x_1,\ldots,x_n) &= k
-    \end{align*}
-    where $\nabla=(\frac{\partial}{\partial x_1},\ldots,\frac{\partial}{\partial x_n})$ is the \textbf{gradient operator}
-    \item Plug all solutions into $f(x_1,\ldots,x_n)$ and find maximum values (provided values exist and $\nabla g\neq \b0$ there)
-    \end{enumerate}
-    \vfill
-    $\lambda$ is the \textbf{Lagrange multiplier}
-\end{frame}
-    
-    
-\begin{frame}{The gradient}
-    $f:\IR^n\to\IR$ function of several variables, $\nabla=\left(\frac{\partial}{\partial x_1},\ldots,\frac{\partial}{\partial x_n}\right)$ the gradient operator
-    \vfill
-    Then
-    \[
-    \nabla f = \left(
-    \frac{\partial}{\partial x_1}f,\ldots,
-    \frac{\partial}{\partial x_n}f
-    \right)
-    \]
-    \vfill
-    So $\nabla f$ is a \emph{vector-valued} function, $\nabla f:\IR^n\to\IR^n$; also written as
-    \[
-    \nabla f = f_{x_1}(x_1,\ldots,x_n)\be_1+\cdots f_{x_n}(x_1,\ldots,x_n)\be_n
-    \]
-    where $f_{x_i}$ is the partial derivative of $f$ with respect to $x_i$ and $\{\be_1,\ldots,\be_n\}$ is the standard basis of $\IR^n$
-\end{frame}
-
-\begin{frame}{Lagrange multipliers (V2.0)}
-        However, the problem we were considering then involved a single multiplier $\lambda$
-        \vfill
-        Here we want $\lambda_1,\ldots,\lambda_n$
-\end{frame}
-
-\begin{frame}{Lagrange multiplier theorem}
-    \begin{theorem}
-        Let $f\colon\mathbb{R}^n \rightarrow \mathbb{R}$ be the objective function, $g\colon\mathbb{R}^n \rightarrow \mathbb{R}^c $ be the constraints function, both being $C^1$.
-        Consider the optimisation problem
-        \begin{align*}
-            \text{maximize}\ f(x) \\
-            \text{subject to}\ g(x) = 0                 
-        \end{align*}
-        Let $x^*$ be an optimal solution to the optimization problem, such that $\operatorname{rank} (Dg(x^*)) = c < n$, where $Dg(x^*)$ denotes the matrix of partial derivatives
-        \[
-            \left[{\partial g_j}/{\partial x_k}\right]  
-        \]
-        Then there exists a unique Lagrange multiplier $\lambda^* \in \mathbb{R}^c$ such that
-        \[
-            Df(x^*) = \lambda^{*T}Dg(x^*)
-        \]
-    \end{theorem}
-\end{frame}
-
-\begin{frame}{Lagrange multipliers (V3.0)}
-    Here we want $\lambda_1,\ldots,\lambda_n$
-    \vfill
-    But we also are looking for $\lambda_i\geq 0$
-    \vfill 
-    So we need to consider the so-called Karush-Kuhn-Tucker (KKT) conditions
-\end{frame}
-
-\begin{frame}{Karush-Kuhn-Tucker (KKT) conditions}
-    Consider the optimisation problem
-    \begin{align*}
-        \text{maximize}\ f(x) \\
-        \text{subject to}& \quad g_i(x) \leq 0  \\
-        &\quad h_i(x)=0               
-    \end{align*}
-    Form the Lagrangian
-    \[
-        L(\bx,\mu,\lambda) = f(\bx)+\mu^T\bg(\bx)+\lambda^T\bh(\bx)
-    \]
-    \begin{theorem}
-        If $(\mathbf{x}^{\ast},\mathbf{\mu}^\ast)$ is a \emph{saddle point} of $L(\mathbf{x},\mathbf{\mu})$ in $\mathbf{x} \in \mathbf{X}$, $\mathbf{\mu} \geq \mathbf{0}$, then $\mathbf{x}^{\ast}$ is an optimal vector for the above optimization problem. Suppose that $f(\mathbf{x})$ and $g_i(\mathbf{x})$, $i = 1, \ldots, m$, are \emph{convex} in $\mathbf{x}$ and that there exists $\mathbf{x}_{0} \in \mathbf{X}$ such that $\mathbf{g}(\mathbf{x}_{0}) < 0$. Then with an optimal vector $\mathbf{x}^{\ast}$ for the above optimization problem there is associated a non-negative vector $\mathbf{\mu}^\ast$ such that $L(\mathbf{x}^{\ast},\mathbf{\mu}^\ast)$ is a saddle point of $L(\mathbf{x},\mathbf{\mu})$
-    \end{theorem}
-\end{frame}
-
-\begin{frame}{KKT conditions}
-    \begin{align*}
-        \frac{\partial}{\partial w_\nu}L_P &=
-        w_\nu-\sum_{i}^n\lambda_iy_ix_{i\nu}=0
-        \qquad\nu=1,\ldots,p \\
-        \frac{\partial}{\partial b}L_P &=
-        -\sum_{i=1}^n \lambda_iy_i = 0 \\
-        y_i(\bx_i^T\bw+b)-1 &\geq 0\qquad i=1,\ldots,n \\
-        \lambda_i &\geq 0\qquad i=1,\ldots,n \\
-        \lambda_i(y_i(\bx_i^T\bw+b)-1) &=0\qquad i=1,\ldots,n \\
-    \end{align*}
-\end{frame}
-
-
-    
-\begin{frame}{Soft-margin SVM}
-    To extend SVM to cases in which the data are not linearly separable, the \textbf{hinge loss} function is helpful
-    \[
-        \max\left(0, 1 - y_i(\mathbf{w}^\mathsf{T} \mathbf{x}_i - b)\right)
-    \]
-    \vfill
-    $y_i$ is the $i$th target (i.e., in this case, 1 or -1), and $\mathbf{w}^\mathsf{T} \mathbf{x}_i - b$ is the $i$-th output
-    \vfill
-    This function is zero if the constraint is satisfied, in other words, if $\mathbf{x}_i$ lies on the correct side of the margin
-    \vfill 
-    For data on the wrong side of the margin, the function's value is proportional to the distance from the margin
-\end{frame}
-
-\begin{frame}
-   
-    The goal of the optimization then is to minimize
-    
-    \[ 
-        \lambda \lVert \mathbf{w} \rVert^2 +\left[\frac 1 n \sum_{i=1}^n \max\left(0, 1 - y_i(\mathbf{w}^\mathsf{T} \mathbf{x}_i - b)\right) \right]
-    \]
-    
-    where the parameter $\lambda > 0$ determines the trade-off between increasing the margin size and ensuring that the $\mathbf{x}_i$ lie on the correct side of the margin
-    \vfill
-    Thus, for sufficiently small values of $\lambda$, it will behave similar to the hard-margin SVM, if the input data are linearly classifiable, but will still learn if a classification rule is viable or not
-\end{frame}
-
 %%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%
 \section{Neural networks (the perceptron)}
+\newSectionSlide{FIGS-transitions/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
 
 \begin{frame}{Artificial neural network (ANN) - from \href{https://en.wikipedia.org/wiki/Artificial_neural_network}{Wikipedia}}
     \begin{quote}
