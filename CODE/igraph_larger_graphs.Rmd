@@ -11,6 +11,12 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+# Word of warning (for upcoming assignments)
+
+I don't want to see exact replicates of this document. Here, you will note that I am "riffing", exploring potential ways to represent the information and discussing this. In your assignments, this is not something you would typically do. 
+Explain what you are doing, explain what that says in terms of the graph you are considering, but get to the point, don't "riff" around unless you have a specific purpose.
+
+
 # Some examples of (connected?) graphs
 
 There are a few very interesting datasets available online. We start with something from a collection from Stanford University, see [here](https://snap.stanford.edu/data/). There are relatively large graphs, so will give us the opportunity to explore what happens when the graphs are not just a few vertices.

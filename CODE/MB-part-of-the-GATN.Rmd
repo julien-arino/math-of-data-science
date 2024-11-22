@@ -15,6 +15,7 @@ knitr::opts_chunk$set(echo = FALSE,
 # Load/install required libraries. Note the use of Ncpus to speed up the process,
 # when compiling packages is required (typically linux)
 required_libs = c("dplyr", 
+                  "GA",
                   "geodata", 
                   "ggraph", 
                   "igraph",
@@ -29,6 +30,11 @@ for (l in required_libs) {
     }
 }
 ```
+
+# Word of warning (for upcoming assignments)
+
+I don't want to see exact replicates of this document. Here, you will note that I am "riffing", exploring potential ways to represent the information and discussing this. In your assignments, this is not something you would typically do. 
+Explain what you are doing, but get to the point, don't "riff" around without a purpose.
 
 # Load the data
 We load two data files: `air_travel_MB.csv` contains the network description and `airport_codes_CAN.csv`, which has some information about all airfields in Canada.
@@ -144,7 +150,7 @@ plot(G, add = TRUE, rescale = FALSE,
 ```
 
 
-Let us add the degree information as the size of the vertices.
+Let us add the degree information as the size of the vertices. First, on the graph with rest of the world connection information..
 
 
 ```{r}
@@ -154,12 +160,34 @@ plot(G, add = TRUE, rescale = FALSE,
     edge.arrow.size = 0.5, edge.arrow.width = 0.75)
 ```
 
+Then on the "purely MB" graph.
+
 ```{r}
 plot(MB, box = FALSE, axes = FALSE)
 V(G_MB)$size = degree(G_MB)*5
 plot(G_MB, add = TRUE, rescale = FALSE,
     edge.arrow.size = 0.5, edge.arrow.width = 0.75)
 ```
+
+So clearly, Winnipeg (YWG) and Thompson (YTH) have the highest degree.
+Let us confirm this by looking at the degree distribution.
+
+```{r}
+sort(degree(G_MB), decreasing = TRUE)
+```
+So, within the MB graph, Winnipeg dwarfs all other vertices in terms of connections to other locations. Note this is the degree in the underlying undirected graph, if we choose an orientation, we get a slightly different picture.
+
+```{r}
+sort(degree(G_MB, mode = "in"), decreasing = TRUE)
+sort(degree(G_MB, mode = "out"), decreasing = TRUE)
+dG_MB_in = degree(G_MB, mode = "in")
+dG_MB_out = degree(G_MB, mode = "out")
+diff_d = names(which(dG_MB_out != dG_MB_in))
+```
+
+It looks like the degree is usually the same regardless of whether we consider in- or out-degree. 
+The only `r length(diff_d)` airports that have different in- and out-degree are `r `diff_d`, that is, `r airport_codes_MB$Name[airport_codes_MB$IATA_Code %in% diff_d]`.
+
 
 Now let us take a look at the arcs. Maybe change their thickness to reflect the volumes along the arcs?
 
@@ -207,47 +235,107 @@ plot(sort(E(G)$vol), type = "b")
 
 One way around this could be to use a so-called sigmoid function. This is a function of the following form:
 $$
-f(x) = \dfrac{1}{1+e^{-cx}},
+f(y) = \dfrac{1}{1+e^{-cy}},
 $$
 where $\mathbb{R}\ni c>0$ is a parameter.
-This function has the following properties: $\lim_{x\to-\infty}f(x)=0$ and $\lim_{x\to\infty}f(x)=1$. By playing with the value of $c$, one can set the beahviour of $f$. Let us see how different values of $c$ influence the value of the points. (The `viridis` palette used starts with yellow and goes towards green and then purple.)
+This function has the following properties: $\lim_{y\to-\infty}f(y)=0$, $\lim_{y\to\infty}f(y)=1$ and $f(0)=1/2$. By playing with the value of $c$, one can set the beahviour of $f$.
+Let us transform the values of the arc weights using such a function, testing how different values of $c$ influence the value of the points.
+Because we are only transforming positive values, let us work with the positive half of the sigmoid.
+
+In the plot below, the red points are the original values, unscaled, while the different colours are the transformed values.
+(The `viridis` palette used starts with yellow and goes towards green and then purple.)
 
 
 ```{r}
 sigmoid = function(x, c) {
-    return(1/(1+exp(-c*x)))
+  # Normalise input values to [0,1] for convenience
+  x = x-min(x)
+  x = x / max(x)
+  # We only use half of the function, so normalise results
+  # to the interval [0,1]. 
+  if (min(x)<0) {
+    return(NULL)
+  }
+  values = 1/(1+exp(-c*x))
+  values = values - min(values)
+  values = values / max(values)
+  return(values)
 }
 
-values_c = c(0.0001, 0.0005, 0.001, 0.005, 0.01)
-x = 1:length(E(G))
-values_x = sort(E(G)$vol)
+values_c = c(0.1, 1, 10, 100, 1000)
+values_x = 1:length(E(G))
+values_y = sort(E(G)$vol)
+values_y = (values_y-min(values_y))
+values_y = values_y / max(values_y)
 my_palette = viridis::viridis(length(values_c))
 
 # First, we plot the "data" (scaled to the [0,1] range)
-plot(x, (values_x-min(values_x))/max(values_x), 
+plot(values_x, values_y, 
      type = "b", col = "red",
-     ylim = (range(values_x)-min(values_x))/max(values_x))
+     ylim = c(0, 1))
 for (c in values_c) {
-    idx = which(c == values_c) # Find which position in the values_c vector, for colour
-    tmp = sigmoid(values_x, c) # Let us rescale the result to between 0 and 1
-    tmp = tmp-min(tmp)
-    tmp = tmp/max(tmp)
-    lines(x, tmp, type = "b", col = my_palette[idx])
+    idx = which(c == values_c) 
+    tmp = sigmoid(values_y, c)
+    lines(values_x, tmp, 
+          type = "b", col = my_palette[idx])
 }
 ```
 
-That last one looks quite nice. We most likely will have to multiply by a factor, so we compute the values in advance.
+Somewhere between the last two looks quite nice. Let's dig a bit more around, see if we can be a bit better. We can use a genetic algorithm to find the value of $c$ that makes the transformed values as close as possible to a line from the minimum $(x_m,y_m)$ to the maximum value $(x_M,y_M)$.
+The line has equation
+$$
+y = \frac{y_M - y_m}{x_M - x_m}(x - x_m) + y_m
+$$
+To do this, we define an error function that we want to minimise and run the genetic algorithm, as shown below.
+```{r find-best-sigmoid, echo=TRUE}
+error_transformation = function(data_x, data_y, c) {
+  x_m = min(data_x)
+  x_M = max(data_x)
+  y = 1 / (x_M - x_m) * (data_x - x_m)
+  transformed_y = sigmoid(data_y, c)
+  error = sum((transformed_y-y)^2)
+  return(error)
+}
+GA = ga(type = "real-valued", 
+        fitness = 
+          function(x) -error_transformation(values_x, 
+                                            values_y, 
+                                            x),
+        lower = c(100),
+        upper = c(1000),
+        suggestions = c(150))
+values_c = as.numeric(GA@solution)
+```
+We find a value of $c\simeq$ `r round(values_c,3)`. Using this value, the transformed values take the form below.
+```{r}
+# First, we plot the "data" (scaled to the [0,1] range)
+plot(values_x, values_y,
+     type = "b", col = "red",
+     ylim = c(0, 1))
+for (c in values_c) {
+    idx = which(c == values_c)
+    tmp = sigmoid(values_y, c)
+    lines(values_x, tmp, 
+          type = "b", 
+          col = my_palette[idx])
+}
+x_m = min(values_x)
+x_M = max(values_x)
+y = 1 / (x_M - x_m) * (values_x - x_m)
+lines(values_x, y/max(y), type = "b")
+```
+
+We most likely will have to multiply by a factor, so we compute the values in advance.
 
 
 ```{r}
-options(repr.plot.width=15, repr.plot.height=15)
-edge_widths = 2*sigmoid(E(G)$vol, 0.1)
+edge_widths = sigmoid(as.numeric(E(G)$vol), values_c)
 
 plot(MB, box = FALSE, axes = FALSE)
 V(G)$size = degree(G)*5
 plot(G, add = TRUE, rescale = FALSE, 
-     edge.width = edge_widths, type = "b",
-    edge.arrow.size = 0.5, edge.arrow.width = 0.75)
+     edge.width = 10*edge_widths, type = "b",
+     edge.arrow.size = 0.5, edge.arrow.width = 0.75)
 ```
 
 Well, after all this, I am not convinced we achieved better than we had done above with just a linear scaling. So when we want a a good plot, we'll come back to that solution.
