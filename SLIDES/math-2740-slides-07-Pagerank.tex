@@ -1,57 +1,64 @@
-\documentclass[aspectratio=169]{beamer}
-
-<<set-options,echo=FALSE,warning=FALSE,message=FALSE>>=
-# Load required libraries
-required_packages = c("dplyr",
-                      "DTMCPack",
-                      "ggplot2",
-                      "igraph",
-                      "knitr", 
-                      "latex2exp",
-                      "markovchain",
-                      "readr", 
-                      "tidyr")
-for (p in required_packages) {
-  if (!require(p, character.only = TRUE)) {
-    install.packages(p, dependencies = TRUE)
-    require(p, character.only = TRUE)
-  }
+\documentclass[aspectratio=169]{beamer}\usepackage[]{graphicx}\usepackage[]{xcolor}
+% maxwidth is the original width if it is less than linewidth
+% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
 }
-# Prepare figure crop hook
-knitr::knit_hooks$set(crop = knitr::hook_pdfcrop)
-# Knitr options
-opts_chunk$set(echo = TRUE, 
-               warning = FALSE, 
-               message = FALSE,
-               crop = TRUE,
-               dev = c("pdf", "png"),
-               fig.width = 6, 
-               fig.height = 4, 
-               fig.path = "FIGS/pagerank-",
-               fig.keep = "high",
-               fig.show = "hide")
-@
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlsng}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hldef}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+\let\hlipl\hlkwb
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
 
 
-<<set-slide-background,echo=FALSE,results='asis'>>=
-# Are we plotting for a dark background?
-plot_blackBG = FALSE
-if (plot_blackBG) {
-  bg_color = "black"
-  fg_color = "white"
-  input_setup = "\\input{slides-setup-blackBG.tex}"
-} else {
-  bg_color = "white"
-  fg_color = "black"
-  input_setup = "\\input{slides-setup-whiteBG.tex}"
-}
-cat(input_setup)
-@
+
+
+\input{slides-setup-whiteBG.tex}
 
 \title{Markov chains, Eigenvector centrality \& PageRank}
 \author{\texorpdfstring{Julien Arino\newline University of Manitoba\newline\url{julien.arino@umanitoba.ca}}{Julien Arino}}
 \date{}
-
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 \begin{document}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -571,56 +578,96 @@ that is, $w_2=w_2$, i.e., $w_2$ can take any value
 \]
 \end{frame}
 
-<<>>=
-# Total population
-nb_states = 10
-# Parameters
-proba_left = 0.5
-proba_right = 0.5
-proba_stay = 1-(proba_left+proba_right)
-# Make the transition matrix
-T = mat.or.vec(nr = nb_states, nc = nb_states)
-for (row in 2:(nb_states-1)) {
-  T[row,(row-1)] = proba_left
-  T[row,(row+1)] = proba_right
-  T[row, row] = proba_stay
-}
-T[1,2] = 1 # First row only moves right
-T[nb_states, (nb_states-1)] = 1 # Last row only moves left
-@
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# Total population}
+\hldef{nb_states} \hlkwb{=} \hlnum{10}
+\hlcom{# Parameters}
+\hldef{proba_left} \hlkwb{=} \hlnum{0.5}
+\hldef{proba_right} \hlkwb{=} \hlnum{0.5}
+\hldef{proba_stay} \hlkwb{=} \hlnum{1}\hlopt{-}\hldef{(proba_left}\hlopt{+}\hldef{proba_right)}
+\hlcom{# Make the transition matrix}
+\hldef{T} \hlkwb{=} \hlkwd{mat.or.vec}\hldef{(}\hlkwc{nr} \hldef{= nb_states,} \hlkwc{nc} \hldef{= nb_states)}
+\hlkwa{for} \hldef{(row} \hlkwa{in} \hlnum{2}\hlopt{:}\hldef{(nb_states}\hlopt{-}\hlnum{1}\hldef{)) \{}
+  \hldef{T[row,(row}\hlopt{-}\hlnum{1}\hldef{)]} \hlkwb{=} \hldef{proba_left}
+  \hldef{T[row,(row}\hlopt{+}\hlnum{1}\hldef{)]} \hlkwb{=} \hldef{proba_right}
+  \hldef{T[row, row]} \hlkwb{=} \hldef{proba_stay}
+\hldef{\}}
+\hldef{T[}\hlnum{1}\hldef{,}\hlnum{2}\hldef{]} \hlkwb{=} \hlnum{1} \hlcom{# First row only moves right}
+\hldef{T[nb_states, (nb_states}\hlopt{-}\hlnum{1}\hldef{)]} \hlkwb{=} \hlnum{1} \hlcom{# Last row only moves left}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
 
 \begin{frame}[fragile]\frametitle{Create the MC object}
-<<>>=
-# Library: markovchain
-mcRW <- new("markovchain",
-            states = sprintf("S_%d", 1:nb_states),
-            transitionMatrix = T,
-            name = "RW_reg")
-@
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# Library: markovchain}
+\hldef{mcRW} \hlkwb{<-} \hlkwd{new}\hldef{(}\hlsng{"markovchain"}\hldef{,}
+            \hlkwc{states} \hldef{=} \hlkwd{sprintf}\hldef{(}\hlsng{"S_%d"}\hldef{,} \hlnum{1}\hlopt{:}\hldef{nb_states),}
+            \hlkwc{transitionMatrix} \hldef{= T,}
+            \hlkwc{name} \hldef{=} \hlsng{"RW_reg"}\hldef{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
 \end{frame}
 
 \begin{frame}[fragile]\frametitle{Show some information about the chain}
-<<>>=
-summary(mcRW)
-@
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{summary}\hldef{(mcRW)}
+\end{alltt}
+\begin{verbatim}
+## RW_reg  Markov chain that is composed by: 
+## Closed classes: 
+## S_1 S_2 S_3 S_4 S_5 S_6 S_7 S_8 S_9 S_10 
+## Recurrent classes: 
+## {S_1,S_2,S_3,S_4,S_5,S_6,S_7,S_8,S_9,S_10}
+## Transient classes: 
+## NONE 
+## The Markov chain is irreducible 
+## The absorbing states are: NONE
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
 \end{frame}
 
 \begin{frame}[fragile]\frametitle{The equilibrium distribution}
-<<>>=
-steadyStates(mcRW)
-@
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{steadyStates}\hldef{(mcRW)}
+\end{alltt}
+\begin{verbatim}
+##             S_1       S_2       S_3       S_4       S_5       S_6       S_7
+## [1,] 0.05555556 0.1111111 0.1111111 0.1111111 0.1111111 0.1111111 0.1111111
+##            S_8       S_9       S_10
+## [1,] 0.1111111 0.1111111 0.05555556
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
 \end{frame}
 
 \begin{frame}[fragile]\frametitle{Showing a realisation}
-<<DTMC-random-walk-regular, >>=
-# Library: DTMCPack
-IC = rep(0, nb_states)
-IC[1] = 1
-sol = DTMC(T, IC, 81, trace=TRUE)
-@
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# Library: DTMCPack}
+\hldef{IC} \hlkwb{=} \hlkwd{rep}\hldef{(}\hlnum{0}\hldef{, nb_states)}
+\hldef{IC[}\hlnum{1}\hldef{]} \hlkwb{=} \hlnum{1}
+\hldef{sol} \hlkwb{=} \hlkwd{DTMC}\hldef{(T, IC,} \hlnum{81}\hldef{,} \hlkwc{trace}\hldef{=}\hlnum{TRUE}\hldef{)}
+\end{alltt}
+\begin{verbatim}
+## NULL
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
 \end{frame}
 
-\maxFrameImage{\Sexpr{fig_chunk('DTMC-random-walk-regular', 'pdf')}}
+\maxFrameImage{FIGS/pagerank-DTMC-random-walk-regular-1.pdf}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -891,57 +938,92 @@ B=
 \end{frame}
 
 \begin{frame}[fragile]\frametitle{Make an absorbing random walk}
-<<>>=
-# Total population
-nb_states = 7
-proba_left = 0.5  # Probability of moving left
-proba_right = 0.5 # Probability of moving right
-proba_stay = 1-(proba_left+proba_right)
-# Make the transition matrix
-T = mat.or.vec(nr = nb_states, nc = nb_states)
-for (row in 2:(nb_states-1)) {
-  T[row,(row-1)] = proba_left
-  T[row,(row+1)] = proba_right
-  T[row, row] = proba_stay
-}
-T[1,1] = 1 # First state is absorbing
-T[nb_states, nb_states] = 1 # Last too
-@
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# Total population}
+\hldef{nb_states} \hlkwb{=} \hlnum{7}
+\hldef{proba_left} \hlkwb{=} \hlnum{0.5}  \hlcom{# Probability of moving left}
+\hldef{proba_right} \hlkwb{=} \hlnum{0.5} \hlcom{# Probability of moving right}
+\hldef{proba_stay} \hlkwb{=} \hlnum{1}\hlopt{-}\hldef{(proba_left}\hlopt{+}\hldef{proba_right)}
+\hlcom{# Make the transition matrix}
+\hldef{T} \hlkwb{=} \hlkwd{mat.or.vec}\hldef{(}\hlkwc{nr} \hldef{= nb_states,} \hlkwc{nc} \hldef{= nb_states)}
+\hlkwa{for} \hldef{(row} \hlkwa{in} \hlnum{2}\hlopt{:}\hldef{(nb_states}\hlopt{-}\hlnum{1}\hldef{)) \{}
+  \hldef{T[row,(row}\hlopt{-}\hlnum{1}\hldef{)]} \hlkwb{=} \hldef{proba_left}
+  \hldef{T[row,(row}\hlopt{+}\hlnum{1}\hldef{)]} \hlkwb{=} \hldef{proba_right}
+  \hldef{T[row, row]} \hlkwb{=} \hldef{proba_stay}
+\hldef{\}}
+\hldef{T[}\hlnum{1}\hldef{,}\hlnum{1}\hldef{]} \hlkwb{=} \hlnum{1} \hlcom{# First state is absorbing}
+\hldef{T[nb_states, nb_states]} \hlkwb{=} \hlnum{1} \hlcom{# Last too}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
 \end{frame}
 
 \begin{frame}[fragile]\frametitle{Create MC object}
-<<>>=
-mcRW <- new("markovchain", 
-            states = sprintf("S_%d", 1:nb_states),
-            transitionMatrix = T,
-            name = "RW_abs")
-@
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hldef{mcRW} \hlkwb{<-} \hlkwd{new}\hldef{(}\hlsng{"markovchain"}\hldef{,}
+            \hlkwc{states} \hldef{=} \hlkwd{sprintf}\hldef{(}\hlsng{"S_%d"}\hldef{,} \hlnum{1}\hlopt{:}\hldef{nb_states),}
+            \hlkwc{transitionMatrix} \hldef{= T,}
+            \hlkwc{name} \hldef{=} \hlsng{"RW_abs"}\hldef{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
 \end{frame}
 
 \begin{frame}[fragile]\frametitle{Show some info about the chain}
-<<>>=
-summary(mcRW)
-@
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{summary}\hldef{(mcRW)}
+\end{alltt}
+\begin{verbatim}
+## RW_abs  Markov chain that is composed by: 
+## Closed classes: 
+## S_1 
+## S_7 
+## Recurrent classes: 
+## {S_1},{S_7}
+## Transient classes: 
+## {S_2,S_3,S_4,S_5,S_6}
+## The Markov chain is not irreducible 
+## The absorbing states are: S_1 S_7
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
 \end{frame}
 
 \begin{frame}[fragile]\frametitle{Plotting the chain}
-<<DTMC-random-walk-absorbing>>=
-plot(mcRW)
-@
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{plot}\hldef{(mcRW)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
 \end{frame}
 
-\maxFrameImage{\Sexpr{fig_chunk('DTMC-random-walk-absorbing', 'pdf')}}
+\maxFrameImage{FIGS/pagerank-DTMC-random-walk-absorbing-1.pdf}
 
 \begin{frame}[fragile]\frametitle{Showing a realisation}
-<<DTMC-random-walk-absorbing-realisation>>=
-# Library: DTMCPack
-IC = rep(0, nb_states)
-IC[4] = 1
-sol = DTMC(T, IC, 30, trace=TRUE)
-@
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# Library: DTMCPack}
+\hldef{IC} \hlkwb{=} \hlkwd{rep}\hldef{(}\hlnum{0}\hldef{, nb_states)}
+\hldef{IC[}\hlnum{4}\hldef{]} \hlkwb{=} \hlnum{1}
+\hldef{sol} \hlkwb{=} \hlkwd{DTMC}\hldef{(T, IC,} \hlnum{30}\hldef{,} \hlkwc{trace}\hldef{=}\hlnum{TRUE}\hldef{)}
+\end{alltt}
+\begin{verbatim}
+## NULL
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
 \end{frame}
 
-\maxFrameImage{\Sexpr{fig_chunk('DTMC-random-walk-absorbing-realisation', 'pdf')}}
+\maxFrameImage{FIGS/pagerank-DTMC-random-walk-absorbing-realisation-1.pdf}
 
 \begin{frame}\frametitle{Additional information about absorbing chains}
 \code{canonicForm(mcRW)}
@@ -954,27 +1036,79 @@ sol = DTMC(T, IC, 30, trace=TRUE)
 \end{frame}
 
 \begin{frame}[fragile]\frametitle{Canonical form}
-<<>>=
-canonicForm(mcRW)
-@
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{canonicForm}\hldef{(mcRW)}
+\end{alltt}
+\begin{verbatim}
+## RW_abs 
+##  A  7 - dimensional discrete Markov Chain defined by the following states: 
+##  S_1, S_7, S_2, S_3, S_4, S_5, S_6 
+##  The transition matrix  (by rows)  is defined as follows: 
+##     S_1 S_7 S_2 S_3 S_4 S_5 S_6
+## S_1 1.0 0.0 0.0 0.0 0.0 0.0 0.0
+## S_7 0.0 1.0 0.0 0.0 0.0 0.0 0.0
+## S_2 0.5 0.0 0.0 0.5 0.0 0.0 0.0
+## S_3 0.0 0.0 0.5 0.0 0.5 0.0 0.0
+## S_4 0.0 0.0 0.0 0.5 0.0 0.5 0.0
+## S_5 0.0 0.0 0.0 0.0 0.5 0.0 0.5
+## S_6 0.0 0.5 0.0 0.0 0.0 0.5 0.0
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
 \end{frame}
 
 \begin{frame}[fragile]\frametitle{Mean absorption time}
-<<>>=
-meanAbsorptionTime(mcRW)
-@
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{meanAbsorptionTime}\hldef{(mcRW)}
+\end{alltt}
+\begin{verbatim}
+## S_2 S_3 S_4 S_5 S_6 
+##   5   8   9   8   5
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
 \end{frame}
 
 \begin{frame}[fragile]\frametitle{Absorption probabilities}
-<<>>=
-absorptionProbabilities(mcRW)
-@
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{absorptionProbabilities}\hldef{(mcRW)}
+\end{alltt}
+\begin{verbatim}
+##           S_1       S_7
+## S_2 0.8333333 0.1666667
+## S_3 0.6666667 0.3333333
+## S_4 0.5000000 0.5000000
+## S_5 0.3333333 0.6666667
+## S_6 0.1666667 0.8333333
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
 \end{frame}
 
 \begin{frame}[fragile]\frametitle{Hitting probabilities}
-<<>>=
-hittingProbabilities(mcRW)
-@
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{hittingProbabilities}\hldef{(mcRW)}
+\end{alltt}
+\begin{verbatim}
+##           S_1 S_2   S_3       S_4   S_5 S_6       S_7
+## S_1 1.0000000 0.0 0.000 0.0000000 0.000 0.0 0.0000000
+## S_2 0.8333333 0.4 0.500 0.3333333 0.250 0.2 0.1666667
+## S_3 0.6666667 0.8 0.625 0.6666667 0.500 0.4 0.3333333
+## S_4 0.5000000 0.6 0.750 0.6666667 0.750 0.6 0.5000000
+## S_5 0.3333333 0.4 0.500 0.6666667 0.625 0.8 0.6666667
+## S_6 0.1666667 0.2 0.250 0.3333333 0.500 0.4 0.8333333
+## S_7 0.0000000 0.0 0.000 0.0000000 0.000 0.0 1.0000000
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%

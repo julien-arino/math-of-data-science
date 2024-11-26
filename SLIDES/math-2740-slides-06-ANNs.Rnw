@@ -8,6 +8,7 @@ required_packages = c("dplyr",
                       "knitr", 
                       "latex2exp",
                       "magick",
+                      "neuralnet",
                       "pracma", 
                       "readr", 
                       "tidyr")
@@ -449,6 +450,55 @@ cat(input_setup)
     \end{center}
 \end{frame}
 
+<<>>=
+OR_table = matrix(c(0, 0, 0,
+                    1, 0, 1,
+                    0, 1, 1,
+                    1, 1, 1),
+                  nc = 3, byrow = TRUE)
+OR_table = as.data.frame(OR_table)
+colnames(OR_table) = c("x1", "x2", "OR")
+nn_OR = neuralnet(OR ~ x1 + x2,
+                  data = OR_table,
+                  act.fct = "logistic",
+                  hidden = 0,
+                  linear.output = FALSE)
+plot(nn_OR)
+pred = predict(nn_OR, OR_table)
+OR_table$result = pred[,1] > 0.5
+kable(OR_table, "latex")
+@
+
+<<>>=
+XOR_table = matrix(c(0, 0, 0,
+                     1, 0, 1,
+                     0, 1, 1,
+                     1, 1, 0),
+                  nc = 3, byrow = TRUE)
+XOR_table = as.data.frame(XOR_table)
+colnames(XOR_table) = c("x1", "x2", "XOR")
+nn_XOR = neuralnet(XOR ~ x1 + x2,
+                   data = XOR_table,
+                   act.fct = "logistic",
+                   hidden = 0,
+                   linear.output = FALSE)
+plot(nn_XOR)
+pred = predict(nn_XOR, XOR_table)
+XOR_table$result = pred[,1] > 0.5
+kable(XOR_table, "latex")
+@
+
+<<>>=
+nn_XOR = neuralnet(XOR ~ x1 + x2,
+                   data = XOR_table,
+                   act.fct = "logistic",
+                   hidden = 2,
+                   linear.output = FALSE)
+plot(nn_XOR)
+pred = predict(nn_XOR, XOR_table)
+XOR_table$result = pred[,1] > 0.5
+kable(XOR_table, "latex")
+@
 
 
 \end{document}

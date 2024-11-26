@@ -456,6 +456,109 @@
     \end{center}
 \end{frame}
 
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hldef{OR_table} \hlkwb{=} \hlkwd{matrix}\hldef{(}\hlkwd{c}\hldef{(}\hlnum{0}\hldef{,} \hlnum{0}\hldef{,} \hlnum{0}\hldef{,}
+                    \hlnum{1}\hldef{,} \hlnum{0}\hldef{,} \hlnum{1}\hldef{,}
+                    \hlnum{0}\hldef{,} \hlnum{1}\hldef{,} \hlnum{1}\hldef{,}
+                    \hlnum{1}\hldef{,} \hlnum{1}\hldef{,} \hlnum{1}\hldef{),}
+                  \hlkwc{nc} \hldef{=} \hlnum{3}\hldef{,} \hlkwc{byrow} \hldef{=} \hlnum{TRUE}\hldef{)}
+\hldef{OR_table} \hlkwb{=} \hlkwd{as.data.frame}\hldef{(OR_table)}
+\hlkwd{colnames}\hldef{(OR_table)} \hlkwb{=} \hlkwd{c}\hldef{(}\hlsng{"x1"}\hldef{,} \hlsng{"x2"}\hldef{,} \hlsng{"OR"}\hldef{)}
+\hldef{nn_OR} \hlkwb{=} \hlkwd{neuralnet}\hldef{(OR} \hlopt{~} \hldef{x1} \hlopt{+} \hldef{x2,}
+                  \hlkwc{data} \hldef{= OR_table,}
+                  \hlkwc{act.fct} \hldef{=} \hlsng{"logistic"}\hldef{,}
+                  \hlkwc{hidden} \hldef{=} \hlnum{0}\hldef{,}
+                  \hlkwc{linear.output} \hldef{=} \hlnum{FALSE}\hldef{)}
+\hlkwd{plot}\hldef{(nn_OR)}
+\hldef{pred} \hlkwb{=} \hlkwd{predict}\hldef{(nn_OR, OR_table)}
+\hldef{OR_table}\hlopt{$}\hldef{result} \hlkwb{=} \hldef{pred[,}\hlnum{1}\hldef{]} \hlopt{>} \hlnum{0.5}
+\hlkwd{kable}\hldef{(OR_table,} \hlsng{"latex"}\hldef{)}
+\end{alltt}
+\end{kframe}
+\begin{tabular}{r|r|r|l}
+\hline
+x1 & x2 & OR & result\\
+\hline
+0 & 0 & 0 & FALSE\\
+\hline
+1 & 0 & 1 & TRUE\\
+\hline
+0 & 1 & 1 & TRUE\\
+\hline
+1 & 1 & 1 & TRUE\\
+\hline
+\end{tabular}
+
+\end{knitrout}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hldef{XOR_table} \hlkwb{=} \hlkwd{matrix}\hldef{(}\hlkwd{c}\hldef{(}\hlnum{0}\hldef{,} \hlnum{0}\hldef{,} \hlnum{0}\hldef{,}
+                     \hlnum{1}\hldef{,} \hlnum{0}\hldef{,} \hlnum{1}\hldef{,}
+                     \hlnum{0}\hldef{,} \hlnum{1}\hldef{,} \hlnum{1}\hldef{,}
+                     \hlnum{1}\hldef{,} \hlnum{1}\hldef{,} \hlnum{0}\hldef{),}
+                  \hlkwc{nc} \hldef{=} \hlnum{3}\hldef{,} \hlkwc{byrow} \hldef{=} \hlnum{TRUE}\hldef{)}
+\hldef{XOR_table} \hlkwb{=} \hlkwd{as.data.frame}\hldef{(XOR_table)}
+\hlkwd{colnames}\hldef{(XOR_table)} \hlkwb{=} \hlkwd{c}\hldef{(}\hlsng{"x1"}\hldef{,} \hlsng{"x2"}\hldef{,} \hlsng{"XOR"}\hldef{)}
+\hldef{nn_XOR} \hlkwb{=} \hlkwd{neuralnet}\hldef{(XOR} \hlopt{~} \hldef{x1} \hlopt{+} \hldef{x2,}
+                   \hlkwc{data} \hldef{= XOR_table,}
+                   \hlkwc{act.fct} \hldef{=} \hlsng{"logistic"}\hldef{,}
+                   \hlkwc{hidden} \hldef{=} \hlnum{0}\hldef{,}
+                   \hlkwc{linear.output} \hldef{=} \hlnum{FALSE}\hldef{)}
+\hlkwd{plot}\hldef{(nn_XOR)}
+\hldef{pred} \hlkwb{=} \hlkwd{predict}\hldef{(nn_XOR, XOR_table)}
+\hldef{XOR_table}\hlopt{$}\hldef{result} \hlkwb{=} \hldef{pred[,}\hlnum{1}\hldef{]} \hlopt{>} \hlnum{0.5}
+\hlkwd{kable}\hldef{(XOR_table,} \hlsng{"latex"}\hldef{)}
+\end{alltt}
+\end{kframe}
+\begin{tabular}{r|r|r|l}
+\hline
+x1 & x2 & XOR & result\\
+\hline
+0 & 0 & 0 & TRUE\\
+\hline
+1 & 0 & 1 & FALSE\\
+\hline
+0 & 1 & 1 & TRUE\\
+\hline
+1 & 1 & 0 & FALSE\\
+\hline
+\end{tabular}
+
+\end{knitrout}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hldef{nn_XOR} \hlkwb{=} \hlkwd{neuralnet}\hldef{(XOR} \hlopt{~} \hldef{x1} \hlopt{+} \hldef{x2,}
+                   \hlkwc{data} \hldef{= XOR_table,}
+                   \hlkwc{act.fct} \hldef{=} \hlsng{"logistic"}\hldef{,}
+                   \hlkwc{hidden} \hldef{=} \hlnum{2}\hldef{,}
+                   \hlkwc{linear.output} \hldef{=} \hlnum{FALSE}\hldef{)}
+\hlkwd{plot}\hldef{(nn_XOR)}
+\hldef{pred} \hlkwb{=} \hlkwd{predict}\hldef{(nn_XOR, XOR_table)}
+\hldef{XOR_table}\hlopt{$}\hldef{result} \hlkwb{=} \hldef{pred[,}\hlnum{1}\hldef{]} \hlopt{>} \hlnum{0.5}
+\hlkwd{kable}\hldef{(XOR_table,} \hlsng{"latex"}\hldef{)}
+\end{alltt}
+\end{kframe}
+\begin{tabular}{r|r|r|l}
+\hline
+x1 & x2 & XOR & result\\
+\hline
+0 & 0 & 0 & FALSE\\
+\hline
+1 & 0 & 1 & TRUE\\
+\hline
+0 & 1 & 1 & TRUE\\
+\hline
+1 & 1 & 0 & FALSE\\
+\hline
+\end{tabular}
+
+\end{knitrout}
 
 
 \end{document}
