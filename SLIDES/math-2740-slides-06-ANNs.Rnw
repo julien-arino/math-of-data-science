@@ -530,7 +530,7 @@ iris_train <- iris[train_idx, ]
 iris_test <- iris[-train_idx, ]
 @
 \vfill
-Thus we pick at random 2/3 of the data for training and 1/3 for testing
+Thus we pick at random 2/3 of the data for training and 1/3 for testing. See some considerations on training, validation and testing on \href{https://en.wikipedia.org/wiki/Training,_validation,_and_test_data_sets}{this Wikipedia page}
 \end{frame}
 
 \begin{frame}[fragile]\frametitle{An example from the \code{neuralnet} manual}
