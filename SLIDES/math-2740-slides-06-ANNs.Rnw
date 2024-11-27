@@ -3,15 +3,9 @@
 <<set-options,echo=FALSE,warning=FALSE,message=FALSE>>=
 # Load required libraries
 required_packages = c("dplyr", 
-                      "ggplot2",
-                      "igraph",
                       "knitr", 
-                      "latex2exp",
                       "magick",
-                      "neuralnet",
-                      "pracma", 
-                      "readr", 
-                      "tidyr")
+                      "neuralnet")
 for (p in required_packages) {
   if (!require(p, character.only = TRUE)) {
     install.packages(p, dependencies = TRUE)
@@ -28,7 +22,7 @@ opts_chunk$set(echo = TRUE,
                dev = c("pdf", "png"),
                fig.width = 6, 
                fig.height = 4, 
-               fig.path = "FIGS/graphs-",
+               fig.path = "FIGS/ann-",
                fig.keep = "high",
                fig.show = "hide")
 @
@@ -450,6 +444,8 @@ cat(input_setup)
     \end{center}
 \end{frame}
 
+\begin{frame}[fragile]\frametitle{Using \code{neuralnet} to learn OR}
+First, create the truth table
 <<>>=
 OR_table = matrix(c(0, 0, 0,
                     1, 0, 1,
@@ -458,17 +454,35 @@ OR_table = matrix(c(0, 0, 0,
                   nc = 3, byrow = TRUE)
 OR_table = as.data.frame(OR_table)
 colnames(OR_table) = c("x1", "x2", "OR")
+@
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Now create and train the NN}
+The ``formula'' is to find the OR column using the x1 and x2 columns. We use no hidden layer
+\vfill
+<<plot-NN-for-OR>>=
 nn_OR = neuralnet(OR ~ x1 + x2,
                   data = OR_table,
                   act.fct = "logistic",
                   hidden = 0,
                   linear.output = FALSE)
-plot(nn_OR)
-pred = predict(nn_OR, OR_table)
-OR_table$result = pred[,1] > 0.5
-kable(OR_table, "latex")
+# Plot the result
+plot(nn_OR, rep = "best")
 @
+\end{frame}
 
+\maxFrameImage{\Sexpr{fig_chunk('plot-NN-for-OR', 'pdf')}}
+
+\begin{frame}[fragile]\frametitle{Testing the result}
+<<>>=
+pred = predict(nn_OR, OR_table)
+OR_table$result = pred > 0.5
+kable(OR_table, "latex", booktabs = TRUE)
+@
+\end{frame}
+
+
+\begin{frame}[fragile]\frametitle{Now the XOR truth table}
 <<>>=
 XOR_table = matrix(c(0, 0, 0,
                      1, 0, 1,
@@ -477,28 +491,67 @@ XOR_table = matrix(c(0, 0, 0,
                   nc = 3, byrow = TRUE)
 XOR_table = as.data.frame(XOR_table)
 colnames(XOR_table) = c("x1", "x2", "XOR")
+@
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Try to learn it without a hidden layer}
+<<>>=
 nn_XOR = neuralnet(XOR ~ x1 + x2,
                    data = XOR_table,
                    act.fct = "logistic",
                    hidden = 0,
                    linear.output = FALSE)
-plot(nn_XOR)
 pred = predict(nn_XOR, XOR_table)
-XOR_table$result = pred[,1] > 0.5
-kable(XOR_table, "latex")
+XOR_table$result = pred > 0.5
+kable(XOR_table, "latex", booktabs = TRUE)
 @
+\end{frame}
 
+\begin{frame}[fragile]\frametitle{Now with a hidden layer}
 <<>>=
 nn_XOR = neuralnet(XOR ~ x1 + x2,
                    data = XOR_table,
-                   act.fct = "logistic",
-                   hidden = 2,
-                   linear.output = FALSE)
-plot(nn_XOR)
+                   act.fct = "tanh",
+                   hidden = 1)
 pred = predict(nn_XOR, XOR_table)
-XOR_table$result = pred[,1] > 0.5
-kable(XOR_table, "latex")
+XOR_table$result = pred > 0.5
+kable(XOR_table, "latex", booktabs = TRUE)
 @
+\vfill
+Should look into options.. :)
+\end{frame}
 
+\begin{frame}[fragile]\frametitle{An example from the \code{neuralnet} manual -- Training vs testing sets}
+\code{iris} is a built-in \code{R} dataset detailing physical characteristics of \Sexpr{nrow(iris)} flowers from \Sexpr{length(unique(iris$Species))} iris species
+\vfill
+<<>>=
+train_idx <- sample(nrow(iris), 2/3 * nrow(iris))
+iris_train <- iris[train_idx, ]
+iris_test <- iris[-train_idx, ]
+@
+\vfill
+Thus we pick at random 2/3 of the data for training and 1/3 for testing
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{An example from the \code{neuralnet} manual}
+<<>>=
+nn <- neuralnet(Species == "setosa" ~ Petal.Length + Petal.Width,
+                iris_train, linear.output = FALSE)
+pred <- predict(nn, iris_test)
+table(iris_test$Species == "setosa", pred[, 1] > 0.5)
+@
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Another example -- multiclass classification}
+<<>>=
+nn <- neuralnet((Species == "setosa") + 
+                  (Species == "versicolor") + 
+                  (Species == "virginica")
+                 ~ Petal.Length + Petal.Width, 
+                iris_train, linear.output = FALSE)
+pred <- predict(nn, iris_test)
+table(iris_test$Species, apply(pred, 1, which.max))
+@
+\end{frame}
 
 \end{document}

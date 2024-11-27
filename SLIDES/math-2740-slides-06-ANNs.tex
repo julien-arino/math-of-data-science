@@ -456,6 +456,8 @@
     \end{center}
 \end{frame}
 
+\begin{frame}[fragile]\frametitle{Using \code{neuralnet} to learn OR}
+First, create the truth table
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -466,33 +468,56 @@
                   \hlkwc{nc} \hldef{=} \hlnum{3}\hldef{,} \hlkwc{byrow} \hldef{=} \hlnum{TRUE}\hldef{)}
 \hldef{OR_table} \hlkwb{=} \hlkwd{as.data.frame}\hldef{(OR_table)}
 \hlkwd{colnames}\hldef{(OR_table)} \hlkwb{=} \hlkwd{c}\hldef{(}\hlsng{"x1"}\hldef{,} \hlsng{"x2"}\hldef{,} \hlsng{"OR"}\hldef{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Now create and train the NN}
+The ``formula'' is to find the OR column using the x1 and x2 columns. We use no hidden layer
+\vfill
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
 \hldef{nn_OR} \hlkwb{=} \hlkwd{neuralnet}\hldef{(OR} \hlopt{~} \hldef{x1} \hlopt{+} \hldef{x2,}
                   \hlkwc{data} \hldef{= OR_table,}
                   \hlkwc{act.fct} \hldef{=} \hlsng{"logistic"}\hldef{,}
                   \hlkwc{hidden} \hldef{=} \hlnum{0}\hldef{,}
                   \hlkwc{linear.output} \hldef{=} \hlnum{FALSE}\hldef{)}
-\hlkwd{plot}\hldef{(nn_OR)}
-\hldef{pred} \hlkwb{=} \hlkwd{predict}\hldef{(nn_OR, OR_table)}
-\hldef{OR_table}\hlopt{$}\hldef{result} \hlkwb{=} \hldef{pred[,}\hlnum{1}\hldef{]} \hlopt{>} \hlnum{0.5}
-\hlkwd{kable}\hldef{(OR_table,} \hlsng{"latex"}\hldef{)}
+\hlcom{# Plot the result}
+\hlkwd{plot}\hldef{(nn_OR,} \hlkwc{rep} \hldef{=} \hlsng{"best"}\hldef{)}
 \end{alltt}
 \end{kframe}
-\begin{tabular}{r|r|r|l}
-\hline
+\end{knitrout}
+\end{frame}
+
+\maxFrameImage{FIGS/ann-plot-NN-for-OR-1.pdf}
+
+\begin{frame}[fragile]\frametitle{Testing the result}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hldef{pred} \hlkwb{=} \hlkwd{predict}\hldef{(nn_OR, OR_table)}
+\hldef{OR_table}\hlopt{$}\hldef{result} \hlkwb{=} \hldef{pred} \hlopt{>} \hlnum{0.5}
+\hlkwd{kable}\hldef{(OR_table,} \hlsng{"latex"}\hldef{,} \hlkwc{booktabs} \hldef{=} \hlnum{TRUE}\hldef{)}
+\end{alltt}
+\end{kframe}
+\begin{tabular}{rrrl}
+\toprule
 x1 & x2 & OR & result\\
-\hline
+\midrule
 0 & 0 & 0 & FALSE\\
-\hline
 1 & 0 & 1 & TRUE\\
-\hline
 0 & 1 & 1 & TRUE\\
-\hline
 1 & 1 & 1 & TRUE\\
-\hline
+\bottomrule
 \end{tabular}
 
 \end{knitrout}
+\end{frame}
 
+
+\begin{frame}[fragile]\frametitle{Now the XOR truth table}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -503,62 +528,124 @@ x1 & x2 & OR & result\\
                   \hlkwc{nc} \hldef{=} \hlnum{3}\hldef{,} \hlkwc{byrow} \hldef{=} \hlnum{TRUE}\hldef{)}
 \hldef{XOR_table} \hlkwb{=} \hlkwd{as.data.frame}\hldef{(XOR_table)}
 \hlkwd{colnames}\hldef{(XOR_table)} \hlkwb{=} \hlkwd{c}\hldef{(}\hlsng{"x1"}\hldef{,} \hlsng{"x2"}\hldef{,} \hlsng{"XOR"}\hldef{)}
-\hldef{nn_XOR} \hlkwb{=} \hlkwd{neuralnet}\hldef{(XOR} \hlopt{~} \hldef{x1} \hlopt{+} \hldef{x2,}
-                   \hlkwc{data} \hldef{= XOR_table,}
-                   \hlkwc{act.fct} \hldef{=} \hlsng{"logistic"}\hldef{,}
-                   \hlkwc{hidden} \hldef{=} \hlnum{0}\hldef{,}
-                   \hlkwc{linear.output} \hldef{=} \hlnum{FALSE}\hldef{)}
-\hlkwd{plot}\hldef{(nn_XOR)}
-\hldef{pred} \hlkwb{=} \hlkwd{predict}\hldef{(nn_XOR, XOR_table)}
-\hldef{XOR_table}\hlopt{$}\hldef{result} \hlkwb{=} \hldef{pred[,}\hlnum{1}\hldef{]} \hlopt{>} \hlnum{0.5}
-\hlkwd{kable}\hldef{(XOR_table,} \hlsng{"latex"}\hldef{)}
 \end{alltt}
 \end{kframe}
-\begin{tabular}{r|r|r|l}
-\hline
-x1 & x2 & XOR & result\\
-\hline
-0 & 0 & 0 & TRUE\\
-\hline
-1 & 0 & 1 & FALSE\\
-\hline
-0 & 1 & 1 & TRUE\\
-\hline
-1 & 1 & 0 & FALSE\\
-\hline
-\end{tabular}
-
 \end{knitrout}
+\end{frame}
 
+\begin{frame}[fragile]\frametitle{Try to learn it without a hidden layer}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hldef{nn_XOR} \hlkwb{=} \hlkwd{neuralnet}\hldef{(XOR} \hlopt{~} \hldef{x1} \hlopt{+} \hldef{x2,}
                    \hlkwc{data} \hldef{= XOR_table,}
                    \hlkwc{act.fct} \hldef{=} \hlsng{"logistic"}\hldef{,}
-                   \hlkwc{hidden} \hldef{=} \hlnum{2}\hldef{,}
+                   \hlkwc{hidden} \hldef{=} \hlnum{0}\hldef{,}
                    \hlkwc{linear.output} \hldef{=} \hlnum{FALSE}\hldef{)}
-\hlkwd{plot}\hldef{(nn_XOR)}
 \hldef{pred} \hlkwb{=} \hlkwd{predict}\hldef{(nn_XOR, XOR_table)}
-\hldef{XOR_table}\hlopt{$}\hldef{result} \hlkwb{=} \hldef{pred[,}\hlnum{1}\hldef{]} \hlopt{>} \hlnum{0.5}
-\hlkwd{kable}\hldef{(XOR_table,} \hlsng{"latex"}\hldef{)}
+\hldef{XOR_table}\hlopt{$}\hldef{result} \hlkwb{=} \hldef{pred} \hlopt{>} \hlnum{0.5}
+\hlkwd{kable}\hldef{(XOR_table,} \hlsng{"latex"}\hldef{,} \hlkwc{booktabs} \hldef{=} \hlnum{TRUE}\hldef{)}
 \end{alltt}
 \end{kframe}
-\begin{tabular}{r|r|r|l}
-\hline
+\begin{tabular}{rrrl}
+\toprule
 x1 & x2 & XOR & result\\
-\hline
+\midrule
 0 & 0 & 0 & FALSE\\
-\hline
 1 & 0 & 1 & TRUE\\
-\hline
-0 & 1 & 1 & TRUE\\
-\hline
-1 & 1 & 0 & FALSE\\
-\hline
+0 & 1 & 1 & FALSE\\
+1 & 1 & 0 & TRUE\\
+\bottomrule
 \end{tabular}
 
 \end{knitrout}
+\end{frame}
 
+\begin{frame}[fragile]\frametitle{Now with a hidden layer}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hldef{nn_XOR} \hlkwb{=} \hlkwd{neuralnet}\hldef{(XOR} \hlopt{~} \hldef{x1} \hlopt{+} \hldef{x2,}
+                   \hlkwc{data} \hldef{= XOR_table,}
+                   \hlkwc{act.fct} \hldef{=} \hlsng{"tanh"}\hldef{,}
+                   \hlkwc{hidden} \hldef{=} \hlnum{1}\hldef{)}
+\hldef{pred} \hlkwb{=} \hlkwd{predict}\hldef{(nn_XOR, XOR_table)}
+\hldef{XOR_table}\hlopt{$}\hldef{result} \hlkwb{=} \hldef{pred} \hlopt{>} \hlnum{0.5}
+\hlkwd{kable}\hldef{(XOR_table,} \hlsng{"latex"}\hldef{,} \hlkwc{booktabs} \hldef{=} \hlnum{TRUE}\hldef{)}
+\end{alltt}
+\end{kframe}
+\begin{tabular}{rrrl}
+\toprule
+x1 & x2 & XOR & result\\
+\midrule
+0 & 0 & 0 & FALSE\\
+1 & 0 & 1 & TRUE\\
+0 & 1 & 1 & TRUE\\
+1 & 1 & 0 & TRUE\\
+\bottomrule
+\end{tabular}
+
+\end{knitrout}
+\vfill
+Should look into options.. :)
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{An example from the \code{neuralnet} manual -- Training vs testing sets}
+\code{iris} is a built-in \code{R} dataset detailing physical characteristics of 150 flowers from 3 iris species
+\vfill
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hldef{train_idx} \hlkwb{<-} \hlkwd{sample}\hldef{(}\hlkwd{nrow}\hldef{(iris),} \hlnum{2}\hlopt{/}\hlnum{3} \hlopt{*} \hlkwd{nrow}\hldef{(iris))}
+\hldef{iris_train} \hlkwb{<-} \hldef{iris[train_idx, ]}
+\hldef{iris_test} \hlkwb{<-} \hldef{iris[}\hlopt{-}\hldef{train_idx, ]}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\vfill
+Thus we pick at random 2/3 of the data for training and 1/3 for testing
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{An example from the \code{neuralnet} manual}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hldef{nn} \hlkwb{<-} \hlkwd{neuralnet}\hldef{(Species} \hlopt{==} \hlsng{"setosa"} \hlopt{~} \hldef{Petal.Length} \hlopt{+} \hldef{Petal.Width,}
+                \hldef{iris_train,} \hlkwc{linear.output} \hldef{=} \hlnum{FALSE}\hldef{)}
+\hldef{pred} \hlkwb{<-} \hlkwd{predict}\hldef{(nn, iris_test)}
+\hlkwd{table}\hldef{(iris_test}\hlopt{$}\hldef{Species} \hlopt{==} \hlsng{"setosa"}\hldef{, pred[,} \hlnum{1}\hldef{]} \hlopt{>} \hlnum{0.5}\hldef{)}
+\end{alltt}
+\begin{verbatim}
+##        
+##         FALSE TRUE
+##   FALSE    34    0
+##   TRUE      0   16
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Another example -- multiclass classification}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hldef{nn} \hlkwb{<-} \hlkwd{neuralnet}\hldef{((Species} \hlopt{==} \hlsng{"setosa"}\hldef{)} \hlopt{+}
+                  \hldef{(Species} \hlopt{==} \hlsng{"versicolor"}\hldef{)} \hlopt{+}
+                  \hldef{(Species} \hlopt{==} \hlsng{"virginica"}\hldef{)}
+                 \hlopt{~} \hldef{Petal.Length} \hlopt{+} \hldef{Petal.Width,}
+                \hldef{iris_train,} \hlkwc{linear.output} \hldef{=} \hlnum{FALSE}\hldef{)}
+\hldef{pred} \hlkwb{<-} \hlkwd{predict}\hldef{(nn, iris_test)}
+\hlkwd{table}\hldef{(iris_test}\hlopt{$}\hldef{Species,} \hlkwd{apply}\hldef{(pred,} \hlnum{1}\hldef{, which.max))}
+\end{alltt}
+\begin{verbatim}
+##             
+##               1  2  3
+##   setosa     16  0  0
+##   versicolor  0 17  1
+##   virginica   0  2 14
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
 
 \end{document}
