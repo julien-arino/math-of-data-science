@@ -4,6 +4,10 @@ This GitHub repo contains material related to the University of Manitoba course 
 
 Here, you will find the publicly available information: code, slides and some general information. All other information (syllabus, assignments, marks) is available through UM Learn.
 
+### Fall 2025 changes
+
+FYI, in Fall 2025, the format of the course will change. From an "assignment only" format, I will be moving to a system with assignments, a midterm and a final examination. Assignments will be longer (2-3 weeks each) and will be more like small projects. The midterm and final will be mathematics only and are planned to be two hours each.
+
 ### This GitHub repo
 
 On the [GitHub version](https://github.com/julien-arino/math-of-data-science/) of the page, you have access to all the files. You can also download the entire repository by clicking the buttons on the left. (You can also of course clone this repo, but you will need to do that from the GitHub version of the site.)
