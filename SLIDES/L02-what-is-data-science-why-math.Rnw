@@ -317,7 +317,16 @@ The `cars` dataset has `r nrow(cars)` rows.
 
 
 
-\begin{frame}{Code for the assignments}
+\begin{frame}{Sample code for the assignments}
+Please compare the results obtained when knit-ing these two files
+\vfill
+\begin{itemize}
+\item Proper notebook: \href{https://raw.githubusercontent.com/julien-arino/math-of-data-science/refs/heads/main/CODE/iris_analysis_proper.Rmd}{CODE} \& \href{https://julien-arino.github.io/math-of-data-science/CODE/iris_analysis_proper.html}{output}
+\vfill
+\item Comment heavy notebook: \href{https://raw.githubusercontent.com/julien-arino/math-of-data-science/refs/heads/main/CODE/iris_analysis_commented.Rmd}{CODE} \& \href{https://julien-arino.github.io/math-of-data-science/CODE/iris_analysis_commented.html}{output} 
+\end{itemize}
+\vfill
+The first one will get you good marks. The second one will get you in hot water...
 \end{frame}
 
 \end{document}
