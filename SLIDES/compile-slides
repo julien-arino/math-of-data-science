@@ -6,6 +6,15 @@
 # of marp)
 # Does pull and push, so beware..
 
+# First, copy the corresponding Rnw files from the new content directory
+for f in L??-*.Rnw
+do
+  if [ -f ~/github/math-of-data-science-new-content/SLIDES/"$f" ]; then
+    echo "Copying $f from new content directory..."
+    cp ~/github/math-of-data-science-new-content/SLIDES/"$f" .
+  fi
+done
+
 for f in L??-*.Rnw
 do
   Rscript -e "library(knitr); knit('$f')"
