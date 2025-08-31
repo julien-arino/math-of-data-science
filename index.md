@@ -14,12 +14,13 @@ On the [GitHub version](https://github.com/julien-arino/math-of-data-science/) o
 
 Feel free to use the material in these slides or in the folders. If you find this useful, I will be happy to know.
 
-### Old slides
+### Slides
 <ul>
 {% for file in site.static_files %}
   {% if file.path contains 'SLIDES' %}
-    {% if file.path contains 'L' %}
-      {% if file.path contains 'pdf' %}
+    {% if file.extname == '.pdf' %}
+      {% assign basename = file.basename %}
+      {% if basename contains 'L0' or basename contains 'L1' or basename contains 'L2' %}
         <li><a href="https://julien-arino.github.io/math-of-data-science/SLIDES/{{ file.basename }}.pdf">{{ file.basename }}</a></li>
       {% endif %}
     {% endif %}
