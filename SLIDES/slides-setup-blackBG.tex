@@ -1,0 +1,222 @@
+\usetheme{default}
+\input{slides_setup_colour_independent.tex}
+
+%% Listings
+\usepackage{listings}
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+\definecolor{mygold}{rgb}{1,0.843,0}
+\definecolor{myblue}{rgb}{0.537,0.812,0.941}
+
+\definecolor{lgreen}{rgb}{0.6,0.9,.6}
+\definecolor{lred}{rgb}{1,0.5,.5}
+
+\lstloadlanguages{R}
+\lstset{ %
+  language=R,
+  backgroundcolor=\color{black!95},   % choose the background color
+  basicstyle=\footnotesize\ttfamily,        % size of fonts used for the code
+  breaklines=true,                 % automatic line breaking only at whitespace
+  captionpos=b,                    % sets the caption-position to bottom
+  commentstyle=\color{mygreen},    % comment style
+  escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+  keywordstyle=\color{myblue},       % keyword style
+  stringstyle=\color{mygold},     % string literal style
+  keepspaces=true,
+  columns=fullflexible,
+  tabsize=4,
+}
+% Could also do (in lstset)
+% basicstyle==\fontfamily{pcr}\footnotesize
+
+
+%%%%%%% 
+%% Definitions in yellow boxes
+\usepackage{etoolbox}
+\setbeamercolor{block title}{use=structure,fg=structure.fg,bg=structure.fg!05!bg}
+\setbeamercolor{block body}{parent=normal text,use=block title,bg=block title.bg!20!bg}
+
+\BeforeBeginEnvironment{definition}{%
+	\setbeamercolor{block title}{fg=black,bg=yellow!20!white}
+	\setbeamercolor{block body}{fg=black, bg=yellow!05!white}
+}
+\AfterEndEnvironment{definition}{
+	\setbeamercolor{block title}{use=structure,fg=structure.fg,bg=structure.fg!20!bg}
+	\setbeamercolor{block body}{parent=normal text,use=block title,bg=block title.bg!50!bg, fg=black}
+}
+\BeforeBeginEnvironment{importanttheorem}{%
+	\setbeamercolor{block title}{fg=black,bg=red!20!white}
+	\setbeamercolor{block body}{fg=black, bg=red!05!white}
+}
+\AfterEndEnvironment{importanttheorem}{
+	\setbeamercolor{block title}{use=structure,fg=structure.fg,bg=structure.fg!20!bg}
+	\setbeamercolor{block body}{parent=normal text,use=block title,bg=block title.bg!50!bg, fg=black}
+}
+\BeforeBeginEnvironment{theorem}{%
+	\setbeamercolor{block title}{fg=white,bg=red!30!black}
+	\setbeamercolor{block body}{fg=white, bg=red!10!black}
+}
+\AfterEndEnvironment{theorem}{
+	\setbeamercolor{block title}{use=structure,fg=structure.fg,bg=structure.fg!20!bg}
+	\setbeamercolor{block body}{parent=normal text,use=block title,bg=block title.bg!50!bg, fg=black}
+}
+\BeforeBeginEnvironment{importantproperty}{%
+	\setbeamercolor{block title}{fg=black,bg=red!50!white}
+	\setbeamercolor{block body}{fg=black, bg=red!30!white}
+}
+\AfterEndEnvironment{importantproperty}{
+	\setbeamercolor{block title}{use=structure,fg=structure.fg,bg=structure.fg!20!bg}
+	\setbeamercolor{block body}{parent=normal text,use=block title,bg=block title.bg!50!bg, fg=black}
+}
+
+
+\tikzstyle{cloud} = [draw, 
+ellipse,
+fill=red!20, 
+node distance=0.87cm,
+minimum height=2em]
+\tikzstyle{line} = [draw, 
+-latex', 
+color=yellow]
+
+
+% Beginning of a section
+% \AtBeginSection[]{
+% 	{
+% 		\setbeamercolor{background canvas}{bg=orange!10}
+% 		\begin{frame}[noframenumbering,plain]
+% 			\framesubtitle{\nameofthepart Chapter \insertromanpartnumber \ -- \iteminsert{\insertpart}}
+% 			\tableofcontents[currentsection,currentsubsection]
+% 		\end{frame}
+% 	\addtocounter{page}{-1}
+% 	%\addtocounter{framenumber}{-1} 
+% 	}
+% }
+
+
+%%% SLIDES COLOURING
+
+%\usecolortheme{owl}
+
+\setbeamerfont{frametitle}{series=\bfseries}
+\setbeamercolor{frametitle}{fg=black!05,bg=black}
+
+\setbeamerfont{framesubtitle}{size=\normalfont\tiny}
+\setbeamercolor{framesubtitle}{fg=black!05}
+
+\setbeamercolor{background canvas}{bg=black}
+\setbeamercolor{normal text}{fg=black!10}
+
+
+
+\definecolor{bottomcolour}{rgb}{0.32,0.3,0.38}
+\definecolor{middlecolour}{rgb}{0.08,0.08,0.16}
+\definecolor{mycolor}{rgb}{0.4,0.4, 0.4}
+% Beginning of a section
+\AtBeginSection[]{
+	{
+		%\setbeamercolor{background canvas}[vertical shading][top=bottomcolour, middle=middlecolour, bottom=black]
+		\setbeamertemplate{background canvas}[vertical shading][bottom=bottomcolour,top=black!20]
+    % \setbeamertemplate{background canvas}{
+    %   \begin{tikzpicture}%[remember picture,overlay]
+    %     \shade[top color=yellow!75!green!33,
+    %     bottom color=blue!66!green!33,
+    %     middle color=blue!6!green!33]
+    %   \end{tikzpicture}
+    % }
+    \begin{frame}[noframenumbering,plain]
+			\framesubtitle{\nameofthepart Chapter \insertromanpartnumber \ -- \iteminsert{\insertpart}}
+			\tableofcontents[currentsection,currentsubsection]
+		\end{frame}
+	\addtocounter{page}{-1}
+	}
+}
+% Beginning of a section
+\AtBeginSubsection[]{
+	{
+		%\setbeamercolor{background canvas}[vertical shading][top=bottomcolour, middle=middlecolour, bottom=black]
+		%\setbeamertemplate{background canvas}[vertical shading][bottom=bottomcolour,top=black!20]
+    \setbeamertemplate{background canvas}{
+      \begin{tikzpicture}%[remember picture,overlay]
+        \shade[top color=yellow!75!green!33,
+        bottom color=blue!66!green!33,
+        middle color=blue!6!green!33]
+      \end{tikzpicture}
+    }
+    \begin{frame}[noframenumbering,plain]
+			\framesubtitle{\nameofthepart Chapter \insertromanpartnumber \ -- \iteminsert{\insertpart}}
+			\tableofcontents[currentsection,currentsubsection]
+		\end{frame}
+	\addtocounter{page}{-1}
+	}
+}
+
+% Colours for special pages
+\def\extraContent{yellow!20}
+
+%% Allow to change slide colour
+%% From: https://tex.stackexchange.com/questions/8043/change-the-background-color-of-a-frame-in-beamer
+\defbeamertemplate*{background canvas}{mydefault}{%
+  \ifbeamercolorempty[bg]{background canvas}{}{\color{bg}\vrule width\paperwidth height\paperheight}% copied beamer default here
+}
+\defbeamertemplate*{background canvas}{bg}{%
+  \color{lightgray!20}\vrule width\paperwidth height\paperheight% added bg color
+}
+\BeforeBeginEnvironment{frame}{%
+  \setbeamertemplate{background canvas}[mydefault]%
+}
+\makeatletter
+\define@key{beamerframe}{bg}[true]{%
+  \setbeamertemplate{background canvas}[bg]%
+}
+\makeatother
+% Use with
+%\begin{frame}
+% \frametitle{Normal}
+%\end{frame} 
+%\begin{frame}[bg]
+% \frametitle{With bg}
+%\end{frame}
+
+
+%% Vertical alignment on pages
+%% From: https://tex.stackexchange.com/questions/148365/how-do-i-ask-beamer-to-exactly-fill-up-a-slide
+%% Turn on with
+%% \stretchon
+%% (outside slide), and off with
+%% \stretchoff
+% \def\itemsymbol{$\blacktriangleright$}
+% \let\svpar\par
+% \let\svitemize\itemize
+% \let\svenditemize\enditemize
+% \let\svitem\item
+% \let\svcenter\center
+% \let\svendcenter\endcenter
+% \let\svcolumn\column
+% \let\svendcolumn\endcolumn
+% \def\newitem{\renewcommand\item[1][\itemsymbol]{\vfill\svitem[##1]}}%
+% \def\newpar{\def\par{\svpar\vfill}}%
+% \newcommand\stretchon{%
+%   \newpar%
+%   \renewcommand\item[1][\itemsymbol]{\svitem[##1]\newitem}%
+%   \renewenvironment{itemize}%
+%     {\svitemize}{\svenditemize\newpar\par}%
+%   \renewenvironment{center}%
+%     {\svcenter\newpar}{\svendcenter\newpar}%
+%   \renewenvironment{column}[2]%
+%     {\svcolumn{##1}\setlength{\parskip}{\columnskip}##2}%
+%     {\svendcolumn\vspace{\columnskip}}%
+% }
+% \newcommand\stretchoff{%
+%   \let\par\svpar%
+%   \let\item\svitem%
+%   \let\itemize\svitemize%
+%   \let\enditemize\svenditemize%
+%   \let\center\svcenter%
+%   \let\endcenter\svendcenter%
+%   \let\column\svcolumn%
+%   \let\endcolumn\svendcolumn%
+% }
+% \newlength\columnskip
+% \columnskip 0pt

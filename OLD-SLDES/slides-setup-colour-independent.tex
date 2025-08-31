@@ -7,6 +7,7 @@
 \usepackage{xcolor}
 \usepackage{dsfont}
 \usepackage{setspace}
+%\usepackage{subfigure}
 % To use \ding{234} and the like
 \usepackage{pifont}
 % To cross reference between slide files
@@ -18,16 +19,6 @@
 \usepackage{marvosym}
 \usepackage{cancel}
 %\usepackage{transparent}
-% Make doi clickable in the bibliography?
-\usepackage{doi}
-
-\usepackage[T1]{fontenc}
-
-\usepackage{longtable}
-
-% For heavier titles
-\usepackage{helvet} % Enables Helvetica font family
-
 
 % Fields and the like
 \def\IC{\mathbb{C}}
@@ -40,7 +31,6 @@
 \def\IN{\mathbb{N}}
 \def\IP{\mathbb{P}}
 \def\IR{\mathbb{R}}
-\newcommand{\IRplus}{\mathbb{R}_{\ge 0}}
 \def\IZ{\mathbb{Z}}
 \def\11{\mathds{1}}
 
@@ -67,7 +57,6 @@
 \def\bx{\bm{x}}
 \def\by{\bm{y}}
 \def\bz{\bm{z}}
-\newcommand{\vect}[1]{\bm{#1}}
 
 % Bold capitals
 \def\bB{\bm{B}}
@@ -153,10 +142,6 @@
 \def\dsum{\mathop{\displaystyle \sum }}%
 \def\dind#1#2{_{\substack{#1\\ #2}}}
 
-\newcommand{\Qmatrix}[1]{%
-  \begin{pmatrix}#1\end{pmatrix}%
-}
-
 \DeclareMathOperator{\GL}{GL}
 \DeclareMathOperator{\Rel}{Re}
 \def\Nt#1{\left|\!\left|\!\left|#1\right|\!\right|\!\right|}
@@ -186,10 +171,6 @@
 \def\blue{\color[rgb]{0,0,1}}
 \def\green{\color[rgb]{0,1,0}}
 
-% Fix skipping lines after items in the bibliography
-\setbeamertemplate{bibliography entry title}{}
-\setbeamertemplate{bibliography entry location}{}
-\setbeamertemplate{bibliography entry note}{}
 
 % Get rid of navigation stuff
 \setbeamertemplate{navigation symbols}{}
@@ -324,7 +305,7 @@ minimum height=2em]
 
 
 \usepackage{tikz}
-\usetikzlibrary{patterns,hobby,matrix}
+\usetikzlibrary{patterns,hobby}
 \usepackage{pgfplots}
 \pgfplotsset{compat=1.6}
 \pgfplotsset{ticks=none}
@@ -353,9 +334,10 @@ minimum height=2em]
         \includegraphics[height=\paperheight,width=\paperwidth]{#1}
     };
   \end{tikzpicture}
-  \setbeamercolor{section in toc}{fg=section_page_list_colour}
+  \setbeamercolor{section in toc}{fg=subsub_header_section}
   \setbeamerfont{section in toc}{size=\Large,series=\bfseries}
   \setbeamertemplate{section in toc shaded}[default][60]
+  %\setbeamercolor{background canvas}{bg=section_colour}
   \tableofcontents[
     currentsection,
     sectionstyle=show/shaded,
@@ -374,9 +356,10 @@ minimum height=2em]
 				\includegraphics[height=\paperheight,width=\paperwidth]{#1}
 			};
 		\end{tikzpicture}
-		\setbeamercolor{section in toc}{fg=section_page_list_colour}
+		\setbeamercolor{section in toc}{fg=subsub_header_section}
 		\setbeamerfont{section in toc}{size=\Large,series=\bfseries}
 		\setbeamertemplate{section in toc shaded}[default][60]
+		%\setbeamercolor{background canvas}{bg=section_colour}
 		\tableofcontents[
 		currentsection,
 		sectionstyle=show/hide,
@@ -395,11 +378,12 @@ minimum height=2em]
         \includegraphics[height=\paperheight,width=\paperwidth]{#1}
     };
   \end{tikzpicture}
-  \setbeamercolor{section in toc}{fg=subsection_page_list_colour}
+  \setbeamercolor{section in toc}{fg=subsub_header_section}
   \setbeamerfont{section in toc}{size=\Large,series=\bfseries}
   \setbeamertemplate{section in toc shaded}[default][60]
   \setbeamerfont{subsection in toc}{series=\bfseries}
   \setbeamertemplate{subsection in toc shaded}[default][50]
+  %\setbeamercolor{background canvas}{bg=section_colour}
   \tableofcontents[
     currentsection,
     sectionstyle=show/hide,
@@ -466,152 +450,45 @@ minimum height=2em]
         }
     }
 
-% This command creates a title page using TikZ only
-\newcommand{\tikztitlepage}[1]{%
-\begin{frame}[plain,noframenumbering]
-  \begin{tikzpicture}[remember picture,overlay]
-    % Background image
-    \node[above right,inner sep=0pt,opacity=0.1] 
-      at (current page.south west) 
-      {\includegraphics[width=\paperwidth,height=\paperheight]{#1}};
 
-    % University logo
-    \node[anchor=north east, inner sep=5pt, opacity=0.9] 
-      at (current page.north east)
-      {\includegraphics[width=0.2\textwidth]{FIGS-slides-admin/UM-logo-horizontal-CMYK.png}};
-    
-    % Title
-    \node[anchor=center, align=center, 
-          font=\fontsize{13}{15}\bfseries\color{UMbrown}, 
-          text width=0.9\textwidth] 
-          at ([yshift=2cm]current page.center)
-          {\inserttitle};
-
-      % Authors
-      \node[anchor=center, align=center,
-        font=\fontsize{10}{12}\bfseries\color{UMbrown},
-        text width=0.7\textwidth]
-        at ([yshift=0.8cm]current page.center)
-        {\insertauthor};
-
-      % Affiliation
-      \node[anchor=north, align=center,
-        font=\fontsize{9}{11}\color{UMbrown},
-        text width=0.7\textwidth]
-        at ([yshift=-0.2cm]current page.center)
-        {\insertaffiliation};      
-    % Date
-    \node[anchor=north, align=center, 
-          font=\fontsize{12}{16}\bfseries\color{UMbrown},
-          text width=0.7\textwidth] 
-          at ([yshift=0.2cm]current page.center)
-          {\insertdate};
-
-    % Land acknowledgement
-    \node[anchor=south, align=justify, 
-          font=\footnotesize, text=black, 
-          text width=1.1\textwidth] 
-          at ([yshift=0.5cm]current page.south)
-          {The University of Manitoba campuses are located on original lands of Anishinaabeg, Ininew, Anisininew, Dakota and Dene peoples, and on the National Homeland of the Red River Métis.\\
-          We respect the Treaties that were made on these territories, we acknowledge the harms and mistakes of the past, and we dedicate ourselves to move forward in partnership with Indigenous communities in a spirit of Reconciliation and collaboration.};
-  \end{tikzpicture}
-  \addtocounter{page}{-1}
-\end{frame}
-}
 % The title page with figure
-% \newcommand{\titlepagewithfigure}[1]{%
-%   \begin{frame}[noframenumbering,plain]
-%     \begin{tikzpicture}[remember picture,overlay]
-%       \node[above right,inner sep=0pt,opacity=0.1] at (current page.south west)
-%       {
-%           \includegraphics[height=\paperheight,width=\paperwidth]{#1}
-%       };
-%       \node[anchor=north east,
-%       inner sep=5pt,
-%       opacity=0.9] at (current page.north east)
-%       {
-%           \includegraphics[width=0.2\textwidth]{FIGS-slides-admin/UM-logo-horizontal-CMYK.png}
-%       };
-%       \node[anchor=south, 
-%       align=justify, 
-%       text=black, 
-%       text width=1.1\textwidth,
-%       font=\footnotesize]  (land_acknowledgement)
-%       at (current page.south) 
-%       {The University of Manitoba campuses are located on original lands of Anishinaabeg, Ininew, Anisininew, Dakota and Dene peoples, and on the National Homeland of the Red River Métis.
-%       We respect the Treaties that were made on these territories, we acknowledge the harms and mistakes of the past, and we dedicate ourselves to move forward in partnership with Indigenous communities in a spirit of Reconciliation and collaboration.};  
-%       % \node[align=center, anchor=south,
-%       % above=0.5cm of land_acknowledgement,
-%       % text=black,
-%       % font=\bfseries] {\insertdate};
-%   \end{tikzpicture}
-%   \setbeamercolor{title}{fg=title_page_title_colour}
-%   \setbeamerfont{title}{size=\Large,series=\bfseries}
-%   \setbeamercolor{author}{fg=title_page_author_colour}
-%   \setbeamerfont{author}{size=\large,series=\bfseries}
-%   \setbeamercolor{institute}{fg=title_page_institute_colour}
-%   \setbeamerfont{institute}{size=\large,series=\bfseries}
-%   \setbeamercolor{date}{fg=title_page_date_colour}
-%   \setbeamerfont{date}{series=\bfseries}
-% 	\titlepage
-% \end{frame}
-% \addtocounter{page}{-1}
-% }
-
 \newcommand{\titlepagewithfigure}[1]{%
-  \begin{frame}[noframenumbering,plain]
-    \begin{tikzpicture}[remember picture,overlay]
-      \node[above right,inner sep=0pt,opacity=0.1] at (current page.south west)
-      {
-          \includegraphics[height=\paperheight,width=\paperwidth]{#1}
-      };
-      \node[anchor=north east,
-      inner sep=5pt,
-      opacity=0.9] at (current page.north east)
-      {
-          \includegraphics[width=0.2\textwidth]{FIGS-slides-admin/UM-logo-horizontal-CMYK.png}
-      };
-      \node[anchor=south, 
-      align=justify, 
-      text=black, 
-      text width=1.1\textwidth,
-      font=\footnotesize]  (land_acknowledgement)
-      at (current page.south) 
-      {The University of Manitoba campuses are located on original lands of Anishinaabeg, Ininew, Anisininew, Dakota and Dene peoples, and on the National Homeland of the Red River Métis.
-      We respect the Treaties that were made on these territories, we acknowledge the harms and mistakes of the past, and we dedicate ourselves to move forward in partnership with Indigenous communities in a spirit of Reconciliation and collaboration.};  
-      % \node[align=center, anchor=south,
-      % above=0.5cm of land_acknowledgement,
-      % text=black,
-      % font=\bfseries] {\insertdate};
-  \end{tikzpicture}
-  \setbeamercolor{title}{fg=title_page_title_colour}
-  \setbeamerfont{title}{size=\Large,series=\bfseries,family=\usefont{T1}{phv}{b}{n}}
-  \setbeamercolor{author}{fg=title_page_author_colour}
-  \setbeamerfont{author}{size=\large,series=\bfseries,family=\usefont{T1}{phv}{b}{n}}
-  \setbeamercolor{institute}{fg=title_page_institute_colour}
-  \setbeamerfont{institute}{size=\large,series=\bfseries,family=\usefont{T1}{phv}{b}{n}}
-  \setbeamercolor{date}{fg=title_page_date_colour}
-  \setbeamerfont{date}{series=\bfseries,family=\usefont{T1}{phv}{b}{n}}
+\begin{frame}[noframenumbering,plain]
+  \begin{tikzpicture}[remember picture,overlay]
+    \node[above right,inner sep=0pt,opacity=0.2] at (current page.south west)
+    {
+        \includegraphics[height=\paperheight,width=\paperwidth]{#1}
+    };
+    \node[anchor=north east,
+    inner sep=5pt,
+    opacity=0.9] at (current page.north east)
+    {
+        \includegraphics[width=0.2\textwidth]{FIGS/UM-logo-horizontal-CMYK.png}
+    };
+    \node[anchor=south, 
+    align=justify, 
+    text=black, 
+    text width=1.1\textwidth,
+    font=\footnotesize]  (land_acknowledgement)
+    at (current page.south) 
+    {The University of Manitoba campuses are located on original lands of Anishinaabeg, Ininew, Anisininew, Dakota and Dene peoples, and on the National Homeland of the Red River Métis.\\
+    We respect the Treaties that were made on these territories, we acknowledge the harms and mistakes of the past, and we dedicate ourselves to move forward in partnership with Indigenous communities in a spirit of Reconciliation and collaboration.};  
+    \node[align=center, anchor=south,
+    above=0.5cm of land_acknowledgement,
+    text=black,
+    font=\bfseries] {Fall 2024};
+\end{tikzpicture}
+  \setbeamercolor{title}{fg=subsub_header_section}
+  \setbeamercolor{author}{fg=subsub_header_section} 
+  \setbeamerfont{title}{size=\Large,series=\bfseries}
+  \setbeamerfont{author}{size=\Large,series=\bfseries}
+  \setbeamerfont{date}{series=\bfseries}
 	\titlepage
 \end{frame}
 \addtocounter{page}{-1}
 }
-% The outline page, with figure
-% \newcommand{\outlinepage}[1]{%
-% \begin{frame}[noframenumbering,plain]
-%   \begin{tikzpicture}[remember picture,overlay]
-%     \node[above right,inner sep=0pt,opacity=0.2] at (current page.south west)
-%     {
-%         \includegraphics[height=\paperheight,width=\paperwidth]{#1}
-%     };
-%   \end{tikzpicture}
-%   \setbeamercolor{section in toc}{fg=outline_page_list_colour}
-%   \setbeamerfont{section in toc}{size=\Large,series=\bfseries,family=\sffamily}
-%   \frametitle{\textcolor{outline_page_title_colour}{\LARGE\bfseries Outline}}
-%   \tableofcontents[hideallsubsections]
-% \end{frame}
-% \addtocounter{page}{-1}
-% }
+
+
 % The outline page, with figure
 \newcommand{\outlinepage}[1]{%
 \begin{frame}[noframenumbering,plain]
@@ -621,11 +498,9 @@ minimum height=2em]
         \includegraphics[height=\paperheight,width=\paperwidth]{#1}
     };
   \end{tikzpicture}
-  \setbeamercolor{section in toc}{fg=outline_page_list_colour}
-  % Use Helvetica Bold only for the outline slide TOC
-  \setbeamerfont{section in toc}{size=\Large,family=\usefont{T1}{phv}{b}{n}}
-  % Use Helvetica Bold for the outline title
-  \frametitle{\textcolor{outline_page_title_colour}{\usefont{T1}{phv}{b}{n}\LARGE Outline}}
+  \setbeamercolor{section in toc}{fg=subsub_header_section}
+  \setbeamerfont{section in toc}{size=\Large,series=\bfseries}
+  \frametitle{\textcolor{blue}{\LARGE\bfseries Outline}}
   \tableofcontents[hideallsubsections]
 \end{frame}
 \addtocounter{page}{-1}

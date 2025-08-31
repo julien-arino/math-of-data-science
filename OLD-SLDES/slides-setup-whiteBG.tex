@@ -115,49 +115,6 @@
    morestring=[d]'% 2001 Robert Denham
   }%
 
-% Custom color for listings
-\definecolor{codegreen}{rgb}{0,0.6,0}
-\definecolor{codegray}{rgb}{0.5,0.5,0.5}
-\definecolor{codepurple}{rgb}{0.58,0,0.82}
-\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
-
-%------------------------------------------------------------
-% Listings configuration for Julia
-%------------------------------------------------------------
-% Define the Julia language for the listings package
-\lstdefinelanguage{Julia}
-{
-  morekeywords={abstract,baremodule,begin,break,catch,const,continue,do,else,elseif,end,export,false,finally,for,function,global,if,import,let,local,macro,module,quote,return,struct,true,try,using,while,in},
-  sensitive=true,
-  comment=[l]{\#},
-  morecomment=[n]{\#=}{=\#}, % For block comments like #= ... =#
-  string=[b]",
-  morestring=[b]',
-  alsoletter={!}, % Allow ! in identifiers for mutating functions
-}
-
-% Define the style for the code blocks
-\lstdefinestyle{JuliaStyle}{
-    backgroundcolor=\color{backcolour},   
-    commentstyle=\color{codegreen},
-    keywordstyle=\color{magenta},
-    numberstyle=\tiny\color{codegray},
-    stringstyle=\color{codepurple},
-    basicstyle=\ttfamily\footnotesize,
-    breakatwhitespace=false,         
-    breaklines=true,                 
-    captionpos=b,                    
-    keepspaces=true,                 
-    % numbers=left,                    
-    % numbersep=5pt,                  
-    showspaces=false,                
-    showstringspaces=false,
-    showtabs=false,                  
-    tabsize=2,
-    language=Julia % Use the newly defined Julia language
-}
-\lstset{style=JuliaStyle}
-
 %%%%%%% 
 %% Definitions in yellow boxes
 \usepackage{etoolbox}
@@ -189,26 +146,93 @@
 	\setbeamercolor{block body}{parent=normal text,use=block title,bg=block title.bg!50!bg, fg=black}
 }
 
-%% Colours for title page, outline and the like
-\definecolor{UMbrown}{RGB}{79,44,29}
-\definecolor{HighlightGold}{RGB}{230,165,83}
-\definecolor{DeepGreen}{RGB}{27,46,28}
-\definecolor{MediumGreen}{RGB}{52,128,56}
-\definecolor{LightGreen}{RGB}{150,224,154}
-\definecolor{AccentRed}{RGB}{196,44,27}
-%% These are the titles used in practice
-% Title page
-\colorlet{title_page_title_colour}{UMbrown}
-\colorlet{title_page_author_colour}{UMbrown}
-\colorlet{title_page_date_colour}{UMbrown}
-\colorlet{title_page_institute_colour}{UMbrown}
-% Outline page
-\colorlet{outline_page_title_colour}{DeepGreen}
-\colorlet{outline_page_list_colour}{UMbrown}
-% Section page
-\colorlet{section_page_title_colour}{DeepGreen}
-\colorlet{section_page_list_colour}{UMbrown}
-% Subection page
-\colorlet{subsection_page_title_colour}{DeepGreen}
-\colorlet{subsection_page_list_colour}{UMbrown}
+% Colour for the outline page
+\definecolor{outline_colour}{RGB}{230,165,83}
+%% Colours for sections, subsections aand subsubsections
+\definecolor{section_colour}{RGB}{27,46,28}
+\definecolor{subsection_colour}{RGB}{52,128,56}
+\definecolor{subsubsection_colour}{RGB}{150,224,154}
+\definecolor{subsub_header_section}{RGB}{196,44,27}
+%\definecolor{mygold}{rgb}{1,0.843,0}
+% Beginning of a section
+% \AtBeginSection[]{
+% 	{
+% 	  \setbeamercolor{section in toc}{fg=mygold}
+% 		\setbeamercolor{background canvas}{bg=section_colour}
+% 		\begin{frame}[noframenumbering,plain]
+% 			\framesubtitle{\nameofthepart Chapter \insertromanpartnumber \ -- \iteminsert{\insertpart}}
+% 			\tableofcontents[
+% 				currentsection,
+% 				sectionstyle=show/shaded,
+% 				subsectionstyle=show/hide/hide,
+% 				subsubsectionstyle=hide/hide/hide]
+% 		\end{frame}
+% 	\addtocounter{page}{-1}
+% 	%\addtocounter{framenumber}{-1} 
+% 	}
+% }
 
+
+% % Beginning of a section
+% \AtBeginSubsection[]{
+% 	{
+% 	  \setbeamercolor{section in toc}{fg=mygold}
+% 		\setbeamercolor{background canvas}{bg=subsection_colour}
+% 		\begin{frame}[noframenumbering,plain]
+% 				\framesubtitle{\nameofthepart Chapter \insertromanpartnumber \ -- \iteminsert{\insertpart}}
+% 				\tableofcontents[
+% 					currentsection,
+% 					sectionstyle=show/hide,
+% 					currentsubsection,
+% 					subsectionstyle=show/shaded/hide,
+% 					subsubsectionstyle=show/hide/hide]
+% 			\end{frame}
+% 		\addtocounter{page}{-1}
+% 	}
+% }
+
+% \newcommand{\newSubSectionSlide}[1]{
+% \begin{frame}[noframenumbering,plain]
+%   \begin{tikzpicture}[remember picture,overlay]
+%     \node[above right,inner sep=0pt,opacity=0.2] at (current page.south west)
+%     {
+%         \includegraphics[height=\paperheight,width=\paperwidth]{#1}
+%     };
+%   \end{tikzpicture}
+%   \setbeamercolor{section in toc}{fg=subsub_header_section}
+%   \setbeamerfont{section in toc}{size=\Large,series=\bfseries}
+%   \setbeamertemplate{section in toc shaded}[default][60]
+%   \setbeamertemplate{subsection in toc shaded}[default][60]
+%   %\setbeamercolor{background canvas}{bg=section_colour}
+%   \tableofcontents[
+%     currentsection,
+%     sectionstyle=show/hide,
+%     currentsubsection,
+%     subsectionstyle=show/shaded/hide,
+%     subsubsectionstyle=show/hide/hide]
+% \end{frame}
+% \addtocounter{page}{-1}
+% }
+
+
+% % Beginning of a section
+% \AtBeginSubsubsection[]{
+% 	{
+% 	  \setbeamercolor{section in toc}{fg=subsub_header_section}
+% 	  \setbeamercolor{subsubsection in toc}{fg=mygold2}
+% 	  \setbeamercolor{subsubsection in toc shaded}{fg=mygrey2}
+% 		\setbeamercolor{background canvas}{bg=subsubsection_colour}
+% 		\begin{frame}[noframenumbering,plain]
+% 				\framesubtitle{\nameofthepart Chapter \insertromanpartnumber \ -- \iteminsert{\insertpart}}
+% 				\tableofcontents[
+% 					currentsection,
+% 					sectionstyle=show/hide,
+% 					currentsubsection,
+% 					subsectionstyle=show/hide/shaded
+% 					currentsubsubsection]%,
+% 					%subsubsectionstyle=hide/hide/shaded]
+% 					%currentsubsubsection]
+% 			\end{frame}
+% 		\addtocounter{page}{-1}
+% 	}
+% }

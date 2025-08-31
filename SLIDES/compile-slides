@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# Render the lectures and copy them where they need 
+# to be (/docs in the repo)
+# Do a local render (might not be most recent version
+# of marp)
+# Does pull and push, so beware..
+
+for f in L??-*.Rnw
+do
+  Rscript -e "library(knitr); knit('$f')"
+done
+
+for f in L??-*.tex 
+do
+    # We need to run pdflatex twice to get the TOC right
+    pdflatex -interaction=nonstopmode $f
+    pdflatex -interaction=nonstopmode $f
+done
+
+rm *.aux *-concordance.tex *.fdb_latexmk *.fls *.idx *.ilg *.ind *.log *.nav *.out *.snm *.synctex.gz *.toc *.vrb

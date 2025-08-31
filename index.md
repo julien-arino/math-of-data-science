@@ -6,7 +6,7 @@ Here, you will find the publicly available information: code, slides and some ge
 
 ### Fall 2025 changes
 
-FYI, in Fall 2025, the format of the course will change. From an "assignment only" format, I will be moving to a system with assignments, a midterm and a final examination. Assignments will be longer (2-3 weeks each) and will be more like small projects. The midterm and final will be mathematics only and are planned to be two hours each.
+FYI, in Fall 2025, the format of the course will change. From an "assignment only" format, I will be moving to a system with assignments, quizzes, a midterm and a final examination. Assignments will be longer (2-3 weeks each) and will be more like small projects. The midterm and final will be mathematics only and are planned to be two hours each.
 
 ### This GitHub repo
 
@@ -14,17 +14,31 @@ On the [GitHub version](https://github.com/julien-arino/math-of-data-science/) o
 
 Feel free to use the material in these slides or in the folders. If you find this useful, I will be happy to know.
 
-### Slides
+### Old slides
 <ul>
 {% for file in site.static_files %}
   {% if file.path contains 'SLIDES' %}
+    {% if file.path contains 'L' %}
+      {% if file.path contains 'pdf' %}
+        <li><a href="https://julien-arino.github.io/math-of-data-science/SLIDES/{{ file.basename }}.pdf">{{ file.basename }}</a></li>
+      {% endif %}
+    {% endif %}
+  {% endif %}
+{% endfor %}
+</ul>
+
+### Old slides
+The following are the slides I used in previous years. I am including them until I have completed the change to the new slide set.
+<ul>
+{% for file in site.static_files %}
+  {% if file.path contains 'OLD-SLIDES' %}
     {% if file.path contains 'math-2740' %}
       {% if file.path contains 'html' %}
-        <li><a href="https://julien-arino.github.io/math-of-data-science/SLIDES/{{ file.basename }}.html">{{ file.basename }}</a></li>
+        <li><a href="https://julien-arino.github.io/math-of-data-science/OLD-SLIDES/{{ file.basename }}.html">{{ file.basename }}</a></li>
       {% endif %}
       {% if file.path contains 'pdf' %}
         {% unless file.path contains 'LightBoard' %}
-          <li><a href="https://julien-arino.github.io/math-of-data-science/SLIDES/{{ file.basename }}.pdf">{{ file.basename }}</a></li>
+          <li><a href="https://julien-arino.github.io/math-of-data-science/OLD-SLIDES/{{ file.basename }}.pdf">{{ file.basename }}</a></li>
         {% endunless %}
       {% endif %}
     {% endif %}
