@@ -243,23 +243,29 @@ Assignment 4 & 21 November & 5 December \\
 \begin{frame}{Self-declaration of absences}
 \begin{itemize}
 \item You can self-declare an absence of less than 120 hours (5 days)
-\item If a self-declared absence overlaps with the due date and time of Friday at 1200
-    \begin{itemize}
-    \item submit the \href{https://forms.office.com/r/HSXE50PefN}{form} \textbf{prior} to the deadline
-    \item This modifies \textit{your} deadline for \textit{that} assignment
-    \end{itemize}
-\item \textbf{I will not accept self-declarations after the deadline}: if at 1200 Friday, I have not received a self-declaration form XOR the assignment, you get a mark of zero on that assignment
-\item Self-declarations are intended for very occasional and unforeseen circumstances $\implies$ I \textbf{will not accept more than two} during the term
+\vfill
+\item Self-declarations are intended for occasional and unforeseen circumstances $\implies$ I \textbf{will not accept more than one} during the term
+\vfill
+\item Self-declarations must be filed less than 48 hours after the event you are using it for
+\vfill
+\item There is no make up for anything missed because of a self-declared absence: any percentage will be moved to the final examination
+\vfill
+\item See the details and the form here (\href{https://umanitoba.ca/student-supports/academic-supports/student-advocacy/self-declaration-policy-students}{link}). You \textbf{must} use the form on that page to self-declare your absence
 \end{itemize}
 \end{frame}
 
 \begin{frame}{Academic dishonesty}
 \begin{itemize}
 \item Feel free to discuss work with others, but solutions must be your own!
+\vfill
 \item Markers will be on the lookout for this
+\vfill
 \item Paraphrasing my computer code = academic dishonesty !
+\vfill
 \item \href{https://stackoverflow.com/}{stack overflow} is a fantastic resource but if you use a solution from there, cite it (in a notebook, that's easy)
+\vfill
 \item ChatGPT, GitHub Copilot, etc. are wonderful tools, but you must use them wisely. Pure unaltered LLM production $\Rightarrow$ AD
+\vfill
 \item FYI: my PhD student who is marking your computer code and some of your math has been working with LLMs for quite a while now. Their LLM detection radar is finely tuned
 \end{itemize}
 \end{frame}
@@ -315,13 +321,17 @@ Note that all options described below are Open Source (completely free)
 \begin{frame}{In short...}
 \begin{itemize}
 \item Terminal version, not very friendly
+\vfill
 \item Nicer terminal: \href{https://github.com/randy3k/radian}{radian}
+\vfill
 \item Execute R scripts by using \texttt{Rscript name\_of\_script.R}. Useful to run code in \texttt{cron}, for instance
+\vfill
 \item Use IDEs:
     \begin{itemize}
     \item \href{https://www.rstudio.com/products/rstudio/}{RStudio} has become the reference
     \item \href{https://invent.kde.org/education/rkward}{RKWard} is useful if you are for instance using an ARM processor (Raspberry Pi, some Chromebooks..)
     \end{itemize}
+\vfill
 \item Integrate into jupyter notebooks
 \end{itemize}
 \end{frame}
@@ -362,9 +372,12 @@ To install RStudio, see \href{https://www.rstudio.com/products/rstudio/}{here}
 \begin{frame}{R is a scripted language}
 \begin{itemize}
 \item Interactive
+\vfill
 \item Allows you to work in real time
+\vfill
     \begin{itemize}
     \item Be careful: what is in memory might involve steps not written down in a script
+    \vfill
     \item If you want to reproduce your steps, it is good to write all the steps down in a script and to test from time to time running using \texttt{Rscript}: this will ensure that all that is required to run is indeed loaded to memory when it needs to, i.e., that it is not already there..
     \end{itemize}
 \end{itemize}
@@ -483,9 +496,10 @@ Remark that here and elsewhere, naming the arguments (e.g., \texttt{nr = 2}) all
 
 \begin{frame}{Matrix operations}
 Probably the biggest annoyance in R compared to other languages
-
+\vfill
 \begin{itemize}
 \item The notation \texttt{A*B} is the \textit{Hadamard product} $A\circ B$ (what would be denoted \texttt{A.*B} in matlab), not the standard matrix multiplication
+\vfill
 \item Matrix multiplication is written \texttt{A \%*\% B}
 \end{itemize}
 \end{frame}
@@ -512,15 +526,8 @@ Then \texttt{x+1} gives
 \end{knitrout}
 
 i.e., adds 1 to all entries in the vector
-
+\vfill
 Beware of this in particular when addressing sets of indices in lists, vectors or matrices
-\end{frame}
-
-\begin{frame}{For the matlab-ers here}
-\begin{itemize}
-\item R does not have the keyword \texttt{end} to access the last entry in a matrix/vector/list..
-\item Use \texttt{length} (lists or vectors), \texttt{nchar} (character chains), \texttt{dim} (matrices.. careful, of course returns 2 values)
-\end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Flow control}

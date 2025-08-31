@@ -1,0 +1,370 @@
+\documentclass[aspectratio=169]{beamer}\usepackage[]{graphicx}\usepackage[]{xcolor}
+% maxwidth is the original width if it is less than linewidth
+% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlsng}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hldef}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+\let\hlipl\hlkwb
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+
+% Set lecture number for later use
+
+
+% Part common to all the lectures
+\subtitle{MATH 2740 -- Mathematics of Data Science -- Lecture 02}
+\author{\texorpdfstring{Julien Arino\newline\url{julien.arino@umanitoba.ca}}{Julien Arino}}
+\institute{Department of Mathematics @ University of Manitoba}
+\date{Fall 202X}
+
+% Title of the lecture
+\title{Why would you care about mathematics as a data scientist? \& An introduction to R Markdown}
+
+
+
+\input{slides-setup-whiteBG.tex}
+
+
+
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% TITLE AND OUTLINE
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\titlepagewithfigure{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
+\outlinepage{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
+
+
+%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%
+% Some information
+\section{Mathematics of data science?}
+% The section page
+\newSectionSlide{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
+
+\begin{frame}{In days of yore (circa 2010)}
+\begin{quote}
+Big data is like teenage sex: everyone talks about it, nobody really knows how to do it, everyone thinks everyone else is doing it, so everyone claims they are doing it...
+\end{quote}
+
+Attributed to \href{https://twitter.com/danariely/status/287952257926971392?lang=en}{Dan Ariely} (Duke University)
+\vfill
+The vocabulary has evolved, big data $\to$ complex data $\to$ data science, but Data Science remains a loosely defined concept, although things are becoming better
+\end{frame}
+
+\begin{frame}{Data Science (according to Wikipedia)}
+Data science is an \textbf{interdisciplinary field} that uses scientific methods, processes, algorithms and systems to extract knowledge and insights from \textbf{structured} and \textbf{unstructured data}, and apply knowledge and actionable insights from data across a broad range of application domains.
+\vfill
+[..] It uses techniques and theories drawn from many fields within the context of \textbf{mathematics}, \textbf{statistics}, \textbf{computer science}, \textbf{information science}, and \textbf{domain knowledge}.
+\end{frame}
+
+\begin{frame}{The data deluge}
+\bbullet Data science is nothing new (some statisticians argue it is just another name for statistics), but it has become prominent in recent years as a consequence of the unprecedented mass of information generated and collected by our modern societies
+\vfill
+\bbullet One speaks of \textit{information explosion} or \textit{data deluge}. See some considerations, e.g., \href{https://bernardmarr.com/how-much-data-is-there-in-the-world/}{here}
+\end{frame}
+
+\begin{frame}{A wide variety of jobs}
+We have absolutely insane amounts of data and we try to make sense of it
+\vfill
+$\implies$ data science
+\vfill
+However, except for the name, the situation has not improved significantly since the days of yore of Ariely's quote: data science is a hodge-podge that contains everything but the kitchen sink
+\vfill
+To caricature
+\begin{itemize}
+\item two main types of data: structured and unstructured
+\item two main branches: statistics and computer science
+\item two main types of jobs: users and developpers
+\end{itemize}
+\end{frame}
+
+\begin{frame}{\textit{Math} of Data Science?}
+\begin{itemize}
+\item DS has two main branches: statistics and computer science
+\item DS has two main types of jobs: users and developpers
+\end{itemize}
+\vfill
+So why a course on Math of Data Science?
+\vfill
+If you plan to be a user and are not curious about \textit{the how} and \textit{the why} and can tolerate errors due to misuse of methods, then you probably don't care about this course
+\vfill
+In other cases, many of the concepts used have their roots in math and to understand where the methods are coming from and, even more importantly, to develop new methods, math is often required
+\end{frame}
+
+\begin{frame}{Warning! We barely brush the surface}
+\begin{itemize}
+\item Some techniques from linear algebra
+\vfill
+\item Some graph theory ideas
+\vfill
+\item A little bit of multivariable calculus
+\end{itemize}
+\vfill
+There is a lot more to see!!!
+\end{frame}
+
+\begin{frame}{Prerequisites / What you will learn}
+\bbullet (MATH 1210 or MATH 1220 or MATH 1300) and (MATH 1232 or MATH 1700 or MATH 1710)
+\vfill
+$\Rightarrow$ You \textbf{must know and be comfortable} with 1st year linear algebra (3 CH) and 1st year calculus (6 CH)
+\vfill
+\bbullet We need more: some stuff you would learn in 2090 (Linear Algebra 2), some stuff from 2130, 2150 or 2720 (Multivariable Calculus) and some stuff from 2070 (Graph Theory)
+\end{frame}
+
+\begin{frame}{Focus here is not on mathematical ``precision''}
+\bbullet We won't do complicated proofs. I will show some when they are useful in understanding \textit{why} something works
+\vfill
+\bbullet We will cover just enough of the mentioned math topics that you can understand \textit{how} to do things
+\vfill
+\bbullet In classic math courses, we work on ``small'' examples so we can work them by hand and are able to do them in tests
+\vfill
+Here, we will do small examples by hand, indeed. But you will do regularly sized examples in computer assignments
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%
+% Some information
+\section{Introduction to RMarkdown}
+% The section page
+\newSectionSlide{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
+
+
+\begin{frame}{Computer work (reminder from Lecture 01)}
+\begin{itemize}
+\item Being able to use computers is an integral part of being a data scientist, so in this course, we use computers a lot
+\vfill
+\item The two main languages in data science are \texttt{R} and \texttt{Python}. Typically, \texttt{R} is used more by people in Stats, while \texttt{Python} is more CS
+\vfill
+\item There is great value in both and knowing both is a plus, but for simplicity, here we use \texttt{R}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Computer assignments (reminder from Lecture 01)}
+\begin{itemize}
+\item Use R Markdown to generate a \boldred{notebook}
+\vfill
+\item Notebooks mix formatted text and code. They are executable and should be submitted as source, not as pdf or html or whatever. Only files in .Rmd are accepted for the computer part of the assignments
+\vfill
+\item Notebooks are not straight code. Submitting straight R code in a notebook with commented code $\Rightarrow$ 0)
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{R Markdown?}
+  \begin{itemize}
+    \item File format for making dynamic documents with R
+    \vfill
+    \item Combines code, its results and narrative text in a single document
+    \vfill
+    \item Uses simple \code{Markdown} syntax for text and \code{R} code chunks for analysis
+    \vfill
+    \item From one `.Rmd` file, you can create HTML, PDF, Word documents, presentations, ...
+  \end{itemize}
+\end{frame}
+
+\subsection{The YAML Header}
+% The subsection page
+\newSubSectionSlide{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
+
+\begin{frame}[fragile]
+  \frametitle{The YAML Header}
+Every R Markdown document starts with a YAML header, enclosed by \code{---}. This controls the overall properties of the document
+\begin{block}{Example YAML for a PDF Document}
+\begin{verbatim}
+---
+title: "My Report"
+author: "My Name"
+date: "2025-08-17"
+output:
+  pdf_document:
+    toc: true
+    number_sections: true
+---
+\end{verbatim}
+\end{block}
+\end{frame}
+
+\subsection{Markdown 101}
+% The subsection page
+\newSubSectionSlide{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
+
+\begin{frame}[fragile]
+  \frametitle{Basic Text Formatting}
+  Markdown provides a simple syntax for formatting text
+  \vfill
+  \begin{itemize}
+    \item \verb|# Header| creates a section title, \verb|## Sub-header| creates a subsection title, etc.
+    \vfill
+    \item \verb|*italic text*| produces \textit{italic text}
+    \vfill
+    \item \verb|**bold text**| produces \textbf{bold text}
+    \vfill
+    \item \verb|`code font`| produces \texttt{code font}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Lists}
+Unordered lists start with \verb|*| or \verb|-|
+\begin{verbatim}
+* Item 1
+* Item 2
+\end{verbatim}
+\vfill
+Ordered lists use numbers
+\begin{verbatim}
+1. First Item
+2. Second Item
+\end{verbatim}
+(Once the numbered list is ``initiated'', the number doesn't matter, you can write 1., 1., 1., etc., provided you have a new line each time)
+\end{frame}
+
+\subsection{R Code Chunks}
+% The subsection page
+\newSubSectionSlide{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
+
+\begin{frame}[fragile]
+  \frametitle{The Core of R Markdown}
+  R code is placed in ``chunks'', which start with \verb|```{r chunk-name}| and end with \verb|```|
+\begin{lstlisting}
+```{r cars-summary}
+# Your R code goes here
+summary(cars)
+```
+\end{lstlisting}
+\vfill
+Chunk names (\code{cars-summary} here) are not mandatory (you could write \code{```\{r\}} but are very useful, in particular when debugging
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Chunk Output}
+  When the document is "knit," the \code{R} code is executed and its output is embedded in the final document
+\begin{lstlisting}
+```{r cars-summary}
+summary(cars)
+```
+\end{lstlisting}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{verbatim}
+##      speed           dist       
+##  Min.   : 4.0   Min.   :  2.00  
+##  1st Qu.:12.0   1st Qu.: 26.00  
+##  Median :15.0   Median : 36.00  
+##  Mean   :15.4   Mean   : 42.98  
+##  3rd Qu.:19.0   3rd Qu.: 56.00  
+##  Max.   :25.0   Max.   :120.00
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Controlling chunks with options}
+  Chunk behavior is controlled by options inside the curly braces
+  \vfill
+  \begin{itemize}
+    \item \verb|echo=FALSE| hides the \code{R} code, but shows the output
+    \vfill
+    \item \verb|eval=FALSE| shows the code, but does not execute it
+    \vfill
+    \item \verb|include=FALSE| executes the code, but hides both code and output
+    \vfill
+    \item \verb|warning=FALSE|, \verb|message=FALSE| hides warnings or messages
+    \vfill
+    \item \verb|fig.width=5|, \verb|fig.height=4| sets figure dimensions
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Figure chunks}
+  Plots are automatically embedded
+\begin{lstlisting}
+```{r pressure-plot, echo=FALSE, fig.cap="Pressure Data"}
+plot(pressure)
+```
+\end{lstlisting}
+
+\begin{center}
+% We cheat, of course, as this is Rnw not Rmd..
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+\includegraphics[width=0.65\textwidth]{FIGS/L02-pressure-plot-rmd-1} 
+\end{knitrout}
+\end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Inline R Code}
+  You can embed \code{R} code directly into text with backticks: \verb|`r ...`|
+  \vfill
+\begin{lstlisting}
+The `cars` dataset has `r nrow(cars)` rows.
+\end{lstlisting}
+  \vfill
+  The \code{cars} dataset has 50 rows.
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Instructions for the computer assignments}
+% The subsection page
+\newSubSectionSlide{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
+
+
+
+\begin{frame}{Code for the assignments}
+\end{frame}
+
+\end{document}
