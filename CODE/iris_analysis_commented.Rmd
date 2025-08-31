@@ -1,0 +1,282 @@
+---
+title: "Iris Dataset Analysis - Code Comments Only"
+author: "Data Analyst"
+date: "`r Sys.Date()`"
+output: 
+  html_document:
+    code_folding: hide
+    toc: true
+    toc_float: true
+    theme: united
+    highlight: tango
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, fig.width = 10, fig.height = 6)
+```
+
+## Analysis Results
+
+```{r libraries}
+# Load all required libraries for data manipulation, visualization, and statistical analysis
+library(dplyr)        # For data manipulation and transformation operations
+library(ggplot2)      # For creating sophisticated data visualizations
+library(corrplot)     # For creating correlation matrix visualizations
+library(GGally)       # For creating scatter plot matrices and pair plots
+library(knitr)        # For creating formatted tables in R Markdown
+library(plotly)       # For creating interactive 3D visualizations
+```
+
+```{r load-data}
+# Load the built-in iris dataset which contains flower measurements
+# This dataset has 150 observations of 3 iris species with 4 measurements each
+# The measurements are: Sepal.Length, Sepal.Width, Petal.Length, Petal.Width
+# The three species are: setosa, versicolor, virginica
+data(iris)
+
+# Display the first 6 rows to understand the structure of our data
+# This helps verify that the data loaded correctly and shows us the column names
+head(iris)
+```
+
+```{r data-structure}
+# Examine the internal structure of the iris dataset
+# This shows data types, number of observations, and basic information about each column
+str(iris)
+
+# Generate summary statistics for all numeric columns
+# This provides min, 1st quartile, median, mean, 3rd quartile, and max for each measurement
+# For the Species factor, it shows the count of each level
+summary(iris)
+```
+
+```{r data-quality}
+# Check for missing values (NA) across the entire dataset
+# Sum all TRUE values from is.na() - should be 0 for a clean dataset
+sum(is.na(iris))
+
+# Check for duplicate rows in the dataset
+# This counts how many rows are exact duplicates of other rows
+sum(duplicated(iris))
+
+# Calculate summary statistics grouped by species
+# This creates a table showing mean values for each measurement by species
+# We also count the number of observations per species to verify equal representation
+iris %>%
+  group_by(Species) %>%                    # Group data by the Species column
+  summarise(
+    count = n(),                           # Count observations in each group
+    avg_sepal_length = mean(Sepal.Length), # Calculate mean sepal length per species
+    avg_sepal_width = mean(Sepal.Width),   # Calculate mean sepal width per species
+    avg_petal_length = mean(Petal.Length), # Calculate mean petal length per species
+    avg_petal_width = mean(Petal.Width)    # Calculate mean petal width per species
+  ) %>%
+  kable(digits = 2, caption = "Summary Statistics by Species")  # Format as nice table
+```
+
+```{r distributions}
+# Create histogram for Sepal Length distribution across all species
+# Use different colors for each species to show overlapping distributions
+# Alpha = 0.7 makes bars semi-transparent so we can see overlaps
+# bins = 15 creates 15 histogram bins for smooth distribution visualization
+p1 <- ggplot(iris, aes(x = Sepal.Length, fill = Species)) +
+  geom_histogram(alpha = 0.7, bins = 15) +
+  labs(title = "Distribution of Sepal Length", x = "Sepal Length (cm)", y = "Frequency") +
+  theme_minimal()  # Use clean minimal theme
+
+# Create histogram for Sepal Width distribution
+# Same parameters as above but for sepal width measurements
+p2 <- ggplot(iris, aes(x = Sepal.Width, fill = Species)) +
+  geom_histogram(alpha = 0.7, bins = 15) +
+  labs(title = "Distribution of Sepal Width", x = "Sepal Width (cm)", y = "Frequency") +
+  theme_minimal()
+
+# Create histogram for Petal Length distribution
+# Petal measurements often show better species separation than sepal measurements
+p3 <- ggplot(iris, aes(x = Petal.Length, fill = Species)) +
+  geom_histogram(alpha = 0.7, bins = 15) +
+  labs(title = "Distribution of Petal Length", x = "Petal Length (cm)", y = "Frequency") +
+  theme_minimal()
+
+# Create histogram for Petal Width distribution
+# This should show the clearest species separation based on prior iris analysis
+p4 <- ggplot(iris, aes(x = Petal.Width, fill = Species)) +
+  geom_histogram(alpha = 0.7, bins = 15) +
+  labs(title = "Distribution of Petal Width", x = "Petal Width (cm)", y = "Frequency") +
+  theme_minimal()
+
+# Arrange all four histograms in a 2x2 grid for easy comparison
+# This allows us to quickly compare distributions across all measurements
+gridExtra::grid.arrange(p1, p2, p3, p4, ncol = 2)
+```
+
+```{r boxplots}
+# Transform data from wide format to long format for easier plotting with facets
+# This converts 4 measurement columns into a single "Measurement" key column and "Value" column
+# We keep the Species column unchanged using -Species in the gather function
+iris_long <- iris %>%
+  tidyr::gather(key = "Measurement", value = "Value", -Species)
+
+# Create box plots showing distribution of all measurements by species
+# Box plots show median, quartiles, and outliers for each species-measurement combination
+# fill = Species colors each box differently for easy species identification
+# alpha = 0.7 makes boxes semi-transparent for better visual appeal
+ggplot(iris_long, aes(x = Species, y = Value, fill = Species)) +
+  geom_boxplot(alpha = 0.7) +
+  facet_wrap(~Measurement, scales = "free_y") +  # Create separate plot for each measurement
+  labs(title = "Distribution of Measurements by Species", 
+       x = "Species", y = "Measurement Value (cm)") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))  # Rotate x-axis labels for readability
+```
+
+```{r correlation}
+# Calculate Pearson correlation coefficients between all numeric measurements
+# This creates a 4x4 matrix showing how strongly each measurement correlates with others
+# Values range from -1 (perfect negative correlation) to +1 (perfect positive correlation)
+cor_matrix <- cor(iris[, 1:4])  # Select only the numeric columns (1-4)
+print(cor_matrix)
+
+# Create a visual correlation plot using colors to represent correlation strength
+# method = "color" uses color intensity to show correlation strength
+# type = "upper" shows only the upper triangle (avoids redundancy since correlation is symmetric)
+# order = "hclust" reorders variables using hierarchical clustering for better visualization
+# tl.cex and tl.col control text label size and color
+corrplot(cor_matrix, method = "color", type = "upper", 
+         order = "hclust", tl.cex = 0.8, tl.col = "black")
+```
+
+```{r scatterplot-matrix}
+# Create a comprehensive scatter plot matrix showing all pairwise relationships
+# This function from GGally creates scatter plots for all variable pairs
+# The diagonal shows density plots for each variable
+# Upper triangle shows correlation coefficients
+# Lower triangle shows scatter plots colored by species
+# aes(color = Species) colors all plots by species for pattern identification
+# columns = 1:4 specifies which columns to include (the 4 measurement columns)
+ggpairs(iris, aes(color = Species), 
+        columns = 1:4,
+        title = "Scatter Plot Matrix of Iris Measurements") +
+  theme_minimal()
+```
+
+```{r 3d-plot}
+# Create an interactive 3D scatter plot using plotly
+# x, y, z axes represent three of our four measurements for 3D visualization
+# color = Species creates different colors for each species
+# colors parameter specifies the exact colors to use for each species
+# marker size controls the size of points in the 3D space
+plot_3d <- plot_ly(iris, 
+                   x = ~Sepal.Length,    # X-axis: Sepal length measurements
+                   y = ~Petal.Length,    # Y-axis: Petal length measurements  
+                   z = ~Petal.Width,     # Z-axis: Petal width measurements
+                   color = ~Species,     # Color points by species
+                   colors = c("red", "green", "blue"),  # Specify colors for each species
+                   marker = list(size = 5)) %>%         # Set marker size
+  add_markers() %>%  # Add the actual data points as markers
+  layout(title = "3D Scatter Plot of Iris Measurements",
+         scene = list(xaxis = list(title = "Sepal Length (cm)"),  # Label X-axis
+                     yaxis = list(title = "Petal Length (cm)"),   # Label Y-axis
+                     zaxis = list(title = "Petal Width (cm)")))   # Label Z-axis
+
+plot_3d
+```
+
+```{r anova}
+# Perform Analysis of Variance (ANOVA) tests for each measurement
+# ANOVA tests whether there are statistically significant differences between species means
+# We'll test each of the four measurements separately
+
+# Initialize empty list to store ANOVA results for each measurement
+anova_results <- list()
+
+# Define the names of all measurement columns for iteration
+measurements <- c("Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width")
+
+# Loop through each measurement and perform ANOVA test
+for (measure in measurements) {
+  # Create formula string for ANOVA: "measurement ~ Species"  
+  # This tests if species significantly affects the measurement
+  formula_str <- paste(measure, "~ Species")
+  
+  # Perform one-way ANOVA using aov() function
+  # This compares means of the measurement across the three species
+  anova_result <- aov(as.formula(formula_str), data = iris)
+  
+  # Store results in our list for potential later use
+  anova_results[[measure]] <- summary(anova_result)
+  
+  # Print results with clear labeling
+  cat("ANOVA for", measure, ":\n")
+  print(anova_results[[measure]])
+  cat("\n")  # Add blank line for readability
+}
+```
+
+```{r pca}
+# Perform Principal Component Analysis (PCA) on the four measurements
+# PCA reduces dimensionality while preserving as much variance as possible
+# scale. = TRUE standardizes variables to have mean=0 and sd=1 before PCA
+# This is important because our measurements are all in the same units (cm)
+pca_result <- prcomp(iris[, 1:4], scale. = TRUE)
+
+# Display summary of PCA results including:
+# - Standard deviation of each principal component
+# - Proportion of variance explained by each component
+# - Cumulative proportion of variance explained
+summary(pca_result)
+
+# Extract PCA scores (coordinates of observations in PC space) and add species labels
+# pca_result$x contains the transformed data in principal component coordinates
+# We add the Species column to enable coloring by species in the plot
+pca_data <- data.frame(pca_result$x, Species = iris$Species)
+
+# Create a biplot showing observations in the first two principal component dimensions
+# PC1 vs PC2 typically captures most of the variance in the data
+# Each point represents one flower, colored by its species
+# stat_ellipse() draws confidence ellipses around each species cluster
+ggplot(pca_data, aes(x = PC1, y = PC2, color = Species)) +
+  geom_point(size = 3, alpha = 0.7) +  # Plot individual observations
+  stat_ellipse() +  # Add confidence ellipses around species clusters
+  labs(title = "PCA Biplot of Iris Dataset",
+       # Include percentage of variance explained in axis labels
+       x = paste("PC1 (", round(summary(pca_result)$importance[2,1]*100, 1), "% variance)", sep=""),
+       y = paste("PC2 (", round(summary(pca_result)$importance[2,2]*100, 1), "% variance)", sep="")) +
+  theme_minimal()
+```
+
+```{r lda}
+# Load MASS library for Linear Discriminant Analysis functions
+library(MASS)
+
+# Set random seed for reproducible results when splitting data
+# This ensures that random sampling produces the same results each time
+set.seed(123)
+
+# Create training and testing datasets using random sampling
+# Sample 70% of row indices for training, remaining 30% for testing
+# This creates a random split while maintaining reasonable sample sizes
+train_indices <- sample(seq_len(nrow(iris)), 0.7 * nrow(iris))  # 70% for training
+train_data <- iris[train_indices, ]    # Extract training observations
+test_data <- iris[-train_indices, ]   # Extract testing observations (remaining 30%)
+
+# Fit Linear Discriminant Analysis model using training data
+# Formula "Species ~ ." means predict Species using all other variables
+# LDA finds linear combinations of predictors that best separate the classes
+lda_model <- lda(Species ~ ., data = train_data)
+
+# Make predictions on the test set using our trained LDA model
+# This returns both predicted classes and prediction probabilities
+predictions <- predict(lda_model, test_data)
+
+# Calculate model accuracy by comparing predicted vs actual species
+# mean() of logical vector gives proportion of TRUE values (correct predictions)
+accuracy <- mean(predictions$class == test_data$Species)
+cat("LDA Model Accuracy:", round(accuracy * 100, 2), "%\n")
+
+# Create confusion matrix to show detailed classification results
+# Rows represent actual species, columns represent predicted species
+# Perfect predictions would have all values on the diagonal
+confusion_matrix <- table(Predicted = predictions$class, Actual = test_data$Species)
+print(confusion_matrix)
+```
