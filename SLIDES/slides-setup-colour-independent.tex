@@ -344,6 +344,100 @@ minimum height=2em]
    }}}}
 
 
+% New integrated section command: creates section and section slide
+\newcommand{\Ssection}[2]{
+\section{#1}
+\begin{frame}[noframenumbering,plain]
+  \begin{tikzpicture}[remember picture,overlay]
+    \node[above right,inner sep=0pt,opacity=0.2] at (current page.south west)
+    {
+        \includegraphics[height=\paperheight,width=\paperwidth]{#2}
+    };
+  \end{tikzpicture}
+  \setbeamercolor{section in toc}{fg=section_page_list_colour}
+  \setbeamerfont{section in toc}{size=\Large,series=\bfseries}
+  \setbeamertemplate{section in toc shaded}[default][60]
+  \tableofcontents[
+    currentsection,
+    sectionstyle=show/shaded,
+    subsectionstyle=show/hide/hide,
+    subsubsectionstyle=hide/hide/hide]
+\end{frame}
+\addtocounter{page}{-1}
+}
+
+% New integrated section command with subsections: creates section and section slide showing subsections
+\newcommand{\SsectionWithSubs}[2]{
+\section{#1}
+\begin{frame}[noframenumbering,plain]
+  \begin{tikzpicture}[remember picture,overlay]
+    \node[above right,inner sep=0pt,opacity=0.2] at (current page.south west)
+    {
+        \includegraphics[height=\paperheight,width=\paperwidth]{#2}
+    };
+  \end{tikzpicture}
+  \setbeamercolor{section in toc}{fg=section_page_list_colour}
+  \setbeamerfont{section in toc}{size=\Large,series=\bfseries}
+  \setbeamertemplate{section in toc shaded}[default][60]
+  \tableofcontents[
+    currentsection,
+    sectionstyle=show/hide,
+    subsectionstyle=show/show/hide,
+    subsubsectionstyle=hide/hide/hide]
+\end{frame}
+\addtocounter{page}{-1}
+}
+
+% New integrated subsection command: creates subsection and subsection slide
+\newcommand{\Ssubsection}[2]{
+\subsection{#1}
+\begin{frame}[noframenumbering,plain]
+  \begin{tikzpicture}[remember picture,overlay]
+    \node[above right,inner sep=0pt,opacity=0.2] at (current page.south west)
+    {
+        \includegraphics[height=\paperheight,width=\paperwidth]{#2}
+    };
+  \end{tikzpicture}
+  \setbeamercolor{section in toc}{fg=subsection_page_list_colour}
+  \setbeamerfont{section in toc}{size=\Large,series=\bfseries}
+  \setbeamertemplate{section in toc shaded}[default][60]
+  \setbeamerfont{subsection in toc}{series=\bfseries}
+  \setbeamertemplate{subsection in toc shaded}[default][50]
+  \tableofcontents[
+    currentsection,
+    sectionstyle=show/hide,
+    subsectionstyle=show/shaded/hide,
+    subsubsectionstyle=hide/hide/hide]
+\end{frame}
+\addtocounter{page}{-1}
+}
+
+% New integrated subsubsection command: creates subsubsection and subsubsection slide
+\newcommand{\Ssubsubsection}[2]{
+\subsubsection{#1}
+\begin{frame}[noframenumbering,plain]
+  \begin{tikzpicture}[remember picture,overlay]
+    \node[above right,inner sep=0pt,opacity=0.2] at (current page.south west)
+    {
+        \includegraphics[height=\paperheight,width=\paperwidth]{#2}
+    };
+  \end{tikzpicture}
+  \setbeamercolor{section in toc}{fg=subsub_header_section}
+  \setbeamerfont{section in toc}{size=\Large,series=\bfseries}
+  \setbeamertemplate{section in toc shaded}[default][60]
+  \setbeamerfont{subsection in toc}{series=\bfseries}
+  \setbeamertemplate{subsection in toc shaded}[default][50]
+  \setbeamertemplate{subsubsection in toc shaded}[default][50]
+  \tableofcontents[
+    currentsection,
+    sectionstyle=show/hide,
+    subsectionstyle=show/hide/hide,
+    subsubsectionstyle=show/shaded/hide]
+\end{frame}
+\addtocounter{page}{-1}
+}
+
+% Legacy commands (kept for backward compatibility)
 % Beginning of a section
 \newcommand{\newSectionSlide}[1]{
 \begin{frame}[noframenumbering,plain]
@@ -408,7 +502,6 @@ minimum height=2em]
 \end{frame}
 \addtocounter{page}{-1}
 }
-
 
 % Beginning of a subsubsection
 \newcommand{\newSubSubSectionSlide}[1]{

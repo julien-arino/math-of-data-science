@@ -85,9 +85,7 @@
 %%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%
 % Some information
-\section{Mathematics of data science?}
-% The section page
-\newSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_uwh6druwh6druwh6.jpeg}
+\Ssection{Mathematics of data science?}{FIGS-slides-admin/Gemini_Generated_Image_uwh6druwh6druwh6.jpeg}
 
 \begin{frame}{In days of yore (circa 2010)}
 \begin{quote}
@@ -175,9 +173,7 @@ Here, we will do small examples by hand, indeed. But you will do regularly sized
 %%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%
 % Some information
-\section{Introduction to R Markdown}
-% The section page
-\newSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_pbzl1mpbzl1mpbzl.jpeg}
+\Ssection{Introduction to R Markdown}{FIGS-slides-admin/Gemini_Generated_Image_pbzl1mpbzl1mpbzl.jpeg}
 
 
 \begin{frame}{Computer work (reminder from Lecture 01)}
@@ -214,14 +210,12 @@ Here, we will do small examples by hand, indeed. But you will do regularly sized
   \end{itemize}
 \end{frame}
 
-\subsection{The YAML Header}
-% The subsection page
-\newSubSectionSlide{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
+\Ssubsection{The YAML Header}{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
 
 \begin{frame}[fragile]
-  \frametitle{The YAML Header}
+  \frametitle{The YAML header}
 Every R Markdown document starts with a YAML header, enclosed by \code{---}. This controls the overall properties of the document
-\begin{block}{Example YAML for a PDF Document}
+\begin{block}{Example YAML for a PDF document}
 \begin{verbatim}
 ---
 title: "My Report"
@@ -236,9 +230,7 @@ output:
 \end{block}
 \end{frame}
 
-\subsection{Markdown 101}
-% The subsection page
-\newSubSectionSlide{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
+\Ssubsection{Markdown 101}{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
 
 \begin{frame}[fragile]
   \frametitle{Basic Text Formatting}
@@ -267,15 +259,14 @@ Ordered lists use numbers
 1. First Item
 2. Second Item
 \end{verbatim}
+\vfill
 (Once the numbered list is ``initiated'', the number doesn't matter, you can write 1., 1., 1., etc., provided you have a new line each time)
 \end{frame}
 
-\subsection{R Code Chunks}
-% The subsection page
-\newSubSectionSlide{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
+\Ssubsection{R code chunks}{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
 
 \begin{frame}[fragile]
-  \frametitle{The Core of R Markdown}
+  \frametitle{Chunks: the core of R Markdown}
   R code is placed in ``chunks'', which start with \verb|```{r chunk-name}| and end with \verb|```|
 \begin{lstlisting}
 ```{r cars-summary}
@@ -288,7 +279,7 @@ Chunk names (\code{cars-summary} here) are not mandatory (you could write \code{
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Chunk Output}
+  \frametitle{Chunk output}
   When the document is "knit," the \code{R} code is executed and its output is embedded in the final document
 \begin{lstlisting}
 ```{r cars-summary}
@@ -358,9 +349,7 @@ The `cars` dataset has `r nrow(cars)` rows.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Instructions for the computer assignments}
-% The subsection page
-\newSubSectionSlide{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
+\Ssubsection{Instructions for the computer assignments}{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
 
 
 
@@ -373,7 +362,7 @@ Please compare the results obtained when knit-ing these two files
 \item Comment heavy notebook: \href{https://raw.githubusercontent.com/julien-arino/math-of-data-science/refs/heads/main/CODE/iris_analysis_commented.Rmd}{CODE} \& \href{https://julien-arino.github.io/math-of-data-science/CODE/iris_analysis_commented.html}{output} 
 \end{itemize}
 \vfill
-The first one will get you good marks. The second one will get you in hot water...
+The first one will get you good marks. The second one will get you in hot water with the marker: you \emph{might} get one warning salvo, but afterwards, a lot of marks will be deducted
 \end{frame}
 
 \end{document}

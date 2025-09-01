@@ -1,0 +1,266 @@
+---
+title: "SVD Image Compression"
+author: "Data Analysis"
+date: "`r Sys.Date()`"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    theme: united
+    highlight: tango
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, fig.width = 10, fig.height = 8)
+```
+
+## Introduction
+
+This document demonstrates Singular Value Decomposition (SVD) applied to image compression. We'll implement SVD from scratch and then compare it with R's built-in SVD function.
+
+## Loading Required Libraries
+
+Load the required libraries. `svd` is a base function, so does not require a specific library. For the others, this is good practice: require the libraries, which returns FALSE if the library cannot be loaded (because it is not installed), in which case we install.
+
+```{r libraries}
+if (!require("pixmap")) {
+    install.packages("pixmap")
+}
+if (!require("bmp")) {
+    install.packages("bmp")
+}
+```
+
+## Loading and Processing the Image
+
+Now load the image using `read.bmp` (from the `bmp` library).
+
+```{r load-image}
+my_image = read.bmp("Julien_and_friend_1000x800.bmp")
+dim(my_image)
+```
+
+```{r convert-grayscale}
+my_image_g = pixmapGrey(my_image)
+plot(my_image_g)
+```
+
+```{r examine-image}
+my_image_g
+```
+
+```{r extract-matrix}
+M = my_image_g@grey
+M
+```
+
+## Manual SVD Implementation
+
+### First, do things the proper way
+
+Reminder, here is the algorithm in the case of distinct $A^TA$ eigenvalues. If all eigenvalues of $A^TA$ are distinct, we can use the Theorem that states that eigenvectors of symmetric matrices are orthogonal. Proceed as follows:
+
+- Compute $A^TA\in\mathcal{M}_n$
+- Compute eigenvalues $\lambda_1,\ldots,\lambda_n$ of $A^TA$; order them as $\lambda_1>\cdots>\lambda_n\geq 0$ ($>$ not $\geq$ since $\neq$)
+- Compute singular values $\sigma_1=\sqrt{\lambda_1},\ldots,\sigma_n=\sqrt{\lambda_n}$
+- Diagonal matrix $D$ in $\Sigma$ is either in $\mathcal{M}_n$ (if $\sigma_n>0$) or in $\mathcal{M}_{n-1}$ (if $\sigma_n=0$)
+- Since eigenvalues are distinct, the Theorem mentioned above $\implies$ eigenvectors are orthogonal set. Compute these eigenvectors in the same order as the eigenvalues
+- Normalise them and use them to make the matrix $V$, i.e., $V=[\mathbf{v}_1\cdots\mathbf{v}_n]$
+- To find the $\mathbf{u}_i$, compute, for $i=1,\ldots,r$,
+$$
+\mathbf{u}_i = \frac{1}{\sigma_i}A\mathbf{v}_i
+$$
+and ensure that $\|\mathbf{u}_i\|=1$.
+
+So let us compute the eigenvalues of $M^TM$ (here).
+
+```{r compute-eigenvalues}
+MTM = t(M) %*% M
+ev = eigen(MTM)
+ev$values
+```
+
+### Check for Unique Eigenvalues
+
+To check if the eigenvalues are unique, we can proceed as follows. `duplicated` returns true if a value is repeated in a vector, `any` returns TRUE if one of the vector entries is TRUE. So...
+
+```{r check-duplicates}
+any(duplicated(ev$values))
+```
+
+So we are good, we can use the algorithm for distinct eigenvalues that was given above. So now we need to order the eigenvalues in decreasing order. We are going to check things out, value-wise, still, it is safer. Note that we will need to sort eigenvectors the same way, so it is best to hang on to the ordering info.
+
+```{r order-eigenvalues}
+order_ev = order(ev$values, decreasing = TRUE)
+ev_ordered = ev$values[order_ev]
+ev_ordered
+```
+
+### R's Default Ordering
+
+A remark before we continue: `R` sorts eigenvalues as we wanted them, in fact.
+
+```{r check-ordering}
+order_ev
+```
+
+### Handle Numerical Zeros
+
+Back to our eigenvalues: no repetition but a bunch of values we should probably call zero, in fact. Let us decide on a threshold below which we can assume things are numerically zero...
+
+```{r handle-zeros}
+ev_ordered[which(ev_ordered<1e-12)] = 0
+ev_ordered
+```
+
+So now if we check repetitions, of course, we get some because of all the zeros.
+
+```{r check-duplicates-after-zeros}
+any(duplicated(ev_ordered))
+```
+
+We could want to double check that the only repetitions come from the zero eigenvalues.
+
+```{r check-nonzero-duplicates}
+any(duplicated(ev_ordered[which(ev_ordered>0)]))
+```
+
+### Algorithm for Repeated Eigenvalues
+
+So there's plenty of zeros, but the nonzero eigenvalues are all distinct. We need to use the case of repeated eigenvalues.
+
+- Compute $A^TA\in\mathcal{M}_n$
+- Compute eigenvalues $\lambda_1,\ldots,\lambda_n$ of $A^TA$; order them as $\lambda_1\geq\cdots\geq\lambda_n\geq 0$
+- Compute singular values $\sigma_1=\sqrt{\lambda_1},\ldots,\sigma_n=\sqrt{\lambda_n}$, with $r\leq n$ the index of the last positive singular value
+- For eigenvalues that are distinct, proceed as before
+- For eigenvalues with multiplicity $>1$, we need to ensure that the resulting eigenvectors are LI *and* orthogonal
+
+Ha! But that means we can still proceed, since we have ascertained that there is no duplicated positive eigenvalue... So let us set aside the indices of positive eigenvalues in the original vector of eigenvalues (as already mentioned, `R` sorts eigenvalues in decreasing order, but just in case, better safe than sorry).
+
+```{r positive-eigenvalues}
+idx_positive_ev = which(ev$values>1e-12)
+order_positive_ev = order(ev$values[idx_positive_ev], decreasing = TRUE)
+idx_positive_ev = idx_positive_ev[order_positive_ev]
+```
+
+Now `idx_positive_ev` contains the ordered list of indices of positive eigenvalues (and their corresponding eigenvectors). So we compute the singular values.
+
+```{r compute-singular-values}
+sv = sqrt(ev$values[idx_positive_ev])
+length(sv)
+```
+
+### Building SVD Components
+
+Then $D=\mathsf{diag}(\sigma_1,\ldots,\sigma_r)$, $V$ is the matrix of normalised eigenvectors in the same order as the $\sigma_i$ and for $i=1,\ldots,r$,
+$$
+\mathbf{u}_i = \frac{1}{\sigma_i}A\mathbf{v}_i,
+$$
+ensuring that $\|\mathbf{u}_i\|=1$.
+
+```{r build-svd-components}
+D = diag(sv)
+V = ev$vectors[idx_positive_ev,idx_positive_ev]
+```
+
+```{r normalize-vectors-1}
+c1 = colSums(V)
+c2 = matrix(rep(1, dim(V)[1]), nr = 1) %*% V
+sum(abs(c1-c2))
+```
+
+```{r normalize-vectors-2}
+for (i in 1:dim(V)[1]) {
+    V[,i] = V[,i]/c1[i]
+}
+```
+
+```{r check-normalized}
+colSums(V)
+```
+
+## Using R's Built-in SVD Function
+
+Now let's use a native R function to do the work
+
+```{r native-svd}
+M.svd = svd(M)
+```
+
+```{r empty-cell-1}
+
+```
+
+```{r examine-svd-structure}
+names(M.svd)
+length(M.svd$d)
+dim(M.svd$u)
+dim(M.svd$v)
+```
+
+```{r empty-cell-2}
+
+```
+
+## Image Compression Function
+
+```{r compression-function}
+compress_image = function(im, n) {
+    # Given an image im on which the svd has been used, "compress" it by keeping only the 
+    # first n singular values
+    if (n > length(im$d)) {
+        # Check that we gave a value of n within range, otherwise just set to the max
+        n = length(im$d)
+    }
+    d_tmp = im$d[1:n]
+    u_tmp = im$u[,1:n]
+    v_tmp = im$v[,1:n]
+    # We store the results in a list (so we can return other information)
+    out = list()
+    # First, compute the resulting image
+    out$img = mat.or.vec(nr = dim(im$u)[1], nc = dim(im$v)[1])
+    for (i in 1:n) {
+        out$img = out$img + d_tmp[i] * u_tmp[,i] %*% t(v_tmp[,i]) 
+    }
+    # Values of the "colours" must be between 0 and 1, so we shift and rescale
+    if (min(min(out$img)) < 0 ) {
+        out$img = out$img - min(min(out$img))
+    }
+    out$img = out$img / max(max(out$img))
+    # Store some information: number of points needed and percentage of the original required
+    out$nb_pixels_original = dim(im$u)[1] * dim(im$v)[2]
+    out$nb_pixels_compressed = length(d_tmp) + dim(u_tmp)[1]*dim(u_tmp)[2] + dim(v_tmp)[1]*dim(v_tmp)[2] 
+    out$pct_of_original = out$nb_pixels_compressed / out$nb_pixels_original * 100
+    # Return the result
+    return(out)
+}
+```
+
+## Apply Compression and Compare Results
+
+```{r apply-compression}
+new_image = my_image_g
+M_tmp = compress_image(M.svd, 10)
+new_image@grey = M_tmp$img
+plot(new_image)
+plot(my_image_g)
+M_tmp$pct_of_original
+```
+
+## Additional Analysis (Commented)
+
+```{r commented-code}
+#M.svd$d
+```
+
+## Summary
+
+This document demonstrates:
+
+1. **Manual SVD Implementation**: Computing SVD step-by-step using eigenvalue decomposition
+2. **Handling Numerical Issues**: Dealing with near-zero eigenvalues and repeated eigenvalues
+3. **Built-in SVD Function**: Using R's optimized `svd()` function
+4. **Image Compression**: Creating a function to compress images using SVD by keeping only the first `n` singular values
+5. **Comparison**: Visualizing the compressed vs. original image and calculating compression ratios
+
+The SVD approach to image compression works by keeping only the most significant singular values and their corresponding singular vectors, which capture the most important features of the image while reducing storage requirements.
