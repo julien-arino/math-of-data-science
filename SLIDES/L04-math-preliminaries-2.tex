@@ -1,0 +1,525 @@
+\documentclass[aspectratio=169]{beamer}\usepackage[]{graphicx}\usepackage[]{xcolor}
+% maxwidth is the original width if it is less than linewidth
+% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlsng}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hldef}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+\let\hlipl\hlkwb
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+
+% Set lecture number for later use
+
+
+% Part common to all the lectures
+\subtitle{MATH 2740 -- Mathematics of Data Science -- Lecture 04}
+\author{\texorpdfstring{Julien Arino\newline\url{julien.arino@umanitoba.ca}}{Julien Arino}}
+\institute{Department of Mathematics @ University of Manitoba}
+\date{Fall 202X}
+
+% Title of the lecture
+\title{Math prelims -- Linear algebra \& Multivariable calculus}
+
+
+
+\input{slides-setup-whiteBG.tex}
+
+
+
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% TITLE AND OUTLINE
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\titlepagewithfigure{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
+\outlinepage{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\section{Similarity and diagonalisation}
+% The section page
+\newSectionSlide{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
+
+\begin{frame}{Similarity}
+\begin{definition}[Similarity]
+$A,B\in\M_n$ are \defword{similar} ($A\sim B$) if $\exists P\in\M_n$ invertible s.t.
+\[
+P^{-1}AP=B
+\]
+\end{definition}
+\begin{theorem}[$\sim$ is an equivalence relation]
+$A,B,C\in\M_n$, then
+\begin{itemize}
+	\item $A\sim A$ \hfill ($\sim$ \defword{reflexive})
+	\item $A\sim B\implies B\sim A$ \hfill ($\sim$ \defword{symmetric})
+	\item $A\sim B$ and $B\sim C$ $\implies$ $A\sim C$ \hfill ($\sim$ \defword{transitive})
+\end{itemize}
+\end{theorem}
+\end{frame}
+
+\begin{frame}{Similarity (cont.)}
+\begin{theorem}
+$A,B\in\M_n$ with $A\sim B$. Then
+\begin{itemize}
+	\item $\det\ A=\det\ B$
+	\item $A$ invertible $\iff$ $B$ invertible
+	\item $A$ and $B$ have the same eigenvalues
+\end{itemize}
+\end{theorem}
+\end{frame}
+
+
+\begin{frame}{Diagonalisation}
+\begin{definition}[Diagonalisability]
+$A\in\M_n$ is \defword{diagonalisable} if $\exists D\in\M_n$ diagonal s.t. $A\sim D$
+\end{definition}
+\vfill
+In other words, $A\in\M_n$ is diagonalisable if there exists a diagonal matrix $D\in\M_n$ and a nonsingular matrix $P\in\M_n$ s.t. $P^{-1}AP=D$
+\vfill
+Could of course write $PAP^{-1}=D$ since $P$ invertible, but $P^{-1}AP$ makes more sense for computations
+\end{frame}
+
+
+\begin{frame}
+\begin{importanttheorem}
+$A\in\M_n$ diagonalisable $\iff$ $A$ has $n$ linearly independent eigenvectors
+\end{importanttheorem}
+\vfill
+\begin{corollary}[Sufficient condition for diagonalisability]
+$A\in\M_n$ has all its eigenvalues distinct $\implies$ $A$ diagonalisable
+\end{corollary}
+\vfill
+For $P^{-1}AP=D$: in $P$, put the linearly independent eigenvectors as columns and in $D$, the corresponding eigenvalues
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\section{Linear independence/Bases/Dimension}
+% The section page
+\newSectionSlide{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
+
+\begin{frame}{Linear combination and span}
+	\begin{definition}[Linear combination]
+		Let $V$ be a vector space.
+		A \defword{linear combination} of a set $\{\bv_1,\ldots,\bv_k\}$ of vectors in $V$ is a \emph{vector}
+		\[
+		c_1\bv_1+\cdots+c_k\bv_k
+		\]
+		where $c_1,\ldots,c_k\in\IF$
+	\end{definition}
+	\vfill
+	\begin{definition}[Span]
+		The set of all linear combinations of a set of vectors $\bv_1,\ldots,\bv_k$ is the \defword{span} of $\{\bv_1,\ldots,\bv_k\}$,
+		\[
+		\Span(\bv_1,\ldots,\bv_k)=
+		\left\{
+		c_1\bv_1+\cdots+c_k\bv_k:c_1,\ldots,c_k\in\IF
+		\right\}
+		\]
+	\end{definition}
+\end{frame}
+
+
+\begin{frame}{Finite/infinite-dimensional vector spaces}
+	\begin{theorem}
+		The span of a set of vectors in $V$ is the smallest subspace of $V$ containing all the vectors in the set
+	\end{theorem}
+	\vfill
+	\begin{definition}[Set of vectors spanning a space]
+		If $\Span(\bv_1,\ldots,\bv_k)=V$, we say $\bv_1,\ldots,\bv_k$ \defword{spans} $V$
+	\end{definition}
+	\vfill
+	\begin{definition}[Dimension of a vector space]
+		A vector space $V$ is \defword{finite-dimensional} if some set of vectors in it spans $V$.
+		A vector space $V$ is \defword{infinite-dimensional} if it is not finite-dimensional
+	\end{definition}
+\end{frame}
+
+
+\begin{frame}{Linear (in)dependence}
+	\begin{definition}[Linear independence/Linear dependence]
+		A set $\{\bv_1,\ldots,\bv_k\}$ of vectors in a vector space $V$ is \defword{linearly independent} if
+		\[
+		\left(c_1\bv_1+\cdots+c_k\bv_k=0\right)
+		\Leftrightarrow
+		\left(c_1=\cdots=c_k=0\right),
+		\]
+		where $c_1,\ldots,c_k\in\IF$. 
+		A set of vectors is \defword{linearly dependent} if it is not linearly independent.
+	\end{definition}
+	\vfill
+	If linearly dependent, assume w.l.o.g. that $c_1\neq 0$, then
+	\[
+	\bv_1 = -\frac{c_2}{c_1}\bv_2-\cdots-\frac{c_k}{c_1}\bv_k
+	\]
+	i.e., $\bv_1$ is a linear combination of the other vectors in the set
+\end{frame}
+
+
+\begin{frame}
+	\begin{theorem}
+		Let $V$ be a finite-dimensional vector space. Then the \defword{cardinal} (number of elements) of every linearly independent set of vectors is less than or equal to the number of elements in every spanning set of vectors
+	\end{theorem}
+\vfill
+E.g., in $\IR^3$, a set with 4 or more vectors is automatically linearly dependent
+\end{frame}
+
+
+\begin{frame}{Basis}
+	\begin{definition}[Basis]
+		Let $V$ be a vector space. A \defword{basis} of $V$ is a set of vectors in $V$ that is both linearly independent and spanning
+	\end{definition}
+	\vfill
+	\begin{theorem}[Criterion for a basis]
+		A set $\{\bv_1,\ldots,\bv_k\}$ of vectors in a vector space $V$ is a basis of $V$ $\iff$ $\forall \bv\in V$, $\bv$ can be written uniquely in the form
+		\[
+		\bv=c_1\bv_1+\cdots+c_k\bv_k,
+		\]
+		where $c_1,\ldots,c_k\in\IF$
+	\end{theorem}
+\end{frame}
+
+\begin{frame}{Plus/Minus Theorem}
+	\begin{theorem}[Plus/Minus Theorem]
+		$S$ a nonempty set of vectors in vector space $V$
+		\begin{itemize}
+			\item If $S$ is linearly independent and $V\ni\bv\not\in \Span(S)$, then $S\cup\{\bv\}$ is linearly independent
+			\item If $\bv\in S$ is linear combination of other vectors in $S$, then $\Span(S)=\Span(S-\{\bv\})$
+		\end{itemize}
+	\end{theorem}
+\end{frame}
+
+
+\begin{frame}{More on bases}
+	\begin{theorem}[Basis of finite-dimensional vector space]
+	Every finite-dimensional vector space has a basis
+	\end{theorem}
+	\vfill
+	\begin{importanttheorem}
+		Any two bases of a finite-dimensional vector space have the same number of vectors
+	\end{importanttheorem}
+	\vfill
+	\begin{definition}[Dimension]
+		The \defword{dimension} $\dim V$ of a finite-dimensional vector space $V$ is the number of vectors in any basis of the vector space
+	\end{definition}
+	\vfill
+	\begin{theorem}[Dimension of a subspace]
+		Let $V$ be a finite-dimensional vector space and $U\subset V$ be a subspace of $V$. Then $\dim U\leq \dim V$
+	\end{theorem}
+\end{frame}
+
+
+\begin{frame}{Constructing bases}
+	\begin{theorem}
+		Let $V$ be a finite-dimensional vector space. Then every linearly independent set of vectors in $V$ with $\dim V$ elements is a basis of $V$
+	\end{theorem}
+	\vfill
+	\begin{theorem}
+		Let $V$ be a finite-dimensional vector space. Then every spanning set of vectors in $V$ with $\dim V$ elements is a basis of $V$
+	\end{theorem}
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\subsection{Linear algebra in a nutshell}
+% The subsection page
+\newSubSectionSlide{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
+
+
+\begin{frame}{To finish: the ``famous'' ``growing result''}
+\begin{importanttheorem}
+Let $A\in\M_n$. The following statements are equivalent (TFAE)
+\begin{enumerate}
+\item The matrix $A$ is invertible
+\item $\forall\bb\in\IF^n$, $A\bx = \bb$ has a unique solution ($\bx=A^{-1}\bb$)
+\item The only solution to $A\bx = \b0$ is the trivial solution $\bx = \b0$
+\item $RREF(A)=\II_n$
+\item The matrix A is equal to a product of elementary matrices
+\item $\forall\bb\in\IF^n$, $A\bx = \bb$ has a solution
+\item There is a matrix $B\in\M_n$ such that $AB = \II_n$
+\item There is an invertible matrix $B\in\M_n$ such that $AB = \II_n$
+\item $\det(A)\neq 0$
+\item $0$ is not an eigenvalue of $A$
+\end{enumerate}
+\end{importanttheorem}
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\section{A crash course in multivariable calculus}
+% The section page
+\newSectionSlide{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
+
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\subsection{What is Multivariable Calculus?}
+% The subsection page
+\newSubSectionSlide{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
+
+\begin{frame}{One dimension}
+MATH 1500 \& 1700 deal with functions of one variable, like $f(x) = x^2$
+\begin{center}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+\includegraphics[width=0.8\textwidth]{FIGS/L04-fig1d-1} 
+\end{knitrout}
+\end{center}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Multivariable calculus}
+Multivariable calculus extends this to functions of two or more variables, like $f(x, y) = x^2 + y^2$
+\begin{center}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+\includegraphics[width=0.8\textwidth]{FIGS/L04-fig2d-1} 
+\end{knitrout}
+\end{center}
+\end{frame}
+
+
+\begin{frame}{Partial derivatives}
+  How do we measure the ``slope'' on a 3D surface?
+  \vfill
+  A \defword{partial derivative} measures the slope in a direction parallel to one of the axes
+  \vfill
+  \begin{itemize}
+    \item $\dfrac{\partial f}{\partial x}$ measures height change as we move only in the $x$ direction. Treat $y$ as a constant
+    \vfill
+    \item $\dfrac{\partial f}{\partial y}$ measures height change as we move only in the $y$ direction. Treat $x$ as a constant
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Partial derivatives}
+  \begin{center}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+\includegraphics[width=0.9\textwidth]{FIGS/L04-fig_partials-1} 
+\end{knitrout}
+\end{center}
+\end{frame}
+
+\begin{frame}{The Steepest path: the gradient}
+  The \defword{gradient}, denoted $\nabla f$, is a vector that combines all the partial derivatives:
+  $$ \nabla f(x, y) = \left( \frac{\partial f}{\partial x}, \frac{\partial f}{\partial y} \right) $$
+  What does it tell us?
+  \begin{itemize}
+    \item \textbf{Direction:} it points in the direction of the \textit{steepest ascent}
+    \item \textbf{Magnitude:} its length represents the steepness of that ascent
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Follow the gradient}
+  \begin{center}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+\includegraphics[width=0.7\textwidth]{FIGS/L04-fig_gradient-1} 
+\end{knitrout}
+\end{center}
+At a peak or a valley (a local max/min), the ground is flat. So, $\nabla f = (0, 0)$
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\subsection{Optimization with Constraints}
+% The subsection page
+\newSubSectionSlide{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
+
+\begin{frame}{The real-world problem}
+  Often, we want to maximize or minimize a function, but we don't have unlimited freedom. We have \defword{constraints}
+  \vfill
+  \begin{itemize}
+    \item Maximize the profit of your company... \textit{subject to a limited budget}
+    \vfill
+    \item Minimize the material used for a can... \textit{that must hold a specific volume}
+    \vfill
+    \item Find the highest point on a mountain... \textit{while staying on a specific trail}
+  \end{itemize}
+  \vfill
+  Setting the gradient to zero ($\nabla f = 0$) finds the highest point on the whole mountain, which might not be on our trail!
+\end{frame}
+
+\begin{frame}{Visualizing the problem}
+  Imagine our function $f(x,y)$ is the altitude on a map (contour lines)
+  \vfill
+  Our constraint, $g(x,y) = c$, is a specific path we must walk on
+\end{frame}
+
+\begin{frame}[fragile]
+  \begin{center}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+\includegraphics[width=0.8\textwidth]{FIGS/L04-fig_constraint-1} 
+\end{knitrout}
+\end{center}
+We are looking for the highest (or lowest) point \textit{along the red path}
+\end{frame}
+
+\begin{frame}{The key insight}
+At the optimal point on the path, the path will be perfectly \textbf{tangent} to the contour line of the surface
+  
+  \begin{center}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+\includegraphics[width=0.7\textwidth]{FIGS/L04-fig_tangency-1} 
+\end{knitrout}
+  \end{center}
+\end{frame}
+
+\begin{frame}
+  Why? If the path crossed the contour line, you could move along the path to get to a higher (or lower) contour
+  \vfill
+  Mathematically, this tangency means the gradient vectors of the function and the constraint are \textbf{parallel}
+  $$ \nabla f = \lambda \nabla g $$
+  \vfill
+  The scalar $\lambda$ (lambda) is called the \defword{Lagrange multiplier}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\subsection{The Lagrangian Method}
+% The subsection page
+\newSubSectionSlide{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
+
+\begin{frame}{The Lagrangian function}
+  The condition $\nabla f = \lambda \nabla g$ is clever, but solving it can be messy
+  \vfill
+  Instead, we combine our function and constraint into a single, new function called the \defword{Lagrangian}
+  
+  $$ \mathcal{L}(x, y, \lambda) = f(x, y) - \lambda [g(x, y) - c] $$
+  \vfill
+  \begin{itemize}
+    \item $f(x, y)$ the function we want to optimize
+    \item $g(x, y) = c$ the constraint we must follow
+    \item $\lambda$ the Lagrange multiplier
+  \end{itemize}
+  \vfill
+  Finding the unconstrained optimum of $\mathcal{L}$ solves the original constrained problem!
+\end{frame}
+
+\begin{frame}{The method -- step-by-step}
+  To find the optimum of the Lagrangian $\mathcal{L}(x, y, \lambda)$, we find where its gradient is zero
+  \vfill
+  We take the partial derivative with respect to \textit{all} its variables ($x$, $y$, and $\lambda$) and set them to zero
+  \vfill
+  \begin{enumerate}
+    \item $\frac{\partial \mathcal{L}}{\partial x} = \frac{\partial f}{\partial x} - \lambda \frac{\partial g}{\partial x} = 0$
+    \item $\frac{\partial \mathcal{L}}{\partial y} = \frac{\partial f}{\partial y} - \lambda \frac{\partial g}{\partial y} = 0$
+    \item $\frac{\partial \mathcal{L}}{\partial \lambda} = -(g(x, y) - c) = 0 \implies g(x, y) = c$
+  \end{enumerate}
+  \vfill
+  The first two equations rearrange to $\nabla f = \lambda \nabla g$ and the third equation is the original constraint
+\end{frame}
+
+\begin{frame}{Example: Fencing a Field}
+  \textbf{Problem:} You have 40 meters of fence. What is the largest rectangular area you can enclose?
+  
+  \begin{itemize}
+    \item \textbf{Maximize Area:} $A(x, y) = xy$
+    \item \textbf{Constraint (Perimeter):} $2x + 2y = 40$
+  \end{itemize}
+  
+  \textbf{1. Form the Lagrangian:}
+  $$ \mathcal{L}(x, y, \lambda) = xy - \lambda(2x + 2y - 40) $$
+  
+  \textbf{2. Take Partial Derivatives:}
+  \begin{itemize}
+    \item $\frac{\partial \mathcal{L}}{\partial x} = y - 2\lambda = 0 \implies y = 2\lambda$
+    \item $\frac{\partial \mathcal{L}}{\partial y} = x - 2\lambda = 0 \implies x = 2\lambda$
+    \item $\frac{\partial \mathcal{L}}{\partial \lambda} = -(2x + 2y - 40) = 0$
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Example: Solution}
+  From the first two equations, we see that $x = y$
+  \vfill
+  Now, substitute this into the third equation (the constraint):
+  $$ 2x + 2(x) = 40 $$
+  $$ 4x = 40 $$
+  $$ x = 10 $$
+  \vfill
+  Since $x=y$, we have $y=10$, i.e., optimal dimensions are 10m by 10m (a square), giving a maximum area of 100 $m^2$
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\subsection{Conclusion}
+% The subsection page
+\newSubSectionSlide{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
+
+\begin{frame}{What does $\lambda$ mean?}
+  The Lagrange multiplier $\lambda$ has a very useful interpretation
+  \vfill
+  It tells you how much the optimal value of your function $f$ will change if you slightly relax the constraint $c$
+  \vfill
+  $$ \lambda = \frac{df_{optimal}}{dc} $$
+  \vfill
+  \textbf{In our example:} If we had 41 meters of fence instead of 40 (so $c$ changes by 1), how much would the max area increase?
+  \vfill
+  $x=y=2\lambda$, so $\lambda = x/2 = 10/2 = 5$.
+  The maximum area would increase by approximately 5 $m^2$
+\end{frame}
+
+
+\end{document}

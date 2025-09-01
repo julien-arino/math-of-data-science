@@ -419,17 +419,17 @@ A very useful data structure, quite flexible and versatile. Empty list: \texttt{
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-> L[1]
-$a
-[1] 10
-> L[[2]]
-[1] 3
-> L$a
-[1] 10
-> L[[\hlsng{"b"}]]
-[1] 3
-> L$another_name
-[1] \hlsng{"Plouf plouf"}
+\hldef{L[}\hlnum{1}\hldef{]}
+\hlcom{# $a}
+\hlcom{# [1] 10}
+\hldef{L[[}\hlnum{2}\hldef{]]}
+\hlcom{# [1] 3}
+\hldef{L}\hlopt{$}\hldef{a}
+\hlcom{# [1] 10}
+\hldef{L[[}\hlsng{"b"}\hldef{]]}
+\hlcom{# [1] 3}
+\hldef{L}\hlopt{$}\hldef{another_name}
+\hlcom{# [1] "Plouf plouf"}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -439,16 +439,16 @@ $a
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-x = 1:10
-y <- \hlkwd{c}(x, 12)
-> y
- [1]  1  2  3  4  5  6  7  8  9 10 12
-z = \hlkwd{c}(\hlsng{"red"}, \hlsng{"blue"})
-> z
-[1] \hlsng{"red"}  \hlsng{"blue"}
-z = \hlkwd{c}(z, 1)
-> z
-[1] \hlsng{"red"}  \hlsng{"blue"} \hlsng{"1"}
+\hldef{x} \hlkwb{=} \hlnum{1}\hlopt{:}\hlnum{10}
+\hldef{y} \hlkwb{<-} \hlkwd{c}\hldef{(x,} \hlnum{12}\hldef{)}
+\hldef{y}
+\hlcom{#  [1]  1  2  3  4  5  6  7  8  9 10 12}
+\hldef{z} \hlkwb{=} \hlkwd{c}\hldef{(}\hlsng{"red"}\hldef{,} \hlsng{"blue"}\hldef{)}
+\hldef{z}
+\hlcom{# [1] "red"  "blue"}
+\hldef{z} \hlkwb{=} \hlkwd{c}\hldef{(z,} \hlnum{1}\hldef{)}
+\hldef{z}
+\hlcom{# [1] "red"  "blue" "1"}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -471,16 +471,16 @@ Matrix with prescribed entries
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-B <- \hlkwd{matrix}(\hlkwd{c}(1,2,3,4), nr = 2, nc = 2)
-> B
-     [,1] [,2]
-[1,]    1    3
-[2,]    2    4
-C <- \hlkwd{matrix}(\hlkwd{c}(1,2,3,4), nr = 2, nc = 2, byrow = TRUE)
-> C
-     [,1] [,2]
-[1,]    1    2
-[2,]    3    4
+\hldef{B} \hlkwb{<-} \hlkwd{matrix}\hldef{(}\hlkwd{c}\hldef{(}\hlnum{1}\hldef{,}\hlnum{2}\hldef{,}\hlnum{3}\hldef{,}\hlnum{4}\hldef{),} \hlkwc{nr} \hldef{=} \hlnum{2}\hldef{,} \hlkwc{nc} \hldef{=} \hlnum{2}\hldef{)}
+\hldef{B}
+\hlcom{#      [,1] [,2]}
+\hlcom{# [1,]    1    3}
+\hlcom{# [2,]    2    4}
+\hldef{C} \hlkwb{<-} \hlkwd{matrix}\hldef{(}\hlkwd{c}\hldef{(}\hlnum{1}\hldef{,}\hlnum{2}\hldef{,}\hlnum{3}\hldef{,}\hlnum{4}\hldef{),} \hlkwc{nr} \hldef{=} \hlnum{2}\hldef{,} \hlkwc{nc} \hldef{=} \hlnum{2}\hldef{,} \hlkwc{byrow} \hldef{=} \hlnum{TRUE}\hldef{)}
+\hldef{C}
+\hlcom{#      [,1] [,2]}
+\hlcom{# [1,]    1    2}
+\hlcom{# [2,]    3    4}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -503,8 +503,8 @@ Vector addition is also frustrating. Say you write \texttt{x=1:10}, i.e., make t
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-> x
- [1]  1  2  3  4  5  6  7  8  9 10
+\hldef{x}
+\hlcom{#  [1]  1  2  3  4  5  6  7  8  9 10}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -513,8 +513,8 @@ Then \texttt{x+1} gives
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-> x+1
- [1]  2  3  4  5  6  7  8  9 10 11
+\hldef{x}\hlopt{+}\hlnum{1}
+\hlcom{#  [1]  2  3  4  5  6  7  8  9 10 11}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -528,9 +528,9 @@ Beware of this in particular when addressing sets of indices in lists, vectors o
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{if} (condition is true) \{
-  list of stuff to do
-\}
+\hlcom{# if (condition is true) \{}
+\hlcom{#   list of stuff to do}
+\hlcom{# \}}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -540,13 +540,13 @@ Even if \texttt{list of stuff to do} is a single instruction, best to use curly 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{if} (condition is true) \{
-  list of stuff to do
-\} else \hlkwd{if} (another condition) \{
-  ...
-\} else \{
-  ...
-\}
+\hlcom{# if (condition is true) \{}
+\hlcom{#   list of stuff to do}
+\hlcom{# \} else if (another condition) \{}
+\hlcom{#   ...}
+\hlcom{# \} else \{}
+\hlcom{#   ...}
+\hlcom{# \}}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -558,18 +558,18 @@ Even if \texttt{list of stuff to do} is a single instruction, best to use curly 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{for} (i in 1:10) \{
-  something using integer i
-\}
-\hlkwd{for} (j in \hlkwd{c}(1,3,4)) \{
-  something using integer j
-\}
-\hlkwd{for} (n in \hlkwd{c}(\hlsng{"truc"}, \hlsng{"muche"}, \hlsng{"chose"})) \{
-  something using string n
-\}
-\hlkwd{for} (m in \hlkwd{list}(\hlsng{"truc"}, \hlsng{"muche"}, \hlsng{"chose"}, 1, 2)) \{
-  something using string n or integer n, depending
-\}
+\hlcom{# for (i in 1:10) \{}
+\hlcom{#   something using integer i}
+\hlcom{# \}}
+\hlcom{# for (j in c(1,3,4)) \{}
+\hlcom{#   something using integer j}
+\hlcom{# \}}
+\hlcom{# for (n in c("truc", "muche", "chose")) \{}
+\hlcom{#   something using string n}
+\hlcom{# \}}
+\hlcom{# for (m in list("truc", "muche", "chose", 1, 2)) \{}
+\hlcom{#   something using string n or integer n, depending}
+\hlcom{# \}}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -635,7 +635,7 @@ gives
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-[1]  2  4  6  8 10 12 14 16 18 20
+\hlcom{# [1]  2  4  6  8 10 12 14 16 18 20}
 \end{alltt}
 \end{kframe}
 \end{knitrout}

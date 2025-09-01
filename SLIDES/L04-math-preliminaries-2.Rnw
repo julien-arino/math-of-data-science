@@ -1,0 +1,560 @@
+\documentclass[aspectratio=169]{beamer}
+
+% Set lecture number for later use
+<<set-lecture-number,echo=FALSE>>=
+lecture_number = "04"
+@
+
+% Part common to all the lectures
+\subtitle{MATH 2740 -- Mathematics of Data Science -- Lecture \Sexpr{lecture_number}}
+\author{\texorpdfstring{Julien Arino\newline\url{julien.arino@umanitoba.ca}}{Julien Arino}}
+\institute{Department of Mathematics @ University of Manitoba}
+\date{Fall 202X}
+
+% Title of the lecture
+\title{Math prelims -- Linear algebra \& Multivariable calculus}
+
+<<set-options,echo=FALSE,warning=FALSE,message=FALSE>>=
+# Source the code common to all lectures
+source("common-code.R")
+@
+
+<<set-slide-background,echo=FALSE,results='asis'>>=
+# Are we plotting for a dark background? Setting is in common-code.R, but
+# cat command must run here.
+cat(input_setup)
+@
+
+<<setup, include=FALSE>>=
+# Set global chunk options
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+@
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% TITLE AND OUTLINE
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\titlepagewithfigure{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
+\outlinepage{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\section{Similarity and diagonalisation}
+% The section page
+\newSectionSlide{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
+
+\begin{frame}{Similarity}
+\begin{definition}[Similarity]
+$A,B\in\M_n$ are \defword{similar} ($A\sim B$) if $\exists P\in\M_n$ invertible s.t.
+\[
+P^{-1}AP=B
+\]
+\end{definition}
+\begin{theorem}[$\sim$ is an equivalence relation]
+$A,B,C\in\M_n$, then
+\begin{itemize}
+	\item $A\sim A$ \hfill ($\sim$ \defword{reflexive})
+	\item $A\sim B\implies B\sim A$ \hfill ($\sim$ \defword{symmetric})
+	\item $A\sim B$ and $B\sim C$ $\implies$ $A\sim C$ \hfill ($\sim$ \defword{transitive})
+\end{itemize}
+\end{theorem}
+\end{frame}
+
+\begin{frame}{Similarity (cont.)}
+\begin{theorem}
+$A,B\in\M_n$ with $A\sim B$. Then
+\begin{itemize}
+	\item $\det\ A=\det\ B$
+	\item $A$ invertible $\iff$ $B$ invertible
+	\item $A$ and $B$ have the same eigenvalues
+\end{itemize}
+\end{theorem}
+\end{frame}
+
+
+\begin{frame}{Diagonalisation}
+\begin{definition}[Diagonalisability]
+$A\in\M_n$ is \defword{diagonalisable} if $\exists D\in\M_n$ diagonal s.t. $A\sim D$
+\end{definition}
+\vfill
+In other words, $A\in\M_n$ is diagonalisable if there exists a diagonal matrix $D\in\M_n$ and a nonsingular matrix $P\in\M_n$ s.t. $P^{-1}AP=D$
+\vfill
+Could of course write $PAP^{-1}=D$ since $P$ invertible, but $P^{-1}AP$ makes more sense for computations
+\end{frame}
+
+
+\begin{frame}
+\begin{importanttheorem}
+$A\in\M_n$ diagonalisable $\iff$ $A$ has $n$ linearly independent eigenvectors
+\end{importanttheorem}
+\vfill
+\begin{corollary}[Sufficient condition for diagonalisability]
+$A\in\M_n$ has all its eigenvalues distinct $\implies$ $A$ diagonalisable
+\end{corollary}
+\vfill
+For $P^{-1}AP=D$: in $P$, put the linearly independent eigenvectors as columns and in $D$, the corresponding eigenvalues
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\section{Linear independence/Bases/Dimension}
+% The section page
+\newSectionSlide{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
+
+\begin{frame}{Linear combination and span}
+	\begin{definition}[Linear combination]
+		Let $V$ be a vector space.
+		A \defword{linear combination} of a set $\{\bv_1,\ldots,\bv_k\}$ of vectors in $V$ is a \emph{vector}
+		\[
+		c_1\bv_1+\cdots+c_k\bv_k
+		\]
+		where $c_1,\ldots,c_k\in\IF$
+	\end{definition}
+	\vfill
+	\begin{definition}[Span]
+		The set of all linear combinations of a set of vectors $\bv_1,\ldots,\bv_k$ is the \defword{span} of $\{\bv_1,\ldots,\bv_k\}$,
+		\[
+		\Span(\bv_1,\ldots,\bv_k)=
+		\left\{
+		c_1\bv_1+\cdots+c_k\bv_k:c_1,\ldots,c_k\in\IF
+		\right\}
+		\]
+	\end{definition}
+\end{frame}
+
+
+\begin{frame}{Finite/infinite-dimensional vector spaces}
+	\begin{theorem}
+		The span of a set of vectors in $V$ is the smallest subspace of $V$ containing all the vectors in the set
+	\end{theorem}
+	\vfill
+	\begin{definition}[Set of vectors spanning a space]
+		If $\Span(\bv_1,\ldots,\bv_k)=V$, we say $\bv_1,\ldots,\bv_k$ \defword{spans} $V$
+	\end{definition}
+	\vfill
+	\begin{definition}[Dimension of a vector space]
+		A vector space $V$ is \defword{finite-dimensional} if some set of vectors in it spans $V$.
+		A vector space $V$ is \defword{infinite-dimensional} if it is not finite-dimensional
+	\end{definition}
+\end{frame}
+
+
+\begin{frame}{Linear (in)dependence}
+	\begin{definition}[Linear independence/Linear dependence]
+		A set $\{\bv_1,\ldots,\bv_k\}$ of vectors in a vector space $V$ is \defword{linearly independent} if
+		\[
+		\left(c_1\bv_1+\cdots+c_k\bv_k=0\right)
+		\Leftrightarrow
+		\left(c_1=\cdots=c_k=0\right),
+		\]
+		where $c_1,\ldots,c_k\in\IF$. 
+		A set of vectors is \defword{linearly dependent} if it is not linearly independent.
+	\end{definition}
+	\vfill
+	If linearly dependent, assume w.l.o.g. that $c_1\neq 0$, then
+	\[
+	\bv_1 = -\frac{c_2}{c_1}\bv_2-\cdots-\frac{c_k}{c_1}\bv_k
+	\]
+	i.e., $\bv_1$ is a linear combination of the other vectors in the set
+\end{frame}
+
+
+\begin{frame}
+	\begin{theorem}
+		Let $V$ be a finite-dimensional vector space. Then the \defword{cardinal} (number of elements) of every linearly independent set of vectors is less than or equal to the number of elements in every spanning set of vectors
+	\end{theorem}
+\vfill
+E.g., in $\IR^3$, a set with 4 or more vectors is automatically linearly dependent
+\end{frame}
+
+
+\begin{frame}{Basis}
+	\begin{definition}[Basis]
+		Let $V$ be a vector space. A \defword{basis} of $V$ is a set of vectors in $V$ that is both linearly independent and spanning
+	\end{definition}
+	\vfill
+	\begin{theorem}[Criterion for a basis]
+		A set $\{\bv_1,\ldots,\bv_k\}$ of vectors in a vector space $V$ is a basis of $V$ $\iff$ $\forall \bv\in V$, $\bv$ can be written uniquely in the form
+		\[
+		\bv=c_1\bv_1+\cdots+c_k\bv_k,
+		\]
+		where $c_1,\ldots,c_k\in\IF$
+	\end{theorem}
+\end{frame}
+
+\begin{frame}{Plus/Minus Theorem}
+	\begin{theorem}[Plus/Minus Theorem]
+		$S$ a nonempty set of vectors in vector space $V$
+		\begin{itemize}
+			\item If $S$ is linearly independent and $V\ni\bv\not\in \Span(S)$, then $S\cup\{\bv\}$ is linearly independent
+			\item If $\bv\in S$ is linear combination of other vectors in $S$, then $\Span(S)=\Span(S-\{\bv\})$
+		\end{itemize}
+	\end{theorem}
+\end{frame}
+
+
+\begin{frame}{More on bases}
+	\begin{theorem}[Basis of finite-dimensional vector space]
+	Every finite-dimensional vector space has a basis
+	\end{theorem}
+	\vfill
+	\begin{importanttheorem}
+		Any two bases of a finite-dimensional vector space have the same number of vectors
+	\end{importanttheorem}
+	\vfill
+	\begin{definition}[Dimension]
+		The \defword{dimension} $\dim V$ of a finite-dimensional vector space $V$ is the number of vectors in any basis of the vector space
+	\end{definition}
+	\vfill
+	\begin{theorem}[Dimension of a subspace]
+		Let $V$ be a finite-dimensional vector space and $U\subset V$ be a subspace of $V$. Then $\dim U\leq \dim V$
+	\end{theorem}
+\end{frame}
+
+
+\begin{frame}{Constructing bases}
+	\begin{theorem}
+		Let $V$ be a finite-dimensional vector space. Then every linearly independent set of vectors in $V$ with $\dim V$ elements is a basis of $V$
+	\end{theorem}
+	\vfill
+	\begin{theorem}
+		Let $V$ be a finite-dimensional vector space. Then every spanning set of vectors in $V$ with $\dim V$ elements is a basis of $V$
+	\end{theorem}
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\subsection{Linear algebra in a nutshell}
+% The subsection page
+\newSubSectionSlide{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
+
+
+\begin{frame}{To finish: the ``famous'' ``growing result''}
+\begin{importanttheorem}
+Let $A\in\M_n$. The following statements are equivalent (TFAE)
+\begin{enumerate}
+\item The matrix $A$ is invertible
+\item $\forall\bb\in\IF^n$, $A\bx = \bb$ has a unique solution ($\bx=A^{-1}\bb$)
+\item The only solution to $A\bx = \b0$ is the trivial solution $\bx = \b0$
+\item $RREF(A)=\II_n$
+\item The matrix A is equal to a product of elementary matrices
+\item $\forall\bb\in\IF^n$, $A\bx = \bb$ has a solution
+\item There is a matrix $B\in\M_n$ such that $AB = \II_n$
+\item There is an invertible matrix $B\in\M_n$ such that $AB = \II_n$
+\item $\det(A)\neq 0$
+\item $0$ is not an eigenvalue of $A$
+\end{enumerate}
+\end{importanttheorem}
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\section{A crash course in multivariable calculus}
+% The section page
+\newSectionSlide{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
+
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\subsection{What is Multivariable Calculus?}
+% The subsection page
+\newSubSectionSlide{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
+
+\begin{frame}{One dimension}
+MATH 1500 \& 1700 deal with functions of one variable, like $f(x) = x^2$
+\begin{center}
+<<fig1d, echo=FALSE, fig.show='asis', out.width="0.8\\textwidth">>=
+# Plot f(x) = x^2
+curve(x^2, from = -2, to = 2, xlab="x", ylab="f(x)", main="A 1D function", asp=1)
+@
+\end{center}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Multivariable calculus}
+Multivariable calculus extends this to functions of two or more variables, like $f(x, y) = x^2 + y^2$
+\begin{center}
+<<fig2d, echo=FALSE, fig.show='asis', out.width="0.8\\textwidth">>=
+# 3D plot for f(x, y) = x^2 + y^2
+x <- seq(-2, 2, length=30)
+y <- seq(-2, 2, length=30)
+f <- function(x, y) { x^2 + y^2 }
+z <- outer(x, y, f)
+persp(x, y, z, theta = 30, phi = 30, expand = 0.5, col = "lightblue",
+      xlab="x", ylab="y", zlab="f(x,y)", ticktype="detailed", main="A 2D function surface")
+@
+\end{center}
+\end{frame}
+
+
+\begin{frame}{Partial derivatives}
+  How do we measure the ``slope'' on a 3D surface?
+  \vfill
+  A \defword{partial derivative} measures the slope in a direction parallel to one of the axes
+  \vfill
+  \begin{itemize}
+    \item $\dfrac{\partial f}{\partial x}$ measures height change as we move only in the $x$ direction. Treat $y$ as a constant
+    \vfill
+    \item $\dfrac{\partial f}{\partial y}$ measures height change as we move only in the $y$ direction. Treat $x$ as a constant
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Partial derivatives}
+  \begin{center}
+<<fig_partials, echo=FALSE, fig.show='asis', out.width="0.9\\textwidth">>=
+# Recreate the 3D plot and add lines to show partial derivative slices
+x <- seq(-2, 2, length=30)
+y <- seq(-2, 2, length=30)
+f <- function(x, y) { x^2 + y^2 }
+z <- outer(x, y, f)
+p_matrix <- persp(x, y, z, theta = 30, phi = 30, expand = 0.5, col = "lightblue",
+      xlab="x", ylab="y", zlab="f(x,y)", ticktype="detailed", main="Slices for Partial Derivatives")
+
+# Slice for df/dx (y is constant at y=1)
+x_slice <- seq(-2, 2, length=30)
+y_const <- 1
+z_slice_x <- f(x_slice, y_const)
+lines(trans3d(x_slice, y_const, z_slice_x, pmat = p_matrix), col = "red", lwd = 2)
+
+# Slice for df/dy (x is constant at x=1)
+y_slice <- seq(-2, 2, length=30)
+x_const <- 1
+z_slice_y <- f(x_const, y_slice)
+lines(trans3d(x_const, y_slice, z_slice_y, pmat = p_matrix), col = "blue", lwd = 2)
+@
+\end{center}
+\end{frame}
+
+\begin{frame}{The Steepest path: the gradient}
+  The \defword{gradient}, denoted $\nabla f$, is a vector that combines all the partial derivatives:
+  $$ \nabla f(x, y) = \left( \frac{\partial f}{\partial x}, \frac{\partial f}{\partial y} \right) $$
+  What does it tell us?
+  \begin{itemize}
+    \item \textbf{Direction:} it points in the direction of the \textit{steepest ascent}
+    \item \textbf{Magnitude:} its length represents the steepness of that ascent
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Follow the gradient}
+  \begin{center}
+<<fig_gradient, echo=FALSE, fig.show='asis', out.width="0.7\\textwidth">>=
+# Contour plot with gradient vectors
+x <- seq(-2, 2, length=15)
+y <- seq(-2, 2, length=15)
+f <- function(x, y) { x^2 + y^2 }
+z <- outer(x, y, f)
+contour(x, y, z, xlab="x", ylab="y", main="Gradient Field")
+
+# Gradient of f(x,y) = x^2 + y^2 is (2x, 2y)
+# We plot this on a grid
+grid <- expand.grid(x=seq(-1.5, 1.5, by=1), y=seq(-1.5, 1.5, by=1))
+grid <- grid[!(grid$x==0 & grid$y==0),] # remove origin
+arrows(grid$x, grid$y, grid$x + 0.2 * (2*grid$x), grid$y + 0.2 * (2*grid$y), 
+       length = 0.05, col = "red")
+@
+\end{center}
+At a peak or a valley (a local max/min), the ground is flat. So, $\nabla f = (0, 0)$
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\subsection{Optimization with Constraints}
+% The subsection page
+\newSubSectionSlide{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
+
+\begin{frame}{The real-world problem}
+  Often, we want to maximize or minimize a function, but we don't have unlimited freedom. We have \defword{constraints}
+  \vfill
+  \begin{itemize}
+    \item Maximize the profit of your company... \textit{subject to a limited budget}
+    \vfill
+    \item Minimize the material used for a can... \textit{that must hold a specific volume}
+    \vfill
+    \item Find the highest point on a mountain... \textit{while staying on a specific trail}
+  \end{itemize}
+  \vfill
+  Setting the gradient to zero ($\nabla f = 0$) finds the highest point on the whole mountain, which might not be on our trail!
+\end{frame}
+
+\begin{frame}{Visualizing the problem}
+  Imagine our function $f(x,y)$ is the altitude on a map (contour lines)
+  \vfill
+  Our constraint, $g(x,y) = c$, is a specific path we must walk on
+\end{frame}
+
+\begin{frame}[fragile]
+  \begin{center}
+<<fig_constraint, echo=FALSE, fig.show='asis', out.width="0.8\\textwidth">>=
+# Function to optimize (an inverted ellipse)
+f <- function(x, y) { -( (x-1)^2 + 2*(y-1)^2 ) }
+x <- seq(-2, 4, length=100)
+y <- seq(-2, 4, length=100)
+z <- outer(x, y, f)
+
+# Contour plot of the function
+contour(x, y, z, levels=c(-15, -10, -5, -2, -1, -0.5), 
+        xlab="x", ylab="y", main="Optimization with a Constraint")
+
+# Constraint g(x,y) = x^2 + y^2 = 4 (a circle path)
+t <- seq(0, 2*pi, length=200)
+xc <- 2 * cos(t)
+yc <- 2 * sin(t)
+lines(xc, yc, col="red", lwd=3)
+text(2.2, 0, "Path g(x,y)=c", col="red", pos=4)
+@
+\end{center}
+We are looking for the highest (or lowest) point \textit{along the red path}
+\end{frame}
+
+\begin{frame}{The key insight}
+At the optimal point on the path, the path will be perfectly \textbf{tangent} to the contour line of the surface
+  
+  \begin{center}
+<<fig_tangency, echo=FALSE, fig.show='asis', out.width="0.7\\textwidth">>=
+# Re-plot the contour and constraint
+f <- function(x, y) { -( (x-1)^2 + 2*(y-1)^2 ) }
+x <- seq(-2, 4, length=100)
+y <- seq(-2, 4, length=100)
+z <- outer(x, y, f)
+contour(x, y, z, levels=c(-15, -10, -5, -2, -1, -0.5), 
+        xlab="x", ylab="y", main="Tangency at the Optimum")
+t <- seq(0, 2*pi, length=200)
+xc <- 2 * cos(t)
+yc <- 2 * sin(t)
+lines(xc, yc, col="red", lwd=2)
+
+# Point of tangency (approximate for this function)
+opt_x <- 1.535
+opt_y <- 1.278
+points(opt_x, opt_y, pch=19, col="blue", cex=1.5)
+
+# Gradient of f: (-2(x-1), -4(y-1))
+grad_f_x <- -2 * (opt_x - 1)
+grad_f_y <- -4 * (opt_y - 1)
+arrows(opt_x, opt_y, opt_x + grad_f_x, opt_y + grad_f_y, col="darkgreen", lwd=2, length=0.1)
+text(opt_x + grad_f_x, opt_y + grad_f_y, expression(nabla*f), col="darkgreen", pos=4)
+
+# Gradient of g: (2x, 2y)
+grad_g_x <- 2 * opt_x
+grad_g_y <- 2 * opt_y
+# Scale it down to see it better
+arrows(opt_x, opt_y, opt_x + 0.2*grad_g_x, opt_y + 0.2*grad_g_y, col="purple", lwd=2, length=0.1)
+text(opt_x + 0.2*grad_g_x, opt_y + 0.2*grad_g_y, expression(nabla*g), col="purple", pos=4)
+@
+  \end{center}
+\end{frame}
+
+\begin{frame}
+  Why? If the path crossed the contour line, you could move along the path to get to a higher (or lower) contour
+  \vfill
+  Mathematically, this tangency means the gradient vectors of the function and the constraint are \textbf{parallel}
+  $$ \nabla f = \lambda \nabla g $$
+  \vfill
+  The scalar $\lambda$ (lambda) is called the \defword{Lagrange multiplier}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\subsection{The Lagrangian Method}
+% The subsection page
+\newSubSectionSlide{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
+
+\begin{frame}{The Lagrangian function}
+  The condition $\nabla f = \lambda \nabla g$ is clever, but solving it can be messy
+  \vfill
+  Instead, we combine our function and constraint into a single, new function called the \defword{Lagrangian}
+  
+  $$ \mathcal{L}(x, y, \lambda) = f(x, y) - \lambda [g(x, y) - c] $$
+  \vfill
+  \begin{itemize}
+    \item $f(x, y)$ the function we want to optimize
+    \item $g(x, y) = c$ the constraint we must follow
+    \item $\lambda$ the Lagrange multiplier
+  \end{itemize}
+  \vfill
+  Finding the unconstrained optimum of $\mathcal{L}$ solves the original constrained problem!
+\end{frame}
+
+\begin{frame}{The method -- step-by-step}
+  To find the optimum of the Lagrangian $\mathcal{L}(x, y, \lambda)$, we find where its gradient is zero
+  \vfill
+  We take the partial derivative with respect to \textit{all} its variables ($x$, $y$, and $\lambda$) and set them to zero
+  \vfill
+  \begin{enumerate}
+    \item $\frac{\partial \mathcal{L}}{\partial x} = \frac{\partial f}{\partial x} - \lambda \frac{\partial g}{\partial x} = 0$
+    \item $\frac{\partial \mathcal{L}}{\partial y} = \frac{\partial f}{\partial y} - \lambda \frac{\partial g}{\partial y} = 0$
+    \item $\frac{\partial \mathcal{L}}{\partial \lambda} = -(g(x, y) - c) = 0 \implies g(x, y) = c$
+  \end{enumerate}
+  \vfill
+  The first two equations rearrange to $\nabla f = \lambda \nabla g$ and the third equation is the original constraint
+\end{frame}
+
+\begin{frame}{Example: Fencing a Field}
+  \textbf{Problem:} You have 40 meters of fence. What is the largest rectangular area you can enclose?
+  
+  \begin{itemize}
+    \item \textbf{Maximize Area:} $A(x, y) = xy$
+    \item \textbf{Constraint (Perimeter):} $2x + 2y = 40$
+  \end{itemize}
+  
+  \textbf{1. Form the Lagrangian:}
+  $$ \mathcal{L}(x, y, \lambda) = xy - \lambda(2x + 2y - 40) $$
+  
+  \textbf{2. Take Partial Derivatives:}
+  \begin{itemize}
+    \item $\frac{\partial \mathcal{L}}{\partial x} = y - 2\lambda = 0 \implies y = 2\lambda$
+    \item $\frac{\partial \mathcal{L}}{\partial y} = x - 2\lambda = 0 \implies x = 2\lambda$
+    \item $\frac{\partial \mathcal{L}}{\partial \lambda} = -(2x + 2y - 40) = 0$
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Example: Solution}
+  From the first two equations, we see that $x = y$
+  \vfill
+  Now, substitute this into the third equation (the constraint):
+  $$ 2x + 2(x) = 40 $$
+  $$ 4x = 40 $$
+  $$ x = 10 $$
+  \vfill
+  Since $x=y$, we have $y=10$, i.e., optimal dimensions are 10m by 10m (a square), giving a maximum area of 100 $m^2$
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\subsection{Conclusion}
+% The subsection page
+\newSubSectionSlide{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
+
+\begin{frame}{What does $\lambda$ mean?}
+  The Lagrange multiplier $\lambda$ has a very useful interpretation
+  \vfill
+  It tells you how much the optimal value of your function $f$ will change if you slightly relax the constraint $c$
+  \vfill
+  $$ \lambda = \frac{df_{optimal}}{dc} $$
+  \vfill
+  \textbf{In our example:} If we had 41 meters of fence instead of 40 (so $c$ changes by 1), how much would the max area increase?
+  \vfill
+  $x=y=2\lambda$, so $\lambda = x/2 = 10/2 = 5$.
+  The maximum area would increase by approximately 5 $m^2$
+\end{frame}
+
+
+\end{document}
