@@ -38,16 +38,15 @@ cat(input_setup)
 
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%
-\Ssection{Least squares problems}{FIGS-slides-admin/Gemini_Generated_Image_c06eixc06eixc06e.jpeg}
+\Ssection{Getting the Canadian census data}{FIGS-slides-admin/Gemini_Generated_Image_5srris5srris5srr.jpeg}
 
+\begin{frame}{Remark}
+This is the slide version of \code{Canada-census-get-plot-data.Rmd} in the folder \code{CODE} of the course repository
+\vfill
+The \code{html} file generated there (\href{https://julien-arino.github.io/math-of-data-science/CODE/Canada-census-get-plot-data.html}{link}) is much easier to read than these slides
+\end{frame}
 
-%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%
-\Ssubsection{Getting the Canadian census data}{FIGS-slides-admin/Gemini_Generated_Image_5srris5srris5srr.jpeg}
-
-\begin{frame}\frametitle{Grabing the Canadian census data}
+\begin{frame}\frametitle{Canadian census data}
 We want to consider the evolution of the population of Canada through time
 \vfill
 For this, we grab the Canadian census data
@@ -59,13 +58,24 @@ We follow the link to Table A2-14, where we find another link, this time to a cs
 \end{frame}
 
 
-\begin{frame}[fragile]\frametitle{Grabing the Canadian census data}
+\begin{frame}[fragile]
+\frametitle{Grabing the Canadian census data}
 The function \code{read.csv} reads in a file (potentially directly from the web)
 \vfill
-Assign the result to the variable data. We then use the function head to show the first few lines in the result.
-\vfill
 <<load-census-csv-1>>=
-data_old = read.csv("https://www150.statcan.gc.ca/n1/en/pub/11-516-x/sectiona/A2_14-eng.csv?st=L7vSnqio")
+prefix = "https://www150.statcan.gc.ca/n1/en/pub/11-516-x/sectiona/"
+page = "A2_14-eng.csv?st=L7vSnqio"
+url = paste0(prefix, page)
+data_old = read.csv(url)
+@
+\vfill
+This directly assigns the result to the variable \code{data}
+\vfill
+We then use the function \code{head} to show the first few lines in the result
+\end{frame}
+
+\begin{frame}[fragile]
+<<load-census-csv-2>>=
 head(data_old)
 @
 \end{frame}
@@ -73,30 +83,30 @@ head(data_old)
 \begin{frame}[fragile]
 Obviously, this does not make a lot of sense. This is normal: take a look at the first few lines in the file. They take the form
 <<>>=
-head(data_old)
+head(data_old, n = 1)
 @
 \vfill
-This happens often: the first few lines are here to set the information, they lay out a simple version of the so-called metadata
+This happens often: the first few lines are here to describe the information contained in the data set, i.e., the so-called \defword{metadata}
 \end{frame}
 
 \begin{frame}[fragile]
-The first line here does this; it is easy to deal with this: the function read.csv takes the optional argument skip=, which indicates how many lines to skip at the beginning
+It is easy to deal with this: the function \code{read.csv} takes the optional argument \code{skip}, which indicates how many lines to skip at the beginning of the file
+\vfill
 The second line is also empty, so let us skip it too
 
-<<load-census-csv-2>>=
-data_old = read.csv("https://www150.statcan.gc.ca/n1/en/pub/11-516-x/sectiona/A2_14-eng.csv?st=L7vSnqio",
-                    skip = 2)
-head(data_old)
+<<load-census-csv-3>>=
+data_old = read.csv(url, skip = 2)
+head(data_old, n = 2)
 @
 \end{frame}
 
 
 \begin{frame}[fragile]
-Here, there is the further issue that to make things legible, the table authors used 3 rows (from 2 to 4) to encode for long names (e.g., Prince Edward Island is written over 3 rows). Note, however, that `read.csv` has rightly picked up on the first row being the column names.
-
-(You could also use the function `read\_csv` from the package `readr` to read in the file. This function is a bit more flexible than `read.csv` and can handle such cases more easily. However, it is not part of the base R package, so you would need to install it first.)
-
-Because we are only interested in the total population of the country and the year, let us simply get rid of the first 4 rows and of all columns except the second (Year) and third (Canada)
+To make things legible, the table authors used 3 rows to write long names (e.g., Prince Edward Island is written over 3 rows)
+\vfill
+Note, however, that \code{read.csv} has rightly picked up on the first row being the column names
+\vfill
+Because we are only interested in the total population of the country and the year, let us get rid of the first 4 rows and of all columns except the second (Year) and third (Canada)
 
 <<>>=
 data_old = data_old[5:dim(data_old)[1], 2:3]
@@ -105,29 +115,35 @@ head(data_old, n=4)
 \end{frame}
 
 
-\begin{frame}
-Still not perfect:
+\begin{frame}[fragile]{Still not perfect...}
+<<>>=
+head(data_old, n=3)
+tail(data_old, n=2)
+@
+\begin{enumerate}
+\item there are some empty rows
+\vfill
+\item the last few rows need to be removed too, they contain remarks about the data
+\vfill
+\item the population counts contain commas
+\vfill
+\item it would be better if years were increasing
+\end{enumerate}
+\end{frame}
 
-- there are some empty rows;
-- the last few rows need to be removed too, they contain remarks about the data;
-- the population counts contain commas;
-- it would be better if years were increasing.
-
-Let us fix these issues.
-
-For 1 and 2, this is easy: remark that the Canada column is empty for both issues. Now remark as well that below Canada (and Year, for that matter), it is written \code{<chr>}. This means that entries in the column are characters. Looking for empty content therefore means looking for empty character chains.
-
-So to fix 1 and 2, we keep the rows where Canada does not equal the empty chain.
-
-To get rid of commas, we just need to substitute an empty chain for ",".
-
-To sort, we find the order for the years and apply it to the entire table.
-
-Finally, as remarked above, for now, both the year and the population are considered as character chains. This means that in order to plot anything, we will have to indicate that these are numbers, not characters.
+\begin{frame}{Fixing these issues}
+1 and 2 are easy: remark that the Canada column is empty for both issues. Entries in the column are strings. Looking for empty content therefore means looking for empty strings
+\vfill
+So to fix 1 and 2, we keep the rows where Canada does not equal the empty string
+\vfill
+To get rid of commas, we just need to substitute an empty string for ","
+\vfill
+To sort, we find the order for the years and apply it to the entire table
+\vfill
+Finally, as remarked above, for now, both the year and the population are considered as strings. To plot, we will have to indicate that these are numbers, not characters
 \end{frame}
 
 \begin{frame}[fragile]
-
 <<>>=
 data_old = data_old[which(data_old$Canada != ""),]
 data_old$Canada = gsub(",", "", data_old$Canada)
@@ -135,21 +151,19 @@ order_data = order(data_old$Year)
 data_old = data_old[order_data,]
 data_old$Year = as.numeric(data_old$Year)
 data_old$Canada = as.numeric(data_old$Canada)
-data_old
+head(data_old)
 @
-
 \end{frame}
 
 
 \begin{frame}[fragile]
-Row numbers are a little weird, so let us fix this.
-
+Row numbers are a little weird
 <<>>=
 row.names(data_old) = 1:dim(data_old)[1]
-data_old
+head(data_old)
 @
 
-Well, that looks about right! Let's see what this looks like in a graph.
+Well, that looks about right! Let's see what this looks like in a graph
 \end{frame}
 
 \begin{frame}[fragile]
@@ -162,32 +176,49 @@ plot(data_old$Year, data_old$Canada,
 
 
 \begin{frame}[fragile]
-But wait, this is only to 1976..! Looking around, we find another table here. There's a download csv link in there, let us see where this leads us. The table is 720KB, so surely there must be more to this than just the population. To get a sense of that, we dump the whole data.frame, not just its head.
-
-<<>>=
+But wait, this is only to 1976..! 
+\vfill
+Looking around, we find another table here
+\vfill
+There's a download csv link in there, let us see where this leads us
+<<load-newer-census-data>>=
 data_new = read.csv("https://www12.statcan.gc.ca/census-recensement/2011/dp-pd/vc-rv/download-telecharger/download-telecharger.cfm?Lang=eng&CTLG=98-315-XWE2011001&FMT=csv")
-head(data_new, 10)
+@
+The table is 720KB, so surely there must be more to this than just the population
+\vfill
+To get a sense of that, we dump a few random rows
+\end{frame}
+
+\begin{frame}[fragile]
+<<>>=
+data_new[sort(unique(c(1,sample(nrow(data_new), 4)))), ]
 @
 \end{frame}
 
 
-\begin{frame}[fragile]
-Haha, this looks quite nice but has way more information than we need: we just want the population of Canada and here we get \Sexpr{dim(data_new)[1]} rows. Also, the population of Canada is expressed in thousands, so once we selected what we want, we will need to multiply by 1,000.
+\begin{frame}{Flat tables}
+This is a \defword{flat table}: each row contains a piece of information, the columns describe what this piece of information is about
+\vfill
+This has \emph{way more} information than we need: we just want the population of Canada and here we get \Sexpr{dim(data_new)[1]} rows over \Sexpr{length(unique(data_new$CHARACTERISTIC))} characteristics
+\vfill
+Also, population is expressed in thousands, so once we selected what we want, we need to multiply by 1,000
+\end{frame}
 
-There are many ways to select rows. Let us proceed as follows: we want the rows where the geography is "Canada" and the characteristic is "Population (in thousands)". Let us find those indices of rows that satisfy the first criterion, those that satisfy the second; if we then intersect these two sets of indices, we will have selected the rows we want.
-
+\begin{frame}[fragile]{Selecting rows}
+We want the rows where the geography is ``Canada'' and the characteristic is ``Population (in thousands)''
+\vfill
+Find indices of rows that satisfy the first criterion and those that satisfy the second; intersecting these two sets of indices, we have selected the rows we want
+\vfill
 <<>>=
 idx_CAN = which(data_new$GEOGRAPHY.NAME == "Canada")
 idx_char = which(data_new$CHARACTERISTIC == "Population (in thousands)")
 idx_keep = intersect(idx_CAN, idx_char)
-head(idx_keep, n = 8)
 @
 \end{frame}
 
 
 \begin{frame}[fragile]
-Yes, this looks okay, so let us keep only these
-
+Let us keep only these rows
 <<>>=
 data_new = data_new[idx_keep,]
 head(data_new, n = 8)
@@ -196,17 +227,21 @@ head(data_new, n = 8)
 
 
 \begin{frame}
-We want to concatenate this data.frame with the one from earlier
+We want to concatenate this data frame with the one from earlier
 \vfill
-To do this, we need the two data frames to have the same number of columns and, actually, the same column names and entry types (notice that \code{YEAR.S.} in \code{data\_new} is a column of characters)
+To do this, we need the two data frames to have the same number of columns, same column names and same entry types (notice that \code{YEAR.S.} in \code{data\_new} is a column of characters)
 \end{frame}
 
-\begin{frame}\frametitle{What remains to do}
+\begin{frame}\frametitle{What remains to be done}
 \begin{itemize}
 \item Rename the columns in the pruned old data (data\_pruned) to \code{year} and \code{population}. Personally, I prefer lowercase column names.. and \code{population} is more informative than \code{Canada}
+\vfill
 \item Keep only the relevant columns in \code{data\_new}, rename them accordingly and multiply population by 1,000 there
+\vfill
 \item Transform year in \code{data\_new} to numbers
+\vfill
 \item We already have data up to and including 1976 in \code{data\_old}, so get rid of that in \code{data\_new}
+\vfill
 \item Append the rows of \code{data\_new} to those of \code{data\_pruned}
 \end{itemize}
 \end{frame}
@@ -226,7 +261,7 @@ data = rbind(data_old,data_new)
 \end{frame}
 
 
-\begin{frame}[fragile]\frametitle{Let us plot the result}
+\begin{frame}[fragile]
 <<plot-whole-Canada-census-data,fig.show='asis',fig.height=3.5>>=
 plot(data$year, data$population,
     type = "b", lwd = 2,
@@ -250,7 +285,7 @@ readr::write_csv(data, file = "../CODE/Canada_census.csv")
 
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
-\Ssubsection{Least squares problem -- Initial considerations}{FIGS-slides-admin/Gemini_Generated_Image_gc7vxngc7vxngc7v.jpeg}
+\Ssection{Least squares problem -- Initial considerations}{FIGS-slides-admin/Gemini_Generated_Image_gc7vxngc7vxngc7v.jpeg}
 
 \begin{frame}
 We just collected the census data for Canada
@@ -544,7 +579,7 @@ GA@solution
 
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
-\Ssubsection{Least squares problem}{FIGS-slides-admin/Gemini_Generated_Image_skqdtfskqdtfskqd.jpeg}
+\Ssection{Least squares problem}{FIGS-slides-admin/Gemini_Generated_Image_skqdtfskqdtfskqd.jpeg}
 
 \begin{frame}{The least squares problem (simplest version)}
 	\begin{definition}
@@ -711,7 +746,7 @@ We have seen 1 and 2, we will not show 3 (it is not hard)
 
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
-\Ssubsection{Fitting something more complicated}{FIGS-slides-admin/Gemini_Generated_Image_jvdz0zjvdz0zjvdz.jpeg}
+\Ssection{Fitting something more complicated}{FIGS-slides-admin/Gemini_Generated_Image_jvdz0zjvdz0zjvdz.jpeg}
 
 \begin{frame}{Suppose we want to fit something a bit more complicated..}
 For instance, instead of the affine function
