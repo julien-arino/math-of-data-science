@@ -1,2 +1,0 @@
-date,mean_temp_c,max_temp_c,min_temp_c,humidity,wind_speed_kmh,wind_dir_deg,pressure_kpa,data_source,collected_at
-2025-08-31,28.1,35,24.2,43,12,225,101.4,Sample Data (Demo),2025-08-31T22:09:59Z

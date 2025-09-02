@@ -2,7 +2,7 @@
 
 % Set lecture number for later use
 <<set-lecture-number,echo=FALSE>>=
-lecture_number = "06"
+lecture_number = "05"
 @
 
 % Part common to all the lectures
@@ -40,14 +40,12 @@ cat(input_setup)
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
-\section{Least squares problems}
-\newSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_c06eixc06eixc06e.jpeg}
+\Ssection{Least squares problems}{FIGS-slides-admin/Gemini_Generated_Image_c06eixc06eixc06e.jpeg}
 
 
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
-\subsection{Getting the Canadian census data}
-\newSubSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_5srris5srris5srr.jpeg}
+\Ssubsection{Getting the Canadian census data}{FIGS-slides-admin/Gemini_Generated_Image_5srris5srris5srr.jpeg}
 
 \begin{frame}\frametitle{Grabing the Canadian census data}
 We want to consider the evolution of the population of Canada through time
@@ -252,8 +250,7 @@ readr::write_csv(data, file = "../CODE/Canada_census.csv")
 
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
-\subsection{Least squares problem -- Initial considerations}
-\newSubSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_gc7vxngc7vxngc7v.jpeg}
+\Ssubsection{Least squares problem -- Initial considerations}{FIGS-slides-admin/Gemini_Generated_Image_gc7vxngc7vxngc7v.jpeg}
 
 \begin{frame}
 We just collected the census data for Canada
@@ -547,8 +544,7 @@ GA@solution
 
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
-\subsection{Least squares problem}
-\newSubSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_skqdtfskqdtfskqd.jpeg}
+\Ssubsection{Least squares problem}{FIGS-slides-admin/Gemini_Generated_Image_skqdtfskqdtfskqd.jpeg}
 
 \begin{frame}{The least squares problem (simplest version)}
 	\begin{definition}
@@ -715,8 +711,7 @@ We have seen 1 and 2, we will not show 3 (it is not hard)
 
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
-\subsection{Fitting something more complicated}
-\newSubSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_jvdz0zjvdz0zjvdz.jpeg}
+\Ssubsection{Fitting something more complicated}{FIGS-slides-admin/Gemini_Generated_Image_jvdz0zjvdz0zjvdz.jpeg}
 
 \begin{frame}{Suppose we want to fit something a bit more complicated..}
 For instance, instead of the affine function

@@ -318,4 +318,20 @@ Please compare the results obtained when knit-ing these two files
 The first one will get you good marks. The second one will get you in hot water with the marker: you \emph{might} get one warning salvo, but afterwards, a lot of marks will be deducted
 \end{frame}
 
+\begin{frame}[fragile]{The chunk option that will avoid issues}
+Compare the first option chunk in the two iris files
+\vfill
+\begin{lstlisting}
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, fig.width = 10, fig.height = 6)
+```\end{lstlisting}
+\vfill
+\begin{lstlisting}
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, fig.width = 10, fig.height = 6)
+```\end{lstlisting}
+\vfill
+I recommend that you play with the \code{echo = } option. Set it to \code{FALSE} and judge your verbosity... Are you explaining enough with the code (and your comments) not shown?
+\end{frame}
+
 \end{document}
