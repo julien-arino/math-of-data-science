@@ -44,7 +44,9 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
-\Ssection{Similarity and diagonalisation}{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
+\section{Similarity and diagonalisation}
+% The section page
+\newSectionSlide{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
 
 \begin{frame}{Similarity}
 \begin{definition}[Similarity]
@@ -105,7 +107,9 @@ For $P^{-1}AP=D$: in $P$, put the linearly independent eigenvectors as columns a
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
-\Ssection{Linear independence/Bases/Dimension}{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
+\section{Linear independence/Bases/Dimension}
+% The section page
+\newSectionSlide{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
 
 \begin{frame}{Linear combination and span}
 	\begin{definition}[Linear combination]
@@ -232,7 +236,9 @@ E.g., in $\IR^3$, a set with 4 or more vectors is automatically linearly depende
 
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
-\Ssubsection{Linear algebra in a nutshell}{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
+\subsection{Linear algebra in a nutshell}
+% The subsection page
+\newSubSectionSlide{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
 
 
 \begin{frame}{To finish: the ``famous'' ``growing result''}
@@ -259,12 +265,16 @@ Let $A\in\M_n$. The following statements are equivalent (TFAE)
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
-\Ssection{A crash course in multivariable calculus}{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
+\section{A crash course in multivariable calculus}
+% The section page
+\newSectionSlide{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
 
 
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
-\Ssubsection{What is Multivariable Calculus?}{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
+\subsection{What is Multivariable Calculus?}
+% The subsection page
+\newSubSectionSlide{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
 
 \begin{frame}{One dimension}
 MATH 1500 \& 1700 deal with functions of one variable, like $f(x) = x^2$
@@ -365,7 +375,9 @@ At a peak or a valley (a local max/min), the ground is flat. So, $\nabla f = (0,
 
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
-\Ssubsection{Optimization with constraints}{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
+\subsection{Optimization with Constraints}
+% The subsection page
+\newSubSectionSlide{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
 
 \begin{frame}{The real-world problem}
   Often, we want to maximize or minimize a function, but we don't have unlimited freedom. We have \defword{constraints}
@@ -461,7 +473,9 @@ text(opt_x + 0.2*grad_g_x, opt_y + 0.2*grad_g_y, expression(nabla*g), col="purpl
 
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
-\Ssubsection{The Lagrangian Method}{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
+\subsection{The Lagrangian Method}
+% The subsection page
+\newSubSectionSlide{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
 
 \begin{frame}{The Lagrangian function}
   The condition $\nabla f = \lambda \nabla g$ is clever, but solving it can be messy
@@ -525,7 +539,9 @@ text(opt_x + 0.2*grad_g_x, opt_y + 0.2*grad_g_y, expression(nabla*g), col="purpl
 
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
-\Ssubsection{Conclusion}{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
+\subsection{Conclusion}
+% The subsection page
+\newSubSectionSlide{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
 
 \begin{frame}{What does $\lambda$ mean?}
   The Lagrange multiplier $\lambda$ has a very useful interpretation

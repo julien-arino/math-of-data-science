@@ -22,7 +22,8 @@ done
 
 for f in L??-*.tex 
 do
-    # We need to run pdflatex twice to get the TOC right
+    # We need to run pdflatex three times to get cross-references and TOC right
+    pdflatex -interaction=nonstopmode $f
     pdflatex -interaction=nonstopmode $f
     pdflatex -interaction=nonstopmode $f
 done

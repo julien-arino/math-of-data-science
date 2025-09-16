@@ -1,0 +1,368 @@
+\documentclass[aspectratio=169]{beamer}\usepackage[]{graphicx}\usepackage[]{xcolor}
+% maxwidth is the original width if it is less than linewidth
+% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlsng}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hldef}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+\let\hlipl\hlkwb
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+
+% Set lecture number for later use
+
+
+% Part common to all the lectures
+\subtitle{MATH 2740 -- Mathematics of Data Science -- Lecture 07}
+\author{\texorpdfstring{Julien Arino\newline\url{julien.arino@umanitoba.ca}}{Julien Arino}}
+\institute{Department of Mathematics @ University of Manitoba}
+\date{Fall 202X}
+
+% Title of the lecture
+\title{Matrix methods -- Least squares problems}
+
+
+
+\input{slides-setup-whiteBG.tex}
+
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% TITLE AND OUTLINE
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\titlepagewithfigure{FIGS-slides-admin/Gemini_Generated_Image_7iz9ft7iz9ft7iz9.jpeg}
+\outlinepage{FIGS-slides-admin/Gemini_Generated_Image_iyzqdwiyzqdwiyzq.jpeg}
+
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\section{QR factorisation}
+\newSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_c06eixc06eixc06e.jpeg}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\subsection{Matrix factorisations}
+\newSubSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_c06eixc06eixc06e.jpeg}
+\begin{frame}{Matrix factorisations}
+	Matrix factorisations are popular because they allow to perform some computations more easily
+	\vfill
+	There are several different types of factorisations. Here, we study just the QR factorisation, which is useful for many least squares problems
+\end{frame}	
+	
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\subsection{Orthogonality and projections}
+\newSubSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_c06eixc06eixc06e.jpeg}
+
+\begin{frame}
+\begin{definition}[Orthogonal set of vectors]
+The set of vectors $\{\bv_1,\ldots,\bv_k\}\in\IR^n$ is an \textbf{orthogonal set} if
+\[
+\forall i,j=1,\ldots,k,\quad i\neq j \implies \bv_i\bullet\bv_j=0
+\]
+\end{definition}
+
+\begin{theorem}\label{th:ortho_implies_LI}
+$\{\bv_1,\ldots,\bv_k\}\in\IR^n$ with $\forall i$, $\bv_i\neq\b0$, orthogonal set $\implies$ $\{\bv_1,\ldots,\bv_k\}\in\IR^n$ linearly independent
+\end{theorem}
+
+\begin{definition}[Orthogonal basis]
+Let $S$ be a basis of the subspace $W\subset\IR^n$ composed of an orthogonal set of vectors. We say $S$ is an \textbf{orthogonal basis} of $W$
+\end{definition}
+\end{frame}
+
+\begin{frame}{Proof of Theorem~\ref{th:ortho_implies_LI}}
+Assume $\{\bv_1,\ldots,\bv_k\}$ orthogonal set with $\bv_i\neq\b0$ for all $i=1,\ldots,k$. Recall $\{\bv_1,\ldots,\bv_k\}$ is LI if 
+\[
+c_1\bv_1+\cdots+c_k\bv_k=\b0\iff c_1=\cdots=c_k=0
+\]
+So assume $c_1,\ldots,c_k\in\IR$ are s.t. $c_1\bv_1+\cdots+c_k\bv_k=\b0$.
+Recall that $\forall\bx\in\IR^k$, $\b0_k\bullet\bx=0$. So for some $\bv_i\in\{\bv_1,\ldots,\bv_k\}$
+\begin{align}
+0 &= \b0\bullet\bv_i \nonumber \\
+&= (c_1\bv_1+\cdots+c_k\bv_k)\bullet\bv_i \nonumber \\
+&= c_1\bv_1\bullet\bv_i+\cdots+c_k\bv_k\bullet\bv_i \label{eq:proof_th_ortho_implies_LI}
+\end{align}
+As $\{\bv_1,\ldots,\bv_k\}$ orthogonal, $\bv_j\bullet\bv_i=0$ when $i\neq j$, \eqref{eq:proof_th_ortho_implies_LI} reduces to
+\[
+c_i\bv_i\bullet\bv_i = 0 \iff c_i\|\bv_i\|^2 = 0
+\]
+As $\bv_i\neq 0$ for all $i$, $\|\bv_i\|\neq 0$ and so $c_i=0$. This is true for all $i$, hence the result \hfill\qed
+\end{frame}
+
+\begin{frame}{Example -- Vectors of the standard basis of $\IR^3$}
+For $\IR^3$, we denote
+\[
+\bi =\begin{pmatrix}
+1\\0\\0
+\end{pmatrix},\quad
+\bj =\begin{pmatrix}
+0\\1\\0
+\end{pmatrix}
+\textrm{ and }
+\bk =\begin{pmatrix}
+0\\0\\1
+\end{pmatrix}
+\]
+($\IR^k$ for $k>3$, we denote them $\be_i$)
+\vfill
+Clearly, $\{\bi,\bj\}$, $\{\bi,\bk\}$, $\{\bj,\bk\}$ and $\{\bi,\bj,\bk\}$ orthogonal sets. The standard basis vectors are also $\neq\b0$, so the sets are LI. And
+\[
+\{\bi,\bj,\bk\}
+\]
+is an orthogonal basis of $\IR^3$ since it spans $\IR^3$ and is LI
+\vfill
+\[
+c_1\bi+c_2\bj+c_3\bk
+=
+c_1\begin{pmatrix}
+1\\0\\0
+\end{pmatrix}
++c_2\begin{pmatrix}
+0\\1\\0
+\end{pmatrix}
++c_3\begin{pmatrix}
+0\\0\\1
+\end{pmatrix}
+=
+\begin{pmatrix}
+c_1\\c_2\\c_3
+\end{pmatrix}
+\]
+\end{frame}
+
+\begin{frame}{Orthonormal version of things}
+\begin{definition}[Orthonormal set]
+The set of vectors $\{\bv_1,\ldots,\bv_k\}\in\IR^n$ is an \textbf{orthonormal set} if it is an orthogonal set and furthermore
+\[
+\forall i=1,\ldots,k,\quad \|\bv_i\|=1
+\]
+\end{definition}
+\begin{definition}[Orthonormal basis]
+A basis of the subspace $W\subset\IR^n$ is an \textbf{orthonormal basis} if the vectors composing it are an orthonormal set
+\end{definition}
+\vfill
+$\{\bv_1,\ldots,\bv_k\}\in\IR^n$ is orthonormal if
+\[
+\bv_i\bullet\bv_j =
+\begin{cases}
+1 &\textrm{if }i=j \\
+0 &\textrm{otherwise}
+\end{cases}
+\]
+\end{frame}
+
+
+\begin{frame}{Projections}
+	\begin{definition}[Orthogonal projection onto a subspace]
+	$W\subset\IR^n$ a subspace and $\{\bu_1,\ldots,\bu_k\}$ an orthogonal basis of $W$. $\forall\bv\in\IR^n$, the \textbf{orthogonal projection} of $\bv$ \textbf{onto} $W$ is
+	\[
+	\mathsf{proj}_W(\bv) =
+	\frac{\bu_1\bullet\bv}{\|\bu_1\|^2}\bu_1
+	+\cdots+
+	\frac{\bu_k\bullet\bv}{\|\bu_k\|^2}\bu_k
+	\]  
+	\end{definition}
+	\vfill
+	\begin{definition}[Component orthogonal to a subspace]
+	$W\subset\IR^n$ a subspace and $\{\bu_1,\ldots,\bu_k\}$ an orthogonal basis of $W$. $\forall\bv\in\IR^n$, the \textbf{component} of  $\bv$ \textbf{orthogonal to} W is
+	\[
+	\mathsf{perp}_W(\bv)=\bv-\mathsf{proj}_W(\bv)
+	\]
+	\end{definition}	
+	\end{frame}
+	
+	
+	\begin{frame}
+	What this aims to do is to construct an orthogonal basis for a subspace $W\subset\IR^n$
+	\vfill
+	To do this, we use the \emph{Gram-Schmidt orthogonalisation process}, which turn s a basis of $W$ into an orthogonal basis of $W$
+	\end{frame}
+	
+	\begin{frame}{Gram-Schmidt process}
+	\begin{theorem}
+	$W\subset\IR^n$ a subset and $\{\bx_1,\ldots,\bx_k\}$ a basis of $W$. Let
+	\begin{align*}
+	\bv_1 &= \bx_1 \\
+	\bv_2 &= \bx_2 -\frac{\bv_1\bullet\bx_2}{\|\bv_1\|^2}\bv_1 \\
+	\bv_3 &= \bx_3 -\frac{\bv_1\bullet\bx_3}{\|\bv_1\|^2}\bv_1 -\frac{\bv_2\bullet\bx_3}{\|\bv_2\|^2}\bv_2 \\
+	&\;\;\vdots & \\
+	\bv_k &= \bx_k -\frac{\bv_1\bullet\bx_k}{\|\bv_1\|^2}\bv_1 -\cdots-\frac{\bv_{k-1}\bullet\bx_k}{\|\bv_{k-1}\|^2}\bv_{k-1}
+	\end{align*}
+	and
+	\[
+	W_1=\mathsf{span}(\bx_1),W_2 = \mathsf{span}(\bx_1,\bx_2),\ldots,
+	W_k = \mathsf{span}(\bx_1,\ldots,\bx_k)
+	\]
+	Then $\forall i=1,\ldots,k$, $\{\bv_1,\ldots,\bv_i\}$ orthogonal basis for $W_i$
+	\end{theorem}
+	\end{frame}
+	
+	
+
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\subsection{Orthogonal matrices}
+\newSubSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_c06eixc06eixc06e.jpeg}
+
+\begin{frame}
+\begin{theorem}
+Let $Q\in\M_{mn}$. The columns of $Q$ form an orthonormal set if and only if
+\[
+Q^TQ=\II_n
+\]
+\end{theorem}
+\begin{definition}[Orthogonal matrix]
+$Q\in\M_n$ is an \textbf{orthogonal matrix} if its columns form an orthonormal set 
+\end{definition}
+So $Q\in\M_n$ orthogonal if $Q^TQ=\II$, i.e., $Q^T=Q^{-1}$
+\begin{theorem}[NSC for orthogonality]
+$Q\in\M_n$ orthogonal $\iff$ $Q^{-1} = Q^T$
+\end{theorem}
+\end{frame}
+
+
+\begin{frame}
+\begin{theorem}[Orthogonal matrices ``encode" isometries]
+\label{th:TFAE_orthogonal_matrices}
+Let $Q\in\M_n$. TFAE
+\begin{enumerate}
+\item $Q$ orthogonal
+\item $\forall\bx\in\IR^n$, $\|Q\bx\|=\|\bx\|$
+\item $\forall\bx,\by\in\IR^n$, $Q\bx\bullet Q\by=\bx\bullet\by$
+\end{enumerate}
+\end{theorem}
+\vfill
+\begin{theorem}\label{th:properties_orthogonal_matrices}
+Let $Q\in\M_n$ be orthogonal. Then
+\begin{enumerate}
+\item The rows of $Q$ form an orthonormal set
+\item $Q^{-1}$ orthogonal
+\item $\det Q=\pm 1$
+\item $\forall\lambda\in\sigma(Q)$, $|\lambda|=1$
+\item If $Q_2\in\M_n$ also orthogonal, then $QQ_2$ orthogonal
+\end{enumerate}
+\end{theorem}
+\end{frame}
+
+
+
+\begin{frame}{Proof of 4 in Theorem~\ref{th:properties_orthogonal_matrices}}
+All statements in Theorem~\ref{th:properties_orthogonal_matrices} are easy, but let's focus on 4 
+\vfill
+Let $\lambda$ be an eigenvalue of $Q\in\M_n$ orthogonal, i.e., $\exists\IR^n\ni\bx\neq\b0$ s.t.
+\[
+Q\bx = \lambda\bx
+\]
+Take the norm on both sides
+\[
+\|Q\bx\| = \|\lambda\bx\|
+\]
+From 2 in Theorem~\ref{th:TFAE_orthogonal_matrices}, $\|Q\bx\|=\|\bx\|$ and from the properties of norms, $\|\lambda\bx\|=|\lambda|\;\|\bx\|$, so we have
+\[
+\|Q\bx\| = \|\lambda\bx\| \iff \|\bx\| = |\lambda|\;\|\bx\| \iff 1=|\lambda|
+\]
+(we can divide by $\|\bx\|$ since $\bx\neq \b0$ as an eigenvector)\hfill\qed
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\subsection{The QR factorisation}
+\begin{frame}{The QR factorisation}
+\begin{theorem}\label{th:QR_factorisation}
+Let $A\in\M_{mn}$ with LI columns. Then $A$ can be factored as
+\[
+A=QR
+\]
+where $Q\in\M_{mn}$ has orthonormal columns and $R\in\M_n$ is nonsingular upper triangular
+\end{theorem}
+\end{frame}
+
+
+\begin{frame}{Back to least squares}
+So what was the point of all that..?
+\vfill
+\begin{theorem}[Least squares with QR factorisation]
+\label{th:LSQ_with_QR}
+$A\in\M_{mn}$ with LI columns, $\bb\in\IR^m$. If $A=QR$ is a QR factorisation of $A$, then the unique least squares solution $\tilde\bx$ of $A\bx=\bb$ is
+\[
+\tilde\bx = R^{-1}Q^T\bb
+\]
+\end{theorem}
+\end{frame}
+
+
+\begin{frame}{Proof of Theorem~\ref{th:LSQ_with_QR}}
+$A$ has LI columns so 
+\begin{itemize}
+\item least squares $A\bx=\bb$ has unique solution $\tilde\bx=(A^TA)^{-1}A^T\bb$
+\item by Theorem~\ref{th:QR_factorisation}, $A$ can be written as $A=QR$ with $Q\in\M_{mn}$ with orthonormal columns and $R\in\M_n$ nonsingular and upper triangular
+\end{itemize}
+So
+\begin{align*}
+A^TA\tilde\bx= A^T\bb &\implies (QR)^TQR\tilde\bx = (QR)^T\bb \\
+&\implies R^TQ^TQR\tilde\bx = R^TQ^T\bb \\
+&\implies R^T\II_nR\tilde\bx = R^TQ^T\bb \\
+&\implies R^TR\tilde\bx = R^TQ^T\bb \\
+&\implies (R^T)^{-1}R\tilde\bx = (R^T)^{-1}R^TQ^T\bb \\
+&\implies R\tilde\bx = Q^T\bb \\
+&\implies \tilde\bx = R^{-1}Q^T\bb\hfill\qed
+\end{align*}
+\end{frame}
+
+
+
+
+\end{document}
