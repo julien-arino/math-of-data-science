@@ -541,16 +541,18 @@ We can't be doing this by hand..
 \end{frame}
 
 
-\begin{frame}\frametitle{Genetic algorithms}
-Let's use something cool: a \emph{genetic algorithm}
+\begin{frame}\frametitle{Let's minimise using something cool -- \emph{genetic algorithms}}
 
-- Genetic algorithms are a stochastic *optimisation* method. There are other types, e.g., gradient descent (deterministic)
-- The idea is to use a mechanism mimicking evolution's drive towards higher fitness
-- The function value is its fitness
-- We try different genes (here, different values of $a,b$) and evaluate their fitness.. keep the good ones
-- We mutate or crossover genes, throw in new ones, etc.
-- We keep doing this until we reach a stopping criterion
-- We then return the best gene we found
+
+\begin{itemize}
+\item Genetic algorithms are a stochastic *optimisation* method. There are other types, e.g., gradient descent (deterministic)
+\item The idea is to use a mechanism mimicking evolution's drive towards higher fitness
+\item The function value is its fitness
+\item We try different genes (here, different values of $a,b$) and evaluate their fitness.. keep the good ones
+\item We mutate or crossover genes, throw in new ones, etc.
+\item We keep doing this until we reach a stopping criterion
+\item We then return the best gene we found
+\end{itemize}
 \end{frame}
 
 
@@ -570,292 +572,15 @@ GA
 GA@solution
 -GA@fitnessValue
 @
-
-- Here, however, we do not have to go brute force: we can reason using mathematics
-- We now take a little detour on the math side of things, we will come back to code in a while..
-\end{frame}
-
-
-
-%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%
-\Ssection{Least squares problem}{FIGS-slides-admin/Gemini_Generated_Image_skqdtfskqdtfskqd.jpeg}
-
-\begin{frame}{The least squares problem (simplest version)}
-	\begin{definition}
-		Given a collection of points $(x_1,y_1),\ldots,(x_n,y_n)$, find the coefficients $a,b$ of the line $y=a+bx$ such that
-		$$
-		\|\mathbf{e}\|=\sqrt{\varepsilon_1^2+\cdots+\varepsilon_n^2}
-		=\sqrt{(y_1-\tilde y_1)^2+\cdots+(y_n-\tilde y_n)^2}
-		$$
-		is minimal, where $\tilde y_i=a+bx_i$ for $i=1,\ldots,n$
-	\end{definition}
-	\vfill
-	We just saw how to solve this by brute force using a genetic algorith to minimise $\|e\|$, let us now see how to solve this problem ``properly''
-\end{frame}
-
-
-\begin{frame}
-	For a data point $i=1,\ldots,n$
-	\[
-	\varepsilon_i = y_i-\tilde y_i = y_i - (a+bx_i)
-	\]
-	So if we write this for all data points,
-	\begin{align*}
-	\varepsilon_1 &= y_1 - (a+bx_1) \\
-	&\;\;\vdots \\
-	\varepsilon_n &= y_n - (a+bx_n) \\
-	\end{align*}
-	In matrix form
-	\[
-	\be = \bb-A\bx
-	\]
-	with
-	\[
-	\be = \begin{pmatrix}
-	\varepsilon_1\\ \vdots\\ \varepsilon_n
-	\end{pmatrix},
-	A=\begin{pmatrix}
-	1 & x_1 \\ \vdots & \vdots \\ 1 & x_n
-	\end{pmatrix},
-	\bx = \begin{pmatrix}
-	a\\b
-	\end{pmatrix}\textrm{ and }
-	\bb = \begin{pmatrix}
-	y_1\\ \vdots\\ y_n
-	\end{pmatrix}
-	\]
-\end{frame}
-
-\begin{frame}{The least squares problem (reformulated)}
-\begin{definition}[Least squares solutions]
-Consider a collection of points $(x_1,y_1),\ldots,(x_n,y_n)$, a matrix $A\in\M_{mn}$, $\bb\in\IR^m$. A \textbf{least squares solution} of $A\bx=\bb$ is a vector $\tilde \bx\in\IR^n$ s.t.
-\[
-\forall \bx\in\IR^n,\quad \|\bb-A\tilde\bx\|\leq \|\bb-A\bx\|
-\]
-\end{definition}
-\end{frame}
-
-
-\begin{frame}{Needed to solve the problem}
-\begin{definition}[Best approximation]
-Let $V$ be a vector space, $W\subset V$ and $\mathbf{v}\in V$. The \textbf{best approximation} to $\mathbf{v}$ in $W$ is $\tilde{\mathbf{v}}\in W$ s.t.
-\[
-\forall\mathbf{w}\in W, \mathbf{w}\neq\tilde{\mathbf{v}}, \quad
-\|\mathbf{v}-\tilde{\mathbf{v}}\| < \|\mathbf{v}-\mathbf{w}\|
-\]
-\end{definition}
-\vfill
-\begin{theorem}[Best approximation theorem]
-Let $V$ be a vector space with an inner product, $W\subset V$ and $\mathbf{v}\in V$. Then $\mathsf{proj}_W(\mathbf{v})$ is the best approximation to $\mathbf{v}$ in W
-\end{theorem}
-\end{frame}
-
-
-\begin{frame}{Let us find the least squares solution}
-$\forall \bx\IR^n$, $A\bx$ is a vector in the \textbf{column space} of $A$ (the space spanned by the vectors making up the columns of $A$)
-\vfill
-Since $\bx\in\IR^n$, $A\bx\in\mathsf{col}(A)$
-\vfill
-$\implies$ least squares solution of $A\bx=\bb$ is a vector $\tilde\by\in\mathsf{col}(A)$ s.t.
-\[
-\forall\by\in\mathsf{col}(A),\quad\|\bb-\tilde\by\|\leq\|\bb-\by\|
-\]
-\vfill
-This looks very much like Best approximation and Best approximation theorem
-\end{frame}
-
-\begin{frame}{Putting things together}
-We just stated: The least squares solution of $A\bx=\bb$ is a vector $\tilde\by\in\mathsf{col}(A)$ s.t.
-\[
-\forall\by\in\mathsf{col}(A),\quad\|\bb-\tilde\by\|\leq\|\bb-\by\|
-\]
-\vfill
-We know (reformulating a tad):
-\begin{theorem}[Best approximation theorem]
-Let $V$ be a vector space with an inner product, $W\subset V$ and $\mathbf{v}\in V$. Then $\mathsf{proj}_W(\mathbf{v})\in W$ is the best approximation to $\mathbf{v}$ in W, i.e.,
-\[
-\forall\mathbf{w}\in W, \mathbf{w}\neq\mathsf{proj}_W(\mathbf{v}), \quad
-\|\mathbf{v}-\mathsf{proj}_W(\mathbf{v})\| < \|\mathbf{v}-\mathbf{w}\|
-\]
-\end{theorem}
-\vfill
-$\implies$ $W=\mathsf{col}(A)$, $\bv=\bb$ and $\tilde\by=\mathsf{proj}_{\mathsf{col}(A)}(\mathbf{b})$
 \end{frame}
 
 \begin{frame}
-So if $\tilde\bx$ is a least squares solution of $A\bx=\bb$, then
-\[
-\tilde\by = A\tilde\bx = \mathsf{proj}_{\mathsf{col}(A)}(\mathbf{b})
-\]
-\vfill
-We have
-\[
-\bb-A\tilde\bx = \bb-\mathsf{proj}_{\mathsf{col}(A)}(\mathbf{b}) 
-= \mathsf{perp}_{\mathsf{col}(A)}(\mathbf{b})
-\]
-and it is easy to show that
-\[
-\mathsf{perp}_{\mathsf{col}(A)}(\mathbf{b}) \perp \mathsf{col}(A)
-\]
-\vfill
-So for all columns $\ba_i$ of $A$
-\[
-\ba_i\boldsymbol{\cdot}(\bb-A\tilde\bx) = 0
-\]
-which we can also write as $\ba_i^T(\bb-A\tilde\bx) = 0$
+\begin{itemize}
+\item Here, however, we do not have to go brute force: we can reason using mathematics
+\item We now take a little detour on the math side of things, we will come back to code in a while..
+\end{itemize}
 \end{frame}
 
-\begin{frame}
-For all columns $\ba_i$ of $A$,
-\[\ba_i^T(\bb-A\tilde\bx) = 0
-\]
-\vfill
-This is equivalent to saying that
-\[
-A^T(\bb-A\tilde\bx) = \b0
-\]
-\vfill
-We have
-\begin{align*}
-A^T(\bb-A\tilde\bx) = \b0 &\iff A^T\bb - A^TA\tilde\bx = \b0 \\
-&\iff A^T\bb = A^TA\tilde\bx \\
-&\iff A^TA\tilde\bx = A^T\bb
-\end{align*}
-The latter system constitutes the \textbf{normal equations} for $\tilde\bx$
-\end{frame}
-
-
-\begin{frame}{Least squares theorem}
-\begin{importanttheorem}[Least squares theorem]\label{th:least_squares}
-$A\in\M_{mn}$, $\bb\in\IR^m$. Then
-\begin{enumerate}
-\item $A\bx=\bb$ always has at least one least squares solution $\tilde\bx$
-\item $\tilde\bx$ least squares solution to $A\bx=\bb$ $\iff$ $\tilde\bx$ is a solution to the normal equations $A^TA\tilde\bx = A^T\bb$
-\item $A$ has linearly independent columns $\iff$ $A^TA$ invertible.  
-\newline In this case, the least squares solution is unique and 
-\[
-\tilde\bx = \left(A^TA\right)^{-1}A^T\bb
-\]
-\end{enumerate}
-\end{importanttheorem}
-\vfill
-We have seen 1 and 2, we will not show 3 (it is not hard)
-\end{frame}
-
-
-%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%
-\Ssection{Fitting something more complicated}{FIGS-slides-admin/Gemini_Generated_Image_jvdz0zjvdz0zjvdz.jpeg}
-
-\begin{frame}{Suppose we want to fit something a bit more complicated..}
-For instance, instead of the affine function
-\[
-y = a+bx
-\]
-suppose we want to do the quadratic
-\[
-y = a_0+a_1x+a_2x^2
-\]
-or even
-\[
-y = k_0 e^{k_1x}
-\]
-\vfill
-How do we proceed?
-\end{frame}
-
-
-\begin{frame}{Fitting the quadratic}
-We have the data points $(x_1,y_1),(x_2,y_2),\ldots,(x_n,y_n)$ and want to fit
-\[
-y = a_0+a_1x+a_2x^2
-\]
-At $(x_1,y_1)$,
-\[
-\tilde y_1 = a_0+a_1x_1+a_2x_1^2
-\]
-$\vdots$\\
-At $(x_n,y_n)$,
-\[
-\tilde y_n = a_0+a_1x_n+a_2x_n^2
-\]
-\end{frame}
-
-\begin{frame}
-In terms of the error
-\begin{align*}
-\varepsilon_1 &= y_1-\tilde y_1 = y_1-(a_0+a_1x_1+a_2x_1^2) \\
-&\;\;\vdots\\
-\varepsilon_n &= y_n-\tilde y_n = y_n-(a_0+a_1x_n+a_2x_n^2)
-\end{align*}
-i.e.,
-\[
-\be = \bb-A\bx 
-\]
-where
-\[
-\be = \begin{pmatrix}
-\varepsilon_1\\ \vdots\\ \varepsilon_n
-\end{pmatrix},
-A=\begin{pmatrix}
-1 & x_1 & x_1^2\\ \vdots & \vdots & \vdots \\ 1 & x_n & x_n^2
-\end{pmatrix},
-\bx = \begin{pmatrix}
-a_0\\a_1\\a_2
-\end{pmatrix}\textrm{ and }
-\bb = \begin{pmatrix}
-y_1\\ \vdots\\ y_n
-\end{pmatrix}
-\]
-\vfill
-Theorem~\ref{th:least_squares} applies, with here $A\in\M_{n3}$ and $\bb\in\IR^n$
-\end{frame}
-
-
-\begin{frame}{Fitting the exponential}
-Things are a bit more complicated here
-\vfill
-If we proceed as before, we get the system
-\begin{align*}
-y_1 &= k_0 e^{k_1x_1} \\
-&\;\;\vdots \\
-y_n &= k_0 e^{k_1x_n}
-\end{align*}
-$e^{k_1x_i}$ is a nonlinear term, it cannot be put in a matrix
-\vfill
-\emph{However}: take the $\ln$ of both sides of the equation
-\[
-\ln(y_i) = \ln(k_0e^{k_1x_i}) = \ln(k_0)+\ln(e^{k_1x_i}) = \ln(k_0)+k_1x_i
-\]
-If $y_i,k_0>0$, then their $\ln$ are defined and we're in business..
-\end{frame}
-
-\begin{frame}
-\[
-\ln(y_i) = \ln (k_0)+k_1x_i
-\]
-So the system is
-\begin{align*}
-\by = A\bx+\bb
-\end{align*}
-with
-\[
-A = \begin{pmatrix}
-x_1\\ \vdots \\ x_n
-\end{pmatrix},
-\bx = \begin{pmatrix}
-k_1
-\end{pmatrix},
-\bb = \begin{pmatrix}
-\ln (k_0)
-\end{pmatrix}
-\textrm{ and }
-\by = \begin{pmatrix}
-\ln (y_1)\\ \vdots\\ \ln (y_n)
-\end{pmatrix}
-\]
-\end{frame}
 
 
 

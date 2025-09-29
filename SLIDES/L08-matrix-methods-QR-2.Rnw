@@ -12,7 +12,7 @@ lecture_number = "08"
 \date{Fall 202X}
 
 % Title of the lecture
-\title{Matrix methods -- Least squares problems}
+\title{Matrix methods -- QR factorisation}
 
 <<set-options,echo=FALSE,warning=FALSE,message=FALSE>>=
 # Source the code common to all lectures

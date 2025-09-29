@@ -12,7 +12,7 @@ lecture_number = "07"
 \date{Fall 202X}
 
 % Title of the lecture
-\title{Matrix methods -- Least squares problems}
+\title{Matrix methods -- QR factorisation}
 
 <<set-options,echo=FALSE,warning=FALSE,message=FALSE>>=
 # Source the code common to all lectures
@@ -38,17 +38,9 @@ cat(input_setup)
 
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%
-\section{QR factorisation}
-\newSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_c06eixc06eixc06e.jpeg}
+\Ssection{Matrix factorisations}{FIGS-slides-admin/Gemini_Generated_Image_c06eixc06eixc06e.jpeg}
 
 
-
-%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%
-\subsection{Matrix factorisations}
-\newSubSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_c06eixc06eixc06e.jpeg}
 \begin{frame}{Matrix factorisations}
 	Matrix factorisations are popular because they allow to perform some computations more easily
 	\vfill
@@ -58,8 +50,7 @@ cat(input_setup)
 
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
-\subsection{Orthogonality and projections}
-\newSubSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_c06eixc06eixc06e.jpeg}
+\Ssection{Orthogonality and projections}{FIGS-slides-admin/Gemini_Generated_Image_c06eixc06eixc06e.jpeg}
 
 \begin{frame}
 \begin{definition}[Orthogonal set of vectors]
@@ -179,13 +170,14 @@ $\{\bv_1,\ldots,\bv_k\}\in\IR^n$ is orthonormal if
 	\end{definition}	
 	\end{frame}
 	
-	
+
+\Ssection{Gram-Schmidt orthogonalisation process}{FIGS-slides-admin/Gemini_Generated_Image_c06eixc06eixc06e.jpeg}	
 	\begin{frame}
 	What this aims to do is to construct an orthogonal basis for a subspace $W\subset\IR^n$
 	\vfill
 	To do this, we use the \emph{Gram-Schmidt orthogonalisation process}, which turn s a basis of $W$ into an orthogonal basis of $W$
 	\end{frame}
-	
+
 	\begin{frame}{Gram-Schmidt process}
 	\begin{theorem}
 	$W\subset\IR^n$ a subset and $\{\bx_1,\ldots,\bx_k\}$ a basis of $W$. Let
@@ -210,8 +202,7 @@ $\{\bv_1,\ldots,\bv_k\}\in\IR^n$ is orthonormal if
 
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
-\subsection{Orthogonal matrices}
-\newSubSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_c06eixc06eixc06e.jpeg}
+\Ssection{Orthogonal matrices}{FIGS-slides-admin/Gemini_Generated_Image_c06eixc06eixc06e.jpeg}
 
 \begin{frame}
 \begin{theorem}
@@ -224,9 +215,9 @@ Q^TQ=\II_n
 $Q\in\M_n$ is an \textbf{orthogonal matrix} if its columns form an orthonormal set 
 \end{definition}
 So $Q\in\M_n$ orthogonal if $Q^TQ=\II$, i.e., $Q^T=Q^{-1}$
-\begin{theorem}[NSC for orthogonality]
+\begin{importanttheorem}[NSC for orthogonality]
 $Q\in\M_n$ orthogonal $\iff$ $Q^{-1} = Q^T$
-\end{theorem}
+\end{importanttheorem}
 \end{frame}
 
 
@@ -241,7 +232,7 @@ Let $Q\in\M_n$. TFAE
 \end{enumerate}
 \end{theorem}
 \vfill
-\begin{theorem}\label{th:properties_orthogonal_matrices}
+\begin{importanttheorem}\label{th:properties_orthogonal_matrices}
 Let $Q\in\M_n$ be orthogonal. Then
 \begin{enumerate}
 \item The rows of $Q$ form an orthonormal set
@@ -250,7 +241,7 @@ Let $Q\in\M_n$ be orthogonal. Then
 \item $\forall\lambda\in\sigma(Q)$, $|\lambda|=1$
 \item If $Q_2\in\M_n$ also orthogonal, then $QQ_2$ orthogonal
 \end{enumerate}
-\end{theorem}
+\end{importanttheorem}
 \end{frame}
 
 
@@ -273,52 +264,6 @@ From 2 in Theorem~\ref{th:TFAE_orthogonal_matrices}, $\|Q\bx\|=\|\bx\|$ and from
 (we can divide by $\|\bx\|$ since $\bx\neq \b0$ as an eigenvector)\hfill\qed
 \end{frame}
 
-
-
-%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%
-\subsection{The QR factorisation}
-\begin{frame}{The QR factorisation}
-\begin{theorem}\label{th:QR_factorisation}
-Let $A\in\M_{mn}$ with LI columns. Then $A$ can be factored as
-\[
-A=QR
-\]
-where $Q\in\M_{mn}$ has orthonormal columns and $R\in\M_n$ is nonsingular upper triangular
-\end{theorem}
-\end{frame}
-
-
-\begin{frame}{Back to least squares}
-So what was the point of all that..?
-\vfill
-\begin{theorem}[Least squares with QR factorisation]
-\label{th:LSQ_with_QR}
-$A\in\M_{mn}$ with LI columns, $\bb\in\IR^m$. If $A=QR$ is a QR factorisation of $A$, then the unique least squares solution $\tilde\bx$ of $A\bx=\bb$ is
-\[
-\tilde\bx = R^{-1}Q^T\bb
-\]
-\end{theorem}
-\end{frame}
-
-
-\begin{frame}{Proof of Theorem~\ref{th:LSQ_with_QR}}
-$A$ has LI columns so 
-\begin{itemize}
-\item least squares $A\bx=\bb$ has unique solution $\tilde\bx=(A^TA)^{-1}A^T\bb$
-\item by Theorem~\ref{th:QR_factorisation}, $A$ can be written as $A=QR$ with $Q\in\M_{mn}$ with orthonormal columns and $R\in\M_n$ nonsingular and upper triangular
-\end{itemize}
-So
-\begin{align*}
-A^TA\tilde\bx= A^T\bb &\implies (QR)^TQR\tilde\bx = (QR)^T\bb \\
-&\implies R^TQ^TQR\tilde\bx = R^TQ^T\bb \\
-&\implies R^T\II_nR\tilde\bx = R^TQ^T\bb \\
-&\implies R^TR\tilde\bx = R^TQ^T\bb \\
-&\implies (R^T)^{-1}R\tilde\bx = (R^T)^{-1}R^TQ^T\bb \\
-&\implies R\tilde\bx = Q^T\bb \\
-&\implies \tilde\bx = R^{-1}Q^T\bb\hfill\qed
-\end{align*}
-\end{frame}
 
 
 
