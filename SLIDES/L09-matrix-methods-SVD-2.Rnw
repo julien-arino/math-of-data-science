@@ -175,17 +175,7 @@ I am caricaturing a little here: there can be cases that do not work exactly lik
 \Ssection{Applications of the SVD -- Least squares}{FIGS-slides-admin/Gemini_Generated_Image_38bqnt38bqnt38bq.jpeg}
 
 
-\begin{frame}{Least squares revisited}
-\begin{theorem}
-Let $A\in\M_{mn}$, $\bx\in\IR^n$ and $\bb\in\IR^m$. The least squares problem $A\bx=\bb$ has a unique least squares solution $\tilde\bx$ of \emph{minimal length} (closest to the origin) given by
-\[
-\tilde\bx = A^+\bb
-\]
-where $A^+$ is the \emph{pseudoinverse} of $A$
-\end{theorem}
-\end{frame}
-
-\begin{frame}
+\begin{frame}{Pseudoinverse of a matrix}
 \begin{definition}[Pseudoinverse]
 $A=U\Sigma V^T$ an SVD for $A\in\M_{mn}$, where 
 \[
@@ -213,7 +203,126 @@ D^{-1} & 0 \\ 0 & 0
 
 
 
+\begin{frame}{Least squares revisited}
+\begin{theorem}
+Let $A\in\M_{mn}$, $\bx\in\IR^n$ and $\bb\in\IR^m$. The least squares problem $A\bx=\bb$ has a unique least squares solution $\tilde\bx$ of \emph{minimal length} (closest to the origin) given by
+\[
+\tilde\bx = A^+\bb
+\]
+where $A^+$ is the \emph{pseudoinverse} of $A$
+\end{theorem}
+\end{frame}
 
+
+
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\Ssection{Summary -- Least squares methods}{FIGS-slides-admin/Gemini_Generated_Image_38bqnt38bqnt38bq.jpeg}
+
+\begin{frame}{The least squares problem}
+\textbf{Problem Statement:}
+\vfill
+Given a system $A\bx = \bb$ where $A\in\M_{mn}$, $\bx\in\IR^n$, $\bb\in\IR^m$ (typically $m>n$), find $\tilde\bx$ that minimizes
+$$
+\|\bb - A\bx\|^2 = \sum_{i=1}^m (b_i - \sum_{j=1}^n A_{ij}x_j)^2
+$$
+\vfill
+\textbf{Geometric interpretation:}
+Find the vector $A\tilde\bx$ in the column space of $A$ that is closest to $\bb$
+\vfill
+\textbf{Solution:} $A\tilde\bx = \text{proj}_{\text{col}(A)}(\bb)$
+\end{frame}
+
+\begin{frame}{Method 1: Normal equations}
+\textbf{The normal equations:}
+$$A^TA\tilde\bx = A^T\bb$$
+\vfill
+\textbf{When this works:}
+\begin{itemize}
+\item Always has at least one solution
+\item Any solution $\tilde\bx$ to the normal equations is a least squares solution
+\end{itemize}
+\vfill
+\textbf{Computational issues:}
+\begin{itemize}
+\item Forming $A^TA$ can be numerically unstable
+\item Condition number of $A^TA$ is the square of the condition number of $A$
+\item Still useful for theoretical analysis
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Method 2: when $A$ Has linearly independent columns}
+\textbf{Condition:} $A\in\M_{mn}$ has linearly independent columns
+\vfill
+\textbf{Then:} $A^TA$ is invertible and the least squares solution is \textbf{unique}
+$$\tilde\bx = (A^TA)^{-1}A^T\bb$$
+\vfill
+\textbf{Properties:}
+\begin{itemize}
+\item $A^TA \in \M_n$ is square, symmetric, and positive definite
+\item $(A^TA)^{-1}A^T$ is called the \emph{left pseudoinverse} of $A$
+\item This gives the unique least squares solution
+\end{itemize}
+\vfill
+\textbf{Drawback:} Computing $(A^TA)^{-1}$ directly can be numerically unstable
+\end{frame}
+
+\begin{frame}{Method 3: QR factorization}
+\textbf{QR Factorization:} If $A\in\M_{mn}$ has linearly independent columns, then
+$$A = QR$$
+where $Q\in\M_{mn}$ has orthonormal columns and $R\in\M_n$ is upper triangular and nonsingular
+\vfill
+\textbf{Least squares solution:}
+$$\tilde\bx = R^{-1}Q^T\bb$$
+\vfill
+\textbf{Advantages:}
+\begin{itemize}
+\item More numerically stable than forming $A^TA$
+\item $R$ is upper triangular $\Rightarrow$ solving $R\tilde\bx = Q^T\bb$ by back substitution
+\item Condition number of $R$ equals condition number of $A$
+\item Gram-Schmidt or Householder reflections can compute QR factorization
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Method 4: Singular Value Decomposition (SVD)}
+\textbf{SVD:} For any $A\in\M_{mn}$,
+$$A = U\Sigma V^T$$
+where $U\in\M_m$ orthogonal, $V\in\M_n$ orthogonal, $\Sigma\in\M_{mn}$ with $\Sigma_{ii} = \sigma_i \geq 0$ (singular values)
+\vfill
+\textbf{Pseudoinverse:} $A^+ = V\Sigma^+ U^T$ where $\Sigma^+$ has $(\Sigma^+)_{ii} = 1/\sigma_i$ if $\sigma_i > 0$, else $0$
+\vfill
+\textbf{Least squares solution:}
+$$\tilde\bx = A^+\bb$$
+\vfill
+\textbf{Key advantages:}
+\begin{itemize}
+\item Works for \emph{any} matrix $A$ (even when columns are linearly dependent)
+\item Gives the solution of \emph{minimal length} when multiple solutions exist
+\item Most numerically stable method
+\item Reveals the rank of $A$ through the number of non-zero singular values
+\end{itemize}
+\end{frame}
+
+\begin{frame}{When to use which method}
+\begin{center}
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Method} & \textbf{When to use} & \textbf{Advantages/Drawbacks} \\
+\hline
+Normal equations & Theory, small problems & Simple, but unstable \\
+\hline
+$(A^TA)^{-1}A^T$ & $A$ has LI columns & Explicit formula, unstable \\
+\hline
+QR Factorization & $A$ has LI columns & Stable, efficient \\
+\hline
+SVD & Any $A$, rank-deficient & Most stable, handles all cases \\
+\hline
+\end{tabular}
+\end{center}
+\vfill
+\textbf Use QR for well-conditioned problems with LI columns, SVD for rank-deficient or ill-conditioned problems
+\end{frame}
 
 % Save counters for next file
 
