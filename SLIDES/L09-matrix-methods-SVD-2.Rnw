@@ -28,7 +28,7 @@ cat(input_setup)
 \begin{document}
 
 % Cross-reference setup to reference previous lectures
-\zexternaldocument{L08-matrix-methods-QR-2-SVD-1}
+%\zexternaldocument{L08-matrix-methods-QR-2-SVD-1}
 
 % Continue theorem numbering from L08 (manual setup - check L08 for current count)
 % L08 has several theorems, so we continue from where it left off
@@ -48,6 +48,8 @@ cat(input_setup)
 
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
+\Ssection{Computing the SVD}{FIGS-slides-admin/Gemini_Generated_Image_38bqnt38bqnt38bq.jpeg}
+
 \begin{frame}{Computing the SVD (case of $\neq$ eigenvalues)}
 To compute the SVD, we use the following result
 \vfill
@@ -123,7 +125,7 @@ In short: not all square matrices are diagonalisable, but all square matrices ad
 Sometimes, we can find several LI eigenvectors associated to the same eigenvalue. Check this. If not, need to use the following
 \vfill
 \begin{definition}[Generalised eigenvectors]
-$\bx\neq\b0$ \textbf{generalized eigenvector} of rank $m$ of $A\in\M_n$ corresponding to eigenvalue $\lambda$ if
+The vector $\bx\neq\b0$ is a \textbf{generalized eigenvector} of rank $m$ of $A\in\M_n$ corresponding to eigenvalue $\lambda$ if
 \[
 (A-\lambda\II)^{m}\bx = \b0
 \]
@@ -170,8 +172,7 @@ I am caricaturing a little here: there can be cases that do not work exactly lik
 
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
-\section{Applications of the SVD -- Least squares}
-\newSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_38bqnt38bqnt38bq.jpeg}
+\Ssection{Applications of the SVD -- Least squares}{FIGS-slides-admin/Gemini_Generated_Image_38bqnt38bqnt38bq.jpeg}
 
 
 \begin{frame}{Least squares revisited}

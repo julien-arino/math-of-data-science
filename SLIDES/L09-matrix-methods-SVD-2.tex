@@ -70,7 +70,7 @@
 \begin{document}
 
 % Cross-reference setup to reference previous lectures
-\zexternaldocument{L08-matrix-methods-QR-2-SVD-1}
+%\zexternaldocument{L08-matrix-methods-QR-2-SVD-1}
 
 % Continue theorem numbering from L08 (manual setup - check L08 for current count)
 % L08 has several theorems, so we continue from where it left off
@@ -90,17 +90,131 @@
 
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
-\section{Applications of the SVD -- Least squares}
-\newSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_38bqnt38bqnt38bq.jpeg}
+\Ssection{Computing the SVD}{FIGS-slides-admin/Gemini_Generated_Image_38bqnt38bqnt38bq.jpeg}
 
-\begin{frame}{Applications of the SVD}
-Many applications of the SVD, both theoretical and practical..
+\begin{frame}{Computing the SVD (case of $\neq$ eigenvalues)}
+To compute the SVD, we use the following result
+\vfill
+\begin{theorem}\label{th:eigenvectors_of_symmetric_are_orthogonal}
+Let $A\in\M_n$ symmetric, $(\lambda_1,\bu_1)$ and $(\lambda_2,\bu_2)$ be eigenpairs, $\lambda_1\neq\lambda_2$. Then $\bu_1\bullet\bu_2=0$
+\end{theorem}
+\end{frame}
+
+\begin{frame}{Proof of Theorem~\ref{th:eigenvectors_of_symmetric_are_orthogonal}}
+$A\in\M_n$ symmetric, $(\lambda_1,\bu_1)$ and $(\lambda_2,\bu_2)$ eigenpairs with $\lambda_1\neq\lambda_2$
+\begin{align*}
+\lambda_1(\bv_1\bullet\bv_2) 
+&= (\lambda_1\bv_1)\bullet\bv_2 \\
+&= A\bv_1\bullet\bv_2 \\
+&= (A\bv_1)^T\bv_2 \\
+&= \bv_1^TA^T\bv_2 \\
+&= \bv_1^T(A\bv_2)  \qquad\textrm{[$A$ symmetric so $A^T=A$]} \\
+&= \bv_1^T(\lambda_2\bv_2) \\
+&= \lambda_2(\bv_1^T\bv_2) \\
+&= \lambda_2(\bv_1\bullet\bv_2)
+\end{align*}
+\vfill
+So $(\lambda_1-\lambda_2)(\bv_1\bullet\bv_2)=0$. But $\lambda_1\neq\lambda_2$, so $\bv_1\bullet\bv_2=0$\hfill\qed
+\end{frame}
+
+
+\begin{frame}{Computing the SVD (case of $\neq$ eigenvalues)}
+If all eigenvalues of $A^TA$ (or $AA^T$) are distinct, we can use Theorem~\ref{th:eigenvectors_of_symmetric_are_orthogonal}
 \vfill
 \begin{enumerate}
-\item Obtaining a unique solutions to least squares when $A^TA$ singular
-\item Image compression
+\item Compute $A^TA\in\M_n$
+\item Compute eigenvalues $\lambda_1,\ldots,\lambda_n$ of $A^TA$; order them as $\lambda_1>\cdots>\lambda_n\geq 0$ ($>$ not $\geq$ since $\neq$)
+\item Compute singular values $\sigma_1=\sqrt{\lambda_1},\ldots,\sigma_n=\sqrt{\lambda_n}$
+\item Diagonal matrix $D$ in $\Sigma$ is either in $\M_n$ (if $\sigma_n>0$) or in $\M_{n-1}$ (if $\sigma_n=0$)
 \end{enumerate}
 \end{frame}
+
+
+\begin{frame}
+\begin{enumerate}
+\setcounter{enumi}{4}
+\item Since eigenvalues are distinct, Theorem~\ref{th:eigenvectors_of_symmetric_are_orthogonal} $\implies$ eigenvectors are orthogonal set. Compute these eigenvectors in the same order as the eigenvalues
+\item Normalise them and use them to make the matrix $V$, i.e., $V=[\bv_1\cdots\bv_n]$
+\item To find the $\bu_i$, compute, for $i=1,\ldots,r$,
+\[
+\bu_i = \frac{1}{\sigma_i}A\bv_i
+\]
+and ensure that $\|\bu_i\|=1$
+\end{enumerate}
+\end{frame}
+
+
+\begin{frame}{Computing the SVD (case where some eigenvalues are $=$)}
+\begin{enumerate}
+\item Compute $A^TA\in\M_n$
+\item Compute eigenvalues $\lambda_1,\ldots,\lambda_n$ of $A^TA$; order them as $\lambda_1\geq\cdots\geq\lambda_n\geq 0$
+\item Compute singular values $\sigma_1=\sqrt{\lambda_1},\ldots,\sigma_n=\sqrt{\lambda_n}$, with $r\leq n$ the index of the last positive singular value
+\item For eigenvalues that are distinct, proceed as before
+\item For eigenvalues with multiplicity $>1$, we need to ensure that the resulting eigenvectors are LI \emph{and} orthogonal
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Dealing with eigenvalues with multiplicity $>1$}
+When an eigenvalue has (algebraic) multiplicity $>1$, e.g., characteristic polynomial contains a factor like $(\lambda-2)^2$, things can become a little bit more complicated
+\vfill
+The proper way to deal with this involves the so-called Jordan Normal Form (another matrix decomposition)
+\vfill
+In short: not all square matrices are diagonalisable, but all square matrices admit a JNF
+\end{frame}
+
+
+\begin{frame}
+Sometimes, we can find several LI eigenvectors associated to the same eigenvalue. Check this. If not, need to use the following
+\vfill
+\begin{definition}[Generalised eigenvectors]
+The vector $\bx\neq\b0$ is a \textbf{generalized eigenvector} of rank $m$ of $A\in\M_n$ corresponding to eigenvalue $\lambda$ if
+\[
+(A-\lambda\II)^{m}\bx = \b0
+\]
+but
+\[
+(A-\lambda\II)^{m-1}\bx\neq \b0
+\]
+\end{definition}
+\end{frame}
+
+
+\begin{frame}{Procedure for generalised eigenvectors}
+$A\in\M_n$ and assume $\lambda$ eigenvalue with algebraic multiplicity $k$
+\vfill
+Find $\bv_1$, ``classic" eigenvector, i.e., $\bv_1\neq\b0$ s.t. $(A-\lambda\II)\bv_1=\b0$
+\vfill
+Find generalised eigenvector $\bv_2$ of rank 2 by solving for $\bv_2\neq\b0$,
+\[
+(A-\lambda\II)\bv_2 = \bv_1
+\]
+$\ldots$
+\vfill
+Find generalised eigenvector $\bv_k$ of rank $k$ by solving for $\bv_k\neq\b0$,
+\[
+(A-\lambda\II)\bv_k = \bv_{k-1}
+\]
+\vfill
+Then $\{\bv_1,\ldots,\bv_k\}$ LI
+\end{frame}
+
+
+\begin{frame}{Back to the normal procedure}
+With the LI eigenvectors $\{\bv_1,\ldots,\bv_k\}$ corresponding to $\lambda$
+\vfill
+Apply Gram-Schmidt to get orthogonal set
+\vfill
+For all eigenvalues with multiplicity $>1$, check that you either have LI eigenvectors or do what we just did
+\vfill
+When you are done, be back on your merry way to step 6 in the case where eigenvalues are all $\neq$
+\vfill
+I am caricaturing a little here: there can be cases that do not work exactly like this, but this is general enough..
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\Ssection{Applications of the SVD -- Least squares}{FIGS-slides-admin/Gemini_Generated_Image_38bqnt38bqnt38bq.jpeg}
 
 
 \begin{frame}{Least squares revisited}
@@ -137,279 +251,6 @@ D^{-1} & 0 \\ 0 & 0
 \end{pmatrix}\in\M_{nm}
 \]
 \end{definition}
-\end{frame}
-
-
-%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%
-\subsection{Applications of the SVD -- Compressing images}
-\newSubSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_6dnw706dnw706dnw.jpeg}
-
-
-\begin{frame}{Compressing images}
-Consider an image (for simplicity, assume in shades of grey). This can be stored in a matrix $A\in\M_{mn}$
-\vfill
-Take the SVD of $A$. Then the small singular values carry information about the regions with little variation and can perhaps be omitted, whereas the large singular values carry information about more ``dynamic'' regions of the image
-\vfill
-Suppose $A$  has $r$ nonzero singular values. For $k\leq r$, let
-\[
-A_k = \sigma_1\bu_1\bv_1^T+\cdots+\sigma_k\bu_k\bv_k^T
-\]
-\vfill
-For $k=r$ we get the usual outer product form \eqref{eq:outer-product-form-SVD}
-\end{frame}
-
-\begin{frame}[fragile]
-Load the image using \code{bmp::read.bmp}
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hldef{my_image} \hlkwb{=} \hldef{bmp}\hlopt{::}\hlkwd{read.bmp}\hldef{(}\hlsng{"../CODE/Julien_and_friend_1000x800.bmp"}\hldef{)}
-\hldef{my_image_g} \hlkwb{=} \hldef{pixmap}\hlopt{::}\hlkwd{pixmapGrey}\hldef{(my_image)}
-\hldef{my_image_g}
-\end{alltt}
-\begin{verbatim}
-## Pixmap image
-##   Type          : pixmapGrey 
-##   Size          : 800x1000 
-##   Resolution    : 1x1 
-##   Bounding box  : 0 0 1000 800
-\end{verbatim}
-\end{kframe}
-\end{knitrout}
-\end{frame}
-
-\maxFrameImage{FIGS/L09-plot-image-svd-original-1.png}
-
-\begin{frame}[fragile]\frametitle{Doing the computations ``by hand''}
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hldef{M} \hlkwb{=} \hldef{my_image_g}\hlopt{@}\hlkwc{grey}
-\hldef{MTM} \hlkwb{=} \hlkwd{t}\hldef{(M)} \hlopt{%*%} \hldef{M}
-\hlcom{# Ensure matrix is symmetric}
-\hldef{MTM} \hlkwb{=} \hldef{(MTM}\hlopt{+}\hlkwd{t}\hldef{(MTM))}\hlopt{/}\hlnum{2}
-\hldef{ev} \hlkwb{=} \hlkwd{eigen}\hldef{(MTM)}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
-\vfill
-Given the size and nature of the entries, the matrix $M^TM$ is symmetric only to \code{1e-5} precision, so we use a little trick to make it symmetric no matter what: take the average of $M^TM$ and its transpose $MM^T$
-\end{frame}
-
-
-\begin{frame}[fragile]\frametitle{Which version of the algorithm to use?}
-Make zero the eigenvalues that are close to zero (200 out of 1000)
-\vfill
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hldef{ev}\hlopt{$}\hldef{values} \hlkwb{=} \hldef{ev}\hlopt{$}\hldef{values}\hlopt{*}\hldef{(ev}\hlopt{$}\hldef{values}\hlopt{>}\hlnum{1e-10}\hldef{)}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
-\vfill
-Can we use the algorithm for all eigenvalues being distinct or do we have repeated ones?
-\vfill
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlkwd{any}\hldef{(}\hlkwd{duplicated}\hldef{(ev}\hlopt{$}\hldef{values[ev}\hlopt{$}\hldef{values}\hlopt{>}\hlnum{1e-10}\hldef{]))}
-\end{alltt}
-\begin{verbatim}
-## [1] FALSE
-\end{verbatim}
-\end{kframe}
-\end{knitrout}
-\vfill
-So we can use the standard algorithm
-\end{frame}
-
-
-\begin{frame}[fragile]\frametitle{Computing the SVD}
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hldef{idx_positive_ev} \hlkwb{=} \hlkwd{which}\hldef{(ev}\hlopt{$}\hldef{values}\hlopt{>}\hlnum{1e-10}\hldef{)}
-\hldef{sv} \hlkwb{=} \hlkwd{sqrt}\hldef{(ev}\hlopt{$}\hldef{values[idx_positive_ev])}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
-\end{frame}
-
-
-\begin{frame}[fragile]\frametitle{Computing the SVD}
-Then $D=\mathsf{diag}(\sigma_1,\ldots,\sigma_r)$, $V$ is the matrix of normalised eigenvectors in the same order as the $\sigma_i$ and for $i=1,\ldots,r$
-$$
-\mathbf{u}_i = \frac{1}{\sigma_i}A\mathbf{v}_i
-$$
-ensuring that $\|\mathbf{u}_i\|=1$
-\vfill
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hldef{D} \hlkwb{=} \hlkwd{diag}\hldef{(sv)}
-\hldef{V} \hlkwb{=} \hldef{ev}\hlopt{$}\hldef{vectors[idx_positive_ev, idx_positive_ev]}
-\hldef{c1} \hlkwb{=} \hlkwd{colSums}\hldef{(V)}
-\hlkwa{for} \hldef{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlkwd{dim}\hldef{(V)[}\hlnum{2}\hldef{]) \{}
-    \hldef{V[,i]} \hlkwb{=} \hldef{V[,i]}\hlopt{/}\hldef{c1[i]}
-\hldef{\}}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
-\end{frame}
-
-
-\begin{frame}[fragile]\frametitle{Computing the SVD}
-Finally, we compute the $\bu_i$'s
-\vfill
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hldef{U} \hlkwb{=} \hldef{M} \hlopt{%*%} \hldef{V} \hlopt{%*%} \hlkwd{diag}\hldef{(}\hlnum{1}\hlopt{/}\hldef{sv)}
-\end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in M \%*\% V: non-conformable arguments}}\begin{alltt}
-\hldef{r} \hlkwb{=} \hlkwd{length}\hldef{(sv)}
-\hldef{im} \hlkwb{=} \hlkwd{list}\hldef{(}\hlkwc{u}\hldef{=U,} \hlkwc{d}\hldef{=sv,} \hlkwc{v}\hldef{=V)}
-\end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: object 'U' not found}}\end{kframe}
-\end{knitrout}
-\end{frame}
-
-\begin{frame}[fragile]\frametitle{Using built-in functions}
-We can also use the built-in function \code{svd} to compute the SVD of $M$
-\vfill
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hldef{M.svd} \hlkwb{=} \hlkwd{svd}\hldef{(M)}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
-\vfill
-The results are stored in a list with components \code{u}, \code{d} and \code{v}
-\end{frame}
-
-\begin{frame}\frametitle{Make function to recreate an image from the SVD}
-Given the SVD \code{im} of an image and a number of singular values to keep \code{n}, we can recreate the image using the function \code{compress\_image}
-\vfill
-We output the new image, but also, the amount of information required to encode this new image, as a percentage of the original image size
-\end{frame}
-
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hldef{compress_image} \hlkwb{=} \hlkwa{function}\hldef{(}\hlkwc{im}\hldef{,} \hlkwc{n}\hldef{) \{}
-  \hlkwa{if} \hldef{(n} \hlopt{>} \hlkwd{length}\hldef{(im}\hlopt{$}\hldef{d)) \{}
-    \hlcom{# Check that we gave a value of n within range, otherwise }
-    \hlcom{# just set to the max}
-    \hldef{n} \hlkwb{=} \hlkwd{length}\hldef{(im}\hlopt{$}\hldef{d)}
-  \hldef{\}}
-  \hldef{d_tmp} \hlkwb{=} \hldef{im}\hlopt{$}\hldef{d[}\hlnum{1}\hlopt{:}\hldef{n]}
-  \hldef{u_tmp} \hlkwb{=} \hldef{im}\hlopt{$}\hldef{u[,}\hlnum{1}\hlopt{:}\hldef{n]}
-  \hldef{v_tmp} \hlkwb{=} \hldef{im}\hlopt{$}\hldef{v[,}\hlnum{1}\hlopt{:}\hldef{n]}
-  \hlcom{# We store the results in a list (so we can return other information)}
-    \hldef{out} \hlkwb{=} \hlkwd{list}\hldef{()}
-    \hlcom{# First, compute the resulting image}
-    \hldef{out}\hlopt{$}\hldef{img} \hlkwb{=} \hlkwd{mat.or.vec}\hldef{(}\hlkwc{nr} \hldef{=} \hlkwd{dim}\hldef{(im}\hlopt{$}\hldef{u)[}\hlnum{1}\hldef{],} \hlkwc{nc} \hldef{=} \hlkwd{dim}\hldef{(im}\hlopt{$}\hldef{v)[}\hlnum{1}\hldef{])}
-    \hlkwa{for} \hldef{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hldef{n) \{}
-        \hldef{out}\hlopt{$}\hldef{img} \hlkwb{=} \hldef{out}\hlopt{$}\hldef{img} \hlopt{+} \hldef{d_tmp[i]} \hlopt{*} \hldef{u_tmp[,i]} \hlopt{%*%} \hlkwd{t}\hldef{(v_tmp[,i])}
-    \hldef{\}}
-
-
-    \hlcom{# Values of the "colours" must be between 0 and 1, so we shift and rescale}
-    \hlkwa{if} \hldef{(}\hlkwd{min}\hldef{(}\hlkwd{min}\hldef{(out}\hlopt{$}\hldef{img))} \hlopt{<} \hlnum{0} \hldef{) \{}
-        \hldef{out}\hlopt{$}\hldef{img} \hlkwb{=} \hldef{out}\hlopt{$}\hldef{img} \hlopt{-} \hlkwd{min}\hldef{(}\hlkwd{min}\hldef{(out}\hlopt{$}\hldef{img))}
-    \hldef{\}}
-    \hldef{out}\hlopt{$}\hldef{img} \hlkwb{=} \hldef{out}\hlopt{$}\hldef{img} \hlopt{/} \hlkwd{max}\hldef{(}\hlkwd{max}\hldef{(out}\hlopt{$}\hldef{img))}
-    \hlcom{# Store some information: number of points needed and percentage of the original required}
-    \hldef{out}\hlopt{$}\hldef{nb_pixels_original} \hlkwb{=} \hlkwd{dim}\hldef{(im}\hlopt{$}\hldef{u)[}\hlnum{1}\hldef{]} \hlopt{*} \hlkwd{dim}\hldef{(im}\hlopt{$}\hldef{v)[}\hlnum{2}\hldef{]}
-    \hldef{out}\hlopt{$}\hldef{nb_pixels_compressed} \hlkwb{=} \hlkwd{length}\hldef{(d_tmp)} \hlopt{+} \hlkwd{dim}\hldef{(u_tmp)[}\hlnum{1}\hldef{]}\hlopt{*}\hlkwd{dim}\hldef{(u_tmp)[}\hlnum{2}\hldef{]} \hlopt{+} \hlkwd{dim}\hldef{(v_tmp)[}\hlnum{1}\hldef{]}\hlopt{*}\hlkwd{dim}\hldef{(v_tmp)[}\hlnum{2}\hldef{]}
-    \hldef{out}\hlopt{$}\hldef{pct_of_original} \hlkwb{=} \hldef{out}\hlopt{$}\hldef{nb_pixels_compressed} \hlopt{/} \hldef{out}\hlopt{$}\hldef{nb_pixels_original} \hlopt{*} \hlnum{100}
-    \hlcom{# Return the result}
-    \hlkwd{return}\hldef{(out)}
-\hldef{\}}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
-
-
-\begin{frame}[fragile]\frametitle{Recreating the image}
-We can now recreate the image using the function \code{compress\_image}
-\vfill
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hldef{new_image} \hlkwb{=} \hldef{my_image_g}
-\hldef{M.svd} \hlkwb{=} \hlkwd{svd}\hldef{(M)}
-\hldef{M_tmp} \hlkwb{=} \hlkwd{compress_image}\hldef{(M.svd,} \hlnum{2}\hldef{)}
-\hldef{new_image}\hlopt{@}\hlkwc{grey} \hlkwb{=} \hldef{M_tmp}\hlopt{$}\hldef{img}
-\hlkwd{plot}\hldef{(new_image)}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
-\end{frame}
-
-\begin{frame}\frametitle{Using $n=2$ singular values}
-\begin{center}
-\includegraphics[width=0.45\textwidth]{FIGS/L09-plot-image-svd-original-1.png}
-\includegraphics[width=0.45\textwidth]{FIGS/L09-plot-image-svd-n2-1.png}
-\end{center}
-\vfill
-Uses 0.56\% of the original information
-\end{frame}
-
-
-
-\begin{frame}\frametitle{Using $n=5$ singular values}
-\begin{center}
-\includegraphics[width=0.45\textwidth]{FIGS/L09-plot-image-svd-original-1.png}
-\includegraphics[width=0.45\textwidth]{FIGS/L09-plot-image-svd-n5-1.png}
-\end{center}
-\vfill
-Uses 1.41\% of the original information
-\end{frame}
-
-
-
-
-\begin{frame}\frametitle{Using $n=10$ singular values}
-\begin{center}
-\includegraphics[width=0.45\textwidth]{FIGS/L09-plot-image-svd-original-1.png}
-\includegraphics[width=0.45\textwidth]{FIGS/L09-plot-image-svd-n10-1.png}
-\end{center}
-\vfill
-Uses 2.81\% of the original information
-\end{frame}
-
-
-
-
-
-\begin{frame}\frametitle{Using $n=20$ singular values}
-\begin{center}
-\includegraphics[width=0.45\textwidth]{FIGS/L09-plot-image-svd-original-1.png}
-\includegraphics[width=0.45\textwidth]{FIGS/L09-plot-image-svd-n20-1.png}
-\end{center}
-\vfill
-Uses 5.63\% of the original information
-\end{frame}
-
-
-
-
-
-\begin{frame}\frametitle{Using $n=50$ singular values}
-\begin{center}
-\includegraphics[width=0.45\textwidth]{FIGS/L09-plot-image-svd-original-1.png}
-\includegraphics[width=0.45\textwidth]{FIGS/L09-plot-image-svd-n50-1.png}
-\end{center}
-\vfill
-Uses 14.07\% of the original information
 \end{frame}
 
 
