@@ -27,6 +27,10 @@ cat(input_setup)
 
 \begin{document}
 
+% Set up cross-references and counter persistence
+
+% Set up cross-references and counter persistence
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% TITLE AND OUTLINE
@@ -1216,4 +1220,8 @@ plot.PCA(data.pca, axes = c(1,2), choix = "ind", habillage = 4)
 
 
 
+
+% Save counters for next file
+
+% Save theorem count for next file
 \end{document}

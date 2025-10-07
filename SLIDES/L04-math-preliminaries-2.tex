@@ -71,6 +71,9 @@
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 \begin{document}
 
+% Set up cross-references and counter persistence
+\setupcrossref{L01-course-organisation-R-setup,L02-what-is-data-science-why-math,L03-math-preliminaries-1}{L03-math-preliminaries-1}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% TITLE AND OUTLINE
@@ -83,29 +86,65 @@
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
-\Ssection{Linear algebra in a nutshell}{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
+\section{Similarity and diagonalisation}
+% The section page
+\newSectionSlide{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
 
+\begin{frame}{Similarity}
+\begin{definition}[Similarity]
+$A,B\in\M_n$ are \defword{similar} ($A\sim B$) if $\exists P\in\M_n$ invertible s.t.
+\[
+P^{-1}AP=B
+\]
+\end{definition}
+\begin{theorem}[$\sim$ is an equivalence relation]
+$A,B,C\in\M_n$, then
+\begin{itemize}
+	\item $A\sim A$ \hfill ($\sim$ \defword{reflexive})
+	\item $A\sim B\implies B\sim A$ \hfill ($\sim$ \defword{symmetric})
+	\item $A\sim B$ and $B\sim C$ $\implies$ $A\sim C$ \hfill ($\sim$ \defword{transitive})
+\end{itemize}
+\end{theorem}
+\end{frame}
 
-\begin{frame}{The ``growing result'' from first-year}
-	\begin{importanttheorem}[Linear algebra in a nutshell]
-		Let $A\in\M_n$. The following statements are equivalent (TFAE)
-		\begin{enumerate}
-			\item The matrix $A$ is invertible
-			\item $\forall\bb\in\IF^n$, $A\bx = \bb$ has a unique solution ($\bx=A^{-1}\bb$)
-			\item The only solution to $A\bx = \b0$ is the trivial solution $\bx = \b0$
-			\item $RREF(A)=\II_n$
-			\item The matrix A is equal to a product of elementary matrices
-			\item $\forall\bb\in\IF^n$, $A\bx = \bb$ has a solution
-			\item There is a matrix $B\in\M_n$ such that $AB = \II_n$
-			\item There is an invertible matrix $B\in\M_n$ such that $AB = \II_n$
-			\item $\det(A)\neq 0$
-			\item $0$ is not an eigenvalue of $A$
-		\end{enumerate}
-	\end{importanttheorem}
+\begin{frame}{Similarity (cont.)}
+\begin{theorem}
+$A,B\in\M_n$ with $A\sim B$. Then
+\begin{itemize}
+	\item $\det\ A=\det\ B$
+	\item $A$ invertible $\iff$ $B$ invertible
+	\item $A$ and $B$ have the same eigenvalues
+\end{itemize}
+\end{theorem}
 \end{frame}
 
 
+\begin{frame}{Diagonalisation}
+\begin{definition}[Diagonalisability]
+$A\in\M_n$ is \defword{diagonalisable} if $\exists D\in\M_n$ diagonal s.t. $A\sim D$
+\end{definition}
+\vfill
+In other words, $A\in\M_n$ is diagonalisable if there exists a diagonal matrix $D\in\M_n$ and a nonsingular matrix $P\in\M_n$ s.t. $P^{-1}AP=D$
+\vfill
+Could of course write $PAP^{-1}=D$ since $P$ invertible, but $P^{-1}AP$ makes more sense for computations
+\end{frame}
 
+
+\begin{frame}
+\begin{importanttheorem}
+$A\in\M_n$ diagonalisable $\iff$ $A$ has $n$ linearly independent eigenvectors
+\end{importanttheorem}
+\vfill
+\begin{corollary}[Sufficient condition for diagonalisability]
+$A\in\M_n$ has all its eigenvalues distinct $\implies$ $A$ diagonalisable
+\end{corollary}
+\vfill
+For $P^{-1}AP=D$: in $P$, put the linearly independent eigenvectors as columns and in $D$, the corresponding eigenvalues
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
@@ -176,8 +215,8 @@
 	\begin{theorem}
 		Let $V$ be a finite-dimensional vector space. Then the \defword{cardinal} (number of elements) of every linearly independent set of vectors is less than or equal to the number of elements in every spanning set of vectors
 	\end{theorem}
-	\vfill
-	E.g., in $\IR^3$, a set with 4 or more vectors is automatically linearly dependent
+\vfill
+E.g., in $\IR^3$, a set with 4 or more vectors is automatically linearly dependent
 \end{frame}
 
 
@@ -195,25 +234,25 @@
 	\end{theorem}
 \end{frame}
 
-%\begin{frame}{Plus/Minus Theorem}
-%	\begin{theorem}[Plus/Minus Theorem]
-%		$S$ a nonempty set of vectors in vector space $V$
-%		\begin{itemize}
-%			\item If $S$ is linearly independent and $V\ni\bv\not\in \Span(S)$, then $S\cup\{\bv\}$ is linearly independent
-%			\item If $\bv\in S$ is linear combination of other vectors in $S$, then $\Span(S)=\Span(S-\{\bv\})$
-%		\end{itemize}
-%	\end{theorem}
-%\end{frame}
+\begin{frame}{Plus/Minus Theorem}
+	\begin{theorem}[Plus/Minus Theorem]
+		$S$ a nonempty set of vectors in vector space $V$
+		\begin{itemize}
+			\item If $S$ is linearly independent and $V\ni\bv\not\in \Span(S)$, then $S\cup\{\bv\}$ is linearly independent
+			\item If $\bv\in S$ is linear combination of other vectors in $S$, then $\Span(S)=\Span(S-\{\bv\})$
+		\end{itemize}
+	\end{theorem}
+\end{frame}
 
 
 \begin{frame}{More on bases}
-	\begin{importanttheorem}[Basis of finite-dimensional vector space]
-		Every finite-dimensional vector space has a basis
-	\end{importanttheorem}
-	\vfill
-	\begin{theorem}
-		Any two bases of a finite-dimensional vector space have the same number of vectors
+	\begin{theorem}[Basis of finite-dimensional vector space]
+	Every finite-dimensional vector space has a basis
 	\end{theorem}
+	\vfill
+	\begin{importanttheorem}
+		Any two bases of a finite-dimensional vector space have the same number of vectors
+	\end{importanttheorem}
 	\vfill
 	\begin{definition}[Dimension]
 		The \defword{dimension} $\dim V$ of a finite-dimensional vector space $V$ is the number of vectors in any basis of the vector space
@@ -239,63 +278,29 @@
 
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%
-\section{Similarity and diagonalisation}
-% The section page
-\newSectionSlide{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
+\subsection{Linear algebra in a nutshell}
+% The subsection page
+\newSubSectionSlide{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
 
-\begin{frame}{Similarity}
-\begin{definition}[Similarity]
-$A,B\in\M_n$ are \defword{similar} ($A\sim B$) if $\exists P\in\M_n$ invertible s.t.
-\[
-P^{-1}AP=B
-\]
-\end{definition}
-\begin{theorem}[$\sim$ is an equivalence relation]
-$A,B,C\in\M_n$, then
-\begin{itemize}
-	\item $A\sim A$ \hfill ($\sim$ \defword{reflexive})
-	\item $A\sim B\implies B\sim A$ \hfill ($\sim$ \defword{symmetric})
-	\item $A\sim B$ and $B\sim C$ $\implies$ $A\sim C$ \hfill ($\sim$ \defword{transitive})
-\end{itemize}
-\end{theorem}
-\end{frame}
 
-\begin{frame}{Similarity (cont.)}
+\begin{frame}{To finish: the ``famous'' ``growing result''}
 \begin{importanttheorem}
-$A,B\in\M_n$ with $A\sim B$. Then
-\begin{itemize}
-	\item $\det\ A=\det\ B$
-	\item $A$ invertible $\iff$ $B$ invertible
-	\item $A$ and $B$ have the same eigenvalues
-\end{itemize}
+Let $A\in\M_n$. The following statements are equivalent (TFAE)
+\begin{enumerate}
+\item The matrix $A$ is invertible
+\item $\forall\bb\in\IF^n$, $A\bx = \bb$ has a unique solution ($\bx=A^{-1}\bb$)
+\item The only solution to $A\bx = \b0$ is the trivial solution $\bx = \b0$
+\item $RREF(A)=\II_n$
+\item The matrix A is equal to a product of elementary matrices
+\item $\forall\bb\in\IF^n$, $A\bx = \bb$ has a solution
+\item There is a matrix $B\in\M_n$ such that $AB = \II_n$
+\item There is an invertible matrix $B\in\M_n$ such that $AB = \II_n$
+\item $\det(A)\neq 0$
+\item $0$ is not an eigenvalue of $A$
+\end{enumerate}
 \end{importanttheorem}
 \end{frame}
 
-
-\begin{frame}{Diagonalisation}
-\begin{definition}[Diagonalisability]
-$A\in\M_n$ is \defword{diagonalisable} if $\exists D\in\M_n$ diagonal s.t. $A\sim D$
-\end{definition}
-\vfill
-In other words, $A\in\M_n$ is diagonalisable if there exists a diagonal matrix $D\in\M_n$ and a nonsingular matrix $P\in\M_n$ s.t. $P^{-1}AP=D$
-\vfill
-Could of course write $PAP^{-1}=D$ since $P$ invertible, but $P^{-1}AP$ makes more sense for computations
-\end{frame}
-
-
-\begin{frame}
-\begin{theorem}
-$A\in\M_n$ diagonalisable $\iff$ $A$ has $n$ linearly independent eigenvectors
-\end{theorem}
-\vfill
-\begin{corollary}[Sufficient condition for diagonalisability]
-$A\in\M_n$ has all its eigenvalues distinct $\implies$ $A$ diagonalisable
-\end{corollary}
-\vfill
-For $P^{-1}AP=D$: in $P$, put the linearly independent eigenvectors as columns and in $D$, the corresponding eigenvalues
-\end{frame}
 
 
 %%%%%%%%%%%%%%%%%%%%%
@@ -500,6 +505,27 @@ At the optimal point on the path, the path will be perfectly \textbf{tangent} to
   Since $x=y$, we have $y=10$, i.e., optimal dimensions are 10m by 10m (a square), giving a maximum area of 100 $m^2$
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\subsection{Conclusion}
+% The subsection page
+\newSubSectionSlide{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
+
+\begin{frame}{What does $\lambda$ mean?}
+  The Lagrange multiplier $\lambda$ has a very useful interpretation
+  \vfill
+  It tells you how much the optimal value of your function $f$ will change if you slightly relax the constraint $c$
+  \vfill
+  $$ \lambda = \frac{df_{optimal}}{dc} $$
+  \vfill
+  \textbf{In our example:} If we had 41 meters of fence instead of 40 (so $c$ changes by 1), how much would the max area increase?
+  \vfill
+  $x=y=2\lambda$, so $\lambda = x/2 = 10/2 = 5$.
+  The maximum area would increase by approximately 5 $m^2$
+\end{frame}
 
 
+
+% Save counters for next file
+\savecounters{L04-math-preliminaries-2}
 \end{document}

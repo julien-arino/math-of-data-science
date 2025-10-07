@@ -27,6 +27,10 @@ cat(input_setup)
 
 \begin{document}
 
+% Set up cross-references and counter persistence
+
+% Set up cross-references and counter persistence
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% TITLE AND OUTLINE
@@ -362,4 +366,8 @@ abline((beta0 + 1) / beta[2], -beta[1] / beta[2], lty = 2)
     Thus, for sufficiently small values of $\lambda$, it will behave similar to the hard-margin SVM, if the input data are linearly classifiable, but will still learn if a classification rule is viable or not
 \end{frame}
 
+
+% Save counters for next file
+
+% Save theorem count for next file
 \end{document}

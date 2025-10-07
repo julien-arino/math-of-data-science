@@ -1,0 +1,390 @@
+\documentclass[aspectratio=169]{beamer}
+
+% Set lecture number for later use
+<<set-lecture-number,echo=FALSE>>=
+lecture_number = "08"
+@
+
+% Part common to all the lectures
+\subtitle{MATH 2740 -- Mathematics of Data Science -- Lecture \Sexpr{lecture_number}}
+\author{\texorpdfstring{Julien Arino\newline\url{julien.arino@umanitoba.ca}}{Julien Arino}}
+\institute{Department of Mathematics @ University of Manitoba}
+\date{Fall 202X}
+
+% Title of the lecture
+\title{Matrix methods -- QR factorisation (2) \& SVD (1)}
+
+<<set-options,echo=FALSE,warning=FALSE,message=FALSE>>=
+# Source the code common to all lectures
+source("common-code.R")
+@
+
+<<set-slide-background,echo=FALSE,results='asis'>>=
+# Are we plotting for a dark background? Setting is in common-code.R, but
+# cat command must run here.
+cat(input_setup)
+@
+
+\begin{document}
+
+% Set up cross-references and counter persistence
+
+% Set up cross-references and counter persistence
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% TITLE AND OUTLINE
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\titlepagewithfigure{FIGS-slides-admin/Gemini_Generated_Image_7iz9ft7iz9ft7iz9.jpeg}
+\outlinepage{FIGS-slides-admin/Gemini_Generated_Image_iyzqdwiyzqdwiyzq.jpeg}
+
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\Ssection{The QR factorisation \& Least squares}{FIGS-slides-admin/Gemini_Generated_Image_c06eixc06eixc06e.jpeg}
+
+\begin{frame}{The QR factorisation}
+\begin{theorem}\label{th:QR_factorisation}
+Let $A\in\M_{mn}$ with LI columns. Then $A$ can be factored as
+\[
+A=QR
+\]
+where $Q\in\M_{mn}$ has orthonormal columns and $R\in\M_n$ is nonsingular upper triangular
+\end{theorem}
+\end{frame}
+
+
+\begin{frame}{Back to least squares}
+So what was the point of all that..?
+\vfill
+\begin{theorem}[Least squares with QR factorisation]
+\label{th:LSQ_with_QR}
+$A\in\M_{mn}$ with LI columns, $\bb\in\IR^m$. If $A=QR$ is a QR factorisation of $A$, then the unique least squares solution $\tilde\bx$ of $A\bx=\bb$ is
+\[
+\tilde\bx = R^{-1}Q^T\bb
+\]
+\end{theorem}
+\end{frame}
+
+
+\begin{frame}{Proof of Theorem~\ref{th:LSQ_with_QR}}
+$A$ has LI columns so 
+\begin{itemize}
+\item least squares $A\bx=\bb$ has unique solution $\tilde\bx=(A^TA)^{-1}A^T\bb$
+\item by Theorem~\ref{th:QR_factorisation}, $A$ can be written as $A=QR$ with $Q\in\M_{mn}$ with orthonormal columns and $R\in\M_n$ nonsingular and upper triangular
+\end{itemize}
+So
+\begin{align*}
+A^TA\tilde\bx= A^T\bb &\implies (QR)^TQR\tilde\bx = (QR)^T\bb \\
+&\implies R^TQ^TQR\tilde\bx = R^TQ^T\bb \\
+&\implies R^T\II_nR\tilde\bx = R^TQ^T\bb \\
+&\implies R^TR\tilde\bx = R^TQ^T\bb \\
+&\implies (R^T)^{-1}R\tilde\bx = (R^T)^{-1}R^TQ^T\bb \\
+&\implies R\tilde\bx = Q^T\bb \\
+&\implies \tilde\bx = R^{-1}Q^T\bb\hfill\qed
+\end{align*}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\Ssection{Singular values}{FIGS-slides-admin/Gemini_Generated_Image_c06eixc06eixc06e.jpeg}
+
+\begin{frame}{Matrix factorisations (continued)}
+The singular value decomposition (known mostly by its acronym, SVD) is yet another type of factorisation/decomposition..
+\end{frame}
+
+\begin{frame}{Singular values}
+\begin{definition}[Singular value]
+Let $A\in\M_{mn}(\IR)$. The \textbf{singular values} of $A$ are the real numbers 
+\[
+\sigma_1\geq \sigma_2\geq\cdots\sigma_n\geq 0
+\]
+that are the square roots of the eigenvalues of $A^TA$
+\end{definition}
+\end{frame}
+
+
+\begin{frame}{Singular values are real and nonnegative?}
+Recall that $\forall A\in\M_{mn}$, $A^TA$ is symmetric
+\vfill
+\textbf{Claim 1.} Real symmetric matrices have real eigenvalues
+\vfill
+\textbf{Proof.} $A\in\M_n(\IR)$ symmetric and $(\lambda,\bv)$ eigenpair of $A$, i.e, $A\bv=\lambda\bv$. Taking the complex conjugate, $\overline{A\bv}=\overline{\lambda\bv}$
+\vfill
+Since $A\in\M_n(\IR)$, $\overline{A}=A$\qquad ($z=\bar z\iff z\in\IR$)
+\vfill
+So
+\[
+A\bar\bv=\overline{A}\bar\bv=\overline{A\bv}=\overline{\lambda\bv}=\overline{\lambda}\bar\bv
+\]
+i.e., if $(\lambda,\bv)$ eigenpair, $(\bar\lambda,\bar\bv)$ also eigenpair
+\end{frame}
+
+\begin{frame}
+Still assuming $A\in\M_n(\IR)$ symmetric and $(\lambda,\bv)$ eigenpair of $A$ and using what we just proved (that $(\bar\lambda,\bar\bv)$ also eigenpair), take transposes
+\begin{align*}
+A\bar\bv = \bar\lambda\bar\bv &\iff (A\bar\bv)^T = (\bar\lambda\bar\bv)^T \\
+&\iff \bar\bv^TA^T=\bar\lambda\bar\bv^T \\
+&\iff \bar\bv^T A = \bar\lambda\bar\bv^T \qquad{\textrm{[$A$ symmetric]}}
+\end{align*}
+\vfill
+Let us now compute $\lambda (\bar\bv\bullet\bv)$. We have
+\begin{align*}
+\lambda (\bar\bv\bullet\bv) &= \lambda\bar\bv^T\bv = \bar\bv^T(\lambda\bv) \\
+&= \bar\bv^T(A\bv) = (\bar\bv^TA)\bv \\
+&= (\bar\lambda\bar\bv^T)\bv = \bar\lambda(\bar\bv\bullet\bv) \\
+&\iff (\lambda-\bar\lambda)(\bar\bv\bullet\bv) = 0
+\end{align*}
+\end{frame}
+
+\begin{frame}
+We have shown
+\[
+(\lambda-\bar\lambda)(\bar\bv\bullet\bv) = 0
+\]
+Let 
+\[
+\bv = \begin{pmatrix}
+a_1+ib_1 \\
+\vdots \\
+a_n+ib_n
+\end{pmatrix}
+\]
+Then
+\[
+\bar\bv = \begin{pmatrix}
+a_1-ib_1 \\
+\vdots \\
+a_n-ib_n
+\end{pmatrix}
+\]
+So
+\[
+\bar\bv\bullet\bv = (a_1^2+b_1^2)+\cdots+(a_n^2+b_n^2)
+\]
+But $\bv$ eigenvector is $\neq\b0$, so $\bar\bv\bullet\bv\neq 0$, so
+\[
+(\lambda-\bar\lambda)(\bar\bv\bullet\bv) = 0
+\iff \lambda-\bar\lambda=0
+\iff \lambda=\bar\lambda\iff \lambda\in\IR\qed
+\]
+\end{frame}
+
+
+\begin{frame}
+\textbf{Claim 2.} For $A\in\M_{mn}(\IR)$, the eigenvalues of $A^TA$ are real and nonnegative
+
+\vfill
+\textbf{Proof.}
+We know that for $A\in\M_{mn}$, $A^TA$ symmetric and from previous claim, if $A\in\M_{mn}(\IR)$, then $A^TA$ is symmetric and real and with real eigenvalues
+\vfill
+Let $(\lambda,\bv)$ be an eigenpair of $A^TA$, with $\bv$ chosen so that $\|\bv\|=1$
+\vfill 
+Norms are functions $V\to\IR_+$, so $\|A\bv\|$ and $\|A\bv\|^2$ are $\geq 0$ and thus
+\begin{align*}
+0\leq \|A\bv\|^2 &= (A\bv)\bullet(A\bv) = (A\bv)^T(A\bv) \\
+&= \bv^TA^TA\bv = \bv^T(A^TA\bv) = \bv^T(\lambda\bv) \\
+&= \lambda(\bv^T\bv) = \lambda(\bv\bullet\bv) = \lambda\|\bv\|^2 \\
+&= \lambda\hfill\qed
+\end{align*}
+\end{frame}
+
+\begin{frame}
+\textbf{Claim 3.} For $A\in\M_{mn}(\IR)$, the nonzero eigenvalues of $A^TA$ and $AA^T$ are the same
+\vfill
+\textbf{Proof.}
+Let $(\lambda,\bv)$ be an eigenpair of $A^TA$ with $\lambda\neq 0$. Then $\bv\neq\b0$ and
+\[
+	A^TA\bv=\lambda\bv\neq\b0
+\]
+Left multiply by $A$
+\[
+	AA^TA\bv = \lambda A\bv
+\]
+Let $\bw=A\bv$, we thus have $AA^T\bw=\lambda\bw$; in other words, $A\bv$ is an eigenvector of $AA^T$ corresponding to the (nonzero) eigenvalue $\lambda$
+\vfill
+The reverse works the same way.. \qed
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\Ssection{The SVD}{FIGS-slides-admin/Gemini_Generated_Image_c06eixc06eixc06e.jpeg}
+
+\begin{frame}{The singular value decomposition (SVD)}
+\begin{importanttheorem}[SVD]\label{th:SVD}
+$A\in\M_{mn}$ with singular values $\sigma_1\geq\cdots\geq\sigma_r>0$ and $\sigma_{r+1}=\cdots=\sigma_n=0$
+\vskip0.5cm
+Then there exists $U\in\M_m$ orthogonal, $V\in\M_n$ orthogonal and a block matrix $\Sigma\in\M_{mn}$ taking the form
+\[
+\Sigma=
+\begin{pmatrix}
+D & 0_{r,n-r} \\
+0_{m-r,r} & 0_{m-r,n-r}
+\end{pmatrix}
+\]
+where 
+\[
+D = \mathsf{diag}(\sigma_1,\ldots,\sigma_r)\in\M_r
+\] 
+such that
+\[
+A=U\Sigma V^T
+\]
+\end{importanttheorem}
+\end{frame}
+
+
+\begin{frame}
+\begin{definition}
+We call a factorisation as in Theorem~\ref{th:SVD} the \textbf{singular value decomposition} of $A$. The columns of $U$ and $V$ are, respectively, the \textbf{left} and \textbf{right singular vectors} of $A$
+\end{definition}
+\vfill
+$U$ and $V^T$ are \emph{rotation} or \emph{reflection} matrices, $\Sigma$ is a \emph{scaling} matrix
+\vfill
+$U\in\M_m$ orthogonal matrix with columns the eigenvectors of $AA^T$
+\vfill
+$V\in\M_n$ orthogonal matrix with columns the eigenvectors of $A^TA$
+\end{frame}
+
+
+\begin{frame}{Outer product form of the SVD}
+\begin{theorem}[Outer product form of the SVD]\label{th:SVD_outer_product_form}
+$A\in\M_{mn}$ with singular values $\sigma_1\geq\cdots\geq\sigma_r>0$ and $\sigma_{r+1}=\cdots=\sigma_n=0$, $\bu_1,\ldots,\bu_r$ and $\bv_1,\ldots,\bv_r$, respectively, left and right singular vectors of $A$ corresponding to these singular values
+\vskip0.5cm
+Then 
+\begin{equation}\label{eq:outer-product-form-SVD}
+A=\sigma_1\bu_1\bv_1^T+\cdots+\sigma_r\bu_r\bv_r^T
+\end{equation}
+\end{theorem}
+\end{frame}
+
+
+\begin{frame}{Computing the SVD (case of $\neq$ eigenvalues)}
+To compute the SVD, we use the following result
+\vfill
+\begin{theorem}\label{th:eigenvectors_of_symmetric_are_orthogonal}
+Let $A\in\M_n$ symmetric, $(\lambda_1,\bu_1)$ and $(\lambda_2,\bu_2)$ be eigenpairs, $\lambda_1\neq\lambda_2$. Then $\bu_1\bullet\bu_2=0$
+\end{theorem}
+\end{frame}
+
+\begin{frame}{Proof of Theorem~\ref{th:eigenvectors_of_symmetric_are_orthogonal}}
+$A\in\M_n$ symmetric, $(\lambda_1,\bu_1)$ and $(\lambda_2,\bu_2)$ eigenpairs with $\lambda_1\neq\lambda_2$
+\begin{align*}
+\lambda_1(\bv_1\bullet\bv_2) 
+&= (\lambda_1\bv_1)\bullet\bv_2 \\
+&= A\bv_1\bullet\bv_2 \\
+&= (A\bv_1)^T\bv_2 \\
+&= \bv_1^TA^T\bv_2 \\
+&= \bv_1^T(A\bv_2)  \qquad\textrm{[$A$ symmetric so $A^T=A$]} \\
+&= \bv_1^T(\lambda_2\bv_2) \\
+&= \lambda_2(\bv_1^T\bv_2) \\
+&= \lambda_2(\bv_1\bullet\bv_2)
+\end{align*}
+\vfill
+So $(\lambda_1-\lambda_2)(\bv_1\bullet\bv_2)=0$. But $\lambda_1\neq\lambda_2$, so $\bv_1\bullet\bv_2=0$\hfill\qed
+\end{frame}
+
+
+\begin{frame}{Computing the SVD (case of $\neq$ eigenvalues)}
+If all eigenvalues of $A^TA$ (or $AA^T$) are distinct, we can use Theorem~\ref{th:eigenvectors_of_symmetric_are_orthogonal}
+\vfill
+\begin{enumerate}
+\item Compute $A^TA\in\M_n$
+\item Compute eigenvalues $\lambda_1,\ldots,\lambda_n$ of $A^TA$; order them as $\lambda_1>\cdots>\lambda_n\geq 0$ ($>$ not $\geq$ since $\neq$)
+\item Compute singular values $\sigma_1=\sqrt{\lambda_1},\ldots,\sigma_n=\sqrt{\lambda_n}$
+\item Diagonal matrix $D$ in $\Sigma$ is either in $\M_n$ (if $\sigma_n>0$) or in $\M_{n-1}$ (if $\sigma_n=0$)
+\end{enumerate}
+\end{frame}
+
+
+\begin{frame}
+\begin{enumerate}
+\setcounter{enumi}{4}
+\item Since eigenvalues are distinct, Theorem~\ref{th:eigenvectors_of_symmetric_are_orthogonal} $\implies$ eigenvectors are orthogonal set. Compute these eigenvectors in the same order as the eigenvalues
+\item Normalise them and use them to make the matrix $V$, i.e., $V=[\bv_1\cdots\bv_n]$
+\item To find the $\bu_i$, compute, for $i=1,\ldots,r$,
+\[
+\bu_i = \frac{1}{\sigma_i}A\bv_i
+\]
+and ensure that $\|\bu_i\|=1$
+\end{enumerate}
+\end{frame}
+
+
+\begin{frame}{Computing the SVD (case where some eigenvalues are $=$)}
+\begin{enumerate}
+\item Compute $A^TA\in\M_n$
+\item Compute eigenvalues $\lambda_1,\ldots,\lambda_n$ of $A^TA$; order them as $\lambda_1\geq\cdots\geq\lambda_n\geq 0$
+\item Compute singular values $\sigma_1=\sqrt{\lambda_1},\ldots,\sigma_n=\sqrt{\lambda_n}$, with $r\leq n$ the index of the last positive singular value
+\item For eigenvalues that are distinct, proceed as before
+\item For eigenvalues with multiplicity $>1$, we need to ensure that the resulting eigenvectors are LI \emph{and} orthogonal
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Dealing with eigenvalues with multiplicity $>1$}
+When an eigenvalue has (algebraic) multiplicity $>1$, e.g., characteristic polynomial contains a factor like $(\lambda-2)^2$, things can become a little bit more complicated
+\vfill
+The proper way to deal with this involves the so-called Jordan Normal Form (another matrix decomposition)
+\vfill
+In short: not all square matrices are diagonalisable, but all square matrices admit a JNF
+\end{frame}
+
+
+\begin{frame}
+Sometimes, we can find several LI eigenvectors associated to the same eigenvalue. Check this. If not, need to use the following
+\vfill
+\begin{definition}[Generalised eigenvectors]
+$\bx\neq\b0$ \textbf{generalized eigenvector} of rank $m$ of $A\in\M_n$ corresponding to eigenvalue $\lambda$ if
+\[
+(A-\lambda\II)^{m}\bx = \b0
+\]
+but
+\[
+(A-\lambda\II)^{m-1}\bx\neq \b0
+\]
+\end{definition}
+\end{frame}
+
+
+\begin{frame}{Procedure for generalised eigenvectors}
+$A\in\M_n$ and assume $\lambda$ eigenvalue with algebraic multiplicity $k$
+\vfill
+Find $\bv_1$, ``classic" eigenvector, i.e., $\bv_1\neq\b0$ s.t. $(A-\lambda\II)\bv_1=\b0$
+\vfill
+Find generalised eigenvector $\bv_2$ of rank 2 by solving for $\bv_2\neq\b0$,
+\[
+(A-\lambda\II)\bv_2 = \bv_1
+\]
+$\ldots$
+\vfill
+Find generalised eigenvector $\bv_k$ of rank $k$ by solving for $\bv_k\neq\b0$,
+\[
+(A-\lambda\II)\bv_k = \bv_{k-1}
+\]
+\vfill
+Then $\{\bv_1,\ldots,\bv_k\}$ LI
+\end{frame}
+
+
+\begin{frame}{Back to the normal procedure}
+With the LI eigenvectors $\{\bv_1,\ldots,\bv_k\}$ corresponding to $\lambda$
+\vfill
+Apply Gram-Schmidt to get orthogonal set
+\vfill
+For all eigenvalues with multiplicity $>1$, check that you either have LI eigenvectors or do what we just did
+\vfill
+When you are done, be back on your merry way to step 6 in the case where eigenvalues are all $\neq$
+\vfill
+I am caricaturing a little here: there can be cases that do not work exactly like this, but this is general enough..
+\end{frame}
+
+
+
+% Save counters for next file
+
+% Save theorem count for next file
+\end{document}

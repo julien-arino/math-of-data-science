@@ -27,6 +27,10 @@ cat(input_setup)
 
 \begin{document}
 
+% Set up cross-references and counter persistence
+
+% Set up cross-references and counter persistence
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% TITLE AND OUTLINE
@@ -547,4 +551,8 @@ for (i in 1:dim(tmp)[1]) {
 There is still a loop, but you can split this list, use it on different machines, etc. And can use \texttt{parLapply}
 \end{frame}
 
+
+% Save counters for next file
+
+% Save theorem count for next file
 \end{document}

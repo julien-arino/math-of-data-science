@@ -32,6 +32,10 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 
 \begin{document}
 
+% Set up cross-references and counter persistence
+
+% Set up cross-references and counter persistence
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% TITLE AND OUTLINE
@@ -557,4 +561,8 @@ text(opt_x + 0.2*grad_g_x, opt_y + 0.2*grad_g_y, expression(nabla*g), col="purpl
 \end{frame}
 
 
+
+% Save counters for next file
+
+% Save theorem count for next file
 \end{document}
