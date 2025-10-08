@@ -731,3 +731,40 @@ minimum height=2em]
 %\renewcommand{\section}[2]{\oldsection[#1]\newSectionSlide[#2]}
 
 
+%%%%%%%%%%%%%%%%%%%%%
+% CUSTOM SLIDE BACKGROUNDS
+%%%%%%%%%%%%%%%%%%%%%
+% Define custom background templates for different colors
+\defbeamertemplate*{background canvas}{blue}{%
+  \color{blue!15}\vrule width\paperwidth height\paperheight%
+}
+\defbeamertemplate*{background canvas}{green}{%
+  \color{green!15}\vrule width\paperwidth height\paperheight%
+}
+\defbeamertemplate*{background canvas}{red}{%
+  \color{red!15}\vrule width\paperwidth height\paperheight%
+}
+\defbeamertemplate*{background canvas}{yellow}{%
+  \color{yellow!20}\vrule width\paperwidth height\paperheight%
+}
+\defbeamertemplate*{background canvas}{purple}{%
+  \color{purple!15}\vrule width\paperwidth height\paperheight%
+}
+\defbeamertemplate*{background canvas}{orange}{%
+  \color{orange!20}\vrule width\paperwidth height\paperheight%
+}
+
+% Define keys for the different background options
+\makeatletter
+\define@key{beamerframe}{blue}[true]{\setbeamertemplate{background canvas}[blue]}
+\define@key{beamerframe}{green}[true]{\setbeamertemplate{background canvas}[green]}
+\define@key{beamerframe}{red}[true]{\setbeamertemplate{background canvas}[red]}
+\define@key{beamerframe}{yellow}[true]{\setbeamertemplate{background canvas}[yellow]}
+\define@key{beamerframe}{purple}[true]{\setbeamertemplate{background canvas}[purple]}
+\define@key{beamerframe}{orange}[true]{\setbeamertemplate{background canvas}[orange]}
+\makeatother
+
+% Reset to normal background for all frames by default
+\BeforeBeginEnvironment{frame}{\setbeamertemplate{background canvas}[default]}
+
+

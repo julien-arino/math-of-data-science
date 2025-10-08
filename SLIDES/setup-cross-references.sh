@@ -14,10 +14,10 @@ lectures=(
     "L07-matrix-methods-QR-1"
     "L08-matrix-methods-QR-2-SVD-1"
     "L09-matrix-methods-SVD-2"
-    "L11-matrix-methods-PCA-1"
-    "L12-matrix-methods-PCA-2"
-    "L13-matrix-methods-SVM-1"
-    "L14-matrix-methods-SVM-2"
+    "L10-matrix-methods-PCA-1"
+    "L11-matrix-methods-PCA-2"
+    "L12-matrix-methods-SVM-1"
+    "L13-matrix-methods-SVM-2"
 )
 
 echo "Setting up cross-references for lecture files..."

@@ -2,7 +2,7 @@
 
 % Set lecture number for later use
 <<set-lecture-number,echo=FALSE>>=
-lecture_number = "12"
+lecture_number = "11"
 @
 
 % Part common to all the lectures
@@ -12,7 +12,7 @@ lecture_number = "12"
 \date{Fall 202X}
 
 % Title of the lecture
-\title{Matrix methods -- QR factorisation}
+\title{Matrix methods -- Principal component analysis (2)}
 
 <<set-options,echo=FALSE,warning=FALSE,message=FALSE>>=
 # Source the code common to all lectures
@@ -41,285 +41,11 @@ cat(input_setup)
 
 
 
-
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%
-\section{Principal component analysis (PCA)}
-\newSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_c06eixc06eixc06e.jpeg}
+\Ssection{Back to PCA}{FIGS-slides-admin/Gemini_Generated_Image_c06eixc06eixc06e.jpeg}
 
 
-\begin{frame}{Dimensionality reduction}
-One of the reasons the SVD is used is for dimensionality reduction. However, SVD has many many other uses
-\vfill
-Now we look at another dimensionality reduction technique, PCA
-\vfill
-PCA is often used as a blackbox technique, here we take a look at the math behind it
-\end{frame}
-
-
-\begin{frame}{What is PCA?}
-Linear algebraic technique 
-\vfill
-Helps reduce a complex dataset to a lower dimensional one
-\vfill
-Non-parametric method: does not assume anything about data distribution (distribution from the statistical point of view)
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%
-\subsection{A crash course on probability}
-\newSubSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_c06eixc06eixc06e.jpeg}
-
-
-\begin{frame}{Brief ``review'' of some probability concepts}
-Proper definition of \emph{probability} requires to use \emph{measure theory}.. will not get into details here
-\vfill
-A \textbf{random variable} $X$ is a \emph{measurable} function $X:\Omega\to E$, where $\Omega$ is a set of outcomes (\emph{sample space}) and $E$ is a measurable space
-\vfill
-$\IP(X\in S\subseteq E) = \IP(\omega\in\Omega|X(\omega)\in S)$
-\vfill
-\textbf{Distribution function} of a r.v., $F(x)=\IP(X\leq x)$, describes the distribution of a r.v.
-\vfill
-R.v. can be discrete or continuous or .. other things. 
-\end{frame}
-
-\begin{frame}
-\begin{definition}[Variance]
-Let $X$ be a random variable. The \textbf{variance} of $X$ is given by
-\[
-\Var X = E\left[\left(X-E(X)\right)^2\right]
-\]
-where $E$ is the expected value
-\end{definition}
-\vfill
-\begin{definition}[Covariance]
-Let $X,Y$ be jointly distributed random variables. The \textbf{covariance} of $X$ and $Y$ is given by
-\[
-\cov (X,Y) = E\left[\left(X-E(X)\right)\left(Y-E(Y)\right)\right]
-\]
-\end{definition}
-\vfill
-Note that $\cov(X,X)=E\left[\left(X-E(X)\right)^2\right] = \Var X$
-\end{frame}
-
-\begin{frame}{In practice: ``true law'' versus ``observation''}
-In statistics: we reason on the \emph{true law} of distributions, but we usually have only access to a sample
-\vfill
-We then use \textbf{estimators} to .. estimate the value of a parameter, e.g., the mean, variance and covariance
-\vfill
-\end{frame}
-    
-\begin{frame}
-\begin{definition}[Unbiased estimators of the mean and variance]
-Let $x_1,\ldots,x_n$ be data points (the \emph{sample}) and 
-\[
-\bar x = \frac 1n \sum_{i=1}^n x_i
-\]
-be the \textbf{mean} of the data. An unbiased estimator of the variance of the sample is
-\[
-\sigma^2 = \frac{1}{n-1}\sum_{i=1}^n (x_i-\bar x)^2
-\]
-\end{definition}
-\end{frame}
-
-\begin{frame}
-\begin{definition}[Unbiased estimator of the covariance]
-Let $(x_1,y_1),\ldots,(x_n,y_n)$ be data points,
-\[
-\bar x = \frac 1n \sum_{i=1}^n x_i
-\textrm{ and }
-\bar y = \frac 1n \sum_{i=1}^n y_i
-\]
-be the means of the data. An estimator of the covariance of the sample is
-\[
-\cov(x,y) = \frac{1}{n}\sum_{i=1}^n (x_i-\bar x)(y_i-\bar y)
-\]
-\end{definition}
-\end{frame}
-
-\begin{frame}{What does covariance do?}
-Variance explains how data disperses around the mean, in a 1-D case
-\vfill
-Covariance measures the relationship between two dimensions. E.g., height and weight
-\vfill
-More than the exact value, the sign is important:
-\begin{itemize}
-    \item $\cov(X,Y)>0$: both dimensions change in the same ``direction''; e.g., larger height usually means higher weight
-    \item $\cov(X,Y)<0$: both dimensions change in reverse directions; e.g., time spent on social media and performance in this class
-    \item $\cov(X,Y)=0$: the dimensions are independent from one another; e.g., sex/gender and ``intelligence''
-\end{itemize}
-\end{frame}
-
-\begin{frame}{The covariance matrix}
-Typically, we consider more than 2 variables.. 
-\begin{definition}
-Suppose $p$ random variables $X_1,\ldots,X_p$. Then the covariance matrix is the symmetric matrix
-\[
-\begin{pmatrix}
-\cov(X_1,X_1) & \cov(X_1,X_2) & \cdots & \cov(X_1,X_p) \\
-\cov(X_2,X_1) & \cov(X_2,X_2) & \cdots & \cov(X_2,X_p) \\
-\vdots & \vdots & & \vdots \\
-\cov(X_p,X_1) & \cov(X_p,X_2) & \cdots & \cov(X_p,X_p) 
-\end{pmatrix}
-\]
-i.e., using the properties of covariance,
-\[
-\begin{pmatrix}
-\Var X_1 & \cov(X_1,X_2) & \cdots & \cov(X_1,X_p) \\
-\cov(X_1,X_2) & \Var X_2 & \cdots & \cov(X_2,X_p) \\
-\vdots & \vdots & & \vdots \\
-\cov(X_1,X_p) & \cov(X_2,X_p) & \cdots & \Var X_p 
-\end{pmatrix}
-\]
-\end{definition}
-\end{frame}
-
-
-%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%
-\subsection{A running example: fingerprints}
-\newSubSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_7cansa7cansa7can.jpeg}
-\begin{frame}{Example of a PCA problem}
-We collect a bunch of information about a bunch of people.. for instance this data from Loughborough University
-\vfill
-\begin{quote}
-This dataset contains the height, weight and 4 fingerprint measurements (length, width, area and circumference), collected from 200 participants.
-\end{quote}
-\vfill
-What best describes a participant?
-\end{frame}
-
-\begin{frame}{The variables}
-Each participant is associated to 11 variables
-\vfill
-\begin{itemize}
-\item "Participant Number"
-\item "Gender"
-\item "Age"
-\item "Dominant Hand"
-\item "Height (cm) (average of 3 measurements)"
-\item "Weight (kg) (average of 3 measurements)"
-\item "Fingertip Temperature (°C)"
-\item "Fingerprint Height (mm)"
-\item "Fingerprint Width (mm)"
-\item "Fingerprint Area (mm2)"
-\item "Fingerprint Circumference (mm)"
-\end{itemize}
-\end{frame}
-
-\begin{frame}{Nature of variables}
-Variables have different natures
-\vfill
-\begin{itemize}
-\item "Participant Number": $\in\IN$ (not interesting)
-\item "Gender": categorical
-\item "Age": $\in\IN$ 
-\item "Dominant Hand": categorical
-\item "Height (cm) (average of 3 measurements)": $\in\IR$
-\item "Weight (kg) (average of 3 measurements)": $\in\IR$
-\item "Fingertip Temperature (°C)": $\in\IR$
-\item "Fingerprint Height (mm)": $\in\IR$
-\item "Fingerprint Width (mm)": $\in\IR$
-\item "Fingerprint Area (mm2)": $\in\IR$
-\item "Fingerprint Circumference (mm)": $\in\IR$
-\end{itemize}
-\end{frame}
-
-\begin{frame}{Setting things up}
-Each participant is a row in the matrix (an \emph{observation})
-\vfill
-Each variable is a column
-\vfill
-So we have an $200\times 10$ matrix (we discard the ``Participant number'' column)
-\vfill
-We want to find what carries the most information
-\vfill
-For this, we are going to project the information in a new basis in which the first ``dimension'' will carry most variance, the second dimension will carry a little less, etc.
-\vfill
-In order to do so, we need to learn how to change bases
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%
-\subsection{Change of basis}
-\newSubSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_c06eixc06eixc06e.jpeg}
-\begin{frame}
-	In the following slide, 
-	\[
-	[\bx]_\B
-	\]
-	denotes the coordinates of $\bx$ in the basis $\B$
-	\vfill
-	The aim of a change of basis is to express vectors in another coordinate system (another basis)
-	\vfill
-	We do so by finding a matrix allowing to move from one basis to another
-\end{frame}
-
-\begin{frame}{Change of basis}
-\begin{definition}[Change of basis matrix]
-$\B=\{\bu_1,\ldots,\bu_n\}$ and $\C=\{\bv_1,\ldots,\bv_n\}$ bases of vector space $V$
-\vfill
-The \textbf{change of basis matrix} $P_{\C\leftarrow\B}\in\M_n$,
-\[
-P_{\C\leftarrow\B}
-=\left[
-[\bu_1]_\C \cdots [\bu_n]_\C
-\right]
-\]
-has columns the coordinate vectors $[\bu_1]_\C,\ldots,[\bu_n]_\C$ of vectors in $\B$ with respect to $\C$
-\end{definition}
-\vfill
-\begin{theorem}
-$\B=\{\bu_1,\ldots,\bu_n\}$ and $\C=\{\bv_1,\ldots,\bv_n\}$ bases of vector space $V$ and $P_{\C\leftarrow\B}$ a change of basis matrix from $\B$ to $\C$
-\begin{enumerate}
-\item $\forall\bx\in V$, $P_{\C\leftarrow\B}[\bx]_\B = [\bx]_\C$
-\item $P_{\C\leftarrow\B}$ s.t. $\forall\bx\in V$, $P_{\C\leftarrow\B}[\bx]_\B = [\bx]_\C$ is \textbf{unique}
-\item $P_{\C\leftarrow\B}$ invertible and $P_{\C\leftarrow\B}^{-1}=P_{\B\leftarrow\C}$
-\end{enumerate}
-\end{theorem}
-\end{frame}
-
-
-\begin{frame}{Row-reduction method for changing bases}
-\begin{theorem}
-\label{th:change-basis-construction}
-$\B=\{\bu_1,\ldots,\bu_n\}$ and $\C=\{\bv_1,\ldots,\bv_n\}$ bases of vector space $V$. Let $\E$ be any basis for $V$,
-\[
-B = [[\bu_1]_\E,\ldots,[\bu_n]_\E] 
-\textrm{ and }
-C = [[\bv_1]_\E,\ldots,[\bv_n]_\E] 
-\]
-and let $[C|B]$ be the augmented matrix constructed using $C$ and $B$. Then
-\[
-RREF\left([C|B]\right)
-=[\II|P_{\C\leftarrow\B}]
-\]
-\end{theorem}
-\vfill
-If working in $\IR^n$, this is quite useful with $\E$ the standard basis of $\IR^n$ (it does not matter if $\B=\E$)
-\end{frame}
-
-\begin{frame}
-So the question now becomes
-\begin{quote}
-How do we find what new basis to look at our data in?
-\end{quote}
-\vfill
-(Changing the basis does not change the data, just the view you have of it)
-\vfill
-(Think of what happens when you do a headstand.. your up becomes down, your right and left switch, but the world does not change, just your view of it)
-\vfill
-(Changes of bases are \emph{fundamental} operations in Science)
-\end{frame}
-
-
-
-%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%
-\subsection{Back to PCA}
-\newSubSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_c06eixc06eixc06e.jpeg}
 \begin{frame}{Setting things up}
 I will use notation (mostly) as in Joliffe's \emph{Principal Component Analysis} (PDF of older version available for free from UofM Libraries)
 \vfill
@@ -635,101 +361,20 @@ where the data is centred!
 Sometimes you will see $S_X=1/(n-1)XX^T$. This is for matrices with observations in columns and variables in rows. Just remember that you want the covariance matrix to have size the number of variables, not observations, this will give you the order in which to take the product
 \end{frame}
 
+
+
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
-\subsection{A 2D example to begin: hockey players}
-\newSubSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_ee8lhqee8lhqee8l.jpeg}
+\Ssection{Hockey players}{FIGS-slides-admin/Gemini_Generated_Image_ee8lhqee8lhqee8l.jpeg}
 
-\begin{frame}[fragile]{A 2D example}
-See a dataset \href{https://opendata.stackexchange.com/questions/7793/age-weight-and-height-dataset}{on this page} for a dataset of height and weight of some hockey players
-\vfill
-<<load-hockey-data>>=
-data = read.csv("https://figshare.com/ndownloader/files/5303173")
-head(data, n=3)
-dim(data)
-@
-\end{frame}
-
-\begin{frame}
-In case you are wondering, this is a database of ice hockey players at IIHF world championships, 2001-2016, assembled by the dataset's author
-\vfill
-See some comments \href{https://ikashnitsky.github.io/2017/ice-hockey-players-height/}{here}
-\vfill
-As usual, it is a good idea to plot this to get a sense of the lay of the land
-\end{frame}
-
-
-<<plot-hockey-1,echo=FALSE>>=
-plot(data$height, data$weight,
-    pch = 19, col = "dodgerblue4",
-    main = "IIHF players 2001-2016 (unprocessed)",
-    xlab = "Height (cm)", ylab = "Weight (kg)")
-@
-
-\maxFrameImage{\Sexpr{knitr::fig_chunk("plot-hockey-1", "pdf")}}
-
-\begin{frame}[fragile]
-The author of the study is interested in the evolution of weights, so it is likely that the same person will be in the dataset several times
-\vfill
-Let us check this: first check will be \code{FALSE} if the number of unique names does not match the number of rows in the dataset
-
-<<>>=
-length(unique(data$name)) == dim(data)[1]
-length(unique(data$name))
-@
-\end{frame}
-
-\begin{frame}[fragile]
-Not interested in the evolution of weights, so simplify: if more than one record for someone, take average of recorded weights and heights
-\vfill
-To be extra careful, could check as well that there are no major variations on player height (homonymies?)
-\vfill
-<<>>=
-data_simplified = data.frame(name = unique(data$name))
-w = c()
-h = c()
-for (n in data_simplified$name) {
-    tmp = data[which(data$name == n),]
-    h = c(h, mean(tmp$height))
-    w = c(w, mean(tmp$weight))
-}
-data_simplified$weight = w
-data_simplified$height = h
-@
-\end{frame}
-
-\begin{frame}[fragile]
-<<>>=
-data = data_simplified
-head(data_simplified, n = 6)
-@
-\end{frame}
-
-<<plot-hockey-2,echo=FALSE>>=
-plot(data$height, data$weight,
-    pch = 19, col = "dodgerblue4",
-    main = "IIHF players 2001-2016 (uniqued)",
-    xlab = "Height (cm)", ylab = "Weight (kg)")
-@
-
-\maxFrameImage{\Sexpr{knitr::fig_chunk("plot-hockey-2", "pdf")}}
-
-\begin{frame}[fragile]\frametitle{Centre the data}
-<<plot-hockey-centred,echo=1:4>>=
-mean(data$weight)
-mean(data$height)
+<<load-hockey-data, echo=FALSE>>=
+# Load the hockey data (as in previous lecture) and centre
+# it.
+# From https://figshare.com/ndownloader/files/5303173
+data = read.csv("https://github.com/julien-arino/math-of-data-science/raw/refs/heads/main/DATA/hockey-players.csv")
 data$weight.c = data$weight-mean(data$weight)
 data$height.c = data$height-mean(data$height)
-plot(data$height.c, data$weight.c,
-    pch = 19, col = "dodgerblue4",
-    main = "IIHF players 2001-2016 (centred)",
-    xlab = "Height (cm)", ylab = "Weight (kg)")
 @
-\end{frame}
-
-\maxFrameImage{\Sexpr{knitr::fig_chunk("plot-hockey-centred", "pdf")}}
-
-
 
 \begin{frame}[fragile]\frametitle{Covariance}
 The function \code{cov} returns the covariance of two samples
@@ -977,179 +622,179 @@ plot(X.new[,1], X.new[,2],
 
 
 
-%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%
-\subsection{Back to fingerprints}
-\newSubSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_ut188hut188hut18.jpeg}
-
-
-\begin{frame}
-We get the data from \href{https://repository.lboro.ac.uk/articles/dataset/Height_weight_and_fingerprint_measurements_collected_from_200_participants/7539206}{here}
-\vfill
-This time, we first download the data, then open the file
-\vfill
-The file is an excel table, so we need to use a library for doing that
-\end{frame}
-
-
-\begin{frame}[fragile]\frametitle{Loading the excel fingerprint data}
-<<open-file>>=
-download.file(url = "https://repository.lboro.ac.uk/ndownloader/files/14015774",
-             destfile = "../CODE/fingerprint_data.xlsx")
-data = openxlsx::read.xlsx("../CODE/fingerprint_data.xlsx")
-head(data, n=3)
-@
-\end{frame}
-
-
-\begin{frame}[fragile]\frametitle{Some wrangling}
-Let us rework the names of columns a bit, for convenience. Let us also get rid of a few columns we are not using
-\vfill
-<<start-wrangling>>=
-data = data[,2:dim(data)[2]]
-colnames(data) = c("gender", "age", "handedness", "height", "weight",
-                  "fing_temp", "fing_height", "fing_width",
-                  "fing_area", "fing_circ")
-head(data, n=3)
-@
-\end{frame}
-
-
-
-\begin{frame}\frametitle{Some wrangling -- Centering}
-Plotting all these variables is complicated, so we forgo this for the time being
-\vfill
-Let us centre the data. That there are some \code{NA} values, so we remove them using the function \code{complete.cases}, which identifies rows where at least one of the variables is \code{NA}
-\vfill
-(We could also use \code{na.rm = TRUE} when taking the average to remove these values.) 
-\vfill
-We make new columns with the prefix \code{.c}, just to still have the initial data handy if need be.
-\end{frame}
-
-\begin{frame}[fragile]\frametitle{Some wrangling -- Centering}
-<<center-the-data>>=
-data = data[complete.cases(data),]
-to_centre = c("age", "height", 
-              "weight", "fing_temp", 
-              "fing_height", "fing_width",
-              "fing_area", "fing_circ")
-for (c in to_centre) {
-    new_c = sprintf("%s.c", c)
-    data[[new_c]] = data[[c]] - mean(data[[c]], na.rm = TRUE)
-}
-head(data)
-@
-\end{frame}
-
-
-
-\begin{frame}[fragile]\frametitle{Covariance matrix}
-<<compute-sample-covariance-matrix>>=
-X = as.matrix(data[, to_centre])
-S = 1/(dim(X)[1]-1)*t(X) %*% X
-S
-@
-\end{frame}
-
-
-
-
-\begin{frame}[fragile]\frametitle{Eigenvalues}
-<<>>=
-ev = eigen(S)
-ev$values
-@
-\vfill
-Let us add the singular values to \code{ev}
-\vfill
-<<>>=
-ev$sing_values = sqrt(ev$values)
-@
-\end{frame}
-
-
-
-\begin{frame}[fragile]\frametitle{Use built-in functions}
-<<>>=
-GS = pracma::gramSchmidt(A = ev$vectors)
-GS$Q
-# Just to check that Q is indeed with normalised columns
-colSums(GS$Q[,1:dim(GS$Q)[2]]^2)
-GS$Q[,1] %*% GS$Q[,2]
-@
-So \code{Q} is indeed an orthogonal matrix
-\end{frame}
-
-
-
-\begin{frame}[fragile]\frametitle{Some wrangling}
-Now recall we saw a theorem that told us how to construct a new basis..
-
-
-<<>>=
-# Make an identity matrix
-Id = diag(dim(GS$Q)[1])
-# Make the augmented matrix
-A = cbind(GS$Q, Id)
-# Compute the RREF and extract the relevant matrix
-P = pracma::rref(A)[,(dim(GS$Q)[2]+1):dim(A)[2]]
-X.new = X %*% t(P)
-@
-\end{frame}
-
-
-\begin{frame}[fragile]\frametitle{Use built-in functions}
-Use the built in function \code{prcomp} or \code{PCA} from the \code{FactoMineR} package
-\vfill
-<<>>=
-# data.pca = prcomp(X, center = TRUE, scale = TRUE)
-data.pca = PCA(X, scale.unit = TRUE, graph = FALSE)
-summary(data.pca)
-@
-\end{frame}
-
-
-\begin{frame}[fragile]\frametitle{Percentage of variance}
-The ``proportion of variance'' (or ``percentage of variance'') information is actually the proportion (and then cumulative proportion) represented by the singular value associated to each principal component
-\vfill
-We check this (approximately) by comparing with the singular values we computed
-\vfill
-<<>>=
-ev$sing_values/(sum(ev$sing_values))
-cumsum(ev$sing_values)/(sum(ev$sing_values))
-@
-\end{frame}
-
-
-
-% \begin{frame}[fragile]\frametitle{Some wrangling}
-% <<>>=
-% str(data.pca)
+% %%%%%%%%%%%%%%%%%%%%%
+% %%%%%%%%%%%%%%%%%%%%%
+% \subsection{Back to fingerprints}
+% \newSubSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_ut188hut188hut18.jpeg}
+% 
+% 
+% \begin{frame}
+% We get the data from \href{https://repository.lboro.ac.uk/articles/dataset/Height_weight_and_fingerprint_measurements_collected_from_200_participants/7539206}{here}
+% \vfill
+% This time, we first download the data, then open the file
+% \vfill
+% The file is an excel table, so we need to use a library for doing that
+% \end{frame}
+% 
+% 
+% \begin{frame}[fragile]\frametitle{Loading the excel fingerprint data}
+% <<open-file>>=
+% download.file(url = "https://repository.lboro.ac.uk/ndownloader/files/14015774",
+%              destfile = "../CODE/fingerprint_data.xlsx")
+% data = openxlsx::read.xlsx("../CODE/fingerprint_data.xlsx")
+% head(data, n=3)
 % @
-% 
-% 
-% <<>>=
-% #library(devtools)
-% #install_github("vqv/ggbiplot")
-% library(ggbiplot)
-% @
-% 
 % \end{frame}
 % 
 % 
 % \begin{frame}[fragile]\frametitle{Some wrangling}
-% <<>>=
-% ggbiplot(data.pca, groups = data$handedness)
+% Let us rework the names of columns a bit, for convenience. Let us also get rid of a few columns we are not using
+% \vfill
+% <<start-wrangling>>=
+% data = data[,2:dim(data)[2]]
+% colnames(data) = c("gender", "age", "handedness", "height", "weight",
+%                   "fing_temp", "fing_height", "fing_width",
+%                   "fing_area", "fing_circ")
+% head(data, n=3)
 % @
 % \end{frame}
-
-\begin{frame}[fragile]\frametitle{Plot results}
-<<plot-PCA-1>>=
-plot.PCA(data.pca, axes = c(1,2), choix = "ind", habillage = 4)
-@
-\end{frame}
-
-\maxFrameImage{\Sexpr{knitr::fig_chunk("plot-PCA-1", "pdf")}}
+% 
+% 
+% 
+% \begin{frame}\frametitle{Some wrangling -- Centering}
+% Plotting all these variables is complicated, so we forgo this for the time being
+% \vfill
+% Let us centre the data. That there are some \code{NA} values, so we remove them using the function \code{complete.cases}, which identifies rows where at least one of the variables is \code{NA}
+% \vfill
+% (We could also use \code{na.rm = TRUE} when taking the average to remove these values.) 
+% \vfill
+% We make new columns with the prefix \code{.c}, just to still have the initial data handy if need be.
+% \end{frame}
+% 
+% \begin{frame}[fragile]\frametitle{Some wrangling -- Centering}
+% <<center-the-data>>=
+% data = data[complete.cases(data),]
+% to_centre = c("age", "height", 
+%               "weight", "fing_temp", 
+%               "fing_height", "fing_width",
+%               "fing_area", "fing_circ")
+% for (c in to_centre) {
+%     new_c = sprintf("%s.c", c)
+%     data[[new_c]] = data[[c]] - mean(data[[c]], na.rm = TRUE)
+% }
+% head(data)
+% @
+% \end{frame}
+% 
+% 
+% 
+% \begin{frame}[fragile]\frametitle{Covariance matrix}
+% <<compute-sample-covariance-matrix>>=
+% X = as.matrix(data[, to_centre])
+% S = 1/(dim(X)[1]-1)*t(X) %*% X
+% S
+% @
+% \end{frame}
+% 
+% 
+% 
+% 
+% \begin{frame}[fragile]\frametitle{Eigenvalues}
+% <<>>=
+% ev = eigen(S)
+% ev$values
+% @
+% \vfill
+% Let us add the singular values to \code{ev}
+% \vfill
+% <<>>=
+% ev$sing_values = sqrt(ev$values)
+% @
+% \end{frame}
+% 
+% 
+% 
+% \begin{frame}[fragile]\frametitle{Use built-in functions}
+% <<>>=
+% GS = pracma::gramSchmidt(A = ev$vectors)
+% GS$Q
+% # Just to check that Q is indeed with normalised columns
+% colSums(GS$Q[,1:dim(GS$Q)[2]]^2)
+% GS$Q[,1] %*% GS$Q[,2]
+% @
+% So \code{Q} is indeed an orthogonal matrix
+% \end{frame}
+% 
+% 
+% 
+% \begin{frame}[fragile]\frametitle{Some wrangling}
+% Now recall we saw a theorem that told us how to construct a new basis..
+% 
+% 
+% <<>>=
+% # Make an identity matrix
+% Id = diag(dim(GS$Q)[1])
+% # Make the augmented matrix
+% A = cbind(GS$Q, Id)
+% # Compute the RREF and extract the relevant matrix
+% P = pracma::rref(A)[,(dim(GS$Q)[2]+1):dim(A)[2]]
+% X.new = X %*% t(P)
+% @
+% \end{frame}
+% 
+% 
+% \begin{frame}[fragile]\frametitle{Use built-in functions}
+% Use the built in function \code{prcomp} or \code{PCA} from the \code{FactoMineR} package
+% \vfill
+% <<>>=
+% # data.pca = prcomp(X, center = TRUE, scale = TRUE)
+% data.pca = PCA(X, scale.unit = TRUE, graph = FALSE)
+% summary(data.pca)
+% @
+% \end{frame}
+% 
+% 
+% \begin{frame}[fragile]\frametitle{Percentage of variance}
+% The ``proportion of variance'' (or ``percentage of variance'') information is actually the proportion (and then cumulative proportion) represented by the singular value associated to each principal component
+% \vfill
+% We check this (approximately) by comparing with the singular values we computed
+% \vfill
+% <<>>=
+% ev$sing_values/(sum(ev$sing_values))
+% cumsum(ev$sing_values)/(sum(ev$sing_values))
+% @
+% \end{frame}
+% 
+% 
+% 
+% % \begin{frame}[fragile]\frametitle{Some wrangling}
+% % <<>>=
+% % str(data.pca)
+% % @
+% % 
+% % 
+% % <<>>=
+% % #library(devtools)
+% % #install_github("vqv/ggbiplot")
+% % library(ggbiplot)
+% % @
+% % 
+% % \end{frame}
+% % 
+% % 
+% % \begin{frame}[fragile]\frametitle{Some wrangling}
+% % <<>>=
+% % ggbiplot(data.pca, groups = data$handedness)
+% % @
+% % \end{frame}
+% 
+% \begin{frame}[fragile]\frametitle{Plot results}
+% <<plot-PCA-1>>=
+% plot.PCA(data.pca, axes = c(1,2), choix = "ind", habillage = 4)
+% @
+% \end{frame}
+% 
+% \maxFrameImage{\Sexpr{knitr::fig_chunk("plot-PCA-1", "pdf")}}
 
 % \begin{frame}[fragile]\frametitle{Plot results with ellipses}
 % <<plot-PCA-2>>=
@@ -1180,43 +825,6 @@ plot.PCA(data.pca, axes = c(1,2), choix = "ind", habillage = 4)
 % \end{frame}
 
 
-
-
-
-%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%
-\section{Support vector machines}
-\newSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_c06eixc06eixc06e.jpeg}
-
-%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%
-\subsection{Clustering and classification}
-\newSubSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_c06eixc06eixc06e.jpeg}
-
-\begin{frame}{Clustering vs classification}
-    Clustering is partitioning an unlabelled dataset into groups of similar objects
-    \vfill
-    Classification sorts data into specific categories using a labelled dataset
-\end{frame}
-
-\begin{frame}{Clustering}
-    From \href{https://en.wikipedia.org/wiki/Cluster_analysis}{Wikipedia}
-    \begin{quote}
-        \textbf{Cluster analysis} or \textbf{clustering} is the task of grouping a set of objects in such a way that objects in the same group (called a \textbf{cluster}) are more similar (in some sense) to each other than to those in other groups (clusters).
-    \end{quote}
-    \vfill
-    There are a myriad of ways to do clustering, this is an extremely active field of research and application. See the Wikipedia page for leads
-\end{frame}
-
-
-\begin{frame}{Classification}
-    From \href{https://en.wikipedia.org/wiki/Statistical_classification}{Wikipedia}
-    \begin{quote}
-        In statistics, \textbf{classification} is the problem of identifying which of a set of categories (sub-populations) an observation (or observations) belongs to. Examples are assigning a given email to the "spam" or "non-spam" class, and assigning a diagnosis to a given patient based on observed characteristics of the patient (sex, blood pressure, presence or absence of certain symptoms, etc.).
-    \end{quote}
-\end{frame}
 
 
 

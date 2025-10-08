@@ -27,14 +27,9 @@ cat(input_setup)
 
 \begin{document}
 
-% Cross-reference setup to reference previous lectures
-%\zexternaldocument{L08-matrix-methods-QR-2-SVD-1}
-
-% Continue theorem numbering from L08 (manual setup - check L08 for current count)
-% L08 has several theorems, so we continue from where it left off
-\setcounter{theorem}{6}  % Adjust this number based on actual count in L08
-
 % Set up cross-references and counter persistence
+%\zexternaldocument{L08-matrix-methods-QR-2-SVD-1}
+\setcounter{theorem}{75} 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -58,7 +53,7 @@ Let $A\in\M_n$ symmetric, $(\lambda_1,\bu_1)$ and $(\lambda_2,\bu_2)$ be eigenpa
 \end{theorem}
 \end{frame}
 
-\begin{frame}{Proof of Theorem~\ref{th:eigenvectors_of_symmetric_are_orthogonal}}
+\begin{frame}[red]{Proof of Theorem~\ref{th:eigenvectors_of_symmetric_are_orthogonal}}
 $A\in\M_n$ symmetric, $(\lambda_1,\bu_1)$ and $(\lambda_2,\bu_2)$ eigenpairs with $\lambda_1\neq\lambda_2$
 \begin{align*}
 \lambda_1(\bv_1\bullet\bv_2) 
@@ -204,13 +199,13 @@ D^{-1} & 0 \\ 0 & 0
 
 
 \begin{frame}{Least squares revisited}
-\begin{theorem}
+\begin{importanttheorem}
 Let $A\in\M_{mn}$, $\bx\in\IR^n$ and $\bb\in\IR^m$. The least squares problem $A\bx=\bb$ has a unique least squares solution $\tilde\bx$ of \emph{minimal length} (closest to the origin) given by
 \[
 \tilde\bx = A^+\bb
 \]
 where $A^+$ is the \emph{pseudoinverse} of $A$
-\end{theorem}
+\end{importanttheorem}
 \end{frame}
 
 

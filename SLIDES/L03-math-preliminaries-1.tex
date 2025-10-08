@@ -797,20 +797,24 @@ Recall that the matrix product is not commutative, i.e., in general, $AB\neq BA$
 The \textbf{zero} matrix is the matrix $0_{mn}$ whose entries are all zero.
 The \textbf{identity} matrix is a square $n\times n$ matrix $\II_n$ with all entries on the main diagonal equal to one and all off diagonal entries equal to zero
 \end{definition}
+\vfill
 \begin{definition}[Symmetric matrix]
 A square matrix $A\in\M_n$ is \textbf{symmetric} if $\forall i,j=1,\ldots,n$, $a_{ij}=a_{ji}$. In other words, $A\in\M_n$ is symmetric if $A=A^T$
 \end{definition}
 \end{frame}
 
 
-\begin{frame}{Properties of symmetric matrices}
-\begin{theorem}
+\begin{frame}{Making symmetric matrices}
+\begin{importanttheorem}\label{th:symmetric_matrices}
 \begin{enumerate}
 	\item If $A\in\M_n$, then $A+A^T$ is symmetric
 	\item If $A\in\M_{mn}$, then $AA^T\in\M_m$ and $A^TA\in\M_n$ are symmetric
 \end{enumerate}
-\end{theorem}
-\vfill
+\end{importanttheorem}
+\end{frame}
+
+\begin{frame}[red]
+\frametitle{Proof of Theorem~\ref{th:symmetric_matrices}}
 $X$ symmetric $\iff$ $X=X^T$, so use $X=$ the matrix whose symmetric property you want to check
 
 1. True if $A+A^T=(A+A^T)^T$. We have 
@@ -904,6 +908,7 @@ A\bx=\lambda \bx
 \]
 A couple $(\lambda,\bx)$ with $\bx\neq\b0$ s.t. $A\bx=\lambda\bx$ is an \textbf{eigenpair}
 \end{definition}
+\vfill
 If $(\lambda,\bx)$ eigenpair, then for $c\neq 0$, $(\lambda,c\bx)$ also eigenpair since $A(c\bx)=cA\bx=c\lambda\bx$ and dividing both sides by $c$..
 \end{frame}
 

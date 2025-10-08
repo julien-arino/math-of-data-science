@@ -27,9 +27,9 @@ cat(input_setup)
 
 \begin{document}
 
-% Set up cross-references and counter persistence
-
-% Set up cross-references and counter persistence
+% Cross-reference setup to reference previous lectures
+\zexternaldocument{L04-math-preliminaries-2}
+% Set up counter persistence
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -302,13 +302,14 @@ We start with a line, giving rise to \defword{linear least squares}
 \end{frame}
 
 \begin{frame}[fragile]\frametitle{Least squares approximation -- A trivial case}
-<<plot-2-points-and-line,echo=FALSE,fig.show='asis',fig.height=3.5>>=
+<<plot-2-points,echo=FALSE,fig.show='asis',fig.height=3.5>>=
 points = list()
 points$x = c(1,2)
 points$y = c(3,5) # So the points are (1,3) and (2,5)
 plot(points$x, points$y, 
-     pch = 19, cex = 1, bty = "n",
-     xlim = c(0, 3), ylim = c(0,6), xlab = "x", ylab = "y")
+     pch = 19, cex = 1.5, bty = "n",
+     xlim = c(0, 3), ylim = c(0,7), 
+     xlab = "x", ylab = "y")
 @
 \end{frame}
 
@@ -340,7 +341,7 @@ $$
 \end{frame}
 
 \begin{frame}[fragile]
-We know from the ``famous'' linear algebra in a nutshell theorem that this system has a unique solution if the matrix
+We know from Theorem~\zref{th:L04-linalg-in-a-nutshell} (Linear algebra in a nutshell) that this system has a unique solution if the matrix
 $$
 M=
 \begin{pmatrix}
@@ -350,23 +351,42 @@ $$
 is invertible
 \vfill
 $\det(M)=1$, so we are good, we'll find $a$ and $b$ easily..
+<<solve-2x2-system>>=
+A = matrix(c(1,1,1,2), nr = 2, nc = 2, byrow = TRUE)
+rhs = matrix(c(3,5), nr = 2, nc =1)
+coefs = solve(A,rhs)
+coefs
+@
 \end{frame}
 
 \begin{frame}[fragile]
+<<plot-2-points-and-line,echo=FALSE,fig.show='asis',fig.height=3.5>>=
+plot(points$x, points$y, 
+     pch = 19, cex = 1.5, bty = "n",
+     xlim = c(0, 3), ylim = c(0,7), xlab = "x", ylab = "y")
+x = seq(0,3,length.out = 100)
+y = coefs[1] + coefs[2]*x
+lines(x,y, lwd = 2, col = "darkred")
+@
+\end{frame}
+
+
+\begin{frame}[fragile]
 Now let's add another point
-<<plot-3-points-and-line-0>>=
+<<plot-3-points-and-line-0,echo=FALSE,fig.show='asis',fig.height=3>>=
 points = list()
 points$x = c(1,2,3)
 points$y = c(3,5,4) # So the points are (1,3), (2,5) and (3,4)
 plot(points$x, points$y,
-     pch = 19, cex = 2, bty = "n",
-    xlim = c(0, 3.5), ylim = c(0,6), xlab = "x", ylab = "y")
+     pch = 19, cex = 1.5, bty = "n",
+    xlim = c(0, 3.5), ylim = c(0,7), 
+    xlab = "x", ylab = "y")
 @
 These points are clearly not colinear, so there is not one line going through the 3
 \end{frame}
 
 \begin{frame}
-We end up with an *overdetermined* system
+We end up with an \emph{overdetermined} system
 $$
 \begin{aligned}
 3 &= a+b \\
@@ -389,48 +409,61 @@ a \\ b
 $$
 \end{frame}
 
+\begin{frame}
+We have verified visually that the points are not colinear, so this system has no solution
+\vfill
+(If you had to do it for good, you consider two vectors stemming from these 3 points and compute the angle between them or check that one is a multiple of the other)
+\vfill
+So let us instead try to find the line that comes "closest" to the 3 points
+\end{frame}
+
 \begin{frame}[fragile]
-We have verified visually that the points are not colinear, so this system has no solution.
-
-(If you had to do it for good, you consider two vectors stemming from these 3 points and compute the angle between them or check that one is a multiple of the other).
-
-So let us instead try to find the line that comes "closest" to the 3 points.
-
-<<plot-3-points-and-line-1>>=
+<<plot-3-points-and-line-1,echo=FALSE,fig.show='asis',fig.height=3>>=
 A = matrix(c(1,1,1,2), nr = 2, nc = 2, byrow = TRUE)
 rhs = matrix(c(3,5), nr = 2, nc =1)
 coefs = solve(A,rhs) # To invert A, in R, you use solve(A), to solve Ax=b, you use solve(A,b)
 plot(points$x, points$y,
-     pch = 19, cex = 2, bty = "n",
-    xlim = c(0, 3.5), ylim = c(0,6), xlab = "x", ylab = "y")
-abline(coef = coefs, lwd = 2)
+     pch = 19, cex = 1.5, bty = "n",
+    xlim = c(0, 3.5), ylim = c(0,7), 
+    xlab = "x", ylab = "y")
+x = seq(0,3.5,length.out = 100)
+y = coefs[1] + coefs[2]*x
+lines(x,y, lwd = 2, col = "darkred")
 @
 
 Obviously, not sensational..
 \end{frame}
 
-\begin{frame}[fragile]
-<<plot-3-points-and-line-2>>=
+\begin{frame}[fragile]{Let's eyeball it -- Less steep and higher $y$-intercept}
+<<plot-3-points-and-line-2,echo=FALSE,fig.show='asis',fig.height=3>>=
 plot(points$x, points$y,
-     pch = 19, cex = 2, bty = "n",
-    xlim = c(0, 3.5), ylim = c(0,6), xlab = "x", ylab = "y")
-abline(coef = coefs, lwd = 2)
-abline(a = 3, b = 0.5, lwd = 2, col = "red")
+     pch = 19, cex = 1.5, bty = "n",
+    xlim = c(0, 3.5), ylim = c(0,8), xlab = "x", ylab = "y")
+abline(coef = coefs, lwd = 2, col = "darkred")
+abline(a = 3, b = 0.5, lwd = 2, col = "dodgerblue4")
 @
+The blue line looks better, but how do we quantify this?
+\end{frame}
 
-How do we find "how far away"?
-
-- We could use projections onto the line (which we know minimises the distance)
-- However, this will be a problem if we later decide that rather than a straight line, we want to use something more "funky" like a quadratic or an exponential
+\begin{frame}
+How do we find "how far away" we are?
+\vfill
+\begin{itemize}
+\item We could use projections onto the line (which we know minimises the distance)
+\vfill
+\item However, this will be a problem if we later decide that rather than a straight line, we want to use something more "funky" like a quadratic or an exponential
+\end{itemize}
 \end{frame}
 
 
 \begin{frame}
-So instead, we compare, for a given value $x$, the distance between the true value $y$ and the value of $y$ obtained using the curve (line, here) that we use to fit the data
-
+Compare, for a given value $x$, the distance between the true value $y$ and the value of $y$ obtained using the curve (line, here) that we use to fit the data
+\vfill
 Let $(x_i,y_i)$ be the data points, i.e., here, $(x_1,y_1)=(1,3)$, $(x_2,y_2)=(2,5)$ and $(x_3,y_3)=(3,4)$
+\end{frame}
 
-Now suppose we use a line with equation $y=a+bx$ and that we pick a value for $a$ and $b$. Then at $x_1$,
+\begin{frame}
+Suppose we use a line with equation $y=a+bx$ and that we pick a value for $a$ and $b$. Then at $x_1$,
 $$
 \tilde y_1 = a+bx_1 = a+b
 $$
@@ -442,13 +475,14 @@ and at $x_3$,
 $$
 \tilde y_3 = a+bx_3 = a+3b
 $$
-Consider $x_1$, for instance. The error we made by using the line with coefficients $(a,b)$ is $\overrightarrow{(x_1,y_1)(x_1,\tilde y_1)}$.
+\vfill
+Consider $x_1$, for instance. The error we made by using the line with coefficients $(a,b)$ is $\overrightarrow{(x_1,y_1)(x_1,\tilde y_1)}$
 \end{frame}
 
 \begin{frame}[fragile]
-For future use, let us create a function for $y = a_0 + a_1x$.
+For future use, let us create a function for $y = a_0 + a_1x$
 
-<<>>=
+<<define-affine-function>>=
 my_line = function(x, a_0, a_1){
     return(a_0 + a_1*x)
 }
@@ -456,7 +490,7 @@ my_line = function(x, a_0, a_1){
 
 Functions are super useful when programming
 
-<<>>=
+<<examples-use-affine-function>>=
 my_line(1,2,3)
 my_line(a_0 = 2, a_1 = 3, x = 1)
 my_line(x = c(1,2,3), a_0 = 2, a_1 = 3)
@@ -465,16 +499,18 @@ my_line(x = c(1,2,3), a_0 = 2, a_1 = 3)
 
 
 \begin{frame}[fragile]
-<<>>=
+<<plot-3-points-and-line-3,echo=FALSE,fig.show='asis',fig.height=3.5>>=
 a = 3
 b = 0.5 # The line has equation y=a+bx
 plot(points$x, points$y,
-     pch = 19, cex = 2, bty = "n",
+     pch = 19, cex = 1.5, bty = "n",
     xlim = c(0, 3.5), ylim = c(0,6), xlab = "x", ylab = "y")
-abline(a = a, b = b, lwd = 2)
-abline(v = c(1,2,3))  # If we used abline(h=c(0,1)), we would get horizontal lines at y=0 and y=1
+x = seq(0,3.5,length.out = 100)
+y = a + b*x
+lines(x,y, lwd = 2, col = "dodgerblue4")
+abline(v = c(1,2,3), lwd = 0.5, lty = 2)
 p = my_line(c(1,2,3), a, b)
-points(c(1,2,3), p, pch = 19, cex = 2, col = "red")
+points(c(1,2,3), p, pch = 19, cex = 1.5, col = "red")
 @
 \end{frame}
 
@@ -489,23 +525,25 @@ $$
 = (x_1-x_1,y_1-\tilde y_1)
 = (0, y_1-\tilde y_1)
 $$
+\vfill
 Let us call
 $$
 \varepsilon_1 = y_1-\tilde y_1
 $$
-We can compute $\varepsilon_2$ and $\varepsilon_3$ too. And we can then form the **error vector**
+We can compute $\varepsilon_2$ and $\varepsilon_3$ too. And we can then form the \defword{error vector}
 $$
 \mathbf{e} = (\varepsilon_1,\varepsilon_2,\varepsilon_3)^T
 $$
+\vfill
 The norm of $\mathbf{e}$, $\|\mathbf{e}\|$, then tells us how much error we are making for the choice of $(a,b)$ we are using
 \end{frame}
 
 
 \begin{frame}
-The norm of $\mathbf{e}$, $\|\mathbf{e}\|$, tells us how much error we are making for the choice of $(a,b)$ we are using
-
+The norm of $\|\mathbf{e}\|$ tells us how much error we are making for the choice of $(a,b)$ we are using
+\vfill
 So our objective is to find $(a,b)$ such that $\|\mathbf{e}\|$ is minimal
-
+\vfill
 We could use various norms, but the Euclidean norm has some very interesting properties, so we use
 $$
 \|\mathbf{e}\| = \sqrt{\varepsilon_1^2+\varepsilon_2^2+\varepsilon_3^2}
@@ -523,14 +561,16 @@ is minimal, where $\tilde y_i=a+bx_i$, for $i=1,\ldots,n$
 \end{frame}
 
 
-\begin{frame}[fragile]
+\begin{frame}
 Let us first hack a brute force solution! (For the example we have been using this far)
+\vfill
+We have our three points in the list \code{points}, the function \code{my\_line} that computes the value $\tilde y$ given $x$ and $a,b$, so let us make a new function that, given $a,b$, computes $\mathbf{e}$
+\vfill
+We'll also pass the points \code{points}
+\end{frame}
 
-We have our three points in the list `points`, the function \code{my\_line} that computes the value $\tilde y$ given $x$ and $a,b$, so let us make a new function that, given $a,b$, computes $\mathbf{e}$
-
-We'll also pass the points `points`
-
-<<>>=
+\begin{frame}[fragile]{A function to compute the error}
+<<define-error-function>>=
 error = function(a_0, a_1, points) {
     y_tilde = my_line(points$x, a_0 = a_0, a_1 = a_1)
     e = points$y - y_tilde
@@ -541,20 +581,24 @@ error(a_0 = 3, a_1 = 0.5, points)
 error(a_0 = 3.1, a_1 = 0.48, points)
 @
 
-We can't be doing this by hand..
+We can't be doing this by hand..!
 \end{frame}
 
 
 \begin{frame}\frametitle{Let's minimise using something cool -- \emph{genetic algorithms}}
-
-
 \begin{itemize}
-\item Genetic algorithms are a stochastic *optimisation* method. There are other types, e.g., gradient descent (deterministic)
+\item Genetic algorithms are a stochastic \emph{optimisation} method. There are other types, e.g., gradient descent (deterministic)
+\vfill
 \item The idea is to use a mechanism mimicking evolution's drive towards higher fitness
+\vfill
 \item The function value is its fitness
+\vfill
 \item We try different genes (here, different values of $a,b$) and evaluate their fitness.. keep the good ones
+\vfill
 \item We mutate or crossover genes, throw in new ones, etc.
+\vfill
 \item We keep doing this until we reach a stopping criterion
+\vfill
 \item We then return the best gene we found
 \end{itemize}
 \end{frame}
@@ -571,16 +615,38 @@ GA = ga(type = "real-valued",
         suggestions = c(a_0 = 2, a_1 = 3),
         lower = c(-10, -10), upper = c(10, 10),
         popSize = 200, maxiter = 150)
-# plot(GA)
+@
+\end{frame}
+
+\begin{frame}[fragile]
+GA returns an S4 object of class \code{ga}
+\vfill
+<<show-GA-return>>=
 GA
+@
+\end{frame}
+
+\begin{frame}[fragile]
+Access slots using @. For instance, the GA finds the coefficients
+<<show-GA-solution>>=
 GA@solution
+@
+with fitness value (i.e., $\|\be\|$)
+<<show-GA-fitness-value>>=
 -GA@fitnessValue
+@
+\end{frame}
+
+\begin{frame}[fragile]
+<<show-GA-convergence,echo=FALSE,fig.show='asis'>>=
+plot(GA)
 @
 \end{frame}
 
 \begin{frame}
 \begin{itemize}
 \item Here, however, we do not have to go brute force: we can reason using mathematics
+\vfill
 \item We now take a little detour on the math side of things, we will come back to code in a while..
 \end{itemize}
 \end{frame}

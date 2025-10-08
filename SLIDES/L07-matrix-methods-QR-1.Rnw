@@ -28,8 +28,7 @@ cat(input_setup)
 \begin{document}
 
 % Set up cross-references and counter persistence
-
-% Set up cross-references and counter persistence
+\setcounter{theorem}{56}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -63,11 +62,11 @@ The set of vectors $\{\bv_1,\ldots,\bv_k\}\in\IR^n$ is an \textbf{orthogonal set
 \forall i,j=1,\ldots,k,\quad i\neq j \implies \bv_i\bullet\bv_j=0
 \]
 \end{definition}
-
+\vfill
 \begin{theorem}\label{th:ortho_implies_LI}
 $\{\bv_1,\ldots,\bv_k\}\in\IR^n$ with $\forall i$, $\bv_i\neq\b0$, orthogonal set $\implies$ $\{\bv_1,\ldots,\bv_k\}\in\IR^n$ linearly independent
 \end{theorem}
-
+\vfill
 \begin{definition}[Orthogonal basis]
 Let $S$ be a basis of the subspace $W\subset\IR^n$ composed of an orthogonal set of vectors. We say $S$ is an \textbf{orthogonal basis} of $W$
 \end{definition}
@@ -215,10 +214,12 @@ Let $Q\in\M_{mn}$. The columns of $Q$ form an orthonormal set if and only if
 Q^TQ=\II_n
 \]
 \end{theorem}
+\vfill
 \begin{definition}[Orthogonal matrix]
 $Q\in\M_n$ is an \textbf{orthogonal matrix} if its columns form an orthonormal set 
 \end{definition}
 So $Q\in\M_n$ orthogonal if $Q^TQ=\II$, i.e., $Q^T=Q^{-1}$
+\vfill
 \begin{importanttheorem}[NSC for orthogonality]
 $Q\in\M_n$ orthogonal $\iff$ $Q^{-1} = Q^T$
 \end{importanttheorem}

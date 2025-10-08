@@ -70,8 +70,7 @@
 \begin{document}
 
 % Set up cross-references and counter persistence
-
-% Set up cross-references and counter persistence
+\setcounter{theorem}{69}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -87,26 +86,26 @@
 \Ssection{The QR factorisation \& Least squares}{FIGS-slides-admin/Gemini_Generated_Image_c06eixc06eixc06e.jpeg}
 
 \begin{frame}{The QR factorisation}
-\begin{theorem}\label{th:QR_factorisation}
+\begin{importanttheorem}\label{th:QR_factorisation}
 Let $A\in\M_{mn}$ with LI columns. Then $A$ can be factored as
 \[
 A=QR
 \]
 where $Q\in\M_{mn}$ has orthonormal columns and $R\in\M_n$ is nonsingular upper triangular
-\end{theorem}
+\end{importanttheorem}
 \end{frame}
 
 
 \begin{frame}{Back to least squares}
 So what was the point of all that..?
 \vfill
-\begin{theorem}[Least squares with QR factorisation]
+\begin{importanttheorem}[Least squares with QR factorisation]
 \label{th:LSQ_with_QR}
 $A\in\M_{mn}$ with LI columns, $\bb\in\IR^m$. If $A=QR$ is a QR factorisation of $A$, then the unique least squares solution $\tilde\bx$ of $A\bx=\bb$ is
 \[
 \tilde\bx = R^{-1}Q^T\bb
 \]
-\end{theorem}
+\end{importanttheorem}
 \end{frame}
 
 
@@ -217,7 +216,7 @@ But $\bv$ eigenvector is $\neq\b0$, so $\bar\bv\bullet\bv\neq 0$, so
 \end{frame}
 
 
-\begin{frame}
+\begin{frame}[red]
 \textbf{Claim 2.} For $A\in\M_{mn}(\IR)$, the eigenvalues of $A^TA$ are real and nonnegative
 
 \vfill
@@ -231,7 +230,7 @@ Norms are functions $V\to\IR_+$, so $\|A\bv\|$ and $\|A\bv\|^2$ are $\geq 0$ and
 0\leq \|A\bv\|^2 &= (A\bv)\bullet(A\bv) = (A\bv)^T(A\bv) \\
 &= \bv^TA^TA\bv = \bv^T(A^TA\bv) = \bv^T(\lambda\bv) \\
 &= \lambda(\bv^T\bv) = \lambda(\bv\bullet\bv) = \lambda\|\bv\|^2 \\
-&= \lambda\hfill\qed
+&= \lambda\hfill\qedhere
 \end{align*}
 \end{frame}
 

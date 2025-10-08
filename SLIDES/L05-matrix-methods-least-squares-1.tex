@@ -69,9 +69,9 @@
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 \begin{document}
 
-% Set up cross-references and counter persistence
-
-% Set up cross-references and counter persistence
+% Cross-reference setup to reference previous lectures
+\zexternaldocument{L04-math-preliminaries-2}
+% Set up counter persistence
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -370,24 +370,24 @@ To get a sense of that, we dump a few random rows
 \hldef{data_new[}\hlkwd{sort}\hldef{(}\hlkwd{unique}\hldef{(}\hlkwd{c}\hldef{(}\hlnum{1}\hldef{,}\hlkwd{sample}\hldef{(}\hlkwd{nrow}\hldef{(data_new),} \hlnum{4}\hldef{)))), ]}
 \end{alltt}
 \begin{verbatim}
-##                 GEOGRAPHY.NAME
-## 1                       Canada
-## 444  Newfoundland and Labrador
-## 2628                 Qu\xe9bec
-## 3814                  Kingston
-## 6603                  Manitoba
-##                                            CHARACTERISTIC YEAR.S.    TOTAL
-## 1                               Population (in thousands)    1956 16081.00
-## 444           Population by single years of age: 67 years    2011  5710.00
-## 2628 Population change by broad age groups: 0 to 14 years    2001    -6.50
-## 3814           % of the population aged 65 years and over    2011    16.30
-## 6603                            % of lone-parent families    2001    16.23
+##                        GEOGRAPHY.NAME
+## 1                              Canada
+## 3558                          Ontario
+## 4967 Kitchener - Cambridge - Waterloo
+## 5829                           Barrie
+## 7744                          Calgary
+##                                            CHARACTERISTIC YEAR.S.   TOTAL
+## 1                               Population (in thousands)    1956 16081.0
+## 3558                         % of married-couple families    1971    91.1
+## 4967          Population by single years of age: 45 years    2011  7335.0
+## 5829 Population change by broad age groups: 0 to 14 years    2006     7.9
+## 7744 Population change by broad age groups: 0 to 14 years    2011    11.8
 ##      FLAG_TOTAL
 ## 1              
-## 444            
-## 2628           
-## 3814           
-## 6603
+## 3558           
+## 4967           
+## 5829           
+## 7744
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -534,7 +534,7 @@ We start with a line, giving rise to \defword{linear least squares}
 \begin{frame}[fragile]\frametitle{Least squares approximation -- A trivial case}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
-\includegraphics[width=\maxwidth]{FIGS/L05-plot-2-points-and-line-1} 
+\includegraphics[width=\maxwidth]{FIGS/L05-plot-2-points-1} 
 \end{knitrout}
 \end{frame}
 
@@ -566,7 +566,7 @@ $$
 \end{frame}
 
 \begin{frame}[fragile]
-We know from the ``famous'' linear algebra in a nutshell theorem that this system has a unique solution if the matrix
+We know from Theorem~\zref{th:L04-linalg-in-a-nutshell} (Linear algebra in a nutshell) that this system has a unique solution if the matrix
 $$
 M=
 \begin{pmatrix}
@@ -576,27 +576,42 @@ $$
 is invertible
 \vfill
 $\det(M)=1$, so we are good, we'll find $a$ and $b$ easily..
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hldef{A} \hlkwb{=} \hlkwd{matrix}\hldef{(}\hlkwd{c}\hldef{(}\hlnum{1}\hldef{,}\hlnum{1}\hldef{,}\hlnum{1}\hldef{,}\hlnum{2}\hldef{),} \hlkwc{nr} \hldef{=} \hlnum{2}\hldef{,} \hlkwc{nc} \hldef{=} \hlnum{2}\hldef{,} \hlkwc{byrow} \hldef{=} \hlnum{TRUE}\hldef{)}
+\hldef{rhs} \hlkwb{=} \hlkwd{matrix}\hldef{(}\hlkwd{c}\hldef{(}\hlnum{3}\hldef{,}\hlnum{5}\hldef{),} \hlkwc{nr} \hldef{=} \hlnum{2}\hldef{,} \hlkwc{nc} \hldef{=}\hlnum{1}\hldef{)}
+\hldef{coefs} \hlkwb{=} \hlkwd{solve}\hldef{(A,rhs)}
+\hldef{coefs}
+\end{alltt}
+\begin{verbatim}
+##      [,1]
+## [1,]    1
+## [2,]    2
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
 \end{frame}
+
+\begin{frame}[fragile]
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+\includegraphics[width=\maxwidth]{FIGS/L05-plot-2-points-and-line-1} 
+\end{knitrout}
+\end{frame}
+
 
 \begin{frame}[fragile]
 Now let's add another point
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hldef{points} \hlkwb{=} \hlkwd{list}\hldef{()}
-\hldef{points}\hlopt{$}\hldef{x} \hlkwb{=} \hlkwd{c}\hldef{(}\hlnum{1}\hldef{,}\hlnum{2}\hldef{,}\hlnum{3}\hldef{)}
-\hldef{points}\hlopt{$}\hldef{y} \hlkwb{=} \hlkwd{c}\hldef{(}\hlnum{3}\hldef{,}\hlnum{5}\hldef{,}\hlnum{4}\hldef{)} \hlcom{# So the points are (1,3), (2,5) and (3,4)}
-\hlkwd{plot}\hldef{(points}\hlopt{$}\hldef{x, points}\hlopt{$}\hldef{y,}
-     \hlkwc{pch} \hldef{=} \hlnum{19}\hldef{,} \hlkwc{cex} \hldef{=} \hlnum{2}\hldef{,} \hlkwc{bty} \hldef{=} \hlsng{"n"}\hldef{,}
-    \hlkwc{xlim} \hldef{=} \hlkwd{c}\hldef{(}\hlnum{0}\hldef{,} \hlnum{3.5}\hldef{),} \hlkwc{ylim} \hldef{=} \hlkwd{c}\hldef{(}\hlnum{0}\hldef{,}\hlnum{6}\hldef{),} \hlkwc{xlab} \hldef{=} \hlsng{"x"}\hldef{,} \hlkwc{ylab} \hldef{=} \hlsng{"y"}\hldef{)}
-\end{alltt}
-\end{kframe}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+\includegraphics[width=\maxwidth]{FIGS/L05-plot-3-points-and-line-0-1} 
 \end{knitrout}
 These points are clearly not colinear, so there is not one line going through the 3
 \end{frame}
 
 \begin{frame}
-We end up with an *overdetermined* system
+We end up with an \emph{overdetermined} system
 $$
 \begin{aligned}
 3 &= a+b \\
@@ -619,56 +634,50 @@ a \\ b
 $$
 \end{frame}
 
+\begin{frame}
+We have verified visually that the points are not colinear, so this system has no solution
+\vfill
+(If you had to do it for good, you consider two vectors stemming from these 3 points and compute the angle between them or check that one is a multiple of the other)
+\vfill
+So let us instead try to find the line that comes "closest" to the 3 points
+\end{frame}
+
 \begin{frame}[fragile]
-We have verified visually that the points are not colinear, so this system has no solution.
-
-(If you had to do it for good, you consider two vectors stemming from these 3 points and compute the angle between them or check that one is a multiple of the other).
-
-So let us instead try to find the line that comes "closest" to the 3 points.
-
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hldef{A} \hlkwb{=} \hlkwd{matrix}\hldef{(}\hlkwd{c}\hldef{(}\hlnum{1}\hldef{,}\hlnum{1}\hldef{,}\hlnum{1}\hldef{,}\hlnum{2}\hldef{),} \hlkwc{nr} \hldef{=} \hlnum{2}\hldef{,} \hlkwc{nc} \hldef{=} \hlnum{2}\hldef{,} \hlkwc{byrow} \hldef{=} \hlnum{TRUE}\hldef{)}
-\hldef{rhs} \hlkwb{=} \hlkwd{matrix}\hldef{(}\hlkwd{c}\hldef{(}\hlnum{3}\hldef{,}\hlnum{5}\hldef{),} \hlkwc{nr} \hldef{=} \hlnum{2}\hldef{,} \hlkwc{nc} \hldef{=}\hlnum{1}\hldef{)}
-\hldef{coefs} \hlkwb{=} \hlkwd{solve}\hldef{(A,rhs)} \hlcom{# To invert A, in R, you use solve(A), to solve Ax=b, you use solve(A,b)}
-\hlkwd{plot}\hldef{(points}\hlopt{$}\hldef{x, points}\hlopt{$}\hldef{y,}
-     \hlkwc{pch} \hldef{=} \hlnum{19}\hldef{,} \hlkwc{cex} \hldef{=} \hlnum{2}\hldef{,} \hlkwc{bty} \hldef{=} \hlsng{"n"}\hldef{,}
-    \hlkwc{xlim} \hldef{=} \hlkwd{c}\hldef{(}\hlnum{0}\hldef{,} \hlnum{3.5}\hldef{),} \hlkwc{ylim} \hldef{=} \hlkwd{c}\hldef{(}\hlnum{0}\hldef{,}\hlnum{6}\hldef{),} \hlkwc{xlab} \hldef{=} \hlsng{"x"}\hldef{,} \hlkwc{ylab} \hldef{=} \hlsng{"y"}\hldef{)}
-\hlkwd{abline}\hldef{(}\hlkwc{coef} \hldef{= coefs,} \hlkwc{lwd} \hldef{=} \hlnum{2}\hldef{)}
-\end{alltt}
-\end{kframe}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+\includegraphics[width=\maxwidth]{FIGS/L05-plot-3-points-and-line-1-1} 
 \end{knitrout}
 
 Obviously, not sensational..
 \end{frame}
 
-\begin{frame}[fragile]
+\begin{frame}[fragile]{Let's eyeball it -- Less steep and higher $y$-intercept}
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlkwd{plot}\hldef{(points}\hlopt{$}\hldef{x, points}\hlopt{$}\hldef{y,}
-     \hlkwc{pch} \hldef{=} \hlnum{19}\hldef{,} \hlkwc{cex} \hldef{=} \hlnum{2}\hldef{,} \hlkwc{bty} \hldef{=} \hlsng{"n"}\hldef{,}
-    \hlkwc{xlim} \hldef{=} \hlkwd{c}\hldef{(}\hlnum{0}\hldef{,} \hlnum{3.5}\hldef{),} \hlkwc{ylim} \hldef{=} \hlkwd{c}\hldef{(}\hlnum{0}\hldef{,}\hlnum{6}\hldef{),} \hlkwc{xlab} \hldef{=} \hlsng{"x"}\hldef{,} \hlkwc{ylab} \hldef{=} \hlsng{"y"}\hldef{)}
-\hlkwd{abline}\hldef{(}\hlkwc{coef} \hldef{= coefs,} \hlkwc{lwd} \hldef{=} \hlnum{2}\hldef{)}
-\hlkwd{abline}\hldef{(}\hlkwc{a} \hldef{=} \hlnum{3}\hldef{,} \hlkwc{b} \hldef{=} \hlnum{0.5}\hldef{,} \hlkwc{lwd} \hldef{=} \hlnum{2}\hldef{,} \hlkwc{col} \hldef{=} \hlsng{"red"}\hldef{)}
-\end{alltt}
-\end{kframe}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+\includegraphics[width=\maxwidth]{FIGS/L05-plot-3-points-and-line-2-1} 
 \end{knitrout}
+The blue line looks better, but how do we quantify this?
+\end{frame}
 
-How do we find "how far away"?
-
-- We could use projections onto the line (which we know minimises the distance)
-- However, this will be a problem if we later decide that rather than a straight line, we want to use something more "funky" like a quadratic or an exponential
+\begin{frame}
+How do we find "how far away" we are?
+\vfill
+\begin{itemize}
+\item We could use projections onto the line (which we know minimises the distance)
+\vfill
+\item However, this will be a problem if we later decide that rather than a straight line, we want to use something more "funky" like a quadratic or an exponential
+\end{itemize}
 \end{frame}
 
 
 \begin{frame}
-So instead, we compare, for a given value $x$, the distance between the true value $y$ and the value of $y$ obtained using the curve (line, here) that we use to fit the data
-
+Compare, for a given value $x$, the distance between the true value $y$ and the value of $y$ obtained using the curve (line, here) that we use to fit the data
+\vfill
 Let $(x_i,y_i)$ be the data points, i.e., here, $(x_1,y_1)=(1,3)$, $(x_2,y_2)=(2,5)$ and $(x_3,y_3)=(3,4)$
+\end{frame}
 
-Now suppose we use a line with equation $y=a+bx$ and that we pick a value for $a$ and $b$. Then at $x_1$,
+\begin{frame}
+Suppose we use a line with equation $y=a+bx$ and that we pick a value for $a$ and $b$. Then at $x_1$,
 $$
 \tilde y_1 = a+bx_1 = a+b
 $$
@@ -680,11 +689,12 @@ and at $x_3$,
 $$
 \tilde y_3 = a+bx_3 = a+3b
 $$
-Consider $x_1$, for instance. The error we made by using the line with coefficients $(a,b)$ is $\overrightarrow{(x_1,y_1)(x_1,\tilde y_1)}$.
+\vfill
+Consider $x_1$, for instance. The error we made by using the line with coefficients $(a,b)$ is $\overrightarrow{(x_1,y_1)(x_1,\tilde y_1)}$
 \end{frame}
 
 \begin{frame}[fragile]
-For future use, let us create a function for $y = a_0 + a_1x$.
+For future use, let us create a function for $y = a_0 + a_1x$
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -725,19 +735,8 @@ Functions are super useful when programming
 
 \begin{frame}[fragile]
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hldef{a} \hlkwb{=} \hlnum{3}
-\hldef{b} \hlkwb{=} \hlnum{0.5} \hlcom{# The line has equation y=a+bx}
-\hlkwd{plot}\hldef{(points}\hlopt{$}\hldef{x, points}\hlopt{$}\hldef{y,}
-     \hlkwc{pch} \hldef{=} \hlnum{19}\hldef{,} \hlkwc{cex} \hldef{=} \hlnum{2}\hldef{,} \hlkwc{bty} \hldef{=} \hlsng{"n"}\hldef{,}
-    \hlkwc{xlim} \hldef{=} \hlkwd{c}\hldef{(}\hlnum{0}\hldef{,} \hlnum{3.5}\hldef{),} \hlkwc{ylim} \hldef{=} \hlkwd{c}\hldef{(}\hlnum{0}\hldef{,}\hlnum{6}\hldef{),} \hlkwc{xlab} \hldef{=} \hlsng{"x"}\hldef{,} \hlkwc{ylab} \hldef{=} \hlsng{"y"}\hldef{)}
-\hlkwd{abline}\hldef{(}\hlkwc{a} \hldef{= a,} \hlkwc{b} \hldef{= b,} \hlkwc{lwd} \hldef{=} \hlnum{2}\hldef{)}
-\hlkwd{abline}\hldef{(}\hlkwc{v} \hldef{=} \hlkwd{c}\hldef{(}\hlnum{1}\hldef{,}\hlnum{2}\hldef{,}\hlnum{3}\hldef{))}  \hlcom{# If we used abline(h=c(0,1)), we would get horizontal lines at y=0 and y=1}
-\hldef{p} \hlkwb{=} \hlkwd{my_line}\hldef{(}\hlkwd{c}\hldef{(}\hlnum{1}\hldef{,}\hlnum{2}\hldef{,}\hlnum{3}\hldef{), a, b)}
-\hlkwd{points}\hldef{(}\hlkwd{c}\hldef{(}\hlnum{1}\hldef{,}\hlnum{2}\hldef{,}\hlnum{3}\hldef{), p,} \hlkwc{pch} \hldef{=} \hlnum{19}\hldef{,} \hlkwc{cex} \hldef{=} \hlnum{2}\hldef{,} \hlkwc{col} \hldef{=} \hlsng{"red"}\hldef{)}
-\end{alltt}
-\end{kframe}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+\includegraphics[width=\maxwidth]{FIGS/L05-plot-3-points-and-line-3-1} 
 \end{knitrout}
 \end{frame}
 
@@ -752,23 +751,25 @@ $$
 = (x_1-x_1,y_1-\tilde y_1)
 = (0, y_1-\tilde y_1)
 $$
+\vfill
 Let us call
 $$
 \varepsilon_1 = y_1-\tilde y_1
 $$
-We can compute $\varepsilon_2$ and $\varepsilon_3$ too. And we can then form the **error vector**
+We can compute $\varepsilon_2$ and $\varepsilon_3$ too. And we can then form the \defword{error vector}
 $$
 \mathbf{e} = (\varepsilon_1,\varepsilon_2,\varepsilon_3)^T
 $$
+\vfill
 The norm of $\mathbf{e}$, $\|\mathbf{e}\|$, then tells us how much error we are making for the choice of $(a,b)$ we are using
 \end{frame}
 
 
 \begin{frame}
-The norm of $\mathbf{e}$, $\|\mathbf{e}\|$, tells us how much error we are making for the choice of $(a,b)$ we are using
-
+The norm of $\|\mathbf{e}\|$ tells us how much error we are making for the choice of $(a,b)$ we are using
+\vfill
 So our objective is to find $(a,b)$ such that $\|\mathbf{e}\|$ is minimal
-
+\vfill
 We could use various norms, but the Euclidean norm has some very interesting properties, so we use
 $$
 \|\mathbf{e}\| = \sqrt{\varepsilon_1^2+\varepsilon_2^2+\varepsilon_3^2}
@@ -786,13 +787,15 @@ is minimal, where $\tilde y_i=a+bx_i$, for $i=1,\ldots,n$
 \end{frame}
 
 
-\begin{frame}[fragile]
+\begin{frame}
 Let us first hack a brute force solution! (For the example we have been using this far)
+\vfill
+We have our three points in the list \code{points}, the function \code{my\_line} that computes the value $\tilde y$ given $x$ and $a,b$, so let us make a new function that, given $a,b$, computes $\mathbf{e}$
+\vfill
+We'll also pass the points \code{points}
+\end{frame}
 
-We have our three points in the list `points`, the function \code{my\_line} that computes the value $\tilde y$ given $x$ and $a,b$, so let us make a new function that, given $a,b$, computes $\mathbf{e}$
-
-We'll also pass the points `points`
-
+\begin{frame}[fragile]{A function to compute the error}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -821,20 +824,24 @@ We'll also pass the points `points`
 \end{kframe}
 \end{knitrout}
 
-We can't be doing this by hand..
+We can't be doing this by hand..!
 \end{frame}
 
 
 \begin{frame}\frametitle{Let's minimise using something cool -- \emph{genetic algorithms}}
-
-
 \begin{itemize}
-\item Genetic algorithms are a stochastic *optimisation* method. There are other types, e.g., gradient descent (deterministic)
+\item Genetic algorithms are a stochastic \emph{optimisation} method. There are other types, e.g., gradient descent (deterministic)
+\vfill
 \item The idea is to use a mechanism mimicking evolution's drive towards higher fitness
+\vfill
 \item The function value is its fitness
+\vfill
 \item We try different genes (here, different values of $a,b$) and evaluate their fitness.. keep the good ones
+\vfill
 \item We mutate or crossover genes, throw in new ones, etc.
+\vfill
 \item We keep doing this until we reach a stopping criterion
+\vfill
 \item We then return the best gene we found
 \end{itemize}
 \end{frame}
@@ -853,7 +860,17 @@ We can't be doing this by hand..
         \hlkwc{suggestions} \hldef{=} \hlkwd{c}\hldef{(}\hlkwc{a_0} \hldef{=} \hlnum{2}\hldef{,} \hlkwc{a_1} \hldef{=} \hlnum{3}\hldef{),}
         \hlkwc{lower} \hldef{=} \hlkwd{c}\hldef{(}\hlopt{-}\hlnum{10}\hldef{,} \hlopt{-}\hlnum{10}\hldef{),} \hlkwc{upper} \hldef{=} \hlkwd{c}\hldef{(}\hlnum{10}\hldef{,} \hlnum{10}\hldef{),}
         \hlkwc{popSize} \hldef{=} \hlnum{200}\hldef{,} \hlkwc{maxiter} \hldef{=} \hlnum{150}\hldef{)}
-\hlcom{# plot(GA)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+\begin{frame}[fragile]
+GA returns an S4 object of class \code{ga}
+\vfill
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
 \hldef{GA}
 \end{alltt}
 \begin{verbatim}
@@ -869,13 +886,26 @@ We can't be doing this by hand..
 ## [16] "optim"        "fitness"      "summary"      "bestSol"      "fitnessValue"
 ## [21] "solution"
 \end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+\begin{frame}[fragile]
+Access slots using @. For instance, the GA finds the coefficients
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hldef{GA}\hlopt{@}\hlkwc{solution}
 \end{alltt}
 \begin{verbatim}
 ##            x1        x2
-## [1,] 3.000767 0.4996946
+## [1,] 2.999867 0.5000735
 \end{verbatim}
+\end{kframe}
+\end{knitrout}
+with fitness value (i.e., $\|\be\|$)
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlopt{-}\hldef{GA}\hlopt{@}\hlkwc{fitnessValue}
 \end{alltt}
@@ -886,9 +916,17 @@ We can't be doing this by hand..
 \end{knitrout}
 \end{frame}
 
+\begin{frame}[fragile]
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+\includegraphics[width=\maxwidth]{FIGS/L05-show-GA-convergence-1} 
+\end{knitrout}
+\end{frame}
+
 \begin{frame}
 \begin{itemize}
 \item Here, however, we do not have to go brute force: we can reason using mathematics
+\vfill
 \item We now take a little detour on the math side of things, we will come back to code in a while..
 \end{itemize}
 \end{frame}

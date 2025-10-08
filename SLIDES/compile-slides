@@ -1,25 +1,32 @@
 #!/bin/bash
 
-# Render the lectures and copy them where they need 
-# to be (/docs in the repo)
-# Do a local render (might not be most recent version
-# of marp)
-# Does pull and push, so beware..
+##
+## Render the lectures
+##
 
-# First, copy the corresponding Rnw files from the new content directory
-for f in L??-*.Rnw
+# First, do some cleanup to start fresh.
+# Remove all lecture slides in pdf and all
+# generated figures (pdf and png)
+for f in L??-*.pdf
 do
-  if [ -f ~/github/math-of-data-science-new-content/SLIDES/"$f" ]; then
-    echo "Copying $f from new content directory..."
-    cp ~/github/math-of-data-science-new-content/SLIDES/"$f" .
-  fi
+  rm $f
+done
+for f in FIGS/L??-*.pdf
+do
+  rm $f
+done
+for f in FIGS/L??-*.png
+do
+  rm $f
 done
 
+# Now knit the slides
 for f in L??-*.Rnw
 do
   Rscript -e "library(knitr); knit('$f')"
 done
 
+# Compile the resulting LaTeX files
 for f in L??-*.tex 
 do
     # We need to run pdflatex three times to get cross-references and TOC right

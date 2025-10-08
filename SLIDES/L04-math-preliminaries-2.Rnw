@@ -31,9 +31,7 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 @
 
 \begin{document}
-
-% Set up cross-references and counter persistence
-
+\setcounter{theorem}{28}
 % Set up cross-references and counter persistence
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -59,6 +57,7 @@ $A,B\in\M_n$ are \defword{similar} ($A\sim B$) if $\exists P\in\M_n$ invertible 
 P^{-1}AP=B
 \]
 \end{definition}
+\vfill
 \begin{theorem}[$\sim$ is an equivalence relation]
 $A,B,C\in\M_n$, then
 \begin{itemize}
@@ -196,17 +195,6 @@ E.g., in $\IR^3$, a set with 4 or more vectors is automatically linearly depende
 	\end{theorem}
 \end{frame}
 
-\begin{frame}{Plus/Minus Theorem}
-	\begin{theorem}[Plus/Minus Theorem]
-		$S$ a nonempty set of vectors in vector space $V$
-		\begin{itemize}
-			\item If $S$ is linearly independent and $V\ni\bv\not\in \Span(S)$, then $S\cup\{\bv\}$ is linearly independent
-			\item If $\bv\in S$ is linear combination of other vectors in $S$, then $\Span(S)=\Span(S-\{\bv\})$
-		\end{itemize}
-	\end{theorem}
-\end{frame}
-
-
 \begin{frame}{More on bases}
 	\begin{theorem}[Basis of finite-dimensional vector space]
 	Every finite-dimensional vector space has a basis
@@ -238,15 +226,9 @@ E.g., in $\IR^3$, a set with 4 or more vectors is automatically linearly depende
 
 
 
-%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%
-\subsection{Linear algebra in a nutshell}
-% The subsection page
-\newSubSectionSlide{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
-
-
-\begin{frame}{To finish: the ``famous'' ``growing result''}
+\begin{frame}{Linear algebra in a nutshell}
 \begin{importanttheorem}
+\label{th:L04-linalg-in-a-nutshell}
 Let $A\in\M_n$. The following statements are equivalent (TFAE)
 \begin{enumerate}
 \item The matrix $A$ is invertible
