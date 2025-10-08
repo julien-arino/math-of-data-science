@@ -370,24 +370,18 @@ To get a sense of that, we dump a few random rows
 \hldef{data_new[}\hlkwd{sort}\hldef{(}\hlkwd{unique}\hldef{(}\hlkwd{c}\hldef{(}\hlnum{1}\hldef{,}\hlkwd{sample}\hldef{(}\hlkwd{nrow}\hldef{(data_new),} \hlnum{4}\hldef{)))), ]}
 \end{alltt}
 \begin{verbatim}
-##                        GEOGRAPHY.NAME
-## 1                              Canada
-## 3558                          Ontario
-## 4967 Kitchener - Cambridge - Waterloo
-## 5829                           Barrie
-## 7744                          Calgary
-##                                            CHARACTERISTIC YEAR.S.   TOTAL
-## 1                               Population (in thousands)    1956 16081.0
-## 3558                         % of married-couple families    1971    91.1
-## 4967          Population by single years of age: 45 years    2011  7335.0
-## 5829 Population change by broad age groups: 0 to 14 years    2006     7.9
-## 7744 Population change by broad age groups: 0 to 14 years    2011    11.8
-##      FLAG_TOTAL
-## 1              
-## 3558           
-## 4967           
-## 5829           
-## 7744
+##                 GEOGRAPHY.NAME                              CHARACTERISTIC
+## 1                       Canada                   Population (in thousands)
+## 520  Newfoundland and Labrador                % of three-person households
+## 1063               Nova Scotia                   Population (in thousands)
+## 4040              Peterborough Population by single years of age: 33 years
+## 9279                     Yukon                % of three-person households
+##      YEAR.S.    TOTAL FLAG_TOTAL
+## 1       1956 16081.00           
+## 520     1986    19.21           
+## 1063    1986   873.00           
+## 4040    2011  1215.00           
+## 9279    1981    16.60
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -899,7 +893,7 @@ Access slots using @. For instance, the GA finds the coefficients
 \end{alltt}
 \begin{verbatim}
 ##            x1        x2
-## [1,] 2.999867 0.5000735
+## [1,] 2.999172 0.5003143
 \end{verbatim}
 \end{kframe}
 \end{knitrout}

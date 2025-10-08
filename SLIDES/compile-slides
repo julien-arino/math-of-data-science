@@ -5,9 +5,13 @@
 ##
 
 # First, do some cleanup to start fresh.
-# Remove all lecture slides in pdf and all
+# Remove all lecture slides in tex and pdf and all
 # generated figures (pdf and png)
 for f in L??-*.pdf
+do
+  rm $f
+done
+for f in L??-*.tex
 do
   rm $f
 done
