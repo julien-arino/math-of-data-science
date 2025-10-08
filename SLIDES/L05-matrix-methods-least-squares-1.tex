@@ -69,6 +69,10 @@
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 \begin{document}
 
+% Set up cross-references and counter persistence
+
+% Set up cross-references and counter persistence
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% TITLE AND OUTLINE
@@ -366,18 +370,24 @@ To get a sense of that, we dump a few random rows
 \hldef{data_new[}\hlkwd{sort}\hldef{(}\hlkwd{unique}\hldef{(}\hlkwd{c}\hldef{(}\hlnum{1}\hldef{,}\hlkwd{sample}\hldef{(}\hlkwd{nrow}\hldef{(data_new),} \hlnum{4}\hldef{)))), ]}
 \end{alltt}
 \begin{verbatim}
-##            GEOGRAPHY.NAME                                        CHARACTERISTIC
-## 1                  Canada                             Population (in thousands)
-## 826  Prince Edward Island Population change by broad age groups: 15 to 64 years
-## 3523              Ontario                          % of three-person households
-## 4465              Toronto           Population by single years of age: 92 years
-## 7318            Saskatoon           Population by single years of age: 22 years
-##      YEAR.S.    TOTAL FLAG_TOTAL
-## 1       1956 16081.00           
-## 826     2001     2.40           
-## 3523    1961    18.47           
-## 4465    2011  3870.00           
-## 7318    2011  4830.00
+##                 GEOGRAPHY.NAME
+## 1                       Canada
+## 444  Newfoundland and Labrador
+## 2628                 Qu\xe9bec
+## 3814                  Kingston
+## 6603                  Manitoba
+##                                            CHARACTERISTIC YEAR.S.    TOTAL
+## 1                               Population (in thousands)    1956 16081.00
+## 444           Population by single years of age: 67 years    2011  5710.00
+## 2628 Population change by broad age groups: 0 to 14 years    2001    -6.50
+## 3814           % of the population aged 65 years and over    2011    16.30
+## 6603                            % of lone-parent families    2001    16.23
+##      FLAG_TOTAL
+## 1              
+## 444            
+## 2628           
+## 3814           
+## 6603
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -864,7 +874,7 @@ We can't be doing this by hand..
 \end{alltt}
 \begin{verbatim}
 ##            x1        x2
-## [1,] 3.000122 0.4999527
+## [1,] 3.000767 0.4996946
 \end{verbatim}
 \begin{alltt}
 \hlopt{-}\hldef{GA}\hlopt{@}\hlkwc{fitnessValue}
@@ -888,4 +898,8 @@ We can't be doing this by hand..
 
 
 
+
+% Save counters for next file
+
+% Save theorem count for next file
 \end{document}
