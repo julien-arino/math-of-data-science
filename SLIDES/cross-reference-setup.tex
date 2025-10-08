@@ -1,0 +1,150 @@
+% Simplified cross-reference and counter persistence system
+% This creates simple commands for manual setup
+
+% Command to reference external documents (use in each file as needed)
+\newcommand{\reffile}[1]{%
+  \IfFileExists{#1.aux}{\zexternaldocument{#1}}{}%
+}
+
+% Commands to save and restore theorem counters
+\newcommand{\savetheoremcount}[1]{%
+  \immediate\write\@auxout{\string\gdef\string\lasttheoremcount{\arabic{theorem}}}%
+}
+
+\newcommand{\continuetheoremcount}[1]{%
+  \IfFileExists{#1.aux}{%
+    \InputIfFileExists{#1.aux}{\setcounter{theorem}{\lasttheoremcount}}{}%
+  }{}%
+}
+
+% Provide default value
+\providecommand{\lasttheoremcount}{0}
+
+% Simple manual setup commands for common patterns
+\newcommand{\setupL01}{}  % First file - no setup needed
+
+\newcommand{\setupL02}{%
+  \reffile{L01-course-organisation-R-setup}%
+  \continuetheoremcount{L01-course-organisation-R-setup}%
+}
+
+\newcommand{\setupL03}{%
+  \reffile{L01-course-organisation-R-setup}%
+  \reffile{L02-what-is-data-science-why-math}%
+  \continuetheoremcount{L02-what-is-data-science-why-math}%
+}
+
+\newcommand{\setupL04}{%
+  \reffile{L01-course-organisation-R-setup}%
+  \reffile{L02-what-is-data-science-why-math}%
+  \reffile{L03-math-preliminaries-1}%
+  \continuetheoremcount{L03-math-preliminaries-1}%
+}
+
+\newcommand{\setupL05}{%
+  \reffile{L01-course-organisation-R-setup}%
+  \reffile{L02-what-is-data-science-why-math}%
+  \reffile{L03-math-preliminaries-1}%
+  \reffile{L04-math-preliminaries-2}%
+  \continuetheoremcount{L04-math-preliminaries-2}%
+}
+
+\newcommand{\setupL06}{%
+  \reffile{L01-course-organisation-R-setup}%
+  \reffile{L02-what-is-data-science-why-math}%
+  \reffile{L03-math-preliminaries-1}%
+  \reffile{L04-math-preliminaries-2}%
+  \reffile{L05-matrix-methods-least-squares-1}%
+  \continuetheoremcount{L05-matrix-methods-least-squares-1}%
+}
+
+\newcommand{\setupL07}{%
+  \reffile{L01-course-organisation-R-setup}%
+  \reffile{L02-what-is-data-science-why-math}%
+  \reffile{L03-math-preliminaries-1}%
+  \reffile{L04-math-preliminaries-2}%
+  \reffile{L05-matrix-methods-least-squares-1}%
+  \reffile{L06-matrix-methods-least-squares-2}%
+  \continuetheoremcount{L06-matrix-methods-least-squares-2}%
+}
+
+\newcommand{\setupL08}{%
+  \reffile{L01-course-organisation-R-setup}%
+  \reffile{L02-what-is-data-science-why-math}%
+  \reffile{L03-math-preliminaries-1}%
+  \reffile{L04-math-preliminaries-2}%
+  \reffile{L05-matrix-methods-least-squares-1}%
+  \reffile{L06-matrix-methods-least-squares-2}%
+  \reffile{L07-matrix-methods-QR-1}%
+  \continuetheoremcount{L07-matrix-methods-QR-1}%
+}
+
+\newcommand{\setupL09}{%
+  \reffile{L01-course-organisation-R-setup}%
+  \reffile{L02-what-is-data-science-why-math}%
+  \reffile{L03-math-preliminaries-1}%
+  \reffile{L04-math-preliminaries-2}%
+  \reffile{L05-matrix-methods-least-squares-1}%
+  \reffile{L06-matrix-methods-least-squares-2}%
+  \reffile{L07-matrix-methods-QR-1}%
+  \reffile{L08-matrix-methods-QR-2-SVD-1}%
+  \continuetheoremcount{L08-matrix-methods-QR-2-SVD-1}%
+}
+
+\newcommand{\setupL11}{%
+  \reffile{L01-course-organisation-R-setup}%
+  \reffile{L02-what-is-data-science-why-math}%
+  \reffile{L03-math-preliminaries-1}%
+  \reffile{L04-math-preliminaries-2}%
+  \reffile{L05-matrix-methods-least-squares-1}%
+  \reffile{L06-matrix-methods-least-squares-2}%
+  \reffile{L07-matrix-methods-QR-1}%
+  \reffile{L08-matrix-methods-QR-2-SVD-1}%
+  \reffile{L09-matrix-methods-SVD-2}%
+  \continuetheoremcount{L09-matrix-methods-SVD-2}%
+}
+
+\newcommand{\setupL12}{%
+  \reffile{L01-course-organisation-R-setup}%
+  \reffile{L02-what-is-data-science-why-math}%
+  \reffile{L03-math-preliminaries-1}%
+  \reffile{L04-math-preliminaries-2}%
+  \reffile{L05-matrix-methods-least-squares-1}%
+  \reffile{L06-matrix-methods-least-squares-2}%
+  \reffile{L07-matrix-methods-QR-1}%
+  \reffile{L08-matrix-methods-QR-2-SVD-1}%
+  \reffile{L09-matrix-methods-SVD-2}%
+  \reffile{L11-matrix-methods-PCA-1}%
+  \continuetheoremcount{L11-matrix-methods-PCA-1}%
+}
+
+\newcommand{\setupL13}{%
+  \reffile{L01-course-organisation-R-setup}%
+  \reffile{L02-what-is-data-science-why-math}%
+  \reffile{L03-math-preliminaries-1}%
+  \reffile{L04-math-preliminaries-2}%
+  \reffile{L05-matrix-methods-least-squares-1}%
+  \reffile{L06-matrix-methods-least-squares-2}%
+  \reffile{L07-matrix-methods-QR-1}%
+  \reffile{L08-matrix-methods-QR-2-SVD-1}%
+  \reffile{L09-matrix-methods-SVD-2}%
+  \reffile{L11-matrix-methods-PCA-1}%
+  \reffile{L12-matrix-methods-PCA-2}%
+  \continuetheoremcount{L12-matrix-methods-PCA-2}%
+}
+
+\newcommand{\setupL14}{%
+  \reffile{L01-course-organisation-R-setup}%
+  \reffile{L02-what-is-data-science-why-math}%
+  \reffile{L03-math-preliminaries-1}%
+  \reffile{L04-math-preliminaries-2}%
+  \reffile{L05-matrix-methods-least-squares-1}%
+  \reffile{L06-matrix-methods-least-squares-2}%
+  \reffile{L07-matrix-methods-QR-1}%
+  \reffile{L08-matrix-methods-QR-2-SVD-1}%
+  \reffile{L09-matrix-methods-SVD-2}%
+  \reffile{L11-matrix-methods-PCA-1}%
+  \reffile{L12-matrix-methods-PCA-2}%
+  \reffile{L13-matrix-methods-SVM-1}%
+  \continuetheoremcount{L13-matrix-methods-SVM-1}%
+}
