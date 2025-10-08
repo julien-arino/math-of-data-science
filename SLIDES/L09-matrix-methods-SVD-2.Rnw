@@ -321,7 +321,7 @@ SVD & Any $A$, rank-deficient & Most stable, handles all cases \\
 \end{tabular}
 \end{center}
 \vfill
-\textbf Use QR for well-conditioned problems with LI columns, SVD for rank-deficient or ill-conditioned problems
+Use QR for well-conditioned problems with LI columns, SVD for rank-deficient or ill-conditioned problems
 \end{frame}
 
 % Save counters for next file
