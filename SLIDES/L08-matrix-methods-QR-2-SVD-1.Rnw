@@ -508,6 +508,9 @@ Uses \Sexpr{round(M_tmp$pct_of_original, 2)}\% of the original information
 
 
 
+<<convert-Rnw-to-R,warning=FALSE,message=FALSE,echo=FALSE,results='hide'>>=
+rmd_chunks_to_r_temp()
+@
 
 % Save counters for next file
 

@@ -370,18 +370,18 @@ To get a sense of that, we dump a few random rows
 \hldef{data_new[}\hlkwd{sort}\hldef{(}\hlkwd{unique}\hldef{(}\hlkwd{c}\hldef{(}\hlnum{1}\hldef{,}\hlkwd{sample}\hldef{(}\hlkwd{nrow}\hldef{(data_new),} \hlnum{4}\hldef{)))), ]}
 \end{alltt}
 \begin{verbatim}
-##                 GEOGRAPHY.NAME                              CHARACTERISTIC
-## 1                       Canada                   Population (in thousands)
-## 520  Newfoundland and Labrador                % of three-person households
-## 1063               Nova Scotia                   Population (in thousands)
-## 4040              Peterborough Population by single years of age: 33 years
-## 9279                     Yukon                % of three-person households
-##      YEAR.S.    TOTAL FLAG_TOTAL
-## 1       1956 16081.00           
-## 520     1986    19.21           
-## 1063    1986   873.00           
-## 4040    2011  1215.00           
-## 9279    1981    16.60
+##         GEOGRAPHY.NAME                              CHARACTERISTIC YEAR.S.
+## 1               Canada                   Population (in thousands)    1956
+## 1656     New Brunswick Population by single years of age: 96 years    2011
+## 3022 Trois-Rivi\xe8res Population by single years of age: 19 years    2011
+## 3601           Ontario Non-official mother tongue: Chinese, n.o.s.    2011
+## 7758           Calgary  Population by single years of age: 7 years    2011
+##       TOTAL FLAG_TOTAL
+## 1     16081           
+## 1656    290           
+## 3022   2065           
+## 3601 202225           
+## 7758  14335
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -893,7 +893,7 @@ Access slots using @. For instance, the GA finds the coefficients
 \end{alltt}
 \begin{verbatim}
 ##            x1        x2
-## [1,] 2.999172 0.5003143
+## [1,] 2.999889 0.5000423
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -924,6 +924,7 @@ with fitness value (i.e., $\|\be\|$)
 \item We now take a little detour on the math side of things, we will come back to code in a while..
 \end{itemize}
 \end{frame}
+
 
 
 

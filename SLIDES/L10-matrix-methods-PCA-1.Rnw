@@ -443,6 +443,9 @@ i.e., using the properties of covariance,
 \end{frame}
 
 
+<<convert-Rnw-to-R,warning=FALSE,message=FALSE,echo=FALSE,results='hide'>>=
+rmd_chunks_to_r_temp()
+@
 
 % Save counters for next file
 

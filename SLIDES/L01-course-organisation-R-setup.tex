@@ -705,6 +705,25 @@ There is still a loop, but you can split this list, use it on different machines
 \end{frame}
 
 
+%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%
+\section*{Final remarks}
+\begin{frame}\frametitle{Can I have this wrapped up to go?}
+For each slide set including \code{R} code, we generate an \code{R} file in the \code{CODE} directory with all the code chunks in this \code{Rnw} file and no \LaTeX
+\vfill
+% Convert the file to R code. 
+% Only include if including R code in the document,
+% otherwise it will generate a meaningless file with just 
+% and knitr options.
+
+Source the file (if you are reading \code{SLIDES/filename.pdf}, then you want \code{CODE/filename.R}) to reproduce all results in the slide set without generating a pdf
+\vfill
+Some small changes might be required (for instance, in the file for this lecture, quite a lot is commented out)
+\end{frame}
+
+
 % Save counters for next file
 
 % Save theorem count for next file

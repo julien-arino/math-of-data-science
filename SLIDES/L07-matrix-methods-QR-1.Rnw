@@ -272,6 +272,9 @@ From 2 in Theorem~\ref{th:TFAE_orthogonal_matrices}, $\|Q\bx\|=\|\bx\|$ and from
 
 
 
+<<convert-Rnw-to-R,warning=FALSE,message=FALSE,echo=FALSE,results='hide'>>=
+rmd_chunks_to_r_temp()
+@
 
 
 % Save counters for next file
