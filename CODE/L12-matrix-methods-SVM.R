@@ -142,7 +142,9 @@ plot_svm_panel(svm_highC, dat, main = 'cost = 100 (harder)')
 
 ## ----svm-soft-tune,echo=TRUE,results='hide'-----------------------------------
 set.seed(2025)
-tune.out = tune(svm, y ~ ., data = dat, kernel = 'linear', ranges = list(cost = c(0.01, 0.1, 1, 10, 100)))
+tune.out = tune(svm, y ~ ., data = dat, 
+                kernel = 'linear', 
+                ranges = list(cost = c(0.01, 0.1, 1, 10, 100)))
 print(tune.out)
 best = tune.out$best.model
 

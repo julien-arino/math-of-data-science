@@ -325,14 +325,14 @@ plot(x, col = y + 3, pch = 19)
 
 % --- Base R SVM before using e1071 ---
 \begin{frame}{Base R: linear SVM in matrix form}
-        Let $X \in \mathbb{R}^{n\times p}$ have rows $\bx_i^T$ and labels $\by \in \{-1,1\}^n$.
+        Let $X \in \mathbb{R}^{n\times p}$ have rows $\bx_i^T$ and labels $\by \in \{-1,1\}^n$
         \vfill
         Soft-margin (hinge-loss) primal objective in vector/matrix form:
         \[
                 \min_{\bw,b} \; \lambda\,\lVert\bw\rVert^2 
                 + \frac{1}{n}\sum_{i=1}^n \max\bigl(0,\; 1 - y_i(\bx_i^T\bw - b)\bigr)
         \]
-        We'll optimize this with a simple subgradient descent using only base R.
+        We'll optimize this with a simple subgradient descent using only base R
 \end{frame}
 
 \begin{frame}[fragile]{R (base): fit SVM via hinge-loss GD}
@@ -370,7 +370,6 @@ cat("w:", paste(round(w, 3), collapse = ", "), " b:", round(b, 3), "\n")
 @
 \end{frame}
 
-\begin{frame}{R (base): decision boundary and margins}
 <<plot-svm-base-result,echo=FALSE,fig.width=6,fig.height=4>>=
 plot(X, col = Y + 3, pch = 19)
 # Draw decision boundary w^T x - b = 0 and margins = ±1
@@ -384,7 +383,6 @@ margins <- Y * (as.vector(X %*% w) - b)
 near <- abs(margins - 1) < 0.15
 if (any(near)) points(X[near, , drop = FALSE], pch = 5, cex = 1.8)
 @
-\end{frame}
 
 \maxFrameImage{\Sexpr{knitr::fig_chunk("plot-svm-base-result", "pdf")}}
 
@@ -470,23 +468,23 @@ abline((beta0 + 1) / beta[2], -beta[1] / beta[2], lty = 2)
     \]
     subject to
     \[
-        y_i(\mathbf{w}^T\mathbf{x}_i - b) \ge 1 - \xi_i,\qquad \xi_i \ge 0,\quad i=1,\dots,n.
+        y_i(\mathbf{w}^T\mathbf{x}_i - b) \ge 1 - \xi_i,\qquad \xi_i \ge 0,\quad i=1,\dots,n
     \]
-    Here $C>0$ controls the penalty for margin violations. Large $C$ \textemdash{} fewer violations (closer to hard-margin). Small $C$ \textemdash{} wider margin but more violations.
+    Here $C>0$ controls the penalty for margin violations. Large $C$ \textemdash{} fewer violations (closer to hard-margin). Small $C$ \textemdash{} wider margin but more violations
 \end{frame}
 
 \begin{frame}{Hinge loss and relation to slack variables}
-    The hinge loss for a single sample is $\ell_{\mathrm{hinge}}(t) = \max(0,1-t)$ with $t=y_i(\mathbf{w}^T\mathbf{x}_i-b)$.
+    The hinge loss for a single sample is $\ell_{\mathrm{hinge}}(t) = \max(0,1-t)$ with $t=y_i(\mathbf{w}^T\mathbf{x}_i-b)$
     \vfill
     Minimizing the empirical hinge loss plus a regularizer is equivalent to the slack-variable primal above when the loss is replaced by the constrained slack formulation. Concretely,
     \[
         \frac{1}{n}\sum_{i=1}^n \ell_{\mathrm{hinge}}\big(y_i(\mathbf{w}^T\mathbf{x}_i-b)\big) + \lambda\lVert\mathbf{w}\rVert^2
     \]
-    and the primal with $C$ are related: roughly $C \approx 1/(2n\lambda)$ (constants depend on exact formulation).
+    and the primal with $C$ are related: roughly $C \approx 1/(2n\lambda)$ (constants depend on exact formulation)
 \end{frame}
 
 \begin{frame}{Worked R example: soft-margin behaviour}
-    We'll simulate a slightly noisy two-class dataset and fit linear SVMs with different cost ($C$) values to see the effect on the margin and support vectors.
+    We'll simulate a slightly noisy two-class dataset and fit linear SVMs with different cost ($C$) values to see the effect on the margin and support vectors
 \end{frame}
 
 \begin{frame}[fragile]{R: simulate data and fit SVMs}
@@ -508,7 +506,6 @@ svm_list = list(low = svm_lowC, med = svm_medC, high = svm_highC)
 @
 \end{frame}
 
-\begin{frame}{R: plot decision boundaries and support vectors}
 <<svm-soft-example-plots,echo=FALSE,fig.width=9,fig.height=3>>=
 par(mfrow = c(1,3))
 plot_svm_panel = function(svmfit, dat, main){
@@ -531,30 +528,30 @@ plot_svm_panel(svm_lowC, dat,  main = 'cost = 0.1 (soft)')
 plot_svm_panel(svm_medC, dat,  main = 'cost = 1')
 plot_svm_panel(svm_highC, dat, main = 'cost = 100 (harder)')
 @
-\end{frame}
+
 
 \maxFrameImage{\Sexpr{knitr::fig_chunk("svm-soft-example-plots", "pdf")}}
 
 \begin{frame}{Interpretation}
-    Observe how smaller cost (left) yields a smoother, wider-margin decision boundary with more misclassified points but fewer support vectors sometimes; larger cost (right) fits data more tightly, reducing training error but possibly overfitting.
+    Observe how smaller cost (left) yields a smoother, wider-margin decision boundary with more misclassified points but fewer support vectors sometimes; larger cost (right) fits data more tightly, reducing training error but possibly overfitting
     \vfill
-    Use cross-validation to select $C$ in practice (next example uses tune()).
+    Use cross-validation to select $C$ in practice (next example uses \code{tune()})
 \end{frame}
 
 \begin{frame}[fragile]{R: tuning cost with cross-validation}
 <<svm-soft-tune,echo=TRUE,results='hide'>>=
 set.seed(2025)
-tune.out = tune(svm, y ~ ., data = dat, kernel = 'linear', ranges = list(cost = c(0.01, 0.1, 1, 10, 100)))
+tune.out = tune(svm, y ~ ., data = dat, 
+                kernel = 'linear', 
+                ranges = list(cost = c(0.01, 0.1, 1, 10, 100)))
 print(tune.out)
 best = tune.out$best.model
 @
 \end{frame}
 
-\begin{frame}{R: final fit and visualization}
 <<svm-soft-final,echo=FALSE,fig.width=6,fig.height=4,warning=FALSE,message=FALSE>>=
 plot(best, dat)
 @
-\end{frame}
 
 \maxFrameImage{\Sexpr{knitr::fig_chunk("svm-soft-final", "pdf")}}
 

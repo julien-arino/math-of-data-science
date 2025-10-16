@@ -371,14 +371,14 @@ Example from \href{https://www.datacamp.com/tutorial/support-vector-machines-r}{
 
 % --- Base R SVM before using e1071 ---
 \begin{frame}{Base R: linear SVM in matrix form}
-        Let $X \in \mathbb{R}^{n\times p}$ have rows $\bx_i^T$ and labels $\by \in \{-1,1\}^n$.
+        Let $X \in \mathbb{R}^{n\times p}$ have rows $\bx_i^T$ and labels $\by \in \{-1,1\}^n$
         \vfill
         Soft-margin (hinge-loss) primal objective in vector/matrix form:
         \[
                 \min_{\bw,b} \; \lambda\,\lVert\bw\rVert^2 
                 + \frac{1}{n}\sum_{i=1}^n \max\bigl(0,\; 1 - y_i(\bx_i^T\bw - b)\bigr)
         \]
-        We'll optimize this with a simple subgradient descent using only base R.
+        We'll optimize this with a simple subgradient descent using only base R
 \end{frame}
 
 \begin{frame}[fragile]{R (base): fit SVM via hinge-loss GD}
@@ -423,9 +423,7 @@ Example from \href{https://www.datacamp.com/tutorial/support-vector-machines-r}{
 \end{knitrout}
 \end{frame}
 
-\begin{frame}{R (base): decision boundary and margins}
 
-\end{frame}
 
 \maxFrameImage{FIGS/L12-plot-svm-base-result-1.pdf}
 
@@ -538,23 +536,23 @@ Example from \href{https://www.datacamp.com/tutorial/support-vector-machines-r}{
     \]
     subject to
     \[
-        y_i(\mathbf{w}^T\mathbf{x}_i - b) \ge 1 - \xi_i,\qquad \xi_i \ge 0,\quad i=1,\dots,n.
+        y_i(\mathbf{w}^T\mathbf{x}_i - b) \ge 1 - \xi_i,\qquad \xi_i \ge 0,\quad i=1,\dots,n
     \]
-    Here $C>0$ controls the penalty for margin violations. Large $C$ \textemdash{} fewer violations (closer to hard-margin). Small $C$ \textemdash{} wider margin but more violations.
+    Here $C>0$ controls the penalty for margin violations. Large $C$ \textemdash{} fewer violations (closer to hard-margin). Small $C$ \textemdash{} wider margin but more violations
 \end{frame}
 
 \begin{frame}{Hinge loss and relation to slack variables}
-    The hinge loss for a single sample is $\ell_{\mathrm{hinge}}(t) = \max(0,1-t)$ with $t=y_i(\mathbf{w}^T\mathbf{x}_i-b)$.
+    The hinge loss for a single sample is $\ell_{\mathrm{hinge}}(t) = \max(0,1-t)$ with $t=y_i(\mathbf{w}^T\mathbf{x}_i-b)$
     \vfill
     Minimizing the empirical hinge loss plus a regularizer is equivalent to the slack-variable primal above when the loss is replaced by the constrained slack formulation. Concretely,
     \[
         \frac{1}{n}\sum_{i=1}^n \ell_{\mathrm{hinge}}\big(y_i(\mathbf{w}^T\mathbf{x}_i-b)\big) + \lambda\lVert\mathbf{w}\rVert^2
     \]
-    and the primal with $C$ are related: roughly $C \approx 1/(2n\lambda)$ (constants depend on exact formulation).
+    and the primal with $C$ are related: roughly $C \approx 1/(2n\lambda)$ (constants depend on exact formulation)
 \end{frame}
 
 \begin{frame}{Worked R example: soft-margin behaviour}
-    We'll simulate a slightly noisy two-class dataset and fit linear SVMs with different cost ($C$) values to see the effect on the margin and support vectors.
+    We'll simulate a slightly noisy two-class dataset and fit linear SVMs with different cost ($C$) values to see the effect on the margin and support vectors
 \end{frame}
 
 \begin{frame}[fragile]{R: simulate data and fit SVMs}
@@ -580,16 +578,15 @@ Example from \href{https://www.datacamp.com/tutorial/support-vector-machines-r}{
 \end{knitrout}
 \end{frame}
 
-\begin{frame}{R: plot decision boundaries and support vectors}
 
-\end{frame}
+
 
 \maxFrameImage{FIGS/L12-svm-soft-example-plots-1.pdf}
 
 \begin{frame}{Interpretation}
-    Observe how smaller cost (left) yields a smoother, wider-margin decision boundary with more misclassified points but fewer support vectors sometimes; larger cost (right) fits data more tightly, reducing training error but possibly overfitting.
+    Observe how smaller cost (left) yields a smoother, wider-margin decision boundary with more misclassified points but fewer support vectors sometimes; larger cost (right) fits data more tightly, reducing training error but possibly overfitting
     \vfill
-    Use cross-validation to select $C$ in practice (next example uses tune()).
+    Use cross-validation to select $C$ in practice (next example uses \code{tune()})
 \end{frame}
 
 \begin{frame}[fragile]{R: tuning cost with cross-validation}
@@ -597,7 +594,9 @@ Example from \href{https://www.datacamp.com/tutorial/support-vector-machines-r}{
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{set.seed}\hldef{(}\hlnum{2025}\hldef{)}
-\hldef{tune.out} \hlkwb{=} \hlkwd{tune}\hldef{(svm, y} \hlopt{~} \hldef{.,} \hlkwc{data} \hldef{= dat,} \hlkwc{kernel} \hldef{=} \hlsng{'linear'}\hldef{,} \hlkwc{ranges} \hldef{=} \hlkwd{list}\hldef{(}\hlkwc{cost} \hldef{=} \hlkwd{c}\hldef{(}\hlnum{0.01}\hldef{,} \hlnum{0.1}\hldef{,} \hlnum{1}\hldef{,} \hlnum{10}\hldef{,} \hlnum{100}\hldef{)))}
+\hldef{tune.out} \hlkwb{=} \hlkwd{tune}\hldef{(svm, y} \hlopt{~} \hldef{.,} \hlkwc{data} \hldef{= dat,}
+                \hlkwc{kernel} \hldef{=} \hlsng{'linear'}\hldef{,}
+                \hlkwc{ranges} \hldef{=} \hlkwd{list}\hldef{(}\hlkwc{cost} \hldef{=} \hlkwd{c}\hldef{(}\hlnum{0.01}\hldef{,} \hlnum{0.1}\hldef{,} \hlnum{1}\hldef{,} \hlnum{10}\hldef{,} \hlnum{100}\hldef{)))}
 \hlkwd{print}\hldef{(tune.out)}
 \hldef{best} \hlkwb{=} \hldef{tune.out}\hlopt{$}\hldef{best.model}
 \end{alltt}
@@ -605,9 +604,7 @@ Example from \href{https://www.datacamp.com/tutorial/support-vector-machines-r}{
 \end{knitrout}
 \end{frame}
 
-\begin{frame}{R: final fit and visualization}
 
-\end{frame}
 
 \maxFrameImage{FIGS/L12-svm-soft-final-1.pdf}
 
