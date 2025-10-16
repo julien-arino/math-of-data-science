@@ -2,7 +2,7 @@
 
 % Set lecture number for later use
 <<set-lecture-number,echo=FALSE>>=
-lecture_number = "14"
+lecture_number = "12"
 @
 
 % Part common to all the lectures
@@ -28,7 +28,7 @@ cat(input_setup)
 \begin{document}
 
 % Set up cross-references and counter persistence
-
+\setcounter{theorem}{87}
 % Set up cross-references and counter persistence
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -45,8 +45,7 @@ cat(input_setup)
 
 %%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%
-\subsection{Support vector machines (SVM)}
-\newSubSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_c06eixc06eixc06e.jpeg}
+\Ssection{Support vector machines (SVM)}{FIGS-slides-admin/Gemini_Generated_Image_c06eixc06eixc06e.jpeg}
 
 \begin{frame}{Support vector machines (SVM)}
     We are given a training dataset of $n$ points of the form
@@ -59,6 +58,12 @@ cat(input_setup)
     \vfill
     Once we have this surface $\S$, any additional point that is added to the set can then be \emph{classified} as belonging to either one of the sets depending on where it is with respect to the surface $\S$
 \end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+\Ssection{Linear SVM}{FIGS-slides-admin/Gemini_Generated_Image_c06eixc06eixc06e.jpeg}
 
 \begin{frame}{Linear SVM}
     We are given a training dataset of $n$ points of the form
@@ -161,12 +166,23 @@ cat(input_setup)
     These $\bx_i$ are the \textbf{support vectors}
 \end{frame}
 
-\begin{frame}{Writing the goal in terms of Lagrange multipliers}
-    Recall that our goal is to
-    \begin{quote}
-        minimize $\|\mathbf{w}\|$ subject to $y_i(\mathbf{w}^\mathsf{T} \mathbf{x}_i - b)-1 \ge 0$ for $i = 1, \ldots, n$
-    \end{quote}
+
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+\Ssection{Guess who's coming to dinner!}{FIGS-slides-admin/Gemini_Generated_Image_c06eixc06eixc06e.jpeg}
+
+
+
+\begin{frame}{Our goal}
+    Recall that our goal is
     \vfill
+    \begin{quote}
+        Minimize $\|\mathbf{w}\|$ subject to $y_i(\mathbf{w}^\mathsf{T} \mathbf{x}_i - b)-1 \ge 0$ for $i = 1, \ldots, n$
+    \end{quote}
+\end{frame}    
+
+
+\begin{frame}{Writing the goal in terms of Lagrange multipliers}
     Using Lagrange multipliers $\lambda_1,\ldots,\lambda_n$, we have the function
     \[
         L_P:=F(\bw,b\lambda_1,\ldots,\lambda_n) =
@@ -180,8 +196,13 @@ cat(input_setup)
 \end{frame}
 
 \begin{frame}{Lagrange multipliers}
-    We have already seen Lagrange multipliers, when we were studying PCA
+    We have already seen Lagrange multipliers
     \vfill
+    \begin{itemize}
+    \item in the intro math slides
+    \vfill
+    \item when we were studying PCA
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Maximisation using Lagrange multipliers (V1.0)}
@@ -224,8 +245,8 @@ cat(input_setup)
         Here we want $\lambda_1,\ldots,\lambda_n$
 \end{frame}
 
-\begin{frame}{Lagrange multiplier theorem}
-    \begin{theorem}
+\begin{frame}
+    \begin{theorem}[Lagrange multiplier theorem]
         Let $f\colon\mathbb{R}^n \rightarrow \mathbb{R}$ be the objective function, $g\colon\mathbb{R}^n \rightarrow \mathbb{R}^c $ be the constraints function, both being $C^1$.
         Consider the optimisation problem
         \begin{align*}
@@ -262,8 +283,15 @@ cat(input_setup)
     \[
         L(\bx,\mu,\lambda) = f(\bx)+\mu^T\bg(\bx)+\lambda^T\bh(\bx)
     \]
+\end{frame}
+
+\begin{frame}
     \begin{theorem}
-        If $(\mathbf{x}^{\ast},\mathbf{\mu}^\ast)$ is a \emph{saddle point} of $L(\mathbf{x},\mathbf{\mu})$ in $\mathbf{x} \in \mathbf{X}$, $\mathbf{\mu} \geq \mathbf{0}$, then $\mathbf{x}^{\ast}$ is an optimal vector for the above optimization problem. Suppose that $f(\mathbf{x})$ and $g_i(\mathbf{x})$, $i = 1, \ldots, m$, are \emph{convex} in $\mathbf{x}$ and that there exists $\mathbf{x}_{0} \in \mathbf{X}$ such that $\mathbf{g}(\mathbf{x}_{0}) < 0$. Then with an optimal vector $\mathbf{x}^{\ast}$ for the above optimization problem there is associated a non-negative vector $\mathbf{\mu}^\ast$ such that $L(\mathbf{x}^{\ast},\mathbf{\mu}^\ast)$ is a saddle point of $L(\mathbf{x},\mathbf{\mu})$
+        If $(\mathbf{x}^{\ast},\mathbf{\mu}^\ast)$ is a \emph{saddle point} of $L(\mathbf{x},\mathbf{\mu})$ in $\mathbf{x} \in \mathbf{X}$, $\mathbf{\mu} \geq \mathbf{0}$, then $\mathbf{x}^{\ast}$ is an optimal vector for the above optimization problem
+        \vskip0.3cm
+        Suppose that $f(\mathbf{x})$ and $g_i(\mathbf{x})$, $i = 1, \ldots, m$, are \emph{convex} in $\mathbf{x}$ and that there exists $\mathbf{x}_{0} \in \mathbf{X}$ such that $\mathbf{g}(\mathbf{x}_{0}) < 0$
+        \vskip0.3cm
+        Then with an optimal vector $\mathbf{x}^{\ast}$ for the above optimization problem there is associated a non-negative vector $\mathbf{\mu}^\ast$ such that $L(\mathbf{x}^{\ast},\mathbf{\mu}^\ast)$ is a saddle point of $L(\mathbf{x},\mathbf{\mu})$
     \end{theorem}
 \end{frame}
 
@@ -294,6 +322,71 @@ plot(x, col = y + 3, pch = 19)
 \end{frame}
 
 \maxFrameImage{\Sexpr{knitr::fig_chunk("plot-svm-example", "pdf")}}
+
+% --- Base R SVM before using e1071 ---
+\begin{frame}{Base R: linear SVM in matrix form}
+        Let $X \in \mathbb{R}^{n\times p}$ have rows $\bx_i^T$ and labels $\by \in \{-1,1\}^n$.
+        \vfill
+        Soft-margin (hinge-loss) primal objective in vector/matrix form:
+        \[
+                \min_{\bw,b} \; \lambda\,\lVert\bw\rVert^2 
+                + \frac{1}{n}\sum_{i=1}^n \max\bigl(0,\; 1 - y_i(\bx_i^T\bw - b)\bigr)
+        \]
+        We'll optimize this with a simple subgradient descent using only base R.
+\end{frame}
+
+\begin{frame}[fragile]{R (base): fit SVM via hinge-loss GD}
+<<svm-base-optimize,echo=TRUE,results='show'>>=
+# Use X, y created above (x: matrix, y: {-1,1})
+X <- x
+Y <- as.numeric(y)
+n <- nrow(X); p <- ncol(X)
+
+# Initialize parameters
+w <- rep(0, p)
+b <- 0
+lambda <- 0.05   # L2 regularization strength (~ 1/(2nC))
+lr <- 0.1        # learning rate
+epochs <- 5000
+
+for (t in 1:epochs) {
+    margins <- Y * (as.vector(X %*% w) - b)
+    active <- margins < 1  # points violating margin
+    if (any(active)) {
+        grad_w <- 2 * lambda * w - colSums( (Y[active] * X[active, , drop = FALSE]) ) / n
+        grad_b <-  sum(Y[active]) / n
+    } else {
+        grad_w <- 2 * lambda * w
+        grad_b <- 0
+    }
+    # parameter update
+    w <- w - lr * grad_w
+    b <- b - lr * grad_b
+    # mild decay for stability
+    if (t %% 1000 == 0) lr <- lr * 0.9
+}
+
+cat("w:", paste(round(w, 3), collapse = ", "), " b:", round(b, 3), "\n")
+@
+\end{frame}
+
+\begin{frame}{R (base): decision boundary and margins}
+<<plot-svm-base-result,echo=FALSE,fig.width=6,fig.height=4>>=
+plot(X, col = Y + 3, pch = 19)
+# Draw decision boundary w^T x - b = 0 and margins = ±1
+if (abs(w[2]) > 1e-8) {
+    abline(b / w[2], -w[1] / w[2])
+    abline((b - 1) / w[2], -w[1] / w[2], lty = 2)
+    abline((b + 1) / w[2], -w[1] / w[2], lty = 2)
+}
+# Highlight near-margin points as approximate support vectors
+margins <- Y * (as.vector(X %*% w) - b)
+near <- abs(margins - 1) < 0.15
+if (any(near)) points(X[near, , drop = FALSE], pch = 5, cex = 1.8)
+@
+\end{frame}
+
+\maxFrameImage{\Sexpr{knitr::fig_chunk("plot-svm-base-result", "pdf")}}
 
 \begin{frame}[fragile]
 <<plot-svm-example-result>>=
@@ -340,6 +433,11 @@ abline((beta0 + 1) / beta[2], -beta[1] / beta[2], lty = 2)
 
 \maxFrameImage{\Sexpr{knitr::fig_chunk("plot-svm-example-result-3", "pdf")}}
 
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+\Ssection{Soft-margin SVM}{FIGS-slides-admin/Gemini_Generated_Image_c06eixc06eixc06e.jpeg}
+
+
 \begin{frame}{Soft-margin SVM}
     To extend SVM to cases in which the data are not linearly separable, the \textbf{hinge loss} function is helpful
     \[
@@ -354,7 +452,6 @@ abline((beta0 + 1) / beta[2], -beta[1] / beta[2], lty = 2)
 \end{frame}
 
 \begin{frame}
-   
     The goal of the optimization then is to minimize
     
     \[ 
@@ -365,6 +462,106 @@ abline((beta0 + 1) / beta[2], -beta[1] / beta[2], lty = 2)
     \vfill
     Thus, for sufficiently small values of $\lambda$, it will behave similar to the hard-margin SVM, if the input data are linearly classifiable, but will still learn if a classification rule is viable or not
 \end{frame}
+
+\begin{frame}{Soft-margin: slack variables and primal form}
+    Another common formulation introduces slack variables $\xi_i \ge 0$ to allow violations of the margin. The soft-margin (primal) problem is:
+    \[
+        \min_{\mathbf{w},b,\xi}\ \frac{1}{2}\lVert\mathbf{w}\rVert^2 + C\sum_{i=1}^n \xi_i
+    \]
+    subject to
+    \[
+        y_i(\mathbf{w}^T\mathbf{x}_i - b) \ge 1 - \xi_i,\qquad \xi_i \ge 0,\quad i=1,\dots,n.
+    \]
+    Here $C>0$ controls the penalty for margin violations. Large $C$ \textemdash{} fewer violations (closer to hard-margin). Small $C$ \textemdash{} wider margin but more violations.
+\end{frame}
+
+\begin{frame}{Hinge loss and relation to slack variables}
+    The hinge loss for a single sample is $\ell_{\mathrm{hinge}}(t) = \max(0,1-t)$ with $t=y_i(\mathbf{w}^T\mathbf{x}_i-b)$.
+    \vfill
+    Minimizing the empirical hinge loss plus a regularizer is equivalent to the slack-variable primal above when the loss is replaced by the constrained slack formulation. Concretely,
+    \[
+        \frac{1}{n}\sum_{i=1}^n \ell_{\mathrm{hinge}}\big(y_i(\mathbf{w}^T\mathbf{x}_i-b)\big) + \lambda\lVert\mathbf{w}\rVert^2
+    \]
+    and the primal with $C$ are related: roughly $C \approx 1/(2n\lambda)$ (constants depend on exact formulation).
+\end{frame}
+
+\begin{frame}{Worked R example: soft-margin behaviour}
+    We'll simulate a slightly noisy two-class dataset and fit linear SVMs with different cost ($C$) values to see the effect on the margin and support vectors.
+\end{frame}
+
+\begin{frame}[fragile]{R: simulate data and fit SVMs}
+<<svm-soft-example-setup,echo=TRUE,results='hide'>>=
+set.seed(2025)
+library(e1071)
+# simulate 2D data with some overlap
+n = 100
+x = matrix(rnorm(2*n), n, 2)
+y = ifelse(x[,1] + 0.6*x[,2] + rnorm(n, sd=0.8) > 0, 1, -1)
+dat = data.frame(x1 = x[,1], x2 = x[,2], y = as.factor(y))
+
+# fit linear SVMs with different cost values
+svm_lowC  = svm(y ~ ., data = dat, kernel = 'linear', cost = 0.1, scale = FALSE)
+svm_medC  = svm(y ~ ., data = dat, kernel = 'linear', cost = 1,   scale = FALSE)
+svm_highC = svm(y ~ ., data = dat, kernel = 'linear', cost = 100, scale = FALSE)
+
+svm_list = list(low = svm_lowC, med = svm_medC, high = svm_highC)
+@
+\end{frame}
+
+\begin{frame}{R: plot decision boundaries and support vectors}
+<<svm-soft-example-plots,echo=FALSE,fig.width=9,fig.height=3>>=
+par(mfrow = c(1,3))
+plot_svm_panel = function(svmfit, dat, main){
+  # grid for background
+  make.grid = function(x, n = 100) {
+    grange = apply(x, 2, range)
+    x1 = seq(from = grange[1,1], to = grange[2,1], length = n)
+    x2 = seq(from = grange[1,2], to = grange[2,2], length = n)
+    expand.grid(x1, x2)
+  }
+  xgrid = make.grid(as.matrix(dat[,1:2]))
+  colnames(xgrid) = colnames(dat)[1:2]
+  ygrid = predict(svmfit, xgrid)
+  plot(xgrid, col = c('#fdd0a2','#b3cde3')[as.numeric(ygrid)], pch = 20, cex = .4, main = main)
+  points(dat[,1:2], col = c('red','blue')[as.numeric(dat$y)], pch = 19)
+  points(dat[svmfit$index,1:2], pch = 5, cex = 1.6)
+}
+
+plot_svm_panel(svm_lowC, dat,  main = 'cost = 0.1 (soft)')
+plot_svm_panel(svm_medC, dat,  main = 'cost = 1')
+plot_svm_panel(svm_highC, dat, main = 'cost = 100 (harder)')
+@
+\end{frame}
+
+\maxFrameImage{\Sexpr{knitr::fig_chunk("svm-soft-example-plots", "pdf")}}
+
+\begin{frame}{Interpretation}
+    Observe how smaller cost (left) yields a smoother, wider-margin decision boundary with more misclassified points but fewer support vectors sometimes; larger cost (right) fits data more tightly, reducing training error but possibly overfitting.
+    \vfill
+    Use cross-validation to select $C$ in practice (next example uses tune()).
+\end{frame}
+
+\begin{frame}[fragile]{R: tuning cost with cross-validation}
+<<svm-soft-tune,echo=TRUE,results='hide'>>=
+set.seed(2025)
+tune.out = tune(svm, y ~ ., data = dat, kernel = 'linear', ranges = list(cost = c(0.01, 0.1, 1, 10, 100)))
+print(tune.out)
+best = tune.out$best.model
+@
+\end{frame}
+
+\begin{frame}{R: final fit and visualization}
+<<svm-soft-final,echo=FALSE,fig.width=6,fig.height=4,warning=FALSE,message=FALSE>>=
+plot(best, dat)
+@
+\end{frame}
+
+\maxFrameImage{\Sexpr{knitr::fig_chunk("svm-soft-final", "pdf")}}
+
+
+<<convert-Rnw-to-R,warning=FALSE,message=FALSE,echo=FALSE,results='hide'>>=
+rmd_chunks_to_r_temp()
+@
 
 
 % Save counters for next file

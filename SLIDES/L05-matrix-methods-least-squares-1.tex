@@ -370,18 +370,18 @@ To get a sense of that, we dump a few random rows
 \hldef{data_new[}\hlkwd{sort}\hldef{(}\hlkwd{unique}\hldef{(}\hlkwd{c}\hldef{(}\hlnum{1}\hldef{,}\hlkwd{sample}\hldef{(}\hlkwd{nrow}\hldef{(data_new),} \hlnum{4}\hldef{)))), ]}
 \end{alltt}
 \begin{verbatim}
-##         GEOGRAPHY.NAME                              CHARACTERISTIC YEAR.S.
-## 1               Canada                   Population (in thousands)    1956
-## 1656     New Brunswick Population by single years of age: 96 years    2011
-## 3022 Trois-Rivi\xe8res Population by single years of age: 19 years    2011
-## 3601           Ontario Non-official mother tongue: Chinese, n.o.s.    2011
-## 7758           Calgary  Population by single years of age: 7 years    2011
-##       TOTAL FLAG_TOTAL
-## 1     16081           
-## 1656    290           
-## 3022   2065           
-## 3601 202225           
-## 7758  14335
+##             GEOGRAPHY.NAME                              CHARACTERISTIC YEAR.S.
+## 1                   Canada                   Population (in thousands)    1956
+## 5324                Guelph Population by single years of age: 36 years    2011
+## 7125                Regina Population by single years of age: 12 years    2011
+## 8150      British Columbia Population by single years of age: 17 years    2011
+## 9577 Northwest Territories         % of five-or-more-person households    2001
+##         TOTAL FLAG_TOTAL
+## 1    16081.00           
+## 5324  1930.00           
+## 7125  2390.00           
+## 8150 55395.00           
+## 9577    17.57
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -893,7 +893,7 @@ Access slots using @. For instance, the GA finds the coefficients
 \end{alltt}
 \begin{verbatim}
 ##            x1        x2
-## [1,] 2.999889 0.5000423
+## [1,] 2.999974 0.5000088
 \end{verbatim}
 \end{kframe}
 \end{knitrout}

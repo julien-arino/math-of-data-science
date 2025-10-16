@@ -54,7 +54,7 @@
 
 
 % Part common to all the lectures
-\subtitle{MATH 2740 -- Mathematics of Data Science -- Lecture 13}
+\subtitle{MATH 2740 -- Mathematics of Data Science -- Lecture 12}
 \author{\texorpdfstring{Julien Arino\newline\url{julien.arino@umanitoba.ca}}{Julien Arino}}
 \institute{Department of Mathematics @ University of Manitoba}
 \date{Fall 202X}
@@ -70,7 +70,7 @@
 \begin{document}
 
 % Set up cross-references and counter persistence
-
+\setcounter{theorem}{87}
 % Set up cross-references and counter persistence
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -87,8 +87,7 @@
 
 %%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%
-\subsection{Support vector machines (SVM)}
-\newSubSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_c06eixc06eixc06e.jpeg}
+\Ssection{Support vector machines (SVM)}{FIGS-slides-admin/Gemini_Generated_Image_c06eixc06eixc06e.jpeg}
 
 \begin{frame}{Support vector machines (SVM)}
     We are given a training dataset of $n$ points of the form
@@ -101,6 +100,12 @@
     \vfill
     Once we have this surface $\S$, any additional point that is added to the set can then be \emph{classified} as belonging to either one of the sets depending on where it is with respect to the surface $\S$
 \end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+\Ssection{Linear SVM}{FIGS-slides-admin/Gemini_Generated_Image_c06eixc06eixc06e.jpeg}
 
 \begin{frame}{Linear SVM}
     We are given a training dataset of $n$ points of the form
@@ -203,12 +208,23 @@
     These $\bx_i$ are the \textbf{support vectors}
 \end{frame}
 
-\begin{frame}{Writing the goal in terms of Lagrange multipliers}
-    Recall that our goal is to
-    \begin{quote}
-        minimize $\|\mathbf{w}\|$ subject to $y_i(\mathbf{w}^\mathsf{T} \mathbf{x}_i - b)-1 \ge 0$ for $i = 1, \ldots, n$
-    \end{quote}
+
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+\Ssection{Guess who's coming to dinner!}{FIGS-slides-admin/Gemini_Generated_Image_c06eixc06eixc06e.jpeg}
+
+
+
+\begin{frame}{Our goal}
+    Recall that our goal is
     \vfill
+    \begin{quote}
+        Minimize $\|\mathbf{w}\|$ subject to $y_i(\mathbf{w}^\mathsf{T} \mathbf{x}_i - b)-1 \ge 0$ for $i = 1, \ldots, n$
+    \end{quote}
+\end{frame}    
+
+
+\begin{frame}{Writing the goal in terms of Lagrange multipliers}
     Using Lagrange multipliers $\lambda_1,\ldots,\lambda_n$, we have the function
     \[
         L_P:=F(\bw,b\lambda_1,\ldots,\lambda_n) =
@@ -222,8 +238,13 @@
 \end{frame}
 
 \begin{frame}{Lagrange multipliers}
-    We have already seen Lagrange multipliers, when we were studying PCA
+    We have already seen Lagrange multipliers
     \vfill
+    \begin{itemize}
+    \item in the intro math slides
+    \vfill
+    \item when we were studying PCA
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Maximisation using Lagrange multipliers (V1.0)}
@@ -266,8 +287,8 @@
         Here we want $\lambda_1,\ldots,\lambda_n$
 \end{frame}
 
-\begin{frame}{Lagrange multiplier theorem}
-    \begin{theorem}
+\begin{frame}
+    \begin{theorem}[Lagrange multiplier theorem]
         Let $f\colon\mathbb{R}^n \rightarrow \mathbb{R}$ be the objective function, $g\colon\mathbb{R}^n \rightarrow \mathbb{R}^c $ be the constraints function, both being $C^1$.
         Consider the optimisation problem
         \begin{align*}
@@ -304,8 +325,15 @@
     \[
         L(\bx,\mu,\lambda) = f(\bx)+\mu^T\bg(\bx)+\lambda^T\bh(\bx)
     \]
+\end{frame}
+
+\begin{frame}
     \begin{theorem}
-        If $(\mathbf{x}^{\ast},\mathbf{\mu}^\ast)$ is a \emph{saddle point} of $L(\mathbf{x},\mathbf{\mu})$ in $\mathbf{x} \in \mathbf{X}$, $\mathbf{\mu} \geq \mathbf{0}$, then $\mathbf{x}^{\ast}$ is an optimal vector for the above optimization problem. Suppose that $f(\mathbf{x})$ and $g_i(\mathbf{x})$, $i = 1, \ldots, m$, are \emph{convex} in $\mathbf{x}$ and that there exists $\mathbf{x}_{0} \in \mathbf{X}$ such that $\mathbf{g}(\mathbf{x}_{0}) < 0$. Then with an optimal vector $\mathbf{x}^{\ast}$ for the above optimization problem there is associated a non-negative vector $\mathbf{\mu}^\ast$ such that $L(\mathbf{x}^{\ast},\mathbf{\mu}^\ast)$ is a saddle point of $L(\mathbf{x},\mathbf{\mu})$
+        If $(\mathbf{x}^{\ast},\mathbf{\mu}^\ast)$ is a \emph{saddle point} of $L(\mathbf{x},\mathbf{\mu})$ in $\mathbf{x} \in \mathbf{X}$, $\mathbf{\mu} \geq \mathbf{0}$, then $\mathbf{x}^{\ast}$ is an optimal vector for the above optimization problem
+        \vskip0.3cm
+        Suppose that $f(\mathbf{x})$ and $g_i(\mathbf{x})$, $i = 1, \ldots, m$, are \emph{convex} in $\mathbf{x}$ and that there exists $\mathbf{x}_{0} \in \mathbf{X}$ such that $\mathbf{g}(\mathbf{x}_{0}) < 0$
+        \vskip0.3cm
+        Then with an optimal vector $\mathbf{x}^{\ast}$ for the above optimization problem there is associated a non-negative vector $\mathbf{\mu}^\ast$ such that $L(\mathbf{x}^{\ast},\mathbf{\mu}^\ast)$ is a saddle point of $L(\mathbf{x},\mathbf{\mu})$
     \end{theorem}
 \end{frame}
 
@@ -339,7 +367,67 @@ Example from \href{https://www.datacamp.com/tutorial/support-vector-machines-r}{
 \end{knitrout}
 \end{frame}
 
-\maxFrameImage{FIGS/L13-plot-svm-example-1.pdf}
+\maxFrameImage{FIGS/L12-plot-svm-example-1.pdf}
+
+% --- Base R SVM before using e1071 ---
+\begin{frame}{Base R: linear SVM in matrix form}
+        Let $X \in \mathbb{R}^{n\times p}$ have rows $\bx_i^T$ and labels $\by \in \{-1,1\}^n$.
+        \vfill
+        Soft-margin (hinge-loss) primal objective in vector/matrix form:
+        \[
+                \min_{\bw,b} \; \lambda\,\lVert\bw\rVert^2 
+                + \frac{1}{n}\sum_{i=1}^n \max\bigl(0,\; 1 - y_i(\bx_i^T\bw - b)\bigr)
+        \]
+        We'll optimize this with a simple subgradient descent using only base R.
+\end{frame}
+
+\begin{frame}[fragile]{R (base): fit SVM via hinge-loss GD}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# Use X, y created above (x: matrix, y: \{-1,1\})}
+\hldef{X} \hlkwb{<-} \hldef{x}
+\hldef{Y} \hlkwb{<-} \hlkwd{as.numeric}\hldef{(y)}
+\hldef{n} \hlkwb{<-} \hlkwd{nrow}\hldef{(X); p} \hlkwb{<-} \hlkwd{ncol}\hldef{(X)}
+
+\hlcom{# Initialize parameters}
+\hldef{w} \hlkwb{<-} \hlkwd{rep}\hldef{(}\hlnum{0}\hldef{, p)}
+\hldef{b} \hlkwb{<-} \hlnum{0}
+\hldef{lambda} \hlkwb{<-} \hlnum{0.05}   \hlcom{# L2 regularization strength (~ 1/(2nC))}
+\hldef{lr} \hlkwb{<-} \hlnum{0.1}        \hlcom{# learning rate}
+\hldef{epochs} \hlkwb{<-} \hlnum{5000}
+
+\hlkwa{for} \hldef{(t} \hlkwa{in} \hlnum{1}\hlopt{:}\hldef{epochs) \{}
+    \hldef{margins} \hlkwb{<-} \hldef{Y} \hlopt{*} \hldef{(}\hlkwd{as.vector}\hldef{(X} \hlopt{%*%} \hldef{w)} \hlopt{-} \hldef{b)}
+    \hldef{active} \hlkwb{<-} \hldef{margins} \hlopt{<} \hlnum{1}  \hlcom{# points violating margin}
+    \hlkwa{if} \hldef{(}\hlkwd{any}\hldef{(active)) \{}
+        \hldef{grad_w} \hlkwb{<-} \hlnum{2} \hlopt{*} \hldef{lambda} \hlopt{*} \hldef{w} \hlopt{-} \hlkwd{colSums}\hldef{( (Y[active]} \hlopt{*} \hldef{X[active, ,} \hlkwc{drop} \hldef{=} \hlnum{FALSE}\hldef{]) )} \hlopt{/} \hldef{n}
+        \hldef{grad_b} \hlkwb{<-}  \hlkwd{sum}\hldef{(Y[active])} \hlopt{/} \hldef{n}
+    \hldef{\}} \hlkwa{else} \hldef{\{}
+        \hldef{grad_w} \hlkwb{<-} \hlnum{2} \hlopt{*} \hldef{lambda} \hlopt{*} \hldef{w}
+        \hldef{grad_b} \hlkwb{<-} \hlnum{0}
+    \hldef{\}}
+    \hlcom{# parameter update}
+    \hldef{w} \hlkwb{<-} \hldef{w} \hlopt{-} \hldef{lr} \hlopt{*} \hldef{grad_w}
+    \hldef{b} \hlkwb{<-} \hldef{b} \hlopt{-} \hldef{lr} \hlopt{*} \hldef{grad_b}
+    \hlcom{# mild decay for stability}
+    \hlkwa{if} \hldef{(t} \hlopt{%%} \hlnum{1000} \hlopt{==} \hlnum{0}\hldef{) lr} \hlkwb{<-} \hldef{lr} \hlopt{*} \hlnum{0.9}
+\hldef{\}}
+
+\hlkwd{cat}\hldef{(}\hlsng{"w:"}\hldef{,} \hlkwd{paste}\hldef{(}\hlkwd{round}\hldef{(w,} \hlnum{3}\hldef{),} \hlkwc{collapse} \hldef{=} \hlsng{", "}\hldef{),} \hlsng{" b:"}\hldef{,} \hlkwd{round}\hldef{(b,} \hlnum{3}\hldef{),} \hlsng{"\textbackslash{}n"}\hldef{)}
+\end{alltt}
+\begin{verbatim}
+## w: 0.421, 1.205  b: 1.101
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+\begin{frame}{R (base): decision boundary and margins}
+
+\end{frame}
+
+\maxFrameImage{FIGS/L12-plot-svm-base-result-1.pdf}
 
 \begin{frame}[fragile]
 \begin{knitrout}
@@ -369,7 +457,7 @@ Example from \href{https://www.datacamp.com/tutorial/support-vector-machines-r}{
 \end{knitrout}
 \end{frame}
 
-\maxFrameImage{FIGS/L13-plot-svm-example-result-1.pdf}
+\maxFrameImage{FIGS/L12-plot-svm-example-result-1.pdf}
 
 
 \begin{frame}[fragile]
@@ -392,7 +480,7 @@ Example from \href{https://www.datacamp.com/tutorial/support-vector-machines-r}{
 \end{knitrout}
 \end{frame}
 
-\maxFrameImage{FIGS/L13-plot-svm-example-result-2-1.pdf}
+\maxFrameImage{FIGS/L12-plot-svm-example-result-2-1.pdf}
 
 \begin{frame}[fragile]
 \begin{knitrout}
@@ -411,7 +499,12 @@ Example from \href{https://www.datacamp.com/tutorial/support-vector-machines-r}{
 \end{knitrout}
 \end{frame}
 
-\maxFrameImage{FIGS/L13-plot-svm-example-result-3-1.pdf}
+\maxFrameImage{FIGS/L12-plot-svm-example-result-3-1.pdf}
+
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+\Ssection{Soft-margin SVM}{FIGS-slides-admin/Gemini_Generated_Image_c06eixc06eixc06e.jpeg}
+
 
 \begin{frame}{Soft-margin SVM}
     To extend SVM to cases in which the data are not linearly separable, the \textbf{hinge loss} function is helpful
@@ -427,7 +520,6 @@ Example from \href{https://www.datacamp.com/tutorial/support-vector-machines-r}{
 \end{frame}
 
 \begin{frame}
-   
     The goal of the optimization then is to minimize
     
     \[ 
@@ -438,6 +530,89 @@ Example from \href{https://www.datacamp.com/tutorial/support-vector-machines-r}{
     \vfill
     Thus, for sufficiently small values of $\lambda$, it will behave similar to the hard-margin SVM, if the input data are linearly classifiable, but will still learn if a classification rule is viable or not
 \end{frame}
+
+\begin{frame}{Soft-margin: slack variables and primal form}
+    Another common formulation introduces slack variables $\xi_i \ge 0$ to allow violations of the margin. The soft-margin (primal) problem is:
+    \[
+        \min_{\mathbf{w},b,\xi}\ \frac{1}{2}\lVert\mathbf{w}\rVert^2 + C\sum_{i=1}^n \xi_i
+    \]
+    subject to
+    \[
+        y_i(\mathbf{w}^T\mathbf{x}_i - b) \ge 1 - \xi_i,\qquad \xi_i \ge 0,\quad i=1,\dots,n.
+    \]
+    Here $C>0$ controls the penalty for margin violations. Large $C$ \textemdash{} fewer violations (closer to hard-margin). Small $C$ \textemdash{} wider margin but more violations.
+\end{frame}
+
+\begin{frame}{Hinge loss and relation to slack variables}
+    The hinge loss for a single sample is $\ell_{\mathrm{hinge}}(t) = \max(0,1-t)$ with $t=y_i(\mathbf{w}^T\mathbf{x}_i-b)$.
+    \vfill
+    Minimizing the empirical hinge loss plus a regularizer is equivalent to the slack-variable primal above when the loss is replaced by the constrained slack formulation. Concretely,
+    \[
+        \frac{1}{n}\sum_{i=1}^n \ell_{\mathrm{hinge}}\big(y_i(\mathbf{w}^T\mathbf{x}_i-b)\big) + \lambda\lVert\mathbf{w}\rVert^2
+    \]
+    and the primal with $C$ are related: roughly $C \approx 1/(2n\lambda)$ (constants depend on exact formulation).
+\end{frame}
+
+\begin{frame}{Worked R example: soft-margin behaviour}
+    We'll simulate a slightly noisy two-class dataset and fit linear SVMs with different cost ($C$) values to see the effect on the margin and support vectors.
+\end{frame}
+
+\begin{frame}[fragile]{R: simulate data and fit SVMs}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{set.seed}\hldef{(}\hlnum{2025}\hldef{)}
+\hlkwd{library}\hldef{(e1071)}
+\hlcom{# simulate 2D data with some overlap}
+\hldef{n} \hlkwb{=} \hlnum{100}
+\hldef{x} \hlkwb{=} \hlkwd{matrix}\hldef{(}\hlkwd{rnorm}\hldef{(}\hlnum{2}\hlopt{*}\hldef{n), n,} \hlnum{2}\hldef{)}
+\hldef{y} \hlkwb{=} \hlkwd{ifelse}\hldef{(x[,}\hlnum{1}\hldef{]} \hlopt{+} \hlnum{0.6}\hlopt{*}\hldef{x[,}\hlnum{2}\hldef{]} \hlopt{+} \hlkwd{rnorm}\hldef{(n,} \hlkwc{sd}\hldef{=}\hlnum{0.8}\hldef{)} \hlopt{>} \hlnum{0}\hldef{,} \hlnum{1}\hldef{,} \hlopt{-}\hlnum{1}\hldef{)}
+\hldef{dat} \hlkwb{=} \hlkwd{data.frame}\hldef{(}\hlkwc{x1} \hldef{= x[,}\hlnum{1}\hldef{],} \hlkwc{x2} \hldef{= x[,}\hlnum{2}\hldef{],} \hlkwc{y} \hldef{=} \hlkwd{as.factor}\hldef{(y))}
+
+\hlcom{# fit linear SVMs with different cost values}
+\hldef{svm_lowC}  \hlkwb{=} \hlkwd{svm}\hldef{(y} \hlopt{~} \hldef{.,} \hlkwc{data} \hldef{= dat,} \hlkwc{kernel} \hldef{=} \hlsng{'linear'}\hldef{,} \hlkwc{cost} \hldef{=} \hlnum{0.1}\hldef{,} \hlkwc{scale} \hldef{=} \hlnum{FALSE}\hldef{)}
+\hldef{svm_medC}  \hlkwb{=} \hlkwd{svm}\hldef{(y} \hlopt{~} \hldef{.,} \hlkwc{data} \hldef{= dat,} \hlkwc{kernel} \hldef{=} \hlsng{'linear'}\hldef{,} \hlkwc{cost} \hldef{=} \hlnum{1}\hldef{,}   \hlkwc{scale} \hldef{=} \hlnum{FALSE}\hldef{)}
+\hldef{svm_highC} \hlkwb{=} \hlkwd{svm}\hldef{(y} \hlopt{~} \hldef{.,} \hlkwc{data} \hldef{= dat,} \hlkwc{kernel} \hldef{=} \hlsng{'linear'}\hldef{,} \hlkwc{cost} \hldef{=} \hlnum{100}\hldef{,} \hlkwc{scale} \hldef{=} \hlnum{FALSE}\hldef{)}
+
+\hldef{svm_list} \hlkwb{=} \hlkwd{list}\hldef{(}\hlkwc{low} \hldef{= svm_lowC,} \hlkwc{med} \hldef{= svm_medC,} \hlkwc{high} \hldef{= svm_highC)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+\begin{frame}{R: plot decision boundaries and support vectors}
+
+\end{frame}
+
+\maxFrameImage{FIGS/L12-svm-soft-example-plots-1.pdf}
+
+\begin{frame}{Interpretation}
+    Observe how smaller cost (left) yields a smoother, wider-margin decision boundary with more misclassified points but fewer support vectors sometimes; larger cost (right) fits data more tightly, reducing training error but possibly overfitting.
+    \vfill
+    Use cross-validation to select $C$ in practice (next example uses tune()).
+\end{frame}
+
+\begin{frame}[fragile]{R: tuning cost with cross-validation}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{set.seed}\hldef{(}\hlnum{2025}\hldef{)}
+\hldef{tune.out} \hlkwb{=} \hlkwd{tune}\hldef{(svm, y} \hlopt{~} \hldef{.,} \hlkwc{data} \hldef{= dat,} \hlkwc{kernel} \hldef{=} \hlsng{'linear'}\hldef{,} \hlkwc{ranges} \hldef{=} \hlkwd{list}\hldef{(}\hlkwc{cost} \hldef{=} \hlkwd{c}\hldef{(}\hlnum{0.01}\hldef{,} \hlnum{0.1}\hldef{,} \hlnum{1}\hldef{,} \hlnum{10}\hldef{,} \hlnum{100}\hldef{)))}
+\hlkwd{print}\hldef{(tune.out)}
+\hldef{best} \hlkwb{=} \hldef{tune.out}\hlopt{$}\hldef{best.model}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+\begin{frame}{R: final fit and visualization}
+
+\end{frame}
+
+\maxFrameImage{FIGS/L12-svm-soft-final-1.pdf}
+
+
+
 
 
 % Save counters for next file

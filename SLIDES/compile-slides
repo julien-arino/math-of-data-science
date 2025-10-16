@@ -23,6 +23,10 @@ for f in FIGS/L??-*.png
 do
   rm $f
 done
+for f in CODE/L??-*.R
+do
+  rm $f
+done
 
 # Now knit the slides
 for f in L??-*.Rnw
