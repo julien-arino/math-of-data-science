@@ -660,56 +660,6 @@ that is, $w_2=w_2$, i.e., $w_2$ can take any value
 \]
 \end{frame}
 
-<<>>=
-# Total population
-nb_states = 10
-# Parameters
-proba_left = 0.5
-proba_right = 0.5
-proba_stay = 1-(proba_left+proba_right)
-# Make the transition matrix
-T = mat.or.vec(nr = nb_states, nc = nb_states)
-for (row in 2:(nb_states-1)) {
-  T[row,(row-1)] = proba_left
-  T[row,(row+1)] = proba_right
-  T[row, row] = proba_stay
-}
-T[1,2] = 1 # First row only moves right
-T[nb_states, (nb_states-1)] = 1 # Last row only moves left
-@
-
-\begin{frame}[fragile]\frametitle{Create the MC object}
-<<>>=
-# Library: markovchain
-mcRW <- new("markovchain",
-            states = sprintf("S_%d", 1:nb_states),
-            transitionMatrix = T,
-            name = "RW_reg")
-@
-\end{frame}
-
-\begin{frame}[fragile]\frametitle{Show some information about the chain}
-<<>>=
-summary(mcRW)
-@
-\end{frame}
-
-\begin{frame}[fragile]\frametitle{The equilibrium distribution}
-<<>>=
-steadyStates(mcRW)
-@
-\end{frame}
-
-\begin{frame}[fragile]\frametitle{Showing a realisation}
-<<DTMC-random-walk-regular, >>=
-# Library: DTMCPack
-IC = rep(0, nb_states)
-IC[1] = 1
-sol = DTMC(T, IC, 81, trace=TRUE)
-@
-\end{frame}
-
-\maxFrameImage{\Sexpr{fig_chunk('DTMC-random-walk-regular', 'pdf')}}
 
 
 
