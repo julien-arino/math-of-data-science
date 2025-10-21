@@ -190,7 +190,7 @@ cat(input_setup)
         +\sum_{i=1}^n\lambda_i
     \]
     \vfill
-    Note that we have as many Lagrange multipliers as there are data points. Indeed, there are that many inequalities that must be satisfied
+    We have as many Lagrange multipliers as there are data points: there are that many inequalities that must be satisfied
     \vfill 
     The aim is to minimise $L_p$ with respect to $\bw$ and $b$ while the derivatives of $L_p$ w.r.t. $\lambda_i$ vanish and the $\lambda_i\geq 0$, $i=1,\ldots,n$
 \end{frame}
@@ -323,8 +323,7 @@ plot(x, col = y + 3, pch = 19)
 
 \maxFrameImage{\Sexpr{knitr::fig_chunk("plot-svm-example", "pdf")}}
 
-% --- Base R SVM before using e1071 ---
-\begin{frame}{Base R: linear SVM in matrix form}
+\begin{frame}{Linear SVM in matrix form (doing things ``by hand'')}
         Let $X \in \mathbb{R}^{n\times p}$ have rows $\bx_i^T$ and labels $\by \in \{-1,1\}^n$
         \vfill
         Soft-margin (hinge-loss) primal objective in vector/matrix form:
@@ -332,12 +331,11 @@ plot(x, col = y + 3, pch = 19)
                 \min_{\bw,b} \; \lambda\,\lVert\bw\rVert^2 
                 + \frac{1}{n}\sum_{i=1}^n \max\bigl(0,\; 1 - y_i(\bx_i^T\bw - b)\bigr)
         \]
-        We'll optimize this with a simple subgradient descent using only base R
+        We optimize this with a simple subgradient descent using base \code{R}
 \end{frame}
 
-\begin{frame}[fragile]{R (base): fit SVM via hinge-loss GD}
-<<svm-base-optimize,echo=TRUE,results='show'>>=
-# Use X, y created above (x: matrix, y: {-1,1})
+\begin{frame}[fragile]{Fit SVM via hinge-loss gradient descent}
+<<svm-base-optimize-1,echo=TRUE,results='show'>>=
 X <- x
 Y <- as.numeric(y)
 n <- nrow(X); p <- ncol(X)
@@ -345,15 +343,21 @@ n <- nrow(X); p <- ncol(X)
 # Initialize parameters
 w <- rep(0, p)
 b <- 0
-lambda <- 0.05   # L2 regularization strength (~ 1/(2nC))
+lambda <- 0.05   # Regularization strength
 lr <- 0.1        # learning rate
 epochs <- 5000
+@
+\end{frame}
 
+
+
+<<svm-base-optimize-2,echo=TRUE,results='show'>>=
 for (t in 1:epochs) {
     margins <- Y * (as.vector(X %*% w) - b)
     active <- margins < 1  # points violating margin
     if (any(active)) {
-        grad_w <- 2 * lambda * w - colSums( (Y[active] * X[active, , drop = FALSE]) ) / n
+        grad_w <- 2 * lambda * w - 
+          colSums( (Y[active] * X[active, , drop = FALSE]) ) / n
         grad_b <-  sum(Y[active]) / n
     } else {
         grad_w <- 2 * lambda * w
@@ -366,9 +370,9 @@ for (t in 1:epochs) {
     if (t %% 1000 == 0) lr <- lr * 0.9
 }
 
-cat("w:", paste(round(w, 3), collapse = ", "), " b:", round(b, 3), "\n")
+cat("w:", paste(round(w, 3), collapse = ", "), 
+    " b:", round(b, 3), "\n")
 @
-\end{frame}
 
 <<plot-svm-base-result,echo=FALSE,fig.width=6,fig.height=4>>=
 plot(X, col = Y + 3, pch = 19)
@@ -389,7 +393,8 @@ if (any(near)) points(X[near, , drop = FALSE], pch = 5, cex = 1.8)
 \begin{frame}[fragile]
 <<plot-svm-example-result>>=
 dat = data.frame(x, y = as.factor(y))
-svmfit = svm(y ~ ., data = dat, kernel = "linear", cost = 10, scale = FALSE)
+svmfit = svm(y ~ ., data = dat, kernel = "linear", cost = 10, 
+             scale = FALSE)
 print(svmfit)
 plot(svmfit, dat)
 @

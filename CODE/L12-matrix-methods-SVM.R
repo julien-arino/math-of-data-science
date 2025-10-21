@@ -21,8 +21,7 @@ x[y == 1,] = x[y == 1,] + 1
 plot(x, col = y + 3, pch = 19)
 
 
-## ----svm-base-optimize,echo=TRUE,results='show'-------------------------------
-# Use X, y created above (x: matrix, y: {-1,1})
+## ----svm-base-optimize-1,echo=TRUE,results='show'-----------------------------
 X <- x
 Y <- as.numeric(y)
 n <- nrow(X); p <- ncol(X)
@@ -30,15 +29,18 @@ n <- nrow(X); p <- ncol(X)
 # Initialize parameters
 w <- rep(0, p)
 b <- 0
-lambda <- 0.05   # L2 regularization strength (~ 1/(2nC))
+lambda <- 0.05   # Regularization strength
 lr <- 0.1        # learning rate
 epochs <- 5000
 
+
+## ----svm-base-optimize-2,echo=TRUE,results='show'-----------------------------
 for (t in 1:epochs) {
     margins <- Y * (as.vector(X %*% w) - b)
     active <- margins < 1  # points violating margin
     if (any(active)) {
-        grad_w <- 2 * lambda * w - colSums( (Y[active] * X[active, , drop = FALSE]) ) / n
+        grad_w <- 2 * lambda * w - 
+          colSums( (Y[active] * X[active, , drop = FALSE]) ) / n
         grad_b <-  sum(Y[active]) / n
     } else {
         grad_w <- 2 * lambda * w
@@ -51,7 +53,8 @@ for (t in 1:epochs) {
     if (t %% 1000 == 0) lr <- lr * 0.9
 }
 
-cat("w:", paste(round(w, 3), collapse = ", "), " b:", round(b, 3), "\n")
+cat("w:", paste(round(w, 3), collapse = ", "), 
+    " b:", round(b, 3), "\n")
 
 
 ## ----plot-svm-base-result,echo=FALSE,fig.width=6,fig.height=4-----------------
@@ -70,7 +73,8 @@ if (any(near)) points(X[near, , drop = FALSE], pch = 5, cex = 1.8)
 
 ## ----plot-svm-example-result--------------------------------------------------
 dat = data.frame(x, y = as.factor(y))
-svmfit = svm(y ~ ., data = dat, kernel = "linear", cost = 10, scale = FALSE)
+svmfit = svm(y ~ ., data = dat, kernel = "linear", cost = 10, 
+             scale = FALSE)
 print(svmfit)
 plot(svmfit, dat)
 

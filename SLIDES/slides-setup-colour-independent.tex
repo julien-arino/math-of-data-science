@@ -767,4 +767,59 @@ minimum height=2em]
 % Reset to normal background for all frames by default
 \BeforeBeginEnvironment{frame}{\setbeamertemplate{background canvas}[default]}
 
+\newcommand{\punnett}[2]{
+    \begin{center}
+    \renewcommand{\arraystretch}{1.5} % Add space to rows
+    \begin{tabular}{|c c | c|c|}
+        \multicolumn{2}{c}{} & \multicolumn{2}{c}{\textbf{Father}} \\
+        \multicolumn{2}{c}{} & #1 \\ \hline
+        #2
+    \end{tabular}
+    \end{center}
+}
 
+% Colour definitions for Punnett squares
+\usepackage{multirow}
+\usepackage{colortbl}
+\definecolor{punnettorange}{HTML}{F8C471} % A soft orange
+\definecolor{punnettblack}{HTML}{BFC9CA} % A light grey for black
+\definecolor{punnetttortie}{HTML}{E59866} % A brownish orange for tortie
+
+
+\usetikzlibrary{positioning, decorations.pathreplacing, arrows.meta}
+
+% --- TIKZ STYLES FOR CAT DIAGRAMS ---
+\tikzset{
+    % This is the main placeholder style for the cat images
+    catnode/.style={
+        draw, 
+        rectangle, 
+        rounded corners, 
+        minimum height=1.5cm, 
+        minimum width=2.5cm, 
+        align=center, 
+        font=\small\bfseries
+    },
+    % Allele styles (the X and Y at the top/side)
+    allele/.style={font=\Large\bfseries},
+    female/.style={allele, color=purple!80!black},
+    male/.style={allele, color=blue!80!black},
+    % --- Placeholder styles for different cats ---
+    % YOU CAN REPLACE THE CONTENTS OF THESE NODES WITH YOUR IMAGES
+    orange_cat/.style={
+        catnode, 
+        fill=orange!30, 
+        text=black
+    },
+    black_cat/.style={
+        catnode, 
+        fill=black!70, 
+        text=white
+    },
+    tortie_cat/.style={
+        catnode, 
+        fill=orange!50!black, % A mix for tortoiseshell
+        text=white
+    }
+}
+% --- END TIKZ STYLES ---

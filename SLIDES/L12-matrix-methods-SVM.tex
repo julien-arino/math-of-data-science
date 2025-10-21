@@ -232,7 +232,7 @@
         +\sum_{i=1}^n\lambda_i
     \]
     \vfill
-    Note that we have as many Lagrange multipliers as there are data points. Indeed, there are that many inequalities that must be satisfied
+    We have as many Lagrange multipliers as there are data points: there are that many inequalities that must be satisfied
     \vfill 
     The aim is to minimise $L_p$ with respect to $\bw$ and $b$ while the derivatives of $L_p$ w.r.t. $\lambda_i$ vanish and the $\lambda_i\geq 0$, $i=1,\ldots,n$
 \end{frame}
@@ -369,8 +369,7 @@ Example from \href{https://www.datacamp.com/tutorial/support-vector-machines-r}{
 
 \maxFrameImage{FIGS/L12-plot-svm-example-1.pdf}
 
-% --- Base R SVM before using e1071 ---
-\begin{frame}{Base R: linear SVM in matrix form}
+\begin{frame}{Linear SVM in matrix form (doing things ``by hand'')}
         Let $X \in \mathbb{R}^{n\times p}$ have rows $\bx_i^T$ and labels $\by \in \{-1,1\}^n$
         \vfill
         Soft-margin (hinge-loss) primal objective in vector/matrix form:
@@ -378,14 +377,13 @@ Example from \href{https://www.datacamp.com/tutorial/support-vector-machines-r}{
                 \min_{\bw,b} \; \lambda\,\lVert\bw\rVert^2 
                 + \frac{1}{n}\sum_{i=1}^n \max\bigl(0,\; 1 - y_i(\bx_i^T\bw - b)\bigr)
         \]
-        We'll optimize this with a simple subgradient descent using only base R
+        We optimize this with a simple subgradient descent using base \code{R}
 \end{frame}
 
-\begin{frame}[fragile]{R (base): fit SVM via hinge-loss GD}
+\begin{frame}[fragile]{Fit SVM via hinge-loss gradient descent}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcom{# Use X, y created above (x: matrix, y: \{-1,1\})}
 \hldef{X} \hlkwb{<-} \hldef{x}
 \hldef{Y} \hlkwb{<-} \hlkwd{as.numeric}\hldef{(y)}
 \hldef{n} \hlkwb{<-} \hlkwd{nrow}\hldef{(X); p} \hlkwb{<-} \hlkwd{ncol}\hldef{(X)}
@@ -393,15 +391,25 @@ Example from \href{https://www.datacamp.com/tutorial/support-vector-machines-r}{
 \hlcom{# Initialize parameters}
 \hldef{w} \hlkwb{<-} \hlkwd{rep}\hldef{(}\hlnum{0}\hldef{, p)}
 \hldef{b} \hlkwb{<-} \hlnum{0}
-\hldef{lambda} \hlkwb{<-} \hlnum{0.05}   \hlcom{# L2 regularization strength (~ 1/(2nC))}
+\hldef{lambda} \hlkwb{<-} \hlnum{0.05}   \hlcom{# Regularization strength}
 \hldef{lr} \hlkwb{<-} \hlnum{0.1}        \hlcom{# learning rate}
 \hldef{epochs} \hlkwb{<-} \hlnum{5000}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{frame}
 
+
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
 \hlkwa{for} \hldef{(t} \hlkwa{in} \hlnum{1}\hlopt{:}\hldef{epochs) \{}
     \hldef{margins} \hlkwb{<-} \hldef{Y} \hlopt{*} \hldef{(}\hlkwd{as.vector}\hldef{(X} \hlopt{%*%} \hldef{w)} \hlopt{-} \hldef{b)}
     \hldef{active} \hlkwb{<-} \hldef{margins} \hlopt{<} \hlnum{1}  \hlcom{# points violating margin}
     \hlkwa{if} \hldef{(}\hlkwd{any}\hldef{(active)) \{}
-        \hldef{grad_w} \hlkwb{<-} \hlnum{2} \hlopt{*} \hldef{lambda} \hlopt{*} \hldef{w} \hlopt{-} \hlkwd{colSums}\hldef{( (Y[active]} \hlopt{*} \hldef{X[active, ,} \hlkwc{drop} \hldef{=} \hlnum{FALSE}\hldef{]) )} \hlopt{/} \hldef{n}
+        \hldef{grad_w} \hlkwb{<-} \hlnum{2} \hlopt{*} \hldef{lambda} \hlopt{*} \hldef{w} \hlopt{-}
+          \hlkwd{colSums}\hldef{( (Y[active]} \hlopt{*} \hldef{X[active, ,} \hlkwc{drop} \hldef{=} \hlnum{FALSE}\hldef{]) )} \hlopt{/} \hldef{n}
         \hldef{grad_b} \hlkwb{<-}  \hlkwd{sum}\hldef{(Y[active])} \hlopt{/} \hldef{n}
     \hldef{\}} \hlkwa{else} \hldef{\{}
         \hldef{grad_w} \hlkwb{<-} \hlnum{2} \hlopt{*} \hldef{lambda} \hlopt{*} \hldef{w}
@@ -414,14 +422,14 @@ Example from \href{https://www.datacamp.com/tutorial/support-vector-machines-r}{
     \hlkwa{if} \hldef{(t} \hlopt{%%} \hlnum{1000} \hlopt{==} \hlnum{0}\hldef{) lr} \hlkwb{<-} \hldef{lr} \hlopt{*} \hlnum{0.9}
 \hldef{\}}
 
-\hlkwd{cat}\hldef{(}\hlsng{"w:"}\hldef{,} \hlkwd{paste}\hldef{(}\hlkwd{round}\hldef{(w,} \hlnum{3}\hldef{),} \hlkwc{collapse} \hldef{=} \hlsng{", "}\hldef{),} \hlsng{" b:"}\hldef{,} \hlkwd{round}\hldef{(b,} \hlnum{3}\hldef{),} \hlsng{"\textbackslash{}n"}\hldef{)}
+\hlkwd{cat}\hldef{(}\hlsng{"w:"}\hldef{,} \hlkwd{paste}\hldef{(}\hlkwd{round}\hldef{(w,} \hlnum{3}\hldef{),} \hlkwc{collapse} \hldef{=} \hlsng{", "}\hldef{),}
+    \hlsng{" b:"}\hldef{,} \hlkwd{round}\hldef{(b,} \hlnum{3}\hldef{),} \hlsng{"\textbackslash{}n"}\hldef{)}
 \end{alltt}
 \begin{verbatim}
 ## w: 0.421, 1.205  b: 1.101
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-\end{frame}
 
 
 
@@ -432,7 +440,8 @@ Example from \href{https://www.datacamp.com/tutorial/support-vector-machines-r}{
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hldef{dat} \hlkwb{=} \hlkwd{data.frame}\hldef{(x,} \hlkwc{y} \hldef{=} \hlkwd{as.factor}\hldef{(y))}
-\hldef{svmfit} \hlkwb{=} \hlkwd{svm}\hldef{(y} \hlopt{~} \hldef{.,} \hlkwc{data} \hldef{= dat,} \hlkwc{kernel} \hldef{=} \hlsng{"linear"}\hldef{,} \hlkwc{cost} \hldef{=} \hlnum{10}\hldef{,} \hlkwc{scale} \hldef{=} \hlnum{FALSE}\hldef{)}
+\hldef{svmfit} \hlkwb{=} \hlkwd{svm}\hldef{(y} \hlopt{~} \hldef{.,} \hlkwc{data} \hldef{= dat,} \hlkwc{kernel} \hldef{=} \hlsng{"linear"}\hldef{,} \hlkwc{cost} \hldef{=} \hlnum{10}\hldef{,}
+             \hlkwc{scale} \hldef{=} \hlnum{FALSE}\hldef{)}
 \hlkwd{print}\hldef{(svmfit)}
 \end{alltt}
 \begin{verbatim}
