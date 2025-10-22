@@ -100,33 +100,36 @@
 
 
 
-\begin{frame}
+\begin{frame}{Basic principle}
 Conduct an experiment with a set of $n$ possible outcomes
 \[
 S=\{S_1,\dots, S_n\}
 \]
 \vfill
 Experiment repeated $t$ times (with $t$ large, potentially infinite)
+\vfill
+Think of $t$ as \emph{time}
 \vfill 
 System has \emph{no memory}: the next state depends only on the present state
 \vfill
-Probability of $S_i$ occurring on the next step given that $S_j$ occurred on the last step:
+Probability of $S_i$ occurring at time $t+1$ given that $S_j$ occurred at time $t$ is
 \[
-p_{ij}=\IP(S_i|S_j)
+p_{ij}=\IP(S_i\,|\,S_j)
 \]
 \end{frame}
 
 
 \begin{frame} 
-Suppose that $S_i$ is the current state, then one of $S_1, \ldots,S_n$ must be the next state; so
+Suppose that $S_i$ is the current state, then one of $S_1, \ldots,S_n$ must be the next state, so
 \[
 p_{1i}+p_{2i}+\cdots+p_{ni}=1, \quad 1\leq i\leq n
 \]
-(Some of the $p_{ij}$ can be zero, all that is needed is that $\sum_{j=1}^n p_{ij}=1$ for all $i$)
+\vfill
+Some of the $p_{ij}$ can be zero, all that is needed is that $\sum_{k=1}^n p_{ki}=1$ for all $i=1,\ldots,n$
 \end{frame}
 
 \begin{frame}
-\begin{definition}
+\begin{definition}[Markov chain]
 An experiment with finite number of possible outcomes $S_1,\ldots,S_n$ is repeated. The sequence of outcomes is a \textbf{Markov chain} if there is a set of $n^2$ numbers $\{p_{ij}\}$ such that the conditional probability of outcome $S_i$ on any experiment given outcome $S_j$ on the previous experiment is $p_{ij}$, i.e., for $1\leq i,j\leq n$, $t=1,\ldots$,
 \[
 	p_{ij}=\IP(S_i\textrm{ on experiment }t+1\;|\;
@@ -134,6 +137,12 @@ An experiment with finite number of possible outcomes $S_1,\ldots,S_n$ is repeat
 \]
 Outcomes $S_1,\ldots,S_n$ are \textbf{states} and $p_{ij}$ are \textbf{transition probabilities}. $P=[p_{ij}]$ the \textbf{transition matrix}
 \end{definition}
+\vfill
+In the following, we often write
+\[
+\IP(S_i\textrm{ on experiment }t+1\;|\;
+	S_j\textrm{ on experiment }t)	\text{ as }\IP(S_i(t+1)\;|\;S_j(t))
+\]
 \end{frame}
 
 
@@ -150,8 +159,7 @@ p_{r1} & p_{r2} & \cdots & p_{rr}
 \]
 has
 \begin{itemize}
-\item nonnegative entries, $p_{ij}\geq 0$
-\item entries less than 1, $p_{ij}\leq 1$
+\item entries that are probabilities, i.e., $0\leq p_{ij}\leq 1$
 \item column sum 1, which we write
 \[
 \sum_{i=1}^n p_{ij}=1,\quad j=1,\ldots,n
@@ -316,32 +324,56 @@ or, using the notation $\nbOne^T=(1,\ldots,1)$,
 \section{Repetition of the process}
 \newSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_Kiki-bof.png}
 
-\begin{frame}{General case}
-$p_i(t)$: probability that state $S_i$ occurs on the $t^{th}$ repetition of the experiment, $1\leq i\leq n$
+\begin{frame}{Deriving the update equation}
+For $1\leq i\leq n$, let $p_i(t)$ be probability that state $S_i$ occurs at time $t$, which we also write $p_i(t)=\IP(S_i(t))$
 \vfill
-Since one the states $S_i$ must occur on the $t^{th}$ repetition
+Since one of the states $S_i$ must occur on the $t^{th}$ repetition, we must have
 \[
 p_1(t)+p_2(t)+\cdots+p_n(t)=1
 \]
-$p_i(t+1)$: probability that state $S_i$, $1\leq i\leq r$, occurs on $(t+1)^{th}$ repetition of the experiment
 \vfill
-$n$ ways to be in state $S_i$ at step $t+1$:
+We want to use this information to derive $p_i(t+1)$, the probability that state $S_i$ occurs at time $t+1$
+\
+\end{frame}
+
+\begin{frame}{How do we get to $S_i$?}
+List all possible ($n$) ways to be in state $S_i$ at time $t+1$:
+\vfill
 \begin{enumerate}
-\item Step $t$ is $S_1$. Probability of getting $S_1$ on $t^{th}$ step is $p_1(t)$, and probability of having $S_i$ after $S_1$ is $p_{i1}$. Therefore $P(S_i|S_1)=p_{i1}p_1(t)$
-\item We get $S_2$ on step $t$ and $S_i$ on step $(t+1)$. Then $P(S_i|S_2)=p_{2i}p_2(t)$
-\item[..]
-\item[n.] Probability of occurrence of $S_i$ at step $t+1$ if $S_n$ at step $t$ is $P(S_i|S_n)=p_{in}p_n(t)$
+\item We were in $S_1$, which happened with probability $p_1(t)$, then moved from $S_1$ to $S_i$, which has probability $p_{i1}$. Thus, 
+\[
+\IP(S_i(t+1)\,|\, S_1(t)) = 
+\IP(S_i(t+1)\,|\,S_1(t)) \; \IP(S_1(t)) = 
+p_{i1}p_1(t)
+\]
+\vfill
+\item Likewise, if we were in $S_2$ at time $t$, then
+\[
+\IP(S_i(t+1)\,|\, S_2(t)) = 
+\IP(S_i(t+1)\,|\,S_2(t))\,\IP(S_2(t)) =
+p_{i2}p_2(t)
+\]
+\vfill
+\item[..]\mbox{}
+\vfill
+\item[n.] Finally, if we were in $S_n$,
+\[
+\IP(S_i(t+1)\,|\, S_n(t)) = 
+\IP(S_i(t+1)\,|\,S_n(t))\,\IP(S_n(t)) =
+p_{in}p_n(t)
+\]
 \end{enumerate}
 \end{frame}
 
 
-\begin{frame}
+\begin{frame}{Sum things up}
+So, for a given state $i=1,\ldots,n$,
 \begin{align*}
-\implies
-p_i(t+1) &= P(S_i|S_1)+\cdots+P(S_i|S_n) \\
+p_i(t+1) &= P(S_i(t+1)\,|\,S_1(t))+\cdots+P(S_i(t+1)\,|\,S_n(t)) \\
 &= p_{i1}p_1(t)+\cdots+p_{in}p_n(t)
 \end{align*}
-Therefore,
+\vfill
+Therefore, since this must be true for all states $i=1,\ldots,n$
 \begin{align*}
 p_1(t+1) &= p_{11}p_1(t)+p_{12}p_2(t)+\dots+p_{1n}p_n(t) \\
 & \;\;\vdots\\
@@ -371,17 +403,17 @@ p_{r1} & p_{r2} & \cdots & p_{rr}
 So
 \[
 \begin{pmatrix}
-	p_1(t+1) & \cdots & p_n(t+1)
+	p_1(t+1) \\ \cdots \\ p_n(t+1)
 \end{pmatrix}
 =
-\begin{pmatrix}
-	p_1(t) & \cdots & p_n(t)
-\end{pmatrix}
 \begin{pmatrix}
 p_{11} & p_{12} & \cdots & p_{1r} \\
 p_{21} & p_{22} & \cdots & p_{2r} \\
 &&& \\
 p_{r1} & p_{r2} & \cdots & p_{rr}
+\end{pmatrix}
+\begin{pmatrix}
+	p_1(t) \\ \cdots \\ p_n(t)
 \end{pmatrix}
 \]
 \vfill
@@ -431,22 +463,23 @@ This works the same way for a column-stochastic matrix, except that here the rel
 \begin{frame}{Long time behaviour}
 Let $p(0)$ be the initial distribution vector. Then
 \begin{align*}
-p(1) &= p(0)P \\
-p(2) &= p(1)P\\
-&= \left(p(0)P\right)P \\
-&= p(0)P^2
+p(1) &= Pp(0) \\
+p(2) &= Pp(1) \\
+&= P\left(Pp(0)\right) \\
+&= P^2p(0)
 \end{align*}
 \vfill
 Continuing, we get, for any $t$,
 \[
-p(t)=p(0)P^t
+p(t)=P^tp(0)
 \]
 \vfill
 Therefore, 
 \[
 \lim_{t\rightarrow +\infty}p(t) =
-\lim_{t\rightarrow +\infty}p(0)P^t =
-p(0)\left(\lim_{t\rightarrow +\infty}P^t\right)
+\lim_{t\rightarrow +\infty}P^tp(0) =
+\left(\lim_{t\rightarrow +\infty}P^t\right)
+p(0)
 \]
 if this limit exists
 \end{frame}
@@ -527,146 +560,51 @@ A \defword{directed graph} (or \textbf{digraph}) $G$ is a pair $(V, A)$ where:
 
 
 \begin{frame}
-\frametitle{From matrix to graph}
+\frametitle{Matrix $\leftrightarrow$ Graph}
     
-Given a transition matrix $P = [p_{ij}]$, define an induced digraph $\G = (V, A)$ (often written $\G(A)$)
+Given a transition matrix $P = [p_{ij}]$, define an induced digraph $\G = (V, A)$
 
 \begin{itemize}
 \item Vertices $V$ correspond to the states
-\item An arc $(i, j)$ exists in $A$ if and only if $p_{ij} > 0$
+\item An arc $(j, i)$ exists in $A$ if and only if $p_{ij} > 0$
 \end{itemize}
 
-\begin{columns}[T] % T aligns the tops
-
-% Left Column: Matrix
+\begin{columns}[T]
 \begin{column}{.45\textwidth}
-    Let $P$ be the transition matrix:
-    $$ P = \begin{pmatrix}
-        0.5 & 0.5 & 0   \\
-        0   & 0.1 & 0.9 \\
-        0.2 & 0.8 & 0
-    \end{pmatrix} $$
-    
-    \vfill
-    \textbf{Arcs created:}
-    \begin{itemize}
-        \item $p_{11}=0.5 \implies (1, 1)$
-        \item $p_{12}=0.5 \implies (1, 2)$
-        \item $p_{22}=0.1 \implies (2, 2)$
-        \item $p_{23}=0.9 \implies (2, 3)$
-        \item $p_{31}=0.2 \implies (3, 1)$
-        \item $p_{32}=0.8 \implies (3, 2)$
-    \end{itemize}
+  \centering
+  \textbf{Transition matrix}
+  \[ 
+    P = \begin{pmatrix}
+              0.5 & 0.8 & 0.1 \\
+              0.5 & 0   & 0.2 \\
+              0   & 0.2 & 0.7
+          \end{pmatrix}
+  \]
 \end{column}
-
-% Right Column: TikZ Graph
 \begin{column}{.55\textwidth}
-    \centering
-    \textbf{Induced transition graph:}
-    \bigskip
-    
-    % TikZ Diagram
-    % We define styles for nodes and edges
-    \begin{tikzpicture}[
-        ->, % All paths have arrows
-        >=Latex, % Use the nicer Latex arrow tip
-        auto, % Place edge labels automatically
-        node distance=2.5cm, % Distance between nodes
-        every node/.style={circle, draw, thick, minimum size=1cm},
-        every path/.style={thick}
-    ]
-        % Place the nodes
-        \node (1) at (0, 2) {1};
-        \node (2) at (-2, 0) {2};
-        \node (3) at (2, 0) {3};
-        
-        % Draw the edges (paths)
-        % 'edge' creates a path from one node to another
-        % 'loop' creates a self-edge
-        \path (1) edge [loop above] node {$0.5$} (1);
-        \path (1) edge [bend left] node[left] {$0.5$} (2);
-        
-        \path (2) edge [loop left] node {$0.1$} (2);
-        \path (2) edge [bend left] node[above] {$0.9$} (3);
-        
-        \path (3) edge [bend left=40] node[below] {$0.2$} (1);
-        \path (3) edge [bend left] node[right] {$0.8$} (2);
-
-    \end{tikzpicture}
+\centering
+\textbf{Transition graph}
+\begin{tikzpicture}[
+    ->, % All paths have arrows
+    >=Latex, % Use the nicer Latex arrow tip
+    node distance=2.5cm, % Distance between nodes
+    every path/.style={thick}
+]
+    \node[state] (S1) at (0, 2) {$S_1$};
+    \node[state] (S2) at (-2, 0) {$S_2$};
+    \node[state] (S3) at (2, 0) {$S_3$};
+    \path (S1) edge [loop above] node[above] {$0.5$} (S1);
+    \path (S1) edge [bend left=10] node[right] {$0.5$} (S2);
+    \path (S2) edge [bend left=10] node[left] {$0.8$} (S1);
+    \path (S2) edge [bend left=10] node[above] {$0.2$} (S3);
+    \path (S3) edge node[right] {$0.1$} (S1);
+    \path (S3) edge [bend left=10] node[below] {$0.2$} (S2);
+    \path (S3) edge [loop right] node[right] {$0.7$} (S3);
+\end{tikzpicture}
 \end{column}
-
 \end{columns}
 \end{frame}
 
-
-% --- SLIDE 4: GRAPH TO MATRIX ---
-\begin{frame}
-    \frametitle{Example: From graph to matrix}
-    
-    Conversely, a transition graph with $n$ states and probabilities on its arcs defines an $n \times n$ stochastic matrix $P$.
-    
-    \begin{itemize}
-        \item The entry $p_{ij}$ is the probability on the arc from state $i$ to state $j$.
-        \item If no arc $(i, j)$ exists, then $p_{ij} = 0$.
-        \item For the matrix to be stochastic, the sum of outgoing probabilities from each state must be 1.
-    \end{itemize}
-    
-    \begin{columns}[T]
-        
-        % Left Column: TikZ Graph
-        \begin{column}{.55\textwidth}
-            \centering
-            \textbf{A 4-state transition graph:}
-            \bigskip
-            
-            \begin{tikzpicture}[
-                ->, >=Latex, auto,
-                node distance=3cm, 
-                every node/.style={circle, draw, thick, minimum size=1cm},
-                every path/.style={thick}
-            ]
-                % Place nodes in a square
-                \node (1) at (0, 3) {1};
-                \node (2) at (3, 3) {2};
-                \node (3) at (3, 0) {3};
-                \node (4) at (0, 0) {4};
-                
-                % Draw edges
-                \path (1) edge [bend left] node[above] {$0.7$} (2);
-                \path (1) edge [loop above] node {$0.3$} (1);
-
-                \path (2) edge [bend left] node[right] {$1.0$} (3);
-                
-                \path (3) edge [bend left] node[below] {$0.5$} (4);
-                \path (3) edge [bend left] node[left] {$0.5$} (2);
-                
-                \path (4) edge [loop left] node {$1.0$} (4);
-
-            \end{tikzpicture}
-        \end{column}
-        
-        % Right Column: Matrix
-        \begin{column}{.45\textwidth}
-            \textbf{Induced transition matrix:}
-            \vfill
-            $$ P = \begin{pmatrix}
-                0.3 & 0.7 & 0 & 0 \\
-                0 & 0 & 1.0 & 0 \\
-                0 & 0.5 & 0 & 0.5 \\
-                0 & 0 & 0 & 1.0
-            \end{pmatrix} $$
-            
-            \vfill
-            \textbf{Check row sums:}
-            \begin{itemize}
-                \item Row 1: $0.3 + 0.7 = 1$
-                \item Row 2: $1.0 = 1$
-                \item Row 3: $0.5 + 0.5 = 1$
-                \item Row 4: $1.0 = 1$
-            \end{itemize}
-        \end{column}
-    \end{columns}
-\end{frame}
 
 \begin{frame}
 \begin{definition}[Reducible/irrecible matrix]
@@ -679,8 +617,21 @@ P & Q \\ \b0 & R
 \]
 i.e., $M$ is similar to a block upper triangular matrix. The matrix $M$ is \defword{irreducible} if no such matrix exists
 \end{definition}
+\vfill
+\begin{definition}[Strongly connected digraph]
+A digraph $\G=(V,A)$ is \defword{strongly connected} if for any pair of vertices $u,v\in V$, there is a directed path from $u$ to $v$
+\end{definition}
+\vfill
+\begin{importanttheorem}
+$P\in\M_n$ irreducible $\iff$ $\G(P)$ strongly connected
+\end{importanttheorem}
 \end{frame}
 
+\begin{frame}{A sufficient condition for primitivity}
+\begin{theorem}
+Let $M\in\M_n$ be a nonnegative matrix. If $\G(M)$ is strongly connected and at least one of the diagonal entries $m_{ii}$ of $M$ is positive, then $M$ is primitive
+\end{theorem}
+\end{frame}
 
 \begin{frame}{Behaviour of a regular MC}
 \begin{theorem}
@@ -701,19 +652,28 @@ So if the Markov chain is regular
 
 
 \begin{frame}{Computing $W$}
-If $p(t)$ converges, then $p(t+1)=Pp(t)$ at the limit, so $w=\lim_{t\to\infty}p(t)$ is a \textbf{fixed point} of the system. Write
-\[
-w=Pw
-\]
-and solve for $w$, i.e., find $w$ as a (right) eigenvector corresponding to the eigenvalue 1
+Recall that since $P$ is a stochastic matrix, 1 is an eigenvalue of $P$. As $P$ is column stochastic, 1 is associated to the left (row) eigenvector $\11$
 \vfill
-$w$ might have to be normalized (you want a probability vector). Check that the norm $\|w\|_1$ defined by
+Now, if $\bp(t)$ converges, then $\bp(t+1)=P\bp(t)$ at the limit, so $\bw=\lim_{t\to\infty}\bp(t)$ is a \textbf{fixed point} of the system. Replacing $\bp$ with its limit, we have
 \[
-\|w\|_1=|w_1|+\cdots+|w_n|=w_1+\cdots+w_n
+\bw=P\bw
 \]
-(since $w\geq 0$) is equal to one. If not, use
+\vfill
+Solving for $\bw$ thus amounts to finding $\bw$ as a (right) eigenvector corresponding to the eigenvalue 1
+\end{frame}
+
+\begin{frame}{Remember to normalise}
+$\bw$ might have to be normalized since you want a probability vector
+\vfill
+Check that the norm $\|\bw\|_1$ defined by
 \[
-\tilde w = \frac{w}{\|w\|_1}
+\|\bw\|_1=|w_1|+\cdots+|w_n|=w_1+\cdots+w_n
+\]
+(since $\bw\geq\b0$) is equal to one
+\vfill
+If not, use
+\[
+\tilde\bw = \frac{\bw}{\|\bw\|_1}
 \]
 \end{frame}
 
@@ -856,15 +816,15 @@ $w$ might have to be normalized (you want a probability vector). Check that the 
     \end{itemize}
 \end{frame}
 
-\begin{frame}{Summary of the 3-state chain}
+\begin{frame}{Summary of the orange cat problem}
     The transition matrix $P$ for states $\{S_1, S_2, S_3\}$ is:
     
     $$
     P = 
     \begin{pmatrix}
-    0.5 & 0 & 0.5 \\
-    0 & 0.5 & 0.5 \\
-    0.25 & 0.25 & 0.5
+    0.5 & 0 & 0.25 \\
+    0 & 0.5 & 0.25 \\
+    0.5 & 0.5 & 0.5
     \end{pmatrix}
     $$
     
@@ -887,21 +847,35 @@ $w$ might have to be normalized (you want a probability vector). Check that the 
 
 
 \begin{frame}
-Compute the left eigenvector associated to 1 (we know the right eigenvector associated to 1 is $(1,\ldots,1)^T$)
+We must solve the right eigenvector problem $w = Pw$, where $w = (w_1, w_2, w_3)^T$
 \[
-\begin{pmatrix}
-	w_1 & w_2 & w_3
-\end{pmatrix}
-\begin{pmatrix}
-	1/2 & 0 & 1/2 \\
-	0 & 1/2 & 1/2 \\
-	1/4 & 1/4 & 1/2
-\end{pmatrix}
+\begin{pmatrix} w_1 \\ w_2 \\ w_3 \end{pmatrix}
 =
 \begin{pmatrix}
-	w_1 & w_2 & w_3
+0.5 & 0 & 0.25 \\
+0 & 0.5 & 0.25 \\
+0.5 & 0.5 & 0.5
 \end{pmatrix}
+\begin{pmatrix} w_1 \\ w_2 \\ w_3 \end{pmatrix}
 \]
+This gives the system of (dependent) equations:
+\begin{align*}
+w_1 &= 0.5 w_1 + 0.25 w_3 \\
+w_2 &= 0.5 w_2 + 0.25 w_3 \\
+w_3 &= 0.5 w_1 + 0.5 w_2 + 0.5 w_3
+\end{align*}
+From the first two equations:
+\begin{itemize}
+    \item $0.5 w_1 = 0.25 w_3 \implies w_3 = 2w_1$
+    \item $0.5 w_2 = 0.25 w_3 \implies w_3 = 2w_2$
+\end{itemize}
+\vfill
+This means $w_1 = w_2$. Using the constraint $w_1+w_2+w_3 = 1$:
+\[
+w_1 + (w_1) + (2w_1) = 1 \implies 4w_1 = 1 \implies w_1 = 0.25
+\]
+\vfill
+The stationary distribution is $w = \begin{pmatrix} 0.25 & 0.25 & 0.5 \end{pmatrix}^T$
 \end{frame}
 
 
