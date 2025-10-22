@@ -1,0 +1,871 @@
+\documentclass[aspectratio=169]{beamer}
+
+% Set lecture number for later use
+<<set-lecture-number,echo=FALSE>>=
+lecture_number = "13"
+@
+
+% Part common to all the lectures
+\subtitle{MATH 2740 -- Mathematics of Data Science -- Lecture \Sexpr{lecture_number}}
+\author{\texorpdfstring{Julien Arino\newline\url{julien.arino@umanitoba.ca}}{Julien Arino}}
+\institute{Department of Mathematics @ University of Manitoba}
+\date{Fall 202X}
+
+% Title of the lecture
+\title{Matrix methods -- Regular Markov chains}
+
+<<set-options,echo=FALSE,warning=FALSE,message=FALSE>>=
+# Source the code common to all lectures
+source("common-code.R")
+@
+
+<<set-slide-background,echo=FALSE,results='asis'>>=
+# Are we plotting for a dark background? Setting is in common-code.R, but
+# cat command must run here.
+cat(input_setup)
+@
+
+<<setup, include=FALSE>>=
+# Set global chunk options
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+@
+
+\begin{document}
+
+% Set up cross-references and counter persistence
+\setcounter{theorem}{89}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% TITLE AND OUTLINE
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\titlepagewithfigure{FIGS-slides-admin/Gemini_Generated_Image_Kiki-as-king.png}
+\outlinepage{FIGS-slides-admin/Gemini_Generated_Image_Kiki-as-devil.png}
+
+
+%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%
+\section{Markov chains}
+\newSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_Kiki-bof.png}
+
+\begin{frame}{Markov chain}
+	A Markov chain is a \emph{stochastic process} in which the evolution through time depends only on the current state of the system (we say the process is \emph{memoryless})
+	\vfill
+	Markov chains are an interesting combination of matrix theory and graph theory
+	\vfill
+	They form the theoretical foundation for Hidden Markov processes or Markov Chain Monte Carlo (MCMC) methods, are used in ML
+\end{frame}
+
+
+
+\begin{frame}
+Conduct an experiment with a set of $n$ possible outcomes
+\[
+S=\{S_1,\dots, S_n\}
+\]
+\vfill
+Experiment repeated $t$ times (with $t$ large, potentially infinite)
+\vfill 
+System has \emph{no memory}: the next state depends only on the present state
+\vfill
+Probability of $S_i$ occurring on the next step given that $S_j$ occurred on the last step:
+\[
+p_{ij}=\IP(S_i|S_j)
+\]
+\end{frame}
+
+
+\begin{frame} 
+Suppose that $S_i$ is the current state, then one of $S_1, \ldots,S_n$ must be the next state; so
+\[
+p_{1i}+p_{2i}+\cdots+p_{ni}=1, \quad 1\leq i\leq n
+\]
+(Some of the $p_{ij}$ can be zero, all that is needed is that $\sum_{j=1}^n p_{ij}=1$ for all $i$)
+\end{frame}
+
+\begin{frame}
+\begin{definition}
+An experiment with finite number of possible outcomes $S_1,\ldots,S_n$ is repeated. The sequence of outcomes is a \textbf{Markov chain} if there is a set of $n^2$ numbers $\{p_{ij}\}$ such that the conditional probability of outcome $S_i$ on any experiment given outcome $S_j$ on the previous experiment is $p_{ij}$, i.e., for $1\leq i,j\leq n$, $t=1,\ldots$,
+\[
+	p_{ij}=\IP(S_i\textrm{ on experiment }t+1\;|\;
+	S_j\textrm{ on experiment }t)	
+\]
+Outcomes $S_1,\ldots,S_n$ are \textbf{states} and $p_{ij}$ are \textbf{transition probabilities}. $P=[p_{ij}]$ the \textbf{transition matrix}
+\end{definition}
+\end{frame}
+
+
+\begin{frame} 
+The matrix 
+\[
+P=
+\begin{pmatrix}
+p_{11} & p_{12} & \cdots & p_{1r} \\
+p_{21} & p_{22} & \cdots & p_{2r} \\
+&&& \\
+p_{r1} & p_{r2} & \cdots & p_{rr}
+\end{pmatrix}
+\]
+has
+\begin{itemize}
+\item nonnegative entries, $p_{ij}\geq 0$
+\item entries less than 1, $p_{ij}\leq 1$
+\item column sum 1, which we write
+\[
+\sum_{i=1}^n p_{ij}=1,\quad j=1,\ldots,n
+\]
+or, using the notation $\nbOne^T=(1,\ldots,1)$,
+\[
+\nbOne^TP=\nbOne^T
+\]
+\end{itemize}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%
+\section{Running example -- Mendelian inheritance}
+\newSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_Kiki-bof.png}
+
+
+\begin{frame}{The ``orange'' gene}
+    
+    A cat's coat color is determined by many genes. The "orange" trait comes from a specific gene called the \textbf{orange locus}
+    
+    \vfill
+    
+    It has two \emph{alleles} (versions):
+    \begin{itemize}
+        \item \textbf{O} $\implies$ Produces \emph{phaeomelanin} (red/orange pigment)
+        \item \textbf{o} $\implies$ Produces \emph{eumelanin} (black/brown pigment)
+    \end{itemize}
+    
+    \vfill
+    
+    This gene is \emph{sex-linked}. It is located on the \textbf{X chromosome}
+    \begin{itemize}
+        \item This changes the rules of inheritance!
+    \end{itemize}
+    
+\end{frame}
+
+% --- SLIDE 2: Males vs. Females ---
+% This slide replaces the GG/Gg/gg slide
+\begin{frame}{How sex-linked genes work}
+    
+    Because the gene is on the X chromosome, males and females inherit it differently
+    
+    \vfill
+    
+    \textbf{Females have two X chromosomes (XX)}
+    \begin{itemize}
+        \item They get two alleles for this gene (one from each parent)
+        \item Possible genotypes: $X^O X^O$, $X^o X^o$, or $X^O X^o$
+    \end{itemize}
+    
+    \vfill
+    
+    \textbf{Males have one X and one Y chromosome (XY)}
+    \begin{itemize}
+        \item They get \emph{only one} allele for this gene (always from the mother)
+        \item Possible genotypes: $X^O Y$ or $X^o Y$
+    \end{itemize}
+    
+\end{frame}
+
+% --- SLIDE 3: Phenotypes (What we see) ---
+% This slide is new and explains the unique "tortoiseshell" case
+\begin{frame}{Genotype vs. phenotype}
+    
+    \textbf{Males (simple):}
+    \begin{itemize}
+        \item $X^O Y \implies$ \textbf{orange cat}
+        \item $X^o Y \implies$ \textbf{non-orange cat} (e.g., black)
+    \end{itemize}
+    
+    \vfill
+    
+    \textbf{Females (the special case):}
+    \begin{itemize}
+        \item $X^O X^O \implies$ \textbf{orange cat}
+        \item $X^o X^o \implies$ \textbf{non-orange cat} (e.g., black)
+        \item $X^O X^o \implies$ \textbf{tortoiseshell cat}
+    \end{itemize}
+    
+    \vfill
+    
+    A ``tortie'' isn't a simple hybrid. Both alleles ($O$ and $o$) are active in different patches of skin, creating the orange and black mottled pattern
+
+\end{frame}
+
+\begin{frame}{Example 1: Orange dad + black Mom}
+    Let's cross an \textbf{orange male ($X^O Y$)} with a \textbf{black female ($X^o X^o$)}
+    
+    \vfill
+    
+    \punnett{$X^O$ & $Y$} {
+        \textbf{Mother} & $X^o$ & $X^O X^o$ & $X^o Y$ \\ \cmidrule(lr){2-4}
+        & $X^o$ & $X^O X^o$ & $X^o Y$
+    }
+    \vfill
+    
+    \textbf{Results for their offspring:}
+    \begin{itemize}
+        \item \textbf{All females} ($X^O X^o$) will be \textbf{tortoiseshell}
+        \item \textbf{All males} ($X^o Y$) will be \textbf{black} (non-orange)
+    \end{itemize}
+    
+\end{frame}
+
+
+\begin{frame}{Example 2: black dad + tortoiseshell mom}
+    
+    Let's cross a \textbf{black male ($X^o Y$)} with a \textbf{tortoiseshell female ($X^O X^o$)}
+    
+    \vfill
+    
+    \punnett{$X^o$ & $Y$} {
+        \textbf{Mother} & $X^O$ & $X^O X^o$ & $X^O Y$ \\ \cmidrule(lr){2-4}
+        & $X^o$ & $X^o X^o$ & $X^o Y$
+    }
+    \vfill
+    
+    \textbf{Results for their offspring (1/4 chance for each):}
+    \begin{itemize}
+        \item $X^O X^o \implies$ \textbf{Tortoiseshell Female}
+        \item $X^o X^o \implies$ \textbf{Black Female}
+        \item $X^O Y \implies$ \textbf{Orange Male}
+        \item $X^o Y \implies$ \textbf{Black Male}
+    \end{itemize}
+    
+\end{frame}
+
+
+% --- SLIDE 6: Fun Fact (Optional) ---
+\begin{frame}{Fun fact: what about male tortoiseshells?}
+    
+    \begin{itemize}
+        \item As we saw, a male is $XY$. He can only get $X^O$ or $X^o$ from his mother, not both
+        \vfill
+        
+        \item A male tortoiseshell is possible, but \emph{extremely rare}
+        
+        \vfill
+        
+        \item It's a genetic anomaly where the cat has an extra X chromosome: \textbf{XXY}
+        
+        \vfill
+        
+        \item This genotype (e.g., $X^O X^o Y$) allows the cat to be male ($Y$) but also express both orange and non-orange alleles ($X^O X^o$), just like a female
+    \end{itemize}
+    
+\end{frame}
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%
+\section{Repetition of the process}
+\newSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_Kiki-bof.png}
+
+\begin{frame}{General case}
+$p_i(t)$: probability that state $S_i$ occurs on the $t^{th}$ repetition of the experiment, $1\leq i\leq n$
+\vfill
+Since one the states $S_i$ must occur on the $t^{th}$ repetition
+\[
+p_1(t)+p_2(t)+\cdots+p_n(t)=1
+\]
+$p_i(t+1)$: probability that state $S_i$, $1\leq i\leq r$, occurs on $(t+1)^{th}$ repetition of the experiment
+\vfill
+$n$ ways to be in state $S_i$ at step $t+1$:
+\begin{enumerate}
+\item Step $t$ is $S_1$. Probability of getting $S_1$ on $t^{th}$ step is $p_1(t)$, and probability of having $S_i$ after $S_1$ is $p_{i1}$. Therefore $P(S_i|S_1)=p_{i1}p_1(t)$
+\item We get $S_2$ on step $t$ and $S_i$ on step $(t+1)$. Then $P(S_i|S_2)=p_{2i}p_2(t)$
+\item[..]
+\item[n.] Probability of occurrence of $S_i$ at step $t+1$ if $S_n$ at step $t$ is $P(S_i|S_n)=p_{in}p_n(t)$
+\end{enumerate}
+\end{frame}
+
+
+\begin{frame}
+\begin{align*}
+\implies
+p_i(t+1) &= P(S_i|S_1)+\cdots+P(S_i|S_n) \\
+&= p_{i1}p_1(t)+\cdots+p_{in}p_n(t)
+\end{align*}
+Therefore,
+\begin{align*}
+p_1(t+1) &= p_{11}p_1(t)+p_{12}p_2(t)+\dots+p_{1n}p_n(t) \\
+& \;\;\vdots\\
+p_n(t+1) &= p_{n1}p_1(t)+p_{n2}p_2(t)+\dots+p_{nn}p_n(t)
+\end{align*}
+\end{frame}
+
+\begin{frame}
+In matrix form
+\[
+p(t+1)=Pp(t), \quad n=1,2,3,\dots
+\]
+where $p(t)=(p_1(t),p_{2}(t),\dots , p_n(t))^T$ is a probability vector and $P=(p_{ij})$ is an $n\times n$ \emph{transition matrix},
+\[
+P=
+\begin{pmatrix}
+p_{11} & p_{12} & \cdots & p_{1r} \\
+p_{21} & p_{22} & \cdots & p_{2r} \\
+&&& \\
+p_{r1} & p_{r2} & \cdots & p_{rr}
+\end{pmatrix}
+\]
+\end{frame}
+
+
+\begin{frame}
+So
+\[
+\begin{pmatrix}
+	p_1(t+1) & \cdots & p_n(t+1)
+\end{pmatrix}
+=
+\begin{pmatrix}
+	p_1(t) & \cdots & p_n(t)
+\end{pmatrix}
+\begin{pmatrix}
+p_{11} & p_{12} & \cdots & p_{1r} \\
+p_{21} & p_{22} & \cdots & p_{2r} \\
+&&& \\
+p_{r1} & p_{r2} & \cdots & p_{rr}
+\end{pmatrix}
+\]
+\vfill
+Easy to check that this gives the same expression as before
+\end{frame}
+
+
+
+\begin{frame}{Stochastic matrices}
+\begin{definition}[Stochastic matrix]
+The nonnegative $n\times n$ matrix $M$ is \textbf{row-stochastic} (resp. \textbf{column-stochastic}) if $\sum_{j=1}^na_{ij}=1$ for all $i=1,\dots,n$ (resp. $\sum_{i=1}^na_{ij}=1$ for all $j=1,\dots,n$)
+\end{definition}
+\vfill
+We often say \textbf{stochastic} and let the context determine whether we mean row- or column-stochastic
+\vfill
+If it is both row- and column-stochastic, the matrix is \textbf{doubly stochastic}
+\vfill
+\begin{theorem}\label{th:spectrum_stochastic_matrix}
+Let $M\in\M_n$ be a stochastic matrix. Then all eigenvalues $\lambda$ of $M$ are such that $|\lambda|\leq 1$.
+\end{theorem}
+\end{frame}
+
+\begin{frame}
+\begin{importanttheorem}
+\label{th:one-is-evalue-stochastic-matrix}
+Let $M\in\M_n$ be a stochastic matrix. $\lambda =1$ is an eigenvalue of $M$. 
+If $M$ is row-stochastic, the eigenvalue 1 is associated to the column vector of ones (a right eigenvector of $M$); if $M$ is column-stochastic, the eigenvalue 1 is associated to the row vector of ones (a left eigenvector of $M$)
+\end{importanttheorem}
+\end{frame}
+
+\begin{frame}[red]{Proof of Theorem~\ref{th:one-is-evalue-stochastic-matrix}}
+Suppose $M\in\M_n$ is row-stochastic. One way to write the requirement that each row sum equals 1 is as 
+\begin{equation}\label{eq:M1equal1}
+M\mathbf{1}=\mathbf{1}
+\end{equation}
+where $\mathbf{1}=(1,\ldots,1)\in\IC^n$ is a column vector
+\vfill
+If $M\in\M_n$, then the eigenpair equation takes the form
+\[
+M\bv=\lambda\bv,\quad \bv\neq\b0
+\]
+So, in \eqref{eq:M1equal1}, $\bv=\mathbf{1}$ and $\lambda=1$
+\vfill
+This works the same way for a column-stochastic matrix, except that here the relation is $\mathbf{1}M=\mathbf{1}$ with $\mathbf{1}$ a row vector and the (left)eigenpair relation is $\bv^TM=\lambda\bv^T$ with $\bv^T$ a row vector
+\end{frame}
+
+\begin{frame}{Long time behaviour}
+Let $p(0)$ be the initial distribution vector. Then
+\begin{align*}
+p(1) &= p(0)P \\
+p(2) &= p(1)P\\
+&= \left(p(0)P\right)P \\
+&= p(0)P^2
+\end{align*}
+\vfill
+Continuing, we get, for any $t$,
+\[
+p(t)=p(0)P^t
+\]
+\vfill
+Therefore, 
+\[
+\lim_{t\rightarrow +\infty}p(t) =
+\lim_{t\rightarrow +\infty}p(0)P^t =
+p(0)\left(\lim_{t\rightarrow +\infty}P^t\right)
+\]
+if this limit exists
+\end{frame}
+
+
+\begin{frame}{The matrix $P^t$}
+\begin{theorem}
+If $M,N$ are nonsingular stochastic matrices, then $MN$ is a stochastic matrix
+\end{theorem}
+\vfill
+\begin{corollary}
+If $M$ is a nonsingular stochastic matrix, then for any $k\in\IN$, $M^k$ is a stochastic matrix
+\end{corollary}
+\vfill
+So $P^t$ is stochastic
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Regular Markov chains}
+\newSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_Kiki-bof.png}
+
+
+\begin{frame}{Regular Markov chains}
+\begin{definition}[Regular Markov chain]
+A \textbf{regular} Markov chain has $P^k$ (entry-wise) positive for some integer $k>0$, i.e., $P^k$ has only positive entries
+\end{definition}
+\vfill
+\begin{definition}[Primitive matrix]
+A nonnegative matrix $M$ is \textbf{primitive} if, and only if, there is an integer $k>0$ such that $M^k$ is positive.
+\end{definition}
+\vfill
+\begin{theorem}
+Markov chain regular $\iff$ transition matrix $P$ primitive
+\end{theorem}
+\end{frame}
+
+\begin{frame}{Matrices and graphs}
+Here and with absorbing chains, there is a lot to gain from using a bit of graph theory
+\vfill
+Matrices and graphs are intimitely linked 
+\vfill
+Some matrix problems are easier considered with graphs, some graph problems are easier with matrices
+\vfill
+Note that I say \emph{graph}, but in other contexts, people speak of \emph{networks}
+\end{frame}
+
+\begin{frame}{What is a directed graph?}
+\begin{definition}[Digraph]
+A \defword{directed graph} (or \textbf{digraph}) $G$ is a pair $(V, A)$ where:
+    \begin{itemize}
+        \item $V$ is a finite set of elements called \defword{vertices} or \textbf{nodes}
+        \item $A \subseteq V \times V$ is a set of ordered pairs of vertices called \defword{arcs} or \textbf{directed edges}
+    \end{itemize}
+\end{definition}
+    \vfill
+\begin{definition}[Arc]
+    An \defword{arc} $a = (u, v) \in A$ represents a connection \textbf{from} vertex $u$ \textbf{to} vertex $v$
+    \begin{itemize}
+        \item $u$ is the \textbf{tail} of the arc
+        \item $v$ is the \textbf{head} of the arc
+    \end{itemize}
+\end{definition}
+\end{frame}
+
+\begin{frame}{In the context of Markov chains}
+\begin{itemize}
+    \item Vertices (nodes) represent the \textbf{states} of the system
+    \vfill
+    \item Arcs represent possible \textbf{transitions} between states
+    \vfill
+    \item The weights on the arcs represent the probability to make a given transition
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{From matrix to graph}
+    
+Given a transition matrix $P = [p_{ij}]$, define an induced digraph $\G = (V, A)$ (often written $\G(A)$)
+
+\begin{itemize}
+\item Vertices $V$ correspond to the states
+\item An arc $(i, j)$ exists in $A$ if and only if $p_{ij} > 0$
+\end{itemize}
+
+\begin{columns}[T] % T aligns the tops
+
+% Left Column: Matrix
+\begin{column}{.45\textwidth}
+    Let $P$ be the transition matrix:
+    $$ P = \begin{pmatrix}
+        0.5 & 0.5 & 0   \\
+        0   & 0.1 & 0.9 \\
+        0.2 & 0.8 & 0
+    \end{pmatrix} $$
+    
+    \vfill
+    \textbf{Arcs created:}
+    \begin{itemize}
+        \item $p_{11}=0.5 \implies (1, 1)$
+        \item $p_{12}=0.5 \implies (1, 2)$
+        \item $p_{22}=0.1 \implies (2, 2)$
+        \item $p_{23}=0.9 \implies (2, 3)$
+        \item $p_{31}=0.2 \implies (3, 1)$
+        \item $p_{32}=0.8 \implies (3, 2)$
+    \end{itemize}
+\end{column}
+
+% Right Column: TikZ Graph
+\begin{column}{.55\textwidth}
+    \centering
+    \textbf{Induced transition graph:}
+    \bigskip
+    
+    % TikZ Diagram
+    % We define styles for nodes and edges
+    \begin{tikzpicture}[
+        ->, % All paths have arrows
+        >=Latex, % Use the nicer Latex arrow tip
+        auto, % Place edge labels automatically
+        node distance=2.5cm, % Distance between nodes
+        every node/.style={circle, draw, thick, minimum size=1cm},
+        every path/.style={thick}
+    ]
+        % Place the nodes
+        \node (1) at (0, 2) {1};
+        \node (2) at (-2, 0) {2};
+        \node (3) at (2, 0) {3};
+        
+        % Draw the edges (paths)
+        % 'edge' creates a path from one node to another
+        % 'loop' creates a self-edge
+        \path (1) edge [loop above] node {$0.5$} (1);
+        \path (1) edge [bend left] node[left] {$0.5$} (2);
+        
+        \path (2) edge [loop left] node {$0.1$} (2);
+        \path (2) edge [bend left] node[above] {$0.9$} (3);
+        
+        \path (3) edge [bend left=40] node[below] {$0.2$} (1);
+        \path (3) edge [bend left] node[right] {$0.8$} (2);
+
+    \end{tikzpicture}
+\end{column}
+
+\end{columns}
+\end{frame}
+
+
+% --- SLIDE 4: GRAPH TO MATRIX ---
+\begin{frame}
+    \frametitle{Example: From graph to matrix}
+    
+    Conversely, a transition graph with $n$ states and probabilities on its arcs defines an $n \times n$ stochastic matrix $P$.
+    
+    \begin{itemize}
+        \item The entry $p_{ij}$ is the probability on the arc from state $i$ to state $j$.
+        \item If no arc $(i, j)$ exists, then $p_{ij} = 0$.
+        \item For the matrix to be stochastic, the sum of outgoing probabilities from each state must be 1.
+    \end{itemize}
+    
+    \begin{columns}[T]
+        
+        % Left Column: TikZ Graph
+        \begin{column}{.55\textwidth}
+            \centering
+            \textbf{A 4-state transition graph:}
+            \bigskip
+            
+            \begin{tikzpicture}[
+                ->, >=Latex, auto,
+                node distance=3cm, 
+                every node/.style={circle, draw, thick, minimum size=1cm},
+                every path/.style={thick}
+            ]
+                % Place nodes in a square
+                \node (1) at (0, 3) {1};
+                \node (2) at (3, 3) {2};
+                \node (3) at (3, 0) {3};
+                \node (4) at (0, 0) {4};
+                
+                % Draw edges
+                \path (1) edge [bend left] node[above] {$0.7$} (2);
+                \path (1) edge [loop above] node {$0.3$} (1);
+
+                \path (2) edge [bend left] node[right] {$1.0$} (3);
+                
+                \path (3) edge [bend left] node[below] {$0.5$} (4);
+                \path (3) edge [bend left] node[left] {$0.5$} (2);
+                
+                \path (4) edge [loop left] node {$1.0$} (4);
+
+            \end{tikzpicture}
+        \end{column}
+        
+        % Right Column: Matrix
+        \begin{column}{.45\textwidth}
+            \textbf{Induced transition matrix:}
+            \vfill
+            $$ P = \begin{pmatrix}
+                0.3 & 0.7 & 0 & 0 \\
+                0 & 0 & 1.0 & 0 \\
+                0 & 0.5 & 0 & 0.5 \\
+                0 & 0 & 0 & 1.0
+            \end{pmatrix} $$
+            
+            \vfill
+            \textbf{Check row sums:}
+            \begin{itemize}
+                \item Row 1: $0.3 + 0.7 = 1$
+                \item Row 2: $1.0 = 1$
+                \item Row 3: $0.5 + 0.5 = 1$
+                \item Row 4: $1.0 = 1$
+            \end{itemize}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}
+\begin{definition}[Reducible/irrecible matrix]
+A matrix $M\in\M_n$ is \defword{reducible} if there exists a permutation matrix $P$ such that
+\[
+P^TMP=
+\begin{pmatrix}
+P & Q \\ \b0 & R
+\end{pmatrix},
+\]
+i.e., $M$ is similar to a block upper triangular matrix. The matrix $M$ is \defword{irreducible} if no such matrix exists
+\end{definition}
+\end{frame}
+
+
+\begin{frame}{Behaviour of a regular MC}
+\begin{theorem}
+If $P$ is the transition matrix of a regular Markov chain, then
+\begin{enumerate}
+\item the powers $P^t$ approach a stochastic matrix $W$
+\item each column of $W$ is the same (column) vector $w=(w_1,\ldots,w_n)^T$
+\item the components of $w$ are positive
+\end{enumerate}
+\end{theorem}
+\vfill
+So if the Markov chain is regular
+\[
+\lim_{t\rightarrow +\infty}p(t)=\lim_{t\rightarrow +\infty}P^tp(0)
+=Wp(0)
+\]
+\end{frame}
+
+
+\begin{frame}{Computing $W$}
+If $p(t)$ converges, then $p(t+1)=Pp(t)$ at the limit, so $w=\lim_{t\to\infty}p(t)$ is a \textbf{fixed point} of the system. Write
+\[
+w=Pw
+\]
+and solve for $w$, i.e., find $w$ as a (right) eigenvector corresponding to the eigenvalue 1
+\vfill
+$w$ might have to be normalized (you want a probability vector). Check that the norm $\|w\|_1$ defined by
+\[
+\|w\|_1=|w_1|+\cdots+|w_n|=w_1+\cdots+w_n
+\]
+(since $w\geq 0$) is equal to one. If not, use
+\[
+\tilde w = \frac{w}{\|w\|_1}
+\]
+\end{frame}
+
+\begin{frame}{Back to orange cats}
+     Create a chain by tracking the 3 female genotypes:
+    \begin{itemize}
+        \item $S_1$: $X^O X^O$ (orange)
+        \item $S_2$: $X^o X^o$ (black)
+        \item $S_3$: $X^O X^o$ (tortoiseshell)
+    \end{itemize}
+    \vfill
+    To make the chain regular, we mate our female with a male chosen randomly from a \textbf{fixed population} that is:
+    \begin{itemize}
+        \item 50\% orange males ($X^O Y$)
+        \item 50\% black males ($X^o Y$)
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{State 1: orange female ($X^O X^O$)}
+    The mother is $X^O X^O$. We pick a father with 50/50 probability.
+    
+    \begin{columns}[T]
+        \begin{column}{.5\textwidth}
+            \centering
+            \textbf{Case 1: Father is $X^O Y$}
+            \renewcommand{\arraystretch}{1.5}
+            \begin{tabular}{c c | c | c |}
+            \multicolumn{2}{c}{} & \multicolumn{1}{c}{$X^O$} & \multicolumn{1}{c}{$Y$} \\ \cline{3-4}
+            \multirow{2}{*}{\rotatebox{90}{Mother}} & $X^O$ & \cellcolor{punnettorange}$X^O X^O$ ($S_1$) & \cellcolor{punnettorange}Male \\ \cline{2-4}
+            & $X^O$ & \cellcolor{punnettorange}$X^O X^O$ ($S_1$) & \cellcolor{punnettorange}Male \\ \cline{2-4}
+            \end{tabular}
+            \vspace{1em}
+            
+            Daughters: 100\% $S_1$
+        \end{column}
+        \begin{column}{.5\textwidth}
+            \centering
+            \textbf{Case 2: Father is $X^o Y$}
+            \renewcommand{\arraystretch}{1.5}
+            \begin{tabular}{c c | c | c |}
+            \multicolumn{2}{c}{} & \multicolumn{1}{c}{$X^o$} & \multicolumn{1}{c}{$Y$} \\ \cline{3-4}
+            \multirow{2}{*}{\rotatebox{90}{Mother}} & $X^O$ & \cellcolor{punnetttortie}$X^O X^o$ ($S_3$) & \cellcolor{punnettorange}Male \\ \cline{2-4}
+            & $X^O$ & \cellcolor{punnetttortie}$X^O X^o$ ($S_3$) & \cellcolor{punnettorange}Male \\ \cline{2-4}
+            \end{tabular}
+            \vspace{1em}
+            
+            Daughters: 100\% $S_3$
+        \end{column}
+    \end{columns}
+    
+    \vfill
+    \textbf{Transitions from $S_1$:}
+    \begin{itemize}
+        \item $\IP(S_1 \to S_1) = 0.5 \times 1.0 = \mathbf{0.5}$
+        \item $\IP(S_1 \to S_2) = 0$
+        \item $\IP(S_1 \to S_3) = 0.5 \times 1.0 = \mathbf{0.5}$
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{State 2: black female ($X^o X^o$)}
+    The mother is $X^o X^o$. We pick a father with 50/50 probability.
+    
+    \begin{columns}[T]
+        \begin{column}{.5\textwidth}
+            \centering
+            \textbf{Case 1: Father is $X^O Y$}
+            \renewcommand{\arraystretch}{1.5}
+            \begin{tabular}{c c | c | c |}
+            \multicolumn{2}{c}{} & \multicolumn{1}{c}{$X^O$} & \multicolumn{1}{c}{$Y$} \\ \cline{3-4}
+            \multirow{2}{*}{\rotatebox{90}{Mother}} & $X^o$ & \cellcolor{punnetttortie}$X^O X^o$ ($S_3$)& \cellcolor{punnettblack}Male \\ \cline{2-4}
+            & $X^o$ & \cellcolor{punnetttortie}$X^O X^o$ ($S_3$)& \cellcolor{punnettblack}Male \\ \cline{2-4}
+            \end{tabular}
+            \vspace{1em}
+            
+            Daughters: 100\% $S_3$
+        \end{column}
+        \begin{column}{.5\textwidth}
+            \centering
+            \textbf{Case 2: Father is $X^o Y$}
+            \renewcommand{\arraystretch}{1.5}
+            \begin{tabular}{c c | c | c |}
+            \multicolumn{2}{c}{} & \multicolumn{1}{c}{$X^o$} & \multicolumn{1}{c}{$Y$} \\ \cline{3-4}
+            \multirow{2}{*}{\rotatebox{90}{Mother}} & $X^o$ & \cellcolor{punnettblack}$X^o X^o$ ($S_2$)& \cellcolor{punnettblack}Male \\ \cline{2-4}
+            & $X^o$ & \cellcolor{punnettblack}$X^o X^o$ ($S_2$)& \cellcolor{punnettblack}Male \\ \cline{2-4}
+            \end{tabular}
+            \vspace{1em}
+            
+            Daughters: 100\% $S_2$
+        \end{column}
+    \end{columns}
+    
+    \vfill
+    \textbf{Transitions from $S_2$:}
+    \begin{itemize}
+        \item $\IP(S_2 \to S_1) = 0$
+        \item $\IP(S_2 \to S_2) = 0.5 \times 1.0 = \mathbf{0.5}$
+        \item $\IP(S_2 \to S_3) = 0.5 \times 1.0 = \mathbf{0.5}$
+    \end{itemize}
+\end{frame}
+
+% --- SLIDE 3 ---
+\begin{frame}{State 3: tortoiseshell female ($X^O X^o$)}
+    The mother is $X^O X^o$. We pick a father with 50/50 probability.
+    
+    \begin{columns}[T]
+        \begin{column}{.5\textwidth}
+            \centering
+            \textbf{Case 1: Father is $X^O Y$}
+            \renewcommand{\arraystretch}{1.5}
+            \begin{tabular}{c c | c | c |}
+            \multicolumn{2}{c}{} & \multicolumn{1}{c}{$X^O$} & \multicolumn{1}{c}{$Y$} \\ \cline{3-4}
+            \multirow{2}{*}{\rotatebox{90}{Mother}} & $X^O$ & \cellcolor{punnettorange}$X^O X^O$ ($S_1$) & \cellcolor{punnettorange}Male \\ \cline{2-4}
+            & $X^o$ & \cellcolor{punnetttortie}$X^O X^o$ ($S_3$) & \cellcolor{punnettblack}Male \\ \cline{2-4}
+            \end{tabular}
+            \vspace{1em}
+            
+            Daughters: 50\% $S_1$, 50\% $S_3$
+        \end{column}
+        \begin{column}{.5\textwidth}
+            \centering
+            \textbf{Case 2: Father is $X^o Y$}
+            \renewcommand{\arraystretch}{1.5}
+            \begin{tabular}{c c | c | c |}
+            \multicolumn{2}{c}{} & \multicolumn{1}{c}{$X^o$} & \multicolumn{1}{c}{$Y$} \\ \cline{3-4}
+            \multirow{2}{*}{\rotatebox{90}{Mother}} & $X^O$ & \cellcolor{punnetttortie}$X^O X^o$ ($S_3$) & \cellcolor{punnettorange}Male \\ \cline{2-4}
+            & $X^o$ & \cellcolor{punnettblack}$X^o X^o$ ($S_2$) & \cellcolor{punnettblack}Male \\ \cline{2-4}
+            \end{tabular}
+            \vspace{1em}
+            
+            Daughters: 50\% $S_2$, 50\% $S_3$
+        \end{column}
+    \end{columns}
+    
+    \vfill
+    \textbf{Transitions from $S_3$:}
+    \begin{itemize}
+        \item $\IP(S_3 \to S_1) = 0.5 \times 0.5 = \mathbf{0.25}$
+        \item $\IP(S_3 \to S_2) = 0.5 \times 0.5 = \mathbf{0.25}$
+        \item $\IP(S_3 \to S_3) = (0.5 \times 0.5) + (0.5 \times 0.5) = \mathbf{0.5}$
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Summary of the 3-state chain}
+    The transition matrix $P$ for states $\{S_1, S_2, S_3\}$ is:
+    
+    $$
+    P = 
+    \begin{pmatrix}
+    0.5 & 0 & 0.5 \\
+    0 & 0.5 & 0.5 \\
+    0.25 & 0.25 & 0.5
+    \end{pmatrix}
+    $$
+    
+    \vfill
+    
+    \textbf{Is this chain regular?}
+    \begin{itemize}
+        \item \textbf{Irreducible? Yes.} All states communicate.
+            \begin{itemize}
+                \item $S_1 \to S_3 \to S_2$ (Path from $S_1$ to $S_2$)
+                \item $S_2 \to S_3 \to S_1$ (Path from $S_2$ to $S_1$)
+                \item All other paths are direct ($S_1 \to S_3$, $S_3 \to S_1$, etc.)
+            \end{itemize}
+        \item \textbf{Aperiodic? Yes.} All states have self-loops ($p_{11}, p_{22}, p_{33} > 0$).
+    \end{itemize}
+    \vfill
+    Since the chain is irreducible and aperiodic, it is \textbf{regular}.
+\end{frame}
+
+
+
+\begin{frame}
+Compute the left eigenvector associated to 1 (we know the right eigenvector associated to 1 is $(1,\ldots,1)^T$)
+\[
+\begin{pmatrix}
+	w_1 & w_2 & w_3
+\end{pmatrix}
+\begin{pmatrix}
+	1/2 & 0 & 1/2 \\
+	0 & 1/2 & 1/2 \\
+	1/4 & 1/4 & 1/2
+\end{pmatrix}
+=
+\begin{pmatrix}
+	w_1 & w_2 & w_3
+\end{pmatrix}
+\]
+\end{frame}
+
+
+
+
+\end{document}

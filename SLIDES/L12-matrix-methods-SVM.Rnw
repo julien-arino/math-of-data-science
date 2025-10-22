@@ -29,7 +29,6 @@ cat(input_setup)
 
 % Set up cross-references and counter persistence
 \setcounter{theorem}{87}
-% Set up cross-references and counter persistence
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
