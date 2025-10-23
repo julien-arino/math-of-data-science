@@ -85,84 +85,50 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Absorbing Markov chains}
-\newSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_dzsfcndzsfcndzsf.jpeg}
+\newSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_Kiki-bof.png}
 
-\begin{frame}{A simple absorbing chain}
-    We create a Markov chain by repeatedly mating a female offspring with a \textbf{fixed Orange Male ($X^O Y$)}.
+\begin{frame}{Modifying the breeding experiment}
+    We modify the setup in Lecture 13 by now repeatedly mating a female offspring with an orange male ($X^O Y$).
     \vfill
-    The state of our chain is the genotype of the female offspring from the previous generation.
+    The state of the chain is the genotype of the female offspring from the previous generation
     \vfill
     There are 3 possible states for the female offspring:
     \begin{itemize}
-        \item $S_1$: $X^O X^O$ (Pure Orange female)
-        \item $S_2$: $X^o X^o$ (Pure Black female)
-        \item $S_3$: $X^O X^o$ (Tortoiseshell female)
+        \item $S_1$: $X^O X^O$ (orange female)
+        \item $S_2$: $X^o X^o$ (black female)
+        \item $S_3$: $X^O X^o$ (tortoiseshell female)
     \end{itemize}
-    \vfill
-    We will examine the transition probabilities $\IP(S_i \to S_j)$.
 \end{frame}
 
-\begin{frame}{State 1: Orange female ($X^O X^O$)}
-    Current state is $S_1$. We mate this $X^O X^O$ female with our fixed $X^O Y$ male.
+\begin{frame}{State 1 -- orange female ($X^O X^O$)}
+    Current state is $S_1$. Mate this $X^O X^O$ female with the $X^O Y$ male
     \vfill
     \begin{center}
-    \begin{tikzpicture}[node distance=0.5cm]
-      % Alleles from parents
-      \node (M1) [female] at (2, 4) {$X^O$};
-      \node (M2) [female, right=of M1] {$X^O$};
-      \node (F1) [male] at (0, 2) {$X^O$};
-      \node (F2) [male, below=of F1] {$Y$};
-      
-      % Braces to label parents
-      \draw [decorate, decoration={brace, amplitude=10pt}, purple!80!black, thick] (1.5, 4.5) -- (4.5, 4.5) node [midway, above=10pt] {Mother ($X^O X^O$)};
-      \draw [decorate, decoration={brace, amplitude=10pt}, blue!80!black, thick] (-0.5, 2.8) -- (-0.5, -0.8) node [midway, left=10pt] {Father ($X^O Y$)};
-      
-      % --- Offspring Nodes (Placeholders) ---
-      % TO ADD IMAGES: replace text={...} with {\includegraphics{...}}
-      \node (O1) [orange_cat] at (2, 2) {Orange Female \\ ($X^O X^O$)};
-      \node (O2) [orange_cat] at (4, 2) {Orange Female \\ ($X^O X^O$)};
-      \node (O3) [orange_cat] at (2, 0) {Orange Male \\ ($X^O Y$)};
-      \node (O4) [orange_cat] at (4, 0) {Orange Male \\ ($X^O Y$)};
-      
-      % Grid lines
-      \draw [gray, thick] (3, 2.8) -- (3, -0.8);
-      \draw [gray, thick] (1.2, 1) -- (4.8, 1);
-    \end{tikzpicture}
+          \renewcommand{\arraystretch}{1.5}
+      \begin{tabular}{c c | c | c |}
+      \multicolumn{2}{c}{} & \multicolumn{1}{c}{$X^O$} & \multicolumn{1}{c}{$Y$} \\ \cline{3-4}
+      \multirow{2}{*}{\rotatebox{90}{Mother}} & $X^O$ & \cellcolor{punnettorange}$X^O X^O$ ($S_1$) & \cellcolor{punnettorange}Orange male \\ \cline{2-4}
+      & $X^O$ & \cellcolor{punnettorange}$X^O X^O$ ($S_1$) & \cellcolor{punnettorange}Orange male \\ \cline{2-4}
+      \end{tabular}
     \end{center}
+
     \vfill
     The female offspring are:
     \begin{itemize}
-        \item 100\% $X^O X^O$ (State $S_1$)
+        \item 100\% $X^O X^O$ (state $S_1$)
     \end{itemize}
-    \vfill
-    This is an \textbf{absorbing state}.
 \end{frame}
 
-\begin{frame}{State 2: Black female ($X^o X^o$)}
-    Current state is $S_2$. We mate this $X^o X^o$ female with our fixed $X^O Y$ male.
+\begin{frame}{State 2 -- black female ($X^o X^o$)}
+    Current state is $S_2$. Mate this $X^o X^o$ female with an $X^O Y$ male
     \vfill
     \begin{center}
-    \begin{tikzpicture}[node distance=0.5cm]
-      % Alleles from parents
-      \node (M1) [female] at (2, 4) {$X^o$};
-      \node (M2) [female, right=of M1] {$X^o$};
-      \node (F1) [male] at (0, 2) {$X^O$};
-      \node (F2) [male, below=of F1] {$Y$};
-      
-      % Braces to label parents
-      \draw [decorate, decoration={brace, amplitude=10pt}, purple!80!black, thick] (1.5, 4.5) -- (4.5, 4.5) node [midway, above=10pt] {Mother ($X^o X^o$)};
-      \draw [decorate, decoration={brace, amplitude=10pt}, blue!80!black, thick] (-0.5, 2.8) -- (-0.5, -0.8) node [midway, left=10pt] {Father ($X^O Y$)};
-      
-      % --- Offspring Nodes (Placeholders) ---
-      \node (O1) [tortie_cat] at (2, 2) {Tortie Female \\ ($X^O X^o$)};
-      \node (O2) [tortie_cat] at (4, 2) {Tortie Female \\ ($X^O X^o$)};
-      \node (O3) [black_cat] at (2, 0) {Black Male \\ ($X^o Y$)};
-      \node (O4) [black_cat] at (4, 0) {Black Male \\ ($X^o Y$)};
-      
-      % Grid lines
-      \draw [gray, thick] (3, 2.8) -- (3, -0.8);
-      \draw [gray, thick] (1.2, 1) -- (4.8, 1);
-    \end{tikzpicture}
+          \renewcommand{\arraystretch}{1.5}
+      \begin{tabular}{c c | c | c |}
+      \multicolumn{2}{c}{} & \multicolumn{1}{c}{$X^O$} & \multicolumn{1}{c}{$Y$} \\ \cline{3-4}
+      \multirow{2}{*}{\rotatebox{90}{Mother}} & $X^o$ & \cellcolor{punnetttortie}$X^O X^o$ ($S_1$) & \cellcolor{punnettblack}Black male \\ \cline{2-4}
+      & $X^o$ & \cellcolor{punnetttortie}$X^O X^o$ ($S_3$) & \cellcolor{punnettblack}Black male \\ \cline{2-4}
+      \end{tabular}
     \end{center}
     \vfill
     The female offspring are:
@@ -171,31 +137,16 @@
     \end{itemize}
 \end{frame}
 
-\begin{frame}{State 3: Tortoiseshell female ($X^O X^o$)}
-    Current state is $S_3$. We mate this $X^O X^o$ female with our fixed $X^O Y$ male.
+\begin{frame}{State 3 -- tortoiseshell female ($X^O X^o$)}
+    Current state is $S_3$. Mate this $X^O X^o$ female with the $X^O Y$ male
     \vfill
     \begin{center}
-    \begin{tikzpicture}[node distance=0.5cm]
-      % Alleles from parents
-      \node (M1) [female] at (2, 4) {$X^O$};
-      \node (M2) [female, right=of M1] {$X^o$};
-      \node (F1) [male] at (0, 2) {$X^O$};
-      \node (F2) [male, below=of F1] {$Y$};
-      
-      % Braces to label parents
-      \draw [decorate, decoration={brace, amplitude=10pt}, purple!80!black, thick] (1.5, 4.5) -- (4.5, 4.5) node [midway, above=10pt] {Mother ($X^O X^o$)};
-      \draw [decorate, decoration={brace, amplitude=10pt}, blue!80!black, thick] (-0.5, 2.8) -- (-0.5, -0.8) node [midway, left=10pt] {Father ($X^O Y$)};
-      
-      % --- Offspring Nodes (Placeholders) ---
-      \node (O1) [orange_cat] at (2, 2) {Orange Female \\ ($X^O X^O$)};
-      \node (O2) [tortie_cat] at (4, 2) {Tortie Female \\ ($X^O X^o$)};
-      \node (O3) [orange_cat] at (2, 0) {Orange Male \\ ($X^O Y$)};
-      \node (O4) [black_cat] at (4, 0) {Black Male \\ ($X^o Y$)};
-      
-      % Grid lines
-      \draw [gray, thick] (3, 2.8) -- (3, -0.8);
-      \draw [gray, thick] (1.2, 1) -- (4.8, 1);
-    \end{tikzpicture}
+          \renewcommand{\arraystretch}{1.5}
+      \begin{tabular}{c c | c | c |}
+      \multicolumn{2}{c}{} & \multicolumn{1}{c}{$X^O$} & \multicolumn{1}{c}{$Y$} \\ \cline{3-4}
+      \multirow{2}{*}{\rotatebox{90}{Mother}} & $X^O$ & \cellcolor{punnettorange}$X^O X^O$ ($S_1$) & \cellcolor{punnettorange}Orange male \\ \cline{2-4}
+      & $X^o$ & \cellcolor{punnetttortie}$X^O X^o$ ($S_3$) & \cellcolor{punnettblack}Black male \\ \cline{2-4}
+      \end{tabular}
     \end{center}
     \vfill
     The female offspring have a 50/50 chance:
@@ -206,73 +157,33 @@
 \end{frame}
 
 \begin{frame}{Summary of the chain}
-    The transition probability matrix $P = [ \IP(S_i \to S_j) ]$ for states $\{S_1, S_2, S_3\}$ is:
-    
-    $$
+    \[
     P = \begin{pmatrix}
-    1 & 0 & 0 \\
-    0 & 0 & 1 \\
-    1/2 & 0 & 1/2
+    1 & 0 & 1/2 \\
+    0 & 0 & 0 \\
+    0 & 1 & 1/2
     \end{pmatrix}
-    $$
+    \]
     
     \vfill
-    
-    \begin{itemize}
-        \item $S_1$ ($X^O X^O$) is an \textbf{absorbing state}.
-        \item $S_2$ ($X^o X^o$) and $S_3$ ($X^O X^o$) are \textbf{transient states}.
-        \item From $S_2$, you are forced to $S_3$.
-        \item From $S_3$, you will (with probability 1) eventually be absorbed into state $S_1$.
-    \end{itemize}
-    
-    This system fulfils the criteria for an absorbing Markov chain
-\end{frame}
-
-
-
-\begin{frame}{Changing the setting of the genetic experiment}
-Suppose now the same type of experiment, but mate each new generation with a GG individual instead of a Gg individual
-\vfill
 \begin{center}
-\begin{tikzpicture}
-	[inner sep=2mm,
-	place/.style={circle,draw=blue!50,fill=blue!90,thick,minimum size=1.25cm}]
-	\node [place] (GG) {GG};
-	\node [place] (Gg) [right=of GG] {Gg};
-	\node [place] (gg) [right=of Gg]{gg};
-	\draw[->] (GG) to [loop above] node [auto] {1} (GG);
-	\draw[->] (Gg) to node [auto] {0.5} (GG);
-	\draw[->] (Gg) to [loop above] node [auto] {0.5} (Gg);
-	\draw[->] (gg) to node [auto] {1} (Gg);
+\begin{tikzpicture}[
+    ->, % All paths have arrows
+    >=Latex, % Use the nicer Latex arrow tip
+    node distance=2.5cm, % Distance between nodes
+    every path/.style={thick}
+]
+    \node[state,fill=punnettorange] (S1) at (0, 2) {$X^OX^O$};
+    \node[state,fill=punnettblack] (S2) at (-2, 0) {$X^oX^o$};
+    \node[state,fill=punnetttortie] (S3) at (2, 0) {$X^OX^o$};
+    \path (S1) edge [loop left] node[left] {$1$} (S1);
+    \path (S2) edge node[above] {$1$} (S3);
+    \path (S3) edge [loop right] node[right] {$0.5$} (S3);
+    \path (S3) edge node[sloped,below] {$0.5$} (S1);
 \end{tikzpicture}
-\end{center}
-\vfill
-\begin{minipage}{0.45\textwidth}
-	\begin{center}
-		\begin{tabular}{c|ccc}
-		$\swarrow$ & GG & Gg & gg \\
-		\hline
-		GG & 1 & 0.5 & 0 \\
-		Gg & 0 & 0.5 & 1 \\
-		gg & 0 & 0 & 0
-		\end{tabular}
-	\end{center}
-\end{minipage}
-\begin{minipage}{0.45\textwidth}
-	\[
-		P=\begin{pmatrix}
-		1 & 1/2 & 0 \\[5pt]
-		0 & 1/2 & 1 \\[5pt]
-		0 & 0 & 0
-		\end{pmatrix}
-	\]
-\end{minipage}
-\begin{itemize}
-\item leave gg after 1 iteration and can never return
-\item when we leave Gg, we can never return
-\item we can never leave GG when we get there
-\end{itemize}
+\end{center}    
 \end{frame}
+
 
 
 \begin{frame}{Absorbing Markov chains}
@@ -287,22 +198,16 @@ In an absorbing Markov chain, a state that is not absorbing is called \textbf{tr
 \end{frame}
 
 
-\begin{frame}
-%\begin{figure}[htbp]
-%\centering
-%\includegraphics[width=0.4\textwidth]{FIGS/graphe_absorbant}
-%\caption{Example of a graph corresponding to an absorbing Markov chain. States 1 and 4 are absorbing, states 2 and 3 are transient.}
-%\label{fig:genetics_absorbing_graph}
-%\end{figure}
+\begin{frame}{Questions about absorbing chains}
 Suppose we have a chain like the following
 \begin{center}
 \begin{tikzpicture}
 	[inner sep=2mm,
-	place/.style={circle,draw=blue!50,fill=blue!90,thick,minimum size=1cm}]
-	\node [place] (1) {1};
-	\node [place] (2) [right=of 1] {2};
-	\node [place] (3) [right=of 2] {3};
-	\node [place] (4) [right=of 3] {4};
+	place/.style={circle,fill=black!10,thick,minimum size=1cm}]
+	\node [place] (1) {$S_1$};
+	\node [place] (2) [right=of 1] {$S_2$};
+	\node [place] (3) [right=of 2] {$S_3$};
+	\node [place] (4) [right=of 3] {$S_4$};
 	\draw[->] (1) to [loop above] (1);
 	\draw[->] (2) to [loop above] (2);
 	\draw[->] (3) to [loop above] (3);
@@ -327,7 +232,7 @@ Suppose we have a chain like the following
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Analysing absorbing Markov chains}
-\newSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_dzsfcndzsfcndzsf.jpeg}
+\newSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_Kiki-bof.png}
 
 \begin{frame}
 The answer to the first question (``Does the process eventually reach an absorbing state?'') is given by the following result
@@ -359,7 +264,7 @@ with $\mathbb{I}_k$ the $k\times k$ identity matrix, $\mathbf{0}$ an $(r-k)\time
 The matrix $\mathbb{I}_{r-k}-Q$ is invertible. Let
 \begin{itemize}
 \item $N=(\mathbb{I}_{r-k}-Q)^{-1}$ the \textbf{fundamental matrix} of the MC
-\item $T_i$ sum of the entries on row $i$ of $N$
+\item $T_i$ sum of the entries on column $i$ of $N$
 \item $B=RN$
 \end{itemize}
 \end{frame}
@@ -369,7 +274,7 @@ Answers to our remaining questions:
 \vfill
 \begin{enumerate}
 \setcounter{enumi}{1}
-\item $N_{ij}$ average number of times the process is in the $j$th transient state if it starts in the $i$th transient state
+\item $N_{ij}$ average number of times the process is in the $i$th transient state if it starts in the $j$th transient state
 \vfill
 \item $T_i$ average number of steps before the process enters an absorbing state if it starts in the $i$th transient state
 \vfill
@@ -383,9 +288,9 @@ The matrix is already in standard form
 \[
 P=
 \begin{pmatrix}
-1 & \frac 12 & 0 \\
-0 & \frac 12 & 1 \\
-0 & 0 & 0
+1 & 0 & 1/2 \\
+0 & 0 & 0 \\
+0 & 1 & 1/2
 \end{pmatrix}
 =\begin{pmatrix}
 \mathbb{I}_1 & R \\
@@ -395,12 +300,12 @@ P=
 with $\mathbb{I}_1=1$, $\mathbf{0}=(0\;\; 0)^T$ and
 \[
 R=\begin{pmatrix}
-\frac 12 & 0
+0 & 1/2
 \end{pmatrix}
 \qquad
 Q=\begin{pmatrix}
-\frac 12 & 1\\
-0 & 0
+0 & 0\\
+0 & 1/2
 \end{pmatrix}
 \]
 We have
@@ -410,103 +315,290 @@ We have
 0 & 1
 \end{pmatrix}
 -\begin{pmatrix}
-\frac 12 & 1\\
-0 & 0
+0 & 0\\
+0 & 1/2
 \end{pmatrix}
 =\begin{pmatrix}
-\frac 12 & -1\\
-0 & 1
+1 & 0\\
+0 & 1/2
 \end{pmatrix}
 \]
-so
+so the fundamental matrix is
 \[
 N=(\mathbb{I}_2-Q)^{-1}=
-2\begin{pmatrix}
-1 & 1 \\
-0 & \frac 12
-\end{pmatrix}=
 \begin{pmatrix}
-2 & 0 \\
-2 & 1
+1 & 0 \\
+0 & 2
 \end{pmatrix}
 \]
 \end{frame}
 
 
-\begin{frame}
-We have
+\begin{frame}{Summary about absorption}
+Fundamental matrix, whose $(i,j)$ entry is the average number of visits to the $i$th transient state if it starts in the $j$th transient state
 \[
 N=
 \begin{pmatrix}
-	2 & 0 \\
-	2 & 1
+1 & 0 \\
+0 & 2
 \end{pmatrix}
 \]
-So
+\vfill
+Average number of steps before absorption (i.e., only orange females) if we start in a transient state is
 \[
-T=N\nbOne=\begin{pmatrix}
-2\\
-3
-\end{pmatrix}
+T=\nbOne^TN=(1,2)
 \]
-and
+\vfill
+Probability of eventually entering the $i$th absorbing state if we start in the $j$th transient state
 \[
 B=RN=
 \begin{pmatrix}
-	\frac 12 & 0
+	0 & 1/2
 \end{pmatrix}
 \begin{pmatrix}
-	2 & 0 \\
-	2 & 1
+1 & 0 \\
+0 & 2
 \end{pmatrix}
 =
 \begin{pmatrix}
-1 & 1
+0 & 1
 \end{pmatrix}
 \]
 \end{frame}
 
 
-\begin{frame}
-\begin{enumerate}
-\setcounter{enumi}{1}
-\item $N_{ij}$ average number of times the process is in the $j$th transient state if it starts in the $i$th transient state
-\[
-N=
-\begin{pmatrix}
-2 & 0 \\
-2 & 1
-\end{pmatrix}
-\]
-\vfill
-\item $T_i$ average number of steps before the process enters an absorbing state if it starts in the $i$th transient state
-\[
-T=\begin{pmatrix}
-2\\
-3
-\end{pmatrix}
-\]
-\vfill
-\item $B_{ij}$ probability of eventually entering the $i$th absorbing state if the process starts in the $j$th transient state
-\[
-B=
-\begin{pmatrix}
-	1 & 1
-\end{pmatrix}
-\]
-\end{enumerate}
-\vfill
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\Ssection{Numerics}{FIGS-slides-admin/Gemini_Generated_Image_Kiki-bof.png}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\Ssubsection{Regular MC example}{FIGS-slides-admin/Gemini_Generated_Image_Kiki-not-so-majestic.png}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# Library}
+\hlkwd{library}\hldef{(markovchain)}
+\hlcom{# Make the transition matrix}
+\hldef{P_reg} \hlkwb{=} \hlkwd{matrix}\hldef{(}\hlkwd{c}\hldef{(}\hlnum{0.5}\hldef{,} \hlnum{0}\hldef{,} \hlnum{0.25}\hldef{,}
+                 \hlnum{0}\hldef{,} \hlnum{0.5}\hldef{,} \hlnum{0.25}\hldef{,}
+                 \hlnum{0.5}\hldef{,} \hlnum{0.5}\hldef{,} \hlnum{0.5}\hldef{),}
+               \hlkwc{nr} \hldef{=} \hlnum{3}\hldef{,} \hlkwc{byrow} \hldef{=} \hlnum{TRUE}\hldef{)}
+\hlcom{# Library: markovchain}
+\hldef{mc_reg} \hlkwb{<-} \hlkwd{new}\hldef{(}\hlsng{"markovchain"}\hldef{,}
+              \hlkwc{states} \hldef{=} \hlkwd{sprintf}\hldef{(}\hlsng{"S_%d"}\hldef{,} \hlnum{1}\hlopt{:}\hlnum{3}\hldef{),}
+              \hlkwc{transitionMatrix} \hldef{=} \hlkwd{t}\hldef{(P_reg),}
+              \hlkwc{name} \hldef{=} \hlsng{"orange_reg"}\hldef{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\begin{frame}[fragile]
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{summary}\hldef{(mc_reg)}
+\end{alltt}
+\begin{verbatim}
+## orange_reg  Markov chain that is composed by: 
+## Closed classes: 
+## S_1 S_2 S_3 
+## Recurrent classes: 
+## {S_1,S_2,S_3}
+## Transient classes: 
+## NONE 
+## The Markov chain is irreducible 
+## The absorbing states are: NONE
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
 \end{frame}
 
+\begin{frame}[fragile]
+\frametitle{The equilibrium distribution}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{steadyStates}\hldef{(mc_reg)}
+\end{alltt}
+\begin{verbatim}
+##       S_1  S_2 S_3
+## [1,] 0.25 0.25 0.5
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+  
+\begin{frame}[fragile]
+\frametitle{Showing a realisation}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{library}\hldef{(DTMCPack)}
+\hldef{IC} \hlkwb{=} \hlkwd{rep}\hldef{(}\hlnum{0}\hldef{,} \hlkwd{dim}\hldef{(P_reg)[}\hlnum{1}\hldef{])}
+\hldef{IC[}\hlnum{1}\hldef{]} \hlkwb{=} \hlnum{1}
+\hldef{sol} \hlkwb{=} \hlkwd{DTMC}\hldef{(}\hlkwd{t}\hldef{(P_reg), IC,} \hlnum{41}\hldef{,} \hlkwc{trace}\hldef{=}\hlnum{TRUE}\hldef{)}
+\end{alltt}
+\begin{verbatim}
+## NULL
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
 
+\maxFrameImage{FIGS/L14-DTMC-random-walk-regular-1.pdf}
+  
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{A few examples}
-\newSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_dzsfcndzsfcndzsf.jpeg}
+\Ssubsection{Absorbing MC example}{FIGS-slides-admin/Gemini_Generated_Image_Kiki-not-so-majestic.png}
 
+\begin{frame}[fragile]\frametitle{The absorbing version}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hldef{P_abs} \hlkwb{=} \hlkwd{matrix}\hldef{(}\hlkwd{c}\hldef{(}\hlnum{1}\hldef{,} \hlnum{0}\hldef{,} \hlnum{0.5}\hldef{,}
+                 \hlnum{0}\hldef{,} \hlnum{0}\hldef{,} \hlnum{0}\hldef{,}
+                 \hlnum{0}\hldef{,} \hlnum{1}\hldef{,} \hlnum{0.5}\hldef{),}
+               \hlkwc{nr} \hldef{=} \hlnum{3}\hldef{,} \hlkwc{byrow} \hldef{=} \hlnum{TRUE}\hldef{)}
+\hldef{mc_abs} \hlkwb{<-} \hlkwd{new}\hldef{(}\hlsng{"markovchain"}\hldef{,}
+              \hlkwc{states} \hldef{=} \hlkwd{sprintf}\hldef{(}\hlsng{"S_%d"}\hldef{,} \hlnum{1}\hlopt{:}\hlnum{3}\hldef{),}
+              \hlkwc{transitionMatrix} \hldef{=} \hlkwd{t}\hldef{(P_abs),}
+              \hlkwc{name} \hldef{=} \hlsng{"orange_abs"}\hldef{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+  
+\begin{frame}[fragile]\frametitle{Show some info about the chain}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{summary}\hldef{(mc_abs)}
+\end{alltt}
+\begin{verbatim}
+## orange_abs  Markov chain that is composed by: 
+## Closed classes: 
+## S_1 
+## Recurrent classes: 
+## {S_1}
+## Transient classes: 
+## {S_2},{S_3}
+## The Markov chain is not irreducible 
+## The absorbing states are: S_1
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+  
+\begin{frame}[fragile]\frametitle{Plotting the chain}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{plot}\hldef{(mc_abs)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+  
+\maxFrameImage{FIGS/L14-DTMC-random-walk-absorbing-1.pdf}
+  
+\begin{frame}[fragile]\frametitle{Showing a realisation}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hldef{IC} \hlkwb{=} \hlkwd{rep}\hldef{(}\hlnum{0}\hldef{,} \hlkwd{dim}\hldef{(P_abs)[}\hlnum{1}\hldef{])}
+\hldef{IC[}\hlnum{3}\hldef{]} \hlkwb{=} \hlnum{1}
+\hldef{sol} \hlkwb{=} \hlkwd{DTMC}\hldef{(}\hlkwd{t}\hldef{(P_abs), IC,} \hlnum{10}\hldef{,} \hlkwc{trace}\hldef{=}\hlnum{TRUE}\hldef{)}
+\end{alltt}
+\begin{verbatim}
+## NULL
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
 
+\maxFrameImage{FIGS/L14-DTMC-random-walk-absorbing-realisation-1.pdf}
+
+\begin{frame}\frametitle{Additional information about absorbing chains}
+\code{canonicForm(mc\_abs)}
+\vfill
+\code{meanAbsorptionTime(mc\_abs)}
+\vfill
+\code{absorptionProbabilities(mc\_abs)}
+\vfill
+\code{hittingProbabilities(mc\_abs)}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Canonical form}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{canonicForm}\hldef{(mc_abs)}
+\end{alltt}
+\begin{verbatim}
+## orange_abs 
+##  A  3 - dimensional discrete Markov Chain defined by the following states: 
+##  S_1, S_2, S_3 
+##  The transition matrix  (by rows)  is defined as follows: 
+##     S_1 S_2 S_3
+## S_1 1.0   0 0.0
+## S_2 0.0   0 1.0
+## S_3 0.5   0 0.5
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Mean absorption time}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{meanAbsorptionTime}\hldef{(mc_abs)}
+\end{alltt}
+\begin{verbatim}
+## S_2 S_3 
+##   3   2
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Absorption probabilities}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{absorptionProbabilities}\hldef{(mc_abs)}
+\end{alltt}
+\begin{verbatim}
+##     S_1
+## S_2   1
+## S_3   1
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Hitting probabilities}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{hittingProbabilities}\hldef{(mc_abs)}
+\end{alltt}
+\begin{verbatim}
+##     S_1 S_2 S_3
+## S_1   1   0 0.0
+## S_2   1   0 1.0
+## S_3   1   0 0.5
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+  
 
 
 \end{document}

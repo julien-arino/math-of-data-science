@@ -817,22 +817,40 @@ If not, use
 \end{frame}
 
 \begin{frame}{Summary of the orange cat problem}
-    The transition matrix $P$ for states $\{S_1, S_2, S_3\}$ is:
-    
-    $$
+    \[
     P = 
     \begin{pmatrix}
     0.5 & 0 & 0.25 \\
     0 & 0.5 & 0.25 \\
     0.5 & 0.5 & 0.5
     \end{pmatrix}
-    $$
+    \]
     
     \vfill
+\begin{center}
+\begin{tikzpicture}[
+    ->, % All paths have arrows
+    >=Latex, % Use the nicer Latex arrow tip
+    node distance=2.5cm, % Distance between nodes
+    every path/.style={thick}
+]
+    \node[state,fill=punnettorange] (S1) at (0, 2) {$X^OX^O$};
+    \node[state,fill=punnettblack] (S2) at (-2, 0) {$X^oX^o$};
+    \node[state,fill=punnetttortie] (S3) at (2, 0) {$X^OX^o$};
+    \path (S1) edge [loop left] node[left] {$0.5$} (S1);
+    \path (S1) edge [bend left=10] node[above,sloped] {$0.5$} (S3);
+    \path (S2) edge [loop left] node[left] {$0.5$} (S2);
+    \path (S2) edge [bend left=10] node[above] {$0.5$} (S3);
+    \path (S3) edge [loop right] node[right] {$0.5$} (S3);
+    \path (S3) edge [bend left=10] node[sloped,below] {$0.25$} (S1);
+    \path (S3) edge [bend left=10] node[below] {$0.25$} (S2);
+\end{tikzpicture}
+\end{center}    
+\end{frame}
     
-    \textbf{Is this chain regular?}
+\begin{frame}{Is this chain regular?}
     \begin{itemize}
-        \item \textbf{Irreducible? Yes.} All states communicate.
+        \item \textbf{Irreducible? Yes.} All states communicate
             \begin{itemize}
                 \item $S_1 \to S_3 \to S_2$ (Path from $S_1$ to $S_2$)
                 \item $S_2 \to S_3 \to S_1$ (Path from $S_2$ to $S_1$)
@@ -875,9 +893,18 @@ This means $w_1 = w_2$. Using the constraint $w_1+w_2+w_3 = 1$:
 w_1 + (w_1) + (2w_1) = 1 \implies 4w_1 = 1 \implies w_1 = 0.25
 \]
 \vfill
-The stationary distribution is $w = \begin{pmatrix} 0.25 & 0.25 & 0.5 \end{pmatrix}^T$
+The stationary distribution is $\bw = (0.25, 0.25,0.5)^T$
 \end{frame}
 
+\begin{frame}{Interpreting the result}
+We find the stationary distribution $\bw = (0.25, 0.25,0.5)^T$
+\vfill
+This means that regardless of initial conditions, if we repeat the process enough times, we tend to that distribution
+\vfill
+This means 25\% of the females will be orange, 25\% black and 50\% tortoiseshell
+\vfill
+This is not what is observed in practice, but remember that our setup is quite specific
+\end{frame}
 
 
 
