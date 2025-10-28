@@ -370,18 +370,18 @@ To get a sense of that, we dump a few random rows
 \hldef{data_new[}\hlkwd{sort}\hldef{(}\hlkwd{unique}\hldef{(}\hlkwd{c}\hldef{(}\hlnum{1}\hldef{,}\hlkwd{sample}\hldef{(}\hlkwd{nrow}\hldef{(data_new),} \hlnum{4}\hldef{)))), ]}
 \end{alltt}
 \begin{verbatim}
-##                        GEOGRAPHY.NAME
-## 1                              Canada
-## 4967 Kitchener - Cambridge - Waterloo
-## 6328                      Thunder Bay
-## 6684                         Winnipeg
-## 8667             Abbotsford - Mission
-##                                   CHARACTERISTIC YEAR.S.   TOTAL FLAG_TOTAL
-## 1                      Population (in thousands)    1956 16081.0           
-## 4967 Population by single years of age: 45 years    2011  7335.0           
-## 6328                 % of four-person households    2001    15.3           
-## 6684 Population by single years of age: 26 years    2011 10335.0           
-## 8667 Population by single years of age: 95 years    2011    80.0
+##        GEOGRAPHY.NAME                                           CHARACTERISTIC
+## 1              Canada                                Population (in thousands)
+## 1898          Moncton              Population by single years of age: 82 years
+## 1971       Saint John                                    Population - % change
+## 6617         Manitoba            Non-official mother tongue: Panjabi (Punjabi)
+## 8131 British Columbia Population change by broad age groups: 65 years and over
+##           YEAR.S.   TOTAL FLAG_TOTAL
+## 1            1956 16081.0           
+## 1898         2011   490.0           
+## 1971 1996 to 2001    -2.4           
+## 6617         2011 10625.0           
+## 8131         2006    12.5
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -893,7 +893,7 @@ Access slots using @. For instance, the GA finds the coefficients
 \end{alltt}
 \begin{verbatim}
 ##            x1        x2
-## [1,] 2.992977 0.5033925
+## [1,] 2.999904 0.5000412
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -904,7 +904,7 @@ with fitness value (i.e., $\|\be\|$)
 \hlopt{-}\hldef{GA}\hlopt{@}\hlkwc{fitnessValue}
 \end{alltt}
 \begin{verbatim}
-## [1] 1.224754
+## [1] 1.224745
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
