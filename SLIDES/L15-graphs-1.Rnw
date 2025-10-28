@@ -12,7 +12,7 @@ lecture_number = "15"
 \date{Fall 202X}
 
 % Title of the lecture
-\title{Graphs -- Introduction (theory)}
+\title{Graphs -- Introduction (theory) -- 1}
 
 <<set-options,echo=FALSE,warning=FALSE,message=FALSE>>=
 # Source the code common to all lectures

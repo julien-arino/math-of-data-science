@@ -1,56 +1,35 @@
 \documentclass[aspectratio=169]{beamer}
 
-<<set-options,echo=FALSE,warning=FALSE,message=FALSE>>=
-# Load required libraries
-required_packages = c("dplyr", 
-                      "ggplot2",
-                      "igraph",
-                      "knitr", 
-                      "latex2exp",
-                      "magick",
-                      "pracma", 
-                      "readr", 
-                      "tidyr")
-for (p in required_packages) {
-  if (!require(p, character.only = TRUE)) {
-    install.packages(p, dependencies = TRUE)
-    require(p, character.only = TRUE)
-  }
-}
-# Prepare figure crop hook
-knitr::knit_hooks$set(crop = knitr::hook_pdfcrop)
-# Knitr options
-opts_chunk$set(echo = TRUE, 
-               warning = FALSE, 
-               message = FALSE,
-               crop = TRUE,
-               dev = c("pdf", "png"),
-               fig.width = 6, 
-               fig.height = 4, 
-               fig.path = "FIGS/graphs-",
-               fig.keep = "high",
-               fig.show = "hide")
+% Set lecture number for later use
+<<set-lecture-number,echo=FALSE>>=
+lecture_number = "16"
 @
 
+% Part common to all the lectures
+\subtitle{MATH 2740 -- Mathematics of Data Science -- Lecture \Sexpr{lecture_number}}
+\author{\texorpdfstring{Julien Arino\newline\url{julien.arino@umanitoba.ca}}{Julien Arino}}
+\institute{Department of Mathematics @ University of Manitoba}
+\date{Fall 202X}
+
+% Title of the lecture
+\title{Graphs -- Introduction (theory) -- 2}
+
+<<set-options,echo=FALSE,warning=FALSE,message=FALSE>>=
+# Source the code common to all lectures
+source("common-code.R")
+@
 
 <<set-slide-background,echo=FALSE,results='asis'>>=
-# Are we plotting for a dark background?
-plot_blackBG = FALSE
-if (plot_blackBG) {
-  bg_color = "black"
-  fg_color = "white"
-  input_setup = "\\input{slides-setup-blackBG.tex}"
-} else {
-  bg_color = "white"
-  fg_color = "black"
-  input_setup = "\\input{slides-setup-whiteBG.tex}"
-}
+# Are we plotting for a dark background? Setting is in common-code.R, but
+# cat command must run here.
 cat(input_setup)
 @
 
-\title{Graphs -- Introduction (theory)}
-\author{\texorpdfstring{Julien Arino\newline University of Manitoba\newline\url{julien.arino@umanitoba.ca}}{Julien Arino}}
-\date{}
+<<setup, include=FALSE>>=
+# Set global chunk options
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+@
+
 
 \begin{document}
 
@@ -63,156 +42,6 @@ cat(input_setup)
 \outlinepage{FIGS-slides-admin/Gemini_Generated_Image_duutxqduutxqduut.jpeg}
 
 
-%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%
-\section{Why use graphs/networks?}
-\newSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
-
-
-\begin{frame}{Graphs versus networks}
-	Mostly a terminology difference:
-	\begin{itemize}
-	\item graphs in the mathematical world
-	\item networks elsewhere
-	\end{itemize}
-	\vfill
-	I will mostly say \emph{graphs} (this is a math course) but might oscillate
-	\vfill
-	Beware: language is not consistent, so make sure you read the definitions at the start of whatever source you are using
-\end{frame}
-
-\begin{frame}{The genesis of graphs -- Euler's bridges of K\"onigsberg}
-	Cross the 7 bridges in a single walk without recrossing any of them?
-	\begin{center}
-	\includegraphics[angle=90,height=.75\textheight]{FIGS_slides/bridge_color}
-	\end{center}
-\end{frame}
-
-\begin{frame}{The genesis of graphs -- Euler's bridges of K\"onigsberg}
-	Cross the 7 bridges in a single walk without recrossing any of them?
-	\begin{center}
-	\includegraphics[height=.75\textheight]{FIGS_slides/bridge_color_with_graph}
-	\end{center}
-\end{frame}
-
-\begin{frame}{The genesis of graphs -- Euler's bridges of K\"onigsberg}
-	Cross the 7 bridges in a single walk without recrossing any of them?
-	\begin{center}
-		\includegraphics[height=.5\textheight]{FIGS_slides/bridge_color_with_graph}
-		\end{center}
-	\begin{block}{Mathematical problem}
-	Is it possible to find a \emph{trail} containing all \emph{edges} of the graph?
-	\end{block}
-\end{frame}
-
-\begin{frame}{Finding a cycle with all vertices}
-	A salesperson must visit a couple of cities for their job. Is it possible for them to plan a round trip using highways enabling tehm to visit each specified city exactly once?
-	\begin{center}
-	\includegraphics[angle=90,width=.3\textwidth]{FIGS_slides/florida}
-	\end{center}
-	\begin{itemize}
-	\item vertices correspond to cities
-	\item two vertices are connected iff a highway connects the corresponding cities and does not pass through any other city.
-	\end{itemize}
-	\begin{block}{Mathematical problem}
-	Is it possible to find a cycle containing all graph vertices?
-	\end{block}
-\end{frame}
-
-\begin{frame}{How far is it to drive through $n$ cities?}
-	What is the minimal length of driving needed to drive through $n$ cities?
-	\begin{center}
-	\includegraphics[angle=90,width=.35\textwidth]{FIGS_slides/florida}
-	\end{center}
-	\begin{itemize}
-	\item vertices correspond to the cities
-	\item all cities are connected; each edge has a value assigned to it
-	\end{itemize}
-	\begin{block}{Mathematical problem}
-	What is the minimal spanning tree associated to the graph?
-	\end{block}
-\end{frame}
-
-
-\begin{frame}{Graphs/networks encode relations}
-	Graphs are used in a variety of contexts because they encode \emph{relations} between objects
-	\vfill
-	Many objects in the world have relations... so graphs are quite easy to find
-	\vfill
-	We will see many examples later, for now we cover the mathematical background
-\end{frame}
-
-
-
-\begin{frame}{Graphs vs digraphs vs multigraphs vs multidigraphs vs ...}
-	Name-wise and notation-wise, this domain is a bit of a mess
-	\vfill
-	\begin{itemize}
-		\item The vertex set $V$ is essentially the only constant
-		\item \emph{Undirected graph} $G=(V,E)$, where $E$ are the \emph{edges}
-		\item \emph{Undirected multigraph} $G_M=(V,E)$
-		\item \emph{Directed graph} (or \emph{digraph}) $G=(V,A)$, where $A$ are the \emph{arcs}
-		\item \emph{Directed multigraph} (or \emph{multidigraph}) $G_M=(V,A)$
-		\item Any of the above is called a \emph{graph} and is denoted $G=(V,X)$, when we seek generality
-	\end{itemize}
-	\vfill
-And just to confuse the whole thing more: we often say \emph{graph} for \emph{unoriented graph}
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%
-\section{Binary relations}
-\newSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
-
-
-\begin{frame}\frametitle{Binary relation}
-	\begin{definition}[Binary relation]
-	\begin{itemize}
-	\item A \defword{binary relation} is an arbitrary association of elements of one set with elements of another (maybe the same) set
-	\item  A binary relation over the sets $X$ and $Y$ is defined as a subset of the Cartesian product $X\times Y =\{(x,y)| x\in X , y\in Y\}$
-	\item $(x,y)\in R$ is read ``$x$ is $R$-related to $y$'' and is denoted $xRy$
-	\item If $(x,y)\not\in R$, we write ``not $x R y$'' or $x\cancel{R} y$
-	\end{itemize}
-	\end{definition}
-\end{frame}
-	
-\begin{frame}
-	\begin{definition}[Properties of binary relations]
-		A binary relation $R$ over a set $X$ is
-	\begin{itemize}
-	\item \defword{Reflexive} if $\forall x\in X$, $xRx$
-	\item \defword{Irreflexive} if there does not exist $x\in X$ such that $xRx$
-	\item \defword{Symmetric} if $xRy \Rightarrow yRx$
-	\item \defword{Asymmetric} if $xRy \Rightarrow $ $y\cancel R x$
-	\item \defword{Antisymmetric} if $xRy$ and $yRx$ $\Rightarrow$ $x=y$
-	\item \defword{Transitive} if $xRy$ and $yRz$ $\Rightarrow$  $xRz$
-	\item \defword{Total} (or \defword{complete}) if $\forall x, y\in X$, $x R y$ or $y R x$
-	\end{itemize}
-	\end{definition}
-\end{frame}
-	
-	
-\begin{frame} 
-	\begin{definition}[Equivalence relation]
-	 A relation that is reflexive ($\forall x\in X$, $xRx$), symmetric ($xRy \Rightarrow yRx$) and transitive ($xRy$ and $yRz$ $\Rightarrow$  $xRz$) is an \defword{equivalence relation}
-	\end{definition}
-	\vfill
-	\begin{definition}[Partial order]
-	 A relation that is reflexive ($\forall x\in X$, $xRx$), antisymmetric ($xRy$ and $yRx$ $\Rightarrow$ $x=y$) and transitive ($xRy$ and $yRz$ $\Rightarrow$  $xRz$) is a \defword{partial order}
-	\end{definition}
-	\vfill
-	\begin{definition}[Total order]
-	A partial order that is total ($\forall x, y\in X$, $x R y$ or $y R x$) is a \defword{total order}
-	\end{definition}
-\end{frame}
-	
-
-
-
 %%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%
@@ -220,379 +49,6 @@ And just to confuse the whole thing more: we often say \emph{graph} for \emph{un
 \section{Undirected graphs}
 \newSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
 
-
-\begin{frame}\frametitle{The \code{igraph} library}
-Throughout these slides, we use the package \code{igraph}
-\vfill
-I illustrate the functions that can be used to study some of the mathematical notions I introduce
-\vfill
-I use mostly examples from the \code{igraph} documentation
-\end{frame}
-
-
-\subsection{Undirected graph}
-\newSubSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
-
-
-\begin{frame}{Graph}
-	Intuitively: a graph is a set of points, and a set of relations between the points
-	\vfill
-	The points are called the \emph{vertices} of the graph and the relations are the \emph{edges} of the graph
-	\vfill
-	We can also think of the relations as being one directional, in which case the relations are the \emph{arcs} of the digraph (a contraction of ``directed graph'')
-\end{frame}
-
-
-\begin{frame}\frametitle{Graph, vertex and edge} 
-	\begin{definition}[Graph]
-	An \defword{undirected graph} is a pair $G=(V,E)$ of sets such that
-	\begin{itemize}
-	\item $V$ is a set of points:  $V=\{v_1,\ldots,v_p\}$
-	\item $E$ is a set of 2-element subsets of $V$: $E=\{\{v_i,v_j\},\{v_i,v_k\},\ldots,\{v_n,v_p\}\}$ or $E=\{v_iv_j,v_iv_k,\ldots,v_nv_p\}$
-	\end{itemize}
-	\end{definition}
-	\begin{definition}[Vertex]
-	The elements of $V$ are the \defword{vertices} (or nodes, or points) of the graph $G$.
-	$V$ (or $V(G)$) is the vertex set of the graph $G$
-	\end{definition}
-	\begin{definition}[Edge]
-	The elements of $E$ are the \defword{edges} (or lines) of the graph $G$.
-	$E$ (or $E(G)$) is the edge set of the graph $G$
-	\end{definition}
-\end{frame}
-
-
-\begin{frame}[fragile]\frametitle{Setting up graphs in \code{igraph}}
-<<setup-graph-1>>=
-G <- make_empty_graph()
-G <- make_graph(edges = c(1, 2, 1, 5), n = 10, 
-                directed = FALSE)
-G <- make_graph("Zachary")
-plot(G, main = "Data on a Karate club")
-@
-\end{frame}
-
-\maxFrameImage{\Sexpr{knitr::fig_chunk("setup-graph-1", "pdf")}}
-
-\begin{frame}\frametitle{Order and Size}
-	\begin{definition}[Order of a graph]
-	The number of vertices in $G$ is the \defword{order} of $G$. Using the notation $|V(G)|$ for the \emph{cardinality} of $V(G)$,
-	$$|V(G)|=\textrm{order of G}$$
-	\end{definition}
-	\vfill
-	\begin{definition}[Size of a graph]
-	The number of edges in $G$ is the \defword{size} of $G$,
-	$$|E(G)|=\textrm{size of G}$$
-	\end{definition}
-	\vfill
-	\begin{itemize}
-	\item A graph having order $p$ and size $q$ is called a $(p,q)-$graph
-	\item A graph is finite if $|V(G)|<\infty$
-	\end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]\frametitle{Some simple measures}
-<<graph-measures-1>>=
-V(G)
-head(E(G))
-gorder(G)
-gsize(G)
-@
-\end{frame}
-
-\begin{frame}\frametitle{Incident -- Adjacent}
-	\begin{definition}[Incident]
-	\begin{itemize}
-	\item A vertex $v$ is \defword{incident} with an edge $e$ if $v\in e$; then $e$ is an edge at $v$
-	\item If $e=uv\in E(G)$, then $u$ and $v$ are each incident with $e$
-	\item The two vertices incident with an edge are its ends
-	\item An edge $e=uv$ is incident with both vertices $u$ and $v$
-	\end{itemize}
-	\end{definition}
-	\vfill
-	\begin{definition}[Adjacent]
-	\begin{itemize}
-	\item Two vertices $u$ and $v$ are \defword{adjacent} in a graph $G$ if $uv\in E(G)$
-	\item If $uv$ and $uw$ are distinct edges (i.e. $v\not=w$) of a graph $G$, then $uv$ and $uw$ are adjacent edges
-	\end{itemize}
-	\end{definition}
-\end{frame}
-
-
-\begin{frame}[fragile]\frametitle{Incident vertices}
-<<incident-vertices>>=
-incident(G, 1)
-incident_edges(G, c(1, 2))
-@
-\end{frame}
-
-\begin{frame}[fragile]\frametitle{Adjacent vertices}
-<<adjacent-vertices>>=
-adjacent_vertices(G, v = 1)
-adjacent_vertices(G, v = c(1, 2))
-@
-\end{frame}
-
-
-\begin{frame}
-	\begin{definition}[Multiple edge]
-	\defword{Multiple edges} are two or more edges connecting the same two vertices within a multigraph
-	\end{definition}
-	\vfill
-	\begin{definition}[Loop]
-	A \defword{loop} is an edge with both the same ends; \emph{e.g.} $\{u,u\}$ is a loop
-	\end{definition}
-	\vfill
-	\begin{definition}[Simple graph]
-		A \defword{simple graph} is a graph which contains no loops or multiple edges
-	\end{definition}
-	\vfill
-	\begin{definition}[Multigraph]
-		A \defword{multigraph} is a graph which can contain multiple edges or loops
-	\end{definition}
-\end{frame}
-
-
-\begin{frame}[fragile]\frametitle{Testing for these properties}
-<<multiple-loop-simple-multigraph>>=
-any_multiple(G)
-any_loop(G)
-is_simple(G)
-@
-\end{frame}
-
-
-
-\begin{frame}\frametitle{Graph and binary relations}
-A simple graph $G$ can be defined in term of a vertex set $V$ and a binary relation over $V$ that is
-	\begin{itemize}
-		\item irreflexive ($\forall u\in V$, $u\cancel Ru$)
-		\item symmetric ($\forall u,v\in V$, $uRv\implies vRu$)
-	\end{itemize}
-	\vfill
-	The set of edges $E(G)$ is the set of symmetric pairs in $R$
-	\vfill
-	If $R$ is not irreflexive, the graph is not simple
-\end{frame}
-
-
-\subsection{Degree of a vertex}
-\newSubSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
-
-\begin{frame}
-	\begin{definition}[Degree of a vertex]
-	Let $v$ be a vertex of $G=(V,E)$.
-	\begin{itemize}
-	\item The number of edges of $G$ incident with $v$ is the \defword{degree} of $v$ in $G$
-	\item The number of edges of $G$ at $v$ is the \defword{degree} of $v$ in $G$
-	\item The degree of $v$ in $G$ is noted $d_G(v)$ or $deg_G(v)$
-	\end{itemize}
-	\end{definition}
-	\vfill
-	\begin{theorem}\label{th:sum-degrees}
-	Let $G$ be a $(p,q)-$graph with vertices $v_1$, $\dots$, $v_p$, then
-	\[
-		\sum_{i=1}^{p}d_G(v_i)=2q
-	\]
-	\end{theorem}
-\end{frame}
-
-\begin{frame}[fragile]\frametitle{Degree}
-<<vertex-degrees-undirected>>=
-degree(G)
-degree_distribution(G)
-plot(degree_distribution(G),
-     type = "b",
-     xlab = "Degree", ylab = "Frequency",
-     main = "Degree distribution of the Karate graph")
-@
-\end{frame}
-
-\maxFrameImage{\Sexpr{knitr::fig_chunk("vertex-degrees-undirected", "pdf")}}
-
-
-
-\begin{frame}
-\begin{definition}[{Odd vertex}]
-A vertex is an \defword{odd vertex} is its degree is odd
-\end{definition}
-\vfill
-\begin{definition}[{Even vertex}]
-A vertex is called \defword{even vertex} is its degree is even
-\end{definition}
-\vfill
-\begin{theorem}\label{th:even-nb-odd-vertices}
-Every graph contains an even number of odd vertices
-\end{theorem}
-\end{frame}
-
-\begin{frame}[fragile]\frametitle{Illustration of recent results}
-Theorem~\ref{th:sum-degrees} states that a $(p,q)-$graph has $\sum_{i=1}^{p}d_G(v_i)=2q$
-<<checking-sum-degrees>>=
-sum(degree(G)) == 2*length(E(G))
-@
-\vfill
-Theorem~\ref{th:even-nb-odd-vertices} states that every graph contains an even number of odd vertices
-<<checking-even-nb-odd-degrees>>=
-sum(pracma::mod(degree(G),2))
-@
-(\code{mode(x,2)} returns 1 if $x$ is odd so \code{sum} counts how many are odd)
-\end{frame}
-
-\begin{frame}[fragile]{Regular graph}
-\begin{definition}[{Regular graph}]
-	If all the vertices of $G$ have the same degree $k$, then the graph $G$ is $k$-regular
-\end{definition}
-\vfill
-<<check-karate-graph-regular>>=
-length(unique(degree(G))) == 1
-@
-\end{frame}
-
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Isomorphic graphs}
-\newSubSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
-
-\begin{frame} \frametitle{Isomorphic graphs} 
-\begin{definition}[Isomorphic graphs]
-Let $G_1=(V(G_1),E(G_1))$ and $G_2=(V(G_2),E(G_2))$ be two graphs.
-$G_1$ and $G_2$ are \defword{isomorphic} if there exists an isomorphism $\phi$ from $G_1$ to $G_2$, that is defined as an injective mapping $\phi:\; V(G_1) \rightarrow V(G_2)$ such that two vertices $u_1$ and $v_1$ are adjacent in $G_1$ $\iff$ the vertices $\phi(u_1)$ and $\phi(v_1)$ are adjacent in $G_2$
-\end{definition}
-\end{frame}
- 
- 
- 
-\begin{frame}
-If $\phi$ is an isomorphism from $G_1$ to $G_2$, then the inverse mapping $\phi ^{-1}$ from $V(G_2)$ to $V(G_1)$ also satisfies the definition of an isomorphism.
-As a consequence, if $G_1$ and $G_2$ are isomorphic graphs, then
-\begin{itemize}
-\item $G_1$ is isomorphic to $G_2$
-\item $G_2$ is isomorphic to $G_1$
-\end{itemize}
-\vfill
-\begin{theorem}
-The relation ``is isomorphic to'' is an equivalence relation on the set of all graphs
-\end{theorem}
-\vfill
-\begin{theorem}
-If $G_1$ and $G_2$ are isomorphic graphs, then the degrees of vertices of $G_1$ are exactly the degrees of vertices of $G_2$
-\end{theorem}
-\end{frame}
-
-\begin{frame}[fragile]\frametitle{Testing isomorphicity}
-Create two isomorphic graphs by permuting the vertices of the first, then test if they are isomorphic
-\vfill
-<<two-isomorphic-graphs>>=
-g1 <- sample_pa(30, m = 2, directed = FALSE)
-g2 <- permute(g1, sample(vcount(g1)))
-# should be TRUE
-isomorphic(g1, g2)
-@
-\end{frame}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Subgraphs, unions of graphs}
-\newSubSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
-
-\begin{frame}\frametitle{Subgraph}
-\begin{definition}[Subgraph]
-Let $G=(V,E)$ be a graph.
-A graph $H=(V(H),E(H))$ is a \defword{subgraph} of $G$ if $V(H)\subseteq V$ and $E(H)\subseteq E$
-\end{definition}
-\end{frame}
-
-\begin{frame}[fragile]\frametitle{Extracting a subgraph}
-<<extract-subgraph>>=
-G_sub = induced_subgraph(G, c(1:5, 11:14))
-plot(G_sub, main = "A subgraph of the Karate graph")
-@
-\end{frame}
-
-\maxFrameImage{\Sexpr{knitr::fig_chunk("extract-subgraph", "pdf")}}
-
-\begin{frame}[fragile]\frametitle{Naming vertices}
-Note that vertices (and as a consequence, edges) will be relabelled, so \code{G\_sub} has vertices labelled 1 to 9
-\vfill
-You can name vertices if you want to avoid this
-<<subgraph-named-vertices>>=
-V(G)$name = 1:length(V(G))
-G_sub = induced_subgraph(G, c(1:5, 11:14))
-plot(G_sub, labels = V(G)$name,
-     main = "Subgraph of the Karate graph preserving names")
-@
-\end{frame}
-
-\maxFrameImage{\Sexpr{knitr::fig_chunk("subgraph-named-vertices", "pdf")}}
-
-
-\begin{frame}
-Let $G_1=(V_1,E_1)$ and $G_2=(V_2,E_2)$ be two graphs
-\begin{definition}[{Union of $G_1$ and $G_2$}]
-$G_1\cup G_2=(V_1\cup V_2,E_1\cup E_2)$
-\end{definition}
-\begin{definition}[{Intersection of $G_1$ and $G_2$}]
-$G_1\cap G_2=(V_1\cap V_2,E_1\cap E_2)$
-\end{definition}
-\begin{definition}[{Disjoint graphs}]
-If $G_1\cap G_2=(\emptyset,\emptyset)= \emptyset$ (empty graph) then $G_1$ and $G_2$ are \defword{disjoint}
-\end{definition}
-\begin{definition}[{Complement of $G_1$}]
-The \defword{complement} $\bar G_1$ of $G_1$ is the graph on $V_1$, with the edge set $E(\bar G_1)=[V_1]^2\backslash E_1$ ($e\in E(\bar G_1)$ $\iff$ $e\not \in E_1$)
-\end{definition}
-\end{frame}
-
-
-\begin{frame}[fragile]\frametitle{Union}
-<<>>=
-net1 <- graph_from_literal(
-  D - A:B:F:G, A - C - F - A, B - E - G - B, A - B, F - G,
-  H - F:G, H - I - J
-)
-net2 <- graph_from_literal(D - A:F:Y, B - A - X - F - H - Z, F - Y)
-print_all(net1 %u% net2)
-@
-\end{frame}
-
-<<plot-union-graphs-net1,echo=FALSE>>=
-plot(net1)
-@
-<<plot-union-graphs-net2,echo=FALSE>>=
-plot(net2)
-@
-<<plot-union-graphs-net1Unet2,echo=FALSE>>=
-plot(net1 %u% net2)
-@
-
-\begin{frame}
-\centering
-\includegraphics[width=0.25\textwidth]{\Sexpr{knitr::fig_chunk("plot-union-graphs-net1", "pdf")}}
-$\bigcup$
-\includegraphics[width=0.25\textwidth]{\Sexpr{knitr::fig_chunk("plot-union-graphs-net2", "pdf")}}
-$\implies$
-\includegraphics[width=0.3\textwidth]{\Sexpr{knitr::fig_chunk("plot-union-graphs-net1Unet2", "pdf")}}
-\end{frame}
-
-\begin{frame}[fragile]\frametitle{Intersection of two graphs}
-<<plot-intersection-graphs-net1Nnet2>>=
-G_inter = net1 %s% net2
-plot(G_inter)
-@
-\end{frame}
-
-\begin{frame}
-\centering
-\includegraphics[width=0.25\textwidth]{\Sexpr{knitr::fig_chunk("plot-union-graphs-net1", "pdf")}}
-$\bigcap$
-\includegraphics[width=0.25\textwidth]{\Sexpr{knitr::fig_chunk("plot-union-graphs-net2", "pdf")}}
-$\implies$
-\includegraphics[width=0.3\textwidth]{\Sexpr{knitr::fig_chunk("plot-intersection-graphs-net1Nnet2", "pdf")}}
-\end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%
@@ -749,7 +205,7 @@ The \defword{length of a cycle} is its number of edges
 \begin{frame}{Remember Euler's bridges of K\"onigsberg?}
 	Cross the 7 bridges in a single walk without recrossing any of them?
 	\begin{center}
-	\includegraphics[width=.7\textwidth]{FIGS_slides/bridge_color_with_graph}
+	\includegraphics[width=.7\textwidth]{FIGS/bridge_color_with_graph}
 	\end{center}
 	\begin{block}{Mathematical problem}
 		Is the (multi)graph traversable? Eulerian?
@@ -981,7 +437,7 @@ where $\Delta (G)$ is the maximum degree of $G$
 \begin{frame}\frametitle{``Real life'' problem}
 What is the minimal number of colours to colour all states in the map so that two adjacent states have different colours?
 \begin{center}
-\includegraphics[width=.85\textwidth]{FIGS_slides/USA-4-colours}
+\includegraphics[width=.85\textwidth]{FIGS/4-colours-Europe}
 \end{center}\end{frame}
 
 \begin{frame}\frametitle{``Real life'' problem}
