@@ -87,27 +87,25 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 \end{frame}
 
 \begin{frame}{Finding a cycle with all vertices}
-	A salesperson must visit a couple of cities for their job. Is it possible for them to plan a round trip using highways enabling tehm to visit each specified city exactly once?
+Salesperson must visit some cities (vertices) for their job. Can they plan a round trip using trains enabling them to visit each specified city exactly once?
 	\begin{center}
-	\includegraphics[angle=90,width=.3\textwidth]{FIGS/florida}
+	\includegraphics[width=.25\textwidth]{FIGS/RFF-map}
 	\end{center}
 	\begin{itemize}
-	\item vertices correspond to cities
-	\item two vertices are connected iff a highway connects the corresponding cities and does not pass through any other city.
+	\item 2 vertices are connected iff a line connects the cities and does not pass through any other city
 	\end{itemize}
 	\begin{block}{Mathematical problem}
 	Is it possible to find a cycle containing all graph vertices?
 	\end{block}
 \end{frame}
 
-\begin{frame}{How far is it to drive through $n$ cities?}
-	What is the minimal length of driving needed to drive through $n$ cities?
+\begin{frame}{How far is it to ``train'' through $n$ cities?}
+	What is the minimal length of train travel needed to visit $n$ cities (vertices)?
 	\begin{center}
-	\includegraphics[angle=90,width=.35\textwidth]{FIGS/florida}
+	\includegraphics[width=.3\textwidth]{FIGS/RFF-map}
 	\end{center}
 	\begin{itemize}
-	\item vertices correspond to the cities
-	\item all cities are connected; each edge has a value assigned to it
+	\item all cities are connected; each edge has a value assigned to it (the distance)
 	\end{itemize}
 	\begin{block}{Mathematical problem}
 	What is the minimal spanning tree associated to the graph?
