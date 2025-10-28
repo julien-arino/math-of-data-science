@@ -266,7 +266,7 @@ R=\begin{pmatrix}
 \qquad
 Q=\begin{pmatrix}
 0 & 0\\
-0 & 1/2
+1 & 1/2
 \end{pmatrix}
 \]
 We have
@@ -277,19 +277,25 @@ We have
 \end{pmatrix}
 -\begin{pmatrix}
 0 & 0\\
-0 & 1/2
+1 & 1/2
 \end{pmatrix}
 =\begin{pmatrix}
 1 & 0\\
-0 & 1/2
+-1 & 1/2
 \end{pmatrix}
 \]
 so the fundamental matrix is
 \[
 N=(\mathbb{I}_2-Q)^{-1}=
+2
+\begin{pmatrix}
+1/2 & 0 \\
+1 & 1
+\end{pmatrix}
+=
 \begin{pmatrix}
 1 & 0 \\
-0 & 2
+2 & 2
 \end{pmatrix}
 \]
 \end{frame}
@@ -301,13 +307,13 @@ Fundamental matrix, whose $(i,j)$ entry is the average number of visits to the $
 N=
 \begin{pmatrix}
 1 & 0 \\
-0 & 2
+2 & 2
 \end{pmatrix}
 \]
 \vfill
 Average number of steps before absorption (i.e., only orange females) if we start in a transient state is
 \[
-T=\nbOne^TN=(1,2)
+T=\nbOne^TN=(3,2)
 \]
 \vfill
 Probability of eventually entering the $i$th absorbing state if we start in the $j$th transient state
@@ -318,11 +324,11 @@ B=RN=
 \end{pmatrix}
 \begin{pmatrix}
 1 & 0 \\
-0 & 2
+1 & 2
 \end{pmatrix}
 =
 \begin{pmatrix}
-0 & 1
+1 & 1
 \end{pmatrix}
 \]
 \end{frame}
