@@ -164,6 +164,7 @@
 \setbeamercolor{block title}{use=structure,fg=structure.fg,bg=structure.fg!40!bg}
 \setbeamercolor{block body}{parent=normal text,use=block title,bg=block title.bg!20!bg}
 
+% Regular definition
 \BeforeBeginEnvironment{definition}{%
 	\setbeamercolor{block title}{fg=black,bg=yellow!20!white}
 	\setbeamercolor{block body}{fg=black, bg=yellow!05!white}
@@ -172,6 +173,16 @@
 	\setbeamercolor{block title}{use=structure,fg=structure.fg,bg=structure.fg!20!bg}
 	\setbeamercolor{block body}{parent=normal text,use=block title,bg=block title.bg!50!bg, fg=black}
 }
+% Less important definition
+\BeforeBeginEnvironment{minordefinition}{%
+	\setbeamercolor{block title}{fg=black,bg=black!15!white}
+	\setbeamercolor{block body}{fg=black, bg=black!05!white}
+}
+\AfterEndEnvironment{minordefinition}{
+	\setbeamercolor{block title}{use=structure,fg=structure.fg,bg=structure.fg!20!bg}
+	\setbeamercolor{block body}{parent=normal text,use=block title,bg=block title.bg!50!bg, fg=black}
+}
+% Important theorem (red)
 \BeforeBeginEnvironment{importanttheorem}{%
 	\setbeamercolor{block title}{fg=black,bg=red!20!white}
 	\setbeamercolor{block body}{fg=black, bg=red!05!white}

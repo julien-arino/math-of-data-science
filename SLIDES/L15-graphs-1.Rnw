@@ -178,13 +178,13 @@ And just to confuse the whole thing more: we often say \emph{graph} for \emph{un
 	 A relation that is reflexive ($\forall x\in X$, $xRx$), symmetric ($xRy \Rightarrow yRx$) and transitive ($xRy$ and $yRz$ $\Rightarrow$  $xRz$) is an \defword{equivalence relation}
 	\end{definition}
 	\vfill
-	\begin{definition}[Partial order]
+	\begin{minordefinition}[Partial order]
 	 A relation that is reflexive ($\forall x\in X$, $xRx$), antisymmetric ($xRy$ and $yRx$ $\Rightarrow$ $x=y$) and transitive ($xRy$ and $yRz$ $\Rightarrow$  $xRz$) is a \defword{partial order}
-	\end{definition}
+	\end{minordefinition}
 	\vfill
-	\begin{definition}[Total order]
+	\begin{minordefinition}[Total order]
 	A partial order that is total ($\forall x, y\in X$, $x R y$ or $y R x$) is a \defword{total order}
-	\end{definition}
+	\end{minordefinition}
 \end{frame}
 	
 
@@ -361,17 +361,16 @@ A simple graph $G$ can be defined in term of a vertex set $V$ and a binary relat
 	Let $v$ be a vertex of $G=(V,E)$.
 	\begin{itemize}
 	\item The number of edges of $G$ incident with $v$ is the \defword{degree} of $v$ in $G$
-	\item The number of edges of $G$ at $v$ is the \defword{degree} of $v$ in $G$
 	\item The degree of $v$ in $G$ is noted $d_G(v)$ or $deg_G(v)$
 	\end{itemize}
 	\end{definition}
 	\vfill
-	\begin{theorem}\label{th:sum-degrees}
+	\begin{importanttheorem}\label{th:sum-degrees}
 	Let $G$ be a $(p,q)-$graph with vertices $v_1$, $\dots$, $v_p$, then
 	\[
 		\sum_{i=1}^{p}d_G(v_i)=2q
 	\]
-	\end{theorem}
+	\end{importanttheorem}
 \end{frame}
 
 \begin{frame}[fragile]\frametitle{Degree}
@@ -398,9 +397,9 @@ A vertex is an \defword{odd vertex} is its degree is odd
 A vertex is called \defword{even vertex} is its degree is even
 \end{definition}
 \vfill
-\begin{theorem}\label{th:even-nb-odd-vertices}
+\begin{importanttheorem}\label{th:even-nb-odd-vertices}
 Every graph contains an even number of odd vertices
-\end{theorem}
+\end{importanttheorem}
 \end{frame}
 
 \begin{frame}[fragile]\frametitle{Illustration of recent results}
@@ -435,10 +434,10 @@ length(unique(degree(G))) == 1
 \newSubSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
 
 \begin{frame} \frametitle{Isomorphic graphs} 
-\begin{definition}[Isomorphic graphs]
+\begin{minordefinition}[Isomorphic graphs]
 Let $G_1=(V(G_1),E(G_1))$ and $G_2=(V(G_2),E(G_2))$ be two graphs.
 $G_1$ and $G_2$ are \defword{isomorphic} if there exists an isomorphism $\phi$ from $G_1$ to $G_2$, that is defined as an injective mapping $\phi:\; V(G_1) \rightarrow V(G_2)$ such that two vertices $u_1$ and $v_1$ are adjacent in $G_1$ $\iff$ the vertices $\phi(u_1)$ and $\phi(v_1)$ are adjacent in $G_2$
-\end{definition}
+\end{minordefinition}
 \end{frame}
  
  
