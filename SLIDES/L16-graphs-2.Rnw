@@ -33,6 +33,10 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 
 \begin{document}
 
+<<load-Zachary-graph,echo=FALSE>>=
+G_Z <- make_graph("Zachary")
+@
+
 % Set up cross-references and counter persistence
 \setcounter{theorem}{30}
 
@@ -95,9 +99,9 @@ A graph is \defword{connected}\index{connected graph} if every two vertices of $
 
 
 \begin{frame}{Vertex deletion \& cut vertices}
-\begin{definition}[{Vertex deletion}]
+\begin{minordefinition}[{Vertex deletion}]
 If $v\in V(G)$ is a vertex of $G$, the graph $G-v$ is the graph formed from $G$ by removing $v$ and all edges incident with $v$
-\end{definition}
+\end{minordefinition}
 \vfill
 \begin{definition}[{Cut-vertices}]
 	Let $G$ be a connected graph. Then $v$ is a \defword{cut-vertex} $G$ if $G-v$ is disconnected
@@ -106,9 +110,9 @@ If $v\in V(G)$ is a vertex of $G$, the graph $G-v$ is the graph formed from $G$ 
 
 
 \begin{frame}{Edge deletion \& bridges}
-\begin{definition}[{Edge deletion}]
+\begin{minordefinition}[{Edge deletion}]
 	If $e$ is an edge of $G$, the graph $G-e$ is the graph formed from $G$ by removing $e$ from $G$
-\end{definition}
+\end{minordefinition}
 \vfill
 \begin{definition}[{Bridge}]
 An edge $e$ in a connected graph $G$ is a \defword{bridge} if $G-e$ is disconnected
@@ -119,6 +123,8 @@ Let $G$ be a connected graph. An edge $e$ of $G$ is a bridge of $G$ $\iff$ $e$ d
 \end{theorem}
 (For \emph{cycle}, see Definition~\ref{def:cycle} later)
 \end{frame}
+
+ 
 
 
 %\begin{frame}\frametitle{Undirected network}
@@ -165,7 +171,7 @@ The sets of vertices and edges determined by a trail is a subgraph
 
 \begin{frame}\frametitle{Distance between two vertices}
 \begin{definition}[{Distance between two vertices}]
-The \defword{distance} $d(u,v)$ in $G=(V,E)$ between two vertices $u$ and $v$ is the length of the shortest path linking $u$ and $v$ in $G$
+The (\defword{geodesic}) \defword{distance} $d(u,v)$ in $G=(V,E)$ between two vertices $u$ and $v$ is the length of the shortest path linking $u$ and $v$ in $G$
 \vskip0.2cm
 If no such path exists, we assume $d(u,v)=\infty$
 \end{definition}
@@ -187,7 +193,7 @@ The \defword{length of a cycle} is its number of edges
 \end{frame}
 
 
-\begin{frame}
+\begin{frame}{Eulerian trails and circuits}
 \begin{definition}[{Eulerian trail}]
 	A walk in an undirected multigraph $M$ that uses each edge \textbf{exactly once} is a \defword{Eulerian trail} of $M$
 \end{definition}
@@ -231,30 +237,30 @@ The \defword{length of a cycle} is its number of edges
 
 
 
-\begin{frame}
-	\frametitle{Fleury's algorithm to find a Eulerian \emph{trail}}
-	\framesubtitle{For a connected graph with exactly 2 odd vertices}
-\begin{itemize}
-	\item Start at one of the odd vertices
-	\item Marking your path as you move from vertex to vertex, travel along any edges you wish, but DO NOT travel along an edge that is a bridge for the graph formed by the EDGES THAT HAVE YET TO BE TRAVELED -- unless you have to
-	\item Continue until every edge has been traveled
-\end{itemize}
-RESULT: a Eulerian trail
-\end{frame}
-
-
-\begin{frame}
-	\frametitle{Fleury's algorithm to find a Eulerian \emph{circuit}}
-	\framesubtitle{For a connected graph with no odd vertices}
-
-	\begin{itemize}
-	\item Pick any vertex as a starting point
-	\item Marking your path as you move from vertex to vertex, travel along any edges you wish, but DO NOT travel along an edge that is a bridge for the graph formed by the EDGES THAT HAVE YET TO BE TRAVELED -- unless you have to
-	\item Continue until you return to your starting point
-\end{itemize}
-RESULT: a Eulerian circuit
-\end{frame}
-
+% \begin{frame}
+% 	\frametitle{Fleury's algorithm to find a Eulerian \emph{trail}}
+% 	\framesubtitle{For a connected graph with exactly 2 odd vertices}
+% \begin{itemize}
+% 	\item Start at one of the odd vertices
+% 	\item Marking your path as you move from vertex to vertex, travel along any edges you wish, but DO NOT travel along an edge that is a bridge for the graph formed by the EDGES THAT HAVE YET TO BE TRAVELED -- unless you have to
+% 	\item Continue until every edge has been traveled
+% \end{itemize}
+% RESULT: a Eulerian trail
+% \end{frame}
+% 
+% 
+% \begin{frame}
+% 	\frametitle{Fleury's algorithm to find a Eulerian \emph{circuit}}
+% 	\framesubtitle{For a connected graph with no odd vertices}
+% 
+% 	\begin{itemize}
+% 	\item Pick any vertex as a starting point
+% 	\item Marking your path as you move from vertex to vertex, travel along any edges you wish, but DO NOT travel along an edge that is a bridge for the graph formed by the EDGES THAT HAVE YET TO BE TRAVELED -- unless you have to
+% 	\item Continue until you return to your starting point
+% \end{itemize}
+% RESULT: a Eulerian circuit
+% \end{frame}
+% 
 
 
 
@@ -280,12 +286,38 @@ RESULT: a Eulerian circuit
 \begin{theorem}[Dirac's theorem]
 	If $G$ is a graph of order $p\geq 3$ such that $deg(v)\geq p/2$ for every vertex $v$ of $G$, then $G$ is Hamiltonian
 \end{theorem}
-\vfill
-\begin{theorem}[Ore's theorem]
-	If $G$ is a graph of order $p\geq 3$ such that for all distinct nonadjacent vertices $u$ and $v$ of $G$, $$deg(u)+deg(v)\geq p$$ 
-	then $G$ is Hamiltonian
-\end{theorem}
+% \vfill
+% \begin{theorem}[Ore's theorem]
+% 	If $G$ is a graph of order $p\geq 3$ such that for all distinct nonadjacent vertices $u$ and $v$ of $G$, $$deg(u)+deg(v)\geq p$$ 
+% 	then $G$ is Hamiltonian
+% \end{theorem}
 \end{frame}
+
+\begin{frame}{Eulerian and Hamiltonian trails and circuits}
+\begin{center}
+\begin{tabular}{p{6.5cm}p{6.5cm}}
+Eulerian & Hamiltonian \\ \midrule
+A walk in an undirected multigraph $M$ that uses each edge \textbf{exactly once} is a \defword{Eulerian trail} of $M$
+& 
+A path containing all vertices of a graph $G$ is a \defword{Hamiltonian path} of $G$ 
+\\ \midrule
+If a graph $G$ has a Eulerian trail, then $G$ is a \defword{traversable graph}
+& 
+If a graph $G$ has an Hamiltonian path, then $G$ is a \defword{traceable graph}
+\\ \midrule
+A circuit containing all the vertices and edges of a multigraph $M$ is a \defword{Eulerian circuit} of $M$
+& 
+A cycle containing all vertices of a graph $G$ is a \defword{Hamiltonian cycle} of $G$
+\\ \midrule
+A graph (resp. multigraph) containing an Eulerian circuit is a \defword{Eulerian graph} (resp. \defword{Eulerian multigraph})
+& 
+A graph containing a Hamiltonian cycle is a \defword{Hamiltonian graph}
+\\ \bottomrule
+\end{tabular}
+\end{center}
+\end{frame}
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -376,18 +408,18 @@ Let $G$ be a plane graph with $p$ vertices, $q$ edges, $r$ regions, and $k$ conn
 \end{frame}
 
 
-\begin{frame}
-\begin{theorem}
-Let $G$ be a connected planar graph with $p$ vertices and $q$ edges, where $p\geq 3$, then $$q\leq 3p-6.$$
-(a maximal connected planar graph with $p$ vertices has $q=3p-6$ edges)
-\end{theorem}
-\vfill
-\begin{corollary}
-If $G$ is a planar graph, then $\delta(G)\leq 5,$
-where $\delta(G)$ is the minimal degree of $G$.
-(every planar graph contains a vertex of degree less than 6)
-\end{corollary}
-\end{frame}
+% \begin{frame}
+% \begin{theorem}
+% Let $G$ be a connected planar graph with $p$ vertices and $q$ edges, where $p\geq 3$, then $$q\leq 3p-6.$$
+% (a maximal connected planar graph with $p$ vertices has $q=3p-6$ edges)
+% \end{theorem}
+% \vfill
+% \begin{corollary}
+% If $G$ is a planar graph, then $\delta(G)\leq 5,$
+% where $\delta(G)$ is the minimal degree of $G$.
+% (every planar graph contains a vertex of degree less than 6)
+% \end{corollary}
+% \end{frame}
 
 
 \begin{frame}{Two well-known non-planar graphs}
@@ -506,7 +538,7 @@ The defining relation $R$ of the digraph $G$ need not be symmetric
 \end{frame}
 
 
-\begin{frame}\frametitle{Directed network}
+\begin{frame}\frametitle{Directed network/weighted (di)graph}
 \begin{definition}[Directed network]
 A directed network is a digraph together with a function $f$,
 \[
@@ -515,24 +547,9 @@ f: A \rightarrow \mathbb{R},
 which maps the arc set $A$ into the set of real number. 
 The value of the arc $uv \in A$ is $f(uv)$
 \end{definition}
+\vfill
+Another name is \defword{weighted} (di)graph
 \end{frame}
-
-
-
-%\begin{frame}\frametitle{Order and Size}
-%\begin{definition}{Order of a graph}
-%The number of vertices in $G$ is the order of $G$
-%$$|V(G)|=\textrm{order of G}$$
-%\end{definition}
-%\begin{definition}{Size of a graph}
-%The number of edges in $G$ is the size of $G$
-%$$|E(G)|=\textrm{size of G}$$
-%\end{definition}
-%\begin{itemize}
-%\item A graph having order $p$ and size $q$ is noted a $(p,q)-$graph.
-%\item A graph is finite is $|V(G)|<\infty$
-%\end{itemize}
-%}
 
 
 
@@ -625,20 +642,20 @@ The value of the arc $uv \in A$ is $f(uv)$
 	
 	
 \begin{frame}{Sources and sinks}
-	\begin{definition}[{Directed away - Directed towards}]
+	\begin{minordefinition}[{Directed away - Directed towards}]
 		If $a=(u,v)\in A(G)$ is an arc of $G$, then
 		\begin{itemize}
 			\item the arc $a$ is said to be \defword{directed away} from $u$
 			\item the arc $a$ is said to be \defword{directed towards} $v$
 		\end{itemize}
-	\end{definition}
+	\end{minordefinition}
 	\vfill
-	\begin{definition}[{Source - Sink}]
+	\begin{minordefinition}[{Source - Sink}]
 		\begin{itemize}
 			\item Any vertex which has no arcs directed towards it is a \defword{source}
 			\item Any vertex which has no arcs directed away from it is a \defword{sink}
 		\end{itemize}
-	\end{definition}
+	\end{minordefinition}
 \end{frame}
 
 \begin{frame}{Adjacent arcs}

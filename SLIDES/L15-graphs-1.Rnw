@@ -261,6 +261,12 @@ plot(G_Z, main = "Data on a Karate club")
 
 \maxFrameImage{\Sexpr{knitr::fig_chunk("setup-graph-3", "pdf")}}
 
+\begin{frame}{Zachary's Karate club data}
+Many of the \code{igraph} examples in the undirected case use data published by Zachary about a university karate club
+\vfill
+See the Wikipedia page for details (\href{https://en.wikipedia.org/wiki/Zachary's_karate_club}{link})
+\end{frame}
+
 \begin{frame}{Plotting}
 By default, plotting of graphs in \code{igraph} doesn't look great.. There are ways to make things a bit better
 \vfill
@@ -577,7 +583,7 @@ A graph $H=(V(H),E(H))$ is a \defword{subgraph} of $G$ if $V(H)\subseteq V$ and 
 
 \begin{frame}[fragile]\frametitle{Extracting a subgraph}
 <<extract-subgraph>>=
-G_sub = induced_subgraph(G, c(1:5, 11:14))
+G_sub = induced_subgraph(G_Z, c(1:5, 11:14))
 plot(G_sub, main = "A subgraph of the Karate graph")
 @
 \end{frame}
@@ -589,9 +595,9 @@ Note that vertices (and as a consequence, edges) will be relabelled, so \code{G\
 \vfill
 You can name vertices if you want to avoid this
 <<subgraph-named-vertices>>=
-V(G)$name = 1:length(V(G))
-G_sub = induced_subgraph(G, c(1:5, 11:14))
-plot(G_sub, labels = V(G)$name,
+V(G_Z)$name = 1:length(V(G_Z))
+G_sub = induced_subgraph(G_Z, c(1:5, 11:14))
+plot(G_sub, labels = V(G_Z)$name,
      main = "Subgraph of the Karate graph preserving names")
 @
 \end{frame}
@@ -627,24 +633,21 @@ print_all(net1 %u% net2)
 @
 \end{frame}
 
-<<plot-union-graphs-net1,echo=FALSE>>=
-plot(net1)
-@
-<<plot-union-graphs-net2,echo=FALSE>>=
-plot(net2)
-@
-<<plot-union-graphs-net1Unet2,echo=FALSE>>=
-plot(net1 %u% net2)
+<<plot-union-combined, echo=FALSE, fig.width=12, fig.height=4, out.width="\\textwidth">>==
+# Set the plot layout to 1 row and 3 columns
+par(mfrow = c(1, 3), mar = c(1, 1, 3, 1)) 
+# Plot 1
+plot(net1, main = "net1")
+# Plot 2
+plot(net2, main = "net2")
+# Plot 3
+plot(net1 %u% net2, main = "Union (net1 %u% net2)")
+# Reset layout to default (good practice)
+par(mfrow = c(1, 1))
 @
 
-\begin{frame}
-\centering
-\includegraphics[width=0.25\textwidth]{\Sexpr{knitr::fig_chunk("plot-union-graphs-net1", "pdf")}}
-$\bigcup$
-\includegraphics[width=0.25\textwidth]{\Sexpr{knitr::fig_chunk("plot-union-graphs-net2", "pdf")}}
-$\implies$
-\includegraphics[width=0.3\textwidth]{\Sexpr{knitr::fig_chunk("plot-union-graphs-net1Unet2", "pdf")}}
-\end{frame}
+\maxFrameImage{\Sexpr{knitr::fig_chunk("plot-union-combined", "pdf")}}
+
 
 \begin{frame}[fragile]\frametitle{Intersection of two graphs}
 <<plot-intersection-graphs-net1Nnet2>>=
@@ -653,14 +656,18 @@ plot(G_inter)
 @
 \end{frame}
 
-\begin{frame}
-\centering
-\includegraphics[width=0.25\textwidth]{\Sexpr{knitr::fig_chunk("plot-union-graphs-net1", "pdf")}}
-$\bigcap$
-\includegraphics[width=0.25\textwidth]{\Sexpr{knitr::fig_chunk("plot-union-graphs-net2", "pdf")}}
-$\implies$
-\includegraphics[width=0.3\textwidth]{\Sexpr{knitr::fig_chunk("plot-intersection-graphs-net1Nnet2", "pdf")}}
-\end{frame}
+<<plot-intersection-combined, echo=FALSE, fig.width=12, fig.height=4, out.width="\\textwidth">>==
+par(mfrow = c(1, 3), mar = c(1, 1, 3, 1)) 
+# Plot 1
+plot(net1, main = "net1")
+# Plot 2
+plot(net2, main = "net2")
+# Plot 3
+plot(net1 %s% net2, main = "Intersection (net1 %u% net2)")
+par(mfrow = c(1, 1))
+@
+
+\maxFrameImage{\Sexpr{knitr::fig_chunk("plot-intersection-combined", "pdf")}}
 
 
 
