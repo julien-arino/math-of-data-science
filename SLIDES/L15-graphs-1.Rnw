@@ -84,6 +84,7 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 	\begin{block}{Mathematical problem}
 	Is it possible to find a \emph{trail} containing all \emph{edges} of the graph?
 	\end{block}
+{\footnotesize The answer, we will see later, is NO}
 \end{frame}
 
 \begin{frame}{Finding a cycle with all vertices}
@@ -240,16 +241,93 @@ I use mostly examples from the \code{igraph} documentation
 
 
 \begin{frame}[fragile]\frametitle{Setting up graphs in \code{igraph}}
+Make an empty graph
 <<setup-graph-1>>=
 G <- make_empty_graph()
+@
+\vfill
+Make a small graph with 10 vertices and 2 edges (1$\leftrightarrow$2 and 1$\leftrightarrow$5)
+<<setup-graph-2>>=
 G <- make_graph(edges = c(1, 2, 1, 5), n = 10, 
                 directed = FALSE)
-G <- make_graph("Zachary")
-plot(G, main = "Data on a Karate club")
+@
+\vfill
+Load and plot the Zachary's Karate club graph
+<<setup-graph-3>>=
+G_Z <- make_graph("Zachary")
+plot(G_Z, main = "Data on a Karate club")
 @
 \end{frame}
 
-\maxFrameImage{\Sexpr{knitr::fig_chunk("setup-graph-1", "pdf")}}
+\maxFrameImage{\Sexpr{knitr::fig_chunk("setup-graph-3", "pdf")}}
+
+\begin{frame}{Plotting}
+By default, plotting of graphs in \code{igraph} doesn't look great.. There are ways to make things a bit better
+\vfill
+\begin{itemize}
+\item Use different layouts (\code{layout\_*} functions)
+\item Change vertex size, color, shape, labels, etc.
+\item Change edge color, width, labels, etc.
+\item Use \code{ggraph} package for more advanced plotting
+\end{itemize}
+\end{frame}
+
+<<better-plot-Zachary-graph, fig.width=9, fig.height=7, dev='cairo_pdf'>>=
+# 1. Add community attribute
+com <- cluster_walktrap(G_Z)
+V(G_Z)$community <- as.factor(com$membership)
+# 2. Add a label attribute
+V(G_Z)$node_label <- 1:vcount(G_Z)
+# 3. Create the plot (using ggraph library)
+ggraph(G_Z, layout = 'kk') +
+  # --- Edges ---
+  geom_edge_link(colour = "lightgrey", width = 0.7, show.legend = FALSE) +
+  # --- Nodes ---
+  geom_node_point(aes(colour = community), size = 8) +
+  # --- Text ---
+  geom_node_text(aes(label = node_label), 
+                 colour = "white", 
+                 size = 3.5,
+                 vjust = 0.4) +
+  # --- Titles & Theme ---
+  labs(title = "Data on a Karate club",
+       subtitle = "Community structure found via Walktrap",
+       colour = "Community") +
+  theme_graph() +
+  theme(legend.position = "right")
+@
+
+\maxFrameImage{\Sexpr{knitr::fig_chunk("better-plot-Zachary-graph", "pdf")}}
+
+\begin{frame}[fragile]{Setting \code{igraph} plot options}
+Less complicated than \code{ggraph}, you can set default plotting options for \code{igraph} graphs using \code{igraph.options} (this applies to all later plots in the same \code{R} session)
+\vfill
+For example, to set vertex size to 25 and colour to lightblue by default
+<<set-igraph-plot-options>>=
+igraph.options(vertex.size = 25,
+               vertex.color = "lightblue")
+@
+\end{frame}
+
+\begin{frame}[fragile]{Using layouts in \code{igraph} plots}
+<<Zachary-graph-igraph-plot-better,fig.width=8,fig.height=6>>=
+# 1. Calculate the layout first and store it
+l_kk <- layout_with_kk(G_Z)
+# 2. Pass the layout matrix to the plot function
+plot(G_Z, 
+     layout = l_kk, 
+     main = "Zachary Graph with Kamada-Kawai Layout",
+     # Visual tweaks for clarity
+     vertex.label = 1:vcount(G_Z),
+     vertex.size = 15,
+     vertex.label.cex = 0.8,
+     vertex.label.color = "black"
+)
+@
+\end{frame}
+
+\maxFrameImage{\Sexpr{knitr::fig_chunk("Zachary-graph-igraph-plot-better", "pdf")}}
+
 
 \begin{frame}\frametitle{Order and Size}
 	\begin{definition}[Order of a graph]
@@ -270,10 +348,10 @@ plot(G, main = "Data on a Karate club")
 
 \begin{frame}[fragile]\frametitle{Some simple measures}
 <<graph-measures-1>>=
-V(G)
-head(E(G))
-gorder(G)
-gsize(G)
+V(G_Z)
+head(E(G_Z))
+gorder(G_Z)
+gsize(G_Z)
 @
 \end{frame}
 
@@ -298,15 +376,15 @@ gsize(G)
 
 \begin{frame}[fragile]\frametitle{Incident vertices}
 <<incident-vertices>>=
-incident(G, 1)
-incident_edges(G, c(1, 2))
+incident(G_Z, 1)
+incident_edges(G_Z, c(1, 2))
 @
 \end{frame}
 
 \begin{frame}[fragile]\frametitle{Adjacent vertices}
 <<adjacent-vertices>>=
-adjacent_vertices(G, v = 1)
-adjacent_vertices(G, v = c(1, 2))
+adjacent_vertices(G_Z, v = 1)
+adjacent_vertices(G_Z, v = c(1, 2))
 @
 \end{frame}
 
@@ -332,9 +410,9 @@ adjacent_vertices(G, v = c(1, 2))
 
 \begin{frame}[fragile]\frametitle{Testing for these properties}
 <<multiple-loop-simple-multigraph>>=
-any_multiple(G)
-any_loop(G)
-is_simple(G)
+any_multiple(G_Z)
+any_loop(G_Z)
+is_simple(G_Z)
 @
 \end{frame}
 
@@ -375,12 +453,12 @@ A simple graph $G$ can be defined in term of a vertex set $V$ and a binary relat
 
 \begin{frame}[fragile]\frametitle{Degree}
 <<vertex-degrees-undirected>>=
-degree(G)
-degree_distribution(G)
-plot(degree_distribution(G),
+degree(G_Z)
+degree_distribution(G_Z)
+plot(degree_distribution(G_Z),
      type = "b",
      xlab = "Degree", ylab = "Frequency",
-     main = "Degree distribution of the Karate graph")
+     main = "Degree distribution of the Zachary graph")
 @
 \end{frame}
 
@@ -390,11 +468,11 @@ plot(degree_distribution(G),
 
 \begin{frame}
 \begin{definition}[{Odd vertex}]
-A vertex is an \defword{odd vertex} is its degree is odd
+A vertex is an \defword{odd vertex} if its degree is odd
 \end{definition}
 \vfill
 \begin{definition}[{Even vertex}]
-A vertex is called \defword{even vertex} is its degree is even
+A vertex is called \defword{even vertex} if its degree is even
 \end{definition}
 \vfill
 \begin{importanttheorem}\label{th:even-nb-odd-vertices}
@@ -405,12 +483,12 @@ Every graph contains an even number of odd vertices
 \begin{frame}[fragile]\frametitle{Illustration of recent results}
 Theorem~\ref{th:sum-degrees} states that a $(p,q)-$graph has $\sum_{i=1}^{p}d_G(v_i)=2q$
 <<checking-sum-degrees>>=
-sum(degree(G)) == 2*length(E(G))
+sum(degree(G_Z)) == 2*length(E(G_Z))
 @
 \vfill
 Theorem~\ref{th:even-nb-odd-vertices} states that every graph contains an even number of odd vertices
 <<checking-even-nb-odd-degrees>>=
-sum(pracma::mod(degree(G),2))
+sum(pracma::mod(degree(G_Z),2))
 @
 (\code{mode(x,2)} returns 1 if $x$ is odd so \code{sum} counts how many are odd)
 \end{frame}
@@ -421,11 +499,17 @@ sum(pracma::mod(degree(G),2))
 \end{definition}
 \vfill
 <<check-karate-graph-regular>>=
-length(unique(degree(G))) == 1
+length(unique(degree(G_Z))) == 1
+@
+\vfill
+We can make regular graphs with \code{sample\_k\_regular}
+<<make-regular-graph>>=
+G_reg <- sample_k_regular(10, 3)
+plot(G_reg, main = "A 3-regular graph with 10 vertices")
 @
 \end{frame}
 
-
+\maxFrameImage{\Sexpr{knitr::fig_chunk("make-regular-graph", "pdf")}}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%
@@ -460,16 +544,24 @@ If $G_1$ and $G_2$ are isomorphic graphs, then the degrees of vertices of $G_1$ 
 \end{frame}
 
 \begin{frame}[fragile]\frametitle{Testing isomorphicity}
-Create two isomorphic graphs by permuting the vertices of the first, then test if they are isomorphic
+Create two isomorphic graphs by creating one graph using preferential attachment (\code{sample\_pa}), then permuting its vertices and testing if they are isomorphic
 \vfill
 <<two-isomorphic-graphs>>=
-g1 <- sample_pa(30, m = 2, directed = FALSE)
-g2 <- permute(g1, sample(vcount(g1)))
+G1 <- sample_pa(30, m = 2, directed = FALSE)
+G2 <- permute(G1, sample(vcount(G1)))
 # should be TRUE
-isomorphic(g1, g2)
+isomorphic(G1, G2)
 @
 \end{frame}
 
+<<plot-two-isomorphic-graphs,echo=FALSE>>=
+par(mfrow = c(1, 2))
+plot(G1, main = TeX("Graph G$_1$"))
+plot(G2, main = TeX("Graph G$_2$"))
+par(mfrow = c(1, 1))
+@
+
+\maxFrameImage{\Sexpr{knitr::fig_chunk("plot-two-isomorphic-graphs", "pdf")}}
 
 %%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%

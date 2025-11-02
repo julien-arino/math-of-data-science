@@ -230,12 +230,20 @@ Assignment 4 & 21 November & 5 December \\
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Results are colour coded}
-Memorising the definitions and some of the theorems is part of the course. To help, results are colour coded
+\begin{frame}{Definitions are colour coded}
+Memorising the definitions is part of the course. To help, definitions are colour coded
 \vfill
 \begin{definition}[Definitions]
-Definitions are important, you need to know them
+These definitions are important, you need to know them
 \end{definition}
+\vfill
+\begin{minordefinition}[Less important definitions]
+These definitions are a little less important, you will not be asked to state them (although it is a good idea to know them anyway)
+\end{minordefinition}
+\end{frame}
+
+\begin{frame}{Results are colour coded}
+Memorising some of the results is part of the course. To help, results are colour coded
 \vfill
 \begin{theorem}[Theorems]
 Theorems in blue boxes are worth knowing but you will not be asked to reproduce them
