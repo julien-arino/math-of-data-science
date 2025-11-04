@@ -152,27 +152,6 @@
 	\end{theorem}
 \end{frame}
 
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlcom{# A perfectly symmetric digraph would have every arc reciprocated}
-\hldef{recip} \hlkwb{<-} \hlkwd{reciprocity}\hldef{(G)}  \hlcom{# ratio of mutual connections}
-\hldef{recip}
-\end{alltt}
-\begin{verbatim}
-## [1] 0.05128205
-\end{verbatim}
-\begin{alltt}
-\hlcom{# Are all edges mutual? (strict symmetry)}
-\hldef{all_mutual} \hlkwb{<-} \hlkwd{all}\hldef{(}\hlkwd{is.mutual}\hldef{(G,} \hlkwd{E}\hldef{(G)))}
-\hldef{all_mutual}
-\end{alltt}
-\begin{verbatim}
-## [1] FALSE
-\end{verbatim}
-\end{kframe}
-\end{knitrout}
-
 \begin{frame}
 	\begin{definition}[{Regular digraph}]
 		A digraph $G$ is $r$-regular if $d_G^+(v)=d_G^-(v)=r$ for all $v\in V(G)$
@@ -200,34 +179,24 @@
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcom{# Shortest paths between two vertices}
-\hldef{sp_1_to_15} \hlkwb{<-} \hlkwd{shortest_paths}\hldef{(G,} \hlkwc{from} \hldef{=} \hlnum{1}\hldef{,} \hlkwc{to} \hldef{=} \hlnum{15}\hldef{,} \hlkwc{mode} \hldef{=} \hlsng{"out"}\hldef{)}
-\hldef{sp_1_to_15}\hlopt{$}\hldef{vpath}
+\hlcom{# A perfectly symmetric digraph would have every arc reciprocated}
+\hldef{recip} \hlkwb{<-} \hlkwd{reciprocity}\hldef{(G)}  \hlcom{# ratio of mutual connections}
+\hldef{recip}
 \end{alltt}
 \begin{verbatim}
-## [[1]]
-## + 4/20 vertices, from 2a87b22:
-## [1]  1  2  5 15
+## [1] 0.05128205
 \end{verbatim}
 \begin{alltt}
-\hlcom{# All simple paths up to a given cutoff (to keep it small)}
-\hldef{paths_1_to_6} \hlkwb{<-} \hlkwd{all_simple_paths}\hldef{(G,} \hlkwc{from} \hldef{=} \hlnum{1}\hldef{,} \hlkwc{to} \hldef{=} \hlnum{6}\hldef{,} \hlkwc{mode} \hldef{=} \hlsng{"out"}\hldef{,} \hlkwc{cutoff} \hldef{=} \hlnum{6}\hldef{)}
-\hlkwd{length}\hldef{(paths_1_to_6)}
+\hlcom{# Are all edges mutual? (strict symmetry)}
+\hldef{all_mutual} \hlkwb{<-} \hlkwd{all}\hldef{(}\hlkwd{is.mutual}\hldef{(G,} \hlkwd{E}\hldef{(G)))}
+\hldef{all_mutual}
 \end{alltt}
 \begin{verbatim}
-## [1] 4
-\end{verbatim}
-\begin{alltt}
-\hlcom{# Number of walks of length 2 via adjacency powers}
-\hldef{Mdir} \hlkwb{<-} \hlkwd{as.matrix}\hldef{(}\hlkwd{as_adjacency_matrix}\hldef{(G,} \hlkwc{sparse} \hldef{=} \hlnum{FALSE}\hldef{))}
-\hldef{M2} \hlkwb{<-} \hldef{Mdir} \hlopt{%*%} \hldef{Mdir}
-\hldef{M2[}\hlnum{1}\hldef{,} \hlnum{6}\hldef{]}
-\end{alltt}
-\begin{verbatim}
-## [1] 0
+## [1] FALSE
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
+
 
 
 %%%%%%%%%%%%%%%%%%%
@@ -249,37 +218,6 @@
 	\end{definition}
 \end{frame}
 
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlkwd{is_connected}\hldef{(G,} \hlkwc{mode} \hldef{=} \hlsng{"weak"}\hldef{)}
-\end{alltt}
-\begin{verbatim}
-## [1] TRUE
-\end{verbatim}
-\begin{alltt}
-\hlkwd{is_connected}\hldef{(G,} \hlkwc{mode} \hldef{=} \hlsng{"strong"}\hldef{)}
-\end{alltt}
-\begin{verbatim}
-## [1] FALSE
-\end{verbatim}
-\begin{alltt}
-\hldef{scc} \hlkwb{<-} \hlkwd{components}\hldef{(G,} \hlkwc{mode} \hldef{=} \hlsng{"strong"}\hldef{)}
-\hldef{scc}\hlopt{$}\hldef{no}
-\end{alltt}
-\begin{verbatim}
-## [1] 2
-\end{verbatim}
-\begin{alltt}
-\hlkwd{table}\hldef{(scc}\hlopt{$}\hldef{membership)}
-\end{alltt}
-\begin{verbatim}
-## 
-##  1  2 
-## 12  8
-\end{verbatim}
-\end{kframe}
-\end{knitrout}
 
 
 \begin{frame}\frametitle{Trails}
@@ -294,30 +232,6 @@
 	A closed walk is a \defword{directed cycle} if it contains at least three vertices and all its vertices are distinct except for $v_0=v_k$
 	\end{definition}
 \end{frame}
-
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlcom{# Condensation graph (SCC DAG) via contracting SCCs}
-\hldef{scc} \hlkwb{<-} \hlkwd{components}\hldef{(G,} \hlkwc{mode} \hldef{=} \hlsng{"strong"}\hldef{)}
-\hldef{G_cond} \hlkwb{<-} \hlkwd{contract}\hldef{(G, scc}\hlopt{$}\hldef{membership,} \hlkwc{vertex.attr.comb} \hldef{=} \hlsng{"ignore"}\hldef{)}
-\hldef{G_cond} \hlkwb{<-} \hlkwd{simplify}\hldef{(G_cond,} \hlkwc{remove.multiple} \hldef{=} \hlnum{TRUE}\hldef{,} \hlkwc{remove.loops} \hldef{=} \hlnum{TRUE}\hldef{)}
-
-\hlkwd{vcount}\hldef{(G_cond);} \hlkwd{ecount}\hldef{(G_cond)}
-\end{alltt}
-\begin{verbatim}
-## [1] 2
-## [1] 1
-\end{verbatim}
-\begin{alltt}
-\hldef{is_dag} \hlkwb{<-} \hlkwd{is.dag}\hldef{(G_cond)}
-\hldef{is_dag}
-\end{alltt}
-\begin{verbatim}
-## [1] TRUE
-\end{verbatim}
-\end{kframe}
-\end{knitrout}
 
 \begin{frame}{Examples of directed cycles}
 	\begin{minipage}{0.5\textwidth}
@@ -359,22 +273,35 @@
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcom{# Orientation and bridges (undirected case -> orientation)}
-\hldef{Gu} \hlkwb{<-} \hlkwd{make_ring}\hldef{(}\hlnum{8}\hldef{)}
-\hlkwd{length}\hldef{(}\hlkwd{bridges}\hldef{(Gu))}
+\hlcom{# Shortest paths between two vertices}
+\hldef{sp_1_to_15} \hlkwb{<-} \hlkwd{shortest_paths}\hldef{(G,} \hlkwc{from} \hldef{=} \hlnum{1}\hldef{,} \hlkwc{to} \hldef{=} \hlnum{15}\hldef{,} \hlkwc{mode} \hldef{=} \hlsng{"out"}\hldef{)}
+\hldef{sp_1_to_15}\hlopt{$}\hldef{vpath}
+\end{alltt}
+\begin{verbatim}
+## [[1]]
+## + 4/20 vertices, from f646b3c:
+## [1]  1  2  5 15
+\end{verbatim}
+\begin{alltt}
+\hlcom{# All simple paths up to a given cutoff (to keep it small)}
+\hldef{paths_1_to_6} \hlkwb{<-} \hlkwd{all_simple_paths}\hldef{(G,} \hlkwc{from} \hldef{=} \hlnum{1}\hldef{,} \hlkwc{to} \hldef{=} \hlnum{6}\hldef{,} \hlkwc{mode} \hldef{=} \hlsng{"out"}\hldef{,} \hlkwc{cutoff} \hldef{=} \hlnum{6}\hldef{)}
+\hlkwd{length}\hldef{(paths_1_to_6)}
+\end{alltt}
+\begin{verbatim}
+## [1] 4
+\end{verbatim}
+\begin{alltt}
+\hlcom{# Number of walks of length 2 via adjacency powers}
+\hldef{Mdir} \hlkwb{<-} \hlkwd{as.matrix}\hldef{(}\hlkwd{as_adjacency_matrix}\hldef{(G,} \hlkwc{sparse} \hldef{=} \hlnum{FALSE}\hldef{))}
+\hldef{M2} \hlkwb{<-} \hldef{Mdir} \hlopt{%*%} \hldef{Mdir}
+\hldef{M2[}\hlnum{1}\hldef{,} \hlnum{6}\hldef{]}
 \end{alltt}
 \begin{verbatim}
 ## [1] 0
 \end{verbatim}
-\begin{alltt}
-\hldef{G_or} \hlkwb{<-} \hlkwd{as.directed}\hldef{(Gu,} \hlkwc{mode} \hldef{=} \hlsng{"arbitrary"}\hldef{)}  \hlcom{# orient edges}
-\hlkwd{is_connected}\hldef{(G_or,} \hlkwc{mode} \hldef{=} \hlsng{"strong"}\hldef{)}
-\end{alltt}
-\begin{verbatim}
-## [1] FALSE
-\end{verbatim}
 \end{kframe}
 \end{knitrout}
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -384,9 +311,9 @@
 
 \begin{frame}\frametitle{Definitions}
 	%Let $D=(V,A)$ be a digraph.
-	\begin{definition}[{Underlying graph}]
+	\begin{minordefinition}[{Underlying graph}]
 	Given a digraph, the undirected graph with each arc replaced by an edge is called the \defword{underlying graph}
-	\end{definition}
+	\end{minordefinition}
 	\vfill
 	\begin{definition}[{Weakly connected digraph}]
 	If the underlying graph is a connected graph, then the digraph is \defword{weakly connected}
@@ -404,31 +331,35 @@
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcom{# Adjacency matrix (directed)}
-\hldef{M} \hlkwb{<-} \hlkwd{as.matrix}\hldef{(}\hlkwd{as_adjacency_matrix}\hldef{(G,} \hlkwc{sparse} \hldef{=} \hlnum{FALSE}\hldef{))}
-
-\hlcom{# Column sums = indegrees, row sums = outdegrees (directed case)}
-\hlkwd{all.equal}\hldef{(}\hlkwd{rowSums}\hldef{(M),} \hlkwd{degree}\hldef{(G,} \hlkwc{mode} \hldef{=} \hlsng{"out"}\hldef{))}
+\hlkwd{is_connected}\hldef{(G,} \hlkwc{mode} \hldef{=} \hlsng{"weak"}\hldef{)}
 \end{alltt}
 \begin{verbatim}
 ## [1] TRUE
 \end{verbatim}
 \begin{alltt}
-\hlkwd{all.equal}\hldef{(}\hlkwd{colSums}\hldef{(M),} \hlkwd{degree}\hldef{(G,} \hlkwc{mode} \hldef{=} \hlsng{"in"}\hldef{))}
+\hlkwd{is_connected}\hldef{(G,} \hlkwc{mode} \hldef{=} \hlsng{"strong"}\hldef{)}
 \end{alltt}
 \begin{verbatim}
-## [1] TRUE
+## [1] FALSE
 \end{verbatim}
 \begin{alltt}
-\hlcom{# Walks of length 3 from 1 to 15 via M^3}
-\hldef{M3} \hlkwb{<-} \hldef{M} \hlopt{%*%} \hldef{M} \hlopt{%*%} \hldef{M}
-\hldef{M3[}\hlnum{1}\hldef{,} \hlnum{15}\hldef{]}
+\hldef{scc} \hlkwb{<-} \hlkwd{components}\hldef{(G,} \hlkwc{mode} \hldef{=} \hlsng{"strong"}\hldef{)}
+\hldef{scc}\hlopt{$}\hldef{no}
 \end{alltt}
 \begin{verbatim}
 ## [1] 2
 \end{verbatim}
+\begin{alltt}
+\hlkwd{table}\hldef{(scc}\hlopt{$}\hldef{membership)}
+\end{alltt}
+\begin{verbatim}
+## 
+##  1  2 
+## 12  8
+\end{verbatim}
 \end{kframe}
 \end{knitrout}
+
 
 \begin{frame}{Strong connectedness is an equivalence relation}
 Denote $x\equiv y$ the relation  ``$x=y$, or $x\neq y$ and there exists a directed path in $G$ from $x$ to $y$''. $\equiv$ is an equivalence relation since
@@ -449,19 +380,6 @@ Denote $x\equiv y$ the relation  ``$x=y$, or $x\neq y$ and there exists a direct
 A strong component in $G$ is a maximal strongly connected subdigraph of $G$
 \end{frame}
 
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlcom{# Distance matrix (shortest path lengths)}
-\hldef{D} \hlkwb{<-} \hlkwd{distances}\hldef{(G,} \hlkwc{mode} \hldef{=} \hlsng{"out"}\hldef{)}
-\hldef{D[}\hlnum{1}\hldef{,} \hlnum{15}\hldef{]}
-\end{alltt}
-\begin{verbatim}
-## [1] 3
-\end{verbatim}
-\end{kframe}
-\end{knitrout}
-
 
 \begin{frame}
 	\begin{theorem}[Properties]
@@ -473,30 +391,6 @@ A strong component in $G$ is a maximal strongly connected subdigraph of $G$
 	\end{theorem}
 \end{frame}
 
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlcom{# Degree matrix and Laplacian}
-\hldef{deg_vec} \hlkwb{<-} \hlkwd{degree}\hldef{(G,} \hlkwc{mode} \hldef{=} \hlsng{"all"}\hldef{)}
-\hldef{Dmat} \hlkwb{<-} \hlkwd{diag}\hldef{(deg_vec)}
-\hldef{L} \hlkwb{<-} \hlkwd{laplacian_matrix}\hldef{(G,} \hlkwc{normalized} \hldef{=} \hlnum{FALSE}\hldef{,} \hlkwc{sparse} \hldef{=} \hlnum{FALSE}\hldef{)}
-
-\hlkwd{dim}\hldef{(Dmat);} \hlkwd{dim}\hldef{(L)}
-\end{alltt}
-\begin{verbatim}
-## [1] 20 20
-## [1] 20 20
-\end{verbatim}
-\begin{alltt}
-\hldef{eigenvals} \hlkwb{<-} \hlkwd{eigen}\hldef{(}\hlkwd{as.matrix}\hldef{(L))}\hlopt{$}\hldef{values}
-\hlkwd{head}\hldef{(eigenvals)}
-\end{alltt}
-\begin{verbatim}
-## [1] 4.125310+0.0000000i 2.957548+1.4580892i 2.957548-1.4580892i
-## [4] 2.598554+0.8441142i 2.598554-0.8441142i 2.172163+0.0000000i
-\end{verbatim}
-\end{kframe}
-\end{knitrout}
 
 
 
@@ -527,15 +421,40 @@ A strong component in $G$ is a maximal strongly connected subdigraph of $G$
 	\end{definition}
 \end{frame}
 
+\begin{frame}[fragile]
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# Condensation graph (SCC DAG) via contracting SCCs}
+\hldef{scc} \hlkwb{<-} \hlkwd{components}\hldef{(G,} \hlkwc{mode} \hldef{=} \hlsng{"strong"}\hldef{)}
+\hldef{G_cond} \hlkwb{<-} \hlkwd{contract}\hldef{(G, scc}\hlopt{$}\hldef{membership,} \hlkwc{vertex.attr.comb} \hldef{=} \hlsng{"ignore"}\hldef{)}
+\hldef{G_cond} \hlkwb{<-} \hlkwd{simplify}\hldef{(G_cond,} \hlkwc{remove.multiple} \hldef{=} \hlnum{TRUE}\hldef{,} \hlkwc{remove.loops} \hldef{=} \hlnum{TRUE}\hldef{)}
+
+\hlkwd{vcount}\hldef{(G_cond);} \hlkwd{ecount}\hldef{(G_cond)}
+\end{alltt}
+\begin{verbatim}
+## [1] 2
+## [1] 1
+\end{verbatim}
+\begin{alltt}
+\hldef{is_dag} \hlkwb{<-} \hlkwd{is.dag}\hldef{(G_cond)}
+\hldef{is_dag}
+\end{alltt}
+\begin{verbatim}
+## [1] TRUE
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
 
 \begin{frame} 
-	\begin{definition}[Articulation set]
+	\begin{minordefinition}[Articulation set]
 		For a connected graph, a set $X$ of vertices is called an \defword{articulation set} (or a \defword{cutset}) if the subgraph of $G$ generated by $V-X$ is not connected
-	\end{definition}
+	\end{minordefinition}
 	\vfill
-	\begin{definition}[Stable set]
+	\begin{minordefinition}[Stable set]
 		A set $S$ of vertices is called a \defword{stable set} if no arc joins two distinct vertices in $S$
-	\end{definition}
+	\end{minordefinition}
 	\vfill
 \end{frame}
 
@@ -570,6 +489,26 @@ A connected graph $G=(V,E)$ is orientable $\iff$ $G$ contains no bridges
 \end{frame}
  
 
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# Orientation and bridges (undirected case -> orientation)}
+\hldef{Gu} \hlkwb{<-} \hlkwd{make_ring}\hldef{(}\hlnum{8}\hldef{)}
+\hlkwd{length}\hldef{(}\hlkwd{bridges}\hldef{(Gu))}
+\end{alltt}
+\begin{verbatim}
+## [1] 0
+\end{verbatim}
+\begin{alltt}
+\hldef{G_or} \hlkwb{<-} \hlkwd{as.directed}\hldef{(Gu,} \hlkwc{mode} \hldef{=} \hlsng{"arbitrary"}\hldef{)}  \hlcom{# orient edges}
+\hlkwd{is_connected}\hldef{(G_or,} \hlkwc{mode} \hldef{=} \hlsng{"strong"}\hldef{)}
+\end{alltt}
+\begin{verbatim}
+## [1] FALSE
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
 
 
 
@@ -579,7 +518,7 @@ A connected graph $G=(V,E)$ is orientable $\iff$ $G$ contains no bridges
 %%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Matrices associated to a graph/digraph}
+\Ssection{Matrices associated to a graph/digraph}{FIGS-slides-admin/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
 
 \begin{frame}{Matrices associated to a graph/digraph}
 	There are multiple matrices associated to a graph/digraph
@@ -634,18 +573,50 @@ A connected graph $G=(V,E)$ is orientable $\iff$ $G$ contains no bridges
 \end{frame}
 
 \begin{frame}
-	\begin{theorem}[{Properties}]
+	\begin{importanttheorem}[{Properties of the adjacency matrix}]
+	Let $M$ be the adjacency matrix of a digraph $G$
 	\begin{itemize}
 	\item $M$ is not necessarily symmetric
 	\item The sum of any column of $M$ is equal to the number of arcs directed towards $v_j$
 	\item The sum of the entries in row $i$ is equal to the number of arcs directed away from vertex $v_i$
 	\item The $(i,j)-$entry of $M^n$ is equal to the number of walks of length $n$ from vertex $v_i$ to $v_j$
 	\end{itemize}
-	\end{theorem}
+	\end{importanttheorem}
 \end{frame}
 	
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# Adjacency matrix (directed)}
+\hldef{M} \hlkwb{<-} \hlkwd{as.matrix}\hldef{(}\hlkwd{as_adjacency_matrix}\hldef{(G,} \hlkwc{sparse} \hldef{=} \hlnum{FALSE}\hldef{))}
+
+\hlcom{# Column sums = indegrees, row sums = outdegrees (directed case)}
+\hlkwd{all.equal}\hldef{(}\hlkwd{rowSums}\hldef{(M),} \hlkwd{degree}\hldef{(G,} \hlkwc{mode} \hldef{=} \hlsng{"out"}\hldef{))}
+\end{alltt}
+\begin{verbatim}
+## [1] TRUE
+\end{verbatim}
+\begin{alltt}
+\hlkwd{all.equal}\hldef{(}\hlkwd{colSums}\hldef{(M),} \hlkwd{degree}\hldef{(G,} \hlkwc{mode} \hldef{=} \hlsng{"in"}\hldef{))}
+\end{alltt}
+\begin{verbatim}
+## [1] TRUE
+\end{verbatim}
+\begin{alltt}
+\hlcom{# Walks of length 3 from 1 to 15 via M^3}
+\hldef{M3} \hlkwb{<-} \hldef{M} \hlopt{%*%} \hldef{M} \hlopt{%*%} \hldef{M}
+\hldef{M3[}\hlnum{1}\hldef{,} \hlnum{15}\hldef{]}
+\end{alltt}
+\begin{verbatim}
+## [1] 2
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+	
+
 \begin{frame}
-	\begin{definition}[Multiplicity of a pair]
+	\begin{minordefinition}[Multiplicity of a pair]
 		The \defword{multiplicity} of a pair $x,y$ is the number $m_G^+(x,y)$ of arcs with initial endpoint $x$ and terminal endpoint $y$. Let
 		\begin{align*}
 			m_G^-(x,y) &= m_G^+(y,x) \\
@@ -656,21 +627,21 @@ A connected graph $G=(V,E)$ is orientable $\iff$ $G$ contains no bridges
 			m_G^+(A,B) &= \{u:u\in U, u=(x,y),x\in A,y\in B\} \\
 			m_G(A,B) &= m_G^+(A,B)+m_G^+(A,B)
 		\end{align*}
-	\end{definition}
+	\end{minordefinition}
 \end{frame}
 
-\begin{frame}{Adjacency matrix of a multigraph}
-\begin{definition}[Matrix associated with $G$]
-	If $G$ has vertices $x_1,x_2,\ldots,x_n$, then the \defword{matrix associated} with $G$ is 
-	\[
-	a_{ij}=m_G^+(x_i,x_j)
-	\]
-\end{definition}
-\vfill
-\begin{definition}[Adjacency matrix]
-	The matrix $a_{ij}+a_{ji}$ is the \defword{adjacency matrix} associated with $G$
-\end{definition}
-\end{frame}
+% \begin{frame}{Adjacency matrix of a multigraph}
+% \begin{definition}[Matrix associated with $G$]
+% 	If $G$ has vertices $x_1,x_2,\ldots,x_n$, then the \defword{matrix associated} with $G$ is 
+% 	\[
+% 	a_{ij}=m_G^+(x_i,x_j)
+% 	\]
+% \end{definition}
+% \vfill
+% \begin{definition}[Adjacency matrix]
+% 	The matrix $a_{ij}+a_{ji}$ is the \defword{adjacency matrix} associated with $G$
+% \end{definition}
+% \end{frame}
 
 \begin{frame}{Adjacency matrix (multigraph case)}
 	\begin{definition}[Adjacency matrix of a multigraph]
@@ -807,6 +778,30 @@ Elements of $L$ are given by
 \]
 \end{frame}
 
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# Degree matrix and Laplacian}
+\hldef{deg_vec} \hlkwb{<-} \hlkwd{degree}\hldef{(G,} \hlkwc{mode} \hldef{=} \hlsng{"all"}\hldef{)}
+\hldef{Dmat} \hlkwb{<-} \hlkwd{diag}\hldef{(deg_vec)}
+\hldef{L} \hlkwb{<-} \hlkwd{laplacian_matrix}\hldef{(G,} \hlkwc{normalized} \hldef{=} \hlnum{FALSE}\hldef{,} \hlkwc{sparse} \hldef{=} \hlnum{FALSE}\hldef{)}
+
+\hlkwd{dim}\hldef{(Dmat);} \hlkwd{dim}\hldef{(L)}
+\end{alltt}
+\begin{verbatim}
+## [1] 20 20
+## [1] 20 20
+\end{verbatim}
+\begin{alltt}
+\hldef{eigenvals} \hlkwb{<-} \hlkwd{eigen}\hldef{(}\hlkwd{as.matrix}\hldef{(L))}\hlopt{$}\hldef{values}
+\hlkwd{head}\hldef{(eigenvals)}
+\end{alltt}
+\begin{verbatim}
+## [1] 4.125310+0.0000000i 2.957548+1.4580892i 2.957548-1.4580892i
+## [4] 2.598554+0.8441142i 2.598554-0.8441142i 2.172163+0.0000000i
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
 
 \begin{frame}\frametitle{Distance matrix}
 	Let $G$ be a graph of order $p$ with vertices $v_1, \ldots , v_p$
@@ -818,6 +813,20 @@ Elements of $L$ are given by
 	Note $\delta_{ii}=0$ for $i=1,\ldots, p$
 	\end{definition}
 \end{frame}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# Distance matrix (shortest path lengths)}
+\hldef{D} \hlkwb{<-} \hlkwd{distances}\hldef{(G,} \hlkwc{mode} \hldef{=} \hlsng{"out"}\hldef{)}
+\hldef{D[}\hlnum{1}\hldef{,} \hlnum{15}\hldef{]}
+\end{alltt}
+\begin{verbatim}
+## [1] 3
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
 
 \begin{frame}
 	\begin{property}

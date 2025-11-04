@@ -133,16 +133,6 @@ head(data.frame(v = as.integer(V(G)), out = deg_out, in_deg = deg_in, total = de
 	\end{theorem}
 \end{frame}
 
-<<ex-regular-symmetric, echo=TRUE>>=
-# A perfectly symmetric digraph would have every arc reciprocated
-recip <- reciprocity(G)  # ratio of mutual connections
-recip
-
-# Are all edges mutual? (strict symmetry)
-all_mutual <- all(is.mutual(G, E(G)))
-all_mutual
-@
-
 \begin{frame}
 	\begin{definition}[{Regular digraph}]
 		A digraph $G$ is $r$-regular if $d_G^+(v)=d_G^-(v)=r$ for all $v\in V(G)$
@@ -167,20 +157,16 @@ all_mutual
 	\end{definition}
 \end{frame}
 
-<<ex-walks-paths, echo=TRUE>>=
-# Shortest paths between two vertices
-sp_1_to_15 <- shortest_paths(G, from = 1, to = 15, mode = "out")
-sp_1_to_15$vpath
+<<ex-regular-symmetric, echo=TRUE>>=
+# A perfectly symmetric digraph would have every arc reciprocated
+recip <- reciprocity(G)  # ratio of mutual connections
+recip
 
-# All simple paths up to a given cutoff (to keep it small)
-paths_1_to_6 <- all_simple_paths(G, from = 1, to = 6, mode = "out", cutoff = 6)
-length(paths_1_to_6)
-
-# Number of walks of length 2 via adjacency powers
-Mdir <- as.matrix(as_adjacency_matrix(G, sparse = FALSE))
-M2 <- Mdir %*% Mdir
-M2[1, 6]
+# Are all edges mutual? (strict symmetry)
+all_mutual <- all(is.mutual(G, E(G)))
+all_mutual
 @
+
 
 
 %%%%%%%%%%%%%%%%%%%
@@ -202,14 +188,6 @@ M2[1, 6]
 	\end{definition}
 \end{frame}
 
-<<ex-connectivity, echo=TRUE>>=
-is_connected(G, mode = "weak")
-is_connected(G, mode = "strong")
-
-scc <- components(G, mode = "strong")
-scc$no
-table(scc$membership)
-@
 
 
 \begin{frame}\frametitle{Trails}
@@ -224,17 +202,6 @@ table(scc$membership)
 	A closed walk is a \defword{directed cycle} if it contains at least three vertices and all its vertices are distinct except for $v_0=v_k$
 	\end{definition}
 \end{frame}
-
-<<ex-condensation, echo=TRUE>>=
-# Condensation graph (SCC DAG) via contracting SCCs
-scc <- components(G, mode = "strong")
-G_cond <- contract(G, scc$membership, vertex.attr.comb = "ignore")
-G_cond <- simplify(G_cond, remove.multiple = TRUE, remove.loops = TRUE)
-
-vcount(G_cond); ecount(G_cond)
-is_dag <- is.dag(G_cond)
-is_dag
-@
 
 \begin{frame}{Examples of directed cycles}
 	\begin{minipage}{0.5\textwidth}
@@ -273,14 +240,21 @@ is_dag
 	\end{minipage}
 \end{frame}
 
-<<ex-orientation-bridges, echo=TRUE>>=
-# Orientation and bridges (undirected case -> orientation)
-Gu <- make_ring(8) 
-length(bridges(Gu))
+<<ex-walks-paths, echo=TRUE>>=
+# Shortest paths between two vertices
+sp_1_to_15 <- shortest_paths(G, from = 1, to = 15, mode = "out")
+sp_1_to_15$vpath
 
-G_or <- as.directed(Gu, mode = "arbitrary")  # orient edges
-is_connected(G_or, mode = "strong")   
+# All simple paths up to a given cutoff (to keep it small)
+paths_1_to_6 <- all_simple_paths(G, from = 1, to = 6, mode = "out", cutoff = 6)
+length(paths_1_to_6)
+
+# Number of walks of length 2 via adjacency powers
+Mdir <- as.matrix(as_adjacency_matrix(G, sparse = FALSE))
+M2 <- Mdir %*% Mdir
+M2[1, 6]
 @
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -290,9 +264,9 @@ is_connected(G_or, mode = "strong")
 
 \begin{frame}\frametitle{Definitions}
 	%Let $D=(V,A)$ be a digraph.
-	\begin{definition}[{Underlying graph}]
+	\begin{minordefinition}[{Underlying graph}]
 	Given a digraph, the undirected graph with each arc replaced by an edge is called the \defword{underlying graph}
-	\end{definition}
+	\end{minordefinition}
 	\vfill
 	\begin{definition}[{Weakly connected digraph}]
 	If the underlying graph is a connected graph, then the digraph is \defword{weakly connected}
@@ -307,18 +281,15 @@ is_connected(G_or, mode = "strong")
 	\end{definition}
 \end{frame}
 
-<<ex-adj-matrix-directed, echo=TRUE>>=
-# Adjacency matrix (directed)
-M <- as.matrix(as_adjacency_matrix(G, sparse = FALSE))
+<<ex-connectivity, echo=TRUE>>=
+is_connected(G, mode = "weak")
+is_connected(G, mode = "strong")
 
-# Column sums = indegrees, row sums = outdegrees (directed case)
-all.equal(rowSums(M), degree(G, mode = "out"))
-all.equal(colSums(M), degree(G, mode = "in"))
-
-# Walks of length 3 from 1 to 15 via M^3
-M3 <- M %*% M %*% M
-M3[1, 15]
+scc <- components(G, mode = "strong")
+scc$no
+table(scc$membership)
 @
+
 
 \begin{frame}{Strong connectedness is an equivalence relation}
 Denote $x\equiv y$ the relation  ``$x=y$, or $x\neq y$ and there exists a directed path in $G$ from $x$ to $y$''. $\equiv$ is an equivalence relation since
@@ -339,12 +310,6 @@ Denote $x\equiv y$ the relation  ``$x=y$, or $x\neq y$ and there exists a direct
 A strong component in $G$ is a maximal strongly connected subdigraph of $G$
 \end{frame}
 
-<<ex-distance-matrix, echo=TRUE>>=
-# Distance matrix (shortest path lengths)
-D <- distances(G, mode = "out")
-D[1, 15]
-@
-
 
 \begin{frame}
 	\begin{theorem}[Properties]
@@ -356,16 +321,6 @@ D[1, 15]
 	\end{theorem}
 \end{frame}
 
-<<ex-degree-laplacian, echo=TRUE>>=
-# Degree matrix and Laplacian
-deg_vec <- degree(G, mode = "all")
-Dmat <- diag(deg_vec)
-L <- laplacian_matrix(G, normalized = FALSE, sparse = FALSE)
-
-dim(Dmat); dim(L)
-eigenvals <- eigen(as.matrix(L))$values
-head(eigenvals)
-@
 
 
 
@@ -396,15 +351,27 @@ head(eigenvals)
 	\end{definition}
 \end{frame}
 
+\begin{frame}[fragile]
+<<ex-condensation, echo=TRUE>>=
+# Condensation graph (SCC DAG) via contracting SCCs
+scc <- components(G, mode = "strong")
+G_cond <- contract(G, scc$membership, vertex.attr.comb = "ignore")
+G_cond <- simplify(G_cond, remove.multiple = TRUE, remove.loops = TRUE)
+
+vcount(G_cond); ecount(G_cond)
+is_dag <- is.dag(G_cond)
+is_dag
+@
+\end{frame}
 
 \begin{frame} 
-	\begin{definition}[Articulation set]
+	\begin{minordefinition}[Articulation set]
 		For a connected graph, a set $X$ of vertices is called an \defword{articulation set} (or a \defword{cutset}) if the subgraph of $G$ generated by $V-X$ is not connected
-	\end{definition}
+	\end{minordefinition}
 	\vfill
-	\begin{definition}[Stable set]
+	\begin{minordefinition}[Stable set]
 		A set $S$ of vertices is called a \defword{stable set} if no arc joins two distinct vertices in $S$
-	\end{definition}
+	\end{minordefinition}
 	\vfill
 \end{frame}
 
@@ -439,6 +406,15 @@ A connected graph $G=(V,E)$ is orientable $\iff$ $G$ contains no bridges
 \end{frame}
  
 
+<<ex-orientation-bridges, echo=TRUE>>=
+# Orientation and bridges (undirected case -> orientation)
+Gu <- make_ring(8) 
+length(bridges(Gu))
+
+G_or <- as.directed(Gu, mode = "arbitrary")  # orient edges
+is_connected(G_or, mode = "strong")   
+@
+
 
 
 
@@ -448,7 +424,7 @@ A connected graph $G=(V,E)$ is orientable $\iff$ $G$ contains no bridges
 %%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Matrices associated to a graph/digraph}
+\Ssection{Matrices associated to a graph/digraph}{FIGS-slides-admin/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
 
 \begin{frame}{Matrices associated to a graph/digraph}
 	There are multiple matrices associated to a graph/digraph
@@ -503,18 +479,34 @@ A connected graph $G=(V,E)$ is orientable $\iff$ $G$ contains no bridges
 \end{frame}
 
 \begin{frame}
-	\begin{theorem}[{Properties}]
+	\begin{importanttheorem}[{Properties of the adjacency matrix}]
+	Let $M$ be the adjacency matrix of a digraph $G$
 	\begin{itemize}
 	\item $M$ is not necessarily symmetric
 	\item The sum of any column of $M$ is equal to the number of arcs directed towards $v_j$
 	\item The sum of the entries in row $i$ is equal to the number of arcs directed away from vertex $v_i$
 	\item The $(i,j)-$entry of $M^n$ is equal to the number of walks of length $n$ from vertex $v_i$ to $v_j$
 	\end{itemize}
-	\end{theorem}
+	\end{importanttheorem}
 \end{frame}
 	
+<<ex-adj-matrix-directed, echo=TRUE>>=
+# Adjacency matrix (directed)
+M <- as.matrix(as_adjacency_matrix(G, sparse = FALSE))
+
+# Column sums = indegrees, row sums = outdegrees (directed case)
+all.equal(rowSums(M), degree(G, mode = "out"))
+all.equal(colSums(M), degree(G, mode = "in"))
+
+# Walks of length 3 from 1 to 15 via M^3
+M3 <- M %*% M %*% M
+M3[1, 15]
+@
+
+	
+
 \begin{frame}
-	\begin{definition}[Multiplicity of a pair]
+	\begin{minordefinition}[Multiplicity of a pair]
 		The \defword{multiplicity} of a pair $x,y$ is the number $m_G^+(x,y)$ of arcs with initial endpoint $x$ and terminal endpoint $y$. Let
 		\begin{align*}
 			m_G^-(x,y) &= m_G^+(y,x) \\
@@ -525,21 +517,21 @@ A connected graph $G=(V,E)$ is orientable $\iff$ $G$ contains no bridges
 			m_G^+(A,B) &= \{u:u\in U, u=(x,y),x\in A,y\in B\} \\
 			m_G(A,B) &= m_G^+(A,B)+m_G^+(A,B)
 		\end{align*}
-	\end{definition}
+	\end{minordefinition}
 \end{frame}
 
-\begin{frame}{Adjacency matrix of a multigraph}
-\begin{definition}[Matrix associated with $G$]
-	If $G$ has vertices $x_1,x_2,\ldots,x_n$, then the \defword{matrix associated} with $G$ is 
-	\[
-	a_{ij}=m_G^+(x_i,x_j)
-	\]
-\end{definition}
-\vfill
-\begin{definition}[Adjacency matrix]
-	The matrix $a_{ij}+a_{ji}$ is the \defword{adjacency matrix} associated with $G$
-\end{definition}
-\end{frame}
+% \begin{frame}{Adjacency matrix of a multigraph}
+% \begin{definition}[Matrix associated with $G$]
+% 	If $G$ has vertices $x_1,x_2,\ldots,x_n$, then the \defword{matrix associated} with $G$ is 
+% 	\[
+% 	a_{ij}=m_G^+(x_i,x_j)
+% 	\]
+% \end{definition}
+% \vfill
+% \begin{definition}[Adjacency matrix]
+% 	The matrix $a_{ij}+a_{ji}$ is the \defword{adjacency matrix} associated with $G$
+% \end{definition}
+% \end{frame}
 
 \begin{frame}{Adjacency matrix (multigraph case)}
 	\begin{definition}[Adjacency matrix of a multigraph]
@@ -676,6 +668,16 @@ Elements of $L$ are given by
 \]
 \end{frame}
 
+<<ex-degree-laplacian, echo=TRUE>>=
+# Degree matrix and Laplacian
+deg_vec <- degree(G, mode = "all")
+Dmat <- diag(deg_vec)
+L <- laplacian_matrix(G, normalized = FALSE, sparse = FALSE)
+
+dim(Dmat); dim(L)
+eigenvals <- eigen(as.matrix(L))$values
+head(eigenvals)
+@
 
 \begin{frame}\frametitle{Distance matrix}
 	Let $G$ be a graph of order $p$ with vertices $v_1, \ldots , v_p$
@@ -687,6 +689,13 @@ Elements of $L$ are given by
 	Note $\delta_{ii}=0$ for $i=1,\ldots, p$
 	\end{definition}
 \end{frame}
+
+<<ex-distance-matrix, echo=TRUE>>=
+# Distance matrix (shortest path lengths)
+D <- distances(G, mode = "out")
+D[1, 15]
+@
+
 
 \begin{frame}
 	\begin{property}
