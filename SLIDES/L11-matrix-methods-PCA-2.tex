@@ -409,7 +409,16 @@ Sometimes you will see $S_X=1/(n-1)XX^T$. This is for matrices with observations
 %%%%%%%%%%%%%%%%%%%%%
 \Ssection{Hockey players}{FIGS-slides-admin/Gemini_Generated_Image_ee8lhqee8lhqee8l.jpeg}
 
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in file(file, "{}rt"{}): cannot open the connection to 'https://github.com/julien-arino/math-of-data-science/raw/refs/heads/main/DATA/hockey-players.csv'}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in data\$weight: object of type 'closure' is not subsettable}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in data\$height: object of type 'closure' is not subsettable}}\end{kframe}
+\end{knitrout}
 
 \begin{frame}[fragile]\frametitle{Covariance}
 The function \code{cov} returns the covariance of two samples
@@ -421,16 +430,14 @@ Note that the functions deals equally well with data that is not centred as with
 \begin{alltt}
 \hlkwd{cov}\hldef{(data}\hlopt{$}\hldef{height, data}\hlopt{$}\hldef{weight)}
 \end{alltt}
-\begin{verbatim}
-## [1] 25.98646
-\end{verbatim}
-\begin{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in data\$weight: object of type 'closure' is not subsettable}}\begin{alltt}
 \hlkwd{cov}\hldef{(data}\hlopt{$}\hldef{height.c, data}\hlopt{$}\hldef{weight.c)}
 \end{alltt}
-\begin{verbatim}
-## [1] 25.98646
-\end{verbatim}
-\end{kframe}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in data\$weight.c: object of type 'closure' is not subsettable}}\end{kframe}
 \end{knitrout}
 \end{frame}
 
@@ -444,15 +451,20 @@ Let us compute the sample covariance matrix
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hldef{X} \hlkwb{=} \hlkwd{as.matrix}\hldef{(data[,}\hlkwd{c}\hldef{(}\hlsng{"height.c"}\hldef{,} \hlsng{"weight.c"}\hldef{)])}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in (function (cond) : error in evaluating the argument 'x' in selecting a method for function 'as.matrix': object of type 'closure' is not subsettable}}\begin{alltt}
 \hldef{S} \hlkwb{=} \hlnum{1}\hlopt{/}\hldef{(}\hlkwd{dim}\hldef{(X)[}\hlnum{1}\hldef{]}\hlopt{-}\hlnum{1}\hldef{)}\hlopt{*}\hlkwd{t}\hldef{(X)} \hlopt{%*%} \hldef{X}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: object 'X' not found}}\begin{alltt}
 \hldef{S}
 \end{alltt}
-\begin{verbatim}
-##          height.c weight.c
-## height.c 28.98592 25.98646
-## weight.c 25.98646 48.49557
-\end{verbatim}
-\end{kframe}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: object 'S' not found}}\end{kframe}
 \end{knitrout}
 \end{frame}
 
@@ -465,16 +477,14 @@ The off-diagonal entries do match the computed covariance. Let us check that the
 \begin{alltt}
 \hlkwd{var}\hldef{(X[,}\hlnum{1}\hldef{])}
 \end{alltt}
-\begin{verbatim}
-## [1] 28.98592
-\end{verbatim}
-\begin{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: object 'X' not found}}\begin{alltt}
 \hlkwd{var}\hldef{(X[,}\hlnum{2}\hldef{])}
 \end{alltt}
-\begin{verbatim}
-## [1] 48.49557
-\end{verbatim}
-\end{kframe}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: object 'X' not found}}\end{kframe}
 \end{knitrout}
 
 
@@ -489,19 +499,15 @@ Now compute the principal components. We need eigenvalues and eigenvectors
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hldef{ev} \hlkwb{=} \hlkwd{eigen}\hldef{(S)}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: object 'S' not found}}\begin{alltt}
 \hldef{ev}
 \end{alltt}
-\begin{verbatim}
-## eigen() decomposition
-## $values
-## [1] 66.49777 10.98372
-## 
-## $vectors
-##           [,1]       [,2]
-## [1,] 0.5694576 -0.8220207
-## [2,] 0.8220207  0.5694576
-\end{verbatim}
-\end{kframe}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: object 'ev' not found}}\end{kframe}
 \end{knitrout}
 \vfill
 (\code{eigen} returns eigenvalues sorted in decreasing order and normalised eigenvectors)
@@ -521,10 +527,16 @@ To use the function \code{abline}, we need to give the coefficients of the line 
     \hlkwc{pch} \hldef{=} \hlnum{19}\hldef{,} \hlkwc{col} \hldef{=} \hlsng{"dodgerblue4"}\hldef{,}
     \hlkwc{main} \hldef{=} \hlsng{"IIHF players 2001-2016 (with first component)"}\hldef{,}
     \hlkwc{xlab} \hldef{=} \hlsng{"Height (cm)"}\hldef{,} \hlkwc{ylab} \hldef{=} \hlsng{"Weight (kg)"}\hldef{)}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in (function (cond) : error in evaluating the argument 'x' in selecting a method for function 'plot': object of type 'closure' is not subsettable}}\begin{alltt}
 \hlkwd{abline}\hldef{(}\hlkwc{a} \hldef{=} \hlnum{0}\hldef{,} \hlkwc{b} \hldef{= ev}\hlopt{$}\hldef{vectors[}\hlnum{2}\hldef{,}\hlnum{1}\hldef{]}\hlopt{/}\hldef{ev}\hlopt{$}\hldef{vectors[}\hlnum{1}\hldef{,}\hlnum{1}\hldef{],}
        \hlkwc{col} \hldef{=} \hlsng{"red"}\hldef{,} \hlkwc{lwd} \hldef{=} \hlnum{3}\hldef{)}
 \end{alltt}
-\end{kframe}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: object 'ev' not found}}\end{kframe}
 \end{knitrout}
 \end{frame}
 
@@ -556,23 +568,27 @@ Note that angles are in radians
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hldef{theta} \hlkwb{=} \hlkwd{atan}\hldef{(ev}\hlopt{$}\hldef{vectors[}\hlnum{2}\hldef{,}\hlnum{1}\hldef{]}\hlopt{/}\hldef{ev}\hlopt{$}\hldef{vectors[}\hlnum{1}\hldef{,}\hlnum{1}\hldef{])}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: object 'ev' not found}}\begin{alltt}
 \hldef{theta}
 \end{alltt}
-\begin{verbatim}
-## [1] 0.9649505
-\end{verbatim}
-\begin{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: object 'theta' not found}}\begin{alltt}
 \hldef{R_theta} \hlkwb{=} \hlkwd{matrix}\hldef{(}\hlkwd{c}\hldef{(}\hlkwd{cos}\hldef{(theta),} \hlopt{-}\hlkwd{sin}\hldef{(theta),}
                   \hlkwd{sin}\hldef{(theta),} \hlkwd{cos}\hldef{(theta)),}
                 \hlkwc{nr} \hldef{=} \hlnum{2}\hldef{,} \hlkwc{byrow} \hldef{=} \hlnum{TRUE}\hldef{)}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: object 'theta' not found}}\begin{alltt}
 \hldef{R_theta}
 \end{alltt}
-\begin{verbatim}
-##           [,1]       [,2]
-## [1,] 0.5694576 -0.8220207
-## [2,] 0.8220207  0.5694576
-\end{verbatim}
-\end{kframe}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: object 'R\_theta' not found}}\end{kframe}
 \end{knitrout}
 \end{frame}
 
@@ -587,20 +603,39 @@ And now we rotate the points
 \begin{alltt}
 \hldef{tmp_in} \hlkwb{=} \hlkwd{matrix}\hldef{(}\hlkwd{c}\hldef{(data}\hlopt{$}\hldef{weight.c, data}\hlopt{$}\hldef{height.c),}
                 \hlkwc{nc} \hldef{=} \hlnum{2}\hldef{)}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in data\$weight.c: object of type 'closure' is not subsettable}}\begin{alltt}
 \hldef{tmp_out} \hlkwb{=} \hlkwd{c}\hldef{()}
 \hlkwa{for} \hldef{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlkwd{dim}\hldef{(tmp_in)[}\hlnum{1}\hldef{]) \{}
     \hldef{tmp_out} \hlkwb{=} \hlkwd{rbind}\hldef{(tmp_out,}
                     \hlkwd{t}\hldef{(R_theta} \hlopt{%*%} \hldef{tmp_in[i,]))}
 \hldef{\}}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: object 'tmp\_in' not found}}\begin{alltt}
 \hldef{data}\hlopt{$}\hldef{weight.c_r} \hlkwb{=} \hldef{tmp_out[,}\hlnum{1}\hldef{]}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in data\$weight.c\_r = tmp\_out[, 1]: object of type 'closure' is not subsettable}}\begin{alltt}
 \hldef{data}\hlopt{$}\hldef{height.c_r} \hlkwb{=} \hldef{tmp_out[,}\hlnum{2}\hldef{]}
 \end{alltt}
-\end{kframe}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in data\$height.c\_r = tmp\_out[, 2]: object of type 'closure' is not subsettable}}\end{kframe}
 \end{knitrout}
 \end{frame}
 
 
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in (function (cond) : error in evaluating the argument 'x' in selecting a method for function 'plot': object of type 'closure' is not subsettable}}\end{kframe}
+\end{knitrout}
 
 \maxFrameImage{FIGS/L11-plot-hockey-centred-evector-2-1.pdf}
 
@@ -619,9 +654,15 @@ Let us plot with the same range as for the non-rotated data for the y-axis
     \hlkwc{xlab} \hldef{=} \hlsng{"x-axis"}\hldef{,} \hlkwc{ylab} \hldef{=} \hlsng{"y-axis"}\hldef{,}
     \hlkwc{main} \hldef{=} \hlsng{"IIHF players 2001-2016 (rotated to first component)"}\hldef{,}
     \hlkwc{ylim} \hldef{=} \hlkwd{range}\hldef{(data}\hlopt{$}\hldef{weight.c))}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in (function (cond) : error in evaluating the argument 'x' in selecting a method for function 'plot': object of type 'closure' is not subsettable}}\begin{alltt}
 \hlkwd{abline}\hldef{(}\hlkwc{h} \hldef{=} \hlnum{0}\hldef{,} \hlkwc{col} \hldef{=} \hlsng{"red"}\hldef{,} \hlkwc{lwd} \hldef{=} \hlnum{2}\hldef{)}
 \end{alltt}
-\end{kframe}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in int\_abline(a = a, b = b, h = h, v = v, untf = untf, ...): plot.new has not been called yet}}\end{kframe}
 \end{knitrout}
 \end{frame}
 
@@ -639,12 +680,22 @@ Plot the first and second eigenvectors
     \hlkwc{pch} \hldef{=} \hlnum{19}\hldef{,} \hlkwc{col} \hldef{=} \hlsng{"dodgerblue4"}\hldef{,}
     \hlkwc{main} \hldef{=} \hlsng{"IIHF players 2001-2016 (with first and second components)"}\hldef{,}
     \hlkwc{xlab} \hldef{=} \hlsng{"Height (cm)"}\hldef{,} \hlkwc{ylab} \hldef{=} \hlsng{"Weight (kg)"}\hldef{)}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in (function (cond) : error in evaluating the argument 'x' in selecting a method for function 'plot': object of type 'closure' is not subsettable}}\begin{alltt}
 \hlkwd{abline}\hldef{(}\hlkwc{a} \hldef{=} \hlnum{0}\hldef{,} \hlkwc{b} \hldef{= ev}\hlopt{$}\hldef{vectors[}\hlnum{2}\hldef{,}\hlnum{1}\hldef{]}\hlopt{/}\hldef{ev}\hlopt{$}\hldef{vectors[}\hlnum{1}\hldef{,}\hlnum{1}\hldef{],}
        \hlkwc{col} \hldef{=} \hlsng{"red"}\hldef{,} \hlkwc{lwd} \hldef{=} \hlnum{3}\hldef{)}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: object 'ev' not found}}\begin{alltt}
 \hlkwd{abline}\hldef{(}\hlkwc{a} \hldef{=} \hlnum{0}\hldef{,} \hlkwc{b} \hldef{= ev}\hlopt{$}\hldef{vectors[}\hlnum{2}\hldef{,}\hlnum{2}\hldef{]}\hlopt{/}\hldef{ev}\hlopt{$}\hldef{vectors[}\hlnum{1}\hldef{,}\hlnum{2}\hldef{],}
        \hlkwc{col} \hldef{=} \hlsng{"darkgreen"}\hldef{,} \hlkwc{lwd} \hldef{=} \hlnum{3}\hldef{)}
 \end{alltt}
-\end{kframe}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: object 'ev' not found}}\end{kframe}
 \end{knitrout}
 \end{frame}
 
@@ -669,21 +720,64 @@ We then normalise the resulting vectors
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hldef{red_line} \hlkwb{=} \hlkwd{c}\hldef{(}\hlnum{1}\hldef{, ev}\hlopt{$}\hldef{vectors[}\hlnum{2}\hldef{,}\hlnum{1}\hldef{]}\hlopt{/}\hldef{ev}\hlopt{$}\hldef{vectors[}\hlnum{1}\hldef{,}\hlnum{1}\hldef{])}
-\hldef{red_line} \hlkwb{=} \hldef{red_line}\hlopt{/}\hlkwd{sqrt}\hldef{(}\hlkwd{sum}\hldef{(red_line}\hlopt{^}\hlnum{2}\hldef{))}
-\hldef{green_line} \hlkwb{=} \hlkwd{c}\hldef{(}\hlnum{1}\hldef{, ev}\hlopt{$}\hldef{vectors[}\hlnum{2}\hldef{,}\hlnum{2}\hldef{]}\hlopt{/}\hldef{ev}\hlopt{$}\hldef{vectors[}\hlnum{1}\hldef{,}\hlnum{2}\hldef{])}
-\hldef{green_line} \hlkwb{=} \hldef{green_line}\hlopt{/}\hlkwd{sqrt}\hldef{(}\hlkwd{sum}\hldef{(green_line}\hlopt{^}\hlnum{2}\hldef{))}
-\hldef{augmented_M} \hlkwb{=} \hlkwd{cbind}\hldef{(red_line,green_line,} \hlkwd{diag}\hldef{(}\hlnum{2}\hldef{))}
-\hldef{P} \hlkwb{=} \hlkwd{rref}\hldef{(augmented_M)[,}\hlnum{3}\hlopt{:}\hlnum{4}\hldef{]}
+\end{alltt}
 
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: object 'ev' not found}}\begin{alltt}
+\hldef{red_line} \hlkwb{=} \hldef{red_line}\hlopt{/}\hlkwd{sqrt}\hldef{(}\hlkwd{sum}\hldef{(red_line}\hlopt{^}\hlnum{2}\hldef{))}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: object 'red\_line' not found}}\begin{alltt}
+\hldef{green_line} \hlkwb{=} \hlkwd{c}\hldef{(}\hlnum{1}\hldef{, ev}\hlopt{$}\hldef{vectors[}\hlnum{2}\hldef{,}\hlnum{2}\hldef{]}\hlopt{/}\hldef{ev}\hlopt{$}\hldef{vectors[}\hlnum{1}\hldef{,}\hlnum{2}\hldef{])}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: object 'ev' not found}}\begin{alltt}
+\hldef{green_line} \hlkwb{=} \hldef{green_line}\hlopt{/}\hlkwd{sqrt}\hldef{(}\hlkwd{sum}\hldef{(green_line}\hlopt{^}\hlnum{2}\hldef{))}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: object 'green\_line' not found}}\begin{alltt}
+\hldef{augmented_M} \hlkwb{=} \hlkwd{cbind}\hldef{(red_line,green_line,} \hlkwd{diag}\hldef{(}\hlnum{2}\hldef{))}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: object 'red\_line' not found}}\begin{alltt}
+\hldef{P} \hlkwb{=} \hlkwd{rref}\hldef{(augmented_M)[,}\hlnum{3}\hlopt{:}\hlnum{4}\hldef{]}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: object 'augmented\_M' not found}}\begin{alltt}
 \hldef{tmp_in} \hlkwb{=} \hlkwd{matrix}\hldef{(}\hlkwd{c}\hldef{(data}\hlopt{$}\hldef{weight.c, data}\hlopt{$}\hldef{height.c),} \hlkwc{nc} \hldef{=} \hlnum{2}\hldef{)}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in data\$weight.c: object of type 'closure' is not subsettable}}\begin{alltt}
 \hldef{tmp_out} \hlkwb{=} \hlkwd{c}\hldef{()}
 \hlkwa{for} \hldef{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlkwd{dim}\hldef{(tmp_in)[}\hlnum{1}\hldef{]) \{}
     \hldef{tmp_out} \hlkwb{=} \hlkwd{rbind}\hldef{(tmp_out,} \hlkwd{t}\hldef{(P} \hlopt{%*%} \hldef{tmp_in[i,]))}
 \hldef{\}}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: object 'tmp\_in' not found}}\begin{alltt}
 \hldef{data}\hlopt{$}\hldef{weight.c_r2} \hlkwb{=} \hldef{tmp_out[,}\hlnum{1}\hldef{]}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in data\$weight.c\_r2 = tmp\_out[, 1]: object of type 'closure' is not subsettable}}\begin{alltt}
 \hldef{data}\hlopt{$}\hldef{height.c_r2} \hlkwb{=} \hldef{tmp_out[,}\hlnum{2}\hldef{]}
 \end{alltt}
-\end{kframe}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in data\$height.c\_r2 = tmp\_out[, 2]: object of type 'closure' is not subsettable}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in (function (cond) : error in evaluating the argument 'x' in selecting a method for function 'plot': object of type 'closure' is not subsettable}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in int\_abline(a = a, b = b, h = h, v = v, untf = untf, ...): plot.new has not been called yet}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in int\_abline(a = a, b = b, h = h, v = v, untf = untf, ...): plot.new has not been called yet}}\end{kframe}
 \end{knitrout}
 \end{frame}
 
@@ -696,20 +790,15 @@ Now do things ``properly''
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hldef{GS} \hlkwb{=} \hldef{pracma}\hlopt{::}\hlkwd{gramSchmidt}\hldef{(}\hlkwc{A} \hldef{= ev}\hlopt{$}\hldef{vectors,} \hlkwc{tol} \hldef{=} \hlnum{1e-10}\hldef{)}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: object 'ev' not found}}\begin{alltt}
 \hldef{GS}
 \end{alltt}
-\begin{verbatim}
-## $Q
-##           [,1]       [,2]
-## [1,] 0.5694576 -0.8220207
-## [2,] 0.8220207  0.5694576
-## 
-## $R
-##      [,1] [,2]
-## [1,]    1    0
-## [2,]    0    1
-\end{verbatim}
-\end{kframe}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: object 'GS' not found}}\end{kframe}
 \end{knitrout}
 \end{frame}
 
@@ -721,22 +810,20 @@ Now recall we saw a theorem that told us how to construct a new basis..
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hldef{A}\hlkwb{=}\hlkwd{matrix}\hldef{(}\hlkwd{c}\hldef{(GS}\hlopt{$}\hldef{Q,}\hlnum{1}\hldef{,}\hlnum{0}\hldef{,}\hlnum{0}\hldef{,}\hlnum{1}\hldef{),} \hlkwc{nr} \hldef{=} \hlnum{2}\hldef{)}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: object 'GS' not found}}\begin{alltt}
 \hldef{A}
 \end{alltt}
-\begin{verbatim}
-##           [,1]       [,2] [,3] [,4]
-## [1,] 0.5694576 -0.8220207    1    0
-## [2,] 0.8220207  0.5694576    0    1
-\end{verbatim}
-\begin{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: object 'A' not found}}\begin{alltt}
 \hldef{pracma}\hlopt{::}\hlkwd{rref}\hldef{(A)}
 \end{alltt}
-\begin{verbatim}
-##      [,1] [,2]       [,3]      [,4]
-## [1,]    1    0  0.5694576 0.8220207
-## [2,]    0    1 -0.8220207 0.5694576
-\end{verbatim}
-\end{kframe}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: object 'A' not found}}\end{kframe}
 \end{knitrout}
 \end{frame}
 
@@ -746,15 +833,18 @@ Now recall we saw a theorem that told us how to construct a new basis..
 \begin{alltt}
 \hldef{P} \hlkwb{=} \hldef{pracma}\hlopt{::}\hlkwd{rref}\hldef{(A)[,}\hlkwd{c}\hldef{(}\hlnum{3}\hldef{,}\hlnum{4}\hldef{)]}
 \end{alltt}
-\begin{verbatim}
-##            [,1]      [,2]
-## [1,]  0.5694576 0.8220207
-## [2,] -0.8220207 0.5694576
-\end{verbatim}
-\begin{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: object 'A' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: object 'P' not found}}\begin{alltt}
 \hldef{X.new} \hlkwb{=} \hldef{X} \hlopt{%*%} \hlkwd{t}\hldef{(P)}
 \end{alltt}
-\end{kframe}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: object 'X' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'X.new' not found}}\end{kframe}
 \end{knitrout}
 \end{frame}
 
