@@ -54,7 +54,7 @@
 
 
 % Part common to all the lectures
-\subtitle{MATH 2740 -- Mathematics of Data Science -- Lecture 16}
+\subtitle{MATH 2740 -- Mathematics of Data Science -- Lecture 17}
 \author{\texorpdfstring{Julien Arino\newline\url{julien.arino@umanitoba.ca}}{Julien Arino}}
 \institute{Department of Mathematics @ University of Manitoba}
 \date{Fall 202X}
@@ -71,16 +71,21 @@
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 \begin{document}
 
+
+
+
+
+
 % Set up cross-references and counter persistence
-\setcounter{theorem}{30}
+\setcounter{theorem}{95}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% TITLE AND OUTLINE
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\titlepagewithfigure{FIGS-transitions/Gemini_Generated_Image_awgymvawgymvawgy.jpeg}
-\outlinepage{FIGS-transitions/Gemini_Generated_Image_duutxqduutxqduut.jpeg}
+\titlepagewithfigure{FIGS-slides-admin/Gemini_Generated_Image_awgymvawgymvawgy.jpeg}
+\outlinepage{FIGS-slides-admin/Gemini_Generated_Image_duutxqduutxqduut.jpeg}
 
 
 %%%%%%%%%%%%%%%%%%%
@@ -88,7 +93,7 @@
 %%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%
 \section{Directed graphs}
-\newSectionSlide{FIGS-transitions/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
+\newSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -112,6 +117,27 @@
 	\end{definition}
 \end{frame}
 
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# Degrees in a digraph: out-, in-, and total degree}
+\hldef{deg_out} \hlkwb{<-} \hlkwd{degree}\hldef{(G,} \hlkwc{mode} \hldef{=} \hlsng{"out"}\hldef{)}
+\hldef{deg_in}  \hlkwb{<-} \hlkwd{degree}\hldef{(G,} \hlkwc{mode} \hldef{=} \hlsng{"in"}\hldef{)}
+\hldef{deg_tot} \hlkwb{<-} \hlkwd{degree}\hldef{(G,} \hlkwc{mode} \hldef{=} \hlsng{"all"}\hldef{)}
+\hlkwd{head}\hldef{(}\hlkwd{data.frame}\hldef{(}\hlkwc{v} \hldef{=} \hlkwd{as.integer}\hldef{(}\hlkwd{V}\hldef{(G)),} \hlkwc{out} \hldef{= deg_out,} \hlkwc{in_deg} \hldef{= deg_in,} \hlkwc{total} \hldef{= deg_tot))}
+\end{alltt}
+\begin{verbatim}
+##   v out in_deg total
+## 1 1   2      2     4
+## 2 2   2      2     4
+## 3 3   2      2     4
+## 4 4   2      2     4
+## 5 5   3      2     5
+## 6 6   2      2     4
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
 
 
 \begin{frame}
@@ -125,6 +151,27 @@
 		If $G$ is a digraph with vertex set $V(G)=\{v_1, \dots , v_p\}$ and $q$ arcs, then $$\sum_{i=1}^p d^+_G(v_i)=\sum_{i=1}^p d^-_G(v_i)=q$$
 	\end{theorem}
 \end{frame}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# A perfectly symmetric digraph would have every arc reciprocated}
+\hldef{recip} \hlkwb{<-} \hlkwd{reciprocity}\hldef{(G)}  \hlcom{# ratio of mutual connections}
+\hldef{recip}
+\end{alltt}
+\begin{verbatim}
+## [1] 0.05128205
+\end{verbatim}
+\begin{alltt}
+\hlcom{# Are all edges mutual? (strict symmetry)}
+\hldef{all_mutual} \hlkwb{<-} \hlkwd{all}\hldef{(}\hlkwd{is.mutual}\hldef{(G,} \hlkwd{E}\hldef{(G)))}
+\hldef{all_mutual}
+\end{alltt}
+\begin{verbatim}
+## [1] FALSE
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
 
 \begin{frame}
 	\begin{definition}[{Regular digraph}]
@@ -150,6 +197,38 @@
 	\end{definition}
 \end{frame}
 
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# Shortest paths between two vertices}
+\hldef{sp_1_to_15} \hlkwb{<-} \hlkwd{shortest_paths}\hldef{(G,} \hlkwc{from} \hldef{=} \hlnum{1}\hldef{,} \hlkwc{to} \hldef{=} \hlnum{15}\hldef{,} \hlkwc{mode} \hldef{=} \hlsng{"out"}\hldef{)}
+\hldef{sp_1_to_15}\hlopt{$}\hldef{vpath}
+\end{alltt}
+\begin{verbatim}
+## [[1]]
+## + 4/20 vertices, from 6a4b0ca:
+## [1]  1  2  5 15
+\end{verbatim}
+\begin{alltt}
+\hlcom{# All simple paths up to a given cutoff (to keep it small)}
+\hldef{paths_1_to_6} \hlkwb{<-} \hlkwd{all_simple_paths}\hldef{(G,} \hlkwc{from} \hldef{=} \hlnum{1}\hldef{,} \hlkwc{to} \hldef{=} \hlnum{6}\hldef{,} \hlkwc{mode} \hldef{=} \hlsng{"out"}\hldef{,} \hlkwc{cutoff} \hldef{=} \hlnum{6}\hldef{)}
+\hlkwd{length}\hldef{(paths_1_to_6)}
+\end{alltt}
+\begin{verbatim}
+## [1] 4
+\end{verbatim}
+\begin{alltt}
+\hlcom{# Number of walks of length 2 via adjacency powers}
+\hldef{Mdir} \hlkwb{<-} \hlkwd{as.matrix}\hldef{(}\hlkwd{as_adjacency_matrix}\hldef{(G,} \hlkwc{sparse} \hldef{=} \hlnum{FALSE}\hldef{))}
+\hldef{M2} \hlkwb{<-} \hldef{Mdir} \hlopt{%*%} \hldef{Mdir}
+\hldef{M2[}\hlnum{1}\hldef{,} \hlnum{6}\hldef{]}
+\end{alltt}
+\begin{verbatim}
+## [1] 0
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
 
 %%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%
@@ -170,6 +249,38 @@
 	\end{definition}
 \end{frame}
 
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{is_connected}\hldef{(G,} \hlkwc{mode} \hldef{=} \hlsng{"weak"}\hldef{)}
+\end{alltt}
+\begin{verbatim}
+## [1] TRUE
+\end{verbatim}
+\begin{alltt}
+\hlkwd{is_connected}\hldef{(G,} \hlkwc{mode} \hldef{=} \hlsng{"strong"}\hldef{)}
+\end{alltt}
+\begin{verbatim}
+## [1] FALSE
+\end{verbatim}
+\begin{alltt}
+\hldef{scc} \hlkwb{<-} \hlkwd{components}\hldef{(G,} \hlkwc{mode} \hldef{=} \hlsng{"strong"}\hldef{)}
+\hldef{scc}\hlopt{$}\hldef{no}
+\end{alltt}
+\begin{verbatim}
+## [1] 2
+\end{verbatim}
+\begin{alltt}
+\hlkwd{table}\hldef{(scc}\hlopt{$}\hldef{membership)}
+\end{alltt}
+\begin{verbatim}
+## 
+##  1  2 
+## 12  8
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
 
 \begin{frame}\frametitle{Trails}
 	Let $G=(V,A)$ be a digraph.
@@ -183,6 +294,30 @@
 	A closed walk is a \defword{directed cycle} if it contains at least three vertices and all its vertices are distinct except for $v_0=v_k$
 	\end{definition}
 \end{frame}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# Condensation graph (SCC DAG) via contracting SCCs}
+\hldef{scc} \hlkwb{<-} \hlkwd{components}\hldef{(G,} \hlkwc{mode} \hldef{=} \hlsng{"strong"}\hldef{)}
+\hldef{G_cond} \hlkwb{<-} \hlkwd{contract}\hldef{(G, scc}\hlopt{$}\hldef{membership,} \hlkwc{vertex.attr.comb} \hldef{=} \hlsng{"ignore"}\hldef{)}
+\hldef{G_cond} \hlkwb{<-} \hlkwd{simplify}\hldef{(G_cond,} \hlkwc{remove.multiple} \hldef{=} \hlnum{TRUE}\hldef{,} \hlkwc{remove.loops} \hldef{=} \hlnum{TRUE}\hldef{)}
+
+\hlkwd{vcount}\hldef{(G_cond);} \hlkwd{ecount}\hldef{(G_cond)}
+\end{alltt}
+\begin{verbatim}
+## [1] 2
+## [1] 1
+\end{verbatim}
+\begin{alltt}
+\hldef{is_dag} \hlkwb{<-} \hlkwd{is.dag}\hldef{(G_cond)}
+\hldef{is_dag}
+\end{alltt}
+\begin{verbatim}
+## [1] TRUE
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
 
 \begin{frame}{Examples of directed cycles}
 	\begin{minipage}{0.5\textwidth}
@@ -221,6 +356,26 @@
 	\end{minipage}
 \end{frame}
 
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# Orientation and bridges (undirected case -> orientation)}
+\hldef{Gu} \hlkwb{<-} \hlkwd{make_ring}\hldef{(}\hlnum{8}\hldef{)}
+\hlkwd{length}\hldef{(}\hlkwd{bridges}\hldef{(Gu))}
+\end{alltt}
+\begin{verbatim}
+## [1] 0
+\end{verbatim}
+\begin{alltt}
+\hldef{G_or} \hlkwb{<-} \hlkwd{as.directed}\hldef{(Gu,} \hlkwc{mode} \hldef{=} \hlsng{"arbitrary"}\hldef{)}  \hlcom{# orient edges}
+\hlkwd{is_connected}\hldef{(G_or,} \hlkwc{mode} \hldef{=} \hlsng{"strong"}\hldef{)}
+\end{alltt}
+\begin{verbatim}
+## [1] FALSE
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -246,6 +401,35 @@
 	\end{definition}
 \end{frame}
 
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# Adjacency matrix (directed)}
+\hldef{M} \hlkwb{<-} \hlkwd{as.matrix}\hldef{(}\hlkwd{as_adjacency_matrix}\hldef{(G,} \hlkwc{sparse} \hldef{=} \hlnum{FALSE}\hldef{))}
+
+\hlcom{# Column sums = indegrees, row sums = outdegrees (directed case)}
+\hlkwd{all.equal}\hldef{(}\hlkwd{rowSums}\hldef{(M),} \hlkwd{degree}\hldef{(G,} \hlkwc{mode} \hldef{=} \hlsng{"out"}\hldef{))}
+\end{alltt}
+\begin{verbatim}
+## [1] TRUE
+\end{verbatim}
+\begin{alltt}
+\hlkwd{all.equal}\hldef{(}\hlkwd{colSums}\hldef{(M),} \hlkwd{degree}\hldef{(G,} \hlkwc{mode} \hldef{=} \hlsng{"in"}\hldef{))}
+\end{alltt}
+\begin{verbatim}
+## [1] TRUE
+\end{verbatim}
+\begin{alltt}
+\hlcom{# Walks of length 3 from 1 to 15 via M^3}
+\hldef{M3} \hlkwb{<-} \hldef{M} \hlopt{%*%} \hldef{M} \hlopt{%*%} \hldef{M}
+\hldef{M3[}\hlnum{1}\hldef{,} \hlnum{15}\hldef{]}
+\end{alltt}
+\begin{verbatim}
+## [1] 2
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
 \begin{frame}{Strong connectedness is an equivalence relation}
 Denote $x\equiv y$ the relation  ``$x=y$, or $x\neq y$ and there exists a directed path in $G$ from $x$ to $y$''. $\equiv$ is an equivalence relation since
 \begin{enumerate}
@@ -265,6 +449,19 @@ Denote $x\equiv y$ the relation  ``$x=y$, or $x\neq y$ and there exists a direct
 A strong component in $G$ is a maximal strongly connected subdigraph of $G$
 \end{frame}
 
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# Distance matrix (shortest path lengths)}
+\hldef{D} \hlkwb{<-} \hlkwd{distances}\hldef{(G,} \hlkwc{mode} \hldef{=} \hlsng{"out"}\hldef{)}
+\hldef{D[}\hlnum{1}\hldef{,} \hlnum{15}\hldef{]}
+\end{alltt}
+\begin{verbatim}
+## [1] 3
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
 
 \begin{frame}
 	\begin{theorem}[Properties]
@@ -275,6 +472,31 @@ A strong component in $G$ is a maximal strongly connected subdigraph of $G$
 	\end{itemize}
 	\end{theorem}
 \end{frame}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# Degree matrix and Laplacian}
+\hldef{deg_vec} \hlkwb{<-} \hlkwd{degree}\hldef{(G,} \hlkwc{mode} \hldef{=} \hlsng{"all"}\hldef{)}
+\hldef{Dmat} \hlkwb{<-} \hlkwd{diag}\hldef{(deg_vec)}
+\hldef{L} \hlkwb{<-} \hlkwd{laplacian_matrix}\hldef{(G,} \hlkwc{normalized} \hldef{=} \hlnum{FALSE}\hldef{,} \hlkwc{sparse} \hldef{=} \hlnum{FALSE}\hldef{)}
+
+\hlkwd{dim}\hldef{(Dmat);} \hlkwd{dim}\hldef{(L)}
+\end{alltt}
+\begin{verbatim}
+## [1] 20 20
+## [1] 20 20
+\end{verbatim}
+\begin{alltt}
+\hldef{eigenvals} \hlkwb{<-} \hlkwd{eigen}\hldef{(}\hlkwd{as.matrix}\hldef{(L))}\hlopt{$}\hldef{values}
+\hlkwd{head}\hldef{(eigenvals)}
+\end{alltt}
+\begin{verbatim}
+## [1] 4.125310+0.0000000i 2.957548+1.4580892i 2.957548-1.4580892i
+## [4] 2.598554+0.8441142i 2.598554-0.8441142i 2.172163+0.0000000i
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
 
 
 
@@ -815,401 +1037,6 @@ $A$ primitive $\iff$ $A^{n^2-2n+2}>\b0$
 \end{frame}
 
 
-%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%
-\section{Trees}
-\newSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
-
-\begin{frame}\frametitle{Trees}
-	\begin{definition}[Forest, trees and branches]
-	\begin{itemize}
-	\item A connected graph with no cycle is a \defword{tree}
-	\item A tree is a connected acyclic graph, its edges are called \defword{branches}
-	\item A graph (connected or not) without any cycle is a \defword{forest}. Each component is a tree
-	\end{itemize}
-	\end{definition}
-	\vfill
-	(A forest is a graph whose connected components are trees)
-\end{frame}
-
-\begin{frame}[fragile]\frametitle{Is the ``Karate graph'' a tree?}
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlkwd{is_acyclic}\hldef{(G)}
-\end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: object 'G' not found}}\begin{alltt}
-\hlkwd{is_tree}\hldef{(G)}
-\end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: object 'G' not found}}\end{kframe}
-\end{knitrout}
-\vfill
-So we need friend to play with!
-\vfill
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hldef{G_tu} \hlkwb{<-} \hlkwd{make_tree}\hldef{(}\hlnum{7}\hldef{,} \hlnum{2}\hldef{,} \hlkwc{mode} \hldef{=} \hlsng{"undirected"}\hldef{)}
-\hldef{G_td} \hlkwb{<-} \hlkwd{make_tree}\hldef{(}\hlnum{7}\hldef{,} \hlnum{2}\hldef{)}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
-\end{frame}
-
-\begin{frame}
-\begin{center}
-\includegraphics[width=0.45\textwidth]{FIGS/L16-make-trees-1.pdf}
-\quad
-\includegraphics[width=0.45\textwidth]{FIGS/L16-make-trees-2.pdf}
-\end{center}
-\end{frame}
-
-
-\begin{frame}
-	\begin{property}
-	\begin{itemize}
-	\item Every edge of a tree is a bridge
-	\item Given two vertices $u $ and $v$ of a tree, there is an unique path linking $u$ to $v$
-	\item A tree with $p$ vertices and $q$ edges satisfies $q=p-1$. Thus, a tree is minimally connected
-	\end{itemize}
-	\end{property}
-	\vfill
-	(First property: the deletion of any edge of a tree diconnects it)
-\end{frame}
-
-\begin{frame}[fragile]\frametitle{Every edge of a tree is a bridge}
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlkwd{E}\hldef{(G_tu)}
-\end{alltt}
-\begin{verbatim}
-## + 6/6 edges from f6e1019:
-## [1] 1--2 1--3 2--4 2--5 3--6 3--7
-\end{verbatim}
-\begin{alltt}
-\hlkwd{bridges}\hldef{(G_tu)}
-\end{alltt}
-\begin{verbatim}
-## + 6/6 edges from f6e1019:
-## [1] 2--4 2--5 1--2 3--6 3--7 1--3
-\end{verbatim}
-\begin{alltt}
-\hlkwd{all}\hldef{(}\hlkwd{sort}\hldef{(}\hlkwd{E}\hldef{(G_tu))} \hlopt{==} \hlkwd{sort}\hldef{(}\hlkwd{bridges}\hldef{(G_tu)))}
-\end{alltt}
-\begin{verbatim}
-## [1] TRUE
-\end{verbatim}
-\end{kframe}
-\end{knitrout}
-\end{frame}
-
-
-\begin{frame}\frametitle{Spanning tree}
-	\begin{definition}[Spanning tree]
-	A \defword{spanning tree} of a connected graph $G$ is a subgraph of $G$ that contains all the vertices of $G$ and is a tree.
-	\end{definition}
-	\vfill
-	A graph may have many spanning trees
-\end{frame}
-
-
-\begin{frame}\frametitle{Minimal spanning tree}
-	\begin{definition}[{Value of a spanning tree}]
-	The \defword{value of a spanning tree} $T$ of order $p$ is
-	$$\sum_{i=1}^{p-1}f(e_i)$$
-	where $f$ is the function that maps the edge set into $\IR$
-	\end{definition}
-	\vfill
-	\begin{definition}[{Minimal spanning tree}]
-	Let $G$ be an undirected network, and let $T$ be a \defword{minimal spanning tree} of $G$. Then $T$ is a spanning tree whose the value is minimum
-	\end{definition}
-\end{frame}
-
-\begin{frame}\frametitle{Algorithm to find a minimal spanning tree}
-Let $G=(V(G),E(G))$ be an undirected network and $T$ be a minimal spanning tree 
-\vfill
-\begin{enumerate}
-\item Sort the edges of $G$ in increasing order by value
-\item $T=(V(G),\emptyset)$
-\item For each edge $e$ in sorted order
-        if the endpoints of $e$ are disconnected in $T$
-        add $e$ to $T$
-\end{enumerate}
-\end{frame}
-
-
-\begin{frame}[fragile]\frametitle{Finding a minimal spanning tree of the Karate graph}
-The function \code{mst} finds minimal spanning trees, using distances if no edge weights are provided
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hldef{G_mst} \hlkwb{=} \hlkwd{mst}\hldef{(G)}
-\end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: object 'G' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'G\_mst' not found}}\end{kframe}
-\end{knitrout}
-\end{frame}
-
-\maxFrameImage{FIGS/L16-minimal-spanning-tree-Karate-graph-1.pdf}
-
-\begin{frame}\frametitle{Minimal connector problem}
-\begin{itemize}
-\item Model: a graph $G$ such that edges represent all possible connections, and each edge has a positive value which represents its cost; 
-an undirected network $G$
-\item Solution: a  minimal spanning tree $T$ of $G$
-\begin{itemize}
-\item a spanning tree of $G$ is a subgraph of $G$ that contains all the vertices of $G$ and is a tree.
-\item the cost of the spanning tree is the sum of values of the edges of $T$
-\item a spanning tree such that no other spanning tree has a smaller cost is a minimmal spanning tree.
-\end{itemize}
-\end{itemize}
-\end{frame}
-
-
-
-\begin{frame}
-\begin{theorem}[Characterisation of trees]\label{th:characterisation_tree}
-$H=(V,U)$ a graph of order $|V|=n>2$. The following are equivalent and all characterise a tree :
-\begin{enumerate}
-\item $H$ connected and has no cycles
-\item $H$ has $n-1$ arcs and no cycles
-\item $H$ connected and has exactly $n-1$ arcs
-\item $H$ has no cycles, and if an arc is added to $H$, exactly one cycle is created
-\item $H$ connected, and if any arc is removed, the remaining graph is not
-connected
-\item Every pair of vertices of $H$ is connected by one and only one chain
-\end{enumerate}
-\end{theorem}
-\end{frame}
-
-
-
-\begin{frame}
-\begin{definition}[Pendant vertex]
-A vertex is \defword{pendant} if it is adjacent to exactly one other vertex
-\end{definition}
-\vfill
-\begin{theorem}
-A tree of order $n\geq 2$ has at least two pendant vertices
-\end{theorem}
-\end{frame}
-
-\begin{frame}
-\begin{theorem}\label{th:partial_graph_tree_G_connected}
-A graph $G=(V,U)$ has a partial graph that is a tree $\iff$ $G$ connected
-\end{theorem}
-\vfill
-Recall that a partial graph is a graph generated by a subset of the arcs (Definition~\ref{def:partial_graph} slide~\pageref{def:partial_graph})
-\end{frame}
-
-\begin{frame}{Spanning tree}
-The procedure in the proof of Theorem~\ref{th:partial_graph_tree_G_connected} gives a \defword{spanning tree}
-\vfill
-Can also build a spanning tree as follows:
-\begin{itemize}
-\item Consider any arc $u_0$
-\item Find arc $u_1$ that does not form a cycle with $u_0$
-\item Find arc $u_2$ that does not form a cycle with $\{u_0,u_1\}$
-\item Continue
-\item When you cannot continue anymore, you have a spanning tree
-\end{itemize}
-\end{frame}
-
-
-
-
-\begin{frame}
-\begin{theorem}
-$G$ connected graph with $\geq 1$ arc. TFAE
-\begin{enumerate}
-\item $G$ strongly connected
-\item Every arc lies on a circuit
-\item $G$ contains no cocircuits
-\end{enumerate}
-\end{theorem}
-\end{frame}
-
-
-\begin{frame}
-\begin{theorem}
-$G$ graph with $\geq 1$ arc. TFAE
-\begin{enumerate}
-\item $G$ is a graph without circuits
-\item Each arc is contained in a cocircuit
-\end{enumerate}
-\end{theorem}
-\vfill
-\begin{theorem}
-If $G$ is a strongly connected graph of order $n$, then $G$ has a cycle basis of $\nu(G)$ circuits
-\end{theorem}
-\end{frame}
-
-\begin{frame}
-\begin{definition}[Node, anti-node, branch]
-$G=(V,U)$ strongly connected without loops and $>1$ vertex. For each $x\in V$, there is a path from it and a path to it so $x$ has at least 2 incident arcs. Specifically,
-\begin{itemize}
-\item $x\in V$ with $>2$ incident arcs is a \defword{node}
-\item $x\in V$ with $2$ incident arcs is an \defword{anti-node}
-\end{itemize}
-A path whose only nodes are its endpoints is a \defword{branch}
-\end{definition}
-\end{frame}
-
-\begin{frame}
-\begin{definition}[Minimally connected graph]
-$G$ is \defword{minimally connected} if it is strongly connected and removal of any arc destroys strong-connectedness
-\end{definition}
-A minimally connected graph is 1-graph without loops
-\vfill
-\begin{definition}[Contraction]
-$G=(V,U)$. The \defword{contraction} of the set $A\subset V$ of vertices consists in replacing $A$ by a single vertex $a$ and replacing each arc into (resp. out of) $A$ by an arc with same index into (resp. out of) $a$
-\end{definition}
-\end{frame}
-
-
-\begin{frame}
-\begin{theorem}
-$G$ minimally connected, $A\subset V$ generating a strongly connected subgraph of $G$. Then the contraction of $A$ gives a minimally connected graph
-\end{theorem}
-\end{frame}
-
-\begin{frame} 
-\begin{theorem}
-$G$ a minimally connected graph, $G'$ be the minimally connected graph obtained by the contraction of an elementary circuit of $G$.	Then
-\[
-\nu(G)=\nu(G')+1
-\]
-\end{theorem}
-\vfill
-\begin{theorem}
-$G$ minimally connected of order $n\geq 2$ $\implies$ $G$ has $\geq 2$ anti-nodes
-\end{theorem}
-\vfill
-\begin{theorem}
-$G=(V,U)$. Then the graph $C'$ obtained by contracting each strongly connected component of $G$ contains no circuits
-\end{theorem}
-\end{frame}
-
-
-\begin{frame}{Arborescences}
-\begin{definition}[Root]
-Vertex $a\in V$ in $G=(V,U)$ is a \defword{root} if all vertices of $G$ can be reached by paths \emph{starting} from $a$
-\end{definition}
-Not all graphs have roots
-\vfill
-\begin{definition}[Quasi-strong connectedness]
-$G$ is \defword{quasi-strongly connected} if $\forall x,y\in V$, exists $z\in V$ (denoted $z(x,y)$ to emphasize dependence on $x,y$) from which there is a path to $x$ and a path to $y$
-\end{definition}
-Strongly connected $\implies$ quasi-strongly connected (take $z(x,y)=x$); converse not true
-
-Quasi-strongly connected $\implies$ connected
-\end{frame}
-
-\begin{frame}{Arborescence}
-\begin{definition}[Arborescence]
-An \defword{arborescence} is a tree that has a root
-\end{definition}
-\vfill
-\begin{lemma}
-$G=(V,U)$ has a root $\iff$ $G$ quasi-strongly connected
-\end{lemma}
-\end{frame}
-
-\begin{frame}
-\begin{theorem}
-$H$ graph of order $n>1$. TFAE (and all characterise an arborescence)
-\begin{enumerate}
-\item $H$ quasi-strongly connected without cycles
-\item $H$ quasi-strongly connected with $n-1$ arcs
-\item $H$ tree having a root $a$
-\item $\exists a\in V$ s.t. all other vertices are connected with $a$ by 1 and only 1 path from $a$
-\item $H$ quasi-strongly connected and loses quasi-strong connectedness if any arc is removed
-\item $H$ quasi-strongly connected and $\exists a\in V$ s.t.
-\begin{align*}
-d_H^-(a)&=0 \\
-d_H^-(x)&=1\qquad \forall x\neq a
-\end{align*}
-\item $H$ has no cycles and $\exists a\in V$ s.t.
-\begin{align*}
-d_H^-(a)&=0 \\
-d_H^-(x)&=1\qquad \forall x\neq a
-\end{align*}
-\end{enumerate}
-\end{theorem}
-\end{frame}
-
-
-\begin{frame}
-\begin{theorem}
-$G$ has a partial graph that is an arborescence $\iff$ $G$ quasi-strongly connected
-\end{theorem}
-\vfill
-\begin{theorem}
-$G=(V,E)$ simple connected graph and $x_1\in V$. It is possible to direct all edges of $E$ so that the resulting graph $G_0=(V,U)$ has a spanning tree $H$ s.t.
-\begin{enumerate}
-	\item $H$ is an arborescence with root $x_1$
-	\item The cycles associated with $H$ are circuits
-	\item The only elementary circuits of $G_0$ are the cycles associated with $H$
-\end{enumerate}
-\end{theorem}
-\end{frame}
-
-
-\begin{frame}{Counting trees}
-\begin{proposition}
-$X$ a set with $n$ distinct objects, $n_1,\ldots,n_p$ nonnegative integers s.t. $n_1+\cdots+n_p=n$. The number of ways to place the $n$ objects into $p$ boxes $X_1,\ldots,X_p$ containing $n_1,\ldots,n_p$ objects respectively is 
-\[
-	\begin{pmatrix}
-		n\\ n_1,\ldots,n_p
-	\end{pmatrix}
-	=
-	\frac{n!}{n_1!\cdots n_p!}
-\]
-\end{proposition}
-\vfill
-\begin{proposition}[Multinomial formula]
-Let $a_1,\ldots,a_p\in\IR$ be $p$ real numbers, then
-\[
-	(a_1+\cdots+a_p)^n= 
-	\sum_{n_1,\ldots,n_p\geq 0}
-	\begin{pmatrix}
-		n\\ n_1,\ldots,n_p
-	\end{pmatrix}
-	(a_1)^{n_1}\cdots(a_p)^{n_p}	
-\]
-\end{proposition}
-\end{frame}
-
-
-\begin{frame} 
-\begin{theorem}
-Denote $T(n;d_1,\ldots,d_n)$ the number of distinct trees $H$ with vertices $x_1,\ldots,x_n$ and with degrees $d_H(x_1)=d_1,\ldots,d_H(x_n)=d_n$. Then
-\[
-	T(n;d_1,\ldots,d_n) = 
-	\begin{pmatrix}
-		n-2 \\
-		d_1-1,\ldots,d_n-1
-	\end{pmatrix}
-\]
-\end{theorem}
-\vfill
-\begin{theorem}
-The number of different trees with vertices $x_1,\ldots,x_n$ is 
-$n^{n-2}$
-\end{theorem}
-\vfill
-There is a whole industry of similar results (as well as for arborescences), but we will stop here. The main point is that we are talking about a large number of possibilities..
-\end{frame}
 
 
 \end{document}
