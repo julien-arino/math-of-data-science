@@ -109,10 +109,12 @@ opts_chunk$set(echo = TRUE,
                dev = c("pdf", "png"),
                fig.width = 6, 
                fig.height = 4, 
-               fig.path = sprintf("FIGS/L%s-", lecture_number),
+               fig.path = sprintf("FIGS/L%s-", 
+                                  lecture_number),
                fig.keep = "high",
-               fig.show = "hide")
-knitr::knit_hooks$set(crop = knitr::hook_pdfcrop)
+               fig.show = "hide",
+               fig.crop = TRUE)
+# knitr::knit_hooks$set(crop = knitr::hook_pdfcrop)
 options(knitr.table.format = "latex")
 # Date for front title page (if needed)
 yyyy = strsplit(as.character(Sys.Date()), "-")[[1]][1]
