@@ -30,4 +30,4 @@ orient_from_und <- function(g, p_recip=0.20) {
   return(gdir)
 }
 
-G_dir <- orient_from_und(G_und, p_recip=0.25)
+# G_dir <- orient_from_und(G_und, p_recip=0.25)
