@@ -1,4 +1,54 @@
-\documentclass[aspectratio=169]{beamer}
+\documentclass[aspectratio=169]{beamer}\usepackage[]{graphicx}\usepackage[]{xcolor}
+% maxwidth is the original width if it is less than linewidth
+% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlsng}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hldef}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+\let\hlipl\hlkwb
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
 
 % Set lecture number for later use
 
@@ -16,6 +66,7 @@
 
 \input{slides-setup-whiteBG.tex}
 
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 \begin{document}
 
 % Cross-reference setup to reference previous lectures
@@ -65,9 +116,7 @@ The function \code{read.csv} reads in a file (potentially directly from the web)
 \hldef{url} \hlkwb{=} \hlkwd{paste0}\hldef{(prefix, page)}
 \hldef{data_old} \hlkwb{=} \hlkwd{read.csv}\hldef{(url)}
 \end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in file(file, "{}rt"{}): cannot open the connection to 'https://www150.statcan.gc.ca/n1/en/pub/11-516-x/sectiona/A2\_14-eng.csv?st=L7vSnqio'}}\end{kframe}
+\end{kframe}
 \end{knitrout}
 \vfill
 This directly assigns the result to the variable \code{data}
@@ -81,9 +130,37 @@ We then use the function \code{head} to show the first few lines in the result
 \begin{alltt}
 \hlkwd{head}\hldef{(data_old)}
 \end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'head': object 'data\_old' not found}}\end{kframe}
+\begin{verbatim}
+##    X Series.A2.14.
+## 1 NA              
+## 2 NA          Year
+## 3 NA              
+## 4 NA              
+## 5 NA              
+## 6 NA              
+##   Population.of.Canada..by.province..census.dates..1851.to.1976 X.1       X.2
+## 1                                                                NA          
+## 2                                                        Canada  NA Newfound-
+## 3                                                                NA      land
+## 4                                                                NA          
+## 5                                                             2  NA         3
+## 6                                                                NA          
+##      X.3 X.4    X.5       X.6    X.7     X.8       X.9 X.10    X.11 X.12
+## 1         NA                                             NA           NA
+## 2 Prince  NA   Nova       New Quebec Ontario  Manitoba   NA Saskat-   NA
+## 3 Edward  NA Scotia Brunswick                            NA  chewan   NA
+## 4 Island  NA                                             NA           NA
+## 5      4  NA      5         6      7       8         9   NA      10   NA
+## 6         NA                                             NA           NA
+##      X.13 X.14     X.15 X.16      X.17        X.18 X.19 X.20
+## 1           NA            NA                         NA   NA
+## 2 Alberta   NA  British   NA     Yukon   Northwest   NA   NA
+## 3           NA Columbia   NA Territory Territories   NA   NA
+## 4           NA            NA                         NA   NA
+## 5      11   NA       12   NA        13          14   NA   NA
+## 6           NA            NA                         NA   NA
+\end{verbatim}
+\end{kframe}
 \end{knitrout}
 \end{frame}
 
@@ -94,9 +171,15 @@ Obviously, this does not make a lot of sense. This is normal: take a look at the
 \begin{alltt}
 \hlkwd{head}\hldef{(data_old,} \hlkwc{n} \hldef{=} \hlnum{1}\hldef{)}
 \end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'head': object 'data\_old' not found}}\end{kframe}
+\begin{verbatim}
+##    X Series.A2.14.
+## 1 NA              
+##   Population.of.Canada..by.province..census.dates..1851.to.1976 X.1 X.2 X.3 X.4
+## 1                                                                NA          NA
+##   X.5 X.6 X.7 X.8 X.9 X.10 X.11 X.12 X.13 X.14 X.15 X.16 X.17 X.18 X.19 X.20
+## 1                       NA        NA        NA        NA             NA   NA
+\end{verbatim}
+\end{kframe}
 \end{knitrout}
 \vfill
 This happens often: the first few lines are here to describe the information contained in the data set, i.e., the so-called \defword{metadata}
@@ -111,15 +194,20 @@ The second line is also empty, so let us skip it too
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hldef{data_old} \hlkwb{=} \hlkwd{read.csv}\hldef{(url,} \hlkwc{skip} \hldef{=} \hlnum{2}\hldef{)}
-\end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in file(file, "{}rt"{}): cannot open the connection to 'https://www150.statcan.gc.ca/n1/en/pub/11-516-x/sectiona/A2\_14-eng.csv?st=L7vSnqio'}}\begin{alltt}
 \hlkwd{head}\hldef{(data_old,} \hlkwc{n} \hldef{=} \hlnum{2}\hldef{)}
 \end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'head': object 'data\_old' not found}}\end{kframe}
+\begin{verbatim}
+##    X Year Canada X.1 Newfound. Prince X.2   Nova       New Quebec Ontario
+## 1 NA              NA      land Edward  NA Scotia Brunswick               
+## 2 NA              NA           Island  NA                                
+##   Manitoba X.3 Saskat. X.4 Alberta X.5  British X.6     Yukon   Northwest X.7
+## 1           NA  chewan  NA          NA Columbia  NA Territory Territories  NA
+## 2           NA          NA          NA           NA                        NA
+##   X.8
+## 1  NA
+## 2  NA
+\end{verbatim}
+\end{kframe}
 \end{knitrout}
 \end{frame}
 
@@ -135,15 +223,16 @@ Because we are only interested in the total population of the country and the ye
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hldef{data_old} \hlkwb{=} \hldef{data_old[}\hlnum{5}\hlopt{:}\hlkwd{dim}\hldef{(data_old)[}\hlnum{1}\hldef{],} \hlnum{2}\hlopt{:}\hlnum{3}\hldef{]}
-\end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: object 'data\_old' not found}}\begin{alltt}
 \hlkwd{head}\hldef{(data_old,} \hlkwc{n}\hldef{=}\hlnum{4}\hldef{)}
 \end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'head': object 'data\_old' not found}}\end{kframe}
+\begin{verbatim}
+##   Year     Canada
+## 5 1976 22,992,604
+## 6                
+## 7 1971 21,568,311
+## 8 1966 20,014,880
+\end{verbatim}
+\end{kframe}
 \end{knitrout}
 \end{frame}
 
@@ -154,14 +243,21 @@ Because we are only interested in the total population of the country and the ye
 \begin{alltt}
 \hlkwd{head}\hldef{(data_old,} \hlkwc{n}\hldef{=}\hlnum{3}\hldef{)}
 \end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'head': object 'data\_old' not found}}\begin{alltt}
+\begin{verbatim}
+##   Year     Canada
+## 5 1976 22,992,604
+## 6                
+## 7 1971 21,568,311
+\end{verbatim}
+\begin{alltt}
 \hlkwd{tail}\hldef{(data_old,} \hlkwc{n}\hldef{=}\hlnum{2}\hldef{)}
 \end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'tail': object 'data\_old' not found}}\end{kframe}
+\begin{verbatim}
+##                           Year Canada
+## 28 see notes to series A15-53.       
+## 29                1848 figure.
+\end{verbatim}
+\end{kframe}
 \end{knitrout}
 \begin{enumerate}
 \item there are some empty rows
@@ -191,40 +287,23 @@ Finally, as remarked above, for now, both the year and the population are consid
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hldef{data_old} \hlkwb{=} \hldef{data_old[}\hlkwd{which}\hldef{(data_old}\hlopt{$}\hldef{Canada} \hlopt{!=} \hlsng{""}\hldef{),]}
-\end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: object 'data\_old' not found}}\begin{alltt}
 \hldef{data_old}\hlopt{$}\hldef{Canada} \hlkwb{=} \hlkwd{gsub}\hldef{(}\hlsng{","}\hldef{,} \hlsng{""}\hldef{, data_old}\hlopt{$}\hldef{Canada)}
-\end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: object 'data\_old' not found}}\begin{alltt}
 \hldef{order_data} \hlkwb{=} \hlkwd{order}\hldef{(data_old}\hlopt{$}\hldef{Year)}
-\end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: object 'data\_old' not found}}\begin{alltt}
 \hldef{data_old} \hlkwb{=} \hldef{data_old[order_data,]}
-\end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: object 'data\_old' not found}}\begin{alltt}
 \hldef{data_old}\hlopt{$}\hldef{Year} \hlkwb{=} \hlkwd{as.numeric}\hldef{(data_old}\hlopt{$}\hldef{Year)}
-\end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: object 'data\_old' not found}}\begin{alltt}
 \hldef{data_old}\hlopt{$}\hldef{Canada} \hlkwb{=} \hlkwd{as.numeric}\hldef{(data_old}\hlopt{$}\hldef{Canada)}
-\end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: object 'data\_old' not found}}\begin{alltt}
 \hlkwd{head}\hldef{(data_old)}
 \end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'head': object 'data\_old' not found}}\end{kframe}
+\begin{verbatim}
+##    Year  Canada
+## 23 1851 2436297
+## 22 1861 3229633
+## 21 1871 3689257
+## 20 1881 4324810
+## 19 1891 4833239
+## 17 1901 5371315
+\end{verbatim}
+\end{kframe}
 \end{knitrout}
 \end{frame}
 
@@ -235,15 +314,18 @@ Row numbers are a little weird
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{row.names}\hldef{(data_old)} \hlkwb{=} \hlnum{1}\hlopt{:}\hlkwd{dim}\hldef{(data_old)[}\hlnum{1}\hldef{]}
-\end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: object 'data\_old' not found}}\begin{alltt}
 \hlkwd{head}\hldef{(data_old)}
 \end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'head': object 'data\_old' not found}}\end{kframe}
+\begin{verbatim}
+##   Year  Canada
+## 1 1851 2436297
+## 2 1861 3229633
+## 3 1871 3689257
+## 4 1881 4324810
+## 5 1891 4833239
+## 6 1901 5371315
+\end{verbatim}
+\end{kframe}
 \end{knitrout}
 
 Well, that looks about right! Let's see what this looks like in a graph
@@ -257,9 +339,8 @@ Well, that looks about right! Let's see what this looks like in a graph
     \hlkwc{type} \hldef{=} \hlsng{"b"}\hldef{,} \hlkwc{lwd} \hldef{=} \hlnum{2}\hldef{,}
     \hlkwc{xlab} \hldef{=} \hlsng{"Year"}\hldef{,} \hlkwc{ylab} \hldef{=} \hlsng{"Population"}\hldef{)}
 \end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'data\_old' not found}}\end{kframe}
+\end{kframe}
+\includegraphics[width=\maxwidth]{FIGS/L05-plot-old-Canada-census-data-1} 
 \end{knitrout}
 \end{frame}
 
@@ -275,9 +356,7 @@ There's a download csv link in there, let us see where this leads us
 \begin{alltt}
 \hldef{data_new} \hlkwb{=} \hlkwd{read.csv}\hldef{(}\hlsng{"https://www12.statcan.gc.ca/census-recensement/2011/dp-pd/vc-rv/download-telecharger/download-telecharger.cfm?Lang=eng&CTLG=98-315-XWE2011001&FMT=csv"}\hldef{)}
 \end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in file(file, "{}rt"{}): cannot open the connection to 'https://www12.statcan.gc.ca/census-recensement/2011/dp-pd/vc-rv/download-telecharger/download-telecharger.cfm?Lang=eng\&CTLG=98-315-XWE2011001\&FMT=csv'}}\end{kframe}
+\end{kframe}
 \end{knitrout}
 The table is 720KB, so surely there must be more to this than just the population
 \vfill
@@ -290,11 +369,567 @@ To get a sense of that, we dump a few random rows
 \begin{alltt}
 \hldef{data_new[}\hlkwd{sort}\hldef{(}\hlkwd{unique}\hldef{(}\hlkwd{c}\hldef{(}\hlnum{1}\hldef{,}\hlkwd{sample}\hldef{(}\hlkwd{nrow}\hldef{(data_new),} \hlnum{4}\hldef{)))), ]}
 \end{alltt}
+\begin{verbatim}
+##                        GEOGRAPHY.NAME
+## 1                              Canada
+## 626                        St. John's
+## 1589                    New Brunswick
+## 2683                        Qu\xe9bec
+## 4958 Kitchener - Cambridge - Waterloo
+##                                            CHARACTERISTIC YEAR.S.   TOTAL
+## 1                               Population (in thousands)    1956 16081.0
+## 626  Population change by broad age groups: 0 to 14 years    2011     6.7
+## 1589          Population by single years of age: 29 years    2011  8340.0
+## 2683          Population by single years of age: 46 years    2011 11645.0
+## 4958          Population by single years of age: 36 years    2011  6655.0
+##      FLAG_TOTAL
+## 1              
+## 626            
+## 1589           
+## 2683           
+## 4958
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
 
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: object 'data\_new' not found}}\end{kframe}
+\begin{frame}{Flat tables}
+This is a \defword{flat table}: each row contains a piece of information, the columns describe what this piece of information is about
+\vfill
+This has \emph{way more} information than we need: we just want the population of Canada and here we get 9960 rows over 213 characteristics
+\vfill
+Also, population is expressed in thousands, so once we selected what we want, we need to multiply by 1,000
+\end{frame}
+
+\begin{frame}[fragile]{Selecting rows}
+We want the rows where the geography is ``Canada'' and the characteristic is ``Population (in thousands)''
+\vfill
+Find indices of rows that satisfy the first criterion and those that satisfy the second; intersecting these two sets of indices, we have selected the rows we want
+\vfill
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hldef{idx_CAN} \hlkwb{=} \hlkwd{which}\hldef{(data_new}\hlopt{$}\hldef{GEOGRAPHY.NAME} \hlopt{==} \hlsng{"Canada"}\hldef{)}
+\hldef{idx_char} \hlkwb{=} \hlkwd{which}\hldef{(data_new}\hlopt{$}\hldef{CHARACTERISTIC} \hlopt{==} \hlsng{"Population (in thousands)"}\hldef{)}
+\hldef{idx_keep} \hlkwb{=} \hlkwd{intersect}\hldef{(idx_CAN, idx_char)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+\begin{frame}[fragile]
+Let us keep only these rows
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hldef{data_new} \hlkwb{=} \hldef{data_new[idx_keep,]}
+\hlkwd{head}\hldef{(data_new,} \hlkwc{n} \hldef{=} \hlnum{8}\hldef{)}
+\end{alltt}
+\begin{verbatim}
+##   GEOGRAPHY.NAME            CHARACTERISTIC YEAR.S. TOTAL FLAG_TOTAL
+## 1         Canada Population (in thousands)    1956 16081           
+## 2         Canada Population (in thousands)    1961 18238           
+## 3         Canada Population (in thousands)    1966 20015           
+## 4         Canada Population (in thousands)    1971 21568           
+## 5         Canada Population (in thousands)    1976 22993           
+## 6         Canada Population (in thousands)    1981 24343           
+## 7         Canada Population (in thousands)    1986 25309           
+## 8         Canada Population (in thousands)    1991 27297
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+\begin{frame}
+We want to concatenate this data frame with the one from earlier
+\vfill
+To do this, we need the two data frames to have the same number of columns, same column names and same entry types (notice that \code{YEAR.S.} in \code{data\_new} is a column of characters)
+\end{frame}
+
+\begin{frame}\frametitle{What remains to be done}
+\begin{itemize}
+\item Rename the columns in the pruned old data (data\_pruned) to \code{year} and \code{population}. Personally, I prefer lowercase column names.. and \code{population} is more informative than \code{Canada}
+\vfill
+\item Keep only the relevant columns in \code{data\_new}, rename them accordingly and multiply population by 1,000 there
+\vfill
+\item Transform year in \code{data\_new} to numbers
+\vfill
+\item We already have data up to and including 1976 in \code{data\_old}, so get rid of that in \code{data\_new}
+\vfill
+\item Append the rows of \code{data\_new} to those of \code{data\_pruned}
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{colnames}\hldef{(data_old)} \hlkwb{=} \hlkwd{c}\hldef{(}\hlsng{"year"}\hldef{,} \hlsng{"population"}\hldef{)}
+\hldef{data_new} \hlkwb{=} \hldef{data_new[,}\hlkwd{c}\hldef{(}\hlsng{"YEAR.S."}\hldef{,}\hlsng{"TOTAL"}\hldef{)]}
+\hlkwd{colnames}\hldef{(data_new)} \hlkwb{=} \hlkwd{c}\hldef{(}\hlsng{"year"}\hldef{,} \hlsng{"population"}\hldef{)}
+\hldef{data_new}\hlopt{$}\hldef{year} \hlkwb{=} \hlkwd{as.numeric}\hldef{(data_new}\hlopt{$}\hldef{year)}
+\hldef{data_new} \hlkwb{=} \hldef{data_new[}\hlkwd{which}\hldef{(data_new}\hlopt{$}\hldef{year}\hlopt{>}\hlnum{1976}\hldef{),]}
+\hldef{data_new}\hlopt{$}\hldef{population} \hlkwb{=} \hldef{data_new}\hlopt{$}\hldef{population}\hlopt{*}\hlnum{1000}
+
+\hldef{data} \hlkwb{=} \hlkwd{rbind}\hldef{(data_old,data_new)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{plot}\hldef{(data}\hlopt{$}\hldef{year, data}\hlopt{$}\hldef{population,}
+    \hlkwc{type} \hldef{=} \hlsng{"b"}\hldef{,} \hlkwc{lwd} \hldef{=} \hlnum{2}\hldef{,}
+    \hlkwc{xlab} \hldef{=} \hlsng{"Year"}\hldef{,} \hlkwc{ylab} \hldef{=} \hlsng{"Population"}\hldef{)}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{FIGS/L05-plot-whole-Canada-census-data-1} 
+\end{knitrout}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Save the processed data}
+In case we need the data elsewhere, we save the data to a \code{csv} file
+\vfill
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{write.csv}\hldef{(data,} \hlkwc{file} \hldef{=} \hlsng{"../CODE/Canada_census.csv"}\hldef{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\vfill
+Using \code{readr} saves the data without row numbers (by default), so we can do this instead
+\vfill
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hldef{readr}\hlopt{::}\hlkwd{write_csv}\hldef{(data,} \hlkwc{file} \hldef{=} \hlsng{"../CODE/Canada_census.csv"}\hldef{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\Ssection{Least squares problem -- Initial considerations}{FIGS-slides-admin/Gemini_Generated_Image_gc7vxngc7vxngc7v.jpeg}
+
+\begin{frame}
+We just collected the census data for Canada
+\vfill
+Suppose we want to predict the population of Canada in 20 years given the historical population growth seen in the previous plot. What can we do?
+\vfill
+If there were just two points, we could easily "drive" a line through these two points. However, we have much more than two points, so we will use \emph{fitting}, \emph{i.e.}, try to make a curve come as close to possible to the points
+\vfill
+We start with a line, giving rise to \defword{linear least squares}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Least squares approximation -- A trivial case}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+\includegraphics[width=\maxwidth]{FIGS/L05-plot-2-points-1} 
+\end{knitrout}
+\end{frame}
+
+\begin{frame}
+We want to find the equation of a line $y=a+bx$ that goes through these two points, i.e., we seek $a$ and $b$ such that
+$$
+\begin{aligned}
+3 &= a+b \\
+5 &= a+2b
+\end{aligned}
+$$
+i.e., they satisfy $y=a+bx$ for $(x,y)=(1,3)$ and $(x,y)=(2,5)$
+\end{frame}
+
+\begin{frame}
+This is a linear system with 2 equations and 2 unknowns $a$ and $b$
+$$
+\begin{pmatrix}
+1 & 1 \\ 1 & 2
+\end{pmatrix}
+\begin{pmatrix}
+a \\ b
+\end{pmatrix}
+=
+\begin{pmatrix}
+3 \\ 5
+\end{pmatrix}
+$$
+\end{frame}
+
+\begin{frame}[fragile]
+We know from Theorem~\zref{th:L04-linalg-in-a-nutshell} (Linear algebra in a nutshell) that this system has a unique solution if the matrix
+$$
+M=
+\begin{pmatrix}
+1 & 1 \\ 1 & 2
+\end{pmatrix}
+$$
+is invertible
+\vfill
+$\det(M)=1$, so we are good, we'll find $a$ and $b$ easily..
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hldef{A} \hlkwb{=} \hlkwd{matrix}\hldef{(}\hlkwd{c}\hldef{(}\hlnum{1}\hldef{,}\hlnum{1}\hldef{,}\hlnum{1}\hldef{,}\hlnum{2}\hldef{),} \hlkwc{nr} \hldef{=} \hlnum{2}\hldef{,} \hlkwc{nc} \hldef{=} \hlnum{2}\hldef{,} \hlkwc{byrow} \hldef{=} \hlnum{TRUE}\hldef{)}
+\hldef{rhs} \hlkwb{=} \hlkwd{matrix}\hldef{(}\hlkwd{c}\hldef{(}\hlnum{3}\hldef{,}\hlnum{5}\hldef{),} \hlkwc{nr} \hldef{=} \hlnum{2}\hldef{,} \hlkwc{nc} \hldef{=}\hlnum{1}\hldef{)}
+\hldef{coefs} \hlkwb{=} \hlkwd{solve}\hldef{(A,rhs)}
+\hldef{coefs}
+\end{alltt}
+\begin{verbatim}
+##      [,1]
+## [1,]    1
+## [2,]    2
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+\begin{frame}[fragile]
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+\includegraphics[width=\maxwidth]{FIGS/L05-plot-2-points-and-line-1} 
+\end{knitrout}
+\end{frame}
+
+
+\begin{frame}[fragile]
+Now let's add another point
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+\includegraphics[width=\maxwidth]{FIGS/L05-plot-3-points-and-line-0-1} 
+\end{knitrout}
+These points are clearly not colinear, so there is not one line going through the 3
+\end{frame}
+
+\begin{frame}
+We end up with an \emph{overdetermined} system
+$$
+\begin{aligned}
+3 &= a+b \\
+5 &= a+2b \\
+4 &= a+3b
+\end{aligned}
+$$
+i.e.,
+$$
+\begin{pmatrix}
+1 & 1 \\ 1 & 2 \\ 1 & 3
+\end{pmatrix}
+\begin{pmatrix}
+a \\ b
+\end{pmatrix}
+=
+\begin{pmatrix}
+3 \\ 5 \\ 4
+\end{pmatrix}
+$$
+\end{frame}
+
+\begin{frame}
+We have verified visually that the points are not colinear, so this system has no solution
+\vfill
+(If you had to do it for good, you consider two vectors stemming from these 3 points and compute the angle between them or check that one is a multiple of the other)
+\vfill
+So let us instead try to find the line that comes "closest" to the 3 points
+\end{frame}
+
+\begin{frame}[fragile]
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+\includegraphics[width=\maxwidth]{FIGS/L05-plot-3-points-and-line-1-1} 
 \end{knitrout}
 
+Obviously, not sensational..
+\end{frame}
+
+\begin{frame}[fragile]{Let's eyeball it -- Less steep and higher $y$-intercept}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+\includegraphics[width=\maxwidth]{FIGS/L05-plot-3-points-and-line-2-1} 
+\end{knitrout}
+The blue line looks better, but how do we quantify this?
+\end{frame}
+
+\begin{frame}
+How do we find "how far away" we are?
+\vfill
+\begin{itemize}
+\item We could use projections onto the line (which we know minimises the distance)
+\vfill
+\item However, this will be a problem if we later decide that rather than a straight line, we want to use something more "funky" like a quadratic or an exponential
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+Compare, for a given value $x$, the distance between the true value $y$ and the value of $y$ obtained using the curve (line, here) that we use to fit the data
+\vfill
+Let $(x_i,y_i)$ be the data points, i.e., here, $(x_1,y_1)=(1,3)$, $(x_2,y_2)=(2,5)$ and $(x_3,y_3)=(3,4)$
+\end{frame}
+
+\begin{frame}
+Suppose we use a line with equation $y=a+bx$ and that we pick a value for $a$ and $b$. Then at $x_1$,
+$$
+\tilde y_1 = a+bx_1 = a+b
+$$
+at $x_2$
+$$
+\tilde y_2 = a+bx_2 = a+2b
+$$
+and at $x_3$,
+$$
+\tilde y_3 = a+bx_3 = a+3b
+$$
+\vfill
+Consider $x_1$, for instance. The error we made by using the line with coefficients $(a,b)$ is $\overrightarrow{(x_1,y_1)(x_1,\tilde y_1)}$
+\end{frame}
+
+\begin{frame}[fragile]
+For future use, let us create a function for $y = a_0 + a_1x$
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hldef{my_line} \hlkwb{=} \hlkwa{function}\hldef{(}\hlkwc{x}\hldef{,} \hlkwc{a_0}\hldef{,} \hlkwc{a_1}\hldef{)\{}
+    \hlkwd{return}\hldef{(a_0} \hlopt{+} \hldef{a_1}\hlopt{*}\hldef{x)}
+\hldef{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+Functions are super useful when programming
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{my_line}\hldef{(}\hlnum{1}\hldef{,}\hlnum{2}\hldef{,}\hlnum{3}\hldef{)}
+\end{alltt}
+\begin{verbatim}
+## [1] 5
+\end{verbatim}
+\begin{alltt}
+\hlkwd{my_line}\hldef{(}\hlkwc{a_0} \hldef{=} \hlnum{2}\hldef{,} \hlkwc{a_1} \hldef{=} \hlnum{3}\hldef{,} \hlkwc{x} \hldef{=} \hlnum{1}\hldef{)}
+\end{alltt}
+\begin{verbatim}
+## [1] 5
+\end{verbatim}
+\begin{alltt}
+\hlkwd{my_line}\hldef{(}\hlkwc{x} \hldef{=} \hlkwd{c}\hldef{(}\hlnum{1}\hldef{,}\hlnum{2}\hldef{,}\hlnum{3}\hldef{),} \hlkwc{a_0} \hldef{=} \hlnum{2}\hldef{,} \hlkwc{a_1} \hldef{=} \hlnum{3}\hldef{)}
+\end{alltt}
+\begin{verbatim}
+## [1]  5  8 11
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+\includegraphics[width=\maxwidth]{FIGS/L05-plot-3-points-and-line-3-1} 
+\end{knitrout}
+\end{frame}
+
+\begin{frame}
+Let us return to the error
+$$
+\overrightarrow{(x_1,y_1)(x_1,\tilde y_1)}
+$$
+We have
+$$
+\overrightarrow{(x_1,y_1)(x_1,\tilde y_1)}
+= (x_1-x_1,y_1-\tilde y_1)
+= (0, y_1-\tilde y_1)
+$$
+\vfill
+Let us call
+$$
+\varepsilon_1 = y_1-\tilde y_1
+$$
+We can compute $\varepsilon_2$ and $\varepsilon_3$ too. And we can then form the \defword{error vector}
+$$
+\mathbf{e} = (\varepsilon_1,\varepsilon_2,\varepsilon_3)^T
+$$
+\vfill
+The norm of $\mathbf{e}$, $\|\mathbf{e}\|$, then tells us how much error we are making for the choice of $(a,b)$ we are using
+\end{frame}
+
+
+\begin{frame}
+The norm of $\|\mathbf{e}\|$ tells us how much error we are making for the choice of $(a,b)$ we are using
+\vfill
+So our objective is to find $(a,b)$ such that $\|\mathbf{e}\|$ is minimal
+\vfill
+We could use various norms, but the Euclidean norm has some very interesting properties, so we use
+$$
+\|\mathbf{e}\| = \sqrt{\varepsilon_1^2+\varepsilon_2^2+\varepsilon_3^2}
+$$
+\end{frame}
+
+
+\begin{frame}\frametitle{The linear least squares problem}
+Given a collection of data points $(x_1,y_1),\ldots,(x_n,y_n)$, find the coefficients $a,b$ of the line $y=a+bx$ such that
+$$
+\|\mathbf{e}\|=\sqrt{\varepsilon_1^2+\cdots+\varepsilon_n^2}
+=\sqrt{(y_1-\tilde y_1)^2+\cdots+(y_n-\tilde y_n)^2}
+$$
+is minimal, where $\tilde y_i=a+bx_i$, for $i=1,\ldots,n$
+\end{frame}
+
+
+\begin{frame}
+Let us first hack a brute force solution! (For the example we have been using this far)
+\vfill
+We have our three points in the list \code{points}, the function \code{my\_line} that computes the value $\tilde y$ given $x$ and $a,b$, so let us make a new function that, given $a,b$, computes $\mathbf{e}$
+\vfill
+We'll also pass the points \code{points}
+\end{frame}
+
+\begin{frame}[fragile]{A function to compute the error}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hldef{error} \hlkwb{=} \hlkwa{function}\hldef{(}\hlkwc{a_0}\hldef{,} \hlkwc{a_1}\hldef{,} \hlkwc{points}\hldef{) \{}
+    \hldef{y_tilde} \hlkwb{=} \hlkwd{my_line}\hldef{(points}\hlopt{$}\hldef{x,} \hlkwc{a_0} \hldef{= a_0,} \hlkwc{a_1} \hldef{= a_1)}
+    \hldef{e} \hlkwb{=} \hldef{points}\hlopt{$}\hldef{y} \hlopt{-} \hldef{y_tilde}
+    \hlkwd{return}\hldef{(}\hlkwd{sqrt}\hldef{(}\hlkwd{sum}\hldef{(e}\hlopt{^}\hlnum{2}\hldef{)))}
+\hldef{\}}
+\hlkwd{error}\hldef{(}\hlkwc{a_0} \hldef{=} \hlnum{2}\hldef{,} \hlkwc{a_1} \hldef{=} \hlnum{3}\hldef{, points)}
+\end{alltt}
+\begin{verbatim}
+## [1] 7.874008
+\end{verbatim}
+\begin{alltt}
+\hlkwd{error}\hldef{(}\hlkwc{a_0} \hldef{=} \hlnum{3}\hldef{,} \hlkwc{a_1} \hldef{=} \hlnum{0.5}\hldef{, points)}
+\end{alltt}
+\begin{verbatim}
+## [1] 1.224745
+\end{verbatim}
+\begin{alltt}
+\hlkwd{error}\hldef{(}\hlkwc{a_0} \hldef{=} \hlnum{3.1}\hldef{,} \hlkwc{a_1} \hldef{=} \hlnum{0.48}\hldef{, points)}
+\end{alltt}
+\begin{verbatim}
+## [1] 1.229471
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+We can't be doing this by hand..!
+\end{frame}
+
+
+\begin{frame}\frametitle{Let's minimise using something cool -- \emph{genetic algorithms}}
+\begin{itemize}
+\item Genetic algorithms are a stochastic \emph{optimisation} method. There are other types, e.g., gradient descent (deterministic)
+\vfill
+\item The idea is to use a mechanism mimicking evolution's drive towards higher fitness
+\vfill
+\item The function value is its fitness
+\vfill
+\item We try different genes (here, different values of $a,b$) and evaluate their fitness.. keep the good ones
+\vfill
+\item We mutate or crossover genes, throw in new ones, etc.
+\vfill
+\item We keep doing this until we reach a stopping criterion
+\vfill
+\item We then return the best gene we found
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwa{if} \hldef{(}\hlopt{!}\hlkwd{require}\hldef{(}\hlsng{"GA"}\hldef{,} \hlkwc{quietly} \hldef{=} \hlnum{TRUE}\hldef{)) \{}
+  \hlkwd{install.packages}\hldef{(}\hlsng{"GA"}\hldef{)}
+  \hlkwd{library}\hldef{(GA)}
+\hldef{\}}
+\hldef{GA} \hlkwb{=} \hlkwd{ga}\hldef{(}\hlkwc{type} \hldef{=} \hlsng{"real-valued"}\hldef{,}
+        \hlkwc{fitness} \hldef{=} \hlkwa{function}\hldef{(}\hlkwc{x}\hldef{)} \hlopt{-}\hlkwd{error}\hldef{(}\hlkwc{a_0} \hldef{= x[}\hlnum{1}\hldef{],} \hlkwc{a_1} \hldef{= x[}\hlnum{2}\hldef{], points),}
+        \hlkwc{suggestions} \hldef{=} \hlkwd{c}\hldef{(}\hlkwc{a_0} \hldef{=} \hlnum{2}\hldef{,} \hlkwc{a_1} \hldef{=} \hlnum{3}\hldef{),}
+        \hlkwc{lower} \hldef{=} \hlkwd{c}\hldef{(}\hlopt{-}\hlnum{10}\hldef{,} \hlopt{-}\hlnum{10}\hldef{),} \hlkwc{upper} \hldef{=} \hlkwd{c}\hldef{(}\hlnum{10}\hldef{,} \hlnum{10}\hldef{),}
+        \hlkwc{popSize} \hldef{=} \hlnum{200}\hldef{,} \hlkwc{maxiter} \hldef{=} \hlnum{150}\hldef{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+\begin{frame}[fragile]
+GA returns an S4 object of class \code{ga}
+\vfill
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hldef{GA}
+\end{alltt}
+\begin{verbatim}
+## An object of class "ga"
+## 
+## Call:
+## ga(type = "real-valued", fitness = function(x) -error(a_0 = x[1],     a_1 = x[2], points), lower = c(-10, -10), upper = c(10, 10),     popSize = 200, maxiter = 150, suggestions = c(a_0 = 2, a_1 = 3))
+## 
+## Available slots:
+##  [1] "call"         "type"         "lower"        "upper"        "nBits"       
+##  [6] "names"        "popSize"      "iter"         "run"          "maxiter"     
+## [11] "suggestions"  "population"   "elitism"      "pcrossover"   "pmutation"   
+## [16] "optim"        "fitness"      "summary"      "bestSol"      "fitnessValue"
+## [21] "solution"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+\begin{frame}[fragile]
+Access slots using @. For instance, the GA finds the coefficients
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hldef{GA}\hlopt{@}\hlkwc{solution}
+\end{alltt}
+\begin{verbatim}
+##            x1        x2
+## [1,] 2.999817 0.5000615
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+with fitness value (i.e., $\|\be\|$)
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlopt{-}\hldef{GA}\hlopt{@}\hlkwc{fitnessValue}
+\end{alltt}
+\begin{verbatim}
+## [1] 1.224745
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+\begin{frame}[fragile]
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+\includegraphics[width=\maxwidth]{FIGS/L05-show-GA-convergence-1} 
+\end{knitrout}
+\end{frame}
+
+\begin{frame}
+\begin{itemize}
+\item Here, however, we do not have to go brute force: we can reason using mathematics
+\vfill
+\item We now take a little detour on the math side of things, we will come back to code in a while..
+\end{itemize}
+\end{frame}
 
 
 
@@ -303,39 +938,7 @@ To get a sense of that, we dump a few random rows
 
 
 
+% Save counters for next file
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+% Save theorem count for next file
+\end{document}

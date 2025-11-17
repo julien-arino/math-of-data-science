@@ -111,14 +111,10 @@ Dataset (\href{https://opendata.stackexchange.com/questions/7793/age-weight-and-
 \begin{alltt}
 \hlcom{# From https://figshare.com/ndownloader/files/5303173}
 \hldef{data} \hlkwb{=} \hlkwd{read.csv}\hldef{(}\hlsng{"https://github.com/julien-arino/math-of-data-science/raw/refs/heads/main/DATA/hockey-players.csv"}\hldef{)}
-\end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in file(file, "{}rt"{}): cannot open the connection to 'https://github.com/julien-arino/math-of-data-science/raw/refs/heads/main/DATA/hockey-players.csv'}}\begin{alltt}
 \hlkwd{dim}\hldef{(data)}
 \end{alltt}
 \begin{verbatim}
-## NULL
+## [1] 6292   13
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -136,10 +132,14 @@ See some comments \href{https://ikashnitsky.github.io/2017/ice-hockey-players-he
 \hlkwd{head}\hldef{(data,} \hlkwc{n}\hldef{=}\hlnum{3}\hldef{)}
 \end{alltt}
 \begin{verbatim}
-##                                                                             
-## 1 function (..., list = character(), package = NULL, lib.loc = NULL,        
-## 2     verbose = getOption("verbose"), envir = .GlobalEnv, overwrite = TRUE) 
-## 3 {
+##   year country no                name position side height weight      birth
+## 1 2001     RUS 10    tverdovsky oleg         D    L    185     84 1976-05-18
+## 2 2001     RUS  2  vichnevsky vitali         D    L    188     86 1980-03-18
+## 3 2001     RUS 26 petrochinin evgeni         D    L    182     95 1976-02-07
+##                      club      age cohort      bmi
+## 1   anaheim mighty ducks  24.95277   1976 24.54346
+## 2   anaheim mighty ducks  21.11978   1980 24.33228
+## 3 severstal cherepovetal  25.22930   1976 28.68011
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -149,12 +149,7 @@ As usual, it is a good idea to plot this to get a sense of the lay of the land
 \end{frame}
 
 
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in (function (cond) : error in evaluating the argument 'x' in selecting a method for function 'plot': object of type 'closure' is not subsettable}}\end{kframe}
-\end{knitrout}
 
 \maxFrameImage{FIGS/L10-plot-hockey-1-1.pdf}
 
@@ -168,14 +163,16 @@ Let us check this: first check will be \code{FALSE} if the number of unique name
 \begin{alltt}
 \hlkwd{length}\hldef{(}\hlkwd{unique}\hldef{(data}\hlopt{$}\hldef{name))} \hlopt{==} \hlkwd{dim}\hldef{(data)[}\hlnum{1}\hldef{]}
 \end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in data\$name: object of type 'closure' is not subsettable}}\begin{alltt}
+\begin{verbatim}
+## [1] FALSE
+\end{verbatim}
+\begin{alltt}
 \hlkwd{length}\hldef{(}\hlkwd{unique}\hldef{(data}\hlopt{$}\hldef{name))}
 \end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in data\$name: object of type 'closure' is not subsettable}}\end{kframe}
+\begin{verbatim}
+## [1] 3278
+\end{verbatim}
+\end{kframe}
 \end{knitrout}
 \end{frame}
 
@@ -188,10 +185,6 @@ To be extra careful, could check as well that there are no major variations on p
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hldef{data_simplified} \hlkwb{=} \hlkwd{data.frame}\hldef{(}\hlkwc{name} \hldef{=} \hlkwd{unique}\hldef{(data}\hlopt{$}\hldef{name))}
-\end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in data\$name: object of type 'closure' is not subsettable}}\begin{alltt}
 \hldef{w} \hlkwb{=} \hlkwd{c}\hldef{()}
 \hldef{h} \hlkwb{=} \hlkwd{c}\hldef{()}
 \hlkwa{for} \hldef{(n} \hlkwa{in} \hldef{data_simplified}\hlopt{$}\hldef{name) \{}
@@ -199,20 +192,10 @@ To be extra careful, could check as well that there are no major variations on p
     \hldef{h} \hlkwb{=} \hlkwd{c}\hldef{(h,} \hlkwd{mean}\hldef{(tmp}\hlopt{$}\hldef{height))}
     \hldef{w} \hlkwb{=} \hlkwd{c}\hldef{(w,} \hlkwd{mean}\hldef{(tmp}\hlopt{$}\hldef{weight))}
 \hldef{\}}
-\end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: object 'data\_simplified' not found}}\begin{alltt}
 \hldef{data_simplified}\hlopt{$}\hldef{weight} \hlkwb{=} \hldef{w}
-\end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: object 'data\_simplified' not found}}\begin{alltt}
 \hldef{data_simplified}\hlopt{$}\hldef{height} \hlkwb{=} \hldef{h}
 \end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: object 'data\_simplified' not found}}\end{kframe}
+\end{kframe}
 \end{knitrout}
 \end{frame}
 
@@ -221,24 +204,22 @@ To be extra careful, could check as well that there are no major variations on p
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hldef{data} \hlkwb{=} \hldef{data_simplified}
-\end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: object 'data\_simplified' not found}}\begin{alltt}
 \hlkwd{head}\hldef{(data_simplified,} \hlkwc{n} \hldef{=} \hlnum{6}\hldef{)}
 \end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'head': object 'data\_simplified' not found}}\end{kframe}
+\begin{verbatim}
+##                  name weight height
+## 1    tverdovsky oleg    84.0  185.0
+## 2  vichnevsky vitali    86.0  188.0
+## 3 petrochinin evgeni    95.0  182.0
+## 4    zhdan alexander    85.5  178.5
+## 5    orekhovsky oleg    88.0  175.0
+## 6      zhukov sergei    92.5  193.0
+\end{verbatim}
+\end{kframe}
 \end{knitrout}
 \end{frame}
 
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in (function (cond) : error in evaluating the argument 'x' in selecting a method for function 'plot': object of type 'closure' is not subsettable}}\end{kframe}
-\end{knitrout}
 
 \maxFrameImage{FIGS/L10-plot-hockey-2-1.pdf}
 
@@ -248,26 +229,20 @@ To be extra careful, could check as well that there are no major variations on p
 \begin{alltt}
 \hlkwd{mean}\hldef{(data}\hlopt{$}\hldef{weight)}
 \end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in (function (cond) : error in evaluating the argument 'x' in selecting a method for function 'mean': object of type 'closure' is not subsettable}}\begin{alltt}
+\begin{verbatim}
+## [1] 87.71555
+\end{verbatim}
+\begin{alltt}
 \hlkwd{mean}\hldef{(data}\hlopt{$}\hldef{height)}
 \end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in (function (cond) : error in evaluating the argument 'x' in selecting a method for function 'mean': object of type 'closure' is not subsettable}}\begin{alltt}
+\begin{verbatim}
+## [1] 183.8596
+\end{verbatim}
+\begin{alltt}
 \hldef{data}\hlopt{$}\hldef{weight.c} \hlkwb{=} \hldef{data}\hlopt{$}\hldef{weight}\hlopt{-}\hlkwd{mean}\hldef{(data}\hlopt{$}\hldef{weight)}
-\end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in data\$weight: object of type 'closure' is not subsettable}}\begin{alltt}
 \hldef{data}\hlopt{$}\hldef{height.c} \hlkwb{=} \hldef{data}\hlopt{$}\hldef{height}\hlopt{-}\hlkwd{mean}\hldef{(data}\hlopt{$}\hldef{height)}
 \end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in data\$height: object of type 'closure' is not subsettable}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in (function (cond) : error in evaluating the argument 'x' in selecting a method for function 'plot': object of type 'closure' is not subsettable}}\end{kframe}
+\end{kframe}
 \end{knitrout}
 \end{frame}
 
@@ -278,7 +253,7 @@ To be extra careful, could check as well that there are no major variations on p
 \begin{frame}{Setting things up}
 Each player is a row in the matrix (an \emph{observation}), each variable (\emph{height} and \emph{weight}) is a column
 \vfill
-After deduplication, we have an $\times 2$ matrix (actually, $\times 4$ if we consider the uncentred and centred variables, but we will use one or the other, not both uncentred and centred)
+After deduplication, we have an 3278$\times 2$ matrix (actually, 3278$\times 4$ if we consider the uncentred and centred variables, but we will use one or the other, not both uncentred and centred)
 \vfill
 We want to find what carries the most information
 \vfill
