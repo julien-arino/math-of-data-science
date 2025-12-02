@@ -2551,8 +2551,7 @@ What is the chromatic number of the graph associated to the map?
 %%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%
-\section{Directed graphs}
-\newSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
+\Ssubsection{Directed graphs}{FIGS-slides-admin/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
 
 
 \begin{frame} \frametitle{Definitions} 
@@ -2784,14 +2783,7 @@ plot(
 %%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%
-\section{Directed graphs}
-\newSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Degrees in digraphs}
-\newSubSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
+\Ssubsection{Directed graphs}{FIGS-slides-admin/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
 
 \begin{frame}{Degree}
 	Let $v$ be a vertex of a digraph $G=(V,A)$
