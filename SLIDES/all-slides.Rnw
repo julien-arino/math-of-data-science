@@ -122,23 +122,6 @@ In mathematics, or=and/or in common parlance. We also have an \textbf{exclusive 
 	Latter is easy to obtain using regular multiplication and $i^2=-1$
 \end{frame}
 
-\begin{frame}{Properties}
-	$\forall\alpha,\beta,\gamma\in\IC$,
-	\vfill
-	$\alpha+\beta=\beta+\alpha$ and $\alpha\beta=\beta\alpha$ \hfill[\textbf{commutativity}]
-	\vfill
-	$(\alpha+\beta)+\gamma=\alpha+(\beta+\gamma)$ and $(\alpha\beta)\gamma=\alpha(\beta\gamma)$ \hfill[\textbf{associativity}]
-	\vfill
-	$\gamma+0=\gamma$ and $\gamma 1=\gamma$ \hfill[\textbf{identities}]
-	\vfill
-	$\forall\alpha\in\IC$, $\exists\beta\in\IC$ unique s.t. $\alpha+\beta=0$ \hfill[\textbf{additive inverse}]
-	\vfill
-	$\forall \alpha\neq 0\in\IC$, $\exists\beta\in\IC$ unique s.t. $\alpha\beta=1$ \hfill[\textbf{multiplicative inverse}]
-	\vfill
-	$\gamma(\alpha+\beta)=\gamma\alpha+\gamma\beta$ \hfill[\textbf{distributivity}]
-\end{frame}
-
-
 \begin{frame}
 	\begin{definition}[Real and imaginary parts]
 		Let $z=a+ib$. Then $\Re z=a$ is \textbf{real part} and $\Im z=b$ is \textbf{imaginary part} of $z$
@@ -159,23 +142,9 @@ In mathematics, or=and/or in common parlance. We also have an \textbf{exclusive 
 			\]
 		\end{itemize}
 	\end{definition}
+	\vfill
+	$z\bar z=|z|^2$ and $\overline{\bar z}=z$
 \end{frame}
-
-\begin{frame}{Properties of complex numbers}
-	Let $w,z\in\IC$, then
-	\begin{itemize}
-		\item $z+\bar z=2\Re z$
-		\item $z-\bar z=2i\Im z$
-		\item $z\bar z=|z|^2$
-		\item $\overline{w+z}=\bar w+\bar z$ and $\overline{wz}=\bar w\bar z$
-		\item $\overline{\bar z}=z$
-		\item $|\Re z|\leq |z|$ and $|\Im z|\leq |z|$
-		\item $|\bar z|=|z|$
-		\item $|wz|=|w|\;|z|$
-		\item $|w+z|\leq |w|+|z|$ \hfill[\textbf{triangle inequality}]
-	\end{itemize}
-\end{frame}
-
 
 \begin{frame}{Vectors}
 	A \textbf{vector} $\bv$ is an ordered $n$-tuple of real or complex numbers
@@ -194,7 +163,7 @@ In mathematics, or=and/or in common parlance. We also have an \textbf{exclusive 
 
 \begin{frame}
 \frametitle{Vector space}
-	\begin{definition}[Vector space]
+	\begin{minordefinition}[Vector space]
 		A \textbf{vector space} over $\IF$ is a set $V$
 		together with two binary operations, \textbf{vector addition}, denoted $+$,
 		and \textbf{scalar multiplication}, that satisfy the relations:
@@ -213,7 +182,7 @@ In mathematics, or=and/or in common parlance. We also have an \textbf{exclusive 
 			(\alpha\beta)\bv$
 			\item $\forall\bv\in V$, $1\bv =\bv$
 		\end{enumerate}
-	\end{definition}
+	\end{minordefinition}
 \end{frame}
 
 \begin{frame}
@@ -255,8 +224,6 @@ In mathematics, or=and/or in common parlance. We also have an \textbf{exclusive 
 		\ba\bullet \bb=\sum_{i=1}^n a_ib_i=a_1b_1+\cdots+a_nb_n
 		\]
 	\end{definition}
-\vfill
-The dot product is a special case of \defword{inner product}
 \end{frame}
 
 \begin{frame}
@@ -281,13 +248,7 @@ The dot product is a special case of \defword{inner product}
 		\ba\bullet \bb=\|\ba\|\;\|\bb\|\;\cos\theta
 		\]
 	\end{theorem}
-	\begin{corollary}[Cauchy-Schwarz inequality]
-		For any two vectors $\ba$ and $\bb$, we have
-		\[
-		|\ba\bullet \bb|\leq \|\ba\|\;\|\bb\|
-		\]
-		with equality if and only if $\ba$ is a scalar multiple of $\bb$, or one of them is $\b0$.
-	\end{corollary}
+	\vfill
 	\begin{theorem}
 		$\ba$ and $\bb$ are orthogonal if and only if $\ba\bullet \bb=0$.
 	\end{theorem}
@@ -373,19 +334,10 @@ where $A$ is an $m\times n$ \textbf{matrix}, $\bx$ and $\bb$ are $n$ (column) \t
 \[
 A\bx=\bb
 \]
-\end{frame}
-
-
-
-
-\begin{frame}
-Consider the system
-\[
-A\bx=\bb
-\]
 \vfill
 If $\bb=\b0$, the system is \defword{homogeneous} and always has the solution $\bx=0$ and so the ``no solution'' option in Theorem~\ref{th:nature_solutions_linear_system} goes away
 \end{frame}
+
 
 
 \begin{frame}
@@ -450,10 +402,7 @@ The \textbf{identity} matrix is a square $n\times n$ matrix $\II_n$ with all ent
 \begin{definition}[Symmetric matrix]
 A square matrix $A\in\M_n$ is \textbf{symmetric} if $\forall i,j=1,\ldots,n$, $a_{ij}=a_{ji}$. In other words, $A\in\M_n$ is symmetric if $A=A^T$
 \end{definition}
-\end{frame}
-
-
-\begin{frame}{Making symmetric matrices}
+\vfill
 \begin{importanttheorem}\label{th:symmetric_matrices}
 \begin{enumerate}
 	\item If $A\in\M_n$, then $A+A^T$ is symmetric
@@ -478,25 +427,6 @@ $X$ symmetric $\iff$ $X=X^T$, so use $X=$ the matrix whose symmetric property yo
 $A^TA$ works similarly
 \end{frame}
 
-\begin{frame}{Determinants}
-\begin{definition}[Determinant]
-Let $A\in\M_n$ with $n\geq 2$. The \textbf{determinant} of $A$ is the \emph{scalar}
-\[
-\det(A)=|A|=\sum_{j=1}^na_{ij}C_{ij}
-\]
-where $C_{ij}=(-1)^{i+j}\det(A_{ij})$ is the $(i,j)$-\textbf{cofactor} of $A$ and $A_{ij}$ is the submatrix of $A$ from which the $i$th row and $j$th column have been removed
-\end{definition}
-This is a cofactor expansion along the $i$th row
-\vfill
-This is a recursive formula: it gives result in terms of $n$ $\M_{n-1}$ matrices, to which it must in turn be applied, all the way down to
-\[
-\det\left(
-\begin{matrix}
-a_{11} & a_{12} \\ a_{21} & a_{22}
-\end{matrix}\right) = a_{11}a_{22}-a_{12}a_{21}
-\]
-\end{frame}
-
 \begin{frame}{Two special matrices and their determinants}
 \begin{definition}
 $A\in\M_n$ is \textbf{upper triangular} if $a_{ij}=0$ when $i>j$, \textbf{lower triangular} if $a_{ij}=0$ when $j>i$, \textbf{triangular} if it is \emph{either} upper or lower triangular and \textbf{diagonal} if it is \emph{both} upper and lower triangular
@@ -518,14 +448,6 @@ AA^{-1}=A^{-1}A=\II
 \]
 $A^{-1}$ is the \textbf{inverse} of $A$. If $A^{-1}$ does not exist, $A$ is \textbf{singular}
 \end{definition}
-\begin{importanttheorem}
-Let $A\in\M_n$, $\bx,\bb\in\IF^n$. Then
-\begin{itemize}
-	\item $A$ invertible $\iff$ $\det(A)\neq 0$
-	\item If $A$ invertible, $A^{-1}$ is unique
-	\item If $A$ invertible, then $A\bx=\bb$ has the unique solution $\bx=A^{-1}\bb$
-\end{itemize}
-\end{importanttheorem}
 \end{frame}
 
 \begin{frame}{Eigenvalues / Eigenvectors / Eigenpairs}
@@ -543,24 +465,13 @@ If $(\lambda,\bx)$ eigenpair, then for $c\neq 0$, $(\lambda,c\bx)$ also eigenpai
 
 
 \begin{frame}{Similarity}
-\begin{definition}[Similarity]
+\begin{minordefinition}[Similarity]
 $A,B\in\M_n$ are \defword{similar} ($A\sim B$) if $\exists P\in\M_n$ invertible s.t.
 \[
 P^{-1}AP=B
 \]
-\end{definition}
+\end{minordefinition}
 \vfill
-\begin{theorem}[$\sim$ is an equivalence relation]
-$A,B,C\in\M_n$, then
-\begin{itemize}
-	\item $A\sim A$ \hfill ($\sim$ \defword{reflexive})
-	\item $A\sim B\implies B\sim A$ \hfill ($\sim$ \defword{symmetric})
-	\item $A\sim B$ and $B\sim C$ $\implies$ $A\sim C$ \hfill ($\sim$ \defword{transitive})
-\end{itemize}
-\end{theorem}
-\end{frame}
-
-\begin{frame}{Similarity (cont.)}
 \begin{theorem}
 $A,B\in\M_n$ with $A\sim B$. Then
 \begin{itemize}
@@ -679,18 +590,6 @@ For $P^{-1}AP=D$: in $P$, put the linearly independent eigenvectors as columns a
 \end{frame}
 
 
-\begin{frame}{Constructing bases}
-	\begin{theorem}
-		Let $V$ be a finite-dimensional vector space. Then every linearly independent set of vectors in $V$ with $\dim V$ elements is a basis of $V$
-	\end{theorem}
-	\vfill
-	\begin{theorem}
-		Let $V$ be a finite-dimensional vector space. Then every spanning set of vectors in $V$ with $\dim V$ elements is a basis of $V$
-	\end{theorem}
-\end{frame}
-
-
-
 \begin{frame}{Linear algebra in a nutshell}
 \begin{importanttheorem}
 \label{th:L04-linalg-in-a-nutshell}
@@ -710,51 +609,6 @@ Let $A\in\M_n$. The following statements are equivalent (TFAE)
 \end{importanttheorem}
 \end{frame}
 
-
-
-\begin{frame}{Partial derivatives}
-  How do we measure the ``slope'' on a 3D surface?
-  \vfill
-  A \defword{partial derivative} measures the slope in a direction parallel to one of the axes
-  \vfill
-  \begin{itemize}
-    \item $\dfrac{\partial f}{\partial x}$ measures height change as we move only in the $x$ direction. Treat $y$ as a constant
-    \vfill
-    \item $\dfrac{\partial f}{\partial y}$ measures height change as we move only in the $y$ direction. Treat $x$ as a constant
-  \end{itemize}
-\end{frame}
-
-\begin{frame}{The Lagrangian function}
-  The condition $\nabla f = \lambda \nabla g$ is clever, but solving it can be messy
-  \vfill
-  Instead, we combine our function and constraint into a single, new function called the \defword{Lagrangian}
-  
-  $$ \mathcal{L}(x, y, \lambda) = f(x, y) - \lambda [g(x, y) - c] $$
-  \vfill
-  \begin{itemize}
-    \item $f(x, y)$ the function we want to optimize
-    \item $g(x, y) = c$ the constraint we must follow
-    \item $\lambda$ the Lagrange multiplier
-  \end{itemize}
-  \vfill
-  Finding the unconstrained optimum of $\mathcal{L}$ solves the original constrained problem!
-\end{frame}
-
-\begin{frame}{The method -- step-by-step}
-  To find the optimum of the Lagrangian $\mathcal{L}(x, y, \lambda)$, we find where its gradient is zero
-  \vfill
-  We take the partial derivative with respect to \textit{all} its variables ($x$, $y$, and $\lambda$) and set them to zero
-  \vfill
-  \begin{enumerate}
-    \item $\frac{\partial \mathcal{L}}{\partial x} = \frac{\partial f}{\partial x} - \lambda \frac{\partial g}{\partial x} = 0$
-    \item $\frac{\partial \mathcal{L}}{\partial y} = \frac{\partial f}{\partial y} - \lambda \frac{\partial g}{\partial y} = 0$
-    \item $\frac{\partial \mathcal{L}}{\partial \lambda} = -(g(x, y) - c) = 0 \implies g(x, y) = c$
-  \end{enumerate}
-  \vfill
-  The first two equations rearrange to $\nabla f = \lambda \nabla g$ and the third equation is the original constraint
-\end{frame}
-
-
 \begin{frame}{The gradient}
     $f:\IR^n\to\IR$ function of several variables, $\nabla=\left(\frac{\partial}{\partial x_1},\ldots,\frac{\partial}{\partial x_n}\right)$ the gradient operator
     \vfill
@@ -773,6 +627,18 @@ Let $A\in\M_n$. The following statements are equivalent (TFAE)
     where $f_{x_i}$ is the partial derivative of $f$ with respect to $x_i$ and $\{\be_1,\ldots,\be_n\}$ is the standard basis of $\IR^n$
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Linearly separable points}
+    Let $X_1$ and $X_2$ be two sets of points in $\IR^p$ 
+    \vfill
+    Then $X_1$ and $X_2$ are \textbf{linearly separable} if there exist $w_{1}, w_{2},..,w_{p}, k\in\IR$ such that 
+    \begin{itemize}
+        \item every point $x \in X_1$ satisfies $\sum^{p}_{i=1} w_{i}x_{i} > k$ 
+        \item every point $x \in X_2$ satisfies $\sum^{p}_{i=1} w_{i}x_{i} < k$
+    \end{itemize}
+    where $x_{i}$ is the $i$th component of $x$
+\end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
@@ -781,31 +647,37 @@ Let $A\in\M_n$. The following statements are equivalent (TFAE)
 \Ssection{Least squares}{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
 
 
-\begin{frame}\frametitle{The linear least squares problem}
-Given a collection of data points $(x_1,y_1),\ldots,(x_n,y_n)$, find the coefficients $a,b$ of the line $y=a+bx$ such that
-$$
-\|\mathbf{e}\|=\sqrt{\varepsilon_1^2+\cdots+\varepsilon_n^2}
-=\sqrt{(y_1-\tilde y_1)^2+\cdots+(y_n-\tilde y_n)^2}
-$$
-is minimal, where $\tilde y_i=a+bx_i$, for $i=1,\ldots,n$
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\Ssubsection{Least squares problem}{FIGS-slides-admin/Gemini_Generated_Image_c06eixc06eixc06e.jpeg}
+
+
+\begin{frame}{The least squares problem}
+\begin{definition}[Least squares solutions]
+Consider a collection of points $(x_1,y_1),\ldots,(x_n,y_n)$, a matrix $A\in\M_{mn}$, $\bb\in\IR^m$. A \textbf{least squares solution} of $A\bx=\bb$ is a vector $\tilde \bx\in\IR^n$ s.t.
+\[
+\forall \bx\in\IR^n,\quad \|\bb-A\tilde\bx\|\leq \|\bb-A\bx\|
+\]
+\end{definition}
+\end{frame}
+
+\begin{frame}{Least squares theorem}
+\begin{importanttheorem}[Least squares theorem]\label{th:least_squares}
+$A\in\M_{mn}$, $\bb\in\IR^m$. Then
+\begin{enumerate}
+\item $A\bx=\bb$ always has at least one least squares solution $\tilde\bx$
+\item $\tilde\bx$ least squares solution to $A\bx=\bb$ $\iff$ $\tilde\bx$ is a solution to the normal equations $A^TA\tilde\bx = A^T\bb$
+\item $A$ has linearly independent columns $\iff$ $A^TA$ invertible.  
+\newline In this case, the least squares solution is unique and 
+\[
+\tilde\bx = \left(A^TA\right)^{-1}A^T\bb
+\]
+\end{enumerate}
+\end{importanttheorem}
 \end{frame}
 
 
-\begin{frame}{The least squares problem (simplest version)}
-	\begin{definition}
-		Given a collection of points $(x_1,y_1),\ldots,(x_n,y_n)$, find the coefficients $a,b$ of the line $y=a+bx$ such that
-		$$
-		\|\mathbf{e}\|=\sqrt{\varepsilon_1^2+\cdots+\varepsilon_n^2}
-		=\sqrt{(y_1-\tilde y_1)^2+\cdots+(y_n-\tilde y_n)^2}
-		$$
-		is minimal, where $\tilde y_i=a+bx_i$ for $i=1,\ldots,n$
-	\end{definition}
-	\vfill
-	We just saw how to solve this by brute force using a genetic algorith to minimise $\|e\|$, let us now see how to solve this problem ``properly''
-\end{frame}
-
-
-\begin{frame}
+\begin{frame}{Fitting an affine function}
 	For a data point $i=1,\ldots,n$
 	\[
 	\varepsilon_i = y_i-\tilde y_i = y_i - (a+bx_i)
@@ -836,67 +708,6 @@ is minimal, where $\tilde y_i=a+bx_i$, for $i=1,\ldots,n$
 	\end{pmatrix}
 	\]
 \end{frame}
-
-\begin{frame}{The least squares problem (reformulated)}
-\begin{definition}[Least squares solutions]
-Consider a collection of points $(x_1,y_1),\ldots,(x_n,y_n)$, a matrix $A\in\M_{mn}$, $\bb\in\IR^m$. A \textbf{least squares solution} of $A\bx=\bb$ is a vector $\tilde \bx\in\IR^n$ s.t.
-\[
-\forall \bx\in\IR^n,\quad \|\bb-A\tilde\bx\|\leq \|\bb-A\bx\|
-\]
-\end{definition}
-\end{frame}
-
-
-\begin{frame}{Needed to solve the problem}
-\begin{definition}[Best approximation]
-Let $V$ be a vector space, $W\subset V$ and $\mathbf{v}\in V$. The \textbf{best approximation} to $\mathbf{v}$ in $W$ is $\tilde{\mathbf{v}}\in W$ s.t.
-\[
-\forall\mathbf{w}\in W, \mathbf{w}\neq\tilde{\mathbf{v}}, \quad
-\|\mathbf{v}-\tilde{\mathbf{v}}\| < \|\mathbf{v}-\mathbf{w}\|
-\]
-\end{definition}
-\vfill
-\begin{theorem}[Best approximation theorem]
-Let $V$ be a vector space with an inner product, $W\subset V$ and $\mathbf{v}\in V$. Then $\mathsf{proj}_W(\mathbf{v})$ is the best approximation to $\mathbf{v}$ in W
-\end{theorem}
-\end{frame}
-
-
-\begin{frame}{Putting things together}
-We just stated: The least squares solution of $A\bx=\bb$ is a vector $\tilde\by\in\mathsf{col}(A)$ s.t.
-\[
-\forall\by\in\mathsf{col}(A),\quad\|\bb-\tilde\by\|\leq\|\bb-\by\|
-\]
-\vfill
-We know (reformulating a tad):
-\begin{theorem}[Best approximation theorem]
-Let $V$ be a vector space with an inner product, $W\subset V$ and $\mathbf{v}\in V$. Then $\mathsf{proj}_W(\mathbf{v})\in W$ is the best approximation to $\mathbf{v}$ in W, i.e.,
-\[
-\forall\mathbf{w}\in W, \mathbf{w}\neq\mathsf{proj}_W(\mathbf{v}), \quad
-\|\mathbf{v}-\mathsf{proj}_W(\mathbf{v})\| < \|\mathbf{v}-\mathbf{w}\|
-\]
-\end{theorem}
-\vfill
-$\implies$ $W=\mathsf{col}(A)$, $\bv=\bb$ and $\tilde\by=\mathsf{proj}_{\mathsf{col}(A)}(\mathbf{b})$
-\end{frame}
-
-\begin{frame}{Least squares theorem}
-\begin{importanttheorem}[Least squares theorem]\label{th:least_squares}
-$A\in\M_{mn}$, $\bb\in\IR^m$. Then
-\begin{enumerate}
-\item $A\bx=\bb$ always has at least one least squares solution $\tilde\bx$
-\item $\tilde\bx$ least squares solution to $A\bx=\bb$ $\iff$ $\tilde\bx$ is a solution to the normal equations $A^TA\tilde\bx = A^T\bb$
-\item $A$ has linearly independent columns $\iff$ $A^TA$ invertible.  
-\newline In this case, the least squares solution is unique and 
-\[
-\tilde\bx = \left(A^TA\right)^{-1}A^T\bb
-\]
-\end{enumerate}
-\end{importanttheorem}
-\vfill
-We have seen 1 and 2, we will not show 3 (it is not hard)
-\end{frame}
-
 
 \begin{frame}{Fitting the quadratic}
 We have the data points $(x_1,y_1),(x_2,y_2),\ldots,(x_n,y_n)$ and want to fit
@@ -944,6 +755,10 @@ y_1\\ \vdots\\ y_n
 Theorem~\ref{th:least_squares} applies, with here $A\in\M_{n3}$ and $\bb\in\IR^n$
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\Ssubsection{Orthogonality and Gram-Schmidt}{FIGS-slides-admin/Gemini_Generated_Image_c06eixc06eixc06e.jpeg}
+
 
 \begin{frame}
 \begin{definition}[Orthogonal set of vectors]
@@ -952,10 +767,6 @@ The set of vectors $\{\bv_1,\ldots,\bv_k\}\in\IR^n$ is an \textbf{orthogonal set
 \forall i,j=1,\ldots,k,\quad i\neq j \implies \bv_i\bullet\bv_j=0
 \]
 \end{definition}
-\vfill
-\begin{theorem}\label{th:ortho_implies_LI}
-$\{\bv_1,\ldots,\bv_k\}\in\IR^n$ with $\forall i$, $\bv_i\neq\b0$, orthogonal set $\implies$ $\{\bv_1,\ldots,\bv_k\}\in\IR^n$ linearly independent
-\end{theorem}
 \vfill
 \begin{definition}[Orthogonal basis]
 Let $S$ be a basis of the subspace $W\subset\IR^n$ composed of an orthogonal set of vectors. We say $S$ is an \textbf{orthogonal basis} of $W$
@@ -985,7 +796,7 @@ $\{\bv_1,\ldots,\bv_k\}\in\IR^n$ is orthonormal if
 
 
 \begin{frame}{Projections}
-	\begin{definition}[Orthogonal projection onto a subspace]
+	\begin{minordefinition}[Orthogonal projection onto a subspace]
 	$W\subset\IR^n$ a subspace and $\{\bu_1,\ldots,\bu_k\}$ an orthogonal basis of $W$. $\forall\bv\in\IR^n$, the \textbf{orthogonal projection} of $\bv$ \textbf{onto} $W$ is
 	\[
 	\mathsf{proj}_W(\bv) =
@@ -993,14 +804,14 @@ $\{\bv_1,\ldots,\bv_k\}\in\IR^n$ is orthonormal if
 	+\cdots+
 	\frac{\bu_k\bullet\bv}{\|\bu_k\|^2}\bu_k
 	\]  
-	\end{definition}
+	\end{minordefinition}
 	\vfill
-	\begin{definition}[Component orthogonal to a subspace]
+	\begin{minordefinition}[Component orthogonal to a subspace]
 	$W\subset\IR^n$ a subspace and $\{\bu_1,\ldots,\bu_k\}$ an orthogonal basis of $W$. $\forall\bv\in\IR^n$, the \textbf{component} of  $\bv$ \textbf{orthogonal to} W is
 	\[
 	\mathsf{perp}_W(\bv)=\bv-\mathsf{proj}_W(\bv)
 	\]
-	\end{definition}	
+	\end{minordefinition}	
 	\end{frame}
 	
 
@@ -1024,18 +835,16 @@ Then $\forall i=1,\ldots,k$, $\{\bv_1,\ldots,\bv_i\}$ orthogonal basis for $W_i$
 \end{frame}
 	
 	
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\Ssubsection{The QR decomposition}{FIGS-slides-admin/Gemini_Generated_Image_c06eixc06eixc06e.jpeg}
+
 
 \begin{frame}
-\begin{theorem}
-Let $Q\in\M_{mn}$. The columns of $Q$ form an orthonormal set if and only if
-\[
-Q^TQ=\II_n
-\]
-\end{theorem}
-\vfill
 \begin{definition}[Orthogonal matrix]
 $Q\in\M_n$ is an \textbf{orthogonal matrix} if its columns form an orthonormal set 
 \end{definition}
+\vfill
 So $Q\in\M_n$ orthogonal if $Q^TQ=\II$, i.e., $Q^T=Q^{-1}$
 \vfill
 \begin{importanttheorem}[NSC for orthogonality]
@@ -1076,11 +885,6 @@ A=QR
 \]
 where $Q\in\M_{mn}$ has orthonormal columns and $R\in\M_n$ is nonsingular upper triangular
 \end{importanttheorem}
-\end{frame}
-
-
-\begin{frame}{Back to least squares}
-So what was the point of all that..?
 \vfill
 \begin{importanttheorem}[Least squares with QR factorisation]
 \label{th:LSQ_with_QR}
@@ -1091,6 +895,10 @@ $A\in\M_{mn}$ with LI columns, $\bb\in\IR^m$. If $A=QR$ is a QR factorisation of
 \end{importanttheorem}
 \end{frame}
 
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\Ssubsection{The SVD}{FIGS-slides-admin/Gemini_Generated_Image_c06eixc06eixc06e.jpeg}
 
 
 \begin{frame}{Singular values}
@@ -1108,6 +916,10 @@ that are the square roots of the eigenvalues of $A^TA$
 Recall that $\forall A\in\M_{mn}$, $A^TA$ is symmetric
 \vfill
 \textbf{Claim 1.} Real symmetric matrices have real eigenvalues
+\vfill
+\textbf{Claim 2.} For $A\in\M_{mn}(\IR)$, the eigenvalues of $A^TA$ are real and nonnegative
+\vfill
+\textbf{Claim 3.} For $A\in\M_{mn}(\IR)$, the nonzero eigenvalues of $A^TA$ and $AA^T$ are the same
 \end{frame}
 
 \begin{frame}[red]
@@ -1127,14 +939,6 @@ Norms are functions $V\to\IR_+$, so $\|A\bv\|$ and $\|A\bv\|^2$ are $\geq 0$ and
 &= \lambda\hfill\qedhere
 \end{align*}
 \end{frame}
-
-\begin{frame}
-\textbf{Claim 3.} For $A\in\M_{mn}(\IR)$, the nonzero eigenvalues of $A^TA$ and $AA^T$ are the same
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%
-\Ssection{The SVD}{FIGS-slides-admin/Gemini_Generated_Image_c06eixc06eixc06e.jpeg}
 
 \begin{frame}{The singular value decomposition (SVD)}
 \begin{importanttheorem}[SVD]\label{th:SVD}
@@ -1251,109 +1055,11 @@ where $A^+$ is the \emph{pseudoinverse} of $A$
 
 
 
-\begin{frame}{The least squares problem}
-\textbf{Problem Statement:}
-\vfill
-Given a system $A\bx = \bb$ where $A\in\M_{mn}$, $\bx\in\IR^n$, $\bb\in\IR^m$ (typically $m>n$), find $\tilde\bx$ that minimizes
-$$
-\|\bb - A\bx\|^2 = \sum_{i=1}^m (b_i - \sum_{j=1}^n A_{ij}x_j)^2
-$$
-\vfill
-\textbf{Geometric interpretation:}
-Find the vector $A\tilde\bx$ in the column space of $A$ that is closest to $\bb$
-\vfill
-\textbf{Solution:} $A\tilde\bx = \text{proj}_{\text{col}(A)}(\bb)$
-\end{frame}
-
-\begin{frame}{Method 1: Normal equations}
-\textbf{The normal equations:}
-$$A^TA\tilde\bx = A^T\bb$$
-\vfill
-\textbf{When this works:}
-\begin{itemize}
-\item Always has at least one solution
-\item Any solution $\tilde\bx$ to the normal equations is a least squares solution
-\end{itemize}
-\vfill
-\textbf{Computational issues:}
-\begin{itemize}
-\item Forming $A^TA$ can be numerically unstable
-\item Condition number of $A^TA$ is the square of the condition number of $A$
-\item Still useful for theoretical analysis
-\end{itemize}
-\end{frame}
-
-\begin{frame}{Method 2: when $A$ Has linearly independent columns}
-\textbf{Condition:} $A\in\M_{mn}$ has linearly independent columns
-\vfill
-\textbf{Then:} $A^TA$ is invertible and the least squares solution is \textbf{unique}
-$$\tilde\bx = (A^TA)^{-1}A^T\bb$$
-\vfill
-\textbf{Properties:}
-\begin{itemize}
-\item $A^TA \in \M_n$ is square, symmetric, and positive definite
-\item $(A^TA)^{-1}A^T$ is called the \emph{left pseudoinverse} of $A$
-\item This gives the unique least squares solution
-\end{itemize}
-\vfill
-\textbf{Drawback:} Computing $(A^TA)^{-1}$ directly can be numerically unstable
-\end{frame}
-
-\begin{frame}{Method 3: QR factorization}
-\textbf{QR Factorization:} If $A\in\M_{mn}$ has linearly independent columns, then
-$$A = QR$$
-where $Q\in\M_{mn}$ has orthonormal columns and $R\in\M_n$ is upper triangular and nonsingular
-\vfill
-\textbf{Least squares solution:}
-$$\tilde\bx = R^{-1}Q^T\bb$$
-\vfill
-\textbf{Advantages:}
-\begin{itemize}
-\item More numerically stable than forming $A^TA$
-\item $R$ is upper triangular $\Rightarrow$ solving $R\tilde\bx = Q^T\bb$ by back substitution
-\item Condition number of $R$ equals condition number of $A$
-\item Gram-Schmidt or Householder reflections can compute QR factorization
-\end{itemize}
-\end{frame}
-
-\begin{frame}{Method 4: Singular Value Decomposition (SVD)}
-\textbf{SVD:} For any $A\in\M_{mn}$,
-$$A = U\Sigma V^T$$
-where $U\in\M_m$ orthogonal, $V\in\M_n$ orthogonal, $\Sigma\in\M_{mn}$ with $\Sigma_{ii} = \sigma_i \geq 0$ (singular values)
-\vfill
-\textbf{Pseudoinverse:} $A^+ = V\Sigma^+ U^T$ where $\Sigma^+$ has $(\Sigma^+)_{ii} = 1/\sigma_i$ if $\sigma_i > 0$, else $0$
-\vfill
-\textbf{Least squares solution:}
-$$\tilde\bx = A^+\bb$$
-\vfill
-\textbf{Key advantages:}
-\begin{itemize}
-\item Works for \emph{any} matrix $A$ (even when columns are linearly dependent)
-\item Gives the solution of \emph{minimal length} when multiple solutions exist
-\item Most numerically stable method
-\item Reveals the rank of $A$ through the number of non-zero singular values
-\end{itemize}
-\end{frame}
-
-\begin{frame}{When to use which method}
-\begin{center}
-\begin{tabular}{|l|l|l|}
-\hline
-\textbf{Method} & \textbf{When to use} & \textbf{Advantages/Drawbacks} \\
-\hline
-Normal equations & Theory, small problems & Simple, but unstable \\
-\hline
-$(A^TA)^{-1}A^T$ & $A$ has LI columns & Explicit formula, unstable \\
-\hline
-QR Factorization & $A$ has LI columns & Stable, efficient \\
-\hline
-SVD & Any $A$, rank-deficient & Most stable, handles all cases \\
-\hline
-\end{tabular}
-\end{center}
-\vfill
-Use QR for well-conditioned problems with LI columns, SVD for rank-deficient or ill-conditioned problems
-\end{frame}
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\Ssection{PCA}{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
 
 
 \begin{frame}{Change of basis}
@@ -1451,15 +1157,6 @@ be the means of the data. An estimator of the covariance of the sample is
 \begin{frame}{The covariance matrix (we usually have more than 2 variables)}
 \begin{definition}
 Suppose $p$ random variables $X_1,\ldots,X_p$. Then the covariance matrix is the symmetric matrix
-\[
-\begin{pmatrix}
-\cov(X_1,X_1) & \cov(X_1,X_2) & \cdots & \cov(X_1,X_p) \\
-\cov(X_2,X_1) & \cov(X_2,X_2) & \cdots & \cov(X_2,X_p) \\
-\vdots & \vdots & & \vdots \\
-\cov(X_p,X_1) & \cov(X_p,X_2) & \cdots & \cov(X_p,X_p) 
-\end{pmatrix}
-\]
-i.e., using the properties of covariance,
 \[
 \begin{pmatrix}
 \Var X_1 & \cov(X_1,X_2) & \cdots & \cov(X_1,X_p) \\
@@ -1925,16 +1622,6 @@ And just to confuse the whole thing more: we often say \emph{graph} for \emph{un
 
 
 
-
-\begin{frame}{Graph}
-	Intuitively: a graph is a set of points, and a set of relations between the points
-	\vfill
-	The points are called the \emph{vertices} of the graph and the relations are the \emph{edges} of the graph
-	\vfill
-	We can also think of the relations as being one directional, in which case the relations are the \emph{arcs} of the digraph (a contraction of ``directed graph'')
-\end{frame}
-
-
 \begin{frame}\frametitle{Graph, vertex and edge} 
 	\begin{definition}[Graph]
 	An \defword{undirected graph} is a pair $G=(V,E)$ of sets such that
@@ -2009,18 +1696,6 @@ And just to confuse the whole thing more: we often say \emph{graph} for \emph{un
 \end{frame}
 
 
-\begin{frame}\frametitle{Graph and binary relations}
-A simple graph $G$ can be defined in term of a vertex set $V$ and a binary relation over $V$ that is
-	\begin{itemize}
-		\item irreflexive ($\forall u\in V$, $u\cancel Ru$)
-		\item symmetric ($\forall u,v\in V$, $uRv\implies vRu$)
-	\end{itemize}
-	\vfill
-	The set of edges $E(G)$ is the set of symmetric pairs in $R$
-	\vfill
-	If $R$ is not irreflexive, the graph is not simple
-\end{frame}
-
 \begin{frame}
 	\begin{definition}[Degree of a vertex]
 	Let $v$ be a vertex of $G=(V,E)$.
@@ -2042,10 +1717,6 @@ A simple graph $G$ can be defined in term of a vertex set $V$ and a binary relat
 \begin{frame}
 \begin{definition}[{Odd vertex}]
 A vertex is an \defword{odd vertex} if its degree is odd
-\end{definition}
-\vfill
-\begin{definition}[{Even vertex}]
-A vertex is called \defword{even vertex} if its degree is even
 \end{definition}
 \vfill
 \begin{importanttheorem}\label{th:even-nb-odd-vertices}
@@ -2237,105 +1908,6 @@ The \defword{length of a cycle} is its number of edges
 \end{frame}
 
 
-\begin{frame}{Eulerian trails and circuits}
-\begin{definition}[{Eulerian trail}]
-	A walk in an undirected multigraph $M$ that uses each edge \textbf{exactly once} is a \defword{Eulerian trail} of $M$
-\end{definition}
-\vfill
-\begin{definition}[{Traversable graph}]
-	If a graph $G$ has a Eulerian trail, then $G$ is a \defword{traversable graph}
-\end{definition}
-\vfill
-\begin{definition}[{Eulerian circuit}]
-	A circuit containing all the vertices and edges of a multigraph $M$ is a \defword{Eulerian circuit} of $M$
-\end{definition}
-\vfill
-\begin{definition}[{Eulerian graph}]
-	A graph (resp. multigraph) containing an Eulerian circuit is a \defword{Eulerian graph} (resp. \defword{Eulerian multigraph})
-\end{definition}
-\end{frame}
-
-\begin{frame}{Remember Euler's bridges of K\"onigsberg?}
-	Cross the 7 bridges in a single walk without recrossing any of them?
-	\begin{center}
-	\includegraphics[width=.7\textwidth]{FIGS/bridge_color_with_graph}
-	\end{center}
-	\begin{block}{Mathematical problem}
-		Is the (multi)graph traversable? Eulerian?
-	\end{block}
-	\end{frame}
-
-
-\begin{frame}
-\begin{theorem}
-	A multigraph $M$ is traversable $\iff$ $M$ is connected and has exactly two odd vertices
-	\vskip0.2cm
-	Furthermore, any Eulerian trail of $M$ begins at one of the odd vertices and ends at the other odd vertex
-\end{theorem}
-\vfill
-\begin{theorem}
-	A multigraph $M$ is Eulerian $\iff$ $M$ is connected and every vertex of $M$ is even
-\end{theorem}
-\end{frame}
-
-
-
-
-% \begin{frame}
-% 	\frametitle{Fleury's algorithm to find a Eulerian \emph{trail}}
-% 	\framesubtitle{For a connected graph with exactly 2 odd vertices}
-% \begin{itemize}
-% 	\item Start at one of the odd vertices
-% 	\item Marking your path as you move from vertex to vertex, travel along any edges you wish, but DO NOT travel along an edge that is a bridge for the graph formed by the EDGES THAT HAVE YET TO BE TRAVELED -- unless you have to
-% 	\item Continue until every edge has been traveled
-% \end{itemize}
-% RESULT: a Eulerian trail
-% \end{frame}
-% 
-% 
-% \begin{frame}
-% 	\frametitle{Fleury's algorithm to find a Eulerian \emph{circuit}}
-% 	\framesubtitle{For a connected graph with no odd vertices}
-% 
-% 	\begin{itemize}
-% 	\item Pick any vertex as a starting point
-% 	\item Marking your path as you move from vertex to vertex, travel along any edges you wish, but DO NOT travel along an edge that is a bridge for the graph formed by the EDGES THAT HAVE YET TO BE TRAVELED -- unless you have to
-% 	\item Continue until you return to your starting point
-% \end{itemize}
-% RESULT: a Eulerian circuit
-% \end{frame}
-% 
-
-
-
-\begin{frame}\frametitle{}
-\begin{definition}[{Hamiltonian path}]
-	A path containing all vertices of a graph $G$ is a \defword{Hamiltonian path} of $G$
-\end{definition}
-\vfill
-\begin{definition}[{Traceable graph}]
-	If a graph $G$ has an Hamiltonian path, then $G$ is a \defword{traceable graph}
-\end{definition}
-\vfill
-\begin{definition}[{Hamiltonian cycle}]
-	A cycle containing all vertices of a graph $G$ is a \defword{Hamiltonian cycle} of $G$
-\end{definition}
-\vfill
-\begin{definition}[{Hamiltonian graph}]
-	A graph containing a Hamiltonian cycle is a \defword{Hamiltonian graph}
-\end{definition}
-\end{frame}
-
-\begin{frame}
-\begin{theorem}[Dirac's theorem]
-	If $G$ is a graph of order $p\geq 3$ such that $deg(v)\geq p/2$ for every vertex $v$ of $G$, then $G$ is Hamiltonian
-\end{theorem}
-% \vfill
-% \begin{theorem}[Ore's theorem]
-% 	If $G$ is a graph of order $p\geq 3$ such that for all distinct nonadjacent vertices $u$ and $v$ of $G$, $$deg(u)+deg(v)\geq p$$ 
-% 	then $G$ is Hamiltonian
-% \end{theorem}
-\end{frame}
 
 \begin{frame}{Eulerian and Hamiltonian trails and circuits}
 \begin{center}
@@ -2519,32 +2091,6 @@ What is the minimal number of colours to colour all states in the map so that tw
 \includegraphics[width=.85\textwidth]{FIGS/4-colours-Europe}
 \end{center}\end{frame}
 
-\begin{frame}\frametitle{``Real life'' problem}
-	What is the minimal number of colours to colour all states in the map so that two adjacent states have different colours?
-	\vfill
-Mathematical representation:
-\begin{itemize}
-\item vertices correspond to the states
-\item vertices are adjacent $\iff$ the two states are adjacent (sharing an isolated point such as the ``Four Corners'' does not count)
-\end{itemize}
-\vfill
-\begin{block}{Mathematical problem}
-What is the chromatic number of the graph associated to the map?
-\end{block}
-\end{frame}
-
-\begin{frame}\frametitle{Welch-Powell algorithm for colouring a graph $G$}
-	\begin{enumerate}
-	\item Order the vertices of $G$ by decreasing degree. (Such an ordering may not be unique since some vertices may have the same degree)
-	\vfill
-	\item Use one colour to paint the first vertex and to paint, in sequential order, each vertex on the list that is not adjacent to a vertex previously painted with this colour
-	\vfill
-	\item Start again at the top of the list and repeat the process, painting previously unpainted vertices using a second colour
-	\vfill
-	\item Repeat with additional colours until all vertices have been painted
-\end{enumerate}\end{frame}
-	
-	
 
 
 %%%%%%%%%%%%%%%%%%%
@@ -2572,13 +2118,6 @@ $A$ or $A(G)$ is the arc set of the digraph $G$
 \end{definition}
 \end{frame}
 
-
-
-\begin{frame}\frametitle{Digraph and binary relation}
-A (simple) digraph $D$ can be defined in term of a vertex set $V$ and an irreflexive relation $R$ over $V$
-\vfill
-The defining relation $R$ of the digraph $G$ need not be symmetric
-\end{frame}
 
 
 \begin{frame}\frametitle{Directed network/weighted (di)graph}
@@ -2613,57 +2152,6 @@ Another name is \defword{weighted} (di)graph
 	\begin{definition}[{Digraph}]
 	In a digraph, no more than one arc can join any pair of vertices
 \end{definition}
-\end{frame}
-
-\begin{frame}{Examples}
-  \centering
-	\def\skip{2.75cm}
-	\begin{tikzpicture}[scale=0.7, 
-		every node/.style={transform shape},
-		auto,
-		cloud/.style={minimum width={width("N-1")+2pt},
-			draw, ellipse},
-		connected/.style={dotted,-}]
-		%% Vertices
-		\node [cloud] at (0,0) (a) {$a$};
-		\node [cloud] at (1*\skip,1*\skip) (b) {$b$};
-		\node [cloud] at (1*\skip,-1*\skip) (c) {$c$};
-		\node [cloud] at (2*\skip,0) (d) {$d$};
-		%% Arcs
-		\path [line, thick,bend right] (a) to node [midway, above] (TextNode) {2} (b);
-		\path [line, thick] (a) to node [midway, above] (TextNode) {3} (b);
-		\path [line, thick,bend left] (a) to node [midway, above] (TextNode) {4} (b);
-		\path [line, thick, looseness=5] (b) to node [midway, above] (TextNode) {5} (b);
-		\path [line, thick, looseness=15] (b) to node [midway, above] (TextNode) {6} (b);
-		\path [line, thick] (c) to node [midway, left] (TextNode) {7} (b);
-		\path [line, thick] (c) to node [midway, above] (TextNode) {1} (a);
-		\path [line, thick, bend left] (d) to node [midway, above] (TextNode) {8} (c);
-		\path [line, thick, bend right] (d) to node [midway, above] (TextNode) {9} (c);
-		\path [line, thick, looseness=5] (d) to node [midway, above] (TextNode) {10} (d);
-	\end{tikzpicture}
-	\begin{tikzpicture}[scale=0.7, 
-		every node/.style={transform shape},
-		auto,
-		cloud/.style={minimum width={width("N-1")+2pt},
-			draw, ellipse},
-		connected/.style={dotted,-}]
-		%% Vertices
-		\node [cloud] at (0,0) (x1) {$x_1$};
-		\node [cloud] at (1*\skip,1*\skip) (x2) {$x_2$};
-		\node [cloud] at (2*\skip,1*\skip) (x3) {$x_3$};
-		\node [cloud] at (1.5*\skip,0) (x4) {$x_4$};
-		\node [cloud] at (2.5*\skip,0*\skip) (x5) {$x_5$};
-		\node [cloud] at (2.5*\skip,1*\skip) (x6) {$x_6$};
-		%% Arcs
-		\path [line, thick,bend left] (x1) to node [midway, above] (TextNode) {1} (x2);
-		\path [line, thick,bend left] (x2) to node [midway, below] (TextNode) {2} (x1);
-		\path [line, thick, looseness=5] (x2) to node [midway, above] (TextNode) {3} (x2);
-		\path [line, thick] (x2) to node [midway, above] (TextNode) {4} (x3);
-		\path [line, thick] (x2) to node [midway, below] (TextNode) {5} (x4);
-		\path [line, thick] (x4) to node [midway, below] (TextNode) {6} (x3);
-		\path [line, thick, looseness=5, below] (x6) to node [midway, above] (TextNode) {7} (x6);
-		\path [line, thick] (x6) to node [midway, right] (TextNode) {8} (x5);
-	\end{tikzpicture}
 \end{frame}
 
 \begin{frame}
@@ -2801,15 +2289,6 @@ plot(
 	\end{definition}
 \end{frame}
 
-<<ex-degrees-basic, echo=TRUE>>=
-# Degrees in a digraph: out-, in-, and total degree
-deg_out <- degree(G, mode = "out")
-deg_in  <- degree(G, mode = "in")
-deg_tot <- degree(G, mode = "all")
-head(data.frame(v = as.integer(V(G)), out = deg_out, in_deg = deg_in, total = deg_tot))
-@
-
-
 
 \begin{frame}
 	\begin{theorem}
@@ -2847,16 +2326,6 @@ head(data.frame(v = as.integer(V(G)), out = deg_out, in_deg = deg_in, total = de
 	\end{definition}
 \end{frame}
 
-<<ex-regular-symmetric, echo=TRUE>>=
-# A perfectly symmetric digraph would have every arc reciprocated
-recip <- reciprocity(G)  # ratio of mutual connections
-recip
-
-# Are all edges mutual? (strict symmetry)
-all_mutual <- all(is.mutual(G, E(G)))
-all_mutual
-@
-
 
 
 %%%%%%%%%%%%%%%%%%%
@@ -2893,58 +2362,6 @@ all_mutual
 	\end{definition}
 \end{frame}
 
-\begin{frame}{Examples of directed cycles}
-	\begin{minipage}{0.5\textwidth}
-		\centering
-		\def\skip{2.75cm}
-		\begin{tikzpicture}[scale=1, 
-			every node/.style={transform shape},
-			auto,
-			cloud/.style={minimum width={width("N-1")+2pt},
-				draw, ellipse},
-			connected/.style={dotted,-}]
-			%% Vertices
-			\node [cloud] at (0,0) (a) {$a$};
-			\node [cloud] at (1*\skip,0) (b) {$b$};
-			\node [cloud] at (0.5*\skip,1*\skip) (c) {$c$};
-			\node [cloud] at (1.5*\skip,1*\skip) (d) {$d$};
-			%% Arcs
-			\path [line, thick] (a) to node [midway, above] (TextNode) {1} (b);
-			\path [line, thick, bend left] (a) to node [midway, above] (TextNode) {2} (c);
-			\path [line, thick] (b) to node [midway, above] (TextNode) {6} (c);
-			\path [line, thick] (b) to node [midway, above] (TextNode) {4} (d);
-			\path [line, thick, bend left] (c) to node [midway, above] (TextNode) {3} (a);
-			\path [line, thick] (c) to node [midway, above] (TextNode) {5} (d);
-		\end{tikzpicture}
-	\end{minipage}
-	\begin{minipage}{0.48\textwidth}
-		Cycles:
-		\begin{itemize}
-			\item $\bmu^1=(1,6,2)=[abca]$
-			\item $\bmu^2=(1,6,3)=[abca]$
-			\item $\bmu^3=(2,3)=[aca]$
-			\item $\bmu^4=(1,4,5,2)=[abdca]$
-			\item $\bmu^5=(6,5,4)=[acdb]$
-			\item $\bmu^6=(1,4,5,3)=[abdca]$
-		\end{itemize}
-	\end{minipage}
-\end{frame}
-
-<<ex-walks-paths, echo=TRUE>>=
-# Shortest paths between two vertices
-sp_1_to_15 <- shortest_paths(G, from = 1, to = 15, mode = "out")
-sp_1_to_15$vpath
-
-# All simple paths up to a given cutoff (to keep it small)
-paths_1_to_6 <- all_simple_paths(G, from = 1, to = 6, mode = "out", cutoff = 6)
-length(paths_1_to_6)
-
-# Number of walks of length 2 via adjacency powers
-Mdir <- as.matrix(as_adjacency_matrix(G, sparse = FALSE))
-M2 <- Mdir %*% Mdir
-M2[1, 6]
-@
-
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -2970,16 +2387,6 @@ M2[1, 6]
 	A digraph is said to be \defword{disconnected}\index{disconnected digraph} if it is not weakly connected
 	\end{definition}
 \end{frame}
-
-<<ex-connectivity, echo=TRUE>>=
-is_connected(G, mode = "weak")
-is_connected(G, mode = "strong")
-
-scc <- components(G, mode = "strong")
-scc$no
-table(scc$membership)
-@
-
 
 \begin{frame}{Strong connectedness is an equivalence relation}
 Denote $x\equiv y$ the relation  ``$x=y$, or $x\neq y$ and there exists a directed path in $G$ from $x$ to $y$''. $\equiv$ is an equivalence relation since
@@ -3012,46 +2419,10 @@ A strong component in $G$ is a maximal strongly connected subdigraph of $G$
 \end{frame}
 
 
-
-
-\begin{frame}\frametitle{Algorithm for determining strongly connected components in $G=(V,A)$}
-	\begin{itemize}
-	\item Determine the strongly connected component $C(v)$ containing the vertex $v$; if $V-C(v)$ is non-empty, re-do the same operation on the sub-digraph $G'=(V-C(v),A')$
-	\item To determine $C(v)$, the strongly connected component containing $v$: let $v$ be a vertex of a digraph , which is not already in any strongly connected component
-	%Set $C(v)=\{v\}$ the strongly connected component containing $v$.
-	%
-	%
-	%
-	%
-	%%Repeat until $V-C(v)=\emptyset$:
-	%Do for any $v\in V-C(v)$
-	\begin{enumerate}
-	\item Mark the vertex $v$ with $\pm$
-	\item Mark with $+$ all successors (not already marked with $+$) of a vertex marked with $+$
-	\item Mark with $-$ all predecessors (not already marked with $-$) of a vertex marked with $-$
-	\item Repeat until no more possible marking with $+$ or $-$
-	\end{enumerate}
-	All vertices marked with $\pm$ belong to the same strongly connected component $C(v)$ containing the vertex $v$
-	\end{itemize}
-\end{frame}
-
 \begin{frame}\frametitle{Condensation of a digraph}
 	\begin{definition}[{Condensation of a digraph}]
 		The condensation $G^*$ of a digraph $G$ is a digraph having as vertices the strongly connected components (SCC) of $G$ and such that there exists an arc in $G^*$ from a SCC $C_i$ to another SCC $C_j$ if there is an arc in $G$ from some vertex of $S_i$ to a vertex of $S_j$
 	\end{definition}
-\end{frame}
-
-\begin{frame}[fragile]
-<<ex-condensation, echo=TRUE>>=
-# Condensation graph (SCC DAG) via contracting SCCs
-scc <- components(G, mode = "strong")
-G_cond <- contract(G, scc$membership, vertex.attr.comb = "ignore")
-G_cond <- simplify(G_cond, remove.multiple = TRUE, remove.loops = TRUE)
-
-vcount(G_cond); ecount(G_cond)
-is_dag <- is.dag(G_cond)
-is_dag
-@
 \end{frame}
 
 \begin{frame} 
@@ -3096,25 +2467,7 @@ A connected graph $G=(V,E)$ is orientable $\iff$ $G$ contains no bridges
 \end{frame}
  
 
-<<ex-orientation-bridges, echo=TRUE>>=
-# Orientation and bridges (undirected case -> orientation)
-Gu <- make_ring(8) 
-length(bridges(Gu))
-
-G_or <- as.directed(Gu, mode = "arbitrary")  # orient edges
-is_connected(G_or, mode = "strong")   
-@
-
-
-
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%
-\Ssection{Matrices associated to a graph/digraph}{FIGS-slides-admin/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
+\Ssubsection{Matrices associated to a graph/digraph}{FIGS-slides-admin/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
 
 \begin{frame}{Matrices associated to a graph/digraph}
 	There are multiple matrices associated to a graph/digraph
@@ -3314,61 +2667,6 @@ M3[1, 15]
 
 
 
-
-
-\begin{frame}{Degree matrix}
-	\begin{definition}[Degree matrix]
-		The \defword{degree} matrix $D=[d_{ij}]$ for $G$ is a $n \times n$ diagonal matrix defined as
-		\[
-			d_{ij} = \begin{cases}
-				d_G(v_i) & \text{if } i = j \\
-				0 & \text{otherwise}
-			\end{cases}
-		\]
-	\end{definition}
-\vfill
-In an undirected graph, this means that each loop increases the degree of a vertex by two
-\vfill
-In a directed graph, the term ``degree'' may refer either to indegree (the number of incoming edges at each vertex) or outdegree (the number of outgoing edges at each vertex)
-\end{frame}
-
-\begin{frame}{Laplacian matrix}
-\begin{definition}[Laplacian matrix]
-	$G=(V,A)$ a simple graph with $n$ vertices. The \defword{Laplacian} matrix is 
-	\[
-		L=D(G)-M(G)
-	\]
-	where $D(G)$ is the degree matrix and $M(G)$ is the adjacency matrix
-\end{definition}
-\end{frame}
-
-\begin{frame}{Laplacian matrix (continued)}
-$G$ simple graph $\implies$ $M(G)$ only contains 1 or 0 and its diagonal elements are all 0
-\vfill
-For directed graphs, either the indegree or outdegree is used, depending on the application
-\vfill
-Elements of $L$ are given by
-\[
-\ell_{ij}=\begin{cases}
-	d_G(v_{i}) & \text{if } i=j\\
-	-1 & \text{if } i\neq j \text{ and } v_{i} 
-	\text{ is adjacent to }v_{j}\\
-	0 & \text{otherwise}
-\end{cases}
-\]
-\end{frame}
-
-<<ex-degree-laplacian, echo=TRUE>>=
-# Degree matrix and Laplacian
-deg_vec <- degree(G, mode = "all")
-Dmat <- diag(deg_vec)
-L <- laplacian_matrix(G, normalized = FALSE, sparse = FALSE)
-
-dim(Dmat); dim(L)
-eigenvals <- eigen(as.matrix(L))$values
-head(eigenvals)
-@
-
 \begin{frame}\frametitle{Distance matrix}
 	Let $G$ be a graph of order $p$ with vertices $v_1, \ldots , v_p$
 	\begin{definition}[Distance matrix]
@@ -3379,13 +2677,6 @@ head(eigenvals)
 	Note $\delta_{ii}=0$ for $i=1,\ldots, p$
 	\end{definition}
 \end{frame}
-
-<<ex-distance-matrix, echo=TRUE>>=
-# Distance matrix (shortest path lengths)
-D <- distances(G, mode = "out")
-D[1, 15]
-@
-
 
 \begin{frame}
 	\begin{property}
@@ -3484,83 +2775,6 @@ Here $d$ is the index of imprimitivity (i.e., the number of eigenvalues that hav
 \end{frame}
 
 \begin{frame}
-\begin{minipage}{0.49\textwidth}
-	\begin{tikzpicture}[auto, %node distance = 2cm, auto,
-		cloud/.style={minimum width={width("N-1")+2pt},
-		draw, ellipse}]
-		\node [cloud] (S1) at (0,0) {$1$};
-		\node [cloud] (S2) at (2,0) {$2$};
-		\node [cloud] (S3) at (1,-2) {$3$};
-		%% Recoveries
-		\path [line, thick] (S1) to [bend left = 20] (S2);
-		\path [line, thick] (S2) to [bend left = 20] (S3);
-		\path [line, thick] (S3) to [bend left = 20] (S1);
-	\end{tikzpicture}
-\end{minipage}
-\begin{minipage}{0.49\textwidth}
-Adjacency matrix
-\[
-	A=\begin{pmatrix}
-	0&1& 0\\
-	0&0&1\\
-	1&0&0
-	\end{pmatrix}
-\]
-\end{minipage}
-\vskip0.2cm
-Closed walks in $G(A)$ (lengths): $1\to 1$ (3), $2\to 2$ (3), $2\to 2$ (3)
-$\implies$ $\gcd = 3$ $\implies$ $d=3$ (here, all eigenvalues have modulus $1$)
-\vfill
-\begin{minipage}{0.49\textwidth}
-\begin{tikzpicture}[auto, %node distance = 2cm, auto,
-cloud/.style={minimum width={width("N-1")+2pt},
-draw, ellipse}]
-\node [cloud] (S1) at (0,0) {$1$};
-\node [cloud] (S2) at (2,0) {$2$};
-\node [cloud] (S3) at (1,-2) {$3$};
-%% Loops
-\path [line, thick, distance=30] (S1) to (S1);
-%% Recoveries
-\path [line, thick] (S1) to [bend left = 20] (S2);
-\path [line, thick] (S2) to [bend left = 20] (S3);
-\path [line, thick] (S3) to [bend left = 20] (S1);
-\end{tikzpicture}
-\end{minipage}
-\begin{minipage}{0.49\textwidth}
-\[
-A= \begin{pmatrix}
-1&1&0\\
-0&0&1\\
-1&0&0
-\end{pmatrix}
-\]
-\end{minipage}
-\vskip0.2cm
-Closed walk $1\to 1$ has length 1 $\implies$
-gcd of lengths of closed walks is 1 $\implies$ $A$ primitive
-\end{frame}
-
-\begin{frame}
-	Let $\b0\leq A\in \M_n$
-\begin{theorem}
-$A$ primitive $\implies$ $\exists\ 0<k\leq (n-1)n^n$ such that $A^k>0$
-\end{theorem}
-\vfill
-\begin{theorem}
-If $A$ is primtive and the shortest simple directed cycle in $G(A)$ has length $s$, then the primitivity index is $\leq n+s(n-1)$
-\end{theorem}
-\vfill
-\begin{theorem}
-$A$ primitive $\iff$ $A^{n^2-2n+2}>\b0$
-\end{theorem}
-\vfill
-\begin{theorem}
-	If $A$ is irreducible and has $d$ positive entries on the diagonal, then the primitivity index $\leq 2n-d-1$
-\end{theorem}
-\end{frame}
-
-
-\begin{frame}
 \begin{theorem}\label{th:PF_allCases}
 	$\b0\leq A\in\M_n$, $\lambda_P=\rho(A)$ the Perron root of $A$, $\bv_P$ and $\bw_P$ the corresponding right and left Perron vectors of $A$, respectively, $d$ the index of imprimitivity of $A$ (with $d=1$ when $A$ is primitive) and $\lambda_j\in\sigma(A)$ the spectrum of $A$, with $j=2,\ldots,n$ unless otherwise specified (assuming $\lambda_1=\lambda_P$) 
 	\vskip0.5cm
@@ -3605,188 +2819,6 @@ $A$ primitive $\iff$ $A^{n^2-2n+2}>\b0$
 \end{frame}
 
 
-<<load-Zachary-graph2,echo=FALSE>>=
-G_Z <- make_graph("Zachary")
-@
-
-
-
-%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%
-\section{Trees}
-\newSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
-
-\begin{frame}\frametitle{Trees}
-\begin{definition}[Forest, trees and branches]
-\begin{itemize}
-\item A connected graph with no cycle is a \defword{tree}
-\item A tree is a connected acyclic graph, its edges are called \defword{branches}
-\item A graph (connected or not) without any cycle is a \defword{forest}. Each component is a tree
-\end{itemize}
-\end{definition}
-\vfill
-(A forest is a graph whose connected components are trees)
-\end{frame}
-
-\begin{frame}[fragile]\frametitle{Is the ``Karate graph'' a tree?}
-<<>>=
-is_acyclic(G_Z)
-is_tree(G_Z)
-@
-\vfill
-So we need a friend to play with!
-\vfill
-<<make-trees, echo=1:2, fig.keep='all'>>=
-G_tu <- make_tree(7, 2, mode = "undirected")
-G_td <- make_tree(7, 2)
-plot(G_tu, main = "An undirected tree")
-plot(G_td, main = "An out directed tree")
-@
-\end{frame}
-
-<<crop-figures-1, echo=FALSE, results='hide'>>=
-knitr::plot_crop(knitr::fig_chunk("make-trees", "pdf", 1))
-knitr::plot_crop(knitr::fig_chunk("make-trees", "pdf", 2))
-@
-
-\begin{frame}
-\begin{center}
-\includegraphics[width=0.45\textwidth]{\Sexpr{knitr::fig_chunk("make-trees", "pdf", 1)}}
-\quad
-\includegraphics[width=0.45\textwidth]{\Sexpr{knitr::fig_chunk("make-trees", "pdf", 2)}}
-\end{center}
-\end{frame}
-
-
-\begin{frame}
-\begin{property}
-\begin{itemize}
-\item Every edge of a tree is a bridge
-\item Given two vertices $u $ and $v$ of a tree, there is an unique path linking $u$ to $v$
-\item A tree with $p$ vertices and $q$ edges satisfies $q=p-1$. Thus, a tree is minimally connected
-\end{itemize}
-\end{property}
-\vfill
-(First property: the deletion of any edge of a tree diconnects it)
-\end{frame}
-
-\begin{frame}[fragile]\frametitle{Every edge of a tree is a bridge}
-<<>>=
-E(G_tu)
-bridges(G_tu)
-all(sort(E(G_tu)) == sort(bridges(G_tu)))
-@
-\end{frame}
-
-
-\begin{frame}\frametitle{Spanning tree}
-\begin{definition}[Spanning tree]
-A \defword{spanning tree} of a connected graph $G$ is a subgraph of $G$ that contains all the vertices of $G$ and is a tree.
-\end{definition}
-\vfill
-A graph may have many spanning trees
-\end{frame}
-
-
-\begin{frame}\frametitle{Minimal spanning tree}
-\begin{definition}[{Value of a spanning tree}]
-The \defword{value of a spanning tree} $T$ of order $p$ is
-$$\sum_{i=1}^{p-1}f(e_i)$$
-where $f$ is the function that maps the edge set into $\IR$
-\end{definition}
-\vfill
-\begin{definition}[{Minimal spanning tree}]
-Let $G$ be an undirected network, and let $T$ be a \defword{minimal spanning tree} of $G$. Then $T$ is a spanning tree whose the value is minimum
-\end{definition}
-\end{frame}
-
-\begin{frame}\frametitle{Algorithm to find a minimal spanning tree}
-Let $G=(V(G),E(G))$ be an undirected network and $T$ be a minimal spanning tree 
-\vfill
-\begin{enumerate}
-\item Sort the edges of $G$ in increasing order by value
-\item $T=(V(G),\emptyset)$
-\item For each edge $e$ in sorted order
-if the endpoints of $e$ are disconnected in $T$
-add $e$ to $T$
-\end{enumerate}
-\end{frame}
-
-
-\begin{frame}[fragile]\frametitle{Finding a minimal spanning tree of the Karate graph}
-The function \code{mst} finds minimal spanning trees, using distances if no edge weights are provided
-<<minimal-spanning-tree-Karate-graph, echo=1>>=
-G_mst = mst(G_Z)
-plot(G_mst, main = "A minimal spanning tree of the Karate graph")
-@
-\end{frame}
-
-\maxFrameImage{\Sexpr{knitr::plot_crop(knitr::fig_chunk("minimal-spanning-tree-Karate-graph", "pdf"))}}
-
-\begin{frame}\frametitle{Minimal connector problem}
-\begin{itemize}
-\item Model: a graph $G$ such that edges represent all possible connections, and each edge has a positive value which represents its cost; 
-an undirected network $G$
-\item Solution: a  minimal spanning tree $T$ of $G$
-\begin{itemize}
-\item a spanning tree of $G$ is a subgraph of $G$ that contains all the vertices of $G$ and is a tree.
-\item the cost of the spanning tree is the sum of values of the edges of $T$
-\item a spanning tree such that no other spanning tree has a smaller cost is a minimmal spanning tree.
-\end{itemize}
-\end{itemize}
-\end{frame}
-
-
-
-\begin{frame}
-\begin{theorem}[Characterisation of trees]\label{th:characterisation_tree}
-$H=(V,U)$ a graph of order $|V|=n>2$. The following are equivalent and all characterise a tree :
-\begin{enumerate}
-\item $H$ connected and has no cycles
-\item $H$ has $n-1$ arcs and no cycles
-\item $H$ connected and has exactly $n-1$ arcs
-\item $H$ has no cycles, and if an arc is added to $H$, exactly one cycle is created
-\item $H$ connected, and if any arc is removed, the remaining graph is not
-connected
-\item Every pair of vertices of $H$ is connected by one and only one chain
-\end{enumerate}
-\end{theorem}
-\end{frame}
-
-
-
-\begin{frame}
-\begin{definition}[Pendant vertex]
-A vertex is \defword{pendant} if it is adjacent to exactly one other vertex
-\end{definition}
-\vfill
-\begin{theorem}
-A tree of order $n\geq 2$ has at least two pendant vertices
-\end{theorem}
-\end{frame}
-
-\begin{frame}
-\begin{theorem}\label{th:partial_graph_tree_G_connected}
-A graph $G=(V,U)$ has a partial graph that is a tree $\iff$ $G$ connected
-\end{theorem}
-\vfill
-(A partial graph is a graph generated by a subset of the arcs)
-\end{frame}
-
-\begin{frame}{Spanning tree}
-Can build a spanning tree as follows:
-\begin{itemize}
-\item Consider any arc $u_0$
-\item Find arc $u_1$ that does not form a cycle with $u_0$
-\item Find arc $u_2$ that does not form a cycle with $\{u_0,u_1\}$
-\item Continue
-\item When you cannot continue anymore, you have a spanning tree
-\end{itemize}
-\end{frame}
-
-
 
 \begin{frame}
 \begin{definition}[Minimally connected graph]
@@ -3820,117 +2852,11 @@ Strongly connected $\implies$ quasi-strongly connected (take $z(x,y)=x$); conver
 Quasi-strongly connected $\implies$ connected
 \end{frame}
 
-\begin{frame}{Arborescence}
-\begin{definition}[Arborescence]
-An \defword{arborescence} is a tree that has a root
-\end{definition}
-\vfill
-\begin{lemma}
-$G=(V,U)$ has a root $\iff$ $G$ quasi-strongly connected
-\end{lemma}
-\end{frame}
-
-\begin{frame}
-\begin{theorem}
-$H$ graph of order $n>1$. TFAE (and all characterise an arborescence)
-\begin{enumerate}
-\item $H$ quasi-strongly connected without cycles
-\item $H$ quasi-strongly connected with $n-1$ arcs
-\item $H$ tree having a root $a$
-\item $\exists a\in V$ s.t. all other vertices are connected with $a$ by 1 and only 1 path from $a$
-\item $H$ quasi-strongly connected and loses quasi-strong connectedness if any arc is removed
-\item $H$ quasi-strongly connected and $\exists a\in V$ s.t.
-\[
-d_H^-(a)=0 \qquad\text{and}\qquad
-d_H^-(x)=1,\quad \forall x\neq a
-\]
-\item $H$ has no cycles and $\exists a\in V$ s.t.
-\[
-d_H^-(a)=0 \qquad\text{and}\qquad
-d_H^-(x)=1,\quad \forall x\neq a
-\]
-\end{enumerate}
-\end{theorem}
-\end{frame}
-
-
-\begin{frame}
-\begin{theorem}
-$G$ has a partial graph that is an arborescence $\iff$ $G$ quasi-strongly connected
-\end{theorem}
-\vfill
-\begin{theorem}
-$G=(V,E)$ simple connected graph and $x_1\in V$. It is possible to direct all edges of $E$ so that the resulting graph $G_0=(V,U)$ has a spanning tree $H$ s.t.
-\begin{enumerate}
-\item $H$ is an arborescence with root $x_1$
-\item The cycles associated with $H$ are circuits
-\item The only elementary circuits of $G_0$ are the cycles associated with $H$
-\end{enumerate}
-\end{theorem}
-\end{frame}
-
-
-\begin{frame}{Counting trees}
-\begin{proposition}
-$X$ a set with $n$ distinct objects, $n_1,\ldots,n_p$ nonnegative integers s.t. $n_1+\cdots+n_p=n$. The number of ways to place the $n$ objects into $p$ boxes $X_1,\ldots,X_p$ containing $n_1,\ldots,n_p$ objects respectively is 
-\[
-\begin{pmatrix}
-n\\ n_1,\ldots,n_p
-\end{pmatrix}
-=
-\frac{n!}{n_1!\cdots n_p!}
-\]
-\end{proposition}
-\vfill
-\begin{proposition}[Multinomial formula]
-Let $a_1,\ldots,a_p\in\IR$ be $p$ real numbers, then
-\[
-(a_1+\cdots+a_p)^n= 
-\sum_{n_1,\ldots,n_p\geq 0}
-\begin{pmatrix}
-n\\ n_1,\ldots,n_p
-\end{pmatrix}
-(a_1)^{n_1}\cdots(a_p)^{n_p}	
-\]
-\end{proposition}
-\end{frame}
-
-
-\begin{frame} 
-\begin{theorem}
-Denote $T(n;d_1,\ldots,d_n)$ the number of distinct trees $H$ with vertices $x_1,\ldots,x_n$ and with degrees $d_H(x_1)=d_1,\ldots,d_H(x_n)=d_n$. Then
-\[
-T(n;d_1,\ldots,d_n) = 
-\begin{pmatrix}
-n-2 \\
-d_1-1,\ldots,d_n-1
-\end{pmatrix}
-\]
-\end{theorem}
-\vfill
-\begin{theorem}
-The number of different trees with vertices $x_1,\ldots,x_n$ is 
-$n^{n-2}$
-\end{theorem}
-\vfill
-There is a whole industry of similar results (as well as for arborescences), but we will stop here. The main point is that we are talking about a large number of possibilities..
-\end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%
-\section{Why characterise graphs?}
-\newSectionSlide{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
+\Ssubsection{Characterisation of graphs}{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
 
-
-
-%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%
-\section{Measures specific to vertices}
-\newSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_4pxjh4pxjh4pxjh4.jpeg}
 
 
 \begin{frame}{Geodesic distance}
@@ -3946,44 +2872,6 @@ For $x,y\in V$, the \defword{geodesic distance} $d(x,y)$ is the length of the sh
 		e(x)=\max_{\stackrel{y\in V}{y\neq x}}d(x,y)
 	\]
 \end{definition}
-\begin{minipage}{0.45\textwidth}
-	\[
-\begin{pmatrix}
-	0 & 1 & 2 & 2 & \boldred{4} & 3 \\
-	1 & 0 & 1 & 1 & \boldred{3} & 2 \\
-	3 & 4 & 0 & \boldred{5} & 2 & 1 \\
-	4 & \boldred{5} & 1 & 0 & 3 & 2 \\
-	1 & 2 & 3 & 3 & 0 & \boldred{4} \\
-	2 & 3 & \boldred{4} & \boldred{4} & 1 & 0
-\end{pmatrix}		
-\]
-\end{minipage}
-\begin{minipage}{0.45\textwidth}
-	\def\skip{2.75cm}
-	\begin{tikzpicture}[scale = 0.65,auto,
-		cloud/.style={minimum width={width("N-1")+2pt},
-			draw, ellipse},
-		connected/.style={dotted,-}]
-		%% Vertices
-		\node [cloud] at (0,0) (x1) {$x_1$};
-		\node [cloud] at (1*\skip,1*\skip) (x2) {$x_2$};
-		\node [cloud] at (2*\skip,1*\skip) (x3) {$x_3$};
-		\node [cloud] at (1.5*\skip,0) (x4) {$x_4$};
-		\node [cloud] at (3*\skip,0*\skip) (x5) {$x_5$};
-		\node [cloud] at (3*\skip,1*\skip) (x6) {$x_6$};
-		%% Arcs
-		\path [line, thick,bend left] (x1) to (x2);
-		\path [line, thick,bend left] (x2) to (x1);
-		\path [line, thick, looseness=5] (x2) to (x2);
-		\path [line, thick] (x2) to (x3);
-		\path [line, thick] (x2) to (x4);
-		\path [line, thick] (x4) to (x3);
-		\path [line, thick, looseness=5, below] (x6) to (x6);
-		\path [line, thick] (x6) to (x5);
-		\path [line, thick] (x3) to (x6);
-		\path [line, thick, bend left] (x5) to (x1);
-		\end{tikzpicture}
-\end{minipage}
 \end{frame}
 
 
@@ -4032,91 +2920,6 @@ In other words
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Normalising betweenness}
-	Betweenness may be normalized by dividing through the number of pairs of vertices not including $v$:
-	\begin{itemize}
-		\item for directed graphs, $(n-1)(n-2)$
-		\item for undirected graphs, $(n-1)(n-2)/2$
-	\end{itemize}
-\end{frame}
-
-\begin{frame}{Number of shortest paths}
-	Recall we found 
-	{\tt distances(G, mode="out")}
-	\[
-		\mathcal{D} =
-		\begin{pmatrix}
-			0 & 1 & 2 & 2 & 4 & 3 \\
-			1 & 0 & 1 & 1 & 3 & 2 \\
-			3 & 4 & 0 & 5 & 2 & 1 \\
-			4 & 5 & 1 & 0 & 3 & 2 \\
-			1 & 2 & 3 & 3 & 0 & 4 \\
-			2 & 3 & 4 & 4 & 1 & 0
-		\end{pmatrix}
-	\]
-	\vfill
-	To find the number of shortest paths between pairs of vertices, we can use powers of the adjacency matrix
-	\vfill
-	Write $\mathcal{D}=[d_{ij}]$, for a given $(i,j)$ ($i\neq j$), if $d_{ij}=k$, then pick the $(i,j)$ in $A^k$
-\end{frame}
-
-\begin{frame}
-	We find
-	\[
-		\begin{pmatrix}
-			0 & 1 & 1 & 1 & 1 & 1 \\
-			1 & 0 & 1 & 1 & 1 & 1 \\
-			1 & 1 & 0 & 1 & 1 & 1 \\
-			1 & 1 & 1 & 0 & 1 & 1 \\
-			1 & 1 & 1 & 1 & 0 & 1 \\
-			1 & 1 & 1 & 1 & 1 & 0
-		\end{pmatrix}
-	\]
-	\vfill
-	Recall that betweenness of $v$ is
-	\[
-		b_\D(v)= \sum_{s\neq t\neq v  \in V} \frac{\sigma_{st}(v)}{\sigma_{st}}
-	\]
-	\vfill
-	$\sigma_{st}$ (\# shortest paths from $s$ to $t$) is found in the matrix above
-	\vfill
-	What about $\sigma_{st}(v)$, \# of those shortest paths that go through $v$?
-	\vfill
-	We can use {\tt all\_shortest\_paths(G, from = s, to = t, mode = "out")}
-\end{frame}
-
-
-\begin{frame}{Example of betweenness}
-	\code{betweenness(G, directed = FALSE, normalized = TRUE)}
-	\centering
-	\def\skip{2.75cm}
-	\begin{tikzpicture}[scale = 0.85,
-		every node/.style={transform shape},
-		auto,
-		cloud/.style={minimum width={width("N-1")+2pt},
-			draw, ellipse},
-		connected/.style={dotted,-}]
-		%% Vertices
-		\node [cloud] at (0,0) (x1) {$0.5$};
-		\node [cloud] at (1*\skip,1*\skip) (x2) {$0.5$};
-		\node [cloud] at (2*\skip,1*\skip) (x3) {$0.45$};
-		\node [cloud] at (1.5*\skip,0) (x4) {$0$};
-		\node [cloud] at (3*\skip,0*\skip) (x5) {$0.45$};
-		\node [cloud] at (3*\skip,1*\skip) (x6) {$0.45$};
-		%% Arcs
-		\path [line, thick,bend left] (x1) to (x2);
-		\path [line, thick,bend left] (x2) to (x1);
-		\path [line, thick] (x2) to (x3);
-		\path [line, thick] (x2) to (x4);
-		\path [line, thick] (x4) to (x3);
-		\path [line, thick] (x6) to (x5);
-		\path [line, thick] (x3) to (x6);
-		\path [line, thick, bend left] (x5) to (x1);
-		\path [line, thick, looseness=5] (x2) to (x2);
-		\path [line, thick, looseness=5, below] (x6) to (x6);
-	\end{tikzpicture}
-\end{frame}
-
 
 \begin{frame}{Closeness}
 	\begin{definition}
@@ -4133,43 +2936,6 @@ In other words
 	\end{definition}
 \end{frame}
 
-\begin{frame}{Example of (out) closeness}
-	\vfill
-	{\tt closeness(G, normalized = TRUE, mode=``out'')}
-	\vfill
-	\begin{center}
-		\def\skip{2.75cm}
-		\begin{tikzpicture}[scale = 0.85,
-			every node/.style={transform shape},
-			auto,
-			cloud/.style={minimum width={width("N-1")+2pt},
-				draw, ellipse},
-			connected/.style={dotted,-}]
-			%% Vertices
-			\node [cloud] at (0,0) (x1) {$0.417$};
-			\node [cloud] at (1*\skip,1*\skip) (x2) {$0.625$};
-			\node [cloud] at (2*\skip,1*\skip) (x3) {$0.333$};
-			\node [cloud] at (1.5*\skip,0) (x4) {$0.333$};
-			\node [cloud] at (3*\skip,0*\skip) (x5) {$0.385$};
-			\node [cloud] at (3*\skip,1*\skip) (x6) {$0.357$};
-			%% Arcs
-			\path [line, thick,bend left] (x1) to (x2);
-			\path [line, thick,bend left] (x2) to (x1);
-			\path [line, thick] (x2) to (x3);
-			\path [line, thick] (x2) to (x4);
-			\path [line, thick] (x4) to (x3);
-			\path [line, thick] (x6) to (x5);
-			\path [line, thick] (x3) to (x6);
-			\path [line, thick, bend left] (x5) to (x1);
-			\path [line, thick, looseness=5] (x2) to (x2);
-			\path [line, thick, looseness=5, below] (x6) to (x6);
-		\end{tikzpicture}
-	\end{center}
-\end{frame}
-%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Periphery of a graph}
-\newSubSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_rzto8rzto8rzto8r.jpeg}
 
 \begin{frame}{Diametre and periphery of a graph}
 \begin{definition}[Diametre of a graph]
@@ -4188,63 +2954,10 @@ $\delta(G)<\infty$ $\iff$ $G$ strongly connected
         \{x\in V:e(x)=\delta(G)\}
     \]
 \end{definition}
+\begin{definition}[{Antipodal vertices}]
+		Vertices $x,y\in V$ are \defword{antipodal} if $d(x,y)=\delta(G)$
+\end{definition}
 \end{frame}
-
-
-\begin{frame}
-		\begin{minipage}{0.45\textwidth}
-	\[
-\begin{pmatrix}
-	0 & 1 & 2 & 2 & \boldred{4} & 3 \\
-	1 & 0 & 1 & 1 & \boldred{3} & 2 \\
-	\rowcolor{gray!95}
-	3 & 4 & 0 & \boldred{5} & 2 & 1 \\
-	\rowcolor{gray!95}
-	4 & \boldred{5} & 1 & 0 & 3 & 2 \\
-	1 & 2 & 3 & 3 & 0 & \boldred{4} \\
-	2 & 3 & \boldred{4} & \boldred{4} & 1 & 0
-\end{pmatrix}		
-\]
-	\end{minipage}
-	\begin{minipage}{0.45\textwidth}
-		\def\skip{2.5cm}
-		\begin{tikzpicture}[scale = 0.65,auto,
-			cloud/.style={minimum width={width("N-1")+2pt},
-				draw, ellipse},
-			connected/.style={dotted,-}]
-			%% Vertices
-			\node [cloud] at (0,0) (x1) {$x_1$};
-			\node [cloud] at (1*\skip,1*\skip) (x2) {$x_2$};
-			\node [cloud, fill=gray!20] at (2*\skip,1*\skip) (x3) {$x_3$};
-			\node [cloud, fill=gray!20] at (1.5*\skip,0) (x4) {$x_4$};
-			\node [cloud] at (3*\skip,0*\skip) (x5) {$x_5$};
-			\node [cloud] at (3*\skip,1*\skip) (x6) {$x_6$};
-			%% Arcs
-			\path [line, thick,bend left] (x1) to (x2);
-			\path [line, thick,bend left] (x2) to (x1);
-			\path [line, thick, looseness=5] (x2) to (x2);
-			\path [line, thick] (x2) to (x3);
-			\path [line, thick] (x2) to (x4);
-			\path [line, thick] (x4) to (x3);
-			\path [line, thick, looseness=5, below] (x6) to (x6);
-			\path [line, thick] (x6) to (x5);
-			\path [line, thick] (x3) to (x6);
-			\path [line, thick, bend left] (x5) to (x1);
-			\end{tikzpicture}
-		\end{minipage}
-		\vfill
-		Diametre is $\delta(G)=5$ and periphery is $\{x_3,x_4\}$
-\vfill
-	\begin{definition}[{Antipodal vertices}]
-			Vertices $x,y\in V$ are \defword{antipodal} if $d(x,y)=\delta(G)$
-	\end{definition}
-\end{frame}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Degree distribution}
-\newSubSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_jkiuvcjkiuvcjkiu.jpeg}
 
 
 \begin{frame}{Degree distribution}
@@ -4279,109 +2992,6 @@ $\delta(G)<\infty$ $\iff$ $G$ strongly connected
 \end{frame}
 
 
-\begin{frame}{Degrees in an undirected graph}
-	\begin{minipage}{0.65\textwidth}
-		\def\skip{2.75cm}
-		\begin{tikzpicture}[scale=0.75,auto,
-			cloud/.style={minimum width={width("N-1")+2pt},
-				draw, ellipse},
-			connected/.style={dotted,-}]
-			%% Vertices
-			\node [cloud] at (0,0) (x1) {$2$};
-			\node [cloud] at (1*\skip,1*\skip) (x2) {$3$};
-			\node [cloud] at (2*\skip,1*\skip) (x3) {$3$};
-			\node [cloud] at (1.5*\skip,0) (x4) {$2$};
-			\node [cloud] at (3*\skip,0*\skip) (x5) {$2$};
-			\node [cloud] at (3*\skip,1*\skip) (x6) {$2$};
-			%% Arcs
-			\draw [thick] (x1) --  (x2);
-			\draw [thick] (x2) --  (x3);
-			\draw [thick] (x2) --  (x4);
-			\draw [thick] (x3) --  (x6);
-			\draw [thick] (x4) --  (x3);
-			\draw [thick] (x6) --  (x5);
-			\draw (x5) to[thick, out=-150, in=-30] (x1);
-			\end{tikzpicture}
-	\end{minipage}
-	\begin{minipage}{0.3\textwidth}
-		Here, vertices are labelled using the degree
-	\end{minipage}
-\end{frame}
-
-
-\begin{frame}{Degrees in a directed graph}
-	\begin{minipage}{0.45\textwidth}
-		\def\skip{2.75cm}
-		\begin{tikzpicture}[scale = 0.65, 
-			every node/.style={transform shape},
-			auto,
-			cloud/.style={minimum width={width("N-1")+2pt},
-				draw, ellipse},
-			connected/.style={dotted,-}]
-			%% Vertices
-			\node [cloud] at (0,0) (x1) {$\begin{matrix}d^+=1\\ d^-=2\end{matrix}$};
-			\node [cloud] at (1*\skip,1*\skip) (x2) {$\begin{matrix}d^+=3\\ d^-=1\end{matrix}$};
-			\node [cloud] at (2*\skip,1*\skip) (x3) {$\begin{matrix}d^+=1\\ d^-=2\end{matrix}$};
-			\node [cloud] at (1.5*\skip,0) (x4) {$\begin{matrix}d^+=1\\ d^-=1\end{matrix}$};
-			\node [cloud] at (3*\skip,0*\skip) (x5) {$\begin{matrix}d^+=1\\ d^-=1\end{matrix}$};
-			\node [cloud] at (3*\skip,1*\skip) (x6) {$\begin{matrix}d^+=1\\ d^-=1\end{matrix}$};
-			%% Arcs
-			\path [line, thick,bend left] (x1) to (x2);
-			\path [line, thick,bend left] (x2) to (x1);
-			\path [line, thick] (x2) to (x3);
-			\path [line, thick] (x2) to (x4);
-			\path [line, thick] (x4) to (x3);
-			\path [line, thick] (x6) to (x5);
-			\path [line, thick] (x3) to (x6);
-			\path [line, thick, bend left] (x5) to (x1);
-			\end{tikzpicture}
-	\end{minipage}
-	\quad
-	\begin{minipage}{0.45\textwidth}
-		\def\skip{2.75cm}
-		\begin{tikzpicture}[scale = 0.65, 
-			every node/.style={transform shape},
-			auto,
-			cloud/.style={minimum width={width("N-1")+2pt},
-				draw, ellipse},
-			connected/.style={dotted,-}]
-			%% Vertices
-			\node [cloud] at (0,0) (x1) {$\begin{matrix}d^+=1\\ d^-=2\end{matrix}$};
-			\node [cloud] at (1*\skip,1*\skip) (x2) {$\begin{matrix}d^+=4\\ d^-=2\end{matrix}$};
-			\node [cloud] at (2*\skip,1*\skip) (x3) {$\begin{matrix}d^+=1\\ d^-=2\end{matrix}$};
-			\node [cloud] at (1.5*\skip,0) (x4) {$\begin{matrix}d^+=1\\ d^-=1\end{matrix}$};
-			\node [cloud] at (3*\skip,0*\skip) (x5) {$\begin{matrix}d^+=1\\ d^-=1\end{matrix}$};
-			\node [cloud] at (3*\skip,1*\skip) (x6) {$\begin{matrix}d^+=2\\ d^-=2\end{matrix}$};
-			%% Arcs
-			\path [line, thick,bend left] (x1) to (x2);
-			\path [line, thick,bend left] (x2) to (x1);
-			\path [line, thick] (x2) to (x3);
-			\path [line, thick] (x2) to (x4);
-			\path [line, thick] (x4) to (x3);
-			\path [line, thick] (x6) to (x5);
-			\path [line, thick] (x3) to (x6);
-			\path [line, thick, bend left] (x5) to (x1);
-			\path [line, thick, looseness=5] (x2) to (x2);
-			\path [line, thick, looseness=5] (x6) to (x6);
-			\end{tikzpicture}
-		\end{minipage}
-\end{frame}
-
-
-\begin{frame}{What to consider about degrees?}
-	Degrees are often considered as a measure of popularity
-	\vfill
-	Often write $k(i)$ (or $k_i$) for ``degree of vertex $i$'', $k^-(i)$ and $k^+(i)$ for in- and out-degree
-	\vfill
-	\begin{itemize}
-		\item Minimum and maximum degree
-		\item Minimum and maximum in/out-degree. E.g., if you consider the global air transportation network and the in/out-degree of airports, in-degree is a measure of a location's ``popularity'' as a travel destination
-		\item Range of degrees in a graph: are there large discrepancies in connectivity between vertices in the graph?
-		\item Average degree (often denoted $\langle k\rangle$ because of physicists)
-		\item Average in/out-degree
-		\item Variance of the degrees or in/out-degrees
-	\end{itemize}
-\end{frame}
 
 
 
@@ -4401,14 +3011,6 @@ $\delta(G)<\infty$ $\iff$ $G$ strongly connected
 \end{frame}
 
 
-\begin{frame}{Degrees in {\tt igraph}}
-	\begin{itemize}
-		\item {\tt degree} gives the degrees of the vertices
-		\item {\tt degree\_distribution} gives numeric vector of the same length as the maximum degree plus one. The first element is the relative frequency zero degree vertices, the second vertices with degree one, etc.
-		\item {\tt knn} calculate the average nearest neighbor degree of the given vertices and the same quantity in the function of vertex degree
-		\item {\tt strength} sums up the edge weights of the adjacent edges for each vertex
-	\end{itemize}
-\end{frame}
 
 \begin{frame}{Degree from adjacency matrix}
 	Suppose adjacency matrix take the form $A=[a_{ij}]$ with $a_{ij}=1$ if there is an arc from the vertex indexed $i$ to the vertex indexed $j$ and 0 otherwise. (Could be the other way round, using $A^T$, just make sure)
@@ -4421,50 +3023,10 @@ $\delta(G)<\infty$ $\iff$ $G$ strongly connected
 \end{frame}
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Measures at the graph level}
-\newSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_hfenashfenashfen.jpeg}
-
-%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Circumference \& Girth}
-\newSubSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_a36uz1a36uz1a36u.jpeg}
-
-
 \begin{frame}{Circumference}
 \begin{definition}[Circumference]
     In an undirected (resp. directed) graph, the total number of edges (resp. arcs) in the longest cycle of graph $G$ is the \defword{circumference} of $G$
 \end{definition}
-\begin{minipage}{0.5\textwidth}
-	Circumference is 6.
-\end{minipage}
-\begin{minipage}{0.49\textwidth}
-	\def\skip{2.5cm}
-	\begin{tikzpicture}[scale = 0.85,auto,
-		cloud/.style={minimum width={width("N-1")+2pt},
-			draw, ellipse},
-		connected/.style={dotted,-}]
-		%% Vertices
-		\node [cloud] at (0,0) (x1) {$x_1$};
-		\node [cloud] at (1*\skip,1*\skip) (x2) {$x_2$};
-		\node [cloud] at (2*\skip,1*\skip) (x3) {$x_3$};
-		\node [cloud] at (1.5*\skip,0) (x4) {$x_4$};
-		\node [cloud] at (3*\skip,0*\skip) (x5) {$x_5$};
-		\node [cloud] at (3*\skip,1*\skip) (x6) {$x_6$};
-		%% Arcs
-		\path [line, thick,bend left, color=red] (x1) to (x2);
-		\path [line, thick,bend left] (x2) to (x1);
-		\path [line, thick] (x2) to (x3);
-		\path [line, thick, color=red] (x2) to (x4);
-		\path [line, thick, color=red] (x4) to (x3);
-		\path [line, thick, color=red] (x6) to (x5);
-		\path [line, thick, color=red] (x3) to (x6);
-		\path [line, thick, bend left, color=red] (x5) to (x1);
-		\end{tikzpicture}
-\end{minipage}
 \end{frame}
 
 
@@ -4472,40 +3034,7 @@ $\delta(G)<\infty$ $\iff$ $G$ strongly connected
 \begin{definition}[Girth]
     The total number of edges in the shortest cycle of graph $G$ is the \defword{girth} $g(G)$
 \end{definition}
-\begin{minipage}{0.3\textwidth}
-	Girth is 2.
-\end{minipage}
-\begin{minipage}{0.69\textwidth}
-	\def\skip{2.5cm}
-	\begin{tikzpicture}[scale = 0.85,auto,
-		cloud/.style={minimum width={width("N-1")+2pt},
-			draw, ellipse},
-		connected/.style={dotted,-}]
-		%% Vertices
-		\node [cloud] at (0,0) (x1) {$x_1$};
-		\node [cloud] at (1*\skip,1*\skip) (x2) {$x_2$};
-		\node [cloud] at (2*\skip,1*\skip) (x3) {$x_3$};
-		\node [cloud] at (1.5*\skip,0) (x4) {$x_4$};
-		\node [cloud] at (3*\skip,0*\skip) (x5) {$x_5$};
-		\node [cloud] at (3*\skip,1*\skip) (x6) {$x_6$};
-		%% Arcs
-		\path [line, thick,bend left, color=red] (x1) to (x2);
-		\path [line, thick,bend left, color=red] (x2) to (x1);
-		\path [line, thick] (x2) to (x3);
-		\path [line, thick] (x2) to (x4);
-		\path [line, thick] (x4) to (x3);
-		\path [line, thick] (x6) to (x5);
-		\path [line, thick] (x3) to (x6);
-		\path [line, thick, bend left] (x5) to (x1);
-		\end{tikzpicture}
-	\end{minipage}	
 \end{frame}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Graph density}
-\newSubSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_m4586wm4586wm458.jpeg}
 
 
 \begin{frame}{Completeness}
@@ -4546,46 +3075,6 @@ or
 	\frac{p}{n(n-1)}
 \]
 \end{frame}
-
-\begin{frame}{Example of density}
-	\begin{minipage}{0.69\textwidth}
-		\def\skip{2.75cm}
-		\begin{tikzpicture}[scale = 0.85,auto,
-			cloud/.style={minimum width={width("N-1")+2pt},
-				draw, ellipse},
-			connected/.style={dotted,-}]
-			%% Vertices
-			\node [cloud] at (0,0) (x1) {$x_1$};
-			\node [cloud] at (1*\skip,1*\skip) (x2) {$x_2$};
-			\node [cloud] at (2*\skip,1*\skip) (x3) {$x_3$};
-			\node [cloud] at (1.5*\skip,0) (x4) {$x_4$};
-			\node [cloud] at (3*\skip,0*\skip) (x5) {$x_5$};
-			\node [cloud] at (3*\skip,1*\skip) (x6) {$x_6$};
-			%% Arcs
-			\path [line, thick,bend left] (x1) to (x2);
-			\path [line, thick,bend left] (x2) to (x1);
-			\path [line, thick] (x2) to (x3);
-			\path [line, thick] (x2) to (x4);
-			\path [line, thick] (x4) to (x3);
-			\path [line, thick] (x6) to (x5);
-			\path [line, thick] (x3) to (x6);
-			\path [line, thick, bend left] (x5) to (x1);
-			\end{tikzpicture}
-		\end{minipage}
-	\begin{minipage}{0.3\textwidth}
-		Graph has order 6 and thus a max of 30 arcs. 
-		Here, 8 arcs $\implies$ density 0.267
-		\vfill 
-		(26.7\% of arcs are present)	
-	\end{minipage}
-\end{frame}
-	
-
-%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Graph connectivity}
-\newSubSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_q8u933q8u933q8u9.jpeg}
-
 
 \begin{frame}{Connectedness}
 We have already seen connectedness (quasi- or strong in the oriented case)
@@ -4669,53 +3158,6 @@ Connectedness is important in terms of characteristing graph properties, as it s
 \begin{definition}[Weakly connected graph]
 	$G=(V,U)$ \defword{weakly connected} if $G=(V,E)$ connected, where $E$ is obtained from $U$ by ignoring the direction of arcs
 \end{definition}
-\vfill
-	\begin{minipage}{0.4\textwidth}
-		\def\skip{2.75cm}
-		\begin{tikzpicture}[scale=0.5,auto,
-			cloud/.style={minimum width={width("N-1")+2pt},
-				draw, ellipse},
-			connected/.style={dotted,-}]
-			%% Vertices
-			\node [cloud] at (0,0) (x1) {$x_1$};
-			\node [cloud] at (1*\skip,1*\skip) (x2) {$x_2$};
-			\node [cloud] at (2*\skip,1*\skip) (x3) {$x_3$};
-			\node [cloud] at (1.5*\skip,0) (x4) {$x_4$};
-			\node [cloud] at (3*\skip,0*\skip) (x5) {$x_5$};
-			\node [cloud] at (3*\skip,1*\skip) (x6) {$x_6$};
-			%% Arcs
-			\path [line, thick,bend left] (x1) to (x2);
-			\path [line, thick,bend left] (x2) to (x1);
-			\path [line, thick] (x2) to (x3);
-			\path [line, thick] (x2) to (x4);
-			\path [line, thick] (x4) to (x3);
-			\path [line, thick] (x6) to (x5);
-			\path [line, thick] (x3) to (x6);
-			\end{tikzpicture}
-		\end{minipage}
-		$\implies$
-	\begin{minipage}{0.4\textwidth}
-		\def\skip{2.75cm}
-		\begin{tikzpicture}[scale=0.5,auto,
-			cloud/.style={minimum width={width("N-1")+2pt},
-				draw, ellipse},
-			connected/.style={dotted,-}]
-			%% Vertices
-			\node [cloud] at (0,0) (x1) {$x_1$};
-			\node [cloud] at (1*\skip,1*\skip) (x2) {$x_2$};
-			\node [cloud] at (2*\skip,1*\skip) (x3) {$x_3$};
-			\node [cloud] at (1.5*\skip,0) (x4) {$x_4$};
-			\node [cloud] at (3*\skip,0*\skip) (x5) {$x_5$};
-			\node [cloud] at (3*\skip,1*\skip) (x6) {$x_6$};
-			%% Arcs
-			\draw [thick] (x1) --  (x2);
-			\draw [thick] (x2) --  (x3);
-			\draw [thick] (x2) --  (x4);
-			\draw [thick] (x3) --  (x6);
-			\draw [thick] (x4) --  (x3);
-			\draw [thick] (x6) --  (x5);
-			\end{tikzpicture}
-		\end{minipage}
 \end{frame}
 
 
@@ -4733,1313 +3175,6 @@ are equivalence classes partitioning $V$ into the \defword{weakly connected comp
 \vfill
 $G=(V,U)$ is weakly connected if there is a single weak component
 \end{frame}
-
-
-\begin{frame}{Components in {\tt igraph}}
-\begin{itemize}
-	\item {\tt is\_connected} decides whether the graph is weakly or strongly connected
-	\item {\tt components} finds the maximal (weakly or strongly) connected components of a graph
-	\item {\tt count\_components} does almost the same as components but returns only the number of clusters found instead of returning the actual clusters
-	\item {\tt component\_distribution} creates a histogram for the maximal connected component sizes
-	\item {\tt decompose} creates a separate graph for each component of a graph
-	\item {\tt subcomponent} finds all vertices reachable from a given vertex, or the opposite: all vertices from which a given vertex is reachable via a directed path
-\end{itemize}
-\end{frame}
-	
-%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Cliques}
-\newSubSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
-
-
-\begin{frame}{Cliques}
-	\begin{definition}[Clique in undirected graphs]
-		$G=(V,E)$ a simple undirected graph. A \defword{clique} is a subgraph $G'$ of $G$ such that all vertices in $G'$ are adjacent
-	\end{definition}
-	\begin{definition}[$n$-clique]
-		A simple, complete graph on $n$ vertices is called an $n$-\defword{clique} and is often denoted $K_n$
-	\end{definition}
-	\begin{definition}[Clique in directed graphs]
-		$G=(V,U)$ a simple directed graph. A \defword{clique} is a subgraph $G'$ of $G$ such that all vertices in $G'$ are mutually adjacent
-	\end{definition}
-	\begin{definition}[Maximal clique]
-		A \defword{maximal clique} is a clique that cannot be extended by adding another adjacent vertex
-	\end{definition}
-\end{frame}
-
-\begin{frame}
-	\begin{minipage}{0.45\textwidth}
-		\def\skip{2.75cm}
-		\begin{tikzpicture}[scale=0.5,auto,
-			cloud/.style={minimum width={width("N-1")+2pt},
-				draw, ellipse},
-			connected/.style={dotted,-}]
-			%% Vertices
-			\node [cloud] at (0,0) (x1) {$x_1$};
-			\node [cloud, color=red] at (1*\skip,1*\skip) (x2) {$x_2$};
-			\node [cloud, color=red] at (2*\skip,1*\skip) (x3) {$x_3$};
-			\node [cloud, color=red] at (1.5*\skip,0) (x4) {$x_4$};
-			\node [cloud] at (3*\skip,0*\skip) (x5) {$x_5$};
-			\node [cloud] at (3*\skip,1*\skip) (x6) {$x_6$};
-			%% Arcs
-			\draw [thick] (x1) --  (x2);
-			\draw [thick, color=red] (x2) --  (x3);
-			\draw [thick, color=red] (x2) --  (x4);
-			\draw [thick] (x3) --  (x6);
-			\draw [thick, color=red] (x4) --  (x3);
-			\draw [thick] (x6) --  (x5);
-			\draw (x5) to[thick, out=-150, in=-30] (x1);
-			\end{tikzpicture}
-		\end{minipage}	
-		\quad
-		\begin{minipage}{0.45\textwidth}
-			\def\skip{2.75cm}
-			\begin{tikzpicture}[scale = 0.5,auto,
-				cloud/.style={minimum width={width("N-1")+2pt},
-					draw, ellipse},
-				connected/.style={dotted,-}]
-				%% Vertices
-				\node [cloud, color=red] at (0,0) (x1) {$x_1$};
-				\node [cloud, color=red] at (1*\skip,1*\skip) (x2) {$x_2$};
-				\node [cloud] at (2*\skip,1*\skip) (x3) {$x_3$};
-				\node [cloud] at (1.5*\skip,0) (x4) {$x_4$};
-				\node [cloud] at (3*\skip,0*\skip) (x5) {$x_5$};
-				\node [cloud] at (3*\skip,1*\skip) (x6) {$x_6$};
-				%% Arcs
-				\path [line, thick,bend left, color=red] (x1) to (x2);
-				\path [line, thick,bend left, color=red] (x2) to (x1);
-				\path [line, thick] (x2) to (x3);
-				\path [line, thick] (x2) to (x4);
-				\path [line, thick] (x4) to (x3);
-				\path [line, thick] (x6) to (x5);
-				\path [line, thick] (x3) to (x6);
-				\path [line, thick, bend left] (x5) to (x1);
-			\end{tikzpicture}
-		\end{minipage}
-\end{frame}
-
-
-\begin{frame}{Cliques in {\tt igraph}}
-\begin{itemize}
-	\item {\tt cliques} find all complete subgraphs in the input graph, obeying the size limitations given in the min and max arguments
-	\item {\tt largest\_cliques} finds all largest cliques in the input graph
-	\item {\tt max\_cliques} finds all maximal cliques in the input graph (The largest cliques are always maximal, but a maximal clique is not necessarily the largest)
-	\item {\tt count\_max\_cliques} counts the maximal cliques
-	\item {\tt clique\_num} calculates the size of the largest clique(s)
-\end{itemize}
-\end{frame}
-	
-	
-%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%
-\subsection{$k$-cores}
-\newSubSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
-
-
-\begin{frame}{$k$-core}
-	\begin{definition}[$k$-core of a graph]
-		$G=(V,U)$ a graph. The $\mathbf{k}$-\defword{core} of $G$ is a maximal subgraph in which each vertex has degree at least $k$
-	\end{definition}
-	\vfill
-	\begin{definition}[Coreness of a vertex]
-		$G=(V,U)$ a graph, $x\in V$. The \defword{coreness} of $x$ is $k$ if $x$ belongs to the $k$-core of $G$ but not to the $k+1$ core of $G$
-	\end{definition}
-	\vfill
-	For directed graphs, in-cores or out-cores depending on whether in-degree or out-degree is used
-	\vfill
-	In {\tt igraph}: {\tt coreness}
-\end{frame}
-
-
-\begin{frame}{Coreness in the directed case}
-	\begin{center}
-		\def\skip{2.75cm}
-		\begin{tikzpicture}[scale = 0.85,auto,
-			cloud/.style={minimum width={width("N-1")+2pt},
-				draw, ellipse},
-			connected/.style={dotted,-}]
-			%% Vertices
-			\node [cloud] at (0,0) (x1) {$x_1$};
-			\node [cloud] at (1*\skip,1*\skip) (x2) {$x_2$};
-			\node [cloud] at (2*\skip,1*\skip) (x3) {$x_3$};
-			\node [cloud] at (1.5*\skip,0) (x4) {$x_4$};
-			\node [cloud] at (3*\skip,0*\skip) (x5) {$x_5$};
-			\node [cloud] at (3*\skip,1*\skip) (x6) {$x_6$};
-			%% Arcs
-			\path [line, thick,bend left] (x1) to (x2);
-			\path [line, thick,bend left] (x2) to (x1);
-			\path [line, thick] (x2) to (x3);
-			\path [line, thick] (x2) to (x4);
-			\path [line, thick] (x4) to (x3);
-			\path [line, thick] (x6) to (x5);
-			\path [line, thick] (x3) to (x6);
-			\path [line, thick, bend left] (x5) to (x1);
-			\path [line, thick, looseness=5] (x2) to (x2);
-			\path [line, thick, looseness=5, below] (x6) to (x6);
-		\end{tikzpicture}
-	\end{center}
-	\vfill
-	$G$ has only a 1-in-core and 1-out-core: there is no (maximal) subgraph	in which the in- or out-degree is larger than 1
-\end{frame}
-
-\begin{frame}{In-coreness in the directed case}
-	\begin{minipage}{0.45\textwidth}
-		\def\skip{2.75cm}
-		\begin{tikzpicture}[scale = 0.65,auto,
-			cloud/.style={minimum width={width("N-1")+2pt},
-				draw, ellipse},
-			connected/.style={dotted,-}]
-			%% Vertices
-			\node [cloud] at (0,0) (x1) {$x_1$};
-			\node [cloud] at (1*\skip,1*\skip) (x2) {$x_2$};
-			\node [cloud] at (2*\skip,1*\skip) (x3) {$x_3$};
-			\node [cloud] at (1.5*\skip,0) (x4) {$x_4$};
-			\node [cloud] at (3*\skip,0*\skip) (x5) {$x_5$};
-			\node [cloud] at (3*\skip,1*\skip) (x6) {$x_6$};
-			%% Arcs
-			\path [line, thick,bend left] (x1) to (x2);
-			\path [line, thick,bend left] (x2) to (x1);
-			\path [line, thick,bend left] (x2) to (x3);
-			\path [line, thick,bend left] (x3) to (x2);
-			\path [line, thick] (x2) to (x4);
-			\path [line, thick] (x4) to (x3);
-			\path [line, thick] (x6) to (x5);
-			\path [line, thick,bend left] (x3) to (x6);
-			\path [line, thick,bend left] (x6) to (x3);
-			\path [line, thick, bend left] (x5) to (x1);
-			\path [line, thick, looseness=5] (x2) to (x2);
-			\path [line, thick, looseness=5, below] (x6) to (x6);
-		\end{tikzpicture}
-	\end{minipage}
-	$\implies$
-	\begin{minipage}{0.45\textwidth}
-		\def\skip{2.75cm}
-		\begin{tikzpicture}[scale = 0.65,auto,
-			cloud/.style={minimum width={width("N-1")+2pt},
-				draw, ellipse},
-			connected/.style={dotted,-}]
-			%% Vertices
-			\node [cloud] at (0,0) (x1) {$1$};
-			\node [cloud, red] at (1*\skip,1*\skip) (x2) {$2$};
-			\node [cloud, red] at (2*\skip,1*\skip) (x3) {$2$};
-			\node [cloud] at (1.5*\skip,0) (x4) {$1$};
-			\node [cloud] at (3*\skip,0*\skip) (x5) {$1$};
-			\node [cloud, red] at (3*\skip,1*\skip) (x6) {$2$};
-			%% Arcs
-			\path [line, thick,bend left] (x1) to (x2);
-			\path [line, thick,bend left] (x2) to (x1);
-			\path [line, thick,bend left,red] (x2) to (x3);
-			\path [line, thick,bend left,red] (x3) to (x2);
-			\path [line, thick] (x2) to (x4);
-			\path [line, thick] (x4) to (x3);
-			\path [line, thick] (x6) to (x5);
-			\path [line, thick,bend left,red] (x3) to (x6);
-			\path [line, thick,bend left,red] (x6) to (x3);
-			\path [line, thick, bend left] (x5) to (x1);
-			\path [line, thick, looseness=5,red] (x2) to (x2);
-			\path [line, thick, looseness=5,red, below] (x6) to (x6);
-		\end{tikzpicture}
-	\end{minipage}
-\end{frame}
-
-\begin{frame}{Coreness in the undirected case}
-	\begin{minipage}{0.45\textwidth}
-		\def\skip{2.75cm}
-		\begin{tikzpicture}[scale=0.65,
-			every node/.style={transform shape},
-			auto,
-			cloud/.style={minimum width={width("N-1")+2pt},
-				draw, ellipse},
-			connected/.style={dotted,-}]
-			%% Vertices
-			\node [cloud] at (0,0) (x1) {$2$};
-			\node [cloud] at (1*\skip,1*\skip) (x2) {$2$};
-			\node [cloud] at (2*\skip,1*\skip) (x3) {$2$};
-			\node [cloud] at (1.5*\skip,0) (x4) {$2$};
-			\node [cloud] at (3*\skip,0*\skip) (x5) {$2$};
-			\node [cloud] at (3*\skip,1*\skip) (x6) {$2$};
-			%% Arcs
-			\draw [thick] (x1) --  (x2);
-			\draw [thick] (x2) --  (x3);
-			\draw [thick] (x2) --  (x4);
-			\draw [thick] (x3) --  (x6);
-			\draw [thick] (x4) --  (x3);
-			\draw [thick] (x6) --  (x5);
-			\draw (x5) to[thick, out=-150, in=-30] (x1);
-			\draw [thick,looseness=5] (x2) to (x2);
-			\draw [thick,looseness=5] (x6) to (x6);
-		\end{tikzpicture}
-	\end{minipage}	
-	$\implies$
-	\begin{minipage}{0.45\textwidth}
-		\def\skip{2.75cm}
-		\begin{tikzpicture}[scale=0.65,
-			every node/.style={transform shape},
-			auto,
-			cloud/.style={minimum width={width("N-1")+2pt},
-				draw, ellipse},
-			connected/.style={dotted,-}]
-			%% Vertices
-			\node [cloud] at (0,0) (x1) {$2$};
-			\node [cloud,red] at (1*\skip,1*\skip) (x2) {$3$};
-			\node [cloud,red] at (2*\skip,1*\skip) (x3) {$3$};
-			\node [cloud] at (1.5*\skip,0) (x4) {$2$};
-			\node [cloud] at (3*\skip,0*\skip) (x5) {$2$};
-			\node [cloud,red] at (3*\skip,1*\skip) (x6) {$3$};
-			%% Arcs
-			\draw [thick] (x1) --  (x2);
-			\draw [thick,red] (x2) --  (x3);
-			\draw [thick] (x2) --  (x4);
-			\draw [thick,red] (x3) --  (x6);
-			\draw [thick] (x4) --  (x3);
-			\draw [thick] (x6) --  (x5);
-			\draw (x5) to[thick, out=-150, in=-30] (x1);
-			\draw [thick,looseness=5,red] (x2) to (x2);
-			\draw [thick,looseness=5,red] (x3) to (x3);
-			\draw [thick,looseness=5,red] (x6) to (x6);
-		\end{tikzpicture}
-	\end{minipage}	
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%
-
-%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%
-\section{Why characterise graphs?}
-\newSectionSlide{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
-
-
-\begin{frame}{Why characterise a graph}
-Graphs are everywhere!
-\vfill
-To compare graphs, understand their properties, we need ways to describe their shape and characteristics
-\end{frame}
-
-
-\begin{frame}{Geodesic distance}
-\begin{definition}[Geodesic distance]
-For $x,y\in V$, the \defword{geodesic distance} $d(x,y)$ is the length of the shortest path from $x$ to $y$, with $d(x,y)=\infty$ if no such path exists
-\end{definition}
-\end{frame}
-
-\begin{frame}
-	\begin{minipage}{0.45\textwidth}
-	\begin{itemize}
-	\item $d(x_1,x_2)=1$
-	\item $d(x_1,x_3)=2$
-	\item $\cdots$
-	\end{itemize}
-	\vfill
-	\[
-	\begin{pmatrix}
-	0 & 1 & 2 & 2 & 4 & 3 \\
-	1 & 0 & 1 & 1 & 3 & 2 \\
-	3 & 4 & 0 & 5 & 2 & 1 \\
-	4 & 5 & 1 & 0 & 3 & 2 \\
-	1 & 2 & 3 & 3 & 0 & 4 \\
-	2 & 3 & 4 & 4 & 1 & 0
-	\end{pmatrix}		
-	\]		
-	\end{minipage}
-	\begin{minipage}{0.45\textwidth}
-		\def\skip{2.75cm}
-		\begin{tikzpicture}[scale=0.65,auto,
-			cloud/.style={minimum width={width("N-1")+2pt},
-				draw, ellipse},
-			connected/.style={dotted,-}]
-			%% Vertices
-			\node [cloud] at (0,0) (x1) {$x_1$};
-			\node [cloud] at (1*\skip,1*\skip) (x2) {$x_2$};
-			\node [cloud] at (2*\skip,1*\skip) (x3) {$x_3$};
-			\node [cloud] at (1.5*\skip,0) (x4) {$x_4$};
-			\node [cloud] at (3*\skip,0*\skip) (x5) {$x_5$};
-			\node [cloud] at (3*\skip,1*\skip) (x6) {$x_6$};
-			%% Arcs
-			\path [line, thick,bend left] (x1) to (x2);
-			\path [line, thick,bend left] (x2) to (x1);
-			\path [line, thick, looseness=5] (x2) to (x2);
-			\path [line, thick] (x2) to (x3);
-			\path [line, thick] (x2) to (x4);
-			\path [line, thick] (x4) to (x3);
-			\path [line, thick, looseness=5, below] (x6) to (x6);
-			\path [line, thick] (x6) to (x5);
-			\path [line, thick] (x3) to (x6);
-			\path [line, thick, bend left] (x5) to (x1);
-			\end{tikzpicture}
-\end{minipage}
-\end{frame}
-
-\begin{frame}
-	\begin{minipage}{0.45\textwidth}
-	\begin{itemize}
-		\item $d(x_5,x_1)=\infty$
-		\item $d(x_3,x_1)=\infty$
-		\item $\cdots$
-	\end{itemize}
-	\vfill
-	\[
-	\begin{pmatrix}
-		0 & 1 & 2 & 2 & 4 & 3 \\
-		1 & 0 & 1 & 1 & 3 & 2 \\
-		\infty & \infty & 0 & \infty & 2 & 1 \\
-		\infty& \infty& 1 & 0 & 3 & 2 \\
-		\infty& \infty & \infty & \infty & 0 & \infty \\
-		\infty & \infty & \infty & \infty & 1 & 0
-	\end{pmatrix}
-	\]
-	\end{minipage}
-	\begin{minipage}{0.45\textwidth}
-		\def\skip{2.75cm}
-		\begin{tikzpicture}[scale=0.65,auto,
-			cloud/.style={minimum width={width("N-1")+2pt},
-				draw, ellipse},
-			connected/.style={dotted,-}]
-			%% Vertices
-			\node [cloud] at (0,0) (x1) {$x_1$};
-			\node [cloud] at (1*\skip,1*\skip) (x2) {$x_2$};
-			\node [cloud] at (2*\skip,1*\skip) (x3) {$x_3$};
-			\node [cloud] at (1.5*\skip,0) (x4) {$x_4$};
-			\node [cloud] at (3*\skip,0*\skip) (x5) {$x_5$};
-			\node [cloud] at (3*\skip,1*\skip) (x6) {$x_6$};
-			%% Arcs
-			\path [line, thick,bend left] (x1) to (x2);
-			\path [line, thick,bend left] (x2) to (x1);
-			\path [line, thick, looseness=5] (x2) to (x2);
-			\path [line, thick] (x2) to (x3);
-			\path [line, thick] (x2) to (x4);
-			\path [line, thick] (x4) to (x3);
-			\path [line, thick, looseness=5, below] (x6) to (x6);
-			\path [line, thick] (x6) to (x5);
-			\path [line, thick] (x3) to (x6);
-			\end{tikzpicture}
-	\end{minipage}
-\end{frame}
-
-\begin{frame}{Eccentricity}
-\begin{definition}[Vertex eccentricity]
-	The \defword{eccentricity} $e(x)$ of vertex $x\in V$ is 
-	\[
-		e(x)=\max_{\stackrel{y\in V}{y\neq x}}d(x,y)
-	\]
-\end{definition}
-\begin{minipage}{0.45\textwidth}
-	\[
-\begin{pmatrix}
-	0 & 1 & 2 & 2 & \boldred{4} & 3 \\
-	1 & 0 & 1 & 1 & \boldred{3} & 2 \\
-	3 & 4 & 0 & \boldred{5} & 2 & 1 \\
-	4 & \boldred{5} & 1 & 0 & 3 & 2 \\
-	1 & 2 & 3 & 3 & 0 & \boldred{4} \\
-	2 & 3 & \boldred{4} & \boldred{4} & 1 & 0
-\end{pmatrix}		
-\]
-\end{minipage}
-\begin{minipage}{0.45\textwidth}
-	\def\skip{2.75cm}
-	\begin{tikzpicture}[scale = 0.65,auto,
-		cloud/.style={minimum width={width("N-1")+2pt},
-			draw, ellipse},
-		connected/.style={dotted,-}]
-		%% Vertices
-		\node [cloud] at (0,0) (x1) {$x_1$};
-		\node [cloud] at (1*\skip,1*\skip) (x2) {$x_2$};
-		\node [cloud] at (2*\skip,1*\skip) (x3) {$x_3$};
-		\node [cloud] at (1.5*\skip,0) (x4) {$x_4$};
-		\node [cloud] at (3*\skip,0*\skip) (x5) {$x_5$};
-		\node [cloud] at (3*\skip,1*\skip) (x6) {$x_6$};
-		%% Arcs
-		\path [line, thick,bend left] (x1) to (x2);
-		\path [line, thick,bend left] (x2) to (x1);
-		\path [line, thick, looseness=5] (x2) to (x2);
-		\path [line, thick] (x2) to (x3);
-		\path [line, thick] (x2) to (x4);
-		\path [line, thick] (x4) to (x3);
-		\path [line, thick, looseness=5, below] (x6) to (x6);
-		\path [line, thick] (x6) to (x5);
-		\path [line, thick] (x3) to (x6);
-		\path [line, thick, bend left] (x5) to (x1);
-		\end{tikzpicture}
-\end{minipage}
-\end{frame}
-
-
-\begin{frame}{Central points, radius and centre}
-\begin{definition}[Central point]
-	A \defword{central point} of $G$ is a vertex $x_0$ with smallest eccentricity
-\end{definition}
-\vfill
-\begin{definition}[Radius]
-	The \defword{radius} of $G$ is $\rho(G)=e(x_0)$, where $x_0$ is a centre of $G$
-	In other words,
-	\[
-	\rho(G)=\min_{x\in V}e(x)
-	\]
-\end{definition}
-\vfill
-\begin{definition}[Centre]
-The \defword{centre} of $G$ is the set of vertices that are central points of $G$, i.e.,
-\[
-    \{x\in V: e(x)=\rho(G)\}
-\]
-\end{definition}
-\end{frame}
-
-
-\begin{frame}
-	\begin{minipage}{0.45\textwidth}
-	\[
-\begin{pmatrix}
-	0 & 1 & 2 & 2 & \boldred{4} & 3 \\
-	\rowcolor{gray!95}
-	1 & 0 & 1 & 1 & \boldred{3} & 2 \\
-	3 & 4 & 0 & \boldred{5} & 2 & 1 \\
-	4 & \boldred{5} & 1 & 0 & 3 & 2 \\
-	1 & 2 & 3 & 3 & 0 & \boldred{4} \\
-	2 & 3 & \boldred{4} & \boldred{4} & 1 & 0
-\end{pmatrix}		
-\]
-\end{minipage}
-\begin{minipage}{0.45\textwidth}
-		\def\skip{2.5cm}
-		\begin{tikzpicture}[scale = 0.65,auto,
-			cloud/.style={minimum width={width("N-1")+2pt},
-				draw, ellipse},
-			connected/.style={dotted,-}]
-			%% Vertices
-			\node [cloud] at (0,0) (x1) {$x_1$};
-			\node [cloud, fill=gray!20] at (1*\skip,1*\skip) (x2) {$x_2$};
-			\node [cloud] at (2*\skip,1*\skip) (x3) {$x_3$};
-			\node [cloud] at (1.5*\skip,0) (x4) {$x_4$};
-			\node [cloud] at (3*\skip,0*\skip) (x5) {$x_5$};
-			\node [cloud] at (3*\skip,1*\skip) (x6) {$x_6$};
-			%% Arcs
-			\path [line, thick,bend left] (x1) to (x2);
-			\path [line, thick,bend left] (x2) to (x1);
-			\path [line, thick, looseness=5] (x2) to (x2);
-			\path [line, thick] (x2) to (x3);
-			\path [line, thick] (x2) to (x4);
-			\path [line, thick] (x4) to (x3);
-			\path [line, thick, looseness=5, below] (x6) to (x6);
-			\path [line, thick] (x6) to (x5);
-			\path [line, thick] (x3) to (x6);
-			\path [line, thick, bend left] (x5) to (x1);
-			\end{tikzpicture}
-	\end{minipage}
-	\vfill
-Radius is 3, $x_2$ is a central point (the only one) and the centre is $\{x_2\}$
-\end{frame}
-
-
-%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Centrality -- Betweenness and closeness}
-\newSubSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_6yeslm6yeslm6yes.jpeg}
-
-\begin{frame}{How \emph{central} is a vertex?}
-	\emph{Centrality} tries to answer the question: what are the most influent vertices? 
-	\vfill
-	We have seen central vertices and vertices on the periphery, let us consider two other measures of centrality
-	\begin{itemize}
-			\item Betweenness centrality
-			\item Closeness centrality
-	\end{itemize}
-	\vfill
-	Many other forms (we will come back to this, e.g., degree centrality)
-\end{frame}
-
-\begin{frame}{Betweenness}
-\begin{definition}[Betweenness]
-	$G=(V,A)$ a (di)graph. The \defword{betweenness} of $v\in V$ is
-	\[
-	b_\D(v)= \sum_{s\neq t\neq v  \in V} \frac{\sigma_{st}(v)}{\sigma_{st}}
-	\]
-	where
-	\begin{itemize}
-	\item $\sigma_{st}$ is number of shortest geodesic paths from $s$ to $t$
-	\item $\sigma_{st}(v)$ is number of shortest geodesic paths from $s$ to $t$ through $v$
-	\end{itemize}		
-\end{definition}
-\end{frame}
-
-\begin{frame}
-In other words
-\begin{itemize}
-	\item For each pair of vertices $(s,t)$, compute the shortest paths between them
-	\item For each pair of vertices $(s,t)$, determine the fraction of shortest paths that pass through vertex $v$
-	\item Sum this fraction over all pairs of vertices $(s,t)$
-\end{itemize}
-\end{frame}
-
-\begin{frame}{Normalising betweenness}
-	Betweenness may be normalized by dividing through the number of pairs of vertices not including $v$:
-	\begin{itemize}
-		\item for directed graphs, $(n-1)(n-2)$
-		\item for undirected graphs, $(n-1)(n-2)/2$
-	\end{itemize}
-\end{frame}
-
-
-\begin{frame}{Example of betweenness}
-	\begin{minipage}{0.45\textwidth}
-		{\tt distances(G, mode="out")}
-		\[
-			\begin{pmatrix}
-				0 & 1 & 2 & 2 & 4 & 3 \\
-				1 & 0 & 1 & 1 & 3 & 2 \\
-				3 & 4 & 0 & 5 & 2 & 1 \\
-				4 & 5 & 1 & 0 & 3 & 2 \\
-				1 & 2 & 3 & 3 & 0 & 4 \\
-				2 & 3 & 4 & 4 & 1 & 0
-			\end{pmatrix}
-		\]
-		\end{minipage}
-	\begin{minipage}{0.45\textwidth}
-		\def\skip{2.75cm}
-		\begin{tikzpicture}[scale = 0.65,
-			every node/.style={transform shape},
-			auto,
-			cloud/.style={minimum width={width("N-1")+2pt},
-				draw, ellipse},
-			connected/.style={dotted,-}]
-			%% Vertices
-			\node [cloud] at (0,0) (x1) {$x_1$};
-			\node [cloud] at (1*\skip,1*\skip) (x2) {$x_2$};
-			\node [cloud] at (2*\skip,1*\skip) (x3) {$x_3$};
-			\node [cloud] at (1.5*\skip,0) (x4) {$x_4$};
-			\node [cloud] at (3*\skip,0*\skip) (x5) {$x_5$};
-			\node [cloud] at (3*\skip,1*\skip) (x6) {$x_6$};
-			%% Arcs
-			\path [line, thick,bend left] (x1) to (x2);
-			\path [line, thick,bend left] (x2) to (x1);
-			\path [line, thick] (x2) to (x3);
-			\path [line, thick] (x2) to (x4);
-			\path [line, thick] (x4) to (x3);
-			\path [line, thick] (x6) to (x5);
-			\path [line, thick] (x3) to (x6);
-			\path [line, thick, bend left] (x5) to (x1);
-			\path [line, thick, looseness=5] (x2) to (x2);
-			\path [line, thick, looseness=5, below] (x6) to (x6);
-		\end{tikzpicture}
-	\end{minipage}
-\end{frame}
-
-
-\begin{frame}{Number of shortest paths}
-	Recall we found 
-	{\tt distances(G, mode="out")}
-	\[
-		\mathcal{D} =
-		\begin{pmatrix}
-			0 & 1 & 2 & 2 & 4 & 3 \\
-			1 & 0 & 1 & 1 & 3 & 2 \\
-			3 & 4 & 0 & 5 & 2 & 1 \\
-			4 & 5 & 1 & 0 & 3 & 2 \\
-			1 & 2 & 3 & 3 & 0 & 4 \\
-			2 & 3 & 4 & 4 & 1 & 0
-		\end{pmatrix}
-	\]
-	\vfill
-	To find the number of shortest paths between pairs of vertices, we can use powers of the adjacency matrix
-	\vfill
-	Write $\mathcal{D}=[d_{ij}]$, for a given $(i,j)$ ($i\neq j$), if $d_{ij}=k$, then pick the $(i,j)$ in $A^k$
-\end{frame}
-
-\begin{frame}
-	We find
-	\[
-		\begin{pmatrix}
-			0 & 1 & 1 & 1 & 1 & 1 \\
-			1 & 0 & 1 & 1 & 1 & 1 \\
-			1 & 1 & 0 & 1 & 1 & 1 \\
-			1 & 1 & 1 & 0 & 1 & 1 \\
-			1 & 1 & 1 & 1 & 0 & 1 \\
-			1 & 1 & 1 & 1 & 1 & 0
-		\end{pmatrix}
-	\]
-	\vfill
-	Recall that betweenness of $v$ is
-	\[
-		b_\D(v)= \sum_{s\neq t\neq v  \in V} \frac{\sigma_{st}(v)}{\sigma_{st}}
-	\]
-	\vfill
-	$\sigma_{st}$ (\# shortest paths from $s$ to $t$) is found in the matrix above
-	\vfill
-	What about $\sigma_{st}(v)$, \# of those shortest paths that go through $v$?
-	\vfill
-	We can use {\tt all\_shortest\_paths(G, from = s, to = t, mode = "out")}
-\end{frame}
-
-
-\begin{frame}{Example of betweenness}
-	\code{betweenness(G, directed = FALSE, normalized = TRUE)}
-	\centering
-	\def\skip{2.75cm}
-	\begin{tikzpicture}[scale = 0.85,
-		every node/.style={transform shape},
-		auto,
-		cloud/.style={minimum width={width("N-1")+2pt},
-			draw, ellipse},
-		connected/.style={dotted,-}]
-		%% Vertices
-		\node [cloud] at (0,0) (x1) {$0.5$};
-		\node [cloud] at (1*\skip,1*\skip) (x2) {$0.5$};
-		\node [cloud] at (2*\skip,1*\skip) (x3) {$0.45$};
-		\node [cloud] at (1.5*\skip,0) (x4) {$0$};
-		\node [cloud] at (3*\skip,0*\skip) (x5) {$0.45$};
-		\node [cloud] at (3*\skip,1*\skip) (x6) {$0.45$};
-		%% Arcs
-		\path [line, thick,bend left] (x1) to (x2);
-		\path [line, thick,bend left] (x2) to (x1);
-		\path [line, thick] (x2) to (x3);
-		\path [line, thick] (x2) to (x4);
-		\path [line, thick] (x4) to (x3);
-		\path [line, thick] (x6) to (x5);
-		\path [line, thick] (x3) to (x6);
-		\path [line, thick, bend left] (x5) to (x1);
-		\path [line, thick, looseness=5] (x2) to (x2);
-		\path [line, thick, looseness=5, below] (x6) to (x6);
-	\end{tikzpicture}
-\end{frame}
-
-
-\begin{frame}{Closeness}
-	\begin{definition}
-		$G=(V,A)$. The \defword{closeness} of $v\in V$ is
-		\[
-		c_\D(v)=\frac{1}{n-1}\displaystyle \sum_{t\in V\setminus\{v\}}d_\D(v,t)
-		\]
-		i.e., mean geodesic distance between a vertex $v$ and all other vertices it has access to
-		\vskip0.2cm 
-		Another definition is
-		\[
-		c_\D(v)=\frac{1}{\displaystyle\sum_{t \in V\setminus\{v\}}d_\D(v,t)}
-		\]				
-	\end{definition}
-\end{frame}
-
-\begin{frame}{Example of (out) closeness}
-	\vfill
-	{\tt closeness(G, normalized = TRUE, mode=``out'')}
-	\vfill
-	\begin{center}
-		\def\skip{2.75cm}
-		\begin{tikzpicture}[scale = 0.85,
-			every node/.style={transform shape},
-			auto,
-			cloud/.style={minimum width={width("N-1")+2pt},
-				draw, ellipse},
-			connected/.style={dotted,-}]
-			%% Vertices
-			\node [cloud] at (0,0) (x1) {$0.417$};
-			\node [cloud] at (1*\skip,1*\skip) (x2) {$0.625$};
-			\node [cloud] at (2*\skip,1*\skip) (x3) {$0.333$};
-			\node [cloud] at (1.5*\skip,0) (x4) {$0.333$};
-			\node [cloud] at (3*\skip,0*\skip) (x5) {$0.385$};
-			\node [cloud] at (3*\skip,1*\skip) (x6) {$0.357$};
-			%% Arcs
-			\path [line, thick,bend left] (x1) to (x2);
-			\path [line, thick,bend left] (x2) to (x1);
-			\path [line, thick] (x2) to (x3);
-			\path [line, thick] (x2) to (x4);
-			\path [line, thick] (x4) to (x3);
-			\path [line, thick] (x6) to (x5);
-			\path [line, thick] (x3) to (x6);
-			\path [line, thick, bend left] (x5) to (x1);
-			\path [line, thick, looseness=5] (x2) to (x2);
-			\path [line, thick, looseness=5, below] (x6) to (x6);
-		\end{tikzpicture}
-	\end{center}
-\end{frame}
-%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Periphery of a graph}
-\newSubSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_rzto8rzto8rzto8r.jpeg}
-
-\begin{frame}{Diametre and periphery of a graph}
-\begin{definition}[Diametre of a graph]
-The \defword{diametre} of $G$ is 
-\[
-	\delta(G) = \max_{\stackrel{x,y\in V}{x\neq y}}d(x,y)
-	= \max_{x\in V}e(x)
-\]
-\end{definition}
-\vfill
-$\delta(G)<\infty$ $\iff$ $G$ strongly connected
-\vfill
-\begin{definition}[Periphery]
-    The \defword{periphery} of a graph is the set of vertices whose eccentricity achieves the diametre, i.e.,
-    \[
-        \{x\in V:e(x)=\delta(G)\}
-    \]
-\end{definition}
-\end{frame}
-
-
-\begin{frame}
-		\begin{minipage}{0.45\textwidth}
-	\[
-\begin{pmatrix}
-	0 & 1 & 2 & 2 & \boldred{4} & 3 \\
-	1 & 0 & 1 & 1 & \boldred{3} & 2 \\
-	\rowcolor{gray!95}
-	3 & 4 & 0 & \boldred{5} & 2 & 1 \\
-	\rowcolor{gray!95}
-	4 & \boldred{5} & 1 & 0 & 3 & 2 \\
-	1 & 2 & 3 & 3 & 0 & \boldred{4} \\
-	2 & 3 & \boldred{4} & \boldred{4} & 1 & 0
-\end{pmatrix}		
-\]
-	\end{minipage}
-	\begin{minipage}{0.45\textwidth}
-		\def\skip{2.5cm}
-		\begin{tikzpicture}[scale = 0.65,auto,
-			cloud/.style={minimum width={width("N-1")+2pt},
-				draw, ellipse},
-			connected/.style={dotted,-}]
-			%% Vertices
-			\node [cloud] at (0,0) (x1) {$x_1$};
-			\node [cloud] at (1*\skip,1*\skip) (x2) {$x_2$};
-			\node [cloud, fill=gray!20] at (2*\skip,1*\skip) (x3) {$x_3$};
-			\node [cloud, fill=gray!20] at (1.5*\skip,0) (x4) {$x_4$};
-			\node [cloud] at (3*\skip,0*\skip) (x5) {$x_5$};
-			\node [cloud] at (3*\skip,1*\skip) (x6) {$x_6$};
-			%% Arcs
-			\path [line, thick,bend left] (x1) to (x2);
-			\path [line, thick,bend left] (x2) to (x1);
-			\path [line, thick, looseness=5] (x2) to (x2);
-			\path [line, thick] (x2) to (x3);
-			\path [line, thick] (x2) to (x4);
-			\path [line, thick] (x4) to (x3);
-			\path [line, thick, looseness=5, below] (x6) to (x6);
-			\path [line, thick] (x6) to (x5);
-			\path [line, thick] (x3) to (x6);
-			\path [line, thick, bend left] (x5) to (x1);
-			\end{tikzpicture}
-		\end{minipage}
-		\vfill
-		Diametre is $\delta(G)=5$ and periphery is $\{x_3,x_4\}$
-\vfill
-	\begin{definition}[{Antipodal vertices}]
-			Vertices $x,y\in V$ are \defword{antipodal} if $d(x,y)=\delta(G)$
-	\end{definition}
-\end{frame}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Degree distribution}
-\newSubSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_jkiuvcjkiuvcjkiu.jpeg}
-
-
-\begin{frame}{Degree distribution}
-	\begin{definition}[Arc incident to a vertex]
-		If a vertex $x$ is the initial endpoint of an arc $u$, which is not a loop, the arc $u$ is \defword{incident out of vertex} $x$ 
-		\vskip0.2cm
-		The number of arcs incident out of $x$ plus the number of loops attached to $x$ is denoted $d_G^+(x)$ and is the \defword{outer demi-degree} of $x$
-		\vskip0.2cm
-		An arc \defword{incident into vertex} $x$ and the \defword{inner demi-degree} $d_G^-(x)$ are defined similarly
-		\end{definition}
-		\vfill
-		\begin{definition}[Degree]
-		The \defword{degree} of vertex $x$ is the number of arcs with $x$ as an endpoint, each loop being counted twice. The degree of $x$ is denoted $d_G(x)=d_G^+(x)+d_G^-(x)$
-		\vskip0.2cm
-		If each vertex has the same degree, the graph is \defword{regular}
-	\end{definition}
-\end{frame}
-
-\begin{frame}
-	\begin{definition}[{Isolated vertex}]
-	A vertex of degree $0$ is \defword{isolated}.
-	\end{definition}
-	\begin{definition}[{Average degree of $G$}]
-	$d(G)=\frac{1}{|V|}\sum_{v\in V}deg_G(v)$.
-	\end{definition}
-	\begin{definition}[{Minimum degree of $G$}]
-	$\delta(G)=\min \{deg_G(v)|v\in V\}$.
-	\end{definition}
-	\begin{definition}[{Maximum degree of $G$}]
-	$\Delta(G)=\max \{deg_G(v)|v\in V\}$.
-	\end{definition}
-\end{frame}
-
-
-\begin{frame}{Degrees in an undirected graph}
-	\begin{minipage}{0.65\textwidth}
-		\def\skip{2.75cm}
-		\begin{tikzpicture}[scale=0.75,auto,
-			cloud/.style={minimum width={width("N-1")+2pt},
-				draw, ellipse},
-			connected/.style={dotted,-}]
-			%% Vertices
-			\node [cloud] at (0,0) (x1) {$2$};
-			\node [cloud] at (1*\skip,1*\skip) (x2) {$3$};
-			\node [cloud] at (2*\skip,1*\skip) (x3) {$3$};
-			\node [cloud] at (1.5*\skip,0) (x4) {$2$};
-			\node [cloud] at (3*\skip,0*\skip) (x5) {$2$};
-			\node [cloud] at (3*\skip,1*\skip) (x6) {$2$};
-			%% Arcs
-			\draw [thick] (x1) --  (x2);
-			\draw [thick] (x2) --  (x3);
-			\draw [thick] (x2) --  (x4);
-			\draw [thick] (x3) --  (x6);
-			\draw [thick] (x4) --  (x3);
-			\draw [thick] (x6) --  (x5);
-			\draw (x5) to[thick, out=-150, in=-30] (x1);
-			\end{tikzpicture}
-	\end{minipage}
-	\begin{minipage}{0.3\textwidth}
-		Here, vertices are labelled using the degree
-	\end{minipage}
-\end{frame}
-
-
-\begin{frame}{Degrees in a directed graph}
-	\begin{minipage}{0.45\textwidth}
-		\def\skip{2.75cm}
-		\begin{tikzpicture}[scale = 0.65, 
-			every node/.style={transform shape},
-			auto,
-			cloud/.style={minimum width={width("N-1")+2pt},
-				draw, ellipse},
-			connected/.style={dotted,-}]
-			%% Vertices
-			\node [cloud] at (0,0) (x1) {$\begin{matrix}d^+=1\\ d^-=2\end{matrix}$};
-			\node [cloud] at (1*\skip,1*\skip) (x2) {$\begin{matrix}d^+=3\\ d^-=1\end{matrix}$};
-			\node [cloud] at (2*\skip,1*\skip) (x3) {$\begin{matrix}d^+=1\\ d^-=2\end{matrix}$};
-			\node [cloud] at (1.5*\skip,0) (x4) {$\begin{matrix}d^+=1\\ d^-=1\end{matrix}$};
-			\node [cloud] at (3*\skip,0*\skip) (x5) {$\begin{matrix}d^+=1\\ d^-=1\end{matrix}$};
-			\node [cloud] at (3*\skip,1*\skip) (x6) {$\begin{matrix}d^+=1\\ d^-=1\end{matrix}$};
-			%% Arcs
-			\path [line, thick,bend left] (x1) to (x2);
-			\path [line, thick,bend left] (x2) to (x1);
-			\path [line, thick] (x2) to (x3);
-			\path [line, thick] (x2) to (x4);
-			\path [line, thick] (x4) to (x3);
-			\path [line, thick] (x6) to (x5);
-			\path [line, thick] (x3) to (x6);
-			\path [line, thick, bend left] (x5) to (x1);
-			\end{tikzpicture}
-	\end{minipage}
-	\quad
-	\begin{minipage}{0.45\textwidth}
-		\def\skip{2.75cm}
-		\begin{tikzpicture}[scale = 0.65, 
-			every node/.style={transform shape},
-			auto,
-			cloud/.style={minimum width={width("N-1")+2pt},
-				draw, ellipse},
-			connected/.style={dotted,-}]
-			%% Vertices
-			\node [cloud] at (0,0) (x1) {$\begin{matrix}d^+=1\\ d^-=2\end{matrix}$};
-			\node [cloud] at (1*\skip,1*\skip) (x2) {$\begin{matrix}d^+=4\\ d^-=2\end{matrix}$};
-			\node [cloud] at (2*\skip,1*\skip) (x3) {$\begin{matrix}d^+=1\\ d^-=2\end{matrix}$};
-			\node [cloud] at (1.5*\skip,0) (x4) {$\begin{matrix}d^+=1\\ d^-=1\end{matrix}$};
-			\node [cloud] at (3*\skip,0*\skip) (x5) {$\begin{matrix}d^+=1\\ d^-=1\end{matrix}$};
-			\node [cloud] at (3*\skip,1*\skip) (x6) {$\begin{matrix}d^+=2\\ d^-=2\end{matrix}$};
-			%% Arcs
-			\path [line, thick,bend left] (x1) to (x2);
-			\path [line, thick,bend left] (x2) to (x1);
-			\path [line, thick] (x2) to (x3);
-			\path [line, thick] (x2) to (x4);
-			\path [line, thick] (x4) to (x3);
-			\path [line, thick] (x6) to (x5);
-			\path [line, thick] (x3) to (x6);
-			\path [line, thick, bend left] (x5) to (x1);
-			\path [line, thick, looseness=5] (x2) to (x2);
-			\path [line, thick, looseness=5] (x6) to (x6);
-			\end{tikzpicture}
-		\end{minipage}
-\end{frame}
-
-
-\begin{frame}{What to consider about degrees?}
-	Degrees are often considered as a measure of popularity
-	\vfill
-	Often write $k(i)$ (or $k_i$) for ``degree of vertex $i$'', $k^-(i)$ and $k^+(i)$ for in- and out-degree
-	\vfill
-	\begin{itemize}
-		\item Minimum and maximum degree
-		\item Minimum and maximum in/out-degree. E.g., if you consider the global air transportation network and the in/out-degree of airports, in-degree is a measure of a location's ``popularity'' as a travel destination
-		\item Range of degrees in a graph: are there large discrepancies in connectivity between vertices in the graph?
-		\item Average degree (often denoted $\langle k\rangle$ because of physicists)
-		\item Average in/out-degree
-		\item Variance of the degrees or in/out-degrees
-	\end{itemize}
-\end{frame}
-
-
-
-\begin{frame}
-	\begin{itemize}
-		\item Average (nearest) neighbour degree, to encode for \emph{preferential attachment} (one prefers to hang out with popular people)
-		\[
-			k_i^{nn} = \frac{1}{k(i)}\sum_{j\in\mathcal{N}(i)}k(j)
-		\]
-		or, in terms of the adjacency matrix $A=[a_{ij}]$,
-		\[
-			k_i^{nn} = \frac{1}{k(i)}\sum_{j}a_{ij}k(j)
-		\]
-		\item \emph{Excess degree}: take nearest neighbour degree but do not consider the edge/arc followed to get to the neighbour
-		\item Degree, nearest neighbour and excess degree distributions
-	\end{itemize}
-\end{frame}
-
-
-\begin{frame}{Degrees in {\tt igraph}}
-	\begin{itemize}
-		\item {\tt degree} gives the degrees of the vertices
-		\item {\tt degree\_distribution} gives numeric vector of the same length as the maximum degree plus one. The first element is the relative frequency zero degree vertices, the second vertices with degree one, etc.
-		\item {\tt knn} calculate the average nearest neighbor degree of the given vertices and the same quantity in the function of vertex degree
-		\item {\tt strength} sums up the edge weights of the adjacent edges for each vertex
-	\end{itemize}
-\end{frame}
-
-\begin{frame}{Degree from adjacency matrix}
-	Suppose adjacency matrix take the form $A=[a_{ij}]$ with $a_{ij}=1$ if there is an arc from the vertex indexed $i$ to the vertex indexed $j$ and 0 otherwise. (Could be the other way round, using $A^T$, just make sure)
-	\vfill
-	Let $\be=(1,\ldots,1)^T$ be the vector of all ones 
-	\vfill
-	$A\be=(d_G^+(1),\ldots,d_G^+(1))^T$ (out-degree)
-	\vfill
-	$\be^TA=(d_G^-(1),\ldots,d_G^-(1))$ (in-degree)
-\end{frame}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Measures at the graph level}
-\newSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_hfenashfenashfen.jpeg}
-
-%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Circumference \& Girth}
-\newSubSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_a36uz1a36uz1a36u.jpeg}
-
-
-\begin{frame}{Circumference}
-\begin{definition}[Circumference]
-    In an undirected (resp. directed) graph, the total number of edges (resp. arcs) in the longest cycle of graph $G$ is the \defword{circumference} of $G$
-\end{definition}
-\begin{minipage}{0.5\textwidth}
-	Circumference is 6.
-\end{minipage}
-\begin{minipage}{0.49\textwidth}
-	\def\skip{2.5cm}
-	\begin{tikzpicture}[scale = 0.85,auto,
-		cloud/.style={minimum width={width("N-1")+2pt},
-			draw, ellipse},
-		connected/.style={dotted,-}]
-		%% Vertices
-		\node [cloud] at (0,0) (x1) {$x_1$};
-		\node [cloud] at (1*\skip,1*\skip) (x2) {$x_2$};
-		\node [cloud] at (2*\skip,1*\skip) (x3) {$x_3$};
-		\node [cloud] at (1.5*\skip,0) (x4) {$x_4$};
-		\node [cloud] at (3*\skip,0*\skip) (x5) {$x_5$};
-		\node [cloud] at (3*\skip,1*\skip) (x6) {$x_6$};
-		%% Arcs
-		\path [line, thick,bend left, color=red] (x1) to (x2);
-		\path [line, thick,bend left] (x2) to (x1);
-		\path [line, thick] (x2) to (x3);
-		\path [line, thick, color=red] (x2) to (x4);
-		\path [line, thick, color=red] (x4) to (x3);
-		\path [line, thick, color=red] (x6) to (x5);
-		\path [line, thick, color=red] (x3) to (x6);
-		\path [line, thick, bend left, color=red] (x5) to (x1);
-		\end{tikzpicture}
-\end{minipage}
-\end{frame}
-
-
-\begin{frame}{Girth}
-\begin{definition}[Girth]
-    The total number of edges in the shortest cycle of graph $G$ is the \defword{girth} $g(G)$
-\end{definition}
-\begin{minipage}{0.3\textwidth}
-	Girth is 2.
-\end{minipage}
-\begin{minipage}{0.69\textwidth}
-	\def\skip{2.5cm}
-	\begin{tikzpicture}[scale = 0.85,auto,
-		cloud/.style={minimum width={width("N-1")+2pt},
-			draw, ellipse},
-		connected/.style={dotted,-}]
-		%% Vertices
-		\node [cloud] at (0,0) (x1) {$x_1$};
-		\node [cloud] at (1*\skip,1*\skip) (x2) {$x_2$};
-		\node [cloud] at (2*\skip,1*\skip) (x3) {$x_3$};
-		\node [cloud] at (1.5*\skip,0) (x4) {$x_4$};
-		\node [cloud] at (3*\skip,0*\skip) (x5) {$x_5$};
-		\node [cloud] at (3*\skip,1*\skip) (x6) {$x_6$};
-		%% Arcs
-		\path [line, thick,bend left, color=red] (x1) to (x2);
-		\path [line, thick,bend left, color=red] (x2) to (x1);
-		\path [line, thick] (x2) to (x3);
-		\path [line, thick] (x2) to (x4);
-		\path [line, thick] (x4) to (x3);
-		\path [line, thick] (x6) to (x5);
-		\path [line, thick] (x3) to (x6);
-		\path [line, thick, bend left] (x5) to (x1);
-		\end{tikzpicture}
-	\end{minipage}	
-\end{frame}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Graph density}
-\newSubSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_m4586wm4586wm458.jpeg}
-
-
-\begin{frame}{Completeness}
-	\begin{definition}[{Complete undirected graph}]
-		An undirected graph is complete if every two of its vertices are adjacent.
-	\end{definition}
-	\begin{definition}[{Complete digraph}]
-		A digraph $D(V,A)$ is complete if $\forall u,v\in V$, $uv\in A$.
-	\end{definition}
-	\vfill
-In case of simple graphs, completeness effectively means that ``information'' can be transmitted from every vertex to every other vertex quickly (1 step)
-\vfill
-It can be useful to know how far away we are from being complete
-\end{frame}
-
-\begin{frame}{Number of edges/arcs in a complete graph}
-$G=(V,E)$ undirected and simple of order $n$ has at most
-\[
-	\frac {n(n-1)}{2}
-\]
-edges, while $G=(V,A)$ directed and simple of order $n$ has at most
-\[
-	n(n-1)
-\]
-arcs 
-\end{frame}
-
-\begin{frame}{Density of a graph}
-	\begin{definition}[Density]
-		The fraction of maximum number of edges or arcs present in the graph is the \defword{density} of the graph.
-	\end{definition}
-If the graph has $p$ edges or arcs, then its density is, respectively,
-\[
-	\frac {2p}{n(n-1)}
-\]
-or 
-\[
-	\frac{p}{n(n-1)}
-\]
-\end{frame}
-
-\begin{frame}{Example of density}
-	\begin{minipage}{0.69\textwidth}
-		\def\skip{2.75cm}
-		\begin{tikzpicture}[scale = 0.85,auto,
-			cloud/.style={minimum width={width("N-1")+2pt},
-				draw, ellipse},
-			connected/.style={dotted,-}]
-			%% Vertices
-			\node [cloud] at (0,0) (x1) {$x_1$};
-			\node [cloud] at (1*\skip,1*\skip) (x2) {$x_2$};
-			\node [cloud] at (2*\skip,1*\skip) (x3) {$x_3$};
-			\node [cloud] at (1.5*\skip,0) (x4) {$x_4$};
-			\node [cloud] at (3*\skip,0*\skip) (x5) {$x_5$};
-			\node [cloud] at (3*\skip,1*\skip) (x6) {$x_6$};
-			%% Arcs
-			\path [line, thick,bend left] (x1) to (x2);
-			\path [line, thick,bend left] (x2) to (x1);
-			\path [line, thick] (x2) to (x3);
-			\path [line, thick] (x2) to (x4);
-			\path [line, thick] (x4) to (x3);
-			\path [line, thick] (x6) to (x5);
-			\path [line, thick] (x3) to (x6);
-			\path [line, thick, bend left] (x5) to (x1);
-			\end{tikzpicture}
-		\end{minipage}
-	\begin{minipage}{0.3\textwidth}
-		Graph has order 6 and thus a max of 30 arcs. 
-		Here, 8 arcs $\implies$ density 0.267
-		\vfill 
-		(26.7\% of arcs are present)	
-	\end{minipage}
-\end{frame}
-	
-
-%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Graph connectivity}
-\newSubSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_q8u933q8u933q8u9.jpeg}
-
-
-\begin{frame}{Connectedness}
-We have already seen connectedness (quasi- or strong in the oriented case)
-\vfill
-Connectedness is important in terms of characteristing graph properties, as it shows the capacity of the graph to convey information to all the members of the graph (the vertices)
-\end{frame}
-
-
-\begin{frame}
-	\begin{definition}[Connected graph]
-	A \defword{connected graph} is a graph that contains a chain $\mu[x,y]$ for each pair $x,y$ of distinct vertices
-	\end{definition}
-	\vfill
-	Denote $x\equiv y$ the relation  ``$x=y$, or $x\neq y$ and there exists a chain in $G$ connecting $x$ and $y$''. $\equiv$ is an equivalence relation since
-	\begin{enumerate}
-		\item $x\equiv y$ \hfill[reflexivity]
-		\item $x\equiv y\implies y\equiv x$ \hfill[symmetry]
-		\item $x\equiv y, y\equiv z\implies x\equiv z$ \hfill[transitivity]
-	\end{enumerate}
-	\begin{definition}[Connected component of a graph]
-	The classes of the equivalence relation $\equiv$ partition $V$ into connected sub-graphs of $G$ called \defword{connected components}
-	\end{definition}
-	\end{frame}
-	
-\begin{frame}{Articulation set} 
-	\begin{definition}[Articulation set]
-	For a connected graph, a set $A$ of vertices is called an \defword{articulation set} (or a \defword{cutset}) if the subgraph of $G$ generated by $V-A$ is not connected
-	\end{definition}
-	\vfill
-	{\tt articulation\_points(G)} in {\tt igraph} (assumes the graph is undirected, makes it so if not)
-\end{frame}
-
-	
-	\begin{frame}{Strongly connected graphs}
-		$G=(V,U)$ connected. 
-		A \defword{path of length 0} is any sequence $\{x\}$ consisting of a single vertex $x\in V$
-		\vfill
-		For $x,y\in V$, let $x\equiv y$ be the relation ``there is a path $\mu_1[x,y]$ from $x$ to $y$ as well as a path $\mu_2[y,x]$ from $y$ to $x$''. This is an equivalence relation (it is reflexive, symmetric and transitive)
-		\vfill
-		\begin{definition}[Strong components]\label{def:strong_components}
-		Sets of the form 
-		\[
-		A(x_0)=\{x:x\in V, x\equiv x_0\}	
-		\]
-		are equivalence classes; they partition $V$ and are the \defword{strongly connected components} of $G$	
-		\end{definition}
-		\vfill
-		\begin{definition}[Strongly connected graph]
-		\label{def:strongly_connected_graph}
-		$G$ \defword{strongly connected} if it has a single strong component
-		\end{definition}
-\end{frame}
-		
-
-\begin{frame}
-	\begin{definition}[Minimally connected graph]
-	$G$ is \defword{minimally connected} if it is strongly connected and removal of any arc destroys strong-connectedness
-	\end{definition}
-	\vfill
-	\begin{definition}[Contraction]
-	$G=(V,U)$. The \defword{contraction} of the set $A\subset V$ of vertices consists in replacing $A$ by a single vertex $a$ and replacing each arc into (resp. out of) $A$ by an arc with same index into (resp. out of) $a$
-	\end{definition}
-\end{frame}
-	
-		
-\begin{frame}{Quasi-strong connectedness}
-	\begin{definition}[Quasi-strong connectedness]
-	$G$ \defword{quasi-strongly connected} if $\forall x,y\in V$, exists $z\in V$ (denoted $z(x,y)$ to emphasize dependence on $x,y$) from which there is a path to $x$ and a path to $y$
-	\end{definition}
-	\vfill
-	Strongly connected $\implies$ quasi-strongly connected (take $z(x,y)=x$); converse not true
-	\vfill
-	Quasi-strongly connected $\implies$ connected
-	\vfill
-	\begin{lemma}
-	$G=(V,U)$ has a root $\iff$ $G$ quasi-strongly connected
-	\end{lemma}
-\end{frame}
-
-\begin{frame}{Weak-connectedness}
-\begin{definition}[Weakly connected graph]
-	$G=(V,U)$ \defword{weakly connected} if $G=(V,E)$ connected, where $E$ is obtained from $U$ by ignoring the direction of arcs
-\end{definition}
-\vfill
-	\begin{minipage}{0.4\textwidth}
-		\def\skip{2.75cm}
-		\begin{tikzpicture}[scale=0.5,auto,
-			cloud/.style={minimum width={width("N-1")+2pt},
-				draw, ellipse},
-			connected/.style={dotted,-}]
-			%% Vertices
-			\node [cloud] at (0,0) (x1) {$x_1$};
-			\node [cloud] at (1*\skip,1*\skip) (x2) {$x_2$};
-			\node [cloud] at (2*\skip,1*\skip) (x3) {$x_3$};
-			\node [cloud] at (1.5*\skip,0) (x4) {$x_4$};
-			\node [cloud] at (3*\skip,0*\skip) (x5) {$x_5$};
-			\node [cloud] at (3*\skip,1*\skip) (x6) {$x_6$};
-			%% Arcs
-			\path [line, thick,bend left] (x1) to (x2);
-			\path [line, thick,bend left] (x2) to (x1);
-			\path [line, thick] (x2) to (x3);
-			\path [line, thick] (x2) to (x4);
-			\path [line, thick] (x4) to (x3);
-			\path [line, thick] (x6) to (x5);
-			\path [line, thick] (x3) to (x6);
-			\end{tikzpicture}
-		\end{minipage}
-		$\implies$
-	\begin{minipage}{0.4\textwidth}
-		\def\skip{2.75cm}
-		\begin{tikzpicture}[scale=0.5,auto,
-			cloud/.style={minimum width={width("N-1")+2pt},
-				draw, ellipse},
-			connected/.style={dotted,-}]
-			%% Vertices
-			\node [cloud] at (0,0) (x1) {$x_1$};
-			\node [cloud] at (1*\skip,1*\skip) (x2) {$x_2$};
-			\node [cloud] at (2*\skip,1*\skip) (x3) {$x_3$};
-			\node [cloud] at (1.5*\skip,0) (x4) {$x_4$};
-			\node [cloud] at (3*\skip,0*\skip) (x5) {$x_5$};
-			\node [cloud] at (3*\skip,1*\skip) (x6) {$x_6$};
-			%% Arcs
-			\draw [thick] (x1) --  (x2);
-			\draw [thick] (x2) --  (x3);
-			\draw [thick] (x2) --  (x4);
-			\draw [thick] (x3) --  (x6);
-			\draw [thick] (x4) --  (x3);
-			\draw [thick] (x6) --  (x5);
-			\end{tikzpicture}
-		\end{minipage}
-\end{frame}
-
-
-\begin{frame}{Weak components}
-Define for $x,y\in V$ the relation $x\equiv y$ as ``$x=y$ or $x\neq y$ and there is a chain in $G$ connecting $x$ and $y$'' [like for components in an undirected graph, except the graph is directed here]
-\vfill
-This defines an equivalence relation
-\begin{definition}[Weak components]
-Sets of the form 
-\[
-	A(x_0)=\{x:x\in V, x\equiv x_0\}
-\]
-are equivalence classes partitioning $V$ into the \defword{weakly connected components} of $G$
-\end{definition}
-\vfill
-$G=(V,U)$ is weakly connected if there is a single weak component
-\end{frame}
-
-
-\begin{frame}{Components in {\tt igraph}}
-\begin{itemize}
-	\item {\tt is\_connected} decides whether the graph is weakly or strongly connected
-	\item {\tt components} finds the maximal (weakly or strongly) connected components of a graph
-	\item {\tt count\_components} does almost the same as components but returns only the number of clusters found instead of returning the actual clusters
-	\item {\tt component\_distribution} creates a histogram for the maximal connected component sizes
-	\item {\tt decompose} creates a separate graph for each component of a graph
-	\item {\tt subcomponent} finds all vertices reachable from a given vertex, or the opposite: all vertices from which a given vertex is reachable via a directed path
-\end{itemize}
-\end{frame}
-	
-%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Cliques}
-\newSubSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
-
 
 \begin{frame}{Cliques}
 	\begin{definition}[Clique in undirected graphs]
@@ -6069,20 +3204,7 @@ $G=(V,U)$ is weakly connected if there is a single weak component
 \end{frame}
 
 
-%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%
-\Ssection{Classification}{FIGS-slides-admin/Gemini_Generated_Image_c06eixc06eixc06e.jpeg}
 
-\begin{frame}{Linearly separable points}
-    Let $X_1$ and $X_2$ be two sets of points in $\IR^p$ 
-    \vfill
-    Then $X_1$ and $X_2$ are \textbf{linearly separable} if there exist $w_{1}, w_{2},..,w_{p}, k\in\IR$ such that 
-    \begin{itemize}
-        \item every point $x \in X_1$ satisfies $\sum^{p}_{i=1} w_{i}x_{i} > k$ 
-        \item every point $x \in X_2$ satisfies $\sum^{p}_{i=1} w_{i}x_{i} < k$
-    \end{itemize}
-    where $x_{i}$ is the $i$th component of $x$
-\end{frame}
 
 
 \end{document}
