@@ -1562,21 +1562,6 @@ Answers to our remaining questions:
 %%%%%%%%%%%%%%%%%%%%
 \Ssection{Graph theory}{FIGS-slides-admin/Gemini_Generated_Image_Kiki-bof.png}
 
-\begin{frame}{Graphs vs digraphs vs multigraphs vs multidigraphs vs ...}
-	Name-wise and notation-wise, this domain is a bit of a mess
-	\vfill
-	\begin{itemize}
-		\item The vertex set $V$ is essentially the only constant
-		\item \emph{Undirected graph} $G=(V,E)$, where $E$ are the \emph{edges}
-		\item \emph{Undirected multigraph} $G_M=(V,E)$
-		\item \emph{Directed graph} (or \emph{digraph}) $G=(V,A)$, where $A$ are the \emph{arcs}
-		\item \emph{Directed multigraph} (or \emph{multidigraph}) $G_M=(V,A)$
-		\item Any of the above is called a \emph{graph} and is denoted $G=(V,X)$, when we seek generality
-	\end{itemize}
-	\vfill
-And just to confuse the whole thing more: we often say \emph{graph} for \emph{unoriented graph}
-\end{frame}
-
 
 \begin{frame}\frametitle{Binary relation}
 	\begin{definition}[Binary relation]
@@ -2229,43 +2214,6 @@ Another name is \defword{weighted} (di)graph
 
 
 
-
-
-<<setup-example-graph,echo=FALSE>>=
-# 12-vertex circulant digraph with steps +1 and +3 (mod 12)
-n1 <- 12
-v1 <- 1:n1
-succ1 <- (v1 %% n1) + 1                      # i -> i+1
-succ3 <- ((v1 + 3 - 1) %% n1) + 1            # i -> i+3
-E1 <- as.vector(rbind(v1, succ1))
-E3 <- as.vector(rbind(v1, succ3))
-G1 <- make_empty_graph(n = n1, directed = TRUE) |>
-  add_edges(c(E1, E3))
-# 8-vertex De Bruijn Digraph (strongly connected)
-G2 <- make_de_bruijn_graph(m = 2, n = 3)
-# Disjoint union (to renumber vertices)
-G  <- disjoint_union(G1, G2)
-# One-way link from the first SCC to the second
-G <- add_edges(G, c(5, 15))
-@
-
-<<export-example-graph, echo=FALSE, include=FALSE, message=FALSE, warning=FALSE>>=
-set.seed(2740)  # for reproducible layout
-lay <- layout_with_fr(G)
-plot(
-	G,
-	layout = lay,
-	vertex.size = 12,
-	vertex.color = "gray85",
-	vertex.frame.color = "gray40",
-	vertex.label = as.character(seq_len(vcount(G))),
-	vertex.label.cex = 0.8,
-	vertex.label.color = "black",
-	edge.arrow.size = 0.5,
-	edge.color = "gray40",
-	asp = 0
-)
-@
 
 %%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%

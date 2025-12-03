@@ -1604,21 +1604,6 @@ Answers to our remaining questions:
 %%%%%%%%%%%%%%%%%%%%
 \Ssection{Graph theory}{FIGS-slides-admin/Gemini_Generated_Image_Kiki-bof.png}
 
-\begin{frame}{Graphs vs digraphs vs multigraphs vs multidigraphs vs ...}
-	Name-wise and notation-wise, this domain is a bit of a mess
-	\vfill
-	\begin{itemize}
-		\item The vertex set $V$ is essentially the only constant
-		\item \emph{Undirected graph} $G=(V,E)$, where $E$ are the \emph{edges}
-		\item \emph{Undirected multigraph} $G_M=(V,E)$
-		\item \emph{Directed graph} (or \emph{digraph}) $G=(V,A)$, where $A$ are the \emph{arcs}
-		\item \emph{Directed multigraph} (or \emph{multidigraph}) $G_M=(V,A)$
-		\item Any of the above is called a \emph{graph} and is denoted $G=(V,X)$, when we seek generality
-	\end{itemize}
-	\vfill
-And just to confuse the whole thing more: we often say \emph{graph} for \emph{unoriented graph}
-\end{frame}
-
 
 \begin{frame}\frametitle{Binary relation}
 	\begin{definition}[Binary relation]
@@ -2272,11 +2257,6 @@ Another name is \defword{weighted} (di)graph
 
 
 
-
-
-
-
-
 %%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%
@@ -2548,28 +2528,32 @@ A connected graph $G=(V,E)$ is orientable $\iff$ $G$ contains no bridges
 \begin{alltt}
 \hlcom{# Adjacency matrix (directed)}
 \hldef{M} \hlkwb{<-} \hlkwd{as.matrix}\hldef{(}\hlkwd{as_adjacency_matrix}\hldef{(G,} \hlkwc{sparse} \hldef{=} \hlnum{FALSE}\hldef{))}
+\end{alltt}
 
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'as.matrix': object 'G' not found}}\begin{alltt}
 \hlcom{# Column sums = indegrees, row sums = outdegrees (directed case)}
 \hlkwd{all.equal}\hldef{(}\hlkwd{rowSums}\hldef{(M),} \hlkwd{degree}\hldef{(G,} \hlkwc{mode} \hldef{=} \hlsng{"out"}\hldef{))}
 \end{alltt}
-\begin{verbatim}
-## [1] TRUE
-\end{verbatim}
-\begin{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in h(simpleError(msg, call)): error in evaluating the argument 'target' in selecting a method for function 'all.equal': error in evaluating the argument 'x' in selecting a method for function 'rowSums': object 'M' not found}}\begin{alltt}
 \hlkwd{all.equal}\hldef{(}\hlkwd{colSums}\hldef{(M),} \hlkwd{degree}\hldef{(G,} \hlkwc{mode} \hldef{=} \hlsng{"in"}\hldef{))}
 \end{alltt}
-\begin{verbatim}
-## [1] TRUE
-\end{verbatim}
-\begin{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in h(simpleError(msg, call)): error in evaluating the argument 'target' in selecting a method for function 'all.equal': error in evaluating the argument 'x' in selecting a method for function 'colSums': object 'M' not found}}\begin{alltt}
 \hlcom{# Walks of length 3 from 1 to 15 via M^3}
 \hldef{M3} \hlkwb{<-} \hldef{M} \hlopt{%*%} \hldef{M} \hlopt{%*%} \hldef{M}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: object 'M' not found}}\begin{alltt}
 \hldef{M3[}\hlnum{1}\hldef{,} \hlnum{15}\hldef{]}
 \end{alltt}
-\begin{verbatim}
-## [1] 2
-\end{verbatim}
-\end{kframe}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: object 'M3' not found}}\end{kframe}
 \end{knitrout}
 
 	
