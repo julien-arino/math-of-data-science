@@ -30,6 +30,8 @@ Feel free to use the material in these slides or in the folders. If you find thi
 {% endfor %}
 </ul>
 
+The file with [all the slides](https://julien-arino.github.io/math-of-data-science/SLIDES/all-slides.pdf)
+
 ### Old slides
 The following are the slides I used in previous years. I am including them until I have completed the change to the new slide set.
 <ul>
