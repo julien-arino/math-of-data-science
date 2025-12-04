@@ -263,7 +263,7 @@ In mathematics, or=and/or in common parlance. We also have an \textbf{exclusive 
 		Let $\ba=(a_1,\ldots,a_n)\in \IR^n$, $\bb=(b_1,\ldots,b_n)\in\IR^n$. 
 		The \defword{dot product} of $\ba$ and $\bb$ is the \textbf{scalar}
 		\[
-		\ba\bullet \bb=\sum_{i=1}^n a_ib_i=a_1b_1+\cdots+a_nb_n
+		\ba\bullet \bb=\sum_{i=1}^n a_ib_i=a_1b_1+\cdots+a_nb_n=\ba^T\bb
 		\]
 	\end{definition}
 \end{frame}
@@ -291,9 +291,9 @@ In mathematics, or=and/or in common parlance. We also have an \textbf{exclusive 
 		\]
 	\end{theorem}
 	\vfill
-	\begin{theorem}
-		$\ba$ and $\bb$ are orthogonal if and only if $\ba\bullet \bb=0$.
-	\end{theorem}
+	\begin{importanttheorem}[Necessary and sufficient condition for orthogonality]
+		$\ba,\bb\in\IR^n$ are orthogonal $\iff$ $\ba\bullet \bb=0$.
+	\end{importanttheorem}
 \end{frame}
 
 \begin{frame}
@@ -526,9 +526,9 @@ $A,B\in\M_n$ with $A\sim B$. Then
 
 
 \begin{frame}{Diagonalisation}
-\begin{definition}[Diagonalisability]
+\begin{minordefinition}[Diagonalisability]
 $A\in\M_n$ is \defword{diagonalisable} if $\exists D\in\M_n$ diagonal s.t. $A\sim D$
-\end{definition}
+\end{minordefinition}
 \vfill
 In other words, $A\in\M_n$ is diagonalisable if there exists a diagonal matrix $D\in\M_n$ and a nonsingular matrix $P\in\M_n$ s.t. $P^{-1}AP=D$
 \vfill
@@ -576,14 +576,14 @@ For $P^{-1}AP=D$: in $P$, put the linearly independent eigenvectors as columns a
 		The span of a set of vectors in $V$ is the smallest subspace of $V$ containing all the vectors in the set
 	\end{theorem}
 	\vfill
-	\begin{definition}[Set of vectors spanning a space]
+	\begin{minordefinition}[Set of vectors spanning a space]
 		If $\Span(\bv_1,\ldots,\bv_k)=V$, we say $\bv_1,\ldots,\bv_k$ \defword{spans} $V$
-	\end{definition}
+	\end{minordefinition}
 	\vfill
-	\begin{definition}[Dimension of a vector space]
+	\begin{minordefinition}[Dimension of a vector space]
 		A vector space $V$ is \defword{finite-dimensional} if some set of vectors in it spans $V$.
 		A vector space $V$ is \defword{infinite-dimensional} if it is not finite-dimensional
-	\end{definition}
+	\end{minordefinition}
 \end{frame}
 
 
@@ -906,7 +906,7 @@ Let $Q\in\M_n$. TFAE
 \end{enumerate}
 \end{theorem}
 \vfill
-\begin{importanttheorem}\label{th:properties_orthogonal_matrices}
+\begin{theorem}\label{th:properties_orthogonal_matrices}
 Let $Q\in\M_n$ be orthogonal. Then
 \begin{enumerate}
 \item The rows of $Q$ form an orthonormal set
@@ -915,7 +915,7 @@ Let $Q\in\M_n$ be orthogonal. Then
 \item $\forall\lambda\in\sigma(Q)$, $|\lambda|=1$
 \item If $Q_2\in\M_n$ also orthogonal, then $QQ_2$ orthogonal
 \end{enumerate}
-\end{importanttheorem}
+\end{theorem}
 \end{frame}
 
 
@@ -1150,13 +1150,13 @@ If working in $\IR^n$, this is quite useful with $\E$ the standard basis of $\IR
 
 
 \begin{frame}
-\begin{definition}[Variance]
+\begin{minordefinition}[Variance]
 Let $X$ be a random variable. The \textbf{variance} of $X$ is given by
 \[
 \Var X = E\left[\left(X-E(X)\right)^2\right]
 \]
 where $E$ is the expected value
-\end{definition}
+\end{minordefinition}
 \vfill
 \begin{definition}[Covariance]
 Let $X,Y$ be jointly distributed random variables. The \textbf{covariance} of $X$ and $Y$ is given by
@@ -1169,7 +1169,7 @@ Note that $\cov(X,X)=E\left[\left(X-E(X)\right)^2\right] = \Var X$
 \end{frame}
 
 \begin{frame}
-\begin{definition}[Unbiased estimators of the mean and variance]
+\begin{minordefinition}[Unbiased estimators of the mean and variance]
 Let $x_1,\ldots,x_n$ be data points (the \emph{sample}) and 
 \[
 \bar x = \frac 1n \sum_{i=1}^n x_i
@@ -1178,11 +1178,11 @@ be the \textbf{mean} of the data. An unbiased estimator of the variance of the s
 \[
 \sigma^2 = \frac{1}{n-1}\sum_{i=1}^n (x_i-\bar x)^2
 \]
-\end{definition}
+\end{minordefinition}
 \end{frame}
 
 \begin{frame}
-\begin{definition}[Unbiased estimator of the covariance]
+\begin{minordefinition}[Unbiased estimator of the covariance]
 Let $(x_1,y_1),\ldots,(x_n,y_n)$ be data points,
 \[
 \bar x = \frac 1n \sum_{i=1}^n x_i
@@ -1193,7 +1193,7 @@ be the means of the data. An estimator of the covariance of the sample is
 \[
 \cov(x,y) = \frac{1}{n}\sum_{i=1}^n (x_i-\bar x)(y_i-\bar y)
 \]
-\end{definition}
+\end{minordefinition}
 \end{frame}
 
 \begin{frame}{The covariance matrix (we usually have more than 2 variables)}
@@ -1287,8 +1287,8 @@ Sometimes you will see $S_X=1/(n-1)XX^T$. This is for matrices with observations
 \Ssection{Markov chains}{FIGS-slides-admin/Gemini_Generated_Image_Kiki-bof.png}
 
 \begin{frame}
-\begin{definition}[Markov chain]
-An experiment with finite number of possible outcomes $S_1,\ldots,S_n$ is repeated. The sequence of outcomes is a \textbf{Markov chain} if there is a set of $n^2$ numbers $\{p_{ij}\}$ such that the conditional probability of outcome $S_i$ on any experiment given outcome $S_j$ on the previous experiment is $p_{ij}$, i.e., for $1\leq i,j\leq n$, $t=1,\ldots$,
+\begin{definition}[Discrete-time Markov chain]
+An experiment with finite number of possible outcomes $S_1,\ldots,S_n$ is repeated. The sequence of outcomes is a \textbf{discrete-time Markov chain} if there is a set of $n^2$ numbers $\{p_{ij}\}$ such that the conditional probability of outcome $S_i$ on any experiment given outcome $S_j$ on the previous experiment is $p_{ij}$, i.e., for $1\leq i,j\leq n$, $t=1,\ldots$,
 \[
 	p_{ij}=\IP(S_i\textrm{ on experiment }t+1\;|\;
 	S_j\textrm{ on experiment }t)	
@@ -1348,24 +1348,28 @@ p_{r1} & p_{r2} & \cdots & p_{rr}
 
 
 \begin{frame}{Stochastic matrices}
-\begin{definition}[Stochastic matrix]
+\begin{definition}[Stochastic matrices]
 The nonnegative $n\times n$ matrix $M$ is \textbf{row-stochastic} (resp. \textbf{column-stochastic}) if $\sum_{j=1}^na_{ij}=1$ for all $i=1,\dots,n$ (resp. $\sum_{i=1}^na_{ij}=1$ for all $j=1,\dots,n$)
+\vskip0.5cm
+$M$ is \textbf{stochastic} if it is row- or column- stochastic
+\vskip0.5cm
+If it is both row- and column-stochastic, the matrix is \textbf{doubly stochastic}
 \end{definition}
 \vfill
-We often say \textbf{stochastic} and let the context determine whether we mean row- or column-stochastic
-\vfill
-If it is both row- and column-stochastic, the matrix is \textbf{doubly stochastic}
-\vfill
-\begin{theorem}\label{th:spectrum_stochastic_matrix}
-Let $M\in\M_n$ be a stochastic matrix. Then all eigenvalues $\lambda$ of $M$ are such that $|\lambda|\leq 1$.
-\end{theorem}
+\begin{importanttheorem}\label{th:spectrum_stochastic_matrix}
+Let $M\in\M_n$ be a stochastic matrix. Then all eigenvalues $\lambda$ of $M$ are such that $|\lambda|\leq 1$
+\end{importanttheorem}
 \end{frame}
 
 \begin{frame}
 \begin{importanttheorem}
 \label{th:one-is-evalue-stochastic-matrix}
-Let $M\in\M_n$ be a stochastic matrix. $\lambda =1$ is an eigenvalue of $M$. 
-If $M$ is row-stochastic, the eigenvalue 1 is associated to the column vector of ones (a right eigenvector of $M$); if $M$ is column-stochastic, the eigenvalue 1 is associated to the row vector of ones (a left eigenvector of $M$)
+Let $M\in\M_n$ be a stochastic matrix. Then
+\begin{itemize}
+	\item $\lambda =1$ is an eigenvalue of $M$
+	\item If $M$ is row-stochastic, the eigenvalue 1 is associated to the column vector of ones (a right eigenvector of $M$)
+	\item If $M$ is column-stochastic, the eigenvalue 1 is associated to the row vector of ones (a left eigenvector of $M$)
+\end{itemize}
 \end{importanttheorem}
 \end{frame}
 
@@ -1415,11 +1419,9 @@ if this limit exists
 If $M,N$ are nonsingular stochastic matrices, then $MN$ is a stochastic matrix
 \end{theorem}
 \vfill
-\begin{corollary}
+\begin{importanttheorem}
 If $M$ is a nonsingular stochastic matrix, then for any $k\in\IN$, $M^k$ is a stochastic matrix
-\end{corollary}
-\vfill
-So $P^t$ is stochastic
+\end{importanttheorem}
 \end{frame}
 
 
@@ -1432,29 +1434,10 @@ A \textbf{regular} Markov chain has $P^k$ (entry-wise) positive for some integer
 A nonnegative matrix $M$ is \textbf{primitive} if, and only if, there is an integer $k>0$ such that $M^k$ is positive.
 \end{definition}
 \vfill
-\begin{theorem}
+\begin{importanttheorem}
 Markov chain regular $\iff$ transition matrix $P$ primitive
-\end{theorem}
+\end{importanttheorem}
 \end{frame}
-
-\begin{frame}{What is a directed graph?}
-\begin{definition}[Digraph]
-A \defword{directed graph} (or \textbf{digraph}) $G$ is a pair $(V, A)$ where:
-    \begin{itemize}
-        \item $V$ is a finite set of elements called \defword{vertices} or \textbf{nodes}
-        \item $A \subseteq V \times V$ is a set of ordered pairs of vertices called \defword{arcs} or \textbf{directed edges}
-    \end{itemize}
-\end{definition}
-    \vfill
-\begin{definition}[Arc]
-    An \defword{arc} $a = (u, v) \in A$ represents a connection \textbf{from} vertex $u$ \textbf{to} vertex $v$
-    \begin{itemize}
-        \item $u$ is the \textbf{tail} of the arc
-        \item $v$ is the \textbf{head} of the arc
-    \end{itemize}
-\end{definition}
-\end{frame}
-
 
 \begin{frame}
 \begin{definition}[Reducible/irrecible matrix]
@@ -1478,88 +1461,49 @@ $P\in\M_n$ irreducible $\iff$ $\G(P)$ strongly connected
 \end{frame}
 
 \begin{frame}{A sufficient condition for primitivity}
-\begin{theorem}
+\begin{importanttheorem}
 Let $M\in\M_n$ be a nonnegative matrix. If $\G(M)$ is strongly connected and at least one of the diagonal entries $m_{ii}$ of $M$ is positive, then $M$ is primitive
-\end{theorem}
+\end{importanttheorem}
 \end{frame}
 
-\begin{frame}{Behaviour of a regular MC}
-\begin{theorem}
+\begin{frame}{Behaviour of a regular Markov chain}
+\begin{importanttheorem}
 If $P$ is the transition matrix of a regular Markov chain, then
 \begin{enumerate}
 \item the powers $P^t$ approach a stochastic matrix $W$
-\item each column of $W$ is the same (column) vector $w=(w_1,\ldots,w_n)^T$
-\item the components of $w$ are positive
+\item each column of $W$ is the same (column) vector $\bw=(w_1,\ldots,w_n)^T$
+\item the components of $\bw$ are positive
+\item $\bw$ is found by solving $\bw=P\bw$, i.e., $\bw$ is a (right) eigenvector of $P$ corresponding to the eigenvalue 1
 \end{enumerate}
-\end{theorem}
+\end{importanttheorem}
 \vfill
-So if the Markov chain is regular
+Recall that of all the $\bw$, you must pick the one such that
 \[
-\lim_{t\rightarrow +\infty}p(t)=\lim_{t\rightarrow +\infty}P^tp(0)
-=Wp(0)
+\|\bw\|_1=\sum_{i=1}^nb_i=1
 \]
 \end{frame}
 
-
-\begin{frame}{Computing $W$}
-Recall that since $P$ is a stochastic matrix, 1 is an eigenvalue of $P$. As $P$ is column stochastic, 1 is associated to the left (row) eigenvector $\11$
-\vfill
-Now, if $\bp(t)$ converges, then $\bp(t+1)=P\bp(t)$ at the limit, so $\bw=\lim_{t\to\infty}\bp(t)$ is a \textbf{fixed point} of the system. Replacing $\bp$ with its limit, we have
-\[
-\bw=P\bw
-\]
-\vfill
-Solving for $\bw$ thus amounts to finding $\bw$ as a (right) eigenvector corresponding to the eigenvalue 1
-\end{frame}
-
-\begin{frame}{Remember to normalise}
-$\bw$ might have to be normalized since you want a probability vector
-\vfill
-Check that the norm $\|\bw\|_1$ defined by
-\[
-\|\bw\|_1=|w_1|+\cdots+|w_n|=w_1+\cdots+w_n
-\]
-(since $\bw\geq\b0$) is equal to one
-\vfill
-If not, use
-\[
-\tilde\bw = \frac{\bw}{\|\bw\|_1}
-\]
-\end{frame}
 
 \begin{frame}{Absorbing Markov chains}
 \begin{definition}[Absorbing state]
-A state $S_i$ in a Markov chain is \textbf{absorbing} if whenever it occurs on the $t^{th}$ generation of the experiment, it then occurs on every subsequent step. In other words, $S_i$ is absorbing if $p_{ii}=1$ and $p_{ij}=0$ for $i\neq j$
+A state $S_i$ in a Markov chain is an \defword{absorbing state} if whenever it occurs on the $t^{th}$ generation of the experiment, it then occurs on every subsequent step. In other words, $S_i$ is absorbing if $p_{ii}=1$ and $p_{ji}=0$ for $j\neq i$
 \end{definition}
 \vfill
 \begin{definition}[Absorbing chain]
-A Markov chain is \textbf{absorbing} if it has at least one absorbing state, and if from every state it is possible to go to an absorbing state.
-In an absorbing Markov chain, a state that is not absorbing is called \textbf{transient}
+A Markov chain is \defword{absorbing} if it has at least one absorbing state, and if from every state it is possible to go to an absorbing state.
+In an absorbing Markov chain, a state that is not absorbing is called a \defword{transient state}
 \end{definition}
 \end{frame}
 
 
-\begin{frame}{Questions about absorbing chains}
-\begin{enumerate}
-\item Does the process eventually reach an absorbing state?
-\item What is the average number of steps spent in a transient state, if starting in a transient state?
-\item What is the average number of steps before entering an absorbing state?
-\item What is the probability of being absorbed by a given absorbing state, when there are more than one, when starting in a given transient state?
-\end{enumerate}
-\end{frame}
-
-\begin{frame}
-The answer to the first question (``Does the process eventually reach an absorbing state?'') is given by the following result
-\vfill
-\begin{theorem}
+\begin{frame}{Absorbing chains are always absorbed..}
+\begin{importanttheorem}
 In an absorbing Markov chain, the probability of reaching an absorbing state is 1
-\end{theorem}
+\end{importanttheorem}
 \end{frame}
 
-\begin{frame}
-To answer the other questions, write the transition matrix in \textbf{standard} form
-\vfill
-For an absorbing chain with $k$ absorbing states and $r-k$ transient states, write transition matrix as
+\begin{frame}[red]{Standard form of an absorbing Markov chain}
+For an absorbing chain with $k$ absorbing states and $r-k$ transient states, write transition matrix in \defword{standard form}
 \[
 P=\begin{pmatrix}
 \mathbb{I}_k & R \\
@@ -1577,24 +1521,20 @@ Transient states & $\b0$ & $Q$
 with $\mathbb{I}_k$ the $k\times k$ identity matrix, $\mathbf{0}$ an $(r-k)\times k$ matrix of zeros, $R$ an $k\times (r-k)$ matrix and $Q$ an $(r-k)\times(r-k)$ matrix.
 The matrix $\mathbb{I}_{r-k}-Q$ is invertible. Let
 \begin{itemize}
-\item $N=(\mathbb{I}_{r-k}-Q)^{-1}$ the \textbf{fundamental matrix} of the MC
+\item $N=(\mathbb{I}_{r-k}-Q)^{-1}$ the \defword{fundamental matrix} of the MC
 \item $T_i$ sum of the entries on column $i$ of $N$
 \item $B=RN$
 \end{itemize}
 \end{frame}
 
 \begin{frame}
-Answers to our remaining questions:
-\vfill
-\begin{enumerate}
-\setcounter{enumi}{1}
+\begin{itemize}
 \item $N_{ij}$ average number of times the process is in the $i$th transient state if it starts in the $j$th transient state
 \vfill
 \item $T_i$ average number of steps before the process enters an absorbing state if it starts in the $i$th transient state
 \vfill
 \item $B_{ij}$ probability of eventually entering the $i$th absorbing state if the process starts in the $j$th transient state
-\end{enumerate}
-\vfill
+\end{itemize}
 \end{frame}
 
 
@@ -1606,18 +1546,18 @@ Answers to our remaining questions:
 
 
 \begin{frame}\frametitle{Binary relation}
-	\begin{definition}[Binary relation]
+	\begin{minordefinition}[Binary relation]
 	\begin{itemize}
 	\item A \defword{binary relation} is an arbitrary association of elements of one set with elements of another (maybe the same) set
 	\item  A binary relation over the sets $X$ and $Y$ is defined as a subset of the Cartesian product $X\times Y =\{(x,y)| x\in X , y\in Y\}$
 	\item $(x,y)\in R$ is read ``$x$ is $R$-related to $y$'' and is denoted $xRy$
 	\item If $(x,y)\not\in R$, we write ``not $x R y$'' or $x\cancel{R} y$
 	\end{itemize}
-	\end{definition}
+	\end{minordefinition}
 \end{frame}
 	
 \begin{frame}
-	\begin{definition}[Properties of binary relations]
+	\begin{minordefinition}[Properties of binary relations]
 		A binary relation $R$ over a set $X$ is
 	\begin{itemize}
 	\item \defword{Reflexive} if $\forall x\in X$, $xRx$
@@ -1628,13 +1568,18 @@ Answers to our remaining questions:
 	\item \defword{Transitive} if $xRy$ and $yRz$ $\Rightarrow$  $xRz$
 	\item \defword{Total} (or \defword{complete}) if $\forall x, y\in X$, $x R y$ or $y R x$
 	\end{itemize}
-	\end{definition}
+	\end{minordefinition}
 \end{frame}
 	
 	
 \begin{frame} 
 	\begin{definition}[Equivalence relation]
-	 A relation that is reflexive ($\forall x\in X$, $xRx$), symmetric ($xRy \Rightarrow yRx$) and transitive ($xRy$ and $yRz$ $\Rightarrow$  $xRz$) is an \defword{equivalence relation}
+	 An \defword{equivalence relation} is a binary relation that is 
+	 \begin{itemize}
+	 	\item reflexive ($\forall x\in X$, $xRx$)
+	 	\item symmetric ($xRy \Rightarrow yRx$) 
+	 	\item transitive ($xRy$ and $yRz$ $\Rightarrow$  $xRz$)
+	 \end{itemize}
 	\end{definition}
 	\vfill
 	\begin{minordefinition}[Partial order]
@@ -1778,26 +1723,34 @@ If $G_1$ and $G_2$ are isomorphic graphs, then the degrees of vertices of $G_1$ 
 \end{frame}
 
 \begin{frame}\frametitle{Subgraph}
-\begin{definition}[Subgraph]
+\begin{minordefinition}[Subgraph]
 Let $G=(V,E)$ be a graph.
 A graph $H=(V(H),E(H))$ is a \defword{subgraph} of $G$ if $V(H)\subseteq V$ and $E(H)\subseteq E$
-\end{definition}
+\end{minordefinition}
 \end{frame}
 
-\begin{frame}
+\begin{frame}{Unions and intersections of graphs}
 Let $G_1=(V_1,E_1)$ and $G_2=(V_2,E_2)$ be two graphs
-\begin{definition}[{Union of $G_1$ and $G_2$}]
+\vfill
+\begin{minordefinition}[Union of two graphs]
 $G_1\cup G_2=(V_1\cup V_2,E_1\cup E_2)$
-\end{definition}
-\begin{definition}[{Intersection of $G_1$ and $G_2$}]
+\end{minordefinition}
+\vfill
+\begin{minordefinition}[Intersection of two graphs]
 $G_1\cap G_2=(V_1\cap V_2,E_1\cap E_2)$
-\end{definition}
-\begin{definition}[{Disjoint graphs}]
+\end{minordefinition}
+\end{frame}
+
+\begin{frame}\frametitle{Disjoint graphs and complement of a graph}
+Let $G_1=(V_1,E_1)$ and $G_2=(V_2,E_2)$ be two graphs
+\vfill
+\begin{minordefinition}[Disjoint graphs]
 If $G_1\cap G_2=(\emptyset,\emptyset)= \emptyset$ (empty graph) then $G_1$ and $G_2$ are \defword{disjoint}
-\end{definition}
-\begin{definition}[{Complement of $G_1$}]
+\end{minordefinition}
+\vfill
+\begin{minordefinition}[Complement of a graph]
 The \defword{complement} $\bar G_1$ of $G_1$ is the graph on $V_1$, with the edge set $E(\bar G_1)=[V_1]^2\backslash E_1$ ($e\in E(\bar G_1)$ $\iff$ $e\not \in E_1$)
-\end{definition}
+\end{minordefinition}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%
@@ -1816,9 +1769,9 @@ A graph is \defword{connected}\index{connected graph} if every two vertices of $
 \end{frame}
 
 \begin{frame}\frametitle{A necessary condition for connectedness}
-	\begin{theorem}
+	\begin{importanttheorem}
 		A connected graph on $p$ vertices has at least $p-1$ edges
-	\end{theorem}
+	\end{importanttheorem}
 	\vfill
 	In other words, a connected graph $G$ of order $p$ has $\text{size}(G)\geq p-1$
 \end{frame}
@@ -1863,16 +1816,9 @@ An edge $e$ in a connected graph $G$ is a \defword{bridge} if $G-e$ is disconnec
 \begin{theorem}
 Let $G$ be a connected graph. An edge $e$ of $G$ is a bridge of $G$ $\iff$ $e$ does not lie on any cycle of $G$
 \end{theorem}
-(For \emph{cycle}, see Definition~\ref{def:cycle} later)
 \end{frame}
 
  
-
-
-%\begin{frame}\frametitle{Undirected network}
-%\begin{definition}{Definition}
-%A undirected network is a graph together with a function which maps the edge set into the set of real number.
-%\end{definition}\end{frame}
 
 
 
@@ -1973,39 +1919,37 @@ A graph containing a Hamiltonian cycle is a \defword{Hamiltonian graph}
 A graph is complete if every two of its vertices are adjacent
 \end{definition}
 \vfill
-\begin{definition}[$n$-clique]
+\begin{minordefinition}[$n$-clique]
 	A simple, complete graph on $n$ vertices is called an $n$-\defword{clique} and is often denoted $K_n$
-\end{definition}
-\vfill
-Note that a complete graph of order $p$ is $(p-1)$-regular
+\end{minordefinition}
 \end{frame}
 
 \begin{frame}\frametitle{Bipartite graph}
-	\begin{definition}[Bipartite graph]
+	\begin{minordefinition}[Bipartite graph]
 		A graph is \defword{bipartite} if its vertices can be partitioned into two sets $V_1$ and $V_2$, such that no two vertices in the same set are adjacent.
 		This graph may be written $G=(V_1,V_2,E)$
-	\end{definition}
+	\end{minordefinition}
 	\vfill
-	\begin{definition}[Complete bipartite graph]
+	\begin{minordefinition}[Complete bipartite graph]
 		A bipartite graph in which every two vertices from the 2 different partitions are adjacent is called a \defword{complete bipartite graph}
 		\vskip0.2cm
 		We often denote $K_{p,q}$ a simple, complete bipartite graph with $|V_1|=p$ and $|V_2|=q$
-	\end{definition}
+	\end{minordefinition}
 \end{frame}
 
 \begin{frame}\frametitle{Some specific graphs}
-	\begin{definition}[{Tree}]
+	\begin{minordefinition}[{Tree}]
 		Any connected graph that has no cycles is a \defword{tree}
-	\end{definition}
-	\begin{definition}[{Cycle $C_n$}]
+	\end{minordefinition}
+	\begin{minordefinition}[{Cycle $C_n$}]
 		For $n\geq 3$, the \defword{cycle} $C_n$ is a connected graph of order $n$ that is a cycle on $n$ vertices
-	\end{definition}
-	\begin{definition}[{Path $P_n$}]
+	\end{minordefinition}
+	\begin{minordefinition}[{Path $P_n$}]
 		The \defword{path} $P_n$ is a connected graph that consists of $n\geq 2$ vertices and $n-1$ edges. Two vertices of $P_n$ have degree 1 and the rest are of degree 2
-	\end{definition}
-	\begin{definition}[{Star $S_n$}]
+	\end{minordefinition}
+	\begin{minordefinition}[{Star $S_n$}]
 		The \defword{star} of order $n$ is the complete bipartite graph $K_{1,n-1}$ (1 vertex of degree $n-1$ and $n-1$ vertices of degree 1)
-	\end{definition}
+	\end{minordefinition}
 \end{frame}
 
 
@@ -2025,11 +1969,9 @@ Note that a complete graph of order $p$ is $(p-1)$-regular
 A graph is \defword{planar} if it \emph{can be} drawn in the plane with no crossing edges (except at the vertices). Otherwise, it is \defword{nonplanar}
 \end{definition}
 \vfill
-\begin{definition}[{Plane graph}]
+\begin{minordefinition}[{Plane graph}]
 A \defword{plane graph} is a graph \emph{that is drawn} in the plane with no crossing edges. (This is only possible if the graph is planar)
-\end{definition}
-\vfill
-(To see the difference, have you ever played \href{https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/untangle.html}{this game}?)
+\end{minordefinition}
 \end{frame}
 
 
@@ -2051,20 +1993,6 @@ Let $G$ be a plane graph with $p$ vertices, $q$ edges, $r$ regions, and $k$ conn
 \end{frame}
 
 
-% \begin{frame}
-% \begin{theorem}
-% Let $G$ be a connected planar graph with $p$ vertices and $q$ edges, where $p\geq 3$, then $$q\leq 3p-6.$$
-% (a maximal connected planar graph with $p$ vertices has $q=3p-6$ edges)
-% \end{theorem}
-% \vfill
-% \begin{corollary}
-% If $G$ is a planar graph, then $\delta(G)\leq 5,$
-% where $\delta(G)$ is the minimal degree of $G$.
-% (every planar graph contains a vertex of degree less than 6)
-% \end{corollary}
-% \end{frame}
-
-
 \begin{frame}{Two well-known non-planar graphs}
 $K_{3,3}$ and $K_5$ are nonplanar
 \vfill
@@ -2080,13 +2008,13 @@ A graph $G$ is planar $\iff$ it contains no subgraph isomorphic to $K_5$ or $K_{
 \newSubSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
 
 \begin{frame}
-\begin{definition}[{Colouring of a graph $G$}]
+\begin{minordefinition}[{Colouring of a graph $G$}]
 A \defword{colouring} of a graph $G$ is an assignment of colours to the vertices of $G$ such that adjacent vertices have different colours
-\end{definition}
+\end{minordefinition}
 \vfill
-\begin{definition}[{$n$-colouring of $G$}]
+\begin{minordefinition}[{$n$-colouring of $G$}]
 A \defword{$n$-colouring} is a colouring of $G$ using $n$ colours
-\end{definition}
+\end{minordefinition}
 \vfill
 \begin{definition}[{$n$-colourable}]
 $G$ is \defword{$n$-colourable} if there exists a colouring of $G$ that uses $n$ colours
@@ -2101,7 +2029,7 @@ The \defword{chromatic number} $\chi (G)$ of a graph $G$ is the minimal value $n
 \vfill
 \begin{property}
 \begin{itemize}
-\item $\chi (G)=1$ $\iff$ $G$ have no edges
+\item $\chi (G)=1$ $\iff$ $G$ has no edges
 \item If $G=K_{n,m}$, then $\chi(G)=2$
 \item If $G=K_n$, then $\chi(G)=n$
 \item For any graph $G$, $$\chi (G)\leq 1+ \Delta (G)$$
@@ -2110,14 +2038,6 @@ where $\Delta (G)$ is the maximum degree of $G$
 \end{itemize}
 \end{property}
 \end{frame}
-
-
-\begin{frame}\frametitle{``Real life'' problem}
-What is the minimal number of colours to colour all states in the map so that two adjacent states have different colours?
-\begin{center}
-\includegraphics[width=.85\textwidth]{FIGS/4-colours-Europe}
-\end{center}\end{frame}
-
 
 
 %%%%%%%%%%%%%%%%%%%
@@ -2222,38 +2142,6 @@ Another name is \defword{weighted} (di)graph
 	\end{definition}
 \end{frame}
 
-\begin{frame}{Arcs incident to a subset of arcs}
-	\begin{definition}[Arc incident out of $X\subset A(G)$]
-		If the initial endpoint of an arc $u$ belongs to $X\subset A(G)$ and if the terminal endpoint of arc $u$ does not belong to $X$, then $u$ is said to be \defword{incident out of} $X$; we write $u\in\omega^+(X)$
-		\vskip0.2cm
-		Similarly, we define an \defword{arc incident into} $X$ and the set $\omega^-(X)$
-		\vskip0.2cm
-		Finally, the set of arcs \defword{incident to} $X$ is denoted
-		\[
-		\omega(X) = \omega^+(X)\cup\omega^-(X)
-		\]
-	\end{definition}
-\end{frame}
-
-\begin{frame}
-	\begin{definition}[Subgraph of $G$ generated by $A\subset V$]
-		The \defword{subgraph} of $G$ generated by $A$ is the graph with $A$ as its vertex set and with all the arcs in $G$ that have both their endpoints in $A$. If $G=(V,\Gamma)$ is a 1-graph, then the subgraph generated by $A$ is the 1-graph $G_A=(A,\Gamma_A)$ where
-		\[
-		\Gamma_A(x)=\Gamma(x)\cap A\qquad (x\in A)
-		\]
-	\end{definition}
-	\vfill
-	\begin{definition}[Partial graph of $G$ generated by $V\subset U$]
-		\label{def:partial_graph}
-		The graph $(X,V)$ whose vertex set is $X$ and whose arc set is $V$. 
-		In other words, it is graph $G$ without the arcs $U-V$
-	\end{definition}
-	\vfill
-	\begin{definition}[Partial subgraph of $G$]
-		A partial subgraph of $G$ is the subgraph of a partial graph of $G$
-	\end{definition}
-\end{frame}
-
 
 
 
@@ -2293,27 +2181,27 @@ Another name is \defword{weighted} (di)graph
 \end{frame}
 
 \begin{frame}
-	\begin{definition}[{Regular digraph}]
+	\begin{minordefinition}[{Regular digraph}]
 		A digraph $G$ is $r$-regular if $d_G^+(v)=d_G^-(v)=r$ for all $v\in V(G)$
-\end{definition}\end{frame}
+\end{minordefinition}\end{frame}
 
 \begin{frame}{Symmetric/antisymmetric digraphs}
-	\begin{definition}[Symmetric digraph]
+	\begin{minordefinition}[Symmetric digraph]
 		Let $G=(V,A)$ be a digraph with associated binary relation $R$.
 		If $R$ is \emph{symmetric}, the digraph is symmetric
-	\end{definition}
+	\end{minordefinition}
 	\vfill
-	\begin{definition}[Anti-symmetric digraph]
+	\begin{minordefinition}[Anti-symmetric digraph]
 		Let $G=(V,A)$ be a digraph with associated binary relation $R$.
 		The digraph $G$ is \defword{anti-symmetric} if
 		\[
 		xRy \implies y\cancel R x
 		\]
-	\end{definition}
+	\end{minordefinition}
 	\vfill
-	\begin{definition}[Symmetric multidigraph]
+	\begin{minordefinition}[Symmetric multidigraph]
 		Let $G=(V,A)$ be a multidigraph. $G$ is symmetric if $\forall x,y\in V(G)$, the number of arcs from $x$ to $y$ equals the number of arcs from $y$ to $x$
-	\end{definition}
+	\end{minordefinition}
 \end{frame}
 
 
@@ -2385,6 +2273,7 @@ Denote $x\equiv y$ the relation  ``$x=y$, or $x\neq y$ and there exists a direct
 	\item $x\equiv y\implies y\equiv x$ \hfill[symmetry]
 	\item $x\equiv y, y\equiv z\implies x\equiv z$ \hfill[transitivity]
 \end{enumerate}
+\vfill
 \begin{definition}[Connected component of a graph]
 	\label{def:strong_components}
 	Sets of the form 
@@ -2394,7 +2283,6 @@ Denote $x\equiv y$ the relation  ``$x=y$, or $x\neq y$ and there exists a direct
 	are equivalence classes. 
 	They partition $V$ into strongly connected sub-digraphs of $G$ called \defword{strongly connected components} (or \defword{strong components}) of $G$
 \end{definition}
-A strong component in $G$ is a maximal strongly connected subdigraph of $G$
 \end{frame}
 
 
@@ -2439,9 +2327,9 @@ A strong component in $G$ is a maximal strongly connected subdigraph of $G$
 Given a connected \emph{graph}, we describe the act of assigning a direction to each edge (edge $\rightarrow$ arc) as \defword{orienting the graph}
 \end{definition}
 \vfill
-\begin{definition}[{Strong orientation}]
+\begin{minordefinition}[{Strong orientation}]
 If the digraph resulting from orienting a graph is strongly connected, the orientation is a \defword{strong orientation}
-\end{definition}
+\end{minordefinition}
 \end{frame}
  
  
@@ -2453,19 +2341,8 @@ A connected graph $G$ is \defword{orientable} if it admits a strong orientation
 \begin{theorem}
 A connected graph $G=(V,E)$ is orientable $\iff$ $G$ contains no bridges
 \end{theorem}
-(in other words, iff every edge is contained in a cycle)
 \end{frame}
  
-
-\Ssubsection{Matrices associated to a graph/digraph}{FIGS-slides-admin/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
-
-\begin{frame}{Matrices associated to a graph/digraph}
-	There are multiple matrices associated to a graph/digraph
-	\vfill
-	The branch of graph theory that studies the properties of matrices derived from graphs and uses of these matrices in determining graph properties is \emph{spectral graph theory}
-	\vfill
-	Graphs greatly simplify some problems in linear algebra and vice versa
-\end{frame}
 
 \subsection{Adjacency matrices}
 \newSubSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_fto8nofto8nofto8.jpeg}
@@ -2522,69 +2399,7 @@ A connected graph $G=(V,E)$ is orientable $\iff$ $G$ contains no bridges
 	\end{itemize}
 	\end{importanttheorem}
 \end{frame}
-	
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlcom{# Adjacency matrix (directed)}
-\hldef{M} \hlkwb{<-} \hlkwd{as.matrix}\hldef{(}\hlkwd{as_adjacency_matrix}\hldef{(G,} \hlkwc{sparse} \hldef{=} \hlnum{FALSE}\hldef{))}
-\end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'as.matrix': object 'G' not found}}\begin{alltt}
-\hlcom{# Column sums = indegrees, row sums = outdegrees (directed case)}
-\hlkwd{all.equal}\hldef{(}\hlkwd{rowSums}\hldef{(M),} \hlkwd{degree}\hldef{(G,} \hlkwc{mode} \hldef{=} \hlsng{"out"}\hldef{))}
-\end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in h(simpleError(msg, call)): error in evaluating the argument 'target' in selecting a method for function 'all.equal': error in evaluating the argument 'x' in selecting a method for function 'rowSums': object 'M' not found}}\begin{alltt}
-\hlkwd{all.equal}\hldef{(}\hlkwd{colSums}\hldef{(M),} \hlkwd{degree}\hldef{(G,} \hlkwc{mode} \hldef{=} \hlsng{"in"}\hldef{))}
-\end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in h(simpleError(msg, call)): error in evaluating the argument 'target' in selecting a method for function 'all.equal': error in evaluating the argument 'x' in selecting a method for function 'colSums': object 'M' not found}}\begin{alltt}
-\hlcom{# Walks of length 3 from 1 to 15 via M^3}
-\hldef{M3} \hlkwb{<-} \hldef{M} \hlopt{%*%} \hldef{M} \hlopt{%*%} \hldef{M}
-\end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: object 'M' not found}}\begin{alltt}
-\hldef{M3[}\hlnum{1}\hldef{,} \hlnum{15}\hldef{]}
-\end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: object 'M3' not found}}\end{kframe}
-\end{knitrout}
-
-	
-
-\begin{frame}
-	\begin{minordefinition}[Multiplicity of a pair]
-		The \defword{multiplicity} of a pair $x,y$ is the number $m_G^+(x,y)$ of arcs with initial endpoint $x$ and terminal endpoint $y$. Let
-		\begin{align*}
-			m_G^-(x,y) &= m_G^+(y,x) \\
-			m_G(x,y) &= m_G^+(x,y)+m_G^-(x,y)
-		\end{align*}
-		If $x\neq y$, then $m_G(x,y)$ is number of arcs with both $x$ and $y$ as endpoints. If $x=y$, then $m_G(x,y)$ equals twice the number of loops attached to vertex $x$. If $A,B\subset V$, $A\neq B$, let
-		\begin{align*}
-			m_G^+(A,B) &= \{u:u\in U, u=(x,y),x\in A,y\in B\} \\
-			m_G(A,B) &= m_G^+(A,B)+m_G^+(A,B)
-		\end{align*}
-	\end{minordefinition}
-\end{frame}
-
-% \begin{frame}{Adjacency matrix of a multigraph}
-% \begin{definition}[Matrix associated with $G$]
-% 	If $G$ has vertices $x_1,x_2,\ldots,x_n$, then the \defword{matrix associated} with $G$ is 
-% 	\[
-% 	a_{ij}=m_G^+(x_i,x_j)
-% 	\]
-% \end{definition}
-% \vfill
-% \begin{definition}[Adjacency matrix]
-% 	The matrix $a_{ij}+a_{ji}$ is the \defword{adjacency matrix} associated with $G$
-% \end{definition}
-% \end{frame}
+		
 
 \begin{frame}{Adjacency matrix (multigraph case)}
 	\begin{definition}[Adjacency matrix of a multigraph]
@@ -2603,24 +2418,10 @@ A connected graph $G=(V,E)$ is orientable $\iff$ $G$ contains no bridges
 	$M_A(G)$ has nonzero diagonal entries if $G$ is not simple.
 \end{frame}
 
-\begin{frame}{Weighted adjacency matrices}
-	Sometimes, adjacency matrices (typically for 1-graphs) have real entries, usually positive
-	\vfill
-	This means that the arcs/edges have been given a weight
-\end{frame}
-
-
 \begin{frame}
-	\begin{theorem}[{Number of walks of length $n$}]
+	\begin{importanttheorem}[{Number of walks of length $n$}]
 		Let $A$ be the adjacency matrix of a graph $G=(V(G),E(G))$, where $V(G)=\{v_1,v_2, \dots , v_p\}$. Then the $(i,j)-$entry of $A^n$, $n\geq 1$, is the number of different walks linking $v_i$ to $v_j$ of length $n$ in $G$.
-	\end{theorem}
-	(two walks of the same length are equal if their edges occur in exactly the same order)
-	
-	Example: let $A$ be the adjacency matrix of a graph $G=(V(G),E(G))$. 
-	\begin{itemize}
-		\item the $(i,i)-$entry of $A^2$ is equal to the degree of $v_i$.
-		\item the $(i,i)-$entry of $A^3$ is equal to twice the number of $C_3$ containing $v_i$.
-	\end{itemize}
+	\end{importanttheorem}
 \end{frame}
 
 
