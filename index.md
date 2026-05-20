@@ -1,4 +1,4 @@
-## MATH 2740 (Mathematics of Data Science)
+## MATH 2740: Mathematics of Data Science
 
 This GitHub repo contains material related to the University of Manitoba course MATH 2740, Mathematics of Data Science and reflects the organisation of the course when I ([Julien Arino](https://julien-arino.github.io/)) teach it.
 
