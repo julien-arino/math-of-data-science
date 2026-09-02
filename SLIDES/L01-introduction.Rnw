@@ -9,7 +9,6 @@ lecture_number = "01"
 \subtitle{MATH 2740 -- Mathematics of Data Science -- Lecture \Sexpr{lecture_number}}
 \author{\texorpdfstring{Julien Arino\newline\url{julien.arino@umanitoba.ca}}{Julien Arino}}
 \institute{Department of Mathematics @ University of Manitoba}
-\date{Fall 2026}
 
 % Title of the lecture
 \title{Presentation of the course and setting up R}
@@ -110,12 +109,6 @@ Seeing you outside of office hours is impossible without ample warning, since I 
 \end{frame}
 
 \begin{frame}{Tutorials}
-\begin{itemize}
-\item In tutorials, you will review some of the mathematical content and work on computations
-\vfill
-\item Lab Tests (45 minutes) will be held
-\end{itemize}
-\vfill
 \begin{center}
 \begin{tabular}{lll}
 \toprule
@@ -127,17 +120,28 @@ B04 & W 1130--1220 & P230 Duff Roblin \\
 \bottomrule
 \end{tabular}
 \end{center}
+\vfill
+\begin{itemize}
+\item In tutorials, you will review some of the mathematical content and work on computations
+\vfill
+\item Lab Tests (45 minutes) will be held
+\end{itemize}
 \end{frame}
 
 \begin{frame}{Evaluation}
 \begin{itemize}
-\item 1 final examination during the December 2026 Examination period (\textbf{35\%})
+\item 4 Lab Tests during tutorials (\textbf{10\%} each for a total \textbf{40\%})
 \vfill
 \item 1 midterm on Thursday 5 November 2026 1800--2000 (\textbf{35\%})
 \vfill
-\item 4 Lab Tests during tutorials (\textbf{10\%} each for a total \textbf{40\%})
+\item 1 final examination during the December 2026 Examination period (\textbf{35\%})
+\end{itemize}
+\vfill
+\begin{itemize}
+\item In all written work, explain what you are doing. No explanation $\implies$ lost marks (even if correct)
 \end{itemize}
 \end{frame}
+
 
 \begin{frame}{Lab Tests}
 \bbullet Held during tutorials on 23 Sept, 07 Oct, 28 Oct, 02 Dec
@@ -161,13 +165,6 @@ B04 & W 1130--1220 & P230 Duff Roblin \\
 \end{itemize}
 \end{frame}
 
-\begin{frame}{In Lab Tests/midterm/final..}
-\begin{itemize}
-\item Explain what you are doing
-\vfill
-\item Math or code without explanation will lose marks
-\end{itemize}
-\end{frame}
 
 \begin{frame}{Self-declaration of absences}
 \begin{itemize}
@@ -180,22 +177,6 @@ B04 & W 1130--1220 & P230 Duff Roblin \\
 \item There is no make up for anything missed because of a self-declared absence: any percentage will be moved to the final examination
 \vfill
 \item See the details and the form here (\href{https://umanitoba.ca/student-supports/academic-supports/student-advocacy/self-declaration-policy-students}{link}). You \textbf{must} use the form on that page to self-declare your absence
-\end{itemize}
-\end{frame}
-
-\begin{frame}{Academic dishonesty}
-\begin{itemize}
-\item Feel free to discuss work with others, but solutions must be your own!
-\vfill
-\item Markers will be on the lookout for this
-\vfill
-\item Paraphrasing my computer code = academic dishonesty !
-\vfill
-\item \href{https://stackoverflow.com/}{stack overflow} is a fantastic resource but if you use a solution from there, cite it (in a notebook, that's easy)
-\vfill
-\item ChatGPT, GitHub Copilot, etc. are wonderful tools, but you must use them wisely. Pure unaltered LLM production $\Rightarrow$ AD
-\vfill
-\item FYI: my PhD student who is marking your computer code and some of your math has been working with LLMs for quite a while now. Their LLM detection radar is finely tuned
 \end{itemize}
 \end{frame}
 
@@ -416,26 +397,6 @@ To install RStudio, see \href{https://www.rstudio.com/products/rstudio/}{here}
 \Ssection{Introduction to R Markdown}{FIGS-slides-admin/Gemini_Generated_Image_pbzl1mpbzl1mpbzl.jpeg}
 
 
-\begin{frame}{Computer work (reminder from Lecture 01)}
-\begin{itemize}
-\item Being able to use computers is an integral part of being a data scientist, so in this course, we use computers a lot
-\vfill
-\item The two main languages in data science are \texttt{R} and \texttt{Python}. Typically, \texttt{R} is used more by people in Stats, while \texttt{Python} is more CS
-\vfill
-\item There is great value in both and knowing both is a plus, but for simplicity, here we use \texttt{R}
-\end{itemize}
-\end{frame}
-
-\begin{frame}{Computer assignments (reminder from Lecture 01)}
-\begin{itemize}
-\item Use R Markdown to generate a \boldred{notebook}
-\vfill
-\item Notebooks mix formatted text and code. They are executable and should be submitted as source, not as pdf or html or whatever. Only files in .Rmd are accepted for the computer part of the assignments
-\vfill
-\item Notebooks are not straight code. Submitting straight R code in a notebook with commented code $\Rightarrow$ 0)
-\end{itemize}
-\end{frame}
-
 
 \begin{frame}
   \frametitle{R Markdown?}
@@ -449,8 +410,6 @@ To install RStudio, see \href{https://www.rstudio.com/products/rstudio/}{here}
     \item From one `.Rmd` file, you can create HTML, PDF, Word documents, presentations, ...
   \end{itemize}
 \end{frame}
-
-\Ssubsection{The YAML Header}{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
 
 \begin{frame}[fragile]
   \frametitle{The YAML header}
@@ -469,8 +428,6 @@ output:
 \end{verbatim}
 \end{block}
 \end{frame}
-
-\Ssubsection{Markdown 101}{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
 
 \begin{frame}[fragile]
   \frametitle{Basic Text Formatting}
@@ -502,8 +459,6 @@ Ordered lists use numbers
 \vfill
 (Once the numbered list is ``initiated'', the number doesn't matter, you can write 1., 1., 1., etc., provided you have a new line each time)
 \end{frame}
-
-\Ssubsection{R code chunks}{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
 
 \begin{frame}[fragile]
   \frametitle{Chunks: the core of R Markdown}
@@ -577,40 +532,6 @@ The `cars` dataset has `r nrow(cars)` rows.
   The \code{cars} dataset has \Sexpr{nrow(cars)} rows.
 \end{frame}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%
-\Ssubsection{Instructions for the computer assignments}{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
-
-
-
-\begin{frame}{Sample code for the assignments}
-Please compare the results obtained when knit-ing these two files
-\vfill
-\begin{itemize}
-\item Proper notebook: \href{https://raw.githubusercontent.com/julien-arino/math-of-data-science/refs/heads/main/CODE/iris_analysis_proper.Rmd}{CODE} \& \href{https://julien-arino.github.io/math-of-data-science/CODE/iris_analysis_proper.html}{output}
-\vfill
-\item Comment heavy notebook: \href{https://raw.githubusercontent.com/julien-arino/math-of-data-science/refs/heads/main/CODE/iris_analysis_commented.Rmd}{CODE} \& \href{https://julien-arino.github.io/math-of-data-science/CODE/iris_analysis_commented.html}{output} 
-\end{itemize}
-\vfill
-The first one will get you good marks. The second one will get you in hot water with the marker: you \emph{might} get one warning salvo, but afterwards, a lot of marks will be deducted
-\end{frame}
-
-\begin{frame}[fragile]{The chunk option that will avoid issues}
-Compare the first option chunk in the two iris files
-\vfill
-\begin{lstlisting}
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, fig.width = 10, fig.height = 6)
-```\end{lstlisting}
-\vfill
-\begin{lstlisting}
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, fig.width = 10, fig.height = 6)
-```\end{lstlisting}
-\vfill
-I recommend that you play with the \code{echo = } option. Set it to \code{FALSE} and judge your verbosity... Are you explaining enough with the code (and your comments) not shown?
-\end{frame}
-
 %%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%
@@ -651,13 +572,15 @@ First version is preferred by R purists.. I don't really care
 \begin{frame}[fragile]{Lists}
 A very useful data structure, quite flexible and versatile. Empty list: \texttt{L <- list()}. Convenient for things like parameters. For instance
 
-<<lists_example1, echo=FALSE>>=
+<<lists_example1, echo=TRUE>>=
 L <- list()
 L$a <- 10
 L$b <- 3
 L[["another_name"]] <- "Plouf plouf"
 @
+\end{frame}
 
+\begin{frame}[fragile]
 <<lists_example2>>=
 L[1]
 L[[2]]
@@ -683,23 +606,19 @@ Note that in \texttt{z}, since the first two entries are characters, the added e
 
 \begin{frame}[fragile]{Matrices}
 Matrix (or vector) of zeros
-<<matrix_zeros, eval=FALSE>>=
+<<matrix_zeros>>=
 A <- mat.or.vec(nr = 2, nc = 3)
+A
 @
+\end{frame}
 
-Matrix with prescribed entries
 
-<<matrix_prescribed, eval=FALSE>>=
+\begin{frame}[fragile]{Matrix are column-first}
+<<matrix_prescribed>>=
 B <- matrix(c(1,2,3,4), nr = 2, nc = 2)
 B
-#      [,1] [,2]
-# [1,]    1    3
-# [2,]    2    4
 C <- matrix(c(1,2,3,4), nr = 2, nc = 2, byrow = TRUE)
 C
-#      [,1] [,2]
-# [1,]    1    2
-# [2,]    3    4
 @
 
 Remark that here and elsewhere, naming the arguments (e.g., \texttt{nr = 2}) allows to use arguments in any order
@@ -716,40 +635,38 @@ Probably the biggest annoyance in R compared to other languages
 \end{frame}
 
 \begin{frame}[fragile]{Vector operations}
-Vector addition is also frustrating. Say you write \texttt{x=1:10}, i.e., make the vector
-<<vector_ops1, eval=FALSE>>=
+Vector addition is also frustrating. Say you create the vector
+<<vector_ops1>>=
+x = 1:10
 x
-#  [1]  1  2  3  4  5  6  7  8  9 10
 @
 
 Then \texttt{x+1} gives
-<<vector_ops2, eval=FALSE>>=
+<<vector_ops2>>=
 x+1
-#  [1]  2  3  4  5  6  7  8  9 10 11
 @
 
-i.e., adds 1 to all entries in the vector
-\vfill
+i.e., adds 1 to all entries in the vector.
 Beware of this in particular when addressing sets of indices in lists, vectors or matrices
 \end{frame}
 
 \begin{frame}[fragile]{Flow control}
 <<flow_control, eval=FALSE>>=
-# if (condition is true) {
-#   list of stuff to do
-# }
+if (condition is true) {
+  list of stuff to do
+}
 @
 
 Even if \texttt{list of stuff to do} is a single instruction, best to use curly braces
 
 <<flow_control_extended, eval=FALSE>>=
-# if (condition is true) {
-#   list of stuff to do
-# } else if (another condition) {
-#   ...
-# } else {
-#   ...
-# }
+if (condition is true) {
+  list of stuff to do
+} else if (another condition) {
+  ...
+} else {
+  ...
+}
 @
 \end{frame}
 
@@ -757,18 +674,18 @@ Even if \texttt{list of stuff to do} is a single instruction, best to use curly 
 \texttt{for} applies to lists or vectors
 
 <<for_loops, eval=FALSE>>=
-# for (i in 1:10) {
-#   something using integer i
-# }
-# for (j in c(1,3,4)) {
-#   something using integer j
-# }
-# for (n in c("truc", "muche", "chose")) {
-#   something using string n
-# }
-# for (m in list("truc", "muche", "chose", 1, 2)) {
-#   something using string n or integer n, depending
-# }
+for (i in 1:10) {
+  something using integer i
+}
+for (j in c(1,3,4)) {
+  something using integer j
+}
+for (n in c("truc", "muche", "chose")) {
+  something using string n
+}
+for (m in list("truc", "muche", "chose", 1, 2)) {
+  something using string n or integer n, depending
+}
 @
 \end{frame}
 

@@ -57,7 +57,6 @@
 \subtitle{MATH 2740 -- Mathematics of Data Science -- Lecture 04}
 \author{\texorpdfstring{Julien Arino\newline\url{julien.arino@umanitoba.ca}}{Julien Arino}}
 \institute{Department of Mathematics @ University of Manitoba}
-\date{Fall 202X}
 
 % Title of the lecture
 \title{Matrix methods -- Least squares problems}
@@ -370,18 +369,18 @@ To get a sense of that, we dump a few random rows
 \hldef{data_new[}\hlkwd{sort}\hldef{(}\hlkwd{unique}\hldef{(}\hlkwd{c}\hldef{(}\hlnum{1}\hldef{,}\hlkwd{sample}\hldef{(}\hlkwd{nrow}\hldef{(data_new),} \hlnum{4}\hldef{)))), ]}
 \end{alltt}
 \begin{verbatim}
-##         GEOGRAPHY.NAME                              CHARACTERISTIC YEAR.S.
-## 1               Canada                   Population (in thousands)    1956
-## 2433          Saguenay      % of the population aged 0 to 14 years    1996
-## 2758         Qu\xe9bec                  % of two-person households    2011
-## 3666 Ottawa - Gatineau Population by single years of age: 25 years    2011
-## 4545          Hamilton  % of the population aged 65 years and over    2006
-##        TOTAL FLAG_TOTAL
-## 1    16081.0           
-## 2433    19.6           
-## 2758    36.2           
-## 3666 17225.0           
-## 4545    15.1
+##            GEOGRAPHY.NAME                                       CHARACTERISTIC
+## 1                  Canada                            Population (in thousands)
+## 3080    Trois-Rivi\xe8res          Population by single years of age: 77 years
+## 4549             Hamilton Population change by broad age groups: 0 to 14 years
+## 4597             Hamilton          Population by single years of age: 41 years
+## 8695 Abbotsford - Mission                         % of three-person households
+##      YEAR.S.   TOTAL FLAG_TOTAL
+## 1       1956 16081.0           
+## 3080    2011  1075.0           
+## 4549    2011    -3.2           
+## 4597    2011 10000.0           
+## 8695    2006    14.5
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -893,7 +892,7 @@ Access slots using @. For instance, the GA finds the coefficients
 \end{alltt}
 \begin{verbatim}
 ##            x1        x2
-## [1,] 3.000661 0.4998195
+## [1,] 2.999447 0.5002755
 \end{verbatim}
 \end{kframe}
 \end{knitrout}

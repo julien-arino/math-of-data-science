@@ -52,7 +52,6 @@ cat(input_setup)
 \subtitle{MATH 2740 -- Mathematics of Data Science -- Lecture \Sexpr{lecture_number}}
 \title{Clustering \& Classification using ANNs}
 \author{\texorpdfstring{Julien Arino\newline University of Manitoba\newline\url{julien.arino@umanitoba.ca}}{Julien Arino}}
-\date{}
 
 \begin{document}
 

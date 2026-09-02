@@ -38,7 +38,7 @@ plot(pressure, main="Pressure Data")
 # X = 10
 
 
-## ----lists_example1, echo=FALSE-----------------------------------------------
+## ----lists_example1, echo=TRUE------------------------------------------------
 L <- list()
 L$a <- 10
 L$b <- 3
@@ -63,62 +63,56 @@ L$another_name
 # z
 
 
-## ----matrix_zeros, eval=FALSE-------------------------------------------------
-# A <- mat.or.vec(nr = 2, nc = 3)
+## ----matrix_zeros-------------------------------------------------------------
+A <- mat.or.vec(nr = 2, nc = 3)
+A
 
 
-## ----matrix_prescribed, eval=FALSE--------------------------------------------
-# B <- matrix(c(1,2,3,4), nr = 2, nc = 2)
-# B
-# #      [,1] [,2]
-# # [1,]    1    3
-# # [2,]    2    4
-# C <- matrix(c(1,2,3,4), nr = 2, nc = 2, byrow = TRUE)
-# C
-# #      [,1] [,2]
-# # [1,]    1    2
-# # [2,]    3    4
+## ----matrix_prescribed--------------------------------------------------------
+B <- matrix(c(1,2,3,4), nr = 2, nc = 2)
+B
+C <- matrix(c(1,2,3,4), nr = 2, nc = 2, byrow = TRUE)
+C
 
 
-## ----vector_ops1, eval=FALSE--------------------------------------------------
-# x
-# #  [1]  1  2  3  4  5  6  7  8  9 10
+## ----vector_ops1--------------------------------------------------------------
+x = 1:10
+x
 
 
-## ----vector_ops2, eval=FALSE--------------------------------------------------
-# x+1
-# #  [1]  2  3  4  5  6  7  8  9 10 11
+## ----vector_ops2--------------------------------------------------------------
+x+1
 
 
 ## ----flow_control, eval=FALSE-------------------------------------------------
-# # if (condition is true) {
-# #   list of stuff to do
-# # }
+# if (condition is true) {
+#   list of stuff to do
+# }
 
 
 ## ----flow_control_extended, eval=FALSE----------------------------------------
-# # if (condition is true) {
-# #   list of stuff to do
-# # } else if (another condition) {
-# #   ...
-# # } else {
-# #   ...
-# # }
+# if (condition is true) {
+#   list of stuff to do
+# } else if (another condition) {
+#   ...
+# } else {
+#   ...
+# }
 
 
 ## ----for_loops, eval=FALSE----------------------------------------------------
-# # for (i in 1:10) {
-# #   something using integer i
-# # }
-# # for (j in c(1,3,4)) {
-# #   something using integer j
-# # }
-# # for (n in c("truc", "muche", "chose")) {
-# #   something using string n
-# # }
-# # for (m in list("truc", "muche", "chose", 1, 2)) {
-# #   something using string n or integer n, depending
-# # }
+# for (i in 1:10) {
+#   something using integer i
+# }
+# for (j in c(1,3,4)) {
+#   something using integer j
+# }
+# for (n in c("truc", "muche", "chose")) {
+#   something using string n
+# }
+# for (m in list("truc", "muche", "chose", 1, 2)) {
+#   something using string n or integer n, depending
+# }
 
 
 ## ----lapply_example1, eval=FALSE----------------------------------------------

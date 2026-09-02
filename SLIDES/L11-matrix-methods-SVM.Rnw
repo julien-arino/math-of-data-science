@@ -9,7 +9,6 @@ lecture_number = "11"
 \subtitle{MATH 2740 -- Mathematics of Data Science -- Lecture \Sexpr{lecture_number}}
 \author{\texorpdfstring{Julien Arino\newline\url{julien.arino@umanitoba.ca}}{Julien Arino}}
 \institute{Department of Mathematics @ University of Manitoba}
-\date{Fall 202X}
 
 % Title of the lecture
 \title{Matrix methods -- Support vector machines}
