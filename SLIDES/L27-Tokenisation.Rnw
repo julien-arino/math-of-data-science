@@ -1,0 +1,402 @@
+\documentclass[aspectratio=169]{beamer}
+
+% Set lecture number for later use
+<<set-lecture-number,echo=FALSE>>=
+  lecture_number = "27"
+@
+  
+% Part common to all the lectures
+\subtitle{MATH 2740 -- Mathematics of Data Science -- Lecture \Sexpr{lecture_number}}
+\author{\texorpdfstring{Julien Arino\newline\url{julien.arino@umanitoba.ca}}{Julien Arino}}
+\institute{Department of Mathematics @ University of Manitoba}
+\date{Fall 202X}
+
+% Title of the lecture
+\title{The linear algebra of large language models (LLM)}
+
+% This is a custom command for definitions. You can put this in a separate file.
+\newcommand{\defword}[1]{\textbf{\textcolor{beamer@blendedblue}{#1}}}
+
+<<set-options,echo=FALSE,warning=FALSE,message=FALSE>>=
+# Source the code common to all lectures
+  source("common-code.R")
+@
+
+<<set-slide-background,echo=FALSE,results='asis'>>=
+  # Are we plotting for a dark background? Setting is in common-code.R, but
+  # cat command must run here.
+  cat(input_setup)
+@
+
+<<setup, include=FALSE>>=
+  # Set global chunk options
+  knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+@
+      
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% TITLE AND OUTLINE
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\titlepagewithfigure{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
+\outlinepage{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
+
+\section{The vector space model}
+
+\begin{frame}{The central idea: from words to vectors}
+\begin{itemize}
+\item The fundamental challenge in Natural Language Processing (\defword{NLP}) is to translate discrete, symbolic data (\defword{words}) into a continuous, numerical format
+\vfill
+\item Why? Computers are built on arithmetic, not semantics. To process and generate language, we need a mathematical representation
+\vfill
+\item The \defword{vector space model} is a key solution. It posits that we can represent words and documents as vectors in a multi-dimensional space, where the geometry of the space reflects semantic relationships
+\vfill
+\item Semantically similar words are mapped to nearby points in this space
+\end{itemize}
+\end{frame}
+
+\begin{frame}{The overall LLM process: a high-level overview}
+\begin{itemize}
+    \item Understanding how LLMs work involves two main phases:
+    \vfill
+    \begin{enumerate}
+        \item \textbf{Training phase}: The model \textbf{learns} the embedding vectors and the complex relationships between them from a vast amount of text data
+        \vfill
+        \item \textbf{Inference phase}: The trained model takes new text input, processes it, and generates an output, like predicting the next word or completing a sentence
+    \end{enumerate}
+    \vfill
+    \item Both phases heavily rely on the linear algebra concepts we will explore
+\end{itemize}
+\end{frame}
+
+\begin{frame}{LLM process: the training phase (learning embeddings)}
+\begin{itemize}
+    \item \textbf{Input}: A massive corpus of text (e.g., books, articles, web pages)
+    \vfill
+    \item \textbf{Goal}: To fill the \defword{embedding matrix} $E$ with meaningful vectors, and to learn the parameters of the attention mechanisms and other layers
+    \vfill
+    \item \textbf{Mechanism}: The model is trained to perform tasks like predicting a masked word in a sentence or the next word in a sequence. Through this prediction task, it adjusts the values in the embedding matrix and other weight matrices
+    \vfill
+    \item \textbf{Mathematical Core}: This learning is an optimization problem solved using \textbf{gradient descent}. The model iteratively updates its parameters (the entries of matrices like $E$, $W_Q$, $W_K$, $W_V$) to minimize a \defword{loss function} that measures prediction error
+\end{itemize}
+\end{frame}
+
+\begin{frame}{LLM process: the inference phase (generating text)}
+\begin{itemize}
+    \item \textbf{Input}: A new piece of text, often a prompt or query from a user
+    \vfill
+    \item \textbf{Process}:
+    \begin{enumerate}
+        \item The input text is first \defword{tokenized}, converting words into integer IDs
+        \vfill
+        \item These token IDs are then looked up in the \textbf{learned embedding matrix} to get their initial vectors
+        \vfill
+        \item These vectors are fed through the layers of the LLM (including attention mechanisms) to produce context-aware representations
+        \vfill
+        \item The model then uses these representations to predict the probability distribution over the next possible token in the vocabulary
+        \vfill
+        \item A token is selected from this distribution (e.g., the most probable one), added to the sequence, and the process repeats to generate further text
+    \end{enumerate}
+    \vfill
+    \item \textbf{Output}: A coherent and contextually relevant text response
+\end{itemize}
+\end{frame}
+
+\begin{frame}{A visual metaphor for the vector space model}
+\begin{center}
+\begin{tikzpicture}[
+    dot/.style={circle, fill=blue!50!black, scale=0.8},
+    label/.style={font=\small, text=black}
+]
+    % Axes
+    \draw[->] (0,0) -- (5,0) node[right, font=\large] {Dim 1};
+    \draw[->] (0,0) -- (0,5) node[above, font=\large] {Dim 2};
+    
+    % Vectors
+    \draw[->, gray] (0,0) -- (4,3);
+    \draw[->, gray] (0,0) -- (3.5,2.8);
+    \draw[->, gray] (0,0) -- (0.8,4.5);
+    \draw[->, gray] (0,0) -- (0.5,4.2);
+    
+    % Points
+    \node[dot, label, above right] at (4,3) {king};
+    \node[dot, label, below right] at (3.5,2.8) {queen};
+    \node[dot, label, right] at (0.8,4.5) {apple};
+    \node[dot, label, left] at (0.5,4.2) {pear};
+\end{tikzpicture}
+\end{center}
+\begin{itemize}
+    \item Vectors for "king" and "queen" are close to each other
+    \vfill
+    \item Vectors for "apple" and "pear" are also close
+    \vfill
+    \item The distance between a fruit and royalty is large
+\end{itemize}
+\end{frame}
+
+\begin{frame}{What is a token?}
+\begin{itemize}
+    \item In LLMs, a \defword{token} is the fundamental unit of text. It can be a word, a sub-word, a character, or a special symbol
+    \vfill
+    \item The process of converting text into a sequence of tokens is called \defword{tokenization}
+    \vfill
+    \item For example, the sentence "The cat sat on the mat" might be tokenized as:
+    \vfill
+    \begin{center}
+        `["the", "cat", "sat", "on", "the", "mat"]`
+    \end{center}
+    \vfill
+    \item Each token is assigned a unique integer index based on a predefined vocabulary. For a sentence, we get a sequence of integers:
+    \vfill
+    \begin{center}
+        `[1, 2, 3, 4, 1, 5]`
+    \end{center}
+    \vfill
+    \item This sequence of integers is the raw input that we must translate into our vector space
+\end{itemize}
+\end{frame}
+
+\begin{frame}{From tokens to vectors: the embedding matrix}
+\begin{itemize}
+\item Our vocabulary of size $V$ is a list of all unique tokens, e.g., "cat" $\to 1234$, "dog" $\to 5678$
+\vfill
+\item The central component of a large language model is the \defword{embedding matrix}, denoted $E \in \mathbb{R}^{V \times d}$
+\vfill
+\item Each row of this matrix, $E_{i,:} \in \mathbb{R}^d$, is the \defword{embedding vector} for the $i$-th token
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Defining a vector space}
+\begin{itemize}
+\item Recall that a \defword{vector space} $V$ over a field $F$ (e.g., $\mathbb{R}$) is a set of vectors with two operations: vector addition and scalar multiplication
+\vfill
+\item In LLMs, our vectors are typically from $\mathbb{R}^d$, where $d$ is the \defword{embedding dimension}. This is the size of the vector used to represent each token. A larger $d$ allows for more complex relationships to be encoded
+\vfill
+\item A vector $v \in \mathbb{R}^d$ is an ordered $d$-tuple: $v = [v_1, v_2, ..., v_d]^T$
+\vfill
+\item We use linear algebra to define key concepts like \textbf{distance} and \textbf{similarity} within this space. For a given word, its position in this space is determined by its relationship to all other words
+\end{itemize}
+\end{frame}
+
+\section{Word embeddings and mathematical operations}
+
+\begin{frame}{How are embeddings learned?}
+\begin{itemize}
+\item Unlike our simple 2D example, the embedding vectors in a real LLM are not assigned by hand
+\vfill
+\item These vectors are \textbf{learned} from vast amounts of text data during the model's training process
+\vfill
+\item The goal of the training is for the model to learn a vector space where words with similar meanings have similar vector representations. This is done by having the model predict masked words in a sentence or the next word in a sequence
+\vfill
+\item The numerical values in the embedding matrix $E$ are initially random and are then optimized over many iterations using an algorithm called \textbf{gradient descent} to minimize a loss function
+\vfill
+\item The final, learned vectors encode a word's meaning, usage, and its relationship to other words based on the context it appeared in during training
+\end{itemize}
+\end{frame}
+
+\begin{frame}{The embedding lookup: a linear transformation}
+\begin{itemize}
+\item The embedding process can be viewed as a linear transformation from a standard basis vector to the dense embedding space
+\vfill
+\item The embedding for token $i$ is found by matrix-vector multiplication:
+  $$ \bv_i = E^T \be_i $$
+where $\be_i$ is a standard basis vector (a \defword{one-hot vector} in LLM parlance)
+\vfill
+\item This is a computationally efficient lookup: for a vocabulary of size $V = 50000$ and a dimension $d = 768$, the matrix $E$ would be of size $50000 \times 768$
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\begin{tikzpicture}
+    % Standard basis vector
+    \matrix [matrix of nodes, nodes in empty cells, draw, column sep=0mm, row sep=0mm,
+             cells={minimum height=0.7cm, minimum width=1.5cm, align=center},
+             row 1/.style={nodes={font=\tiny}}] (vector) {
+             . \\ . \\ 1 \\ . \\ . \\
+    };
+    \node[left, xshift=-0.5cm] at (vector-1-1.west) {Index 1: 'the'};
+    \node[left, xshift=-0.5cm] at (vector-2-1.west) {Index 2: 'cat'};
+    \node[left, xshift=-0.5cm, font=\large] at (vector-3-1.west) {Index 3: 'bank'};
+    \node[left, xshift=-0.5cm] at (vector-4-1.west) {Index 4: 'river'};
+    \node[left, xshift=-0.5cm] at (vector-5-1.west) {Index 5: '...'};
+    
+    \node[right, xshift=1cm] at (vector.east) {$\in \mathbb{R}^V$};
+\end{tikzpicture}
+\end{center}
+\end{frame}
+
+\begin{frame}{Measuring similarity: the dot product and cosine similarity}
+\begin{itemize}
+\item How do we quantify the "closeness" of two word vectors, $\bu$ and $\bv$
+\vfill
+\item We use the \defword{dot product} (or inner product):
+$$ \bu \cdot \bv = \sum_{i=1}^d u_i v_i = ||\bu|| \cdot ||\bv|| \cos(\theta) $$
+\vfill
+\item The dot product is maximized when vectors point in the same direction
+\vfill
+\item A more robust measure is \defword{cosine similarity}, which normalizes for vector magnitude and is invariant to vector length:
+$$ \text{similarity}(\bu, \bv) = \frac{\bu \cdot \bv}{||\bu|| \cdot ||\bv||} = \cos(\theta) $$
+\vfill
+\item Cosine similarity is a scalar value in the range $[-1, 1]$. A value of 1 means identical direction (most similar), 0 means orthogonal (no relationship), and -1 means opposite direction
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Example: word embeddings in 2D}
+\begin{itemize}
+\item Let's consider a toy example in $\mathbb{R}^2$ with a vocabulary of three words: "cat", "dog", and "apple"
+\vfill
+\item Assume embedding vectors are
+  $$ \bv_{\text{cat}} = \begin{bmatrix} 0.8 \\ 0.6 \end{bmatrix}, \quad \bv_{\text{dog}} = \begin{bmatrix} 0.7 \\ 0.7 \end{bmatrix}, \quad \bv_{\text{apple}} = \begin{bmatrix} -0.5 \\ 0.5 \end{bmatrix} $$
+\vfill
+\item First, compute their norms:
+  $$ ||\bv_{\text{cat}}|| = \sqrt{0.8^2 + 0.6^2} = 1 $$
+  $$ ||\bv_{\text{dog}}|| = \sqrt{0.7^2 + 0.7^2} \approx 0.99 $$
+  $$ ||\bv_{\text{apple}}|| = \sqrt{(-0.5)^2 + 0.5^2} \approx 0.71 $$
+\end{itemize}
+
+
+\end{frame}
+\begin{frame}{Example: word embeddings in 2D (continued)}
+\begin{itemize}
+\item Now, the dot products:
+  $$ \bv_{\text{cat}} \cdot \bv_{\text{dog}} = (0.8)(0.7) + (0.6)(0.7) = 0.56 + 0.42 = 0.98 $$
+  $$ \bv_{\text{cat}} \cdot \bv_{\text{apple}} = (0.8)(-0.5) + (0.6)(0.5) = -0.4 + 0.3 = -0.1 $$
+\vfill
+\item And finally, the similarities:
+  $$ \text{sim}(\text{cat}, \text{dog}) = \frac{0.98}{1 \cdot \sqrt{0.98}} \approx 0.99 \quad (\text{very similar}) $$
+  $$ \text{sim}(\text{cat}, \text{apple}) = \frac{-0.1}{1 \cdot \sqrt{0.5}} \approx -0.14 \quad (\text{not similar}) $$
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Vector arithmetic: encoding analogies}
+\begin{itemize}
+\item The true power of these embeddings is their capacity for vector arithmetic, which reveals latent linear relationships
+\vfill
+\item The famous example:
+  $$ \vec{\textbf{king}} - \vec{\textbf{man}} + \vec{\textbf{woman}} \approx \vec{\textbf{queen}} $$
+\vfill
+\item This demonstrates that the vector difference $\vec{\textbf{king}} - \vec{\textbf{man}}$ represents the "gender" or "royalty" dimension. Adding it to $\vec{\textbf{woman}}$ yields the vector for "queen"
+\vfill
+\item This property is a direct consequence of the linear algebraic structure learned during training. It shows that the model has learned to identify and represent meaningful axes in the vector space
+\end{itemize}
+\end{frame}
+
+\section{The attention mechanism}
+
+\begin{frame}{The problem of context: a mathematical view}
+\begin{itemize}
+\item A simple word embedding is context-independent. The vector for "bank" is always the same, whether in "river bank" or "financial bank."
+\vfill
+\item LLMs need a mechanism to produce \defword{context-dependent} representations
+\vfill
+\item The \defword{attention mechanism} computes a new representation for each token by creating a \textbf{weighted average} of all other token vectors in the sequence
+\vfill
+\item The weights are determined by the relevance of each token to the current token
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Attention in three matrices: Q, K, and V}
+\begin{itemize}
+\item For a sequence of token embeddings, we stack them into a matrix $X \in \mathbb{R}^{n \times d}$, where $n$ is the sequence length
+\vfill
+\item For each token's input embedding $\vec{x}_i \in \mathbb{R}^d$, we project it into three different vector spaces using three trainable weight matrices:
+  \begin{itemize}
+    \item \defword{Query matrix} $W_Q \in \mathbb{R}^{d \times d_k}$
+    \vfill
+    \item \defword{Key matrix} $W_K \in \mathbb{R}^{d \times d_k}$
+    \vfill
+    \item \defword{Value matrix} $W_V \in \mathbb{R}^{d \times d_v}$
+  \end{itemize}
+\vfill
+\item The matrices Q, K, and V are then calculated via matrix multiplication:
+  $$ Q = X W_Q \quad K = X W_K \quad V = X W_V $$
+\vfill
+\item $Q, K \in \mathbb{R}^{n \times d_k}$ and $V \in \mathbb{R}^{n \times d_v}$. This is a simple linear transformation for all tokens in the sequence simultaneously
+\end{itemize}
+\end{frame}
+
+\begin{frame}{The scaled dot-product attention equation}
+\begin{itemize}
+\item The core of attention is computing the attention scores and applying them to the Value vectors
+\vfill
+\item The score matrix is a result of a massive dot product operation between every Query vector and every Key vector
+\vfill
+\item This is efficiently computed as a single matrix multiplication: $QK^T$
+\vfill
+\item The full equation for the output matrix $Z \in \mathbb{R}^{n \times d_v}$ is:
+$$ \text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V $$
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Dissecting the equation: the attention scores}
+\begin{itemize}
+\item Let's consider a simple example with a sequence of two words, "river bank". Let's use 2D vectors for simplicity
+\vfill
+\item Let the input embeddings be: $\vec{x}_{\text{river}} = \begin{bmatrix} 0.5 \\ 0.2 \end{bmatrix}$ and $\vec{x}_{\text{bank}} = \begin{bmatrix} 0.8 \\ 0.6 \end{bmatrix}$. So $X = \begin{bmatrix} 0.5 & 0.2 \\ 0.8 & 0.6 \end{bmatrix}$
+\vfill
+\item Assume the weight matrices are:
+  $$ W_Q = \begin{bmatrix} 1 & 0 \\ 0 & 1 \end{bmatrix}, \quad W_K = \begin{bmatrix} 1 & 0 \\ 0 & 1 \end{bmatrix}, \quad W_V = \begin{bmatrix} 1 & 0 \\ 0 & 1 \end{bmatrix} $$
+\vfill
+\item Then $Q=X$, $K=X$, $V=X$. We compute $QK^T$:
+  $$ QK^T = \begin{bmatrix} 0.5 & 0.2 \\ 0.8 & 0.6 \end{bmatrix} \begin{bmatrix} 0.5 & 0.8 \\ 0.2 & 0.6 \end{bmatrix} = \begin{bmatrix} (0.5)(0.5) + (0.2)(0.2) & (0.5)(0.8) + (0.2)(0.6) \\ (0.8)(0.5) + (0.6)(0.2) & (0.8)(0.8) + (0.6)(0.6) \end{bmatrix} $$
+  $$ = \begin{bmatrix} 0.29 & 0.52 \\ 0.52 & 1 \end{bmatrix} $$
+\vfill
+\item The element $(1,2)$ is the dot product of the query for "river" and the key for "bank". It shows how much "river" should attend to "bank"
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Dissecting the equation: scaling and softmax}
+\begin{itemize}
+\item The next step is scaling and applying the softmax function to the score matrix
+\vfill
+\item The scale factor $\sqrt{d_k} = \sqrt{2} \approx 1.414$.
+$$ \frac{QK^T}{\sqrt{d_k}} = \frac{1}{\sqrt{2}} \begin{bmatrix} 0.29 & 0.52 \\ 0.52 & 1 \end{bmatrix} \approx \begin{bmatrix} 0.205 & 0.368 \\ 0.368 & 0.707 \end{bmatrix} $$
+\vfill
+\item The softmax is applied row-wise. For the first row (the weights for "river"):
+  $$ \text{softmax}([0.205, 0.368]) = \left[ \frac{e^{0.205}}{e^{0.205} + e^{0.368}}, \frac{e^{0.368}}{e^{0.205} + e^{0.368}} \right] \approx [0.46, 0.54] $$
+\vfill
+\item The resulting weight matrix $A$ is:
+  $$ A = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right) \approx \begin{bmatrix} 0.46 & 0.54 \\ 0.46 & 0.54 \end{bmatrix} $$
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Dissecting the equation: final output}
+\begin{itemize}
+\item The final step is to multiply the weight matrix $A$ by the Value matrix $V$
+\vfill
+\item The output is the new context-aware representation $Z = AV$:
+$$ Z = \begin{bmatrix} 0.46 & 0.54 \\ 0.46 & 0.54 \end{bmatrix} \begin{bmatrix} 0.5 & 0.2 \\ 0.8 & 0.6 \end{bmatrix} $$
+\vfill
+\item The first row of $Z$ is the new vector for "river":
+  $$ \vec{z}_{\text{river}} = (0.46) \bv_{\text{river}} + (0.54) \bv_{\text{bank}} = 0.46 \begin{bmatrix} 0.5 \\ 0.2 \end{bmatrix} + 0.54 \begin{bmatrix} 0.8 \\ 0.6 \end{bmatrix} = \begin{bmatrix} 0.23 \\ 0.092 \end{bmatrix} + \begin{bmatrix} 0.432 \\ 0.324 \end{bmatrix} = \begin{bmatrix} 0.662 \\ 0.416 \end{bmatrix} $$
+\vfill
+\item The new vector for "river" is a \textbf{linear combination} of the two original value vectors. Its position in the space is now influenced by the vector for "bank", thereby incorporating context
+\end{itemize}
+\end{frame}
+
+\begin{frame}{The importance of the Transformer architecture}
+\begin{itemize}
+    \item The attention mechanism is a key component of the \defword{Transformer architecture}
+    \vfill
+    \item This architecture allows for parallel processing of all tokens in a sequence, a major improvement over older models like Recurrent Neural Networks (\textbf{RNNs}) that process tokens one-by-one
+    \vfill
+    \item The entire Transformer block is a sequence of linear algebraic operations:
+    \begin{enumerate}
+        \item Linear projection of input embeddings ($X \to Q, K, V$)
+        \vfill
+        \item Matrix multiplication for attention scores ($QK^T$)
+        \vfill
+        \item Scaling, softmax, and a final matrix multiplication ($Z=AV$)
+        \vfill
+        \item Further linear transformations (feed-forward layers) and residual connections (vector addition)
+    \end{enumerate}
+    \vfill
+    \item The power of LLMs lies in the scale and repeated application of these fundamental linear algebra concepts
+\end{itemize}
+\end{frame}
+
+\end{document}

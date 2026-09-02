@@ -4,9 +4,9 @@ This GitHub repo contains material related to the University of Manitoba course 
 
 Here, you will find the publicly available information: code, slides and some general information. All other information (syllabus, assignments, marks) is available through UM Learn.
 
-### Fall 2025 changes
+### Fall 2026 format
 
-FYI, in Fall 2025, the format of the course will change. From an "assignment only" format, I will be moving to a system with assignments, quizzes, a midterm and a final examination. Assignments will be longer (2-3 weeks each) and will be more like small projects. The midterm and final will be mathematics only and are planned to be two hours each.
+The course evaluation consists of Lab Tests (held during tutorials), a two-hour Midterm Examination and a Final Examination.
 
 ### This GitHub repo
 

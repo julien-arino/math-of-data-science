@@ -375,7 +375,7 @@ steadyStates(mc_reg)
   
 \begin{frame}[fragile]
 \frametitle{Showing a realisation}
-<<DTMC-random-walk-regular, >>=
+<<DTMC-random-walk-regular>>=
 library(DTMCPack)
 IC = rep(0, dim(P_reg)[1])
 IC[1] = 1

@@ -552,8 +552,8 @@ x1 & x2 & OR & result\\
 x1 & x2 & XOR & result\\
 \midrule
 0 & 0 & 0 & FALSE\\
-1 & 0 & 1 & FALSE\\
-0 & 1 & 1 & TRUE\\
+1 & 0 & 1 & TRUE\\
+0 & 1 & 1 & FALSE\\
 1 & 1 & 0 & TRUE\\
 \bottomrule
 \end{tabular}
@@ -579,9 +579,9 @@ x1 & x2 & XOR & result\\
 x1 & x2 & XOR & result\\
 \midrule
 0 & 0 & 0 & FALSE\\
-1 & 0 & 1 & TRUE\\
+1 & 0 & 1 & FALSE\\
 0 & 1 & 1 & TRUE\\
-1 & 1 & 0 & TRUE\\
+1 & 1 & 0 & FALSE\\
 \bottomrule
 \end{tabular}
 
@@ -618,8 +618,8 @@ Thus we pick at random 2/3 of the data for training and 1/3 for testing. See som
 \begin{verbatim}
 ##        
 ##         FALSE TRUE
-##   FALSE    32    0
-##   TRUE      0   18
+##   FALSE    30    0
+##   TRUE      0   20
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -639,10 +639,10 @@ Thus we pick at random 2/3 of the data for training and 1/3 for testing. See som
 \end{alltt}
 \begin{verbatim}
 ##             
-##               1  2  3
-##   setosa     18  0  0
-##   versicolor  0 13  1
-##   virginica   0  1 17
+##               1  2
+##   setosa     20  0
+##   versicolor  0 11
+##   virginica   0 19
 \end{verbatim}
 \end{kframe}
 \end{knitrout}

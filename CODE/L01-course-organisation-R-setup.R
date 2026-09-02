@@ -13,6 +13,23 @@ source("common-code.R")
 cat(input_setup)
 
 
+## ----include=FALSE------------------------------------------------------------
+library(knitr)
+opts_chunk$set(
+concordance=TRUE
+)
+opts_knit$set(concordance = TRUE)
+
+
+## ----cars-summary-rmd, echo=FALSE---------------------------------------------
+# This Sweave chunk generates the output as it would appear in R Markdown
+summary(cars)
+
+
+## ----pressure-plot-rmd, echo=FALSE,fig.show='asis',out.width="0.65\\\\textwidth"----
+plot(pressure, main="Pressure Data")
+
+
 ## ----assignment1, eval=FALSE--------------------------------------------------
 # X <- 10
 

@@ -370,24 +370,18 @@ To get a sense of that, we dump a few random rows
 \hldef{data_new[}\hlkwd{sort}\hldef{(}\hlkwd{unique}\hldef{(}\hlkwd{c}\hldef{(}\hlnum{1}\hldef{,}\hlkwd{sample}\hldef{(}\hlkwd{nrow}\hldef{(data_new),} \hlnum{4}\hldef{)))), ]}
 \end{alltt}
 \begin{verbatim}
-##                        GEOGRAPHY.NAME
-## 1                              Canada
-## 626                        St. John's
-## 1589                    New Brunswick
-## 2683                        Qu\xe9bec
-## 4958 Kitchener - Cambridge - Waterloo
-##                                            CHARACTERISTIC YEAR.S.   TOTAL
-## 1                               Population (in thousands)    1956 16081.0
-## 626  Population change by broad age groups: 0 to 14 years    2011     6.7
-## 1589          Population by single years of age: 29 years    2011  8340.0
-## 2683          Population by single years of age: 46 years    2011 11645.0
-## 4958          Population by single years of age: 36 years    2011  6655.0
-##      FLAG_TOTAL
-## 1              
-## 626            
-## 1589           
-## 2683           
-## 4958
+##            GEOGRAPHY.NAME                              CHARACTERISTIC YEAR.S.
+## 1                  Canada                   Population (in thousands)    1956
+## 617            St. John's     % of the population aged 15 to 64 years    2001
+## 7887              Calgary          Non-official mother tongue: German    2011
+## 8572 Abbotsford - Mission  Population by single years of age: 0 years    2011
+## 9755              Nunavut Population by single years of age: 74 years    2011
+##        TOTAL FLAG_TOTAL
+## 1    16081.0           
+## 617     71.7           
+## 7887 14020.0           
+## 8572  2115.0           
+## 9755    35.0
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -899,7 +893,7 @@ Access slots using @. For instance, the GA finds the coefficients
 \end{alltt}
 \begin{verbatim}
 ##            x1        x2
-## [1,] 2.999817 0.5000615
+## [1,] 2.999511 0.5002712
 \end{verbatim}
 \end{kframe}
 \end{knitrout}

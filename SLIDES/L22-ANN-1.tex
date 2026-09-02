@@ -10,12 +10,7 @@
   \fi
 }
 \makeatother
-\usepackage{xcolor}
-\definecolor{lightblue}{RGB}{173, 216, 230}
-\definecolor{lightyellow}{RGB}{255, 255, 224}
-\definecolor{lightgreen}{RGB}{144, 238, 144}
-\definecolor{lightyellow}{RGB}{255, 255, 153}
-\definecolor{lightgray}{RGB}{211, 211, 211}
+
 \definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
 \newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
 \newcommand{\hlsng}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
@@ -61,7 +56,7 @@
 \input{slides-setup-whiteBG.tex}
 
 \title{Clustering \& Classification using ANNs}
-\author{\texorpdfstring{Adriana-Stefania Ciupeanu\newline University of Manitoba\newline}{Adriana-Stefania Ciupeanu}}
+\author{\texorpdfstring{Julien Arino\newline University of Manitoba\newline\url{julien.arino@umanitoba.ca}}{Julien Arino}}
 \date{}
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 \begin{document}
@@ -72,121 +67,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \titlepagewithfigure{FIGS-slides-admin/Gemini_Generated_Image_pbzl1mpbzl1mpbzl.jpeg}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Biological background
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \outlinepage{FIGS-slides-admin/Gemini_Generated_Image_yegaxcyegaxcyega.jpeg}
-
-%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%
-\section{Motivation}
-
-\newSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_yegaxcyegaxcyega.jpeg}
-\begin{frame}{Why Neural Networks?}
-
-\begin{columns}
-\column{0.5\textwidth}
-\textbf{Applications:}
-\begin{itemize}
-    \item Image recognition
-    \item Natural language processing
-    \item Time series prediction
-    \item Complex classification
-\end{itemize}
-
-\column{0.5\textwidth}
-\textbf{Key Advantages:}
-\begin{itemize}
-    \item Learn non-linear patterns
-    \item Automatic feature learning
-    \item Surprisingly flexible
-    \item Proven in practice
-\end{itemize}
-\end{columns}
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%
-
-\section{Biological Background}
-\newSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_yegaxcyegaxcyega.jpeg}
-
-\begin{frame}{The Biological Neuron}
-Many machine learning methods inspired by biology, e.g., the (human) brain \\
-\vfill 
-Our brain has $~ 10^{11}$ neurons, each of which communicates (is connected) to $~$ $10^4$ other neurons
-\vfill
-
-\begin{minipage}{.6\textwidth}
-\begin{figure}
-\includegraphics[scale=0.2]{FIGS/neuron_fig.png}
-\end{figure}
-\end{minipage}%
-\begin{minipage}{.4\textwidth}
-\begin{itemize}
-    \item \textbf{Dendrites}: receive signals
-    \item \textbf{Cell body}: integrates signals
-    \item \textbf{Axon}: transmits output
-    \item \textbf{Synapses}: modifiable connections
-\end{itemize}
-\end{minipage}
-
-\end{frame}
-
-
-\begin{frame}{Learning in Brains and Neural Networks: Synaptic Plasticity}
-\textbf{Synaptic Plasticity}: The ability of connections between neurons to change strength based on activity.
-\vfill
-\begin{center}
-\begin{tikzpicture}[scale=1.2]
-    % Weak connection
-    \draw[very thin, gray, opacity=0.5] (0, 2) -- (0.5, 1);
-    \node[gray, font=\small] at (-0.7, 1.5) {Weak};
-    
-    % Strong connection  
-    \draw[very thick, red] (1.5, 2) -- (2, 1);
-    \node[red, font=\small] at (1, 1.5) {Strong};
-    
-    % Neurons
-    \draw[fill=lightblue, thick] (0, 2) circle (0.3cm);
-    \draw[fill=lightblue, thick] (1.5, 2) circle (0.3cm);
-    
-    \draw[fill=lightyellow, thick] (0.5, 0.5) circle (0.3cm);
-    \draw[fill=lightyellow, thick] (2, 0.5) circle (0.3cm);
-    
-    % Labels
-    \node[font=\tiny] at (0.25, 2.6) {Presynaptic};
-    \node[font=\tiny] at (0.25, 0) {Postsynaptic};
-\end{tikzpicture}
-\end{center}
-\vfill
-
-\textbf{Hebbian Principle}: ``Neurons that fire together, wire together''
-
-\vfill
-
-\textbf{Why this matters for artificial neural networks:}
-\begin{itemize}
-    \item Connection strength $\leftrightarrow$ \textbf{weights} in our network
-    \item Learning means \textbf{adjusting weights} based on activity patterns
-    \item Backpropagation is the artificial version of synaptic plasticity
-\end{itemize}
-\end{frame}
-
-
 
 %%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%
@@ -216,62 +97,6 @@ Our brain has $~ 10^{11}$ neurons, each of which communicates (is connected) to 
     Inputs are 0 or 1, so are outputs
 \end{frame}
 
-\begin{frame}{From Biology to Computation}
-
-\begin{minipage}{0.6\textwidth}
-
-\begin{tikzpicture}[scale=0.85]
-    % Inputs with biological labels
-    \node[circle, draw, fill=lightblue] (x0) at (0, 2) {$x_0=1$};
-    \node[circle, draw, fill=lightblue] (x1) at (0, 1) {$x_1$};
-    \node[circle, draw, fill=lightblue] (x2) at (0, 0) {$x_2$};
-    \node[circle, draw, fill=lightblue] (x3) at (0, -1) {$x_3$};
-    
-    \node[font=\tiny, gray] at (-0.8, 1) {Dendrites};
-    
-    % Summation - representing cell body integration
-    \node[draw, thick, minimum width=1.2cm, minimum height=1.8cm, fill=lightyellow] (sum) at (2.5, 0.5) {$\sum$};
-    \node[font=\tiny, gray] at (2.5, -0.8) {Cell Body};
-    
-    % Weights with visual emphasis
-    \draw[-latex, thick] (x0) -- (sum) node[midway, above, font=\small] {$w_0$};
-    \draw[-latex, thick] (x1) -- (sum) node[midway, above, font=\small] {$w_1$};
-    \draw[-latex, thick] (x2) -- (sum) node[midway, above, font=\small] {$w_2$};
-    \draw[-latex, thick] (x3) -- (sum) node[midway, above, font=\small] {$w_3$};
-    
-    \node[font=\tiny, gray] at (1.25, 1.5) {Synapses};
-    
-    % Activation function - representing axon
-    \node[draw, thick, minimum width=1.2cm, minimum height=1.8cm, fill=lightgreen] (act) at (5, 0.5) {$f()$};
-    \node[font=\tiny, gray] at (5, -0.8) {Axon (Spike)};
-    \draw[-latex, thick] (sum) -- (act) node[midway, above, font=\small] {$a$};
-    
-    % Output
-    \draw[-latex, thick] (act) -- (6.8, 0.5);
-    \node[font=\small, fill=lightyellow!80, draw, rounded corners] at (7.6, 0.5) {$o = f(a)$};
-\end{tikzpicture}
-\end{minipage}%
-\begin{minipage}{.4\textwidth}
-\begin{align*}
-a &= \sum_{i=0}^{n} w_i x_i \quad \text{(weighted sum)} \\
-o &= f(a) \quad \text{(activation)}
-\end{align*}
-\end{minipage}
-
-
-
-\begin{tabular}{lll}
-\toprule
-\textbf{Biological Neuron} & $\leftrightarrow$ & \textbf{Artificial Neuron} \\
-\midrule
-Dendrites receive signals & $\leftrightarrow$ & Inputs $x_i$ \\
-Synaptic strength & $\leftrightarrow$ & Weights $w_i$ \\
-Cell body integrates & $\leftrightarrow$ & Summation $\sum w_i x_i$ \\
-Action potential threshold & $\leftrightarrow$ & Activation $f(a)$ \\
-Axon fires/doesn't fire & $\leftrightarrow$ & Output $o$ \\
-\bottomrule
-\end{tabular}
-\end{frame}
 
 \begin{frame}{}
     \begin{center}
@@ -317,7 +142,6 @@ Axon fires/doesn't fire & $\leftrightarrow$ & Output $o$ \\
     \end{center}
     The connections into the output layer are called \emph{synapses}, they are modifiable
 \end{frame}
-
 
 \begin{frame}{The activation function}
     \begin{center}
@@ -380,114 +204,6 @@ Axon fires/doesn't fire & $\leftrightarrow$ & Output $o$ \\
     where $w_{0j}=-\theta_j$
 \end{frame}
 
-\begin{frame}{Common Activation Functions}
-
-\begin{center}
-\small
-\begin{tabular}{llc}
-\toprule
-\textbf{Function} & \textbf{Definition} & \textbf{Range} \\
-\midrule
-Sigmoid & $\sigma(a) = \frac{1}{1+e^{-a}}$ & $(0, 1)$ \\
-Tanh & $\tanh(a) = \frac{e^a - e^{-a}}{e^a + e^{-a}}$ & $(-1, 1)$ \\
-ReLU & $f(a) = \max(0, a)$ & $[0, \infty)$ \\
-Linear & $f(a) = a$ & $(-\infty, \infty)$ \\
-\bottomrule
-\end{tabular}
-\end{center}
-
-\vfill
-
-\textbf{Key insight}:
-\begin{itemize}
-    \item Hidden layers: Use ReLU, tanh, or sigmoid
-    \item Output layer: Match to task (linear, sigmoid, softmax)
-\end{itemize}
-
-\end{frame}
-
-
-\begin{frame}{Why Non-Linearity Matters}
-
-\textbf{Without activation:}
-\[
-o = W_2(W_1 x) = (W_2 W_1) x = W_{\text{combined}} x \quad \text{(linear!)}
-\]
-
-\vfill
-\textbf{Result}: Can only learn linear patterns
-
-\vfill
-\textbf{Solution}: Apply non-linear function $f()$ after each sum
-
-\end{frame}
-
-\begin{frame}{Single Neuron vs. Network}
-
-\textbf{Limitation}: Single neuron = linear decision boundary
-
-\vfill
-
-\begin{center}
-\textbf{Single Neuron}
-
-\begin{tikzpicture}[scale=0.8]
-    \node[circle, draw, fill=lightblue] (x1) at (0, 1) {$x_1$};
-    \node[circle, draw, fill=lightblue] (x2) at (0, -1) {$x_2$};
-    \node[draw, circle, thick, minimum width=0.8cm, fill=lightyellow] (n) at (2, 0) {$\sigma$};
-    \draw[-latex] (x1) -- (n);
-    \draw[-latex] (x2) -- (n);
-    \draw[-latex] (n) -- (3.5, 0);
-\end{tikzpicture}
-
-\vfill
-\textbf{Multi-Layer Network}
-
-\begin{tikzpicture}[scale=0.8]
-    % Input
-    \node[circle, draw, fill=lightblue] (x1) at (0, 1.5) {$x_1$};
-    \node[circle, draw, fill=lightblue] (x2) at (0, -1.5) {$x_2$};
-    
-    % Hidden
-    \node[circle, draw, fill=lightgreen] (h1) at (2, 1) {$h_1$};
-    \node[circle, draw, fill=lightgreen] (h2) at (2, -1) {$h_2$};
-    
-    % Output
-    \node[circle, draw, fill=lightyellow] (o) at (4, 0) {$o$};
-    
-    % Connections
-    \draw[-latex] (x1) -- (h1);
-    \draw[-latex] (x1) -- (h2);
-    \draw[-latex] (x2) -- (h1);
-    \draw[-latex] (x2) -- (h2);
-    \draw[-latex] (h1) -- (o);
-    \draw[-latex] (h2) -- (o);
-\end{tikzpicture}
-\end{center}
-\end{frame}
-
-\begin{frame}{The Learning Problem}
-
-\textbf{Goal}: Adjust weights to minimize prediction error
-
-\begin{center}
-\textbf{Forward Pass} (predict)
-\[\text{input} \xrightarrow{\text{weights}} \text{hidden} \xrightarrow{\text{weights}} \text{output}\]
-
-\vspace{0.5cm}
-
-\textbf{Backward Pass} (learn)
-\[\text{Error} \xrightarrow{\text{gradients}} \text{update weights}\]
-\end{center}
-
-\vfill
-
-\textbf{Loss function}: 
-\[
-\text{Loss} = \frac{1}{N} \sum_{i=1}^{N} (y_i - \hat{y}_i)^2
-\]
-\end{frame}
-
 
 \begin{frame}{Learning something simple}
     The aim is to adjust the synaptic weights so that the proper response is provided to a given stimulus
@@ -547,8 +263,6 @@ o = W_2(W_1 x) = (W_2 W_1) x = W_{\text{combined}} x \quad \text{(linear!)}
     \end{itemize}
 \end{frame}
 
-
-
 \begin{frame}{Widrow-Hoff learning rule}
     Need to provide the correct answer, i.e., this is a supervised learning rule
     \vfill
@@ -572,217 +286,9 @@ o = W_2(W_1 x) = (W_2 W_1) x = W_{\text{combined}} x \quad \text{(linear!)}
     \end{itemize} 
 \end{frame}
 
-\begin{frame}{Understanding Loss Functions}
-
-For a single data point with target $y$ and network output $o$, we measure error as:
-
-\vfill
-
-\textbf{Squared error loss}:
-\[
-L = \frac{1}{2}(y - o)^2
-\]
-
-\vfill
-
-For all $N$ training samples:
-\[
-L_{\text{total}} = \frac{1}{N} \sum_{i=1}^{N} \frac{1}{2}(y_i - o_i)^2
-\]
-
-\vfill
-
-\textbf{Goal of learning}: Minimize this loss by adjusting weights
-
-\vfill
-
-\textbf{How do we minimize?} We compute partial derivatives of the loss with respect to each weight, then move weights in the direction that decreases loss
-
-\end{frame}
-
-\begin{frame}{Derivatives of Common Activation Functions}
-
-We'll need these when using the chain rule. For each activation $f(a)$, we need $\frac{\partial f}{\partial a}$:
-
-\vfill
-
-\begin{center}
-\small
-\begin{tabular}{lll}
-\toprule
-\textbf{Function} $f(a)$ & \textbf{Derivative} $f'(a)$ & \textbf{In terms of output } $o = f(a)$ \\
-\midrule
-Sigmoid & $\sigma(a) = \frac{1}{1+e^{-a}}$ & $\sigma'(a) = \sigma(a)(1-\sigma(a))$ \\
-& & $= o(1-o)$ \\
-\midrule
-Tanh & $\tanh(a)$ & $\tanh'(a) = 1 - \tanh^2(a)$ \\
-& & $= 1 - o^2$ \\
-\midrule
-ReLU & $f(a) = \max(0, a)$ & $f'(a) = \begin{cases} 1 & \text{if } a > 0 \\ 0 & \text{if } a < 0 \end{cases}$ \\
-\bottomrule
-\end{tabular}
-\end{center}
-
-\vfill
-
-\textbf{Key}: We'll use these derivatives in the chain rule for backpropagation
-\end{frame}
-
-\begin{frame}{Backpropagation: Single Layer Network}
-
-\textbf{Simple case}: One input layer, one output neuron (no hidden layer)
-
-\vfill
-
-\textbf{Forward pass}:
-\begin{align*}
-a &= w_1 x_1 + w_2 x_2 + w_0 \quad \text{(weighted sum)} \\
-o &= f(a) \quad \text{(apply activation, e.g., sigmoid)}
-\end{align*}
-
-\vfill
-
-\textbf{Loss}:
-\[
-L = \frac{1}{2}(y - o)^2
-\]
-
-\vfill
-
-\textbf{Goal}: Find $\frac{\partial L}{\partial w_1}$, $\frac{\partial L}{\partial w_2}$, $\frac{\partial L}{\partial w_0}$ to update weights
-
-\end{frame}
-
-\begin{frame}{Applying the Chain Rule}
-
-To find $\frac{\partial L}{\partial w_1}$, we use the chain rule:
-
-\vfill
-
-\[
-\frac{\partial L}{\partial w_1} = \frac{\partial L}{\partial o} \cdot \frac{\partial o}{\partial a} \cdot \frac{\partial a}{\partial w_1}
-\]
-
-\vfill
-
-\textbf{Break it into pieces}:
-
-\begin{itemize}
-    \item $\displaystyle \frac{\partial L}{\partial o} = \frac{\partial}{\partial o} \left[\frac{1}{2}(y - o)^2\right] = -(y - o)$
-    
-    \vfill
-    
-    \item $\displaystyle \frac{\partial o}{\partial a} = f'(a)$ (depends on activation function, e.g., $o(1-o)$ for sigmoid)
-    
-    \vfill
-    
-    \item $\displaystyle \frac{\partial a}{\partial w_1} = \frac{\partial}{\partial w_1}(w_1 x_1 + w_2 x_2 + w_0) = x_1$
-\end{itemize}
-
-\end{frame}
-
-\begin{frame}{The Gradient}
-
-Putting it together:
-
-\vfill
-
-\[
-\frac{\partial L}{\partial w_1} = \underbrace{-(y - o)}_{\text{error}} \cdot \underbrace{f'(a)}_{\text{slope of activation}} \cdot \underbrace{x_1}_{\text{input}}
-\]
-
-\vfill
-
-More generally, for any weight $w_i$:
-
-\[
-\frac{\partial L}{\partial w_i} = -(y - o) \cdot f'(a) \cdot x_i
-\]
-
-\vfill
-
-Similarly, for the bias:
-
-\[
-\frac{\partial L}{\partial w_0} = -(y - o) \cdot f'(a) \cdot x_0 = -(y - o) \cdot f'(a)
-\]
-(since $x_0 = 1$ is the bias input)
-
-\end{frame}
-
-\begin{frame}{Gradient Descent Update}
-
-Once we have the gradient, we update weights using gradient descent:
-
-\vfill
-
-\[
-w_i^{(t+1)} = w_i^{(t)} - \eta \frac{\partial L}{\partial w_i}
-\]
-
-where $\eta$ is the learning rate (small positive constant, like $\eta = 0.01$)
-
-\vfill
-
-Substituting our gradient:
-
-\[
-w_i^{(t+1)} = w_i^{(t)} - \eta \left[-(y - o) \cdot f'(a) \cdot x_i\right]
-\]
-
-\[
-w_i^{(t+1)} = w_i^{(t)} + \eta (y - o) \cdot f'(a) \cdot x_i
-\]
-
-\vfill
-
-\textbf{Compare to Widrow-Hoff}:
-\[
-w_i^{(t+1)} = w_i^{(t)} + \eta (t - o) x_i
-\]
-
-The extra $f'(a)$ term is what makes backprop work with smooth activations!
-
-\end{frame}
-
-\begin{frame}{Comparison: Widrow-Hoff vs Backpropagation}
-
-\begin{center}
-\small
-\begin{tabular}{lll}
-\toprule
-\textbf{Aspect} & \textbf{Widrow-Hoff} & \textbf{Backpropagation} \\
-\midrule
-Layers & Single layer only & \textbf{Any number of layers} \\
-\midrule
-Update rule & $w \leftarrow w + \eta(t-o)x$ & $w \leftarrow w - \eta \frac{\partial L}{\partial w}$ \\
-\midrule
-Activation & Step function (0/1) & \textbf{Smooth} (sigmoid, tanh, ReLU) \\
-\midrule
-Chain rule & Not needed & \textbf{Essential} \\
-\midrule
-Non-linearity & Ignored & \textbf{Accounted for via } $f'(a)$ \\
-\bottomrule
-\end{tabular}
-\end{center}
-
-\vfill
-
-Backpropagation is Widrow-Hoff generalized:
-\begin{itemize}
-    \item Works with smooth activation functions (not just 0/1)
-    \item Uses chain rule to compute gradients through multiple layers
-    \item Error term $(t-o)$ becomes $-(y-o) \cdot f'(a)$ to account for saturation
-\end{itemize}
-
-\end{frame}
-
-
 \begin{frame}{Learning OR}
     \begin{center}
         \begin{tabular}{cccc}
-        Input & Input & $\to$ & Target \\
-        \midrule
             0 & 0 & $\mapsto$ & 0 \\
             1 & 0 & $\mapsto$ & 1 \\
             0 & 1 & $\mapsto$ & 1 \\
@@ -792,8 +298,6 @@ Backpropagation is Widrow-Hoff generalized:
     Three cells in the retina (two inputs and the ``dummy'' cell used for the threshold) and one output cell. So inputs and outputs must be
     \begin{center}
         \begin{tabular}{ccccc}
-        Input & Input & Const & $\to$ & Target \\
-        \midrule
             1 & 0 & 0 & $\mapsto$ & 0 \\
             1 & 1 & 0 & $\mapsto$ & 1 \\
             1 & 0 & 1 & $\mapsto$ & 1 \\
@@ -803,57 +307,66 @@ Backpropagation is Widrow-Hoff generalized:
     Initialise the $3\times 1$ weight matrix $W$ to zero:
     \[
         W=\begin{pmatrix}
-            w_0 = -\theta, w_1, w_2
-        \end{pmatrix}^T
+            w_0 = -\theta \\
+            w_1 \\ w_2
+        \end{pmatrix}
         = \begin{pmatrix}
-            0, 0, 0
-        \end{pmatrix}^T
+            0\\ 0\\ 0
+        \end{pmatrix}
     \]
 \end{frame}
 
 
-\begin{frame}{Iteration 1: Present $[1, 1, 1] \to 1$}
-
-\textbf{Predict}:
-\[
-a = w_0 \cdot 1 + w_1 \cdot 1 + w_2 \cdot 1 = 0 + 0 + 0 = 0
-\]
-
-Since $a = 0 \leq 0$, output $o = 0$. But target is $t = 1$, so error is $1 - 0 = 1$.
-
-\vfill
-\textbf{Update weights}:
-\begin{align*}
-\Delta w_0 &= 0.1 \times 1 \times 1 = 0.1 \\
-\Delta w_1 &= 0.1 \times 1 \times 1 = 0.1 \\
-\Delta w_2 &= 0.1 \times 1 \times 1 = 0.1
-\end{align*}
-
-\vfill
-\textbf{New weights}: $w = [0.1, 0.1, 0.1]^T$
+\begin{frame}{Procedure}
+    We choose one random association in 
+    \begin{center}
+        \begin{tabular}{ccccc}
+            1 & 0 & 0 & $\mapsto$ & 0 \\
+            1 & 1 & 0 & $\mapsto$ & 1 \\
+            1 & 0 & 1 & $\mapsto$ & 1 \\
+            1 & 1 & 1 & $\mapsto$ & 1 \\
+        \end{tabular}
+    \end{center}
+    say, the fourth one. So we present $[1,1,1]$ and expect an output of 1. We have
+    \[
+        a = \sum_i w_ix_i = (1\times 0)+(1\times 0)+(1\times 0) = 0
+    \]
+    This being $\leq 0$ means that $o=0$, giving an error of 1
 \end{frame}
 
-\begin{frame}{Iteration 2: Present $[1, 0, 0] \to 0$}
-
-\textbf{Predict}:
-\[
-a = 0.1 \cdot 1 + 0.1 \cdot 0 + 0.1 \cdot 0 = 0.1
-\]
-
-Since $a = 0.1 > 0$, output $o = 1$. But target is $t = 0$, so error is $0 - 1 = -1$.
-
-\vfill
-\textbf{Update}:
-\begin{align*}
-\Delta w_0 &= 0.1 \times (-1) \times 1 = -0.1 \\
-\Delta w_1 &= 0.1 \times (-1) \times 0 = 0 \\
-\Delta w_2 &= 0.1 \times (-1) \times 0 = 0
-\end{align*}
-
-\vfill
-\textbf{New weights}: $w = [0, 0.1, 0.1]^T$ 
+\begin{frame}{Applying the rule}
+    Suppose the learning constant $\eta=0.1$. Then applying \eqref{eq:WidrowHoff},
+    \begin{align*}
+        \Delta w_0 &= \eta(t-o)x_0 = 0.1\times(1-0)\times 1= 0.1 \\
+        \Delta w_1 &= \eta(t-o)x_0 = 0.1\times(1-0)\times 1= 0.1 \\
+        \Delta w_2 &= \eta(t-o)x_0 = 0.1\times(1-0)\times 1= 0.1         
+    \end{align*}
+    Applying the correction, $W$ becomes
+    \[
+        W=\begin{pmatrix}
+            0.1\\ 0.1\\ 0.1
+        \end{pmatrix}
+    \]
 \end{frame}
 
+\begin{frame}{Trying another input}
+    Suppose we now present the first input $[1,0,0]$. This should produce a result of 0. Then
+    \[
+        a = \sum_i w_ix_i = (1\times 0.1)+(0\times 0.1)+(0\times 0.1) = 0.1
+    \]
+    which is $>0$, so $o=1$. We compute the correction
+    \begin{align*}
+        \Delta w_0 &= \eta(t-o)x_0 = 0.1\times(0-1)\times 1= -0.1 \\
+        \Delta w_1 &= \eta(t-o)x_1 = 0.1\times(0-1)\times 0= 0 \\
+        \Delta w_1 &= \eta(t-o)x_2 = 0.1\times(0-1)\times 0= 0         
+    \end{align*}
+    and adjust the weights, giving
+    \[
+        W=\begin{pmatrix}
+            0\\ 0.1\\ 0.1
+        \end{pmatrix}
+    \]
+\end{frame}
 
 \begin{frame}{And we are done!}
     With the weights
@@ -874,85 +387,6 @@ Since $a = 0.1 > 0$, output $o = 1$. But target is $t = 0$, so error is $0 - 1 =
     \end{center}    
 \end{frame}
 
-\begin{frame}[fragile]{Setting Up R}
-
-\begin{lstlisting}
-# Install once
-install.packages("neuralnet")
-
-# Load for session
-library(neuralnet)
-\end{lstlisting}
-
-\vfill
-The \texttt{neuralnet} package provides:
-\begin{itemize}
-    \item Flexible network specification
-    \item Training via backpropagation
-    \item Prediction on new data
-    \item Network visualization
-\end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]\frametitle{Using \code{neuralnet} to learn OR}
-First, create the truth table
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hldef{OR_table} \hlkwb{=} \hlkwd{matrix}\hldef{(}\hlkwd{c}\hldef{(}\hlnum{0}\hldef{,} \hlnum{0}\hldef{,} \hlnum{0}\hldef{,}
-                    \hlnum{1}\hldef{,} \hlnum{0}\hldef{,} \hlnum{1}\hldef{,}
-                    \hlnum{0}\hldef{,} \hlnum{1}\hldef{,} \hlnum{1}\hldef{,}
-                    \hlnum{1}\hldef{,} \hlnum{1}\hldef{,} \hlnum{1}\hldef{),}
-                  \hlkwc{nc} \hldef{=} \hlnum{3}\hldef{,} \hlkwc{byrow} \hldef{=} \hlnum{TRUE}\hldef{)}
-\hldef{OR_table} \hlkwb{=} \hlkwd{as.data.frame}\hldef{(OR_table)}
-\hlkwd{colnames}\hldef{(OR_table)} \hlkwb{=} \hlkwd{c}\hldef{(}\hlsng{"x1"}\hldef{,} \hlsng{"x2"}\hldef{,} \hlsng{"OR"}\hldef{)}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
-\end{frame}
-
-\begin{frame}[fragile]\frametitle{Now create and train the NN}
-The ``formula'' is to find the OR column using the x1 and x2 columns. We use no hidden layer
-\vfill
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hldef{nn_OR} \hlkwb{=} \hlkwd{neuralnet}\hldef{(OR} \hlopt{~} \hldef{x1} \hlopt{+} \hldef{x2,}
-                  \hlkwc{data} \hldef{= OR_table,}
-                  \hlkwc{act.fct} \hldef{=} \hlsng{"logistic"}\hldef{,}
-                  \hlkwc{hidden} \hldef{=} \hlnum{0}\hldef{,}
-                  \hlkwc{linear.output} \hldef{=} \hlnum{FALSE}\hldef{)}
-\hlcom{# Plot the result}
-\hlkwd{plot}\hldef{(nn_OR,} \hlkwc{rep} \hldef{=} \hlsng{"best"}\hldef{)}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
-\end{frame}
-
-\maxFrameImage{FIGS/ann-plot-NN-for-OR-1.pdf}
-
-\begin{frame}[fragile]\frametitle{Testing the result}
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hldef{pred} \hlkwb{=} \hlkwd{predict}\hldef{(nn_OR, OR_table)}
-\hldef{OR_table}\hlopt{$}\hldef{result} \hlkwb{=} \hldef{pred} \hlopt{>} \hlnum{0.5}
-\hlkwd{kable}\hldef{(OR_table,} \hlsng{"latex"}\hldef{,} \hlkwc{booktabs} \hldef{=} \hlnum{TRUE}\hldef{)}
-\end{alltt}
-\end{kframe}
-\begin{tabular}{rrrl}
-\toprule
-x1 & x2 & OR & result\\
-\midrule
-0 & 0 & 0 & FALSE\\
-1 & 0 & 1 & TRUE\\
-0 & 1 & 1 & TRUE\\
-1 & 1 & 1 & TRUE\\
-\bottomrule
-\end{tabular}
-
-\end{knitrout}
-\end{frame}
 
 \begin{frame}{Learning XOR}
     Let us now look at the XOR truth table
@@ -1022,7 +456,65 @@ x1 & x2 & OR & result\\
     \end{center}
 \end{frame}
 
+\begin{frame}[fragile]\frametitle{Using \code{neuralnet} to learn OR}
+First, create the truth table
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hldef{OR_table} \hlkwb{=} \hlkwd{matrix}\hldef{(}\hlkwd{c}\hldef{(}\hlnum{0}\hldef{,} \hlnum{0}\hldef{,} \hlnum{0}\hldef{,}
+                    \hlnum{1}\hldef{,} \hlnum{0}\hldef{,} \hlnum{1}\hldef{,}
+                    \hlnum{0}\hldef{,} \hlnum{1}\hldef{,} \hlnum{1}\hldef{,}
+                    \hlnum{1}\hldef{,} \hlnum{1}\hldef{,} \hlnum{1}\hldef{),}
+                  \hlkwc{nc} \hldef{=} \hlnum{3}\hldef{,} \hlkwc{byrow} \hldef{=} \hlnum{TRUE}\hldef{)}
+\hldef{OR_table} \hlkwb{=} \hlkwd{as.data.frame}\hldef{(OR_table)}
+\hlkwd{colnames}\hldef{(OR_table)} \hlkwb{=} \hlkwd{c}\hldef{(}\hlsng{"x1"}\hldef{,} \hlsng{"x2"}\hldef{,} \hlsng{"OR"}\hldef{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{frame}
 
+\begin{frame}[fragile]\frametitle{Now create and train the NN}
+The ``formula'' is to find the OR column using the x1 and x2 columns. We use no hidden layer
+\vfill
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hldef{nn_OR} \hlkwb{=} \hlkwd{neuralnet}\hldef{(OR} \hlopt{~} \hldef{x1} \hlopt{+} \hldef{x2,}
+                  \hlkwc{data} \hldef{= OR_table,}
+                  \hlkwc{act.fct} \hldef{=} \hlsng{"logistic"}\hldef{,}
+                  \hlkwc{hidden} \hldef{=} \hlnum{0}\hldef{,}
+                  \hlkwc{linear.output} \hldef{=} \hlnum{FALSE}\hldef{)}
+\hlcom{# Plot the result}
+\hlkwd{plot}\hldef{(nn_OR,} \hlkwc{rep} \hldef{=} \hlsng{"best"}\hldef{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+\maxFrameImage{FIGS/ann-plot-NN-for-OR-1.pdf}
+
+\begin{frame}[fragile]\frametitle{Testing the result}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hldef{pred} \hlkwb{=} \hlkwd{predict}\hldef{(nn_OR, OR_table)}
+\hldef{OR_table}\hlopt{$}\hldef{result} \hlkwb{=} \hldef{pred} \hlopt{>} \hlnum{0.5}
+\hlkwd{kable}\hldef{(OR_table,} \hlsng{"latex"}\hldef{,} \hlkwc{booktabs} \hldef{=} \hlnum{TRUE}\hldef{)}
+\end{alltt}
+\end{kframe}
+\begin{tabular}{rrrl}
+\toprule
+x1 & x2 & OR & result\\
+\midrule
+0 & 0 & 0 & FALSE\\
+1 & 0 & 1 & TRUE\\
+0 & 1 & 1 & TRUE\\
+1 & 1 & 1 & TRUE\\
+\bottomrule
+\end{tabular}
+
+\end{knitrout}
+\end{frame}
 
 
 \begin{frame}[fragile]\frametitle{Now the XOR truth table}
@@ -1088,8 +580,8 @@ x1 & x2 & XOR & result\\
 \midrule
 0 & 0 & 0 & FALSE\\
 1 & 0 & 1 & TRUE\\
-0 & 1 & 1 & TRUE\\
-1 & 1 & 0 & TRUE\\
+0 & 1 & 1 & FALSE\\
+1 & 1 & 0 & FALSE\\
 \bottomrule
 \end{tabular}
 
@@ -1125,9 +617,9 @@ Thus we pick at random 2/3 of the data for training and 1/3 for testing. See som
 \end{alltt}
 \begin{verbatim}
 ##        
-##         FALSE TRUE
-##   FALSE    37    0
-##   TRUE      0   13
+##         FALSE
+##   FALSE    34
+##   TRUE     16
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1147,10 +639,10 @@ Thus we pick at random 2/3 of the data for training and 1/3 for testing. See som
 \end{alltt}
 \begin{verbatim}
 ##             
-##               1
-##   setosa     13
-##   versicolor 19
-##   virginica  18
+##               1  2  3
+##   setosa     16  0  0
+##   versicolor  0 15  4
+##   virginica   0  0 15
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
