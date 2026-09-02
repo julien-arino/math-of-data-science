@@ -1,5 +1,11 @@
 \documentclass[aspectratio=169]{beamer}
 
+% Set lecture number for later use
+<<set-lecture-number,echo=FALSE>>=
+lecture_number = "18"
+@
+
+
 <<set-options,echo=FALSE,warning=FALSE,message=FALSE>>=
 # Load required libraries
 required_packages = c("dplyr", 
@@ -48,6 +54,7 @@ if (plot_blackBG) {
 cat(input_setup)
 @
 
+\subtitle{MATH 2740 -- Mathematics of Data Science -- Lecture \Sexpr{lecture_number}}
 \title{Characteristing graphs}
 \author{\texorpdfstring{Julien Arino\newline University of Manitoba\newline\url{julien.arino@umanitoba.ca}}{Julien Arino}}
 \date{}
