@@ -97,6 +97,26 @@ I also add (for some of you) a few things that will be handy and establish some 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \outlinepage{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
 
+\begin{frame}{Linear algebra in a nutshell (MATH 1210/1220/1300)}
+\begin{importanttheorem}
+\label{th:L04-linalg-in-a-nutshell}
+Let $A\in\M_n$. The following statements are equivalent (TFAE)
+\begin{enumerate}
+\item The matrix $A$ is invertible
+\item $\forall\bb\in\IF^n$, $A\bx = \bb$ has a unique solution ($\bx=A^{-1}\bb$)
+\item The only solution to $A\bx = \b0$ is the trivial solution $\bx = \b0$
+\item $RREF(A)=\II_n$
+\item The matrix A is equal to a product of elementary matrices
+\item $\forall\bb\in\IF^n$, $A\bx = \bb$ has a solution
+\item There is a matrix $B\in\M_n$ such that $AB = \II_n$
+\item There is an invertible matrix $B\in\M_n$ such that $AB = \II_n$
+\item $\det(A)\neq 0$
+\item $0$ is not an eigenvalue of $A$
+\end{enumerate}
+\end{importanttheorem}
+\end{frame}
+
+
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
@@ -598,9 +618,9 @@ The dot product is a special case of \defword{inner product}
 		\]
 		with equality if and only if $\ba$ is a scalar multiple of $\bb$, or one of them is $\b0$.
 	\end{corollary}
-	\begin{theorem}
+	\begin{importanttheorem}
 		$\ba$ and $\bb$ are orthogonal if and only if $\ba\bullet \bb=0$.
-	\end{theorem}
+	\end{importanttheorem}
 \end{frame}
 
 \begin{frame}
