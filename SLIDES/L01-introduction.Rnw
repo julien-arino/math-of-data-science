@@ -130,11 +130,11 @@ B04 & W 1130--1220 & P230 Duff Roblin \\
 
 \begin{frame}{Evaluation}
 \begin{itemize}
-\item 4 Lab Tests during tutorials (\textbf{10\%} each for a total \textbf{40\%})
+\item 3 Lab Tests during tutorials (\textbf{10\%} each for a total \textbf{30\%})
 \vfill
 \item 1 midterm on Thursday 5 November 2026 1800--2000 (\textbf{35\%})
 \vfill
-\item 1 final examination during the December 2026 Examination period (\textbf{35\%})
+\item 1 final examination during the December 2026 Examination period (\textbf{45\%})
 \end{itemize}
 \vfill
 \begin{itemize}
@@ -144,7 +144,7 @@ B04 & W 1130--1220 & P230 Duff Roblin \\
 
 
 \begin{frame}{Lab Tests}
-\bbullet Held during tutorials on 23 Sept, 07 Oct, 28 Oct, 02 Dec
+\bbullet Held during tutorials on 23 Sept, 21 Oct, 25 Nov
 \vfill
 \bbullet 45 minutes long 
 \vfill

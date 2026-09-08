@@ -8,6 +8,10 @@ Here, you will find the publicly available information: code, slides and some ge
 
 The course evaluation consists of Lab Tests (held during tutorials), a two-hour Midterm Examination and a Final Examination.
 
+**Office Hours:** TBD. Because of the ongoing renovation of Machray Hall, office hours will be strictly limited to the posted times once they are determined.
+
+**Exercises:** The standalone booklet of exercises has answers, but these are posted after the corresponding tutorial.
+
 ### This GitHub repo
 
 On the [GitHub version](https://github.com/julien-arino/math-of-data-science/) of the page, you have access to all the files. You can also download the entire repository by clicking the buttons on the left. (You can also of course clone this repo, but you will need to do that from the GitHub version of the site.)
