@@ -250,6 +250,11 @@ There are a few proofs (not many!) that I want you to know how to do
 Such proofs appear on slides like the present one, with a red background
 \end{frame}
 
+\begin{frame}[plain]
+  \begin{center}
+    \includegraphics[width=\textwidth]{volunteer-notetaker-slide-2025.pdf}
+  \end{center}
+\end{frame}
 
 %%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%
