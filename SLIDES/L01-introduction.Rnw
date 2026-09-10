@@ -83,7 +83,7 @@ In case you want to know, the slides in the course are \code{Rnw} compiled using
 \vfill
 \item It is therefore \textbf{impossible} for me to see you in my office
 \vfill
-\item I have booked 238 St Paul's from 1430 to 1600 on Tuesday and Thursday for office hours
+\item I have booked 316 St Paul's from 1400 to 1800 on Tuesday for office hours
 \vfill
 Seeing you outside of office hours is impossible without ample warning, since I actually need to book a room
 \end{itemize}
