@@ -85,15 +85,15 @@ x+1
 
 
 ## ----flow_control, eval=FALSE-------------------------------------------------
-# if (condition is true) {
+# if (condition_is_true) {
 #   list of stuff to do
 # }
 
 
 ## ----flow_control_extended, eval=FALSE----------------------------------------
-# if (condition is true) {
+# if (condition_is_true) {
 #   list of stuff to do
-# } else if (another condition) {
+# } else if (another_condition) {
 #   ...
 # } else {
 #   ...
