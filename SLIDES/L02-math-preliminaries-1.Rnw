@@ -132,8 +132,8 @@ In mathematics, or=and/or in common parlance. We also have an \textbf{exclusive 
 	\mathbf{not}\ A
 	\]
 	to mean that $A$ is false.
-	$\mathbf{not}\ A$ is the \textbf{contraposition} of $A$ (or $\mathbf{not}\ A$
-	is the contraposite of $A$)
+	$\mathbf{not}\ A$ is the \textbf{negation} of $A$ (or $\mathbf{not}\ A$
+	is the negative of $A$)
 \end{frame}
 
 \begin{frame}
@@ -174,10 +174,10 @@ In mathematics, or=and/or in common parlance. We also have an \textbf{exclusive 
 \frametitle{Playing with quantifiers}
 	For the quantifiers $\forall$ (for all) and $\exists$ (there exists),
 	\begin{center}
-		$\exists$ is the contraposite of $\forall$
+		$\exists$ is the negation of $\forall$
 	\end{center}
 	\vfill
-	Therefore, for example, the contraposite of
+	Therefore, for example, the negation of
 	\[
 	\forall x\in X,\exists y\in Y
 	\]
@@ -868,8 +868,22 @@ A\bx=\lambda \bx
 \]
 A couple $(\lambda,\bx)$ with $\bx\neq\b0$ s.t. $A\bx=\lambda\bx$ is an \textbf{eigenpair}
 \end{definition}
+\end{frame}
+
+\begin{frame}[red]{Parallel eigenvectors}
+\begin{importanttheorem}
+If $(\lambda,\bx)$ eigenpair, then for $c\neq 0$, $(\lambda,c\bx)$ also eigenpair
+\end{importanttheorem}
 \vfill
-If $(\lambda,\bx)$ eigenpair, then for $c\neq 0$, $(\lambda,c\bx)$ also eigenpair since $A(c\bx)=cA\bx=c\lambda\bx$ and dividing both sides by $c$..
+\begin{proof}
+Assume $(\lambda,\bx)$ is an eigenpair of $A\in\M_n$, i.e., $\bx\neq\b0$ and $A\bx=\lambda \bx$
+\vskip0.5cm
+Take the nonzero scalar $c\in\IF$.
+Then $A(c\bx)=cA\bx$ because scalars move freely in vector/matrix products.
+Therefore $A(c\bx)=cA\bx=c\lambda\bx$ since $A\bx=\lambda\bx$
+\vskip0.5cm
+So finally, moving $c$ again, $A(c\bx)=\lambda(c\bx)$, i.e., $c\bx$ is an eigenvector of $A$ associated to $\lambda$
+\end{proof}
 \end{frame}
 
 
