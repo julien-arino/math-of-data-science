@@ -25,7 +25,7 @@ Feel free to use the material in these slides or in the folders. If you find thi
     {% unless file.path contains 'FIGS' %}
       {% if file.extname == '.pdf' %}
         {% assign basename = file.basename %}
-        {% if basename contains 'L0' or basename contains 'L1' or basename contains 'L2' %}
+        {% if basename contains 'U0' or basename contains 'U1' or basename contains 'U2' %}
           <li><a href="https://julien-arino.github.io/math-of-data-science/SLIDES/{{ file.basename }}.pdf">{{ file.basename }}</a></li>
         {% endif %}
       {% endif %}

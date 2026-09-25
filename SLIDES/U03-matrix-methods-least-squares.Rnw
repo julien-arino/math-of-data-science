@@ -1,0 +1,1079 @@
+\documentclass[aspectratio=169]{beamer}
+
+% Set lecture number for later use
+<<set-lecture-number,echo=FALSE>>=
+lecture_number = "U03"
+@
+
+% Part common to all the lectures
+\subtitle{MATH 2740 -- Mathematics of Data Science -- Unit \Sexpr{lecture_number}}
+\author{\texorpdfstring{Julien Arino\newline\url{julien.arino@umanitoba.ca}}{Julien Arino}}
+\institute{Department of Mathematics @ University of Manitoba}
+
+% Title of the lecture
+\title{Matrix methods -- Least squares problems}
+
+<<set-options,echo=FALSE,warning=FALSE,message=FALSE>>=
+# Source the code common to all lectures
+source("common-code.R")
+@
+
+<<set-slide-background,echo=FALSE,results='asis'>>=
+# Are we plotting for a dark background? Setting is in common-code.R, but
+# cat command must run here.
+cat(input_setup)
+@
+
+\begin{document}
+
+% Cross-reference setup to reference previous lectures
+\zexternaldocument{L04-math-preliminaries-2}
+% Set up counter persistence
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% TITLE AND OUTLINE
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\SStitlepage
+\SSoutlinepage
+
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\SSsection{Getting the Canadian census data}
+
+\begin{frame}{Remark}
+This is the slide version of \code{Canada-census-get-plot-data.Rmd} in the folder \code{CODE} of the course repository
+\vfill
+The \code{html} file generated there (\href{https://julien-arino.github.io/math-of-data-science/CODE/Canada-census-get-plot-data.html}{link}) is much easier to read than these slides
+\end{frame}
+
+\begin{frame}\frametitle{Canadian census data}
+We want to consider the evolution of the population of Canada through time
+\vfill
+For this, we grab the Canadian census data
+\vfill Search for (Google) ``Canada historical census data csv", since csv (comma separated values) is a very easy format to use with R
+\vfill
+Here, we find a csv for 1851 to 1976
+\vfill
+We follow the link to Table A2-14, where we find another link, this time to a csv file. This is what we use in \code{R}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Grabing the Canadian census data}
+The function \code{read.csv} reads in a file (potentially directly from the web)
+\vfill
+<<load-census-csv-1>>=
+prefix = "https://www150.statcan.gc.ca/n1/en/pub/11-516-x/sectiona/"
+page = "A2_14-eng.csv?st=L7vSnqio"
+url = paste0(prefix, page)
+data_old = read.csv(url)
+@
+\vfill
+This directly assigns the result to the variable \code{data}
+\vfill
+We then use the function \code{head} to show the first few lines in the result
+\end{frame}
+
+\begin{frame}[fragile]
+<<load-census-csv-2>>=
+head(data_old)
+@
+\end{frame}
+
+\begin{frame}[fragile]
+Obviously, this does not make a lot of sense. This is normal: take a look at the first few lines in the file. They take the form
+<<>>=
+head(data_old, n = 1)
+@
+\vfill
+This happens often: the first few lines are here to describe the information contained in the data set, i.e., the so-called \defword{metadata}
+\end{frame}
+
+\begin{frame}[fragile]
+It is easy to deal with this: the function \code{read.csv} takes the optional argument \code{skip}, which indicates how many lines to skip at the beginning of the file
+\vfill
+The second line is also empty, so let us skip it too
+
+<<load-census-csv-3>>=
+data_old = read.csv(url, skip = 2)
+head(data_old, n = 2)
+@
+\end{frame}
+
+
+\begin{frame}[fragile]
+To make things legible, the table authors used 3 rows to write long names (e.g., Prince Edward Island is written over 3 rows)
+\vfill
+Note, however, that \code{read.csv} has rightly picked up on the first row being the column names
+\vfill
+Because we are only interested in the total population of the country and the year, let us get rid of the first 4 rows and of all columns except the second (Year) and third (Canada)
+
+<<>>=
+data_old = data_old[5:dim(data_old)[1], 2:3]
+head(data_old, n=4)
+@
+\end{frame}
+
+
+\begin{frame}[fragile]{Still not perfect...}
+<<>>=
+head(data_old, n=3)
+tail(data_old, n=2)
+@
+\begin{enumerate}
+\item there are some empty rows
+\vfill
+\item the last few rows need to be removed too, they contain remarks about the data
+\vfill
+\item the population counts contain commas
+\vfill
+\item it would be better if years were increasing
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Fixing these issues}
+1 and 2 are easy: remark that the Canada column is empty for both issues. Entries in the column are strings. Looking for empty content therefore means looking for empty strings
+\vfill
+So to fix 1 and 2, we keep the rows where Canada does not equal the empty string
+\vfill
+To get rid of commas, we just need to substitute an empty string for ","
+\vfill
+To sort, we find the order for the years and apply it to the entire table
+\vfill
+Finally, as remarked above, for now, both the year and the population are considered as strings. To plot, we will have to indicate that these are numbers, not characters
+\end{frame}
+
+\begin{frame}[fragile]
+<<>>=
+data_old = data_old[which(data_old$Canada != ""),]
+data_old$Canada = gsub(",", "", data_old$Canada)
+order_data = order(data_old$Year)
+data_old = data_old[order_data,]
+data_old$Year = as.numeric(data_old$Year)
+data_old$Canada = as.numeric(data_old$Canada)
+head(data_old)
+@
+\end{frame}
+
+
+\begin{frame}[fragile]
+Row numbers are a little weird
+<<>>=
+row.names(data_old) = 1:dim(data_old)[1]
+head(data_old)
+@
+
+Well, that looks about right! Let's see what this looks like in a graph
+\end{frame}
+
+\begin{frame}[fragile]
+<<plot-old-Canada-census-data,fig.show='asis',fig.height=3.5>>=
+plot(data_old$Year, data_old$Canada,
+    type = "b", lwd = 2,
+    xlab = "Year", ylab = "Population")
+@
+\end{frame}
+
+
+\begin{frame}[fragile]
+But wait, this is only to 1976..! 
+\vfill
+Looking around, we find another table here
+\vfill
+There's a download csv link in there, let us see where this leads us
+<<load-newer-census-data>>=
+data_new = read.csv("https://www12.statcan.gc.ca/census-recensement/2011/dp-pd/vc-rv/download-telecharger/download-telecharger.cfm?Lang=eng&CTLG=98-315-XWE2011001&FMT=csv")
+@
+The table is 720KB, so surely there must be more to this than just the population
+\vfill
+To get a sense of that, we dump a few random rows
+\end{frame}
+
+\begin{frame}[fragile]
+<<>>=
+data_new[sort(unique(c(1,sample(nrow(data_new), 4)))), ]
+@
+\end{frame}
+
+
+\begin{frame}{Flat tables}
+This is a \defword{flat table}: each row contains a piece of information, the columns describe what this piece of information is about
+\vfill
+This has \emph{way more} information than we need: we just want the population of Canada and here we get \Sexpr{dim(data_new)[1]} rows over \Sexpr{length(unique(data_new$CHARACTERISTIC))} characteristics
+\vfill
+Also, population is expressed in thousands, so once we selected what we want, we need to multiply by 1,000
+\end{frame}
+
+\begin{frame}[fragile]{Selecting rows}
+We want the rows where the geography is ``Canada'' and the characteristic is ``Population (in thousands)''
+\vfill
+Find indices of rows that satisfy the first criterion and those that satisfy the second; intersecting these two sets of indices, we have selected the rows we want
+\vfill
+<<>>=
+idx_CAN = which(data_new$GEOGRAPHY.NAME == "Canada")
+idx_char = which(data_new$CHARACTERISTIC == "Population (in thousands)")
+idx_keep = intersect(idx_CAN, idx_char)
+@
+\end{frame}
+
+
+\begin{frame}[fragile]
+Let us keep only these rows
+<<>>=
+data_new = data_new[idx_keep,]
+head(data_new, n = 8)
+@
+\end{frame}
+
+
+\begin{frame}
+We want to concatenate this data frame with the one from earlier
+\vfill
+To do this, we need the two data frames to have the same number of columns, same column names and same entry types (notice that \code{YEAR.S.} in \code{data\_new} is a column of characters)
+\end{frame}
+
+\begin{frame}\frametitle{What remains to be done}
+\begin{itemize}
+\item Rename the columns in the pruned old data (data\_pruned) to \code{year} and \code{population}. Personally, I prefer lowercase column names.. and \code{population} is more informative than \code{Canada}
+\vfill
+\item Keep only the relevant columns in \code{data\_new}, rename them accordingly and multiply population by 1,000 there
+\vfill
+\item Transform year in \code{data\_new} to numbers
+\vfill
+\item We already have data up to and including 1976 in \code{data\_old}, so get rid of that in \code{data\_new}
+\vfill
+\item Append the rows of \code{data\_new} to those of \code{data\_pruned}
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]
+<<>>=
+colnames(data_old) = c("year", "population")
+data_new = data_new[,c("YEAR.S.","TOTAL")]
+colnames(data_new) = c("year", "population")
+data_new$year = as.numeric(data_new$year)
+data_new = data_new[which(data_new$year>1976),]
+data_new$population = data_new$population*1000
+
+data = rbind(data_old,data_new)
+@
+\end{frame}
+
+
+\begin{frame}[fragile]
+<<plot-whole-Canada-census-data,fig.show='asis',fig.height=3.5>>=
+plot(data$year, data$population,
+    type = "b", lwd = 2,
+    xlab = "Year", ylab = "Population")
+@
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Save the processed data}
+In case we need the data elsewhere, we save the data to a \code{csv} file
+\vfill
+<<>>=
+write.csv(data, file = "../CODE/Canada_census.csv")
+@
+\vfill
+Using \code{readr} saves the data without row numbers (by default), so we can do this instead
+\vfill
+<<>>=
+readr::write_csv(data, file = "../CODE/Canada_census.csv")
+@
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\SSsection{Least squares problems}
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\SSsubsection{Initial considerations}
+
+\begin{frame}
+We just collected the census data for Canada
+\vfill
+Suppose we want to predict the population of Canada in 20 years given the historical population growth seen in the previous plot. What can we do?
+\vfill
+If there were just two points, we could easily "drive" a line through these two points. However, we have much more than two points, so we will use \emph{fitting}, \emph{i.e.}, try to make a curve come as close to possible to the points
+\vfill
+We start with a line, giving rise to \defword{linear least squares}
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Least squares approximation -- A trivial case}
+<<plot-2-points,echo=FALSE,fig.show='asis',fig.height=3.5>>=
+points = list()
+points$x = c(1,2)
+points$y = c(3,5) # So the points are (1,3) and (2,5)
+plot(points$x, points$y, 
+     pch = 19, cex = 1.5, bty = "n",
+     xlim = c(0, 3), ylim = c(0,7), 
+     xlab = "x", ylab = "y")
+@
+\end{frame}
+
+\begin{frame}
+We want to find the equation of a line $y=a+bx$ that goes through these two points, i.e., we seek $a$ and $b$ such that
+$$
+\begin{aligned}
+3 &= a+b \\
+5 &= a+2b
+\end{aligned}
+$$
+i.e., they satisfy $y=a+bx$ for $(x,y)=(1,3)$ and $(x,y)=(2,5)$
+\end{frame}
+
+\begin{frame}
+This is a linear system with 2 equations and 2 unknowns $a$ and $b$
+$$
+\begin{pmatrix}
+1 & 1 \\ 1 & 2
+\end{pmatrix}
+\begin{pmatrix}
+a \\ b
+\end{pmatrix}
+=
+\begin{pmatrix}
+3 \\ 5
+\end{pmatrix}
+$$
+\end{frame}
+
+\begin{frame}[fragile]
+We know from Theorem~\zref{th:L04-linalg-in-a-nutshell} (Linear algebra in a nutshell) that this system has a unique solution if the matrix
+$$
+M=
+\begin{pmatrix}
+1 & 1 \\ 1 & 2
+\end{pmatrix}
+$$
+is invertible
+\vfill
+$\det(M)=1$, so we are good, we'll find $a$ and $b$ easily..
+<<solve-2x2-system>>=
+A = matrix(c(1,1,1,2), nr = 2, nc = 2, byrow = TRUE)
+rhs = matrix(c(3,5), nr = 2, nc =1)
+coefs = solve(A,rhs)
+coefs
+@
+\end{frame}
+
+\begin{frame}[fragile]
+<<plot-2-points-and-line,echo=FALSE,fig.show='asis',fig.height=3.5>>=
+plot(points$x, points$y, 
+     pch = 19, cex = 1.5, bty = "n",
+     xlim = c(0, 3), ylim = c(0,7), xlab = "x", ylab = "y")
+x = seq(0,3,length.out = 100)
+y = coefs[1] + coefs[2]*x
+lines(x,y, lwd = 2, col = "darkred")
+@
+\end{frame}
+
+
+\begin{frame}[fragile]
+Now let's add another point
+<<plot-3-points-and-line-0,echo=FALSE,fig.show='asis',fig.height=3>>=
+points = list()
+points$x = c(1,2,3)
+points$y = c(3,5,4) # So the points are (1,3), (2,5) and (3,4)
+plot(points$x, points$y,
+     pch = 19, cex = 1.5, bty = "n",
+    xlim = c(0, 3.5), ylim = c(0,7), 
+    xlab = "x", ylab = "y")
+@
+These points are clearly not colinear, so there is not one line going through the 3
+\end{frame}
+
+\begin{frame}
+We end up with an \emph{overdetermined} system
+$$
+\begin{aligned}
+3 &= a+b \\
+5 &= a+2b \\
+4 &= a+3b
+\end{aligned}
+$$
+i.e.,
+$$
+\begin{pmatrix}
+1 & 1 \\ 1 & 2 \\ 1 & 3
+\end{pmatrix}
+\begin{pmatrix}
+a \\ b
+\end{pmatrix}
+=
+\begin{pmatrix}
+3 \\ 5 \\ 4
+\end{pmatrix}
+$$
+\end{frame}
+
+\begin{frame}
+We have verified visually that the points are not colinear, so this system has no solution
+\vfill
+(If you had to do it for good, you consider two vectors stemming from these 3 points and compute the angle between them or check that one is a multiple of the other)
+\vfill
+So let us instead try to find the line that comes "closest" to the 3 points
+\end{frame}
+
+\begin{frame}[fragile]
+<<plot-3-points-and-line-1,echo=FALSE,fig.show='asis',fig.height=3>>=
+A = matrix(c(1,1,1,2), nr = 2, nc = 2, byrow = TRUE)
+rhs = matrix(c(3,5), nr = 2, nc =1)
+coefs = solve(A,rhs) # To invert A, in R, you use solve(A), to solve Ax=b, you use solve(A,b)
+plot(points$x, points$y,
+     pch = 19, cex = 1.5, bty = "n",
+    xlim = c(0, 3.5), ylim = c(0,7), 
+    xlab = "x", ylab = "y")
+x = seq(0,3.5,length.out = 100)
+y = coefs[1] + coefs[2]*x
+lines(x,y, lwd = 2, col = "darkred")
+@
+
+Obviously, not sensational..
+\end{frame}
+
+\begin{frame}[fragile]{Let's eyeball it -- Less steep and higher $y$-intercept}
+<<plot-3-points-and-line-2,echo=FALSE,fig.show='asis',fig.height=3>>=
+plot(points$x, points$y,
+     pch = 19, cex = 1.5, bty = "n",
+    xlim = c(0, 3.5), ylim = c(0,8), xlab = "x", ylab = "y")
+abline(coef = coefs, lwd = 2, col = "darkred")
+abline(a = 3, b = 0.5, lwd = 2, col = "dodgerblue4")
+@
+The blue line looks better, but how do we quantify this?
+\end{frame}
+
+\begin{frame}
+How do we find "how far away" we are?
+\vfill
+\begin{itemize}
+\item We could use projections onto the line (which we know minimises the distance)
+\vfill
+\item However, this will be a problem if we later decide that rather than a straight line, we want to use something more "funky" like a quadratic or an exponential
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+Compare, for a given value $x$, the distance between the true value $y$ and the value of $y$ obtained using the curve (line, here) that we use to fit the data
+\vfill
+Let $(x_i,y_i)$ be the data points, i.e., here, $(x_1,y_1)=(1,3)$, $(x_2,y_2)=(2,5)$ and $(x_3,y_3)=(3,4)$
+\end{frame}
+
+\begin{frame}
+Suppose we use a line with equation $y=a+bx$ and that we pick a value for $a$ and $b$. Then at $x_1$,
+$$
+\tilde y_1 = a+bx_1 = a+b
+$$
+at $x_2$
+$$
+\tilde y_2 = a+bx_2 = a+2b
+$$
+and at $x_3$,
+$$
+\tilde y_3 = a+bx_3 = a+3b
+$$
+\vfill
+Consider $x_1$, for instance. The error we made by using the line with coefficients $(a,b)$ is $\overrightarrow{(x_1,y_1)(x_1,\tilde y_1)}$
+\end{frame}
+
+\begin{frame}[fragile]
+For future use, let us create a function for $y = a_0 + a_1x$
+
+<<define-affine-function>>=
+my_line = function(x, a_0, a_1){
+    return(a_0 + a_1*x)
+}
+@
+
+Functions are super useful when programming
+
+<<examples-use-affine-function>>=
+my_line(1,2,3)
+my_line(a_0 = 2, a_1 = 3, x = 1)
+my_line(x = c(1,2,3), a_0 = 2, a_1 = 3)
+@
+\end{frame}
+
+
+\begin{frame}[fragile]
+<<plot-3-points-and-line-3,echo=FALSE,fig.show='asis',fig.height=3.5>>=
+a = 3
+b = 0.5 # The line has equation y=a+bx
+plot(points$x, points$y,
+     pch = 19, cex = 1.5, bty = "n",
+    xlim = c(0, 3.5), ylim = c(0,6), xlab = "x", ylab = "y")
+x = seq(0,3.5,length.out = 100)
+y = a + b*x
+lines(x,y, lwd = 2, col = "dodgerblue4")
+abline(v = c(1,2,3), lwd = 0.5, lty = 2)
+p = my_line(c(1,2,3), a, b)
+points(c(1,2,3), p, pch = 19, cex = 1.5, col = "red")
+@
+\end{frame}
+
+\begin{frame}
+Let us return to the error
+$$
+\overrightarrow{(x_1,y_1)(x_1,\tilde y_1)}
+$$
+We have
+$$
+\overrightarrow{(x_1,y_1)(x_1,\tilde y_1)}
+= (x_1-x_1,y_1-\tilde y_1)
+= (0, y_1-\tilde y_1)
+$$
+\vfill
+Let us call
+$$
+\varepsilon_1 = y_1-\tilde y_1
+$$
+We can compute $\varepsilon_2$ and $\varepsilon_3$ too. And we can then form the \defword{error vector}
+$$
+\mathbf{e} = (\varepsilon_1,\varepsilon_2,\varepsilon_3)^T
+$$
+\vfill
+The norm of $\mathbf{e}$, $\|\mathbf{e}\|$, then tells us how much error we are making for the choice of $(a,b)$ we are using
+\end{frame}
+
+
+\begin{frame}
+The norm of $\|\mathbf{e}\|$ tells us how much error we are making for the choice of $(a,b)$ we are using
+\vfill
+So our objective is to find $(a,b)$ such that $\|\mathbf{e}\|$ is minimal
+\vfill
+We could use various norms, but the Euclidean norm has some very interesting properties, so we use
+$$
+\|\mathbf{e}\| = \sqrt{\varepsilon_1^2+\varepsilon_2^2+\varepsilon_3^2}
+$$
+\end{frame}
+
+
+\begin{frame}\frametitle{The linear least squares problem}
+Given a collection of data points $(x_1,y_1),\ldots,(x_n,y_n)$, find the coefficients $a,b$ of the line $y=a+bx$ such that
+$$
+\|\mathbf{e}\|=\sqrt{\varepsilon_1^2+\cdots+\varepsilon_n^2}
+=\sqrt{(y_1-\tilde y_1)^2+\cdots+(y_n-\tilde y_n)^2}
+$$
+is minimal, where $\tilde y_i=a+bx_i$, for $i=1,\ldots,n$
+\end{frame}
+
+
+\begin{frame}
+Let us first hack a brute force solution! (For the example we have been using this far)
+\vfill
+We have our three points in the list \code{points}, the function \code{my\_line} that computes the value $\tilde y$ given $x$ and $a,b$, so let us make a new function that, given $a,b$, computes $\mathbf{e}$
+\vfill
+We'll also pass the points \code{points}
+\end{frame}
+
+\begin{frame}[fragile]{A function to compute the error}
+<<define-error-function>>=
+error = function(a_0, a_1, points) {
+    y_tilde = my_line(points$x, a_0 = a_0, a_1 = a_1)
+    e = points$y - y_tilde
+    return(sqrt(sum(e^2)))
+}
+error(a_0 = 2, a_1 = 3, points)
+error(a_0 = 3, a_1 = 0.5, points)
+error(a_0 = 3.1, a_1 = 0.48, points)
+@
+
+We can't be doing this by hand..!
+\end{frame}
+
+
+\begin{frame}\frametitle{Let's minimise using something cool -- \emph{genetic algorithms}}
+\begin{itemize}
+\item Genetic algorithms are a stochastic \emph{optimisation} method. There are other types, e.g., gradient descent (deterministic)
+\vfill
+\item The idea is to use a mechanism mimicking evolution's drive towards higher fitness
+\vfill
+\item The function value is its fitness
+\vfill
+\item We try different genes (here, different values of $a,b$) and evaluate their fitness.. keep the good ones
+\vfill
+\item We mutate or crossover genes, throw in new ones, etc.
+\vfill
+\item We keep doing this until we reach a stopping criterion
+\vfill
+\item We then return the best gene we found
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]
+<<run-plot-ga>>=
+if (!require("GA", quietly = TRUE)) {
+  install.packages("GA")
+  library(GA)
+}
+GA = ga(type = "real-valued",
+        fitness = function(x) -error(a_0 = x[1], a_1 = x[2], points),
+        suggestions = c(a_0 = 2, a_1 = 3),
+        lower = c(-10, -10), upper = c(10, 10),
+        popSize = 200, maxiter = 150)
+@
+\end{frame}
+
+\begin{frame}[fragile]
+GA returns an S4 object of class \code{ga}
+\vfill
+<<show-GA-return>>=
+GA
+@
+\end{frame}
+
+\begin{frame}[fragile]
+Access slots using @. For instance, the GA finds the coefficients
+<<show-GA-solution>>=
+GA@solution
+@
+with fitness value (i.e., $\|\be\|$)
+<<show-GA-fitness-value>>=
+-GA@fitnessValue
+@
+\end{frame}
+
+\begin{frame}[fragile]
+<<show-GA-convergence,echo=FALSE,fig.show='asis'>>=
+plot(GA)
+@
+\end{frame}
+
+\begin{frame}
+\begin{itemize}
+\item Here, however, we do not have to go brute force: we can reason using mathematics
+\vfill
+\item We now take a little detour on the math side of things, we will come back to code in a while..
+\end{itemize}
+\end{frame}
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\SSsubsection{The least squares problem}
+
+\begin{frame}{The least squares problem (simplest version)}
+	\begin{definition}
+		Given a collection of points $(x_1,y_1),\ldots,(x_n,y_n)$, find the coefficients $a,b$ of the line $y=a+bx$ such that
+		$$
+		\|\mathbf{e}\|=\sqrt{\varepsilon_1^2+\cdots+\varepsilon_n^2}
+		=\sqrt{(y_1-\tilde y_1)^2+\cdots+(y_n-\tilde y_n)^2}
+		$$
+		is minimal, where $\tilde y_i=a+bx_i$ for $i=1,\ldots,n$
+	\end{definition}
+	\vfill
+	We just saw how to solve this by brute force using a genetic algorith to minimise $\|e\|$, let us now see how to solve this problem ``properly''
+\end{frame}
+
+
+\begin{frame}
+	For a data point $i=1,\ldots,n$
+	\[
+	\varepsilon_i = y_i-\tilde y_i = y_i - (a+bx_i)
+	\]
+	So if we write this for all data points,
+	\begin{align*}
+	\varepsilon_1 &= y_1 - (a+bx_1) \\
+	&\;\;\vdots \\
+	\varepsilon_n &= y_n - (a+bx_n) \\
+	\end{align*}
+	In matrix form
+	\[
+	\be = \bb-A\bx
+	\]
+	with
+	\[
+	\be = \begin{pmatrix}
+	\varepsilon_1\\ \vdots\\ \varepsilon_n
+	\end{pmatrix},
+	A=\begin{pmatrix}
+	1 & x_1 \\ \vdots & \vdots \\ 1 & x_n
+	\end{pmatrix},
+	\bx = \begin{pmatrix}
+	a\\b
+	\end{pmatrix}\textrm{ and }
+	\bb = \begin{pmatrix}
+	y_1\\ \vdots\\ y_n
+	\end{pmatrix}
+	\]
+\end{frame}
+
+\begin{frame}{The least squares problem (reformulated)}
+\begin{definition}[Least squares solutions]
+Consider a collection of points $(x_1,y_1),\ldots,(x_n,y_n)$, a matrix $A\in\M_{mn}$, $\bb\in\IR^m$. A \textbf{least squares solution} of $A\bx=\bb$ is a vector $\tilde \bx\in\IR^n$ s.t.
+\[
+\forall \bx\in\IR^n,\quad \|\bb-A\tilde\bx\|\leq \|\bb-A\bx\|
+\]
+\end{definition}
+\end{frame}
+
+
+\begin{frame}{Needed to solve the problem}
+\begin{definition}[Best approximation]
+Let $V$ be a vector space, $W\subset V$ and $\mathbf{v}\in V$. The \textbf{best approximation} to $\mathbf{v}$ in $W$ is $\tilde{\mathbf{v}}\in W$ s.t.
+\[
+\forall\mathbf{w}\in W, \mathbf{w}\neq\tilde{\mathbf{v}}, \quad
+\|\mathbf{v}-\tilde{\mathbf{v}}\| < \|\mathbf{v}-\mathbf{w}\|
+\]
+\end{definition}
+\vfill
+\begin{theorem}[Best approximation theorem]
+Let $V$ be a vector space with an inner product, $W\subset V$ and $\mathbf{v}\in V$. Then $\mathsf{proj}_W(\mathbf{v})$ is the best approximation to $\mathbf{v}$ in W
+\end{theorem}
+\end{frame}
+
+
+\begin{frame}{Let us find the least squares solution}
+$\forall \bx\IR^n$, $A\bx$ is a vector in the \textbf{column space} of $A$ (the space spanned by the vectors making up the columns of $A$)
+\vfill
+Since $\bx\in\IR^n$, $A\bx\in\mathsf{col}(A)$
+\vfill
+$\implies$ least squares solution of $A\bx=\bb$ is a vector $\tilde\by\in\mathsf{col}(A)$ s.t.
+\[
+\forall\by\in\mathsf{col}(A),\quad\|\bb-\tilde\by\|\leq\|\bb-\by\|
+\]
+\vfill
+This looks very much like Best approximation and Best approximation theorem
+\end{frame}
+
+\begin{frame}{Putting things together}
+We just stated: The least squares solution of $A\bx=\bb$ is a vector $\tilde\by\in\mathsf{col}(A)$ s.t.
+\[
+\forall\by\in\mathsf{col}(A),\quad\|\bb-\tilde\by\|\leq\|\bb-\by\|
+\]
+\vfill
+We know (reformulating a tad):
+\begin{theorem}[Best approximation theorem]
+Let $V$ be a vector space with an inner product, $W\subset V$ and $\mathbf{v}\in V$. Then $\mathsf{proj}_W(\mathbf{v})\in W$ is the best approximation to $\mathbf{v}$ in W, i.e.,
+\[
+\forall\mathbf{w}\in W, \mathbf{w}\neq\mathsf{proj}_W(\mathbf{v}), \quad
+\|\mathbf{v}-\mathsf{proj}_W(\mathbf{v})\| < \|\mathbf{v}-\mathbf{w}\|
+\]
+\end{theorem}
+\vfill
+$\implies$ $W=\mathsf{col}(A)$, $\bv=\bb$ and $\tilde\by=\mathsf{proj}_{\mathsf{col}(A)}(\mathbf{b})$
+\end{frame}
+
+\begin{frame}
+So if $\tilde\bx$ is a least squares solution of $A\bx=\bb$, then
+\[
+\tilde\by = A\tilde\bx = \mathsf{proj}_{\mathsf{col}(A)}(\mathbf{b})
+\]
+\vfill
+We have
+\[
+\bb-A\tilde\bx = \bb-\mathsf{proj}_{\mathsf{col}(A)}(\mathbf{b}) 
+= \mathsf{perp}_{\mathsf{col}(A)}(\mathbf{b})
+\]
+and it is easy to show that
+\[
+\mathsf{perp}_{\mathsf{col}(A)}(\mathbf{b}) \perp \mathsf{col}(A)
+\]
+\vfill
+So for all columns $\ba_i$ of $A$
+\[
+\ba_i\boldsymbol{\cdot}(\bb-A\tilde\bx) = 0
+\]
+which we can also write as $\ba_i^T(\bb-A\tilde\bx) = 0$
+\end{frame}
+
+\begin{frame}
+For all columns $\ba_i$ of $A$,
+\[\ba_i^T(\bb-A\tilde\bx) = 0
+\]
+\vfill
+This is equivalent to saying that
+\[
+A^T(\bb-A\tilde\bx) = \b0
+\]
+\vfill
+We have
+\begin{align*}
+A^T(\bb-A\tilde\bx) = \b0 &\iff A^T\bb - A^TA\tilde\bx = \b0 \\
+&\iff A^T\bb = A^TA\tilde\bx \\
+&\iff A^TA\tilde\bx = A^T\bb
+\end{align*}
+The latter system constitutes the \defword{normal equations} for $\tilde\bx$
+\end{frame}
+
+
+\begin{frame}{Least squares theorem}
+\begin{importanttheorem}[Least squares theorem]\label{th:least_squares}
+$A\in\M_{mn}$, $\bb\in\IR^m$. Then
+\begin{enumerate}
+\item $A\bx=\bb$ always has at least one least squares solution $\tilde\bx$
+\item $\tilde\bx$ least squares solution to $A\bx=\bb$ $\iff$ $\tilde\bx$ is a solution to the normal equations $A^TA\tilde\bx = A^T\bb$
+\item $A$ has linearly independent columns $\iff$ $A^TA$ invertible.  
+\newline In this case, the least squares solution is unique and 
+\[
+\tilde\bx = \left(A^TA\right)^{-1}A^T\bb
+\]
+\end{enumerate}
+\end{importanttheorem}
+\vfill
+We have seen 1 and 2, we will not show 3 (it is not hard)
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\SSsubsection{Fitting something more complicated}
+
+\begin{frame}{Suppose we want to fit something a bit more complicated..}
+For instance, instead of the affine function
+\[
+y = a+bx
+\]
+suppose we want to do the quadratic
+\[
+y = a_0+a_1x+a_2x^2
+\]
+or even
+\[
+y = k_0 e^{k_1x}
+\]
+\vfill
+How do we proceed?
+\end{frame}
+
+
+\begin{frame}{Fitting the quadratic}
+We have the data points $(x_1,y_1),(x_2,y_2),\ldots,(x_n,y_n)$ and want to fit
+\[
+y = a_0+a_1x+a_2x^2
+\]
+At $(x_1,y_1)$,
+\[
+\tilde y_1 = a_0+a_1x_1+a_2x_1^2
+\]
+$\vdots$\\
+At $(x_n,y_n)$,
+\[
+\tilde y_n = a_0+a_1x_n+a_2x_n^2
+\]
+\end{frame}
+
+\begin{frame}
+In terms of the error
+\begin{align*}
+\varepsilon_1 &= y_1-\tilde y_1 = y_1-(a_0+a_1x_1+a_2x_1^2) \\
+&\;\;\vdots\\
+\varepsilon_n &= y_n-\tilde y_n = y_n-(a_0+a_1x_n+a_2x_n^2)
+\end{align*}
+i.e.,
+\[
+\be = \bb-A\bx 
+\]
+where
+\[
+\be = \begin{pmatrix}
+\varepsilon_1\\ \vdots\\ \varepsilon_n
+\end{pmatrix},
+A=\begin{pmatrix}
+1 & x_1 & x_1^2\\ \vdots & \vdots & \vdots \\ 1 & x_n & x_n^2
+\end{pmatrix},
+\bx = \begin{pmatrix}
+a_0\\a_1\\a_2
+\end{pmatrix}\textrm{ and }
+\bb = \begin{pmatrix}
+y_1\\ \vdots\\ y_n
+\end{pmatrix}
+\]
+\vfill
+Theorem~\ref{th:least_squares} applies, with here $A\in\M_{n3}$ and $\bb\in\IR^n$
+\end{frame}
+
+
+\begin{frame}{Fitting the exponential}
+Things are a bit more complicated here
+\vfill
+If we proceed as before, we get the system
+\begin{align*}
+y_1 &= k_0 e^{k_1x_1} \\
+&\;\;\vdots \\
+y_n &= k_0 e^{k_1x_n}
+\end{align*}
+$e^{k_1x_i}$ is a nonlinear term, it cannot be put in a matrix
+\vfill
+\emph{However}: take the $\ln$ of both sides of the equation
+\[
+\ln(y_i) = \ln(k_0e^{k_1x_i}) = \ln(k_0)+\ln(e^{k_1x_i}) = \ln(k_0)+k_1x_i
+\]
+If $y_i,k_0>0$, then their $\ln$ are defined and we're in business..
+\end{frame}
+
+\begin{frame}
+\[
+\ln(y_i) = \ln (k_0)+k_1x_i
+\]
+So the system is
+\begin{align*}
+\by = A\bx+\bb
+\end{align*}
+with
+\[
+A = \begin{pmatrix}
+x_1\\ \vdots \\ x_n
+\end{pmatrix},
+\bx = \begin{pmatrix}
+k_1
+\end{pmatrix},
+\bb = \begin{pmatrix}
+\ln (k_0)
+\end{pmatrix}
+\textrm{ and }
+\by = \begin{pmatrix}
+\ln (y_1)\\ \vdots\\ \ln (y_n)
+\end{pmatrix}
+\]
+\end{frame}
+
+\SSsection{Example -- Canadian population data}
+
+\begin{frame}[fragile]{Example: Canadian census data}
+Let's consider data from the Canadian census. We first load and visualize it.
+<<canada-census-plot, fig.height=4, fig.width=6, out.width="0.7\\textwidth", fig.align='center'>>=
+canada = read.csv("../DATA/Canada_census.csv")
+canada = as.data.frame(canada)
+plot(canada, main = "Canadian Population over Time", 
+     xlab = "Year", ylab = "Population")
+@
+\end{frame}
+
+\begin{frame}[fragile]{Fitting a linear model}
+Let's first try to fit a linear model $y = a_0 + a_1 \times \text{year}$. 
+\vfill
+We construct the matrix $A$ and the vector $\bb$ (the population data):
+<<canada-census-linear-setup>>=
+b = canada$population
+A = matrix(ncol = 2, nrow = dim(canada)[1],
+           data = c(rep(1, dim(canada)[1]),
+                    canada$year))
+@
+\vfill
+Recall that the normal equations are $A^T A \tilde{\bx} = A^T \bb$, where $\tilde{\bx} = (a_0, a_1)^T$.
+\end{frame}
+
+\begin{frame}[fragile]{Solving the normal equations}
+We can compute $A^T A$ and solve the normal equations in R:
+<<canada-census-linear-solve>>=
+ATA = t(A) %*% A
+invATA = solve(ATA)
+x_tilde = invATA %*% t(A) %*% b
+@
+\vfill
+The resulting coefficients $\tilde{\bx}$ are:
+<<canada-census-linear-coeffs, echo=FALSE>>=
+x_tilde
+@
+\end{frame}
+
+\begin{frame}[fragile]{Visualizing the linear fit}
+We compute the fitted values and plot them alongside the data:
+<<canada-census-linear-plot, fig.height=3.5, fig.width=6, out.width="0.6\\textwidth", fig.align='center'>>=
+x_axis = seq(canada$year[1], max(canada$year), 1)
+y_fitted = x_tilde[1] + x_tilde[2] * x_axis
+
+plot(canada, ylim = c(min(y_fitted), max(canada$population)))
+lines(x_axis, y_fitted, col = "red", lwd = 2)
+@
+\end{frame}
+
+\begin{frame}[fragile]{Fitting a quadratic model}
+The linear fit misses the curvature in the population growth. Let us try a quadratic model:
+\[
+y = a_0 + a_1 \times \text{year} + a_2 \times \text{year}^2
+\]
+\vfill
+We can set up the matrix $A_2$:
+<<canada-census-quad-setup>>=
+A2 = matrix(ncol = 3, nrow = dim(canada)[1],
+            data = c(rep(1, dim(canada)[1]),
+                     canada$year,
+                     canada$year^2))
+@
+\end{frame}
+
+\begin{frame}[fragile]{Numerical issues}
+Let's try to compute $A_2^T A_2$ and its inverse:
+<<canada-census-quad-solve>>=
+ATA2 = t(A2) %*% A2
+invATA2 = solve(ATA2)
+@
+\vfill
+While R computes this, it is potentially dangerous. The years are around 1900-2000, so $\text{year}^2 \approx 4 \times 10^6$. The columns of $A_2$ have vastly different scales, which makes $A_2^T A_2$ very poorly conditioned!
+\end{frame}
+
+\begin{frame}[fragile]{A better conditioned formulation}
+To avoid numerical issues, we should shift the years so they start at 0:
+\[
+\text{shifted\_year} = \text{year} - \min(\text{year})
+\]
+We are now fitting $y = a_0 + a_1 \times \text{shifted\_year} + a_2 \times \text{shifted\_year}^2$.
+<<canada-census-quad2-setup>>=
+A3 = matrix(ncol = 3, nrow = dim(canada)[1],
+            data = c(rep(1, dim(canada)[1]),
+                     canada$year - min(canada$year),
+                     (canada$year - min(canada$year))^2))
+@
+This makes the values in the columns of $A_3$ much closer in magnitude.
+\end{frame}
+
+\begin{frame}[fragile]{Solving the shifted quadratic model}
+We can now safely compute the normal equations for the shifted model:
+<<canada-census-quad2-solve>>=
+ATA3 = t(A3) %*% A3
+invATA3 = solve(ATA3)
+x_tilde = invATA3 %*% t(A3) %*% b
+@
+\vfill
+The resulting coefficients $\tilde{\bx}$ are:
+<<canada-census-quad2-coeffs, echo=FALSE>>=
+x_tilde
+@
+\end{frame}
+
+\begin{frame}[fragile]{Visualizing the quadratic fit}
+We compute the fitted quadratic curve and plot it:
+<<canada-census-quad2-plot, fig.height=3.5, fig.width=6, out.width="0.6\\textwidth", fig.align='center'>>=
+y_fitted_quad = x_tilde[1] + 
+  x_tilde[2] * (x_axis - min(canada$year)) + 
+  x_tilde[3] * (x_axis - min(canada$year))^2
+
+plot(canada, ylim = c(min(y_fitted), max(canada$population)))
+lines(x_axis, y_fitted, col = "red", lwd = 2) # Linear
+lines(x_axis, y_fitted_quad, col = "blue", lwd = 2) # Quadratic
+@
+\end{frame}
+
+\begin{frame}{Takeaways}
+\begin{itemize}
+\item Matrix formulations of least squares give us a straightforward way to solve polynomial curve fitting problems
+\vfill
+\item By adding columns corresponding to higher powers (or other transformations), we can easily expand the model
+\vfill
+\item \textbf{Numerical stability is crucial}: always be careful when dealing with polynomials of large numbers. Shifting and scaling your data can prevent matrices from becoming ill-conditioned
+\end{itemize}
+\end{frame}
+
+<<convert-Rnw-to-R-part2,warning=FALSE,message=FALSE,echo=FALSE,results='hide'>>=
+rmd_chunks_to_r_temp()
+@
+
+
+% Save counters for next file
+
+% Save theorem count for next file
+\end{document}
