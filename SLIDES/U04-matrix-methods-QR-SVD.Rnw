@@ -11,7 +11,7 @@ lecture_number = "U04"
 \institute{Department of Mathematics @ University of Manitoba}
 
 % Title of the lecture
-\title{Matrix methods -- QR factorisation (1)}
+\title{Matrix methods -- QR factorisation \& SVD}
 
 <<set-options,echo=FALSE,warning=FALSE,message=FALSE>>=
 # Source the code common to all lectures
@@ -38,11 +38,6 @@ cat(input_setup)
 \SSoutlinepage
 
 
-%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%
-\SSsection{Matrix factorisations}
-
-
 \begin{frame}{Matrix factorisations}
 	Matrix factorisations are popular because they allow to perform some computations more easily
 	\vfill
@@ -52,7 +47,13 @@ cat(input_setup)
 
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
-\SSsection{Orthogonality and projections}
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\SSsection{The QR decomposition}
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\SSsubsection{Orthogonality and projections}
 
 \begin{frame}
 \begin{definition}[Orthogonal set of vectors]
@@ -172,8 +173,9 @@ $\{\bv_1,\ldots,\bv_k\}\in\IR^n$ is orthonormal if
 	\end{definition}	
 	\end{frame}
 	
-
-\SSsection{Gram-Schmidt orthogonalisation process}	
+%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\SSsubsection{Gram-Schmidt orthogonalisation process}	
 	\begin{frame}
 	What this aims to do is to construct an orthogonal basis for a subspace $W\subset\IR^n$
 	\vfill
@@ -204,7 +206,7 @@ $\{\bv_1,\ldots,\bv_k\}\in\IR^n$ is orthonormal if
 
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
-\SSsection{Orthogonal matrices}
+\SSsubsection{Orthogonal matrices}
 
 \begin{frame}
 \begin{theorem}
@@ -276,22 +278,11 @@ rmd_chunks_to_r_temp()
 @
 
 
-% Save counters for next file
-
-% Save theorem count for next file
-
-% Set up cross-references and counter persistence
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% TITLE AND OUTLINE
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
-\SSsection{The QR factorisation \& Least squares}
+\SSsubsection{The QR factorisation \& Least squares}
 
 \begin{frame}{The QR factorisation}
 \begin{importanttheorem}\label{th:QR_factorisation}
@@ -340,7 +331,11 @@ A^TA\tilde\bx= A^T\bb &\implies (QR)^TQR\tilde\bx = (QR)^T\bb \\
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
-\SSsection{Singular values}
+\SSsection{The singular values decomposition}
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\SSsubsection{Singular values}
 
 \begin{frame}{Matrix factorisations (continued)}
 The singular value decomposition (known mostly by its acronym, SVD) is yet another type of factorisation/decomposition..
@@ -461,7 +456,7 @@ The reverse works the same way.. \qed
 
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
-\SSsection{The SVD}
+\SSsubsection{The SVD}
 
 \begin{frame}{The singular value decomposition (SVD)}
 \begin{importanttheorem}[SVD]\label{th:SVD}
@@ -513,9 +508,7 @@ A=\sigma_1\bu_1\bv_1^T+\cdots+\sigma_r\bu_r\bv_r^T
 
 %%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%
-\SSsection{An application of the SVD -- Image compression}
+\SSsubsection{An application of the SVD -- Image compression}
 
 
 \begin{frame}{Applications of the SVD}
@@ -762,24 +755,10 @@ Uses \Sexpr{round(M_tmp$pct_of_original, 2)}\% of the original information
 rmd_chunks_to_r_temp()
 @
 
-% Save counters for next file
-
-% Save theorem count for next file
-
-% Set up cross-references and counter persistence
-%\zexternaldocument{L08-matrix-methods-QR-2-SVD-1}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% TITLE AND OUTLINE
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
 
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
-\SSsection{Computing the SVD}
+\SSsubsection{Computing the SVD}
 
 \begin{frame}{Computing the SVD (case of $\neq$ eigenvalues)}
 To compute the SVD, we use the following result
@@ -903,7 +882,7 @@ I am caricaturing a little here: there can be cases that do not work exactly lik
 
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
-\SSsection{Applications of the SVD -- Least squares}
+\SSsubsection{Applications of the SVD -- Least squares}
 
 
 \begin{frame}{Pseudoinverse of a matrix}
@@ -949,7 +928,7 @@ where $A^+$ is the \emph{pseudoinverse} of $A$
 
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
-\SSsection{Summary -- Least squares methods}
+\SSsubsection{Summary -- Least squares methods}
 
 \begin{frame}{The least squares problem}
 \textbf{Problem Statement:}

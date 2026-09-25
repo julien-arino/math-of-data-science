@@ -263,7 +263,7 @@ generate_sssection_bgs <- function() {
   n_bgs <- 0 
   if (!is.null(file) && file.exists(file)) {
     content <- readLines(file, warn = FALSE)
-    n_bgs <- sum(grepl("\\\\SSsection\\{", content))
+    n_bgs <- sum(grepl("\\\\SS(sub)*section\\{", content))
   }
   
   # If there are no \SSsection commands, don't do anything

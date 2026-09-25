@@ -91,21 +91,21 @@ cat(input_setup)
 \begin{frame}{The genesis of graphs -- Euler's bridges of K\"onigsberg}
 	Cross the 7 bridges in a single walk without recrossing any of them?
 	\begin{center}
-	\includegraphics[angle=90,height=.75\textheight]{FIGS_slides/bridge_color}
+	\includegraphics[angle=90,height=.75\textheight]{FIGS-slides-admin/bridge_color}
 	\end{center}
 \end{frame}
 
 \begin{frame}{The genesis of graphs -- Euler's bridges of K\"onigsberg}
 	Cross the 7 bridges in a single walk without recrossing any of them?
 	\begin{center}
-	\includegraphics[height=.75\textheight]{FIGS_slides/bridge_color_with_graph}
+	\includegraphics[height=.75\textheight]{FIGS-slides-admin/bridge_color_with_graph}
 	\end{center}
 \end{frame}
 
 \begin{frame}{The genesis of graphs -- Euler's bridges of K\"onigsberg}
 	Cross the 7 bridges in a single walk without recrossing any of them?
 	\begin{center}
-		\includegraphics[height=.5\textheight]{FIGS_slides/bridge_color_with_graph}
+		\includegraphics[height=.5\textheight]{FIGS-slides-admin/bridge_color_with_graph}
 		\end{center}
 	\begin{block}{Mathematical problem}
 	Is it possible to find a \emph{trail} containing all \emph{edges} of the graph?
@@ -115,7 +115,7 @@ cat(input_setup)
 \begin{frame}{Finding a cycle with all vertices}
 	A salesperson must visit a couple of cities for their job. Is it possible for them to plan a round trip using highways enabling tehm to visit each specified city exactly once?
 	\begin{center}
-	\includegraphics[angle=90,width=.3\textwidth]{FIGS_slides/florida}
+	\includegraphics[angle=90,width=.3\textwidth]{FIGS-slides-admin/florida}
 	\end{center}
 	\begin{itemize}
 	\item vertices correspond to cities
@@ -129,7 +129,7 @@ cat(input_setup)
 \begin{frame}{How far is it to drive through $n$ cities?}
 	What is the minimal length of driving needed to drive through $n$ cities?
 	\begin{center}
-	\includegraphics[angle=90,width=.35\textwidth]{FIGS_slides/florida}
+	\includegraphics[angle=90,width=.35\textwidth]{FIGS-slides-admin/florida}
 	\end{center}
 	\begin{itemize}
 	\item vertices correspond to the cities
@@ -746,7 +746,7 @@ The \defword{length of a cycle} is its number of edges
 \begin{frame}{Remember Euler's bridges of K\"onigsberg?}
 	Cross the 7 bridges in a single walk without recrossing any of them?
 	\begin{center}
-	\includegraphics[width=.7\textwidth]{FIGS_slides/bridge_color_with_graph}
+	\includegraphics[width=.7\textwidth]{FIGS-slides-admin/bridge_color_with_graph}
 	\end{center}
 	\begin{block}{Mathematical problem}
 		Is the (multi)graph traversable? Eulerian?
@@ -975,7 +975,7 @@ where $\Delta (G)$ is the maximum degree of $G$
 \begin{frame}\frametitle{``Real life'' problem}
 What is the minimal number of colours to colour all states in the map so that two adjacent states have different colours?
 \begin{center}
-\includegraphics[width=.85\textwidth]{FIGS_slides/USA-4-colours}
+\includegraphics[width=.85\textwidth]{FIGS/USA-4-colours}
 \end{center}\end{frame}
 
 \begin{frame}\frametitle{``Real life'' problem}
@@ -2330,21 +2330,21 @@ There is a whole industry of similar results (as well as for arborescences), but
 \begin{frame}{The genesis of graphs -- Euler's bridges of K\"onigsberg}
 	Cross the 7 bridges in a single walk without recrossing any of them?
 	\begin{center}
-	\includegraphics[angle=90,height=.75\textheight]{FIGS_slides/bridge_color}
+	\includegraphics[angle=90,height=.75\textheight]{FIGS-slides-admin/bridge_color}
 	\end{center}
 \end{frame}
 
 \begin{frame}{The genesis of graphs -- Euler's bridges of K\"onigsberg}
 	Cross the 7 bridges in a single walk without recrossing any of them?
 	\begin{center}
-	\includegraphics[height=.75\textheight]{FIGS_slides/bridge_color_with_graph}
+	\includegraphics[height=.75\textheight]{FIGS-slides-admin/bridge_color_with_graph}
 	\end{center}
 \end{frame}
 
 \begin{frame}{The genesis of graphs -- Euler's bridges of K\"onigsberg}
 	Cross the 7 bridges in a single walk without recrossing any of them?
 	\begin{center}
-		\includegraphics[height=.5\textheight]{FIGS_slides/bridge_color_with_graph}
+		\includegraphics[height=.5\textheight]{FIGS-slides-admin/bridge_color_with_graph}
 		\end{center}
 	\begin{block}{Mathematical problem}
 	Is it possible to find a \emph{trail} containing all \emph{edges} of the graph?
@@ -2354,7 +2354,7 @@ There is a whole industry of similar results (as well as for arborescences), but
 \begin{frame}{Finding a cycle with all vertices}
 	A salesperson must visit a couple of cities for their job. Is it possible for them to plan a round trip using highways enabling tehm to visit each specified city exactly once?
 	\begin{center}
-	\includegraphics[angle=90,width=.3\textwidth]{FIGS_slides/florida}
+	\includegraphics[angle=90,width=.3\textwidth]{FIGS-slides-admin/florida}
 	\end{center}
 	\begin{itemize}
 	\item vertices correspond to cities
@@ -2368,7 +2368,7 @@ There is a whole industry of similar results (as well as for arborescences), but
 \begin{frame}{How far is it to drive through $n$ cities?}
 	What is the minimal length of driving needed to drive through $n$ cities?
 	\begin{center}
-	\includegraphics[angle=90,width=.35\textwidth]{FIGS_slides/florida}
+	\includegraphics[angle=90,width=.35\textwidth]{FIGS-slides-admin/florida}
 	\end{center}
 	\begin{itemize}
 	\item vertices correspond to the cities
@@ -2985,7 +2985,7 @@ The \defword{length of a cycle} is its number of edges
 \begin{frame}{Remember Euler's bridges of K\"onigsberg?}
 	Cross the 7 bridges in a single walk without recrossing any of them?
 	\begin{center}
-	\includegraphics[width=.7\textwidth]{FIGS_slides/bridge_color_with_graph}
+	\includegraphics[width=.7\textwidth]{FIGS-slides-admin/bridge_color_with_graph}
 	\end{center}
 	\begin{block}{Mathematical problem}
 		Is the (multi)graph traversable? Eulerian?
@@ -3214,7 +3214,7 @@ where $\Delta (G)$ is the maximum degree of $G$
 \begin{frame}\frametitle{``Real life'' problem}
 What is the minimal number of colours to colour all states in the map so that two adjacent states have different colours?
 \begin{center}
-\includegraphics[width=.85\textwidth]{FIGS_slides/USA-4-colours}
+\includegraphics[width=.85\textwidth]{FIGS/USA-4-colours}
 \end{center}\end{frame}
 
 \begin{frame}\frametitle{``Real life'' problem}
@@ -4569,21 +4569,21 @@ There is a whole industry of similar results (as well as for arborescences), but
 \begin{frame}{The genesis of graphs -- Euler's bridges of K\"onigsberg}
 	Cross the 7 bridges in a single walk without recrossing any of them?
 	\begin{center}
-	\includegraphics[angle=90,height=.75\textheight]{FIGS_slides/bridge_color}
+	\includegraphics[angle=90,height=.75\textheight]{FIGS-slides-admin/bridge_color}
 	\end{center}
 \end{frame}
 
 \begin{frame}{The genesis of graphs -- Euler's bridges of K\"onigsberg}
 	Cross the 7 bridges in a single walk without recrossing any of them?
 	\begin{center}
-	\includegraphics[height=.75\textheight]{FIGS_slides/bridge_color_with_graph}
+	\includegraphics[height=.75\textheight]{FIGS-slides-admin/bridge_color_with_graph}
 	\end{center}
 \end{frame}
 
 \begin{frame}{The genesis of graphs -- Euler's bridges of K\"onigsberg}
 	Cross the 7 bridges in a single walk without recrossing any of them?
 	\begin{center}
-		\includegraphics[height=.5\textheight]{FIGS_slides/bridge_color_with_graph}
+		\includegraphics[height=.5\textheight]{FIGS-slides-admin/bridge_color_with_graph}
 		\end{center}
 	\begin{block}{Mathematical problem}
 	Is it possible to find a \emph{trail} containing all \emph{edges} of the graph?
@@ -4593,7 +4593,7 @@ There is a whole industry of similar results (as well as for arborescences), but
 \begin{frame}{Finding a cycle with all vertices}
 	A salesperson must visit a couple of cities for their job. Is it possible for them to plan a round trip using highways enabling tehm to visit each specified city exactly once?
 	\begin{center}
-	\includegraphics[angle=90,width=.3\textwidth]{FIGS_slides/florida}
+	\includegraphics[angle=90,width=.3\textwidth]{FIGS-slides-admin/florida}
 	\end{center}
 	\begin{itemize}
 	\item vertices correspond to cities
@@ -4607,7 +4607,7 @@ There is a whole industry of similar results (as well as for arborescences), but
 \begin{frame}{How far is it to drive through $n$ cities?}
 	What is the minimal length of driving needed to drive through $n$ cities?
 	\begin{center}
-	\includegraphics[angle=90,width=.35\textwidth]{FIGS_slides/florida}
+	\includegraphics[angle=90,width=.35\textwidth]{FIGS-slides-admin/florida}
 	\end{center}
 	\begin{itemize}
 	\item vertices correspond to the cities
@@ -5224,7 +5224,7 @@ The \defword{length of a cycle} is its number of edges
 \begin{frame}{Remember Euler's bridges of K\"onigsberg?}
 	Cross the 7 bridges in a single walk without recrossing any of them?
 	\begin{center}
-	\includegraphics[width=.7\textwidth]{FIGS_slides/bridge_color_with_graph}
+	\includegraphics[width=.7\textwidth]{FIGS-slides-admin/bridge_color_with_graph}
 	\end{center}
 	\begin{block}{Mathematical problem}
 		Is the (multi)graph traversable? Eulerian?
@@ -5453,7 +5453,7 @@ where $\Delta (G)$ is the maximum degree of $G$
 \begin{frame}\frametitle{``Real life'' problem}
 What is the minimal number of colours to colour all states in the map so that two adjacent states have different colours?
 \begin{center}
-\includegraphics[width=.85\textwidth]{FIGS_slides/USA-4-colours}
+\includegraphics[width=.85\textwidth]{FIGS/USA-4-colours}
 \end{center}\end{frame}
 
 \begin{frame}\frametitle{``Real life'' problem}

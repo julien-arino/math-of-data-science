@@ -49,6 +49,11 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 %%%%%%%%%%%%%%%%%%%%
 \SSsection{Markov chains}
 
+%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%
+\SSsubsection{Markov chains}
+
+
 \begin{frame}{Markov chain}
 	A Markov chain is a \emph{stochastic process} in which the evolution through time depends only on the current state of the system (we say the process is \emph{memoryless})
 	\vfill
@@ -133,153 +138,7 @@ or, using the notation $\nbOne^T=(1,\ldots,1)$,
 
 %%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%
-\SSsection{Running example -- Mendelian inheritance}
-
-
-\begin{frame}{The ``orange'' gene}
-    
-    A cat's coat color is determined by many genes. The "orange" trait comes from a specific gene called the \textbf{orange locus}
-    
-    \vfill
-    
-    It has two \emph{alleles} (versions):
-    \begin{itemize}
-        \item \textbf{O} $\implies$ Produces \emph{phaeomelanin} (red/orange pigment)
-        \item \textbf{o} $\implies$ Produces \emph{eumelanin} (black/brown pigment)
-    \end{itemize}
-    
-    \vfill
-    
-    This gene is \emph{sex-linked}. It is located on the \textbf{X chromosome}
-    \begin{itemize}
-        \item This changes the rules of inheritance!
-    \end{itemize}
-    
-\end{frame}
-
-% --- SLIDE 2: Males vs. Females ---
-% This slide replaces the GG/Gg/gg slide
-\begin{frame}{How sex-linked genes work}
-    
-    Because the gene is on the X chromosome, males and females inherit it differently
-    
-    \vfill
-    
-    \textbf{Females have two X chromosomes (XX)}
-    \begin{itemize}
-        \item They get two alleles for this gene (one from each parent)
-        \item Possible genotypes: $X^O X^O$, $X^o X^o$, or $X^O X^o$
-    \end{itemize}
-    
-    \vfill
-    
-    \textbf{Males have one X and one Y chromosome (XY)}
-    \begin{itemize}
-        \item They get \emph{only one} allele for this gene (always from the mother)
-        \item Possible genotypes: $X^O Y$ or $X^o Y$
-    \end{itemize}
-    
-\end{frame}
-
-% --- SLIDE 3: Phenotypes (What we see) ---
-% This slide is new and explains the unique "tortoiseshell" case
-\begin{frame}{Genotype vs. phenotype}
-    
-    \textbf{Males (simple):}
-    \begin{itemize}
-        \item $X^O Y \implies$ \textbf{orange cat}
-        \item $X^o Y \implies$ \textbf{non-orange cat} (e.g., black)
-    \end{itemize}
-    
-    \vfill
-    
-    \textbf{Females (the special case):}
-    \begin{itemize}
-        \item $X^O X^O \implies$ \textbf{orange cat}
-        \item $X^o X^o \implies$ \textbf{non-orange cat} (e.g., black)
-        \item $X^O X^o \implies$ \textbf{tortoiseshell cat}
-    \end{itemize}
-    
-    \vfill
-    
-    A ``tortie'' isn't a simple hybrid. Both alleles ($O$ and $o$) are active in different patches of skin, creating the orange and black mottled pattern
-
-\end{frame}
-
-\begin{frame}{Example 1: Orange dad + black Mom}
-    Let's cross an \textbf{orange male ($X^O Y$)} with a \textbf{black female ($X^o X^o$)}
-    
-    \vfill
-    
-    \punnett{$X^O$ & $Y$} {
-        \textbf{Mother} & $X^o$ & $X^O X^o$ & $X^o Y$ \\ \cmidrule(lr){2-4}
-        & $X^o$ & $X^O X^o$ & $X^o Y$
-    }
-    \vfill
-    
-    \textbf{Results for their offspring:}
-    \begin{itemize}
-        \item \textbf{All females} ($X^O X^o$) will be \textbf{tortoiseshell}
-        \item \textbf{All males} ($X^o Y$) will be \textbf{black} (non-orange)
-    \end{itemize}
-    
-\end{frame}
-
-
-\begin{frame}{Example 2: black dad + tortoiseshell mom}
-    
-    Let's cross a \textbf{black male ($X^o Y$)} with a \textbf{tortoiseshell female ($X^O X^o$)}
-    
-    \vfill
-    
-    \punnett{$X^o$ & $Y$} {
-        \textbf{Mother} & $X^O$ & $X^O X^o$ & $X^O Y$ \\ \cmidrule(lr){2-4}
-        & $X^o$ & $X^o X^o$ & $X^o Y$
-    }
-    \vfill
-    
-    \textbf{Results for their offspring (1/4 chance for each):}
-    \begin{itemize}
-        \item $X^O X^o \implies$ \textbf{Tortoiseshell Female}
-        \item $X^o X^o \implies$ \textbf{Black Female}
-        \item $X^O Y \implies$ \textbf{Orange Male}
-        \item $X^o Y \implies$ \textbf{Black Male}
-    \end{itemize}
-    
-\end{frame}
-
-
-% --- SLIDE 6: Fun Fact (Optional) ---
-\begin{frame}{Fun fact: what about male tortoiseshells?}
-    
-    \begin{itemize}
-        \item As we saw, a male is $XY$. He can only get $X^O$ or $X^o$ from his mother, not both
-        \vfill
-        
-        \item A male tortoiseshell is possible, but \emph{extremely rare}
-        
-        \vfill
-        
-        \item It's a genetic anomaly where the cat has an extra X chromosome: \textbf{XXY}
-        
-        \vfill
-        
-        \item This genotype (e.g., $X^O X^o Y$) allows the cat to be male ($Y$) but also express both orange and non-orange alleles ($X^O X^o$), just like a female
-    \end{itemize}
-    
-\end{frame}
-
-
-
-
-
-%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%
-\SSsection{Repetition of the process}
+\SSsubsection{Repetition of the process}
 
 \begin{frame}{Deriving the update equation}
 For $1\leq i\leq n$, let $p_i(t)$ be probability that state $S_i$ occurs at time $t$, which we also write $p_i(t)=\IP(S_i(t))$
@@ -453,6 +312,150 @@ If $M$ is a nonsingular stochastic matrix, then for any $k\in\IN$, $M^k$ is a st
 \vfill
 So $P^t$ is stochastic
 \end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%
+\SSsection{Running example -- Orange cats}
+
+
+\begin{frame}{The ``orange'' gene}
+    
+    A cat's coat color is determined by many genes. The "orange" trait comes from a specific gene called the \textbf{orange locus}
+    
+    \vfill
+    
+    It has two \emph{alleles} (versions):
+    \begin{itemize}
+        \item \textbf{O} $\implies$ Produces \emph{phaeomelanin} (red/orange pigment)
+        \item \textbf{o} $\implies$ Produces \emph{eumelanin} (black/brown pigment)
+    \end{itemize}
+    
+    \vfill
+    
+    This gene is \emph{sex-linked}. It is located on the \textbf{X chromosome}
+    \begin{itemize}
+        \item This changes the rules of inheritance!
+    \end{itemize}
+    
+\end{frame}
+
+% --- SLIDE 2: Males vs. Females ---
+% This slide replaces the GG/Gg/gg slide
+\begin{frame}{How sex-linked genes work}
+    
+    Because the gene is on the X chromosome, males and females inherit it differently
+    
+    \vfill
+    
+    \textbf{Females have two X chromosomes (XX)}
+    \begin{itemize}
+        \item They get two alleles for this gene (one from each parent)
+        \item Possible genotypes: $X^O X^O$, $X^o X^o$, or $X^O X^o$
+    \end{itemize}
+    
+    \vfill
+    
+    \textbf{Males have one X and one Y chromosome (XY)}
+    \begin{itemize}
+        \item They get \emph{only one} allele for this gene (always from the mother)
+        \item Possible genotypes: $X^O Y$ or $X^o Y$
+    \end{itemize}
+    
+\end{frame}
+
+% --- SLIDE 3: Phenotypes (What we see) ---
+% This slide is new and explains the unique "tortoiseshell" case
+\begin{frame}{Genotype vs. phenotype}
+    
+    \textbf{Males (simple):}
+    \begin{itemize}
+        \item $X^O Y \implies$ \textbf{orange cat}
+        \item $X^o Y \implies$ \textbf{non-orange cat} (e.g., black)
+    \end{itemize}
+    
+    \vfill
+    
+    \textbf{Females (the special case):}
+    \begin{itemize}
+        \item $X^O X^O \implies$ \textbf{orange cat}
+        \item $X^o X^o \implies$ \textbf{non-orange cat} (e.g., black)
+        \item $X^O X^o \implies$ \textbf{tortoiseshell cat}
+    \end{itemize}
+    
+    \vfill
+    
+    A ``tortie'' isn't a simple hybrid. Both alleles ($O$ and $o$) are active in different patches of skin, creating the orange and black mottled pattern
+
+\end{frame}
+
+\begin{frame}{Example 1: Orange dad + black Mom}
+    Let's cross an \textbf{orange male ($X^O Y$)} with a \textbf{black female ($X^o X^o$)}
+    
+    \vfill
+    
+    \punnett{$X^O$ & $Y$} {
+        \textbf{Mother} & $X^o$ & $X^O X^o$ & $X^o Y$ \\ \cmidrule(lr){2-4}
+        & $X^o$ & $X^O X^o$ & $X^o Y$
+    }
+    \vfill
+    
+    \textbf{Results for their offspring:}
+    \begin{itemize}
+        \item \textbf{All females} ($X^O X^o$) will be \textbf{tortoiseshell}
+        \item \textbf{All males} ($X^o Y$) will be \textbf{black} (non-orange)
+    \end{itemize}
+    
+\end{frame}
+
+
+\begin{frame}{Example 2: black dad + tortoiseshell mom}
+    
+    Let's cross a \textbf{black male ($X^o Y$)} with a \textbf{tortoiseshell female ($X^O X^o$)}
+    
+    \vfill
+    
+    \punnett{$X^o$ & $Y$} {
+        \textbf{Mother} & $X^O$ & $X^O X^o$ & $X^O Y$ \\ \cmidrule(lr){2-4}
+        & $X^o$ & $X^o X^o$ & $X^o Y$
+    }
+    \vfill
+    
+    \textbf{Results for their offspring (1/4 chance for each):}
+    \begin{itemize}
+        \item $X^O X^o \implies$ \textbf{Tortoiseshell Female}
+        \item $X^o X^o \implies$ \textbf{Black Female}
+        \item $X^O Y \implies$ \textbf{Orange Male}
+        \item $X^o Y \implies$ \textbf{Black Male}
+    \end{itemize}
+    
+\end{frame}
+
+
+% --- SLIDE 6: Fun Fact (Optional) ---
+\begin{frame}{Fun fact: what about male tortoiseshells?}
+    
+    \begin{itemize}
+        \item As we saw, a male is $XY$. He can only get $X^O$ or $X^o$ from his mother, not both
+        \vfill
+        
+        \item A male tortoiseshell is possible, but \emph{extremely rare}
+        
+        \vfill
+        
+        \item It's a genetic anomaly where the cat has an extra X chromosome: \textbf{XXY}
+        
+        \vfill
+        
+        \item This genotype (e.g., $X^O X^o Y$) allows the cat to be male ($Y$) but also express both orange and non-orange alleles ($X^O X^o$), just like a female
+    \end{itemize}
+    
+\end{frame}
+
+
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1020,9 +1023,7 @@ Suppose we have a chain like the following
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\SSsection{Analysing absorbing Markov chains}
+\SSsubsection{Analysis of absorbing Markov chains}
 
 \begin{frame}
 The answer to the first question (``Does the process eventually reach an absorbing state?'') is given by the following result

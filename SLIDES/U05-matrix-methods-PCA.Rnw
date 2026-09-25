@@ -11,7 +11,7 @@ lecture_number = "U05"
 \institute{Department of Mathematics @ University of Manitoba}
 
 % Title of the lecture
-\title{Matrix methods -- Principal component analysis (1)}
+\title{Matrix methods -- Principal component analysis}
 
 <<set-options,echo=FALSE,warning=FALSE,message=FALSE>>=
 # Source the code common to all lectures
