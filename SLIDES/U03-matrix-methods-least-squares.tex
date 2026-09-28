@@ -369,18 +369,18 @@ To get a sense of that, we dump a few random rows
 \hldef{data_new[}\hlkwd{sort}\hldef{(}\hlkwd{unique}\hldef{(}\hlkwd{c}\hldef{(}\hlnum{1}\hldef{,}\hlkwd{sample}\hldef{(}\hlkwd{nrow}\hldef{(data_new),} \hlnum{4}\hldef{)))), ]}
 \end{alltt}
 \begin{verbatim}
-##      GEOGRAPHY.NAME                                            CHARACTERISTIC
-## 1            Canada                                 Population (in thousands)
-## 2373         Quebec                              % of married-couple families
-## 3512        Ontario                                % of two-person households
-## 4301         Oshawa % of private households containing a couple with children
-## 5829         Barrie      Population change by broad age groups: 0 to 14 years
-##      YEAR.S.    TOTAL FLAG_TOTAL
-## 1       1956 16081.00           
-## 2373    1981    80.38           
-## 3512    1961    23.92           
-## 4301    2006    35.90           
-## 5829    2006     7.90
+##         GEOGRAPHY.NAME                              CHARACTERISTIC YEAR.S.
+## 1               Canada                   Population (in thousands)    1956
+## 712         St. John's Population by single years of age: 79 years    2011
+## 3138 Trois-Rivi\xe8res       Non-official mother tongue: Atikamekw    2011
+## 5199         Brantford Population by single years of age: 94 years    2011
+## 9306             Yukon         % of five-or-more-person households    2006
+##        TOTAL FLAG_TOTAL
+## 1    16081.0           
+## 712    740.0           
+## 3138    90.0           
+## 5199    75.0           
+## 9306    16.2
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -897,8 +897,8 @@ Access slots using @. For instance, the GA finds the coefficients
 \hldef{GA}\hlopt{@}\hlkwc{solution}
 \end{alltt}
 \begin{verbatim}
-##            x1       x2
-## [1,] 2.999906 0.500045
+##            x1        x2
+## [1,] 3.000718 0.4996703
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1083,21 +1083,42 @@ The latter system constitutes the \defword{normal equations} for $\tilde\bx$
 \end{frame}
 
 
+\begin{frame}{Invertibility of $A^TA$}
+\begin{theorem}[Invertibility of $A^TA$]
+Let $A \in \M_{mn}$. Then $A$ has linearly independent columns $\iff$ $A^TA$ invertible
+\end{theorem}
+\vfill
+\textbf{Proof.}
+Since $A^TA \in \M_n$ is square, it is invertible $\iff$ $A^TA \bx = \b0 \implies \bx = \b0$.
+
+Also, $A$ has linearly independent columns $\iff$ $A \bx = \b0 \implies \bx = \b0$. 
+Thus, it suffices to show that $A^TA \bx = \b0 \iff A \bx = \b0$.
+
+\begin{itemize}
+\item ($\impliedby$) If $A\bx = \b0$, then multiplying on the left by $A^T$ gives $A^TA\bx = A^T\b0 = \b0$.
+\item ($\implies$) Suppose $A^TA\bx = \b0$. Multiplying on the left by $\bx^T$ gives
+\[
+\bx^T A^T A \bx = \bx^T \b0 = 0
+\]
+But $\bx^T A^T A \bx = (A\bx)^T (A\bx) = \|A\bx\|^2$. Since the norm of a vector is zero if and only if the vector is the zero vector, we have $\|A\bx\|^2 = 0 \implies A\bx = \b0$. \hfill $\square$
+\end{itemize}
+\end{frame}
+
+
 \begin{frame}{Least squares theorem}
 \begin{importanttheorem}[Least squares theorem]\label{th:least_squares}
 $A\in\M_{mn}$, $\bb\in\IR^m$. Then
 \begin{enumerate}
 \item $A\bx=\bb$ always has at least one least squares solution $\tilde\bx$
 \item $\tilde\bx$ least squares solution to $A\bx=\bb$ $\iff$ $\tilde\bx$ is a solution to the normal equations $A^TA\tilde\bx = A^T\bb$
-\item $A$ has linearly independent columns $\iff$ $A^TA$ invertible.  
-\newline In this case, the least squares solution is unique and 
+\item If $A^TA$ invertible, then the least squares solution is unique and 
 \[
 \tilde\bx = \left(A^TA\right)^{-1}A^T\bb
 \]
 \end{enumerate}
 \end{importanttheorem}
 \vfill
-We have seen 1 and 2, we will not show 3 (it is not hard)
+We have seen 1 and 2, and we just proved 3!
 \end{frame}
 
 
@@ -1280,12 +1301,15 @@ We compute the fitted values and plot them alongside the data:
 \hldef{x_axis} \hlkwb{=} \hlkwd{seq}\hldef{(canada}\hlopt{$}\hldef{year[}\hlnum{1}\hldef{],} \hlkwd{max}\hldef{(canada}\hlopt{$}\hldef{year),} \hlnum{1}\hldef{)}
 \hldef{y_fitted} \hlkwb{=} \hldef{x_tilde[}\hlnum{1}\hldef{]} \hlopt{+} \hldef{x_tilde[}\hlnum{2}\hldef{]} \hlopt{*} \hldef{x_axis}
 
-\hlkwd{plot}\hldef{(canada,} \hlkwc{ylim} \hldef{=} \hlkwd{c}\hldef{(}\hlkwd{min}\hldef{(y_fitted),} \hlkwd{max}\hldef{(canada}\hlopt{$}\hldef{population)))}
+\hlkwd{plot}\hldef{(canada,} \hlkwc{ylim} \hldef{=} \hlkwd{c}\hldef{(}\hlkwd{min}\hldef{(y_fitted),} \hlkwd{max}\hldef{(canada}\hlopt{$}\hldef{population)),}
+\hlkwc{xlab} \hldef{=} \hlsng{"Year"}\hldef{,} \hlkwc{ylab} \hldef{=} \hlsng{"Population"}\hldef{)}
 \hlkwd{lines}\hldef{(x_axis, y_fitted,} \hlkwc{col} \hldef{=} \hlsng{"red"}\hldef{,} \hlkwc{lwd} \hldef{=} \hlnum{2}\hldef{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
 \end{frame}
+
+\maxFrameImage{FIGS/U03-canada-census-linear-plot-1.pdf}
 
 \begin{frame}[fragile]{Fitting a quadratic model}
 The linear fit misses the curvature in the population growth. Let us try a quadratic model:
@@ -1319,11 +1343,11 @@ Let's try to compute $A_2^T A_2$ and its inverse:
 {\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in `solve.default()`:\\\#\# ! system is computationally singular: reciprocal condition number = 2.05592e-20}}\end{kframe}
 \end{knitrout}
 \vfill
-While R computes this, it is potentially dangerous. The years are around 1900-2000, so $\text{year}^2 \approx 4 \times 10^6$. The columns of $A_2$ have vastly different scales, which makes $A_2^T A_2$ very poorly conditioned!
+The years are around 1900-2000, so $\text{year}^2 \approx 4 \times 10^6$. The columns of $A_2$ have vastly different scales, which makes $A_2^T A_2$ very poorly \defword{conditioned}!
 \end{frame}
 
 \begin{frame}[fragile]{A better conditioned formulation}
-To avoid numerical issues, we should shift the years so they start at 0:
+To avoid numerical issues, we can shift years so they start at 0:
 \[
 \text{shifted\_year} = \text{year} - \min(\text{year})
 \]
@@ -1375,13 +1399,39 @@ We compute the fitted quadratic curve and plot it:
   \hldef{x_tilde[}\hlnum{2}\hldef{]} \hlopt{*} \hldef{(x_axis} \hlopt{-} \hlkwd{min}\hldef{(canada}\hlopt{$}\hldef{year))} \hlopt{+}
   \hldef{x_tilde[}\hlnum{3}\hldef{]} \hlopt{*} \hldef{(x_axis} \hlopt{-} \hlkwd{min}\hldef{(canada}\hlopt{$}\hldef{year))}\hlopt{^}\hlnum{2}
 
-\hlkwd{plot}\hldef{(canada,} \hlkwc{ylim} \hldef{=} \hlkwd{c}\hldef{(}\hlkwd{min}\hldef{(y_fitted),} \hlkwd{max}\hldef{(canada}\hlopt{$}\hldef{population)))}
+\hlkwd{plot}\hldef{(canada,} \hlkwc{ylim} \hldef{=} \hlkwd{c}\hldef{(}\hlkwd{min}\hldef{(y_fitted),} \hlkwd{max}\hldef{(canada}\hlopt{$}\hldef{population)),}
+\hlkwc{xlab} \hldef{=} \hlsng{"Year"}\hldef{,} \hlkwc{ylab} \hldef{=} \hlsng{"Population"}\hldef{)}
 \hlkwd{lines}\hldef{(x_axis, y_fitted,} \hlkwc{col} \hldef{=} \hlsng{"red"}\hldef{,} \hlkwc{lwd} \hldef{=} \hlnum{2}\hldef{)} \hlcom{# Linear}
 \hlkwd{lines}\hldef{(x_axis, y_fitted_quad,} \hlkwc{col} \hldef{=} \hlsng{"blue"}\hldef{,} \hlkwc{lwd} \hldef{=} \hlnum{2}\hldef{)} \hlcom{# Quadratic}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
 \end{frame}
+
+\maxFrameImage{FIGS/U03-canada-census-quad2-plot-1.pdf}
+
+\begin{frame}[fragile]{Visualizing the quadratic fit (ggplot2)}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hldef{df_fit} \hlkwb{<-} \hlkwd{data.frame}\hldef{(}\hlkwc{year} \hldef{= x_axis,}
+                     \hlkwc{linear} \hldef{= y_fitted,}
+                     \hlkwc{quad} \hldef{= y_fitted_quad)}
+
+\hlkwd{ggplot}\hldef{()} \hlopt{+}
+  \hlkwd{geom_point}\hldef{(}\hlkwc{data} \hldef{= canada,} \hlkwd{aes}\hldef{(}\hlkwc{x} \hldef{= year,} \hlkwc{y} \hldef{= population))} \hlopt{+}
+  \hlkwd{geom_line}\hldef{(}\hlkwc{data} \hldef{= df_fit,} \hlkwd{aes}\hldef{(}\hlkwc{x} \hldef{= year,} \hlkwc{y} \hldef{= linear),} \hlkwc{color} \hldef{=} \hlsng{"red"}\hldef{,} \hlkwc{linewidth} \hldef{=} \hlnum{1}\hldef{)} \hlopt{+}
+  \hlkwd{geom_line}\hldef{(}\hlkwc{data} \hldef{= df_fit,} \hlkwd{aes}\hldef{(}\hlkwc{x} \hldef{= year,} \hlkwc{y} \hldef{= quad),} \hlkwc{color} \hldef{=} \hlsng{"blue"}\hldef{,} \hlkwc{linewidth} \hldef{=} \hlnum{1}\hldef{)} \hlopt{+}
+  \hlkwd{scale_y_continuous}\hldef{(}\hlkwc{labels} \hldef{=} \hlkwa{function}\hldef{(}\hlkwc{x}\hldef{)} \hlkwd{paste0}\hldef{(x} \hlopt{/} \hlnum{1e6}\hldef{,} \hlsng{"M"}\hldef{))} \hlopt{+}
+  \hlkwd{labs}\hldef{(}\hlkwc{x} \hldef{=} \hlsng{"Year"}\hldef{,} \hlkwc{y} \hldef{=} \hlsng{"Population"}\hldef{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\vfill
+\code{ggplot2} is a graphic package providing a ``grammar of graphics''. Nicer output than default \code{R} plots, but also harder (LLMs help a lot here)
+\end{frame}
+
+\maxFrameImage{FIGS/U03-canada-census-quad2-plot-ggplot-1.pdf}
 
 \begin{frame}{Takeaways}
 \begin{itemize}
@@ -1390,6 +1440,8 @@ We compute the fitted quadratic curve and plot it:
 \item By adding columns corresponding to higher powers (or other transformations), we can easily expand the model
 \vfill
 \item \textbf{Numerical stability is crucial}: always be careful when dealing with polynomials of large numbers. Shifting and scaling your data can prevent matrices from becoming ill-conditioned
+\vfill
+\item You could shift to the mean or even $[-1,1]$. Just remember to ``unshift'' back the years 
 \end{itemize}
 \end{frame}
 

@@ -254,11 +254,12 @@ x_tilde = invATA %*% t(A) %*% b
 x_tilde
 
 
-## ----canada-census-linear-plot, fig.height=3.5, fig.width=6, out.width="0.6\\textwidth", fig.align='center'----
+## ----canada-census-linear-plot------------------------------------------------
 x_axis = seq(canada$year[1], max(canada$year), 1)
 y_fitted = x_tilde[1] + x_tilde[2] * x_axis
 
-plot(canada, ylim = c(min(y_fitted), max(canada$population)))
+plot(canada, ylim = c(min(y_fitted), max(canada$population)),
+xlab = "Year", ylab = "Population")
 lines(x_axis, y_fitted, col = "red", lwd = 2)
 
 
@@ -296,9 +297,23 @@ y_fitted_quad = x_tilde[1] +
   x_tilde[2] * (x_axis - min(canada$year)) + 
   x_tilde[3] * (x_axis - min(canada$year))^2
 
-plot(canada, ylim = c(min(y_fitted), max(canada$population)))
+plot(canada, ylim = c(min(y_fitted), max(canada$population)),
+xlab = "Year", ylab = "Population")
 lines(x_axis, y_fitted, col = "red", lwd = 2) # Linear
 lines(x_axis, y_fitted_quad, col = "blue", lwd = 2) # Quadratic
+
+
+## ----canada-census-quad2-plot-ggplot, fig.height=3.5, fig.width=6, out.width="0.6\\textwidth", fig.align='center'----
+df_fit <- data.frame(year = x_axis, 
+                     linear = y_fitted, 
+                     quad = y_fitted_quad)
+
+ggplot() +
+  geom_point(data = canada, aes(x = year, y = population)) +
+  geom_line(data = df_fit, aes(x = year, y = linear), color = "red", linewidth = 1) +
+  geom_line(data = df_fit, aes(x = year, y = quad), color = "blue", linewidth = 1) +
+  scale_y_continuous(labels = function(x) paste0(x / 1e6, "M")) +
+  labs(x = "Year", y = "Population")
 
 
 ## ----convert-Rnw-to-R-part2,warning=FALSE,message=FALSE,echo=FALSE,results='hide'----

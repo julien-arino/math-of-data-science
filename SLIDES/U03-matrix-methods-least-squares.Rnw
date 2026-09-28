@@ -809,21 +809,42 @@ The latter system constitutes the \defword{normal equations} for $\tilde\bx$
 \end{frame}
 
 
+\begin{frame}{Invertibility of $A^TA$}
+\begin{theorem}[Invertibility of $A^TA$]
+Let $A \in \M_{mn}$. Then $A$ has linearly independent columns $\iff$ $A^TA$ invertible
+\end{theorem}
+\vfill
+\textbf{Proof.}
+Since $A^TA \in \M_n$ is square, it is invertible $\iff$ $A^TA \bx = \b0 \implies \bx = \b0$.
+
+Also, $A$ has linearly independent columns $\iff$ $A \bx = \b0 \implies \bx = \b0$. 
+Thus, it suffices to show that $A^TA \bx = \b0 \iff A \bx = \b0$.
+
+\begin{itemize}
+\item ($\impliedby$) If $A\bx = \b0$, then multiplying on the left by $A^T$ gives $A^TA\bx = A^T\b0 = \b0$.
+\item ($\implies$) Suppose $A^TA\bx = \b0$. Multiplying on the left by $\bx^T$ gives
+\[
+\bx^T A^T A \bx = \bx^T \b0 = 0
+\]
+But $\bx^T A^T A \bx = (A\bx)^T (A\bx) = \|A\bx\|^2$. Since the norm of a vector is zero if and only if the vector is the zero vector, we have $\|A\bx\|^2 = 0 \implies A\bx = \b0$. \hfill $\square$
+\end{itemize}
+\end{frame}
+
+
 \begin{frame}{Least squares theorem}
 \begin{importanttheorem}[Least squares theorem]\label{th:least_squares}
 $A\in\M_{mn}$, $\bb\in\IR^m$. Then
 \begin{enumerate}
 \item $A\bx=\bb$ always has at least one least squares solution $\tilde\bx$
 \item $\tilde\bx$ least squares solution to $A\bx=\bb$ $\iff$ $\tilde\bx$ is a solution to the normal equations $A^TA\tilde\bx = A^T\bb$
-\item $A$ has linearly independent columns $\iff$ $A^TA$ invertible.  
-\newline In this case, the least squares solution is unique and 
+\item If $A^TA$ invertible, then the least squares solution is unique and 
 \[
 \tilde\bx = \left(A^TA\right)^{-1}A^T\bb
 \]
 \end{enumerate}
 \end{importanttheorem}
 \vfill
-We have seen 1 and 2, we will not show 3 (it is not hard)
+We have seen 1 and 2, and we just proved 3!
 \end{frame}
 
 
@@ -982,14 +1003,17 @@ x_tilde
 
 \begin{frame}[fragile]{Visualizing the linear fit}
 We compute the fitted values and plot them alongside the data:
-<<canada-census-linear-plot, fig.height=3.5, fig.width=6, out.width="0.6\\textwidth", fig.align='center'>>=
+<<canada-census-linear-plot>>=
 x_axis = seq(canada$year[1], max(canada$year), 1)
 y_fitted = x_tilde[1] + x_tilde[2] * x_axis
 
-plot(canada, ylim = c(min(y_fitted), max(canada$population)))
+plot(canada, ylim = c(min(y_fitted), max(canada$population)),
+xlab = "Year", ylab = "Population")
 lines(x_axis, y_fitted, col = "red", lwd = 2)
 @
 \end{frame}
+
+\maxFrameImage{\Sexpr{knitr::fig_chunk("canada-census-linear-plot", "pdf")}}
 
 \begin{frame}[fragile]{Fitting a quadratic model}
 The linear fit misses the curvature in the population growth. Let us try a quadratic model:
@@ -1013,11 +1037,11 @@ ATA2 = t(A2) %*% A2
 invATA2 = solve(ATA2)
 @
 \vfill
-While R computes this, it is potentially dangerous. The years are around 1900-2000, so $\text{year}^2 \approx 4 \times 10^6$. The columns of $A_2$ have vastly different scales, which makes $A_2^T A_2$ very poorly conditioned!
+The years are around 1900-2000, so $\text{year}^2 \approx 4 \times 10^6$. The columns of $A_2$ have vastly different scales, which makes $A_2^T A_2$ very poorly \defword{conditioned}!
 \end{frame}
 
 \begin{frame}[fragile]{A better conditioned formulation}
-To avoid numerical issues, we should shift the years so they start at 0:
+To avoid numerical issues, we can shift years so they start at 0:
 \[
 \text{shifted\_year} = \text{year} - \min(\text{year})
 \]
@@ -1052,11 +1076,33 @@ y_fitted_quad = x_tilde[1] +
   x_tilde[2] * (x_axis - min(canada$year)) + 
   x_tilde[3] * (x_axis - min(canada$year))^2
 
-plot(canada, ylim = c(min(y_fitted), max(canada$population)))
+plot(canada, ylim = c(min(y_fitted), max(canada$population)),
+xlab = "Year", ylab = "Population")
 lines(x_axis, y_fitted, col = "red", lwd = 2) # Linear
 lines(x_axis, y_fitted_quad, col = "blue", lwd = 2) # Quadratic
 @
 \end{frame}
+
+\maxFrameImage{\Sexpr{knitr::fig_chunk("canada-census-quad2-plot", "pdf")}}
+
+\begin{frame}[fragile]{Visualizing the quadratic fit (ggplot2)}
+<<canada-census-quad2-plot-ggplot, fig.height=3.5, fig.width=6, out.width="0.6\\textwidth", fig.align='center'>>=
+df_fit <- data.frame(year = x_axis, 
+                     linear = y_fitted, 
+                     quad = y_fitted_quad)
+
+ggplot() +
+  geom_point(data = canada, aes(x = year, y = population)) +
+  geom_line(data = df_fit, aes(x = year, y = linear), color = "red", linewidth = 1) +
+  geom_line(data = df_fit, aes(x = year, y = quad), color = "blue", linewidth = 1) +
+  scale_y_continuous(labels = function(x) paste0(x / 1e6, "M")) +
+  labs(x = "Year", y = "Population")
+@
+\vfill
+\code{ggplot2} is a graphic package providing a ``grammar of graphics''. Nicer output than default \code{R} plots, but also harder (LLMs help a lot here)
+\end{frame}
+
+\maxFrameImage{\Sexpr{knitr::fig_chunk("canada-census-quad2-plot-ggplot", "pdf")}}
 
 \begin{frame}{Takeaways}
 \begin{itemize}
@@ -1065,6 +1111,8 @@ lines(x_axis, y_fitted_quad, col = "blue", lwd = 2) # Quadratic
 \item By adding columns corresponding to higher powers (or other transformations), we can easily expand the model
 \vfill
 \item \textbf{Numerical stability is crucial}: always be careful when dealing with polynomials of large numbers. Shifting and scaling your data can prevent matrices from becoming ill-conditioned
+\vfill
+\item You could shift to the mean or even $[-1,1]$. Just remember to ``unshift'' back the years 
 \end{itemize}
 \end{frame}
 
