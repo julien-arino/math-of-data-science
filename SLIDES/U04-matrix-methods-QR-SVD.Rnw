@@ -41,7 +41,7 @@ cat(input_setup)
 \begin{frame}{Matrix factorisations}
 	Matrix factorisations are popular because they allow to perform some computations more easily
 	\vfill
-	There are several different types of factorisations. Here, we study just the QR factorisation, which is useful for many least squares problems
+	There are several different types of factorisations. Here, we study just the QR factorisation (useful for many least squares problems) and SVD (useful in many contexts)
 \end{frame}	
 	
 
@@ -154,52 +154,53 @@ $\{\bv_1,\ldots,\bv_k\}\in\IR^n$ is orthonormal if
 \end{frame}
 
 
-\begin{frame}{Projections}
-	\begin{definition}[Orthogonal projection onto a subspace]
-	$W\subset\IR^n$ a subspace and $\{\bu_1,\ldots,\bu_k\}$ an orthogonal basis of $W$. $\forall\bv\in\IR^n$, the \textbf{orthogonal projection} of $\bv$ \textbf{onto} $W$ is
-	\[
-	\mathsf{proj}_W(\bv) =
-	\frac{\bu_1\bullet\bv}{\|\bu_1\|^2}\bu_1
-	+\cdots+
-	\frac{\bu_k\bullet\bv}{\|\bu_k\|^2}\bu_k
-	\]  
-	\end{definition}
-	\vfill
-	\begin{definition}[Component orthogonal to a subspace]
-	$W\subset\IR^n$ a subspace and $\{\bu_1,\ldots,\bu_k\}$ an orthogonal basis of $W$. $\forall\bv\in\IR^n$, the \textbf{component} of  $\bv$ \textbf{orthogonal to} W is
-	\[
-	\mathsf{perp}_W(\bv)=\bv-\mathsf{proj}_W(\bv)
-	\]
-	\end{definition}	
-	\end{frame}
-	
 %%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%
-\SSsubsection{Gram-Schmidt orthogonalisation process}	
-	\begin{frame}
-	What this aims to do is to construct an orthogonal basis for a subspace $W\subset\IR^n$
-	\vfill
-	To do this, we use the \emph{Gram-Schmidt orthogonalisation process}, which turn s a basis of $W$ into an orthogonal basis of $W$
-	\end{frame}
+\SSsubsection{The Gram-Schmidt orthogonalisation process}	
 
-	\begin{frame}{Gram-Schmidt process}
-	\begin{theorem}
-	$W\subset\IR^n$ a subset and $\{\bx_1,\ldots,\bx_k\}$ a basis of $W$. Let
-	\begin{align*}
-	\bv_1 &= \bx_1 \\
-	\bv_2 &= \bx_2 -\frac{\bv_1\bullet\bx_2}{\|\bv_1\|^2}\bv_1 \\
-	\bv_3 &= \bx_3 -\frac{\bv_1\bullet\bx_3}{\|\bv_1\|^2}\bv_1 -\frac{\bv_2\bullet\bx_3}{\|\bv_2\|^2}\bv_2 \\
-	&\;\;\vdots & \\
-	\bv_k &= \bx_k -\frac{\bv_1\bullet\bx_k}{\|\bv_1\|^2}\bv_1 -\cdots-\frac{\bv_{k-1}\bullet\bx_k}{\|\bv_{k-1}\|^2}\bv_{k-1}
-	\end{align*}
-	and
-	\[
-	W_1=\mathsf{span}(\bx_1),W_2 = \mathsf{span}(\bx_1,\bx_2),\ldots,
-	W_k = \mathsf{span}(\bx_1,\ldots,\bx_k)
-	\]
-	Then $\forall i=1,\ldots,k$, $\{\bv_1,\ldots,\bv_i\}$ orthogonal basis for $W_i$
-	\end{theorem}
-	\end{frame}
+\begin{frame}
+What this aims to do is to construct an orthogonal basis for a subspace $W\subset\IR^n$
+\vfill
+To do this, we use the \emph{Gram-Schmidt orthogonalisation process}, which turn s a basis of $W$ into an orthogonal basis of $W$
+\end{frame}
+
+\begin{frame}{Projections}
+\begin{definition}[Orthogonal projection onto a subspace]
+$W\subset\IR^n$ a subspace and $\{\bu_1,\ldots,\bu_k\}$ an orthogonal basis of $W$. $\forall\bv\in\IR^n$, the \textbf{orthogonal projection} of $\bv$ \textbf{onto} $W$ is
+\[
+\mathsf{proj}_W(\bv) =
+\frac{\bu_1\bullet\bv}{\|\bu_1\|^2}\bu_1
++\cdots+
+\frac{\bu_k\bullet\bv}{\|\bu_k\|^2}\bu_k
+\]  
+\end{definition}
+\vfill
+\begin{definition}[Component orthogonal to a subspace]
+$W\subset\IR^n$ a subspace and $\{\bu_1,\ldots,\bu_k\}$ an orthogonal basis of $W$. $\forall\bv\in\IR^n$, the \textbf{component} of  $\bv$ \textbf{orthogonal to} W is
+\[
+\mathsf{perp}_W(\bv)=\bv-\mathsf{proj}_W(\bv)
+\]
+\end{definition}	
+\end{frame}
+
+\begin{frame}
+\begin{theorem}[Gram-Schmidt orthogonalisation process]
+$W\subset\IR^n$ a subset and $\{\bx_1,\ldots,\bx_k\}$ a basis of $W$. Let
+\begin{align*}
+\bv_1 &= \bx_1 \\
+\bv_2 &= \bx_2 -\frac{\bv_1\bullet\bx_2}{\|\bv_1\|^2}\bv_1 \\
+\bv_3 &= \bx_3 -\frac{\bv_1\bullet\bx_3}{\|\bv_1\|^2}\bv_1 -\frac{\bv_2\bullet\bx_3}{\|\bv_2\|^2}\bv_2 \\
+&\;\;\vdots & \\
+\bv_k &= \bx_k -\frac{\bv_1\bullet\bx_k}{\|\bv_1\|^2}\bv_1 -\cdots-\frac{\bv_{k-1}\bullet\bx_k}{\|\bv_{k-1}\|^2}\bv_{k-1}
+\end{align*}
+and
+\[
+W_1=\mathsf{span}(\bx_1),W_2 = \mathsf{span}(\bx_1,\bx_2),\ldots,
+W_k = \mathsf{span}(\bx_1,\ldots,\bx_k)
+\]
+Then $\forall i=1,\ldots,k$, $\{\bv_1,\ldots,\bv_i\}$ orthogonal basis for $W_i$
+\end{theorem}
+\end{frame}
 	
 	
 
@@ -227,7 +228,7 @@ $Q\in\M_n$ orthogonal $\iff$ $Q^{-1} = Q^T$
 \end{frame}
 
 
-\begin{frame}
+\begin{frame}{Orthogonal matrices ``encode" isometries}
 \begin{theorem}[Orthogonal matrices ``encode" isometries]
 \label{th:TFAE_orthogonal_matrices}
 Let $Q\in\M_n$. TFAE
@@ -237,7 +238,37 @@ Let $Q\in\M_n$. TFAE
 \item $\forall\bx,\by\in\IR^n$, $Q\bx\bullet Q\by=\bx\bullet\by$
 \end{enumerate}
 \end{theorem}
+\end{frame}
+
+
+
+\begin{frame}{Proof of Theorem~\ref{th:TFAE_orthogonal_matrices}}
+\textbf{1 $\implies$ 3}: Assume $Q$ is orthogonal. Then $Q^TQ=\II_n$, so
+\[
+Q\bx \bullet Q\by = (Q\bx)^T(Q\by) = \bx^TQ^TQ\by = \bx^T\II_n\by = \bx\bullet\by
+\]
 \vfill
+\textbf{3 $\implies$ 1}: Assume $Q\bx\bullet Q\by=\bx\bullet\by$ $\forall\bx,\by$. For standard basis vectors $\be_i, \be_j$:
+\[
+(Q\be_i)\bullet(Q\be_j) = \be_i\bullet\be_j = \begin{cases} 1 & \text{if } i=j \\ 0 & \text{if } i\neq j \end{cases}
+\]
+Since $Q\be_i$ is the $i$-th column of $Q$, the columns of $Q$ are orthonormal, so $Q$ is orthogonal.
+\vfill
+\textbf{3 $\implies$ 2}: Assume $Q\bx\bullet Q\by=\bx\bullet\by$. Letting $\by=\bx$ gives
+\[
+\|Q\bx\|^2 = Q\bx\bullet Q\bx = \bx\bullet\bx = \|\bx\|^2 \implies \|Q\bx\| = \|\bx\|
+\]
+\vfill
+\textbf{2 $\implies$ 3}: Assume $\|Q\bz\|=\|\bz\|$ for all $\bz$. Using $\bz=\bx+\by$, we expand $\|Q(\bx+\by)\|^2 = \|\bx+\by\|^2$:
+\[
+\|Q\bx\|^2 + 2Q\bx\bullet Q\by + \|Q\by\|^2 = \|\bx\|^2 + 2\bx\bullet\by + \|\by\|^2
+\]
+Since $\|Q\bx\|=\|\bx\|$ and $\|Q\by\|=\|\by\|$, we get $Q\bx\bullet Q\by = \bx\bullet\by$. \hfill\qed
+\end{frame}
+
+
+
+\begin{frame}
 \begin{importanttheorem}\label{th:properties_orthogonal_matrices}
 Let $Q\in\M_n$ be orthogonal. Then
 \begin{enumerate}
@@ -252,8 +283,48 @@ Let $Q\in\M_n$ be orthogonal. Then
 
 
 
+\begin{frame}{Proof of 1 and 2 in Theorem~\ref{th:properties_orthogonal_matrices}}
+\textbf{1. The rows of $Q$ form an orthonormal set}
+\begin{itemize}
+\item By definition, $Q$ is orthogonal $\iff Q^TQ = \II_n$
+\item Since $Q$ is square, $Q^TQ = \II_n \implies Q^{-1} = Q^T \implies QQ^T = \II_n$
+\item This is equivalent to $(Q^T)^T Q^T = \II_n$, so the columns of $Q^T$ (the rows of $Q$) are orthonormal \hfill\qed
+\end{itemize}
+\vfill
+\textbf{2. $Q^{-1}$ is orthogonal}
+\begin{itemize}
+\item We must show that $(Q^{-1})^T Q^{-1} = \II_n$
+\item Using $Q^{-1} = Q^T$, we get $(Q^{-1})^T Q^{-1} = (Q^T)^T Q^T = Q Q^T = \II_n$
+\item Thus $Q^{-1}$ is an orthogonal matrix \hfill\qed
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{Proof of 3 and 5 in Theorem~\ref{th:properties_orthogonal_matrices}}
+\textbf{3. $\det Q = \pm 1$}
+\begin{itemize}
+\item We have $Q^T Q = \II_n$. Taking determinant on both sides 
+\[
+\det(Q^T Q) = \det(\II_n) = 1
+\]
+\item Using $\det(AB)=\det(A)\det(B)$, we get $\det(Q^T) \det(Q) = 1$
+\item From the general property $\det(A^T) = \det(A)$, it follows that $(\det(Q))^2 = 1$, so $\det Q = \pm 1$ \hfill\qed
+\end{itemize}
+\vfill
+\textbf{5. If $Q_2\in\M_n$ also orthogonal, then $QQ_2$ orthogonal}
+\begin{itemize}
+\item We must show that $(QQ_2)^T (QQ_2) = \II_n$
+\item $(QQ_2)^T (QQ_2) = Q_2^T Q^T Q Q_2 = Q_2^T (Q^T Q) Q_2$
+\item Since $Q$ is orthogonal, $Q^TQ = \II_n$, so the expression becomes $Q_2^T \II_n Q_2 = Q_2^T Q_2$
+\item Since $Q_2$ is orthogonal, $Q_2^T Q_2 = \II_n$ \hfill\qed
+\end{itemize}
+\end{frame}
+
+
+
 \begin{frame}{Proof of 4 in Theorem~\ref{th:properties_orthogonal_matrices}}
-All statements in Theorem~\ref{th:properties_orthogonal_matrices} are easy, but let's focus on 4 
+\textbf{4. $\forall\lambda\in\sigma(Q)$, $|\lambda|=1$}
 \vfill
 Let $\lambda$ be an eigenvalue of $Q\in\M_n$ orthogonal, i.e., $\exists\IR^n\ni\bx\neq\b0$ s.t.
 \[
@@ -300,7 +371,7 @@ So what was the point of all that..?
 \vfill
 \begin{importanttheorem}[Least squares with QR factorisation]
 \label{th:LSQ_with_QR}
-$A\in\M_{mn}$ with LI columns, $\bb\in\IR^m$. If $A=QR$ is a QR factorisation of $A$, then the unique least squares solution $\tilde\bx$ of $A\bx=\bb$ is
+$A\in\M_{mn}$ with linearly independent columns, $\bb\in\IR^m$. If $A=QR$ is a QR factorisation of $A$, then the unique least squares solution $\tilde\bx$ of $A\bx=\bb$ is
 \[
 \tilde\bx = R^{-1}Q^T\bb
 \]
@@ -329,9 +400,23 @@ A^TA\tilde\bx= A^T\bb &\implies (QR)^TQR\tilde\bx = (QR)^T\bb \\
 
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Other applications of the QR decomposition}
+Focus here on least squares, but QR decomposition fundamental tool in numerical linear algebra with other important applications
+\begin{itemize}
+\item \textbf{Solving linear systems}: to solve $A\bx=\bb$ for a non-singular square matrix $A$, write $QR\bx=\bb \implies R\bx=Q^T\bb$. Since $R$ is upper triangular, this can be quickly solved by back-substitution. This method is often more numerically stable than Gaussian elimination (called the LU decomposition)
+\vfill
+\item \textbf{Computing eigenvalues}: the \textbf{QR algorithm} is a standard method for calculating the eigenvalues of a matrix. It uses the iterative process $A_k = Q_kR_k$ and $A_{k+1} = R_kQ_k$. Under certain conditions, $A_k$ converges to an upper triangular matrix whose diagonal entries are the eigenvalues
+\vfill
+\item \textbf{Computing determinants}: if $A=QR$, then $\det(A)=\det(Q)\det(R)$. Since $Q$ is orthogonal, $\det(Q)=\pm 1$, and since $R$ is upper triangular, $\det(R)$ is simply the product of its diagonal entries
+\end{itemize}
+\end{frame}
+
+
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
-\SSsection{The singular values decomposition}
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\SSsection{The SVD (singular values decomposition)}
 
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
