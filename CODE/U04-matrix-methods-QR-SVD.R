@@ -17,6 +17,49 @@ cat(input_setup)
 rmd_chunks_to_r_temp()
 
 
+## ----echo=FALSE,results='hide'------------------------------------------------
+A <- matrix(c(1, 1, 0, 1, 0, 1), nrow=3, byrow=FALSE)
+qr_A <- qr(A)
+Q_A <- qr.Q(qr_A)
+R_A <- qr.R(qr_A)
+
+## ----label="qr-example-r-lsq"-------------------------------------------------
+b <- c(2, 3, 4)
+QT_b <- t(Q_A) %*% b
+x_tilde <- solve(R_A, QT_b)
+x_tilde
+qr.coef(qr_A, b) # with the built-in solver
+
+
+## ----label='qr-canada-census-extract-data'------------------------------------
+data <- read.csv("../DATA/Canada_census.csv")
+data <- data[which(data$year <= 1980),]
+x <- data$year
+y <- data$population
+A_q <- matrix(c(rep(1, length(x)), x, x^2), nr = length(x), nc = 3)
+
+
+## ----label='qr-canada-census-normal-fail'-------------------------------------
+ATA <- t(A_q) %*% A_q
+try(solve(ATA) %*% t(A_q) %*% y)
+
+
+## ----label='qr-canada-census-fit'---------------------------------------------
+# Compute the QR decomposition of A_q
+QR <- qr(A_q)
+Q <- qr.Q(QR)
+R <- qr.R(QR)
+
+# Solve Rx = Q^T y
+sol_qr <- backsolve(R, t(Q) %*% y)
+sol_qr
+
+
+## ----label='qr-canada-census-solve'-------------------------------------------
+sol_qr_direct <- qr.solve(A_q, y)
+sol_qr_direct
+
+
 ## ----plot-image-svd-original,echo=c(1:3,7),crop=TRUE--------------------------
 my_image = bmp::read.bmp("../CODE/Julien_and_friend_1000x800.bmp")
 my_image_g = pixmap::pixmapGrey(my_image)

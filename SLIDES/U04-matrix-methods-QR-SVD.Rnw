@@ -229,7 +229,7 @@ $Q\in\M_n$ orthogonal $\iff$ $Q^{-1} = Q^T$
 
 
 \begin{frame}{Orthogonal matrices ``encode" isometries}
-\begin{theorem}[Orthogonal matrices ``encode" isometries]
+\begin{importanttheorem}[Orthogonal matrices ``encode" isometries]
 \label{th:TFAE_orthogonal_matrices}
 Let $Q\in\M_n$. TFAE
 \begin{enumerate}
@@ -237,7 +237,7 @@ Let $Q\in\M_n$. TFAE
 \item $\forall\bx\in\IR^n$, $\|Q\bx\|=\|\bx\|$
 \item $\forall\bx,\by\in\IR^n$, $Q\bx\bullet Q\by=\bx\bullet\by$
 \end{enumerate}
-\end{theorem}
+\end{importanttheorem}
 \end{frame}
 
 
@@ -414,6 +414,173 @@ Focus here on least squares, but QR decomposition fundamental tool in numerical 
 
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Example -- Solving least squares with QR (1/5)}
+Consider the matrix $A$ and a vector $\bb$:
+\[
+A = \begin{pmatrix} 1 & 1 \\ 1 & 0 \\ 0 & 1 \end{pmatrix} 
+\quad\text{and}\quad 
+\bb = \begin{pmatrix} 2 \\ 3 \\ 4 \end{pmatrix}.
+\]
+We want to find the unique least squares solution $\tilde\bx$ to $A\bx = \bb$.
+
+\vfill
+
+To do this using the QR decomposition, we must first compute $Q$ and $R$.
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Example -- Solving least squares with QR (2/5)}
+We compute $Q$ by applying the Gram-Schmidt process to the columns of $A$: $\ba_1 = (1, 1, 0)$ and $\ba_2 = (1, 0, 1)$.
+
+\vfill
+First, we find the orthogonal vectors:
+\[
+\bv_1 = \ba_1 = (1, 1, 0).
+\]
+\[
+\bv_2 = \ba_2 - \frac{\bv_1 \bullet \ba_2}{\|\bv_1\|^2}\bv_1 = (1, 0, 1) - \frac{1}{2}(1, 1, 0) = \left(\frac{1}{2}, -\frac{1}{2}, 1\right).
+\]
+
+\vfill
+Then, we normalise them to obtain the orthonormal columns of $Q$:
+\[
+\bu_1 = \frac{\bv_1}{\|\bv_1\|} = \left(\frac{1}{\sqrt{2}}, \frac{1}{\sqrt{2}}, 0\right).
+\]
+\[
+\bu_2 = \frac{\bv_2}{\|\bv_2\|} = \sqrt{\frac{2}{3}}\left(\frac{1}{2}, -\frac{1}{2}, 1\right) = \left(\frac{1}{\sqrt{6}}, -\frac{1}{\sqrt{6}}, \frac{2}{\sqrt{6}}\right).
+\]
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Example -- Solving least squares with QR (3/5)}
+Thus, the orthogonal matrix $Q$ is:
+\[
+Q = \begin{pmatrix} \frac{1}{\sqrt{2}} & \frac{1}{\sqrt{6}} \\ \frac{1}{\sqrt{2}} & -\frac{1}{\sqrt{6}} \\ 0 & \frac{2}{\sqrt{6}} \end{pmatrix}.
+\]
+
+\vfill
+To find $R$, recall that $A = QR$. Since $Q$ has orthonormal columns, $Q^T Q = \II$. Thus:
+\[
+Q^T A = Q^T Q R = \II R = R.
+\]
+
+\vfill
+We can therefore compute $R$ directly as $Q^T A$:
+\[
+R = \begin{pmatrix} \frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} & 0 \\ \frac{1}{\sqrt{6}} & -\frac{1}{\sqrt{6}} & \frac{2}{\sqrt{6}} \end{pmatrix} \begin{pmatrix} 1 & 1 \\ 1 & 0 \\ 0 & 1 \end{pmatrix} = \begin{pmatrix} \frac{2}{\sqrt{2}} & \frac{1}{\sqrt{2}} \\ 0 & \frac{3}{\sqrt{6}} \end{pmatrix}.
+\]
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Example -- Solving least squares with QR (4/5)}
+By Theorem~\ref{th:LSQ_with_QR}, we know that $R\tilde\bx = Q^T\bb$. First, we compute $Q^T\bb$:
+\[
+Q^T\bb = \begin{pmatrix} \frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} & 0 \\ \frac{1}{\sqrt{6}} & -\frac{1}{\sqrt{6}} & \frac{2}{\sqrt{6}} \end{pmatrix} \begin{pmatrix} 2 \\ 3 \\ 4 \end{pmatrix} = \begin{pmatrix} \frac{5}{\sqrt{2}} \\ \frac{7}{\sqrt{6}} \end{pmatrix}.
+\]
+
+\vfill
+
+Now we solve the upper triangular system $R\tilde\bx = Q^T\bb$ via back-substitution:
+\[
+\begin{pmatrix} \frac{2}{\sqrt{2}} & \frac{1}{\sqrt{2}} \\ 0 & \frac{3}{\sqrt{6}} \end{pmatrix} \begin{pmatrix} \tilde x_1 \\ \tilde x_2 \end{pmatrix} = \begin{pmatrix} \frac{5}{\sqrt{2}} \\ \frac{7}{\sqrt{6}} \end{pmatrix}.
+\]
+The second equation gives $\frac{3}{\sqrt{6}}\tilde x_2 = \frac{7}{\sqrt{6}}$, which implies $\tilde x_2 = \frac{7}{3}$.
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]\frametitle{Example -- Solving least squares with QR (5/5)}
+Substituting this into the first equation yields $\frac{2}{\sqrt{2}}\tilde x_1 + \frac{1}{\sqrt{2}}\left(\frac{7}{3}\right) = \frac{5}{\sqrt{2}}$, which simplifies to $2\tilde x_1 + \frac{7}{3} = 5$. Solving for $\tilde x_1$ yields $\tilde x_1 = \frac{4}{3}$.
+
+Thus, the least squares solution is $\tilde\bx = \begin{pmatrix} 4/3 \\ 7/3 \end{pmatrix}$.
+
+We can easily confirm this result in \textsf{R}:
+<<echo=FALSE,results='hide'>>=
+A <- matrix(c(1, 1, 0, 1, 0, 1), nrow=3, byrow=FALSE)
+qr_A <- qr(A)
+Q_A <- qr.Q(qr_A)
+R_A <- qr.R(qr_A)
+@
+<<label="qr-example-r-lsq">>=
+b <- c(2, 3, 4)
+QT_b <- t(Q_A) %*% b
+x_tilde <- solve(R_A, QT_b)
+x_tilde
+qr.coef(qr_A, b) # with the built-in solver
+@
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]\frametitle{Fitting the Canada census data using QR}
+Let us return to the Canada census data we fitted earlier using the normal equations.
+\vfill
+We saw that computing $A^TA$ and its inverse for a quadratic fit was problematic when using the raw years, because the matrix $A$ was badly conditioned. 
+\vfill
+This led us to shift the $x$-axis to start at $t=0$.
+\vfill
+The QR decomposition provides a much more numerically stable way to solve the least squares problem $A\bx = \bb$.
+\vfill
+To illustrate this, let us try to fit the quadratic model on the unshifted raw data using the QR approach.
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Setup for unshifted quadratic fit}
+We first load the data and set up our matrix $A$ for a quadratic fit without shifting the years.
+<<label='qr-canada-census-extract-data'>>=
+data <- read.csv("../DATA/Canada_census.csv")
+data <- data[which(data$year <= 1980),]
+x <- data$year
+y <- data$population
+A_q <- matrix(c(rep(1, length(x)), x, x^2), nr = length(x), nc = 3)
+@
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Normal equations failure}
+Recall that using the normal equations on this matrix failed because $A^TA$ is computationally singular. We can see this in \textsf{R}:
+<<label='qr-canada-census-normal-fail'>>=
+ATA <- t(A_q) %*% A_q
+try(solve(ATA) %*% t(A_q) %*% y)
+@
+\vfill
+However, the QR decomposition avoids forming $A^TA$, preserving numerical stability.
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Solving with QR decomposition}
+We can compute the QR decomposition using \textsf{R}'s built-in \texttt{qr} function, extract the $Q$ and $R$ components, and then use \texttt{backsolve} to solve the upper triangular system $R\bx = Q^T\bb$.
+<<label='qr-canada-census-fit'>>=
+# Compute the QR decomposition of A_q
+QR <- qr(A_q)
+Q <- qr.Q(QR)
+R <- qr.R(QR)
+
+# Solve Rx = Q^T y
+sol_qr <- backsolve(R, t(Q) %*% y)
+sol_qr
+@
+\end{frame}
+
+\begin{frame}[fragile]\frametitle{Direct solution with \texttt{qr.solve}}
+The QR decomposition successfully finds the coefficients for the unshifted data!
+\vfill
+Alternatively, \textsf{R} provides the function \texttt{qr.solve} which directly solves the least squares problem using the QR decomposition under the hood:
+<<label='qr-canada-census-solve'>>=
+sol_qr_direct <- qr.solve(A_q, y)
+sol_qr_direct
+@
+\vfill
+This demonstrates the practical advantage of using orthogonal matrix factorisations in data science applications over the normal equations.
+\end{frame}
+
+
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
 \SSsection{The SVD (singular values decomposition)}
