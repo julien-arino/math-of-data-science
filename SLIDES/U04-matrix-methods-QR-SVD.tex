@@ -244,7 +244,7 @@ W_k = \mathsf{span}(\bx_1,\ldots,\bx_k)
 Then $\forall i=1,\ldots,k$, $\{\bv_1,\ldots,\bv_i\}$ is an orthogonal basis of $W_i$
 \end{theorem}
 \end{frame}
-	
+
 \begin{frame}
 \begin{importanttheorem}[Gram-Schmidt orthonormalisation process]
 Let $W$ be a subspace of $\IR^n$ and $\{\bx_1,\ldots,\bx_k\}$ be a basis of $W$. 
@@ -785,7 +785,7 @@ But $\bv$ eigenvector is $\neq\b0$, so $\bar\bv\bullet\bv\neq 0$, so
 
 \vfill
 \textbf{Proof.}
-We know that for $A\in\M_{mn}$, $A^TA$ symmetric and from previous claim, if $A\in\M_{mn}(\IR)$, then $A^TA$ is symmetric and real and with real eigenvalues
+We know that for $A\in\M_{mn}$, $A^TA$ symmetric and from previous claim, if $A\in\M_{mn}(\IR)$, then $A^TA$ is symmetric, real and with real eigenvalues
 \vfill
 Let $(\lambda,\bv)$ be an eigenpair of $A^TA$, with $\bv$ chosen so that $\|\bv\|=1$
 \vfill 
@@ -827,8 +827,8 @@ Then there exists $U\in\M_m$ orthogonal, $V\in\M_n$ orthogonal and a block matri
 \[
 \Sigma=
 \begin{pmatrix}
-D & 0_{r,n-r} \\
-0_{m-r,r} & 0_{m-r,n-r}
+D & \b0_{r\times n-r} \\
+\b0_{m-r\times r} & \b0_{m-r\times n-r}
 \end{pmatrix}
 \]
 where 
@@ -857,7 +857,8 @@ $V\in\M_n$ orthogonal matrix with columns the eigenvectors of $A^TA$
 
 
 \begin{frame}{Outer product form of the SVD}
-\begin{theorem}[Outer product form of the SVD]\label{th:SVD_outer_product_form}
+\begin{theorem}[Outer product form of the SVD]
+\label{th:SVD_outer_product_form}
 $A\in\M_{mn}$ with singular values $\sigma_1\geq\cdots\geq\sigma_r>0$ and $\sigma_{r+1}=\cdots=\sigma_n=0$, $\bu_1,\ldots,\bu_r$ and $\bv_1,\ldots,\bv_r$, respectively, left and right singular vectors of $A$ corresponding to these singular values
 \vskip0.5cm
 Then 
@@ -877,6 +878,7 @@ Many applications of the SVD, both theoretical and practical..
 \vfill
 \begin{enumerate}
 \item Obtaining a unique solutions to least squares when $A^TA$ singular
+\vfill
 \item Image compression
 \end{enumerate}
 \end{frame}
@@ -884,7 +886,8 @@ Many applications of the SVD, both theoretical and practical..
 
 
 \begin{frame}{Compressing images}
-Consider an image (for simplicity, assume in shades of grey). This can be stored in a matrix $A\in\M_{mn}$
+Consider an image (for simplicity, assume in shades of grey). 
+This can be stored in a matrix $A\in\M_{mn}$
 \vfill
 Take the SVD of $A$. Then the small singular values carry information about the regions with little variation and can perhaps be omitted, whereas the large singular values carry information about more ``dynamic'' regions of the image
 \vfill
@@ -893,7 +896,7 @@ Suppose $A$  has $r$ nonzero singular values. For $k\leq r$, let
 A_k = \sigma_1\bu_1\bv_1^T+\cdots+\sigma_k\bu_k\bv_k^T
 \]
 \vfill
-For $k=r$ we get the usual outer product form \eqref{eq:outer-product-form-SVD}
+For $k=r$ we get the usual outer product form \eqref{eq:outer-product-form-SVD} in Theorem~\ref{th:SVD_outer_product_form}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -1049,7 +1052,7 @@ We output the new image, but also, the amount of information required to encode 
   \hldef{d_tmp} \hlkwb{=} \hldef{im}\hlopt{$}\hldef{d[}\hlnum{1}\hlopt{:}\hldef{n]}
   \hldef{u_tmp} \hlkwb{=} \hldef{im}\hlopt{$}\hldef{u[,}\hlnum{1}\hlopt{:}\hldef{n]}
   \hldef{v_tmp} \hlkwb{=} \hldef{im}\hlopt{$}\hldef{v[,}\hlnum{1}\hlopt{:}\hldef{n]}
-  \hlcom{# We store the results in a list (so we can return other information)}
+  \hlcom{# Store the results in a list (so we can return other information)}
     \hldef{out} \hlkwb{=} \hlkwd{list}\hldef{()}
     \hlcom{# First, compute the resulting image}
     \hldef{out}\hlopt{$}\hldef{img} \hlkwb{=} \hlkwd{mat.or.vec}\hldef{(}\hlkwc{nr} \hldef{=} \hlkwd{dim}\hldef{(im}\hlopt{$}\hldef{u)[}\hlnum{1}\hldef{],} \hlkwc{nc} \hldef{=} \hlkwd{dim}\hldef{(im}\hlopt{$}\hldef{v)[}\hlnum{1}\hldef{])}
@@ -1058,15 +1061,18 @@ We output the new image, but also, the amount of information required to encode 
     \hldef{\}}
 
 
-    \hlcom{# Values of the "colours" must be between 0 and 1, so we shift and rescale}
+    \hlcom{# Values of "colours" must be in [0,1], so shift and rescale}
     \hlkwa{if} \hldef{(}\hlkwd{min}\hldef{(}\hlkwd{min}\hldef{(out}\hlopt{$}\hldef{img))} \hlopt{<} \hlnum{0} \hldef{) \{}
         \hldef{out}\hlopt{$}\hldef{img} \hlkwb{=} \hldef{out}\hlopt{$}\hldef{img} \hlopt{-} \hlkwd{min}\hldef{(}\hlkwd{min}\hldef{(out}\hlopt{$}\hldef{img))}
     \hldef{\}}
     \hldef{out}\hlopt{$}\hldef{img} \hlkwb{=} \hldef{out}\hlopt{$}\hldef{img} \hlopt{/} \hlkwd{max}\hldef{(}\hlkwd{max}\hldef{(out}\hlopt{$}\hldef{img))}
-    \hlcom{# Store some information: number of points needed and percentage of the original required}
+    \hlcom{# Store some information: # points needed and % of the original}
     \hldef{out}\hlopt{$}\hldef{nb_pixels_original} \hlkwb{=} \hlkwd{dim}\hldef{(im}\hlopt{$}\hldef{u)[}\hlnum{1}\hldef{]} \hlopt{*} \hlkwd{dim}\hldef{(im}\hlopt{$}\hldef{v)[}\hlnum{2}\hldef{]}
-    \hldef{out}\hlopt{$}\hldef{nb_pixels_compressed} \hlkwb{=} \hlkwd{length}\hldef{(d_tmp)} \hlopt{+} \hlkwd{dim}\hldef{(u_tmp)[}\hlnum{1}\hldef{]}\hlopt{*}\hlkwd{dim}\hldef{(u_tmp)[}\hlnum{2}\hldef{]} \hlopt{+} \hlkwd{dim}\hldef{(v_tmp)[}\hlnum{1}\hldef{]}\hlopt{*}\hlkwd{dim}\hldef{(v_tmp)[}\hlnum{2}\hldef{]}
-    \hldef{out}\hlopt{$}\hldef{pct_of_original} \hlkwb{=} \hldef{out}\hlopt{$}\hldef{nb_pixels_compressed} \hlopt{/} \hldef{out}\hlopt{$}\hldef{nb_pixels_original} \hlopt{*} \hlnum{100}
+    \hldef{out}\hlopt{$}\hldef{nb_pixels_compressed} \hlkwb{=} \hlkwd{length}\hldef{(d_tmp)} \hlopt{+}
+      \hlkwd{dim}\hldef{(u_tmp)[}\hlnum{1}\hldef{]}\hlopt{*}\hlkwd{dim}\hldef{(u_tmp)[}\hlnum{2}\hldef{]} \hlopt{+}
+      \hlkwd{dim}\hldef{(v_tmp)[}\hlnum{1}\hldef{]}\hlopt{*}\hlkwd{dim}\hldef{(v_tmp)[}\hlnum{2}\hldef{]}
+    \hldef{out}\hlopt{$}\hldef{pct_of_original} \hlkwb{=} \hldef{out}\hlopt{$}\hldef{nb_pixels_compressed} \hlopt{/}
+      \hldef{out}\hlopt{$}\hldef{nb_pixels_original} \hlopt{*} \hlnum{100}
     \hlcom{# Return the result}
     \hlkwd{return}\hldef{(out)}
 \hldef{\}}

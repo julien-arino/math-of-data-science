@@ -117,7 +117,7 @@ compress_image = function(im, n) {
   d_tmp = im$d[1:n]
   u_tmp = im$u[,1:n]
   v_tmp = im$v[,1:n]
-  # We store the results in a list (so we can return other information)
+  # Store the results in a list (so we can return other information)
     out = list()
     # First, compute the resulting image
     out$img = mat.or.vec(nr = dim(im$u)[1], nc = dim(im$v)[1])
@@ -126,15 +126,18 @@ compress_image = function(im, n) {
     }
     
     
-    # Values of the "colours" must be between 0 and 1, so we shift and rescale
+    # Values of "colours" must be in [0,1], so shift and rescale
     if (min(min(out$img)) < 0 ) {
         out$img = out$img - min(min(out$img))
     }
     out$img = out$img / max(max(out$img))
-    # Store some information: number of points needed and percentage of the original required
+    # Store some information: # points needed and % of the original
     out$nb_pixels_original = dim(im$u)[1] * dim(im$v)[2]
-    out$nb_pixels_compressed = length(d_tmp) + dim(u_tmp)[1]*dim(u_tmp)[2] + dim(v_tmp)[1]*dim(v_tmp)[2] 
-    out$pct_of_original = out$nb_pixels_compressed / out$nb_pixels_original * 100
+    out$nb_pixels_compressed = length(d_tmp) + 
+      dim(u_tmp)[1]*dim(u_tmp)[2] + 
+      dim(v_tmp)[1]*dim(v_tmp)[2] 
+    out$pct_of_original = out$nb_pixels_compressed / 
+      out$nb_pixels_original * 100
     # Return the result
     return(out)
 }
