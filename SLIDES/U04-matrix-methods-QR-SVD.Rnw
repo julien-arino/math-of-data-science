@@ -1306,6 +1306,26 @@ D^{-1} & 0 \\ 0 & 0
 \end{frame}
 
 
+\begin{frame}{Properties of the pseudoinverse}
+The pseudoinverse $A^+$ generalises the concept of matrix inverse and satisfies the following properties (known as the Moore-Penrose conditions):
+\begin{enumerate}
+\item $AA^+A = A$
+\item $A^+AA^+ = A^+$
+\item $(AA^+)^T = AA^+$
+\item $(A^+A)^T = A^+A$
+\end{enumerate}
+\vfill
+Other useful properties:
+\begin{itemize}
+\item If $A$ is square and invertible, then $A^+ = A^{-1}$
+\item $(A^+)^+ = A$
+\item $(A^T)^+ = (A^+)^T$
+\item If $A$ has full column rank, then $A^+ = (A^TA)^{-1}A^T$
+\item If $A$ has full row rank, then $A^+ = A^T(AA^T)^{-1}$
+\end{itemize}
+\end{frame}
+
+
 
 \begin{frame}{Least squares revisited}
 \begin{importanttheorem}
