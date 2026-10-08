@@ -13,10 +13,6 @@ source("common-code.R")
 cat(input_setup)
 
 
-## ----convert-Rnw-to-R-part1,warning=FALSE,message=FALSE,echo=FALSE,results='hide'----
-rmd_chunks_to_r_temp()
-
-
 ## ----echo=FALSE,results='hide'------------------------------------------------
 A <- matrix(c(1, 1, 0, 1, 0, 1), nrow=3, byrow=FALSE)
 qr_A <- qr(A)
@@ -65,42 +61,7 @@ my_image = bmp::read.bmp("../CODE/Julien_and_friend_1000x800.bmp")
 my_image_g = pixmap::pixmapGrey(my_image)
 my_image_g
 pixmap::plot(my_image_g)
-
-
-## ----image-compression-svd-compute-MTM----------------------------------------
 M = my_image_g@grey
-MTM = t(M) %*% M
-# Ensure matrix is symmetric
-MTM = (MTM+t(MTM))/2
-ev = eigen(MTM)
-
-
-## ----image-compression-svd-zero-evalues---------------------------------------
-ev$values = ev$values*(ev$values>1e-10)
-
-
-## ----image-compression-svd-check-evalues--------------------------------------
-any(duplicated(ev$values[ev$values>1e-10]))
-
-
-## -----------------------------------------------------------------------------
-idx_positive_ev = which(ev$values>1e-10)
-sv = sqrt(ev$values[idx_positive_ev])
-
-
-## -----------------------------------------------------------------------------
-D = diag(sv)
-V = ev$vectors[idx_positive_ev, idx_positive_ev]
-c1 = colSums(V)
-for (i in 1:dim(V)[2]) {
-    V[,i] = V[,i]/c1[i]
-}
-
-
-## -----------------------------------------------------------------------------
-U = M %*% V %*% diag(1/sv)
-r = length(sv)
-im = list(u=U, d=sv, v=V)
 
 
 ## -----------------------------------------------------------------------------
@@ -175,8 +136,41 @@ new_image@grey = M_tmp$img
 plot(new_image)
 
 
-## ----convert-Rnw-to-R-part2,warning=FALSE,message=FALSE,echo=FALSE,results='hide'----
-rmd_chunks_to_r_temp()
+## ----image-compression-svd-compute-MTM----------------------------------------
+M = my_image_g@grey
+MTM = t(M) %*% M
+# Ensure matrix is symmetric
+MTM = (MTM+t(MTM))/2
+ev = eigen(MTM)
+
+
+## ----image-compression-svd-zero-evalues---------------------------------------
+ev$values = ev$values*(ev$values>1e-10)
+
+
+## ----image-compression-svd-check-evalues--------------------------------------
+any(duplicated(ev$values[ev$values>1e-10]))
+
+
+## -----------------------------------------------------------------------------
+idx_positive_ev = which(ev$values>1e-10)
+sv = sqrt(ev$values[idx_positive_ev])
+
+
+## -----------------------------------------------------------------------------
+D = diag(sv)
+V = ev$vectors[, idx_positive_ev]
+# Not needed with R, other languages might not normalise
+c1 = sqrt(colSums(V^2))
+for (i in 1:dim(V)[2]) {
+    V[,i] = V[,i]/c1[i]
+}
+
+
+## -----------------------------------------------------------------------------
+U = M %*% V %*% diag(1/sv)
+r = length(sv)
+im = list(u=U, d=sv, v=V)
 
 
 ## ----convert-Rnw-to-R-part3,warning=FALSE,message=FALSE,echo=FALSE,results='hide'----

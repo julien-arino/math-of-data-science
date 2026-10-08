@@ -417,11 +417,6 @@ From 2 in Theorem~\ref{th:TFAE_orthogonal_matrices}, $\|Q\bx\|=\|\bx\|$ and from
 
 
 
-
-
-
-
-
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
 \SSsubsection{The QR factorisation \& Least squares}
@@ -921,105 +916,6 @@ Load the image using \code{bmp::read.bmp}
 
 \maxFrameImage{FIGS/U04-plot-image-svd-original-1.png}
 
-\begin{frame}[fragile]\frametitle{Doing the computations ``by hand''}
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hldef{M} \hlkwb{=} \hldef{my_image_g}\hlopt{@}\hlkwc{grey}
-\hldef{MTM} \hlkwb{=} \hlkwd{t}\hldef{(M)} \hlopt{%*%} \hldef{M}
-\hlcom{# Ensure matrix is symmetric}
-\hldef{MTM} \hlkwb{=} \hldef{(MTM}\hlopt{+}\hlkwd{t}\hldef{(MTM))}\hlopt{/}\hlnum{2}
-\hldef{ev} \hlkwb{=} \hlkwd{eigen}\hldef{(MTM)}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
-\vfill
-Given the size and nature of the entries, the matrix $M^TM$ is symmetric only to \code{1e-5} precision, so we use a little trick to make it symmetric no matter what: take the average of $M^TM$ and its transpose $MM^T$
-\end{frame}
-
-
-\begin{frame}[fragile]\frametitle{Which version of the algorithm to use?}
-Make zero the eigenvalues that are close to zero (200 out of 1000)
-\vfill
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hldef{ev}\hlopt{$}\hldef{values} \hlkwb{=} \hldef{ev}\hlopt{$}\hldef{values}\hlopt{*}\hldef{(ev}\hlopt{$}\hldef{values}\hlopt{>}\hlnum{1e-10}\hldef{)}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
-\vfill
-Can we use the algorithm for all eigenvalues being distinct or do we have repeated ones?
-\vfill
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlkwd{any}\hldef{(}\hlkwd{duplicated}\hldef{(ev}\hlopt{$}\hldef{values[ev}\hlopt{$}\hldef{values}\hlopt{>}\hlnum{1e-10}\hldef{]))}
-\end{alltt}
-\begin{verbatim}
-## [1] FALSE
-\end{verbatim}
-\end{kframe}
-\end{knitrout}
-\vfill
-So we can use the standard algorithm
-\end{frame}
-
-
-\begin{frame}[fragile]\frametitle{Computing the SVD}
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hldef{idx_positive_ev} \hlkwb{=} \hlkwd{which}\hldef{(ev}\hlopt{$}\hldef{values}\hlopt{>}\hlnum{1e-10}\hldef{)}
-\hldef{sv} \hlkwb{=} \hlkwd{sqrt}\hldef{(ev}\hlopt{$}\hldef{values[idx_positive_ev])}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
-\end{frame}
-
-
-\begin{frame}[fragile]\frametitle{Computing the SVD}
-Then $D=\mathsf{diag}(\sigma_1,\ldots,\sigma_r)$, $V$ is the matrix of normalised eigenvectors in the same order as the $\sigma_i$ and for $i=1,\ldots,r$
-$$
-\mathbf{u}_i = \frac{1}{\sigma_i}A\mathbf{v}_i
-$$
-ensuring that $\|\mathbf{u}_i\|=1$
-\vfill
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hldef{D} \hlkwb{=} \hlkwd{diag}\hldef{(sv)}
-\hldef{V} \hlkwb{=} \hldef{ev}\hlopt{$}\hldef{vectors[idx_positive_ev, idx_positive_ev]}
-\hldef{c1} \hlkwb{=} \hlkwd{colSums}\hldef{(V)}
-\hlkwa{for} \hldef{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlkwd{dim}\hldef{(V)[}\hlnum{2}\hldef{]) \{}
-    \hldef{V[,i]} \hlkwb{=} \hldef{V[,i]}\hlopt{/}\hldef{c1[i]}
-\hldef{\}}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
-\end{frame}
-
-
-\begin{frame}[fragile]\frametitle{Computing the SVD}
-Finally, we compute the $\bu_i$'s
-\vfill
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hldef{U} \hlkwb{=} \hldef{M} \hlopt{%*%} \hldef{V} \hlopt{%*%} \hlkwd{diag}\hldef{(}\hlnum{1}\hlopt{/}\hldef{sv)}
-\end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in `M \%*\% V`:\\\#\# ! non-conformable arguments}}\begin{alltt}
-\hldef{r} \hlkwb{=} \hlkwd{length}\hldef{(sv)}
-\hldef{im} \hlkwb{=} \hlkwd{list}\hldef{(}\hlkwc{u}\hldef{=U,} \hlkwc{d}\hldef{=sv,} \hlkwc{v}\hldef{=V)}
-\end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error:\\\#\# ! object 'U' not found}}\end{kframe}
-\end{knitrout}
-\end{frame}
-
 \begin{frame}[fragile]\frametitle{Using built-in functions}
 We can also use the built-in function \code{svd} to compute the SVD of $M$
 \vfill
@@ -1157,9 +1053,6 @@ Uses 14.07\% of the original information
 
 
 
-
-
-
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
 \SSsubsection{Computing the SVD}
@@ -1290,6 +1183,100 @@ Let $A = \begin{pmatrix} 1 & 0 \\ 0 & 1 \\ 1 & 0 \end{pmatrix}$.
 \end{enumerate}
 \end{frame}
 
+\begin{frame}[fragile]\frametitle{Return to image compression -- Computations ``by hand''}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hldef{M} \hlkwb{=} \hldef{my_image_g}\hlopt{@}\hlkwc{grey}
+\hldef{MTM} \hlkwb{=} \hlkwd{t}\hldef{(M)} \hlopt{%*%} \hldef{M}
+\hlcom{# Ensure matrix is symmetric}
+\hldef{MTM} \hlkwb{=} \hldef{(MTM}\hlopt{+}\hlkwd{t}\hldef{(MTM))}\hlopt{/}\hlnum{2}
+\hldef{ev} \hlkwb{=} \hlkwd{eigen}\hldef{(MTM)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\vfill
+Given the size and nature of the entries, the matrix $M^TM$ is symmetric only to \code{1e-5} precision, so we use a little trick to make it symmetric no matter what: take the average of $M^TM$ and its transpose $MM^T$
+\end{frame}
+
+
+\begin{frame}[fragile]\frametitle{Which version of the algorithm to use?}
+Make zero the eigenvalues that are close to zero (200 out of 1000)
+\vfill
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hldef{ev}\hlopt{$}\hldef{values} \hlkwb{=} \hldef{ev}\hlopt{$}\hldef{values}\hlopt{*}\hldef{(ev}\hlopt{$}\hldef{values}\hlopt{>}\hlnum{1e-10}\hldef{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\vfill
+Can we use the algorithm for all eigenvalues being distinct or do we have repeated ones?
+\vfill
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{any}\hldef{(}\hlkwd{duplicated}\hldef{(ev}\hlopt{$}\hldef{values[ev}\hlopt{$}\hldef{values}\hlopt{>}\hlnum{1e-10}\hldef{]))}
+\end{alltt}
+\begin{verbatim}
+## [1] FALSE
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\vfill
+So we can use the standard algorithm
+\end{frame}
+
+
+\begin{frame}[fragile]\frametitle{Computing the SVD}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hldef{idx_positive_ev} \hlkwb{=} \hlkwd{which}\hldef{(ev}\hlopt{$}\hldef{values}\hlopt{>}\hlnum{1e-10}\hldef{)}
+\hldef{sv} \hlkwb{=} \hlkwd{sqrt}\hldef{(ev}\hlopt{$}\hldef{values[idx_positive_ev])}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+\begin{frame}[fragile]\frametitle{Computing the SVD}
+Then $D=\mathsf{diag}(\sigma_1,\ldots,\sigma_r)$, $V$ is the matrix of normalised eigenvectors in the same order as the $\sigma_i$ and for $i=1,\ldots,r$
+$$
+\mathbf{u}_i = \frac{1}{\sigma_i}A\mathbf{v}_i
+$$
+ensuring that $\|\mathbf{u}_i\|=1$
+\vfill
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hldef{D} \hlkwb{=} \hlkwd{diag}\hldef{(sv)}
+\hldef{V} \hlkwb{=} \hldef{ev}\hlopt{$}\hldef{vectors[, idx_positive_ev]}
+\hlcom{# Not needed with R, other languages might not normalise}
+\hldef{c1} \hlkwb{=} \hlkwd{sqrt}\hldef{(}\hlkwd{colSums}\hldef{(V}\hlopt{^}\hlnum{2}\hldef{))}
+\hlkwa{for} \hldef{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlkwd{dim}\hldef{(V)[}\hlnum{2}\hldef{]) \{}
+    \hldef{V[,i]} \hlkwb{=} \hldef{V[,i]}\hlopt{/}\hldef{c1[i]}
+\hldef{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+\begin{frame}[fragile]\frametitle{Computing the SVD}
+Finally, we compute the $\bu_i$'s
+\vfill
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hldef{U} \hlkwb{=} \hldef{M} \hlopt{%*%} \hldef{V} \hlopt{%*%} \hlkwd{diag}\hldef{(}\hlnum{1}\hlopt{/}\hldef{sv)}
+\hldef{r} \hlkwb{=} \hlkwd{length}\hldef{(sv)}
+\hldef{im} \hlkwb{=} \hlkwd{list}\hldef{(}\hlkwc{u}\hldef{=U,} \hlkwc{d}\hldef{=sv,} \hlkwc{v}\hldef{=V)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
 
 \begin{frame}{Computing the SVD (case where some eigenvalues are $=$)}
 \begin{enumerate}
@@ -1304,7 +1291,7 @@ Let $A = \begin{pmatrix} 1 & 0 \\ 0 & 1 \\ 1 & 0 \end{pmatrix}$.
 \begin{frame}{Dealing with eigenvalues with multiplicity $>1$}
 When an eigenvalue has (algebraic) multiplicity $>1$, e.g., characteristic polynomial contains a factor like $(\lambda-2)^2$, things can become a little bit more complicated
 \vfill
-The proper way to deal with this involves the so-called Jordan Normal Form (another matrix decomposition)
+The proper way to deal with this involves the so-called Jordan Normal Form (JNF, another matrix decomposition -- for square matrices)
 \vfill
 In short: not all square matrices are diagonalisable, but all square matrices admit a JNF
 \end{frame}
@@ -1359,6 +1346,46 @@ I am caricaturing a little here: there can be cases that do not work exactly lik
 \end{frame}
 
 
+\begin{frame}{Example 3: Repeated eigenvalues}
+Let $A = \begin{pmatrix} 1 & -1 & 0 \\ 0 & 1 & -1 \\ -1 & 0 & 1 \end{pmatrix}$.
+\vfill
+\begin{enumerate}
+\item Compute $A^TA = \begin{pmatrix} 1 & 0 & -1 \\ -1 & 1 & 0 \\ 0 & -1 & 1 \end{pmatrix} \begin{pmatrix} 1 & -1 & 0 \\ 0 & 1 & -1 \\ -1 & 0 & 1 \end{pmatrix} = \begin{pmatrix} 2 & -1 & -1 \\ -1 & 2 & -1 \\ -1 & -1 & 2 \end{pmatrix}$
+\item Eigenvalues of $A^TA$: the characteristic polynomial is $-\lambda^3 + 6\lambda^2 - 9\lambda = 0$, which gives $\lambda_1=3, \lambda_2=3, \lambda_3=0$.
+\item Singular values: $\sigma_1=\sqrt{3}, \sigma_2=\sqrt{3}, \sigma_3=0$.
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Example 3: Repeated eigenvalues (continued)}
+\begin{enumerate}
+\setcounter{enumi}{3}
+\item Eigenvectors of $A^TA$:
+\begin{itemize}
+\item For $\lambda_3=0$: null space of $A^TA$, giving $\bv_3 = \frac{1}{\sqrt{3}}\begin{pmatrix} 1 \\ 1 \\ 1 \end{pmatrix}$
+\item For $\lambda_1=\lambda_2=3$: we need to find the null space of $A^TA - 3\II = \begin{pmatrix} -1 & -1 & -1 \\ -1 & -1 & -1 \\ -1 & -1 & -1 \end{pmatrix}$. The eigenspace is the plane $x+y+z=0$. 
+\end{itemize}
+We must choose two \textbf{orthogonal} eigenvectors in this plane. 
+\vfill
+Let $\bx_1 = \begin{pmatrix} 1 \\ -1 \\ 0 \end{pmatrix}$. To find a second vector $\bx_2$ orthogonal to $\bx_1$ using Gram-Schmidt, we start with another vector in the plane, e.g., $\mathbf{y}_2 = \begin{pmatrix} 1 \\ 0 \\ -1 \end{pmatrix}$. We compute $\bx_2 = \mathbf{y}_2 - \mathrm{proj}_{\bx_1}(\mathbf{y}_2) = \begin{pmatrix} 1/2 \\ 1/2 \\ -1 \end{pmatrix}$, which we can scale to $\begin{pmatrix} 1 \\ 1 \\ -2 \end{pmatrix}$.
+\vfill
+Normalising gives $\bv_1 = \frac{1}{\sqrt{2}}\begin{pmatrix} 1 \\ -1 \\ 0 \end{pmatrix}$ and $\bv_2 = \frac{1}{\sqrt{6}}\begin{pmatrix} 1 \\ 1 \\ -2 \end{pmatrix}$.
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Example 3: Repeated eigenvalues (continued)}
+\begin{enumerate}
+\setcounter{enumi}{4}
+\item Compute the $\bu_i$ for $i=1,2$:
+\begin{itemize}
+\item $\bu_1 = \frac{1}{\sigma_1}A\bv_1 = \frac{1}{\sqrt{3}}\begin{pmatrix} 1 & -1 & 0 \\ 0 & 1 & -1 \\ -1 & 0 & 1 \end{pmatrix}\frac{1}{\sqrt{2}}\begin{pmatrix} 1 \\ -1 \\ 0 \end{pmatrix} = \frac{1}{\sqrt{6}}\begin{pmatrix} 2 \\ -1 \\ -1 \end{pmatrix}$
+\item $\bu_2 = \frac{1}{\sigma_2}A\bv_2 = \frac{1}{\sqrt{3}}\begin{pmatrix} 1 & -1 & 0 \\ 0 & 1 & -1 \\ -1 & 0 & 1 \end{pmatrix}\frac{1}{\sqrt{6}}\begin{pmatrix} 1 \\ 1 \\ -2 \end{pmatrix} = \frac{1}{\sqrt{18}}\begin{pmatrix} 0 \\ 3 \\ -3 \end{pmatrix} = \frac{1}{\sqrt{2}}\begin{pmatrix} 0 \\ 1 \\ -1 \end{pmatrix}$
+\end{itemize}
+\item To complete the orthonormal basis $U$ of $\R^3$, we find $\bu_3$ orthogonal to $\bu_1$ and $\bu_2$. By inspection (or cross product), $\bu_3 = \frac{1}{\sqrt{3}}\begin{pmatrix} 1 \\ 1 \\ 1 \end{pmatrix}$.
+\item Finally, $U = \begin{pmatrix} \frac{2}{\sqrt{6}} & 0 & \frac{1}{\sqrt{3}} \\ -\frac{1}{\sqrt{6}} & \frac{1}{\sqrt{2}} & \frac{1}{\sqrt{3}} \\ -\frac{1}{\sqrt{6}} & -\frac{1}{\sqrt{2}} & \frac{1}{\sqrt{3}} \end{pmatrix}$.
+\end{enumerate}
+\end{frame}
+
+
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
 \SSsubsection{Applications of the SVD -- Least squares}
@@ -1400,6 +1427,53 @@ Let $A\in\M_{mn}$, $\bx\in\IR^n$ and $\bb\in\IR^m$. The least squares problem $A
 \]
 where $A^+$ is the \emph{pseudoinverse} of $A$
 \end{importanttheorem}
+\end{frame}
+
+\begin{frame}{What does ``minimal length'' mean?}
+When $A$ has \emph{full column rank} (i.e., its columns are linearly independent), the least squares solution is unique:
+\[
+\tilde\bx = (A^T A)^{-1} A^T \bb
+\]
+However, if the columns of $A$ are \emph{linearly dependent}, the matrix $A^T A$ is not invertible. In this case, there are \textbf{infinitely many} least squares solutions that minimise $\|A\bx - \bb\|$ 
+\vfill
+Among all these possible solutions, the pseudoinverse $A^+$ selects the unique solution $\tilde\bx = A^+\bb$ that has the \textbf{smallest Euclidean norm} $\|\tilde\bx\|$
+\vfill
+Geometrically, it is the solution closest to the origin in $\IR^n$
+\end{frame}
+
+\begin{frame}{Example: Computing the pseudoinverse}
+Let $A = \begin{pmatrix} 1 & 1 \\ 1 & 1 \end{pmatrix}$. The SVD of $A$ is $U\Sigma V^T$ with:
+\[
+U = \frac{1}{\sqrt{2}}\begin{pmatrix} 1 & 1 \\ 1 & -1 \end{pmatrix},\quad
+\Sigma = \begin{pmatrix} 2 & 0 \\ 0 & 0 \end{pmatrix},\quad
+V = \frac{1}{\sqrt{2}}\begin{pmatrix} 1 & 1 \\ 1 & -1 \end{pmatrix}
+\]
+\vfill
+To find $A^+$, we form $\Sigma^+$ by taking the reciprocal of the non-zero singular values (leaving zeros as zero):
+\[
+\Sigma^+ = \begin{pmatrix} 1/2 & 0 \\ 0 & 0 \end{pmatrix}
+\]
+\vfill
+Then the pseudoinverse is $A^+ = V\Sigma^+ U^T$:
+\[
+A^+ = \frac{1}{\sqrt{2}}\begin{pmatrix} 1 & 1 \\ 1 & -1 \end{pmatrix} \begin{pmatrix} 1/2 & 0 \\ 0 & 0 \end{pmatrix} \frac{1}{\sqrt{2}}\begin{pmatrix} 1 & 1 \\ 1 & -1 \end{pmatrix}^T = \frac{1}{4}\begin{pmatrix} 1 & 1 \\ 1 & 1 \end{pmatrix}
+\]
+\end{frame}
+
+\begin{frame}{Example: Least squares using the pseudoinverse}
+Consider $A\bx = \bb$ where $A = \begin{pmatrix} 1 & 1 \\ 1 & 1 \end{pmatrix}$ and $\bb = \begin{pmatrix} 3 \\ 1 \end{pmatrix}$
+\vfill
+The system $\begin{pmatrix} x_1+x_2 \\ x_1+x_2 \end{pmatrix} = \begin{pmatrix} 3 \\ 1 \end{pmatrix}$ has no exact solution
+\vfill
+The least squares approach minimises the error $\|A\bx-\bb\|^2 = (x_1+x_2-3)^2 + (x_1+x_2-1)^2$. The minimum error is achieved when $x_1+x_2 = 2$
+\vfill
+Any vector $\bx = \begin{pmatrix} x_1 \\ 2-x_1 \end{pmatrix}$ is a least squares solution (e.g., $\begin{pmatrix} 2 \\ 0 \end{pmatrix}$, $\begin{pmatrix} 0 \\ 2 \end{pmatrix}$)
+\vfill
+The \textbf{minimal length} solution is given by the pseudoinverse:
+\[
+\tilde\bx = A^+\bb = \frac{1}{4}\begin{pmatrix} 1 & 1 \\ 1 & 1 \end{pmatrix}\begin{pmatrix} 3 \\ 1 \end{pmatrix} = \begin{pmatrix} 1 \\ 1 \end{pmatrix}
+\]
+which is indeed the point on the line $x_1+x_2=2$ closest to the origin
 \end{frame}
 
 
