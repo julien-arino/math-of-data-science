@@ -1216,6 +1216,81 @@ and ensure that $\|\bu_i\|=1$
 \end{frame}
 
 
+\begin{frame}{Why do we compute $\bu_i$ this way?}
+Recall the definition of the SVD:
+\[
+A = U\Sigma V^T
+\]
+Right-multiply by $V$; since $V$ is an orthogonal matrix ($V^TV = VV^T = \II$)
+\[
+AV = U\Sigma V^TV = U\Sigma
+\]
+Looking at the $i$-th column of both sides of this equation:
+\begin{itemize}
+\item The $i$-th column of $AV$ is $A\bv_i$
+\item The $i$-th column of $U\Sigma$ is $\sigma_i\bu_i$
+\end{itemize}
+Therefore, we have $A\bv_i = \sigma_i\bu_i$, which yields for $\sigma_i > 0$:
+\[
+\bu_i = \frac{1}{\sigma_i}A\bv_i
+\]
+\end{frame}
+
+
+\begin{frame}{Example 1: Square matrix}
+Let $A = \begin{pmatrix} 2 & 2 \\ -1 & 1 \end{pmatrix}$.
+\vfill
+\begin{enumerate}
+\item Compute $A^TA = \begin{pmatrix} 2 & -1 \\ 2 & 1 \end{pmatrix}\begin{pmatrix} 2 & 2 \\ -1 & 1 \end{pmatrix} = \begin{pmatrix} 5 & 3 \\ 3 & 5 \end{pmatrix}$
+\item Eigenvalues of $A^TA$: characteristic equation is $(5-\lambda)^2 - 9 = 0 \implies \lambda = 8, 2$. So $\lambda_1=8, \lambda_2=2$.
+\item Singular values: $\sigma_1=\sqrt{8}=2\sqrt{2}, \sigma_2=\sqrt{2}$. Matrix $\Sigma = \begin{pmatrix} 2\sqrt{2} & 0 \\ 0 & \sqrt{2} \end{pmatrix}$.
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Example 1: Square matrix (continued)}
+\begin{enumerate}
+\setcounter{enumi}{3}
+\item Eigenvectors of $A^TA$:
+\begin{itemize}
+\item For $\lambda_1=8$: null space of $\begin{pmatrix} -3 & 3 \\ 3 & -3 \end{pmatrix}$, giving $\bv_1 = \frac{1}{\sqrt{2}}\begin{pmatrix} 1 \\ 1 \end{pmatrix}$
+\item For $\lambda_2=2$: null space of $\begin{pmatrix} 3 & 3 \\ 3 & 3 \end{pmatrix}$, giving $\bv_2 = \frac{1}{\sqrt{2}}\begin{pmatrix} -1 \\ 1 \end{pmatrix}$
+\end{itemize}
+So $V = \frac{1}{\sqrt{2}}\begin{pmatrix} 1 & -1 \\ 1 & 1 \end{pmatrix}$.
+\item Compute the $\bu_i$:
+\begin{itemize}
+\item $\bu_1 = \frac{1}{\sigma_1}A\bv_1 = \frac{1}{2\sqrt{2}}\begin{pmatrix} 2 & 2 \\ -1 & 1 \end{pmatrix}\frac{1}{\sqrt{2}}\begin{pmatrix} 1 \\ 1 \end{pmatrix} = \frac{1}{4}\begin{pmatrix} 4 \\ 0 \end{pmatrix} = \begin{pmatrix} 1 \\ 0 \end{pmatrix}$
+\item $\bu_2 = \frac{1}{\sigma_2}A\bv_2 = \frac{1}{\sqrt{2}}\begin{pmatrix} 2 & 2 \\ -1 & 1 \end{pmatrix}\frac{1}{\sqrt{2}}\begin{pmatrix} -1 \\ 1 \end{pmatrix} = \frac{1}{2}\begin{pmatrix} 0 \\ 2 \end{pmatrix} = \begin{pmatrix} 0 \\ 1 \end{pmatrix}$
+\end{itemize}
+So $U = \begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix}$.
+\end{enumerate}
+\end{frame}
+
+
+\begin{frame}{Example 2: Nonsquare matrix}
+Let $A = \begin{pmatrix} 1 & 0 \\ 0 & 1 \\ 1 & 0 \end{pmatrix}$.
+\vfill
+\begin{enumerate}
+\item Compute $A^TA = \begin{pmatrix} 1 & 0 & 1 \\ 0 & 1 & 0 \end{pmatrix}\begin{pmatrix} 1 & 0 \\ 0 & 1 \\ 1 & 0 \end{pmatrix} = \begin{pmatrix} 2 & 0 \\ 0 & 1 \end{pmatrix}$
+\item Eigenvalues of $A^TA$ are clearly $\lambda_1=2, \lambda_2=1$.
+\item Singular values: $\sigma_1=\sqrt{2}, \sigma_2=1$. The matrix $\Sigma$ is $3 \times 2$, so $\Sigma = \begin{pmatrix} \sqrt{2} & 0 \\ 0 & 1 \\ 0 & 0 \end{pmatrix}$.
+\item Eigenvectors of $A^TA$ are the standard basis vectors: $\bv_1 = \begin{pmatrix} 1 \\ 0 \end{pmatrix}, \bv_2 = \begin{pmatrix} 0 \\ 1 \end{pmatrix}$. So $V = \begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix}$.
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Example 2: Nonsquare matrix (continued)}
+\begin{enumerate}
+\setcounter{enumi}{4}
+\item Compute the $\bu_i$ for $i=1,2$:
+\begin{itemize}
+\item $\bu_1 = \frac{1}{\sigma_1}A\bv_1 = \frac{1}{\sqrt{2}}\begin{pmatrix} 1 & 0 \\ 0 & 1 \\ 1 & 0 \end{pmatrix}\begin{pmatrix} 1 \\ 0 \end{pmatrix} = \frac{1}{\sqrt{2}}\begin{pmatrix} 1 \\ 0 \\ 1 \end{pmatrix}$
+\item $\bu_2 = \frac{1}{\sigma_2}A\bv_2 = \frac{1}{1}\begin{pmatrix} 1 & 0 \\ 0 & 1 \\ 1 & 0 \end{pmatrix}\begin{pmatrix} 0 \\ 1 \end{pmatrix} = \begin{pmatrix} 0 \\ 1 \\ 0 \end{pmatrix}$
+\end{itemize}
+\item Find $\bu_3$ to complete the orthonormal basis $U$ of $\R^3$. We need $\bu_3$ orthogonal to $\bu_1$ and $\bu_2$, with $\|\bu_3\|=1$. By inspection, $\bu_3 = \frac{1}{\sqrt{2}}\begin{pmatrix} -1 \\ 0 \\ 1 \end{pmatrix}$ works.
+\item Finally, $U = \begin{pmatrix} \frac{1}{\sqrt{2}} & 0 & -\frac{1}{\sqrt{2}} \\ 0 & 1 & 0 \\ \frac{1}{\sqrt{2}} & 0 & \frac{1}{\sqrt{2}} \end{pmatrix}$.
+\end{enumerate}
+\end{frame}
+
+
 \begin{frame}{Computing the SVD (case where some eigenvalues are $=$)}
 \begin{enumerate}
 \item Compute $A^TA\in\M_n$
