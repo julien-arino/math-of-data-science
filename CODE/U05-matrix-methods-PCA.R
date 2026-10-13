@@ -33,6 +33,7 @@ plot(data$height, data$weight,
 ## -----------------------------------------------------------------------------
 length(unique(data$name)) == dim(data)[1]
 length(unique(data$name))
+dim(data)[1]
 
 
 ## -----------------------------------------------------------------------------
@@ -69,6 +70,32 @@ plot(data$height.c, data$weight.c,
     pch = 19, col = "dodgerblue4",
     main = "IIHF players 2001-2016 (centred)",
     xlab = "Height (cm)", ylab = "Weight (kg)")
+
+
+## ----worked-example-R-1-------------------------------------------------------
+C = matrix(c(1, 1, 1, -1), nrow = 2)
+B = diag(2)
+CB = cbind(C, B)
+(R = pracma::rref(CB))
+(P = R[, 3:4])
+
+
+## ----worked-example-R-2-------------------------------------------------------
+x = c(3, 2)
+(x_C = P %*% x)
+
+# Verification: reconstruct x in the canonical basis
+C %*% x_C
+
+
+## ----var-hockey-uncentred-----------------------------------------------------
+var(data$height)
+var(data$weight)
+
+
+## ----var-hockey-centred-------------------------------------------------------
+var(data$height.c)
+var(data$weight.c)
 
 
 ## ----convert-Rnw-to-R-part1,warning=FALSE,message=FALSE,echo=FALSE,results='hide'----

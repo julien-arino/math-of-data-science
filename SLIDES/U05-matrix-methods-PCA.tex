@@ -82,9 +82,9 @@
 
 
 \begin{frame}{Dimensionality reduction}
-One of the reasons the SVD is used is for dimensionality reduction. However, SVD has many many other uses
+In the previous unit, we saw that SVD could be used to reduce the dimension of data (matrices)
 \vfill
-Now we look at another dimensionality reduction technique, PCA
+Now we look at another dimensionality reduction technique: principal component analysis (PCA)
 \vfill
 PCA is often used as a blackbox technique, here we take a look at the math behind it
 \end{frame}
@@ -155,7 +155,7 @@ As usual, it is a good idea to plot this to get a sense of the lay of the land
 \begin{frame}[fragile]
 The author of the study is interested in the evolution of weights, so it is likely that the same person will be in the dataset several times
 \vfill
-Let us check this: first check will be \code{FALSE} if the number of unique names does not match the number of rows in the dataset
+Let us check this: first check below will be \code{FALSE} if the number of unique names does not match the number of rows in the dataset
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -171,12 +171,18 @@ Let us check this: first check will be \code{FALSE} if the number of unique name
 \begin{verbatim}
 ## [1] 3278
 \end{verbatim}
+\begin{alltt}
+\hlkwd{dim}\hldef{(data)[}\hlnum{1}\hldef{]}
+\end{alltt}
+\begin{verbatim}
+## [1] 6292
+\end{verbatim}
 \end{kframe}
 \end{knitrout}
 \end{frame}
 
 \begin{frame}[fragile]
-Not interested in the evolution of weights, so simplify: if more than one record for someone, take average of recorded weights and heights
+We are not interested in the evolution of weights, so we simplify: if more than one record for someone, take average of recorded weights and heights
 \vfill
 To be extra careful, could check as well that there are no major variations on player height (homonymies?)
 \vfill
@@ -263,36 +269,93 @@ In order to do so, we need to learn how to change bases
 
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
 \SSsection{Change of basis}
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\SSsubsection{Theory}
 
 
 \begin{frame}
-	In the following slide, 
+	In the following, 
 	\[
 	[\bx]_\B
 	\]
-	denotes the coordinates of $\bx$ in the basis $\B$
+	denotes the coordinates of $\bx$ in the basis $\B=\{\bu_1,\ldots,\bu_n\}$, i.e., $[\bx]_\B=(b_1,\ldots,b_n)^T$ such that $\bx = b_1\bu_1+\cdots+b_n\bu_n$
 	\vfill
-	The aim of a change of basis is to express vectors in another coordinate system (another basis)
+	The aim of a change of basis is to express vectors in another coordinate system (another basis) $\C=\{\bv_1,\ldots,\bv_n\}$
 	\vfill
 	We do so by finding a matrix allowing to move from one basis to another
 \end{frame}
 
 \begin{frame}{Change of basis}
 \begin{definition}[Change of basis matrix]
-$\B=\{\bu_1,\ldots,\bu_n\}$ and $\C=\{\bv_1,\ldots,\bv_n\}$ bases of vector space $V$
-\vfill
-The \textbf{change of basis matrix} $P_{\C\leftarrow\B}\in\M_n$,
+Let $\B=\{\bu_1,\ldots,\bu_n\}$ and $\C=\{\bv_1,\ldots,\bv_n\}$ be bases of vector space $V$
+\vskip0.5cm
+The \textbf{change of basis matrix} $P_{\C\leftarrow\B}\in\M_n$ from basis $\B$ to $\C$ is
 \[
 P_{\C\leftarrow\B}
 =\left[
 [\bu_1]_\C \cdots [\bu_n]_\C
 \right]
 \]
-has columns the coordinate vectors $[\bu_1]_\C,\ldots,[\bu_n]_\C$ of vectors in $\B$ with respect to $\C$
+i.e., its columns are the coordinate vectors $[\bu_1]_\C,\ldots,[\bu_n]_\C$ of vectors in $\B$ with respect to $\C$
 \end{definition}
+\end{frame}
+
+\begin{frame}{Example -- $\B$ is the canonical basis of $\IR^3$}
+Let $\B=\{\bi,\bj,\bk\}$ be the canonical basis of $\IR^3$ and $\C=\{\bv_1,\bv_2,\bv_3\}$, with
+\[
+\bv_1 = \begin{pmatrix} 1 \\ 0 \\ 0 \end{pmatrix}, \quad
+\bv_2 = \begin{pmatrix} 1 \\ 1 \\ 0 \end{pmatrix}, \quad
+\bv_3 = \begin{pmatrix} 1 \\ 1 \\ 1 \end{pmatrix}
+\]
 \vfill
-\begin{theorem}
+To find $P_{\C\leftarrow\B} = [[\bi]_\C \;\; [\bj]_\C \;\; [\bk]_\C]$, express each canonical vector in terms of $\C$:
+\[
+\bi = \bv_1, \quad
+\bj = \bv_2 - \bv_1, \quad
+\bk = \bv_3 - \bv_2
+\]
+\[
+\implies [\bi]_\C = \begin{pmatrix} 1 \\ 0 \\ 0 \end{pmatrix}, \quad
+[\bj]_\C = \begin{pmatrix} -1 \\ 1 \\ 0 \end{pmatrix}, \quad
+[\bk]_\C = \begin{pmatrix} 0 \\ -1 \\ 1 \end{pmatrix}
+\]
+\vfill
+The change of basis matrix from $\B$ to $\C$ is
+\[
+P_{\C\leftarrow\B} = [[\bi]_\C \;\; [\bj]_\C \;\; [\bk]_\C] = \begin{pmatrix} 1 & -1 & 0 \\ 0 & 1 & -1 \\ 0 & 0 & 1 \end{pmatrix}
+\]
+\end{frame}
+
+
+\begin{frame}{Example -- $\C$ is the canonical basis of $\IR^3$}
+Now consider the reverse: let $\B=\{\bu_1,\bu_2,\bu_3\}$ with
+\[
+\bu_1 = \begin{pmatrix} 1 \\ 0 \\ 0 \end{pmatrix}, \quad
+\bu_2 = \begin{pmatrix} 1 \\ 1 \\ 0 \end{pmatrix}, \quad
+\bu_3 = \begin{pmatrix} 1 \\ 1 \\ 1 \end{pmatrix}
+\]
+and let $\C=\{\bi,\bj,\bk\}$ be the canonical basis of $\IR^3$
+\vfill
+Since $\C$ is the canonical basis, the coordinates in $\C$ are simply the vector itself:
+\[
+[\bu_1]_\C = \begin{pmatrix} 1 \\ 0 \\ 0 \end{pmatrix}, \quad
+[\bu_2]_\C = \begin{pmatrix} 1 \\ 1 \\ 0 \end{pmatrix}, \quad
+[\bu_3]_\C = \begin{pmatrix} 1 \\ 1 \\ 1 \end{pmatrix}
+\]
+\vfill
+Thus, the change of basis matrix from $\B$ to the canonical basis $\C$ is
+\[
+P_{\C\leftarrow\B} = [[\bu_1]_\C \;\; [\bu_2]_\C \;\; [\bu_3]_\C] = \begin{pmatrix} 1 & 1 & 1 \\ 0 & 1 & 1 \\ 0 & 0 & 1 \end{pmatrix}
+\]
+\end{frame}
+
+\begin{frame}
+\begin{theorem}\label{th:change-of-basis-properties}
 $\B=\{\bu_1,\ldots,\bu_n\}$ and $\C=\{\bv_1,\ldots,\bv_n\}$ bases of vector space $V$ and $P_{\C\leftarrow\B}$ a change of basis matrix from $\B$ to $\C$
 \begin{enumerate}
 \item $\forall\bx\in V$, $P_{\C\leftarrow\B}[\bx]_\B = [\bx]_\C$
@@ -300,6 +363,32 @@ $\B=\{\bu_1,\ldots,\bu_n\}$ and $\C=\{\bv_1,\ldots,\bv_n\}$ bases of vector spac
 \item $P_{\C\leftarrow\B}$ invertible and $P_{\C\leftarrow\B}^{-1}=P_{\B\leftarrow\C}$
 \end{enumerate}
 \end{theorem}
+\end{frame}
+
+\begin{frame}{Example -- Linking the two directions}
+Let $\B=\{\bi,\bj,\bk\}$ be the canonical basis and $\C=\{\bv_1,\bv_2,\bv_3\}$ with
+\[
+\bv_1 = \begin{pmatrix} 1 \\ 0 \\ 0 \end{pmatrix}, \quad
+\bv_2 = \begin{pmatrix} 1 \\ 1 \\ 0 \end{pmatrix}, \quad
+\bv_3 = \begin{pmatrix} 1 \\ 1 \\ 1 \end{pmatrix}
+\]
+\vfill
+From our two previous examples:
+\[
+P_{\C\leftarrow\B} = \begin{pmatrix} 1 & -1 & 0 \\ 0 & 1 & -1 \\ 0 & 0 & 1 \end{pmatrix}
+\quad\text{and}\quad
+P_{\B\leftarrow\C} = \begin{pmatrix} 1 & 1 & 1 \\ 0 & 1 & 1 \\ 0 & 0 & 1 \end{pmatrix}
+\]
+\vfill
+By item~3 in Theorem~\ref{th:change-of-basis-properties}, $P_{\C\leftarrow\B}^{-1} = P_{\B\leftarrow\C}$. Indeed:
+\[
+P_{\C\leftarrow\B} P_{\B\leftarrow\C}
+= \begin{pmatrix} 1 & -1 & 0 \\ 0 & 1 & -1 \\ 0 & 0 & 1 \end{pmatrix}
+\begin{pmatrix} 1 & 1 & 1 \\ 0 & 1 & 1 \\ 0 & 0 & 1 \end{pmatrix}
+= \begin{pmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{pmatrix} = \II
+\]
+\vfill
+Since $P_{\B\leftarrow\C} = [\bv_1 \;\; \bv_2 \;\; \bv_3]$ is immediate, we have $P_{\C\leftarrow\B} = [\bv_1 \;\; \bv_2 \;\; \bv_3]^{-1}$
 \end{frame}
 
 
@@ -343,20 +432,59 @@ How do we find what new basis to look at our data in?
 
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
-\SSsection{Example of change of basis}
+\SSsubsection{A simple example}
 
 \begin{frame}{Worked example: change of basis}
+\begin{columns}[c]
+\begin{column}{0.58\textwidth}
 \textbf{Problem:} Find the change of basis matrix from basis $\B$ to basis $\C$ in $\IR^2$, where
-$$\B = \left\{\begin{pmatrix} 1 \\ 0 \end{pmatrix}, \begin{pmatrix} 0 \\ 1 \end{pmatrix}\right\} \quad \text{and} \quad \C = \left\{\begin{pmatrix} 1 \\ 1 \end{pmatrix}, \begin{pmatrix} 1 \\ -1 \end{pmatrix}\right\}$$
-
-\vfill
-Then use this to find the coordinates of $\bx = \begin{pmatrix} 3 \\ 2 \end{pmatrix}$ in basis $\C$
+\[
+\B = \left\{\begin{pmatrix} 1 \\ 0 \end{pmatrix}, \begin{pmatrix} 0 \\ 1 \end{pmatrix}\right\}
+\quad\text{and}\quad
+\C = \left\{\begin{pmatrix} 1 \\ 1 \end{pmatrix}, \begin{pmatrix} 1 \\ -1 \end{pmatrix}\right\}
+\]
+\vskip0.5cm
+Then use this matrix to find the coordinates of $\bx = \begin{pmatrix} 3 \\ 2 \end{pmatrix}$ in basis $\C$
+\end{column}
+\begin{column}{0.42\textwidth}
+\centering
+\begin{tikzpicture}[scale=0.85, >=Latex]
+    % Grid
+    \draw[step=1cm, gray!20, very thin] (-1.2,-1.8) grid (3.8,2.8);
+    % Axes
+    \draw[->, thick, gray!60] (-1.2,0) -- (3.8,0) node[right, font=\footnotesize] {$x$};
+    \draw[->, thick, gray!60] (0,-1.8) -- (0,2.8) node[above, font=\footnotesize] {$y$};
+    
+    % Basis B vectors (standard)
+    \draw[->, very thick, black] (0,0) -- (1,0) node[below=2pt, font=\small] {$\bi$};
+    \draw[->, very thick, black] (0,0) -- (0,1) node[left=2pt, font=\small] {$\bj$};
+    
+    % New axes directions (dashed)
+    \draw[dashed, blue!50, thin] (-1.5,-1.5) -- (2.8,2.8) node[above right, font=\footnotesize, text=blue!80!black] {$\bv_1$-axis};
+    \draw[dashed, blue!50, thin] (-1.5,1.5) -- (2.3,-2.3) node[below right, font=\footnotesize, text=blue!80!black] {$\bv_2$-axis};
+    
+    % Basis C vectors
+    \draw[->, very thick, blue!80!black] (0,0) -- (1,1) node[above left, font=\small] {$\bv_1$};
+    \draw[->, very thick, blue!80!black] (0,0) -- (1,-1) node[below left, font=\small] {$\bv_2$};
+    
+    % Vector x
+    \draw[->, very thick, red!80!black] (0,0) -- (3,2) node[above, font=\small] {$\bx$};
+    \filldraw[red!80!black] (3,2) circle (1.5pt);
+\end{tikzpicture}
+\end{column}
+\end{columns}
 \end{frame}
 
 \begin{frame}{Step 1 -- Set up the matrices}
 \begin{itemize}
-\item $\B$ is the standard basis of $\IR^2$, so $[\bu_1]_\E = \begin{pmatrix} 1 \\ 0 \end{pmatrix}$, $[\bu_2]_\E = \begin{pmatrix} 0 \\ 1 \end{pmatrix}$
-\item For $\C$: $[\bv_1]_\E = \begin{pmatrix} 1 \\ 1 \end{pmatrix}$, $[\bv_2]_\E = \begin{pmatrix} 1 \\ -1 \end{pmatrix}$
+\item $\B=\{\bi,\bj\}$ is the standard basis of $\IR^2$, so using $\E=\B$, we have 
+\[
+[\bi]_\E = \begin{pmatrix} 1 \\ 0 \end{pmatrix}, \quad [\bj]_\E = \begin{pmatrix} 0 \\ 1 \end{pmatrix}
+\]
+\item For $\C$: 
+\[
+[\bv_1]_\E = \begin{pmatrix} 1 \\ 1 \end{pmatrix}, \quad [\bv_2]_\E = \begin{pmatrix} 1 \\ -1 \end{pmatrix}
+\]
 \end{itemize}
 \end{frame}
 
@@ -380,7 +508,7 @@ $$P_{\C\leftarrow\B} = \begin{pmatrix} \frac{1}{2} & \frac{1}{2} \\ \frac{1}{2} 
 \vfill
 \textbf{Verification:} Let's check that this matrix works correctly.
 \begin{itemize}
-\item $[\bu_1]_\C = P_{\C\leftarrow\B}[\bu_1]_\B = \begin{pmatrix} \frac{1}{2} & \frac{1}{2} \\ \frac{1}{2} & -\frac{1}{2} \end{pmatrix}\begin{pmatrix} 1 \\ 0 \end{pmatrix} = \begin{pmatrix} \frac{1}{2} \\ \frac{1}{2} \end{pmatrix}$
+\item $[\bi]_\C = P_{\C\leftarrow\B}[\bi]_\B = \begin{pmatrix} \frac{1}{2} & \frac{1}{2} \\ \frac{1}{2} & -\frac{1}{2} \end{pmatrix}\begin{pmatrix} 1 \\ 0 \end{pmatrix} = \begin{pmatrix} \frac{1}{2} \\ \frac{1}{2} \end{pmatrix}$
 \item Check: $\frac{1}{2}\begin{pmatrix} 1 \\ 1 \end{pmatrix} + \frac{1}{2}\begin{pmatrix} 1 \\ -1 \end{pmatrix} = \begin{pmatrix} 1 \\ 0 \end{pmatrix}$
 \end{itemize}
 \end{frame}
@@ -415,6 +543,184 @@ Solving: $c_1 = \frac{5}{2}$, $c_2 = \frac{1}{2}$
 This confirms our result: $[\bx]_\C = \begin{pmatrix} \frac{5}{2} \\ \frac{1}{2} \end{pmatrix}$
 \end{frame}
 
+\begin{frame}[fragile]{Computation in R -- Finding $P_{\C\leftarrow\B}$}
+Set up $C = [\bv_1, \bv_2]$, $B = [\bi, \bj]$, form the augmented matrix $[C|B]$ and row reduce:
+\vfill
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hldef{C} \hlkwb{=} \hlkwd{matrix}\hldef{(}\hlkwd{c}\hldef{(}\hlnum{1}\hldef{,} \hlnum{1}\hldef{,} \hlnum{1}\hldef{,} \hlopt{-}\hlnum{1}\hldef{),} \hlkwc{nrow} \hldef{=} \hlnum{2}\hldef{)}
+\hldef{B} \hlkwb{=} \hlkwd{diag}\hldef{(}\hlnum{2}\hldef{)}
+\hldef{CB} \hlkwb{=} \hlkwd{cbind}\hldef{(C, B)}
+\hldef{(R} \hlkwb{=} \hldef{pracma}\hlopt{::}\hlkwd{rref}\hldef{(CB))}
+\end{alltt}
+\begin{verbatim}
+##      [,1] [,2] [,3] [,4]
+## [1,]    1    0  0.5  0.5
+## [2,]    0    1  0.5 -0.5
+\end{verbatim}
+\begin{alltt}
+\hldef{(P} \hlkwb{=} \hldef{R[,} \hlnum{3}\hlopt{:}\hlnum{4}\hldef{])}
+\end{alltt}
+\begin{verbatim}
+##      [,1] [,2]
+## [1,]  0.5  0.5
+## [2,]  0.5 -0.5
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+\begin{frame}[fragile]{Computation in R -- Coordinates of $\bx$}
+Now compute $[\bx]_\C = P_{\C\leftarrow\B} [\bx]_\B$ and verify that $C [\bx]_\C = \bx$:
+\vfill
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hldef{x} \hlkwb{=} \hlkwd{c}\hldef{(}\hlnum{3}\hldef{,} \hlnum{2}\hldef{)}
+\hldef{(x_C} \hlkwb{=} \hldef{P} \hlopt{%*%} \hldef{x)}
+\end{alltt}
+\begin{verbatim}
+##      [,1]
+## [1,]  2.5
+## [2,]  0.5
+\end{verbatim}
+\begin{alltt}
+\hlcom{# Verification: reconstruct x in the canonical basis}
+\hldef{C} \hlopt{%*%} \hldef{x_C}
+\end{alltt}
+\begin{verbatim}
+##      [,1]
+## [1,]    3
+## [2,]    2
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\SSsubsection{Basis for a trajectory in \texorpdfstring{$\IR^2$}{R\textasciicircum 2}}
+
+\begin{frame}{Example -- A trajectory in $\IR^2$}
+\begin{columns}[c]
+\begin{column}{0.54\textwidth}
+Let $\B=\{\bi,\bj\}$ be the canonical basis of $\IR^2$.
+\vskip0.2cm
+Consider a trajectory along the unit circle:
+\[
+\bx(t) = \begin{pmatrix} \cos t \\ \sin t \end{pmatrix}, \quad t \in \IR
+\]
+\vskip0.2cm
+This is a function $\bx:\IR\to\IR^2$ that we call a \textbf{parametric equation}:
+\begin{itemize}
+    \item $t$ is the parameter (often interpreted as time)
+    \item For each $t$, $\bx(t)$ is a point in $\IR^2$; as $t$ varies, $\bx(t)$ traces out the trajectory
+\end{itemize}
+\end{column}
+\begin{column}{0.46\textwidth}
+\centering
+\begin{tikzpicture}[scale=0.95, >=Latex]
+    % Axes
+    \draw[->, gray!40] (-2.2,0) -- (2.4,0) node[right, font=\tiny] {$x$};
+    \draw[->, gray!40] (0,-2.2) -- (0,2.4) node[above, font=\tiny] {$y$};
+    
+    % Circle trajectory
+    \draw[thick, gray!50] (0,0) circle (1.6);
+    
+    % Standard basis at origin
+    \draw[->, very thick, black] (0,0) -- (0.8,0) node[below=1pt, font=\scriptsize] {$\bi$};
+    \draw[->, very thick, black] (0,0) -- (0,0.8) node[left=1pt, font=\scriptsize] {$\bj$};
+    
+    % Direction arrow on trajectory
+    \draw[->, thick, teal] (15:1.6) arc (15:35:1.6);
+    \draw[->, thick, teal] (105:1.6) arc (105:125:1.6);
+
+    % Point 1 at t = 45 deg
+    \coordinate (P1) at (45:1.6);
+    \draw[->, thick, purple!70!black] (0,0) -- (P1) node[midway, below right, font=\scriptsize] {$\bx(t_1)$};
+    \filldraw[purple!80!black] (P1) circle (1.8pt);
+    
+    % Point 2 at t = 135 deg
+    \coordinate (P2) at (135:1.6);
+    \draw[->, thick, purple!70!black] (0,0) -- (P2) node[midway, below left, font=\scriptsize] {$\bx(t_2)$};
+    \filldraw[purple!80!black] (P2) circle (1.8pt);
+\end{tikzpicture}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{A moving basis along the trajectory}
+\begin{columns}[c]
+\begin{column}{0.54\textwidth}
+At each point $\bx(t)$ on the trajectory, define a moving basis $\C(t) = \{\bv_1(t), \bv_2(t)\}$:
+\begin{itemize}
+    \item $\bv_1(t) = \bx'\!(t) = \begin{pmatrix} -\sin t \\ \cos t \end{pmatrix}$ (unit tangent)
+    \item $\bv_2(t) = \begin{pmatrix} \cos t \\ \sin t \end{pmatrix}$ (outward unit normal)
+\end{itemize}
+\vskip0.2cm
+Since $\bv_1(t) \bullet \bv_2(t) = 0$ and $\|\bv_1\|=\|\bv_2\|=1$, $\C(t)$ is an orthonormal basis for all $t$
+\vskip0.2cm
+As $t$ changes, the basis $\{\bv_1(t), \bv_2(t)\}$ moves and rotates along with $\bx(t)$
+\end{column}
+\begin{column}{0.46\textwidth}
+\centering
+\begin{tikzpicture}[scale=0.95, >=Latex]
+    % Axes
+    \draw[->, gray!40] (-2.2,0) -- (2.4,0) node[right, font=\tiny] {$x$};
+    \draw[->, gray!40] (0,-2.2) -- (0,2.4) node[above, font=\tiny] {$y$};
+    
+    % Circle trajectory
+    \draw[thick, gray!50] (0,0) circle (1.6);
+    
+    % Standard basis at origin
+    \draw[->, very thick, black] (0,0) -- (0.8,0) node[below=1pt, font=\scriptsize] {$\bi$};
+    \draw[->, very thick, black] (0,0) -- (0,0.8) node[left=1pt, font=\scriptsize] {$\bj$};
+    
+    % Direction arrow on trajectory
+    \draw[->, thick, teal] (15:1.6) arc (15:35:1.6);
+    \draw[->, thick, teal] (105:1.6) arc (105:125:1.6);
+
+    % Point 1 at t = 45 deg
+    \coordinate (P1) at (45:1.6);
+    \draw[->, thick, purple!70!black] (0,0) -- (P1) node[midway, below right, font=\scriptsize] {$\bx(t_1)$};
+    \filldraw[purple!80!black] (P1) circle (1.8pt);
+    \draw[->, very thick, blue!80!black] (P1) -- ++(135:1.1) node[above left, font=\scriptsize] {$\bv_1(t_1)$};
+    \draw[->, very thick, red!80!black] (P1) -- ++(45:1.1) node[above right, font=\scriptsize] {$\bv_2(t_1)$};
+    
+    % Point 2 at t = 135 deg
+    \coordinate (P2) at (135:1.6);
+    \draw[->, thick, purple!70!black] (0,0) -- (P2) node[midway, below left, font=\scriptsize] {$\bx(t_2)$};
+    \filldraw[purple!80!black] (P2) circle (1.8pt);
+    \draw[->, very thick, blue!80!black] (P2) -- ++(225:1.1) node[below left, font=\scriptsize] {$\bv_1(t_2)$};
+    \draw[->, very thick, red!80!black] (P2) -- ++(135:1.1) node[above left, font=\scriptsize] {$\bv_2(t_2)$};
+\end{tikzpicture}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Coordinates in the moving basis}
+The change of basis matrix from $\C(t)$ to the canonical basis $\B$ is
+\[
+P_{\B\leftarrow\C(t)} = [\bv_1(t) \;\; \bv_2(t)] = \begin{pmatrix} -\sin t & \cos t \\ \cos t & \sin t \end{pmatrix}
+\]
+\vfill
+Since $P_{\B\leftarrow\C(t)}$ is symmetric and orthogonal, the change of basis matrix to $\C(t)$ is:
+\[
+P_{\C(t)\leftarrow\B} = P_{\B\leftarrow\C(t)}^{-1} = P_{\B\leftarrow\C(t)}^T = \begin{pmatrix} -\sin t & \cos t \\ \cos t & \sin t \end{pmatrix}
+\]
+\vfill
+In the moving basis $\C(t)$, the coordinates of position and velocity are:
+\[
+[\bx(t)]_{\C(t)} = P_{\C(t)\leftarrow\B} \begin{pmatrix} \cos t \\ \sin t \end{pmatrix} = \begin{pmatrix} 0 \\ 1 \end{pmatrix}, \qquad
+[\bx'\!(t)]_{\C(t)} = P_{\C(t)\leftarrow\B} \begin{pmatrix} -\sin t \\ \cos t \end{pmatrix} = \begin{pmatrix} 1 \\ 0 \end{pmatrix}
+\]
+\vfill
+In the local frame, the particle is always at distance $1$ along the normal axis with velocity $1$ along the tangent
+\vfill
+\footnotesize\emph{Choosing the inward normal $-\bv_2(t)$ simply gives $[\bx(t)]_{\C(t)} = \begin{pmatrix} 0 \\ -1 \end{pmatrix}$}
+\end{frame}
+
 
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
@@ -443,7 +749,7 @@ $\IP(X\in S\subseteq E) = \IP(\omega\in\Omega|X(\omega)\in S)$
 R.v. can be discrete or continuous or .. other things. 
 \end{frame}
 
-\begin{frame}
+\begin{frame}{Variance}
 \begin{definition}[Variance]
 Let $X$ be a random variable. The \textbf{variance} of $X$ is given by
 \[
@@ -451,7 +757,9 @@ Let $X$ be a random variable. The \textbf{variance} of $X$ is given by
 \]
 where $E$ is the expected value
 \end{definition}
-\vfill
+\end{frame}
+
+\begin{frame}{Covariance}
 \begin{definition}[Covariance]
 Let $X,Y$ be jointly distributed random variables. The \textbf{covariance} of $X$ and $Y$ is given by
 \[
@@ -480,6 +788,59 @@ be the \textbf{mean} of the data. An unbiased estimator of the variance of the s
 \sigma^2 = \frac{1}{n-1}\sum_{i=1}^n (x_i-\bar x)^2
 \]
 \end{definition}
+\vfill
+\textbf{Unbiased}: the expected value of the estimator equals the true parameter value ($E(\bar x) = E(X)$ and $E(\sigma^2) = \Var X$): on average, it does not systematically overestimate or underestimate the parameter
+\end{frame}
+
+\begin{frame}[fragile]{Variance of hockey players' height and weight}
+We compute the sample variance in R using the function \code{var}:
+\vfill
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{var}\hldef{(data}\hlopt{$}\hldef{height)}
+\end{alltt}
+\begin{verbatim}
+## [1] 29.66176
+\end{verbatim}
+\begin{alltt}
+\hlkwd{var}\hldef{(data}\hlopt{$}\hldef{weight)}
+\end{alltt}
+\begin{verbatim}
+## [1] 47.81112
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\vfill
+The variance is about $29.7\text{ cm}^2$ for height and $47.8\text{ kg}^2$ for weight
+\end{frame}
+
+\begin{frame}[fragile]{Normalising does not change the variance}
+Centring (normalising) shifts data by a constant, leaving spread unchanged:
+\[
+\Var(X - c) = \Var X
+\]
+\vfill
+Indeed, computing the variance using the centred values:
+\vfill
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{var}\hldef{(data}\hlopt{$}\hldef{height.c)}
+\end{alltt}
+\begin{verbatim}
+## [1] 29.66176
+\end{verbatim}
+\begin{alltt}
+\hlkwd{var}\hldef{(data}\hlopt{$}\hldef{weight.c)}
+\end{alltt}
+\begin{verbatim}
+## [1] 47.81112
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\vfill
+The variance is identical to that of the uncentred data
 \end{frame}
 
 \begin{frame}
