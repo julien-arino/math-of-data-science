@@ -692,18 +692,32 @@ The variance is identical to that of the uncentred data
 \end{frame}
 
 \begin{frame}
-\begin{definition}[Unbiased estimator of the covariance]
+\begin{definition}[Unbiased estimator of the covariance - 2D case]
 Let $(x_1,y_1),\ldots,(x_n,y_n)$ be data points,
 \[
 \bar x = \frac 1n \sum_{i=1}^n x_i
 \textrm{ and }
 \bar y = \frac 1n \sum_{i=1}^n y_i
 \]
-be the means of the data. An estimator of the covariance of the sample is
+be the means of the data. An unbiased estimator of the covariance of the sample is
 \[
-\cov(x,y) = \frac{1}{n}\sum_{i=1}^n (x_i-\bar x)(y_i-\bar y)
+\cov(x,y) = \frac{1}{n-1}\sum_{i=1}^n (x_i-\bar x)(y_i-\bar y)
 \]
 \end{definition}
+\end{frame}
+
+\begin{frame}[fragile]{Computation of covariance in R -- ``By hand'' and with a function}
+We compute the means and sum directly from the definition:
+\vfill
+<<cov-hockey-by-hand>>=
+n = length(data$height)
+x_bar = sum(data$height) / n
+y_bar = sum(data$weight) / n
+sum((data$height - x_bar) * (data$weight - y_bar)) / (n - 1)
+cov(data$height, data$weight)
+@
+\vfill
+The covariance is about $26.6\text{ cm}\cdot\text{kg}$, matching R's built-in \code{cov}
 \end{frame}
 
 \begin{frame}{What does covariance do?}
@@ -742,25 +756,15 @@ i.e., using the properties of covariance,
 \end{definition}
 \end{frame}
 
-
-<<convert-Rnw-to-R-part1,warning=FALSE,message=FALSE,echo=FALSE,results='hide'>>=
-rmd_chunks_to_r_temp()
+\begin{frame}[fragile]{Covariance matrix of hockey players in R}
+When passed a data frame or matrix, \code{cov} computes the covariance matrix:
+\vfill
+<<cov-matrix-hockey>>=
+cov(data[, c("height", "weight")])
 @
-
-% Save counters for next file
-
-% Save theorem count for next file
-
-% Set up cross-references and counter persistence
-
-% Set up cross-references and counter persistence
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% TITLE AND OUTLINE
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+\vfill
+The diagonal entries are the variances ($\Var(\text{height})\approx 29.7$, $\Var(\text{weight})\approx 47.8$) and the off-diagonal entries are $\cov(\text{height}, \text{weight})\approx 26.6$
+\end{frame}
 
 
 %%%%%%%%%%%%%%%%%%%%%

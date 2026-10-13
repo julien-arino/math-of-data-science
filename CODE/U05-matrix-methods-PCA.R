@@ -98,8 +98,16 @@ var(data$height.c)
 var(data$weight.c)
 
 
-## ----convert-Rnw-to-R-part1,warning=FALSE,message=FALSE,echo=FALSE,results='hide'----
-rmd_chunks_to_r_temp()
+## ----cov-hockey-by-hand-------------------------------------------------------
+n = length(data$height)
+x_bar = sum(data$height) / n
+y_bar = sum(data$weight) / n
+sum((data$height - x_bar) * (data$weight - y_bar)) / (n - 1)
+cov(data$height, data$weight)
+
+
+## ----cov-matrix-hockey--------------------------------------------------------
+cov(data[, c("height", "weight")])
 
 
 ## ----load-hockey-data-2, echo=FALSE-------------------------------------------
