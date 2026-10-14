@@ -920,6 +920,18 @@ i.e., using the properties of covariance,
 \end{definition}
 \end{frame}
 
+\begin{frame}{Covariance matrix}
+$\Sigma$ the covariance matrix of the random variable, $S_X$ the sample covariance matrix
+\vfill
+$X\in\M_{mp}$ the data, then the (sample) covariance matrix $S_X$ takes the form
+\[
+S_X = \frac{1}{n-1}X^TX
+\]
+where the data is centred!
+\vfill
+Sometimes you will see $S_X=1/(n-1)XX^T$. This is for matrices with observations in columns and variables in rows. Just remember that you want the covariance matrix to have size the number of variables, not observations, this will give you the order in which to take the product
+\end{frame}
+
 \begin{frame}[fragile]{Covariance matrix of hockey players in R}
 When passed a data frame or matrix, \code{cov} computes the covariance matrix:
 \vfill
@@ -1247,18 +1259,6 @@ where $\bv_i$ eigenvector of $S_X$ associated to the $i$th largest eigenvalue $\
 If $\bv_i$ is normalised, then $\lambda_i=\Var z_k$
 \end{frame}
 
-
-\begin{frame}{Covariance matrix}
-$\Sigma$ the covariance matrix of the random variable, $S_X$ the sample covariance matrix
-\vfill
-$X\in\M_{mp}$ the data, then the (sample) covariance matrix $S_X$ takes the form
-\[
-S_X = \frac{1}{n-1}X^TX
-\]
-where the data is centred!
-\vfill
-Sometimes you will see $S_X=1/(n-1)XX^T$. This is for matrices with observations in columns and variables in rows. Just remember that you want the covariance matrix to have size the number of variables, not observations, this will give you the order in which to take the product
-\end{frame}
 
 
 

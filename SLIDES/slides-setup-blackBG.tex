@@ -37,9 +37,17 @@
 \setbeamercolor{block title}{use=structure,fg=structure.fg,bg=structure.fg!05!bg}
 \setbeamercolor{block body}{parent=normal text,use=block title,bg=block title.bg!20!bg}
 
-\BeforeBeginEnvironment{definition}{%
+\BeforeBeginEnvironment{importantdefinition}{%
 	\setbeamercolor{block title}{fg=black,bg=yellow!20!white}
 	\setbeamercolor{block body}{fg=black, bg=yellow!05!white}
+}
+\AfterEndEnvironment{importantdefinition}{
+	\setbeamercolor{block title}{use=structure,fg=structure.fg,bg=structure.fg!20!bg}
+	\setbeamercolor{block body}{parent=normal text,use=block title,bg=block title.bg!50!bg, fg=black}
+}
+\BeforeBeginEnvironment{definition}{%
+	\setbeamercolor{block title}{fg=black,bg=black!15!white}
+	\setbeamercolor{block body}{fg=black, bg=black!05!white}
 }
 \AfterEndEnvironment{definition}{
 	\setbeamercolor{block title}{use=structure,fg=structure.fg,bg=structure.fg!20!bg}

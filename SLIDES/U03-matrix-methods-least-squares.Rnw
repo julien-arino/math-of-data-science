@@ -665,14 +665,14 @@ plot(GA)
 \SSsubsection{The least squares problem}
 
 \begin{frame}{The least squares problem (simplest version)}
-	\begin{definition}
+	\begin{importantdefinition}
 		Given a collection of points $(x_1,y_1),\ldots,(x_n,y_n)$, find the coefficients $a,b$ of the line $y=a+bx$ such that
 		$$
 		\|\mathbf{e}\|=\sqrt{\varepsilon_1^2+\cdots+\varepsilon_n^2}
 		=\sqrt{(y_1-\tilde y_1)^2+\cdots+(y_n-\tilde y_n)^2}
 		$$
 		is minimal, where $\tilde y_i=a+bx_i$ for $i=1,\ldots,n$
-	\end{definition}
+	\end{importantdefinition}
 	\vfill
 	We just saw how to solve this by brute force using a genetic algorith to minimise $\|e\|$, let us now see how to solve this problem ``properly''
 \end{frame}
@@ -711,12 +711,12 @@ plot(GA)
 \end{frame}
 
 \begin{frame}{The least squares problem (reformulated)}
-\begin{definition}[Least squares solutions]
+\begin{importantdefinition}[Least squares solutions]
 Consider a collection of points $(x_1,y_1),\ldots,(x_n,y_n)$, a matrix $A\in\M_{mn}$, $\bb\in\IR^m$. A \textbf{least squares solution} of $A\bx=\bb$ is a vector $\tilde \bx\in\IR^n$ s.t.
 \[
 \forall \bx\in\IR^n,\quad \|\bb-A\tilde\bx\|\leq \|\bb-A\bx\|
 \]
-\end{definition}
+\end{importantdefinition}
 \end{frame}
 
 

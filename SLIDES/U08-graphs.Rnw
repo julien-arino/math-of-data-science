@@ -1742,9 +1742,9 @@ Elements of $L$ are given by
 		A matrix $A\in\M_n$ is \defword{reducible} if $\exists P\in\M_n$, permutation matrix, s.t. $P^TAP$ can be written in block triangular form. If no such $P$ exists, $A$ is \defword{irreducible}
 	\end{definition}
 	\vfill
-	\begin{theorem}
+	\begin{importanttheorem}
 		$A$ irreducible $\iff$ $G(A)$ strongly connected
-	\end{theorem}
+	\end{importanttheorem}
 \end{frame}
 
 \begin{frame}
