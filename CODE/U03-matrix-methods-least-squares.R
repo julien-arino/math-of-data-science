@@ -65,7 +65,8 @@ plot(data_old$Year, data_old$Canada,
 
 
 ## ----load-newer-census-data---------------------------------------------------
-data_new = read.csv("https://www12.statcan.gc.ca/census-recensement/2011/dp-pd/vc-rv/download-telecharger/download-telecharger.cfm?Lang=eng&CTLG=98-315-XWE2011001&FMT=csv")
+data_new = read.csv("../DATA/98-315-XWE2011001-001.csv",
+                    fileEncoding = "latin1")
 
 
 ## -----------------------------------------------------------------------------

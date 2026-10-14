@@ -181,11 +181,12 @@ plot(data_old$Year, data_old$Canada,
 \begin{frame}[fragile]
 But wait, this is only to 1976..! 
 \vfill
-Looking around, we find another table here
+Looking around, we find another table \href{https://www12.statcan.gc.ca/census-recensement/2011/dp-pd/vc-rv/index.cfm?LANG=ENG&VIEW=D&TOPIC_ID=1&GEOCODE=01&CFORMAT=html}{here} with a download csv link (\href{https://www12.statcan.gc.ca/census-recensement/2011/dp-pd/vc-rv/download-telecharger/download-telecharger.cfm?Lang=eng&CTLG=98-315-XWE2011001&FMT=csv}{this one})
 \vfill
-There's a download csv link in there, let us see where this leads us
+StatCan has added Cloudflare bot protection, so automated downloads from R fail. We download it via browser and save to \code{DATA/98-315-XWE2011001-001.csv}
 <<load-newer-census-data>>=
-data_new = read.csv("https://www12.statcan.gc.ca/census-recensement/2011/dp-pd/vc-rv/download-telecharger/download-telecharger.cfm?Lang=eng&CTLG=98-315-XWE2011001&FMT=csv")
+data_new = read.csv("../DATA/98-315-XWE2011001-001.csv",
+                    fileEncoding = "latin1")
 @
 The table is 720KB, so surely there must be more to this than just the population
 \vfill

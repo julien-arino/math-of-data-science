@@ -347,13 +347,14 @@ Well, that looks about right! Let's see what this looks like in a graph
 \begin{frame}[fragile]
 But wait, this is only to 1976..! 
 \vfill
-Looking around, we find another table here
+Looking around, we find another table \href{https://www12.statcan.gc.ca/census-recensement/2011/dp-pd/vc-rv/index.cfm?LANG=ENG&VIEW=D&TOPIC_ID=1&GEOCODE=01&CFORMAT=html}{here} with a download csv link (\href{https://www12.statcan.gc.ca/census-recensement/2011/dp-pd/vc-rv/download-telecharger/download-telecharger.cfm?Lang=eng&CTLG=98-315-XWE2011001&FMT=csv}{this one})
 \vfill
-There's a download csv link in there, let us see where this leads us
+StatCan has added Cloudflare bot protection, so automated downloads from R fail. We download it via browser and save to \code{DATA/98-315-XWE2011001-001.csv}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hldef{data_new} \hlkwb{=} \hlkwd{read.csv}\hldef{(}\hlsng{"https://www12.statcan.gc.ca/census-recensement/2011/dp-pd/vc-rv/download-telecharger/download-telecharger.cfm?Lang=eng&CTLG=98-315-XWE2011001&FMT=csv"}\hldef{)}
+\hldef{data_new} \hlkwb{=} \hlkwd{read.csv}\hldef{(}\hlsng{"../DATA/98-315-XWE2011001-001.csv"}\hldef{,}
+                    \hlkwc{fileEncoding} \hldef{=} \hlsng{"latin1"}\hldef{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -369,18 +370,18 @@ To get a sense of that, we dump a few random rows
 \hldef{data_new[}\hlkwd{sort}\hldef{(}\hlkwd{unique}\hldef{(}\hlkwd{c}\hldef{(}\hlnum{1}\hldef{,}\hlkwd{sample}\hldef{(}\hlkwd{nrow}\hldef{(data_new),} \hlnum{4}\hldef{)))), ]}
 \end{alltt}
 \begin{verbatim}
-##         GEOGRAPHY.NAME                              CHARACTERISTIC YEAR.S.
-## 1               Canada                   Population (in thousands)    1956
-## 712         St. John's Population by single years of age: 79 years    2011
-## 3138 Trois-Rivi\xe8res       Non-official mother tongue: Atikamekw    2011
-## 5199         Brantford Population by single years of age: 94 years    2011
-## 9306             Yukon         % of five-or-more-person households    2006
-##        TOTAL FLAG_TOTAL
-## 1    16081.0           
-## 712    740.0           
-## 3138    90.0           
-## 5199    75.0           
-## 9306    16.2
+##      GEOGRAPHY.NAME                         CHARACTERISTIC YEAR.S.   TOTAL
+## 1            Canada              Population (in thousands)    1956 16081.0
+## 12           Canada              Population (in thousands)    2011 33477.0
+## 1981     Saint John % of the population aged 0 to 14 years    2011    16.4
+## 6778       Winnipeg             % of two-person households    2006    32.1
+## 7235         Regina           % of three-person households    2001    15.6
+##      FLAG_TOTAL
+## 1              
+## 12             
+## 1981           
+## 6778           
+## 7235
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -898,7 +899,7 @@ Access slots using @. For instance, the GA finds the coefficients
 \end{alltt}
 \begin{verbatim}
 ##            x1        x2
-## [1,] 3.000718 0.4996703
+## [1,] 3.001388 0.4992915
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -939,14 +940,14 @@ with fitness value (i.e., $\|\be\|$)
 \SSsubsection{The least squares problem}
 
 \begin{frame}{The least squares problem (simplest version)}
-	\begin{definition}
+	\begin{importantdefinition}
 		Given a collection of points $(x_1,y_1),\ldots,(x_n,y_n)$, find the coefficients $a,b$ of the line $y=a+bx$ such that
 		$$
 		\|\mathbf{e}\|=\sqrt{\varepsilon_1^2+\cdots+\varepsilon_n^2}
 		=\sqrt{(y_1-\tilde y_1)^2+\cdots+(y_n-\tilde y_n)^2}
 		$$
 		is minimal, where $\tilde y_i=a+bx_i$ for $i=1,\ldots,n$
-	\end{definition}
+	\end{importantdefinition}
 	\vfill
 	We just saw how to solve this by brute force using a genetic algorith to minimise $\|e\|$, let us now see how to solve this problem ``properly''
 \end{frame}
@@ -985,12 +986,12 @@ with fitness value (i.e., $\|\be\|$)
 \end{frame}
 
 \begin{frame}{The least squares problem (reformulated)}
-\begin{definition}[Least squares solutions]
+\begin{importantdefinition}[Least squares solutions]
 Consider a collection of points $(x_1,y_1),\ldots,(x_n,y_n)$, a matrix $A\in\M_{mn}$, $\bb\in\IR^m$. A \textbf{least squares solution} of $A\bx=\bb$ is a vector $\tilde \bx\in\IR^n$ s.t.
 \[
 \forall \bx\in\IR^n,\quad \|\bb-A\tilde\bx\|\leq \|\bb-A\bx\|
 \]
-\end{definition}
+\end{importantdefinition}
 \end{frame}
 
 

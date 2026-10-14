@@ -137,21 +137,21 @@ Not used here but worth noting: we say $S$ is a \textbf{proper subset} of $X$ an
 \frametitle{Intersection and union of sets}
 	Let $X$ and $Y$ be two sets
 	\vfill
-	\begin{definition}[Intersection]
+	\begin{importantdefinition}[Intersection]
 		The intersection of $X$ and $Y$, $X\cap Y$, is the set of elements that belong
 		to $X$ \textbf{and} to $Y$,
 		\[
 		X\cap Y=\{x:x\in X\textbf{ and } x\in Y\}
 		\]
-	\end{definition}
+	\end{importantdefinition}
 	\vfill
-	\begin{definition}[Union]
+	\begin{importantdefinition}[Union]
 		The union of $X$ and $Y$, $X\cup Y$, is the set of elements that belong
 		to $X$ \textbf{or} to $Y$,
 		\[
 		X\cup Y=\{x:x\in X\textbf{ or } x\in Y\}
 		\]
-	\end{definition}
+	\end{importantdefinition}
 In mathematics, or=and/or in common parlance. We also have an \textbf{exclusive or} (xor)
 \end{frame}
 
@@ -235,14 +235,14 @@ In mathematics, or=and/or in common parlance. We also have an \textbf{exclusive 
 \newSectionSlide{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
 
 \begin{frame}{Complex numbers}
-	\begin{definition}[Complex numbers]
+	\begin{importantdefinition}[Complex numbers]
 		A \textbf{complex number} is an ordered pair $(a,b)$, where $a,b\in\IR$. Usually written $a+ib$ or $a+bi$, where $i^2=-1$ (i.e., $i=\sqrt{-1}$)
 		\vfill
 		The set of all complex numbers is denoted $\IC$, 
 		\[
 		\IC=\{a+ib: a,b\in\IR\}
 		\]
-	\end{definition}
+	\end{importantdefinition}
 \end{frame}
 
 \begin{frame}
@@ -300,13 +300,13 @@ In mathematics, or=and/or in common parlance. We also have an \textbf{exclusive 
 
 
 \begin{frame}
-	\begin{definition}[Real and imaginary parts]
+	\begin{importantdefinition}[Real and imaginary parts]
 		Let $z=a+ib$. Then $\Re z=a$ is \textbf{real part} and $\Im z=b$ is \textbf{imaginary part} of $z$
-	\end{definition}
+	\end{importantdefinition}
 	\vfill
 	If ambiguous, write $\Re(z)$ and $\Im(z)$
 	\vfill
-	\begin{definition}[Conjugate and Modulus]
+	\begin{importantdefinition}[Conjugate and Modulus]
 		Let $z=a+ib\in\IC$. Then
 		\begin{itemize}
 			\item \textbf{Complex conjugate} of $z$ is
@@ -318,7 +318,7 @@ In mathematics, or=and/or in common parlance. We also have an \textbf{exclusive 
 			|z|=\sqrt{a^2+b^2} \geq 0
 			\]
 		\end{itemize}
-	\end{definition}
+	\end{importantdefinition}
 \end{frame}
 
 \begin{frame}{Properties of complex numbers}
@@ -507,8 +507,23 @@ $\begin{pmatrix}
 \end{frame}
 
 \begin{frame}
+\frametitle{Subspaces}
+	\begin{definition}[Subspace]
+		Let $V$ be a vector space over $\IF$. A non-empty subset $W$ of $V$ is a \defword{subspace} of $V$ if $W$ is itself a vector space under the same operations of addition and scalar multiplication
+	\end{definition}
+	\vfill
+	\begin{importantdefinition}[Subspace -- Practical definition]
+		Let $V$ be a vector space over $\IF$. A non-empty subset $W$ of $V$ is a subspace if
+		\begin{enumerate}
+			\item for all $\bu, \bv \in W$, $\bu + \bv \in W$ ($W$ is closed under vector addition)
+			\item for all $\alpha \in \IF$ and $\bv \in W$, $\alpha\bv \in W$ ($W$ is closed under scalar multiplication)
+		\end{enumerate}
+	\end{importantdefinition}
+\end{frame}
+
+\begin{frame}
 \frametitle{Norms}
-	\begin{definition}[Norm]
+	\begin{importantdefinition}[Norm]
 		Let $V$ be a vector space over $\IF$, and $\bv\in V$ be a vector. The
 		\textbf{norm} of $\bv$, denoted $\|\bv\|$, is a function from $V$ to $\IR_+$ that has the
 		following properties:
@@ -517,7 +532,7 @@ $\begin{pmatrix}
 			\item For all $\alpha\in\IF$ and all $\bv\in V$, $\|\alpha \bv\|=|\alpha|\ \|\bv\|$
 			\item For all $\bu,\bv\in V$, $\|\bu+\bv\|\leq\|\bu\|+\|\bv\|$
 		\end{enumerate}
-	\end{definition}
+	\end{importantdefinition}
 \end{frame}
 
 \begin{frame}
@@ -558,20 +573,20 @@ $\begin{pmatrix}
 
 \begin{frame}
 \frametitle{Dot product}
-	\begin{definition}[Dot product]
+	\begin{importantdefinition}[Dot product]
 		Let $\ba=(a_1,\ldots,a_n)\in \IR^n$, $\bb=(b_1,\ldots,b_n)\in\IR^n$. 
 		The \defword{dot product} of $\ba$ and $\bb$ is the \textbf{scalar}
 		\[
 		\ba\bullet \bb=\sum_{i=1}^n a_ib_i=a_1b_1+\cdots+a_nb_n
 		\]
-	\end{definition}
+	\end{importantdefinition}
 \vfill
 The dot product is a special case of \defword{inner product}
 \end{frame}
 
 \begin{frame}
 \frametitle{Properties of the dot product}
-	\begin{theorem}
+	\begin{importanttheorem}
 		For $\ba,\bb,\bc\in \IR^n$ and $\alpha\in\IR$,
 		\begin{itemize}
 			\item $\ba\bullet\ba=\|\ba\|^2$ \hfill (so $\ba\bullet \ba\geq 0$, with $\ba\bullet \ba=0$ iff $\ba=\b0$)
@@ -580,7 +595,7 @@ The dot product is a special case of \defword{inner product}
 			\item $(\alpha \ba)\bullet \bb=\alpha(\ba\bullet \bb)=\ba\bullet(\alpha \bb)$
 			\item $\b0\bullet \ba=0$
 		\end{itemize}
-	\end{theorem}
+	\end{importanttheorem}
 \end{frame}
 
 \begin{frame}
@@ -605,23 +620,26 @@ The dot product is a special case of \defword{inner product}
 
 \begin{frame}
 \frametitle{Scalar and vector projections}
-	Scalar projection of $\bv$ onto $\ba$ (or component of $\bv$ along $\ba$):
-	\[
-  	\mathsf{comp}_{\ba}\bv=
-  	\frac{\ba\bullet\bv}{\|\ba\|}
-	\]
-	\begin{minipage}{0.59\textwidth}
-		Vector (or orthogonal) projection of $\bv$ onto $\ba$:
+	\begin{minipage}{0.62\textwidth}
+		\begin{importantdefinition}
+		Let $\ba,\bv$ be vectors.
+		The \defword{scalar projection} of $\bv$ onto $\ba$ (or \defword{component} of $\bv$ along $\ba$) is
+		\[
+		\mathsf{comp}_{\ba}\bv=
+		\frac{\ba\bullet\bv}{\|\ba\|}
+		\]
+		The \defword{vector projection} (or \defword{orthogonal projection}) of $\bv$ onto $\ba$ is
 		\[
 		\mathsf{proj}_{\ba}\bv=
-		  \left(
-		    \frac{\ba\bullet\bv}{\|\ba\|}
-		  \right)
-		  \frac{\ba}{\|\ba\|}
-		  =\frac{\ba\bullet\bv}{\|\ba\|^2}\ba
+		\left(
+		\frac{\ba\bullet\bv}{\|\ba\|}
+		\right)
+		\frac{\ba}{\|\ba\|}
+		=\frac{\ba\bullet\bv}{\|\ba\|^2}\ba
 		\]
+		\end{importantdefinition}
 	\end{minipage}
-	\begin{minipage}{0.39\textwidth}
+	\begin{minipage}{0.36\textwidth}
 		\begin{center}
 			\includegraphics[width=1.1\textwidth]{FIGS/proj_v_onto_a}
 		\end{center}
@@ -737,7 +755,7 @@ If $\bb=\b0$, the system is \defword{homogeneous} and always has the solution $\
 \SSsubsection{Matrix arithmetic}
 
 \begin{frame}
-	\begin{definition}[Matrix]
+	\begin{importantdefinition}[Matrix]
 		An $m$-by-$n$ or $m\times n$ matrix is a rectangular array of elements of $\IR$ or $\IC$ with $m$ rows and $n$ columns,
 		\[
 		A=[a_{ij}]=
@@ -747,7 +765,7 @@ If $\bb=\b0$, the system is \defword{homogeneous} and always has the solution $\
 		a_{m1} & \cdots & a_{mn}
 		\end{pmatrix}
 		\]
-	\end{definition}
+	\end{importantdefinition}
 	\vfill
 	We always list indices as ``row,column''
 	\vfill
@@ -790,14 +808,14 @@ Recall that the matrix product is not commutative, i.e., in general, $AB\neq BA$
 \end{frame}
 
 \begin{frame}{Special matrices}
-\begin{definition}[Zero and identity matrices]
+\begin{importantdefinition}[Zero and identity matrices]
 The \textbf{zero} matrix is the matrix $0_{mn}$ whose entries are all zero.
 The \textbf{identity} matrix is a square $n\times n$ matrix $\II_n$ with all entries on the main diagonal equal to one and all off diagonal entries equal to zero
-\end{definition}
+\end{importantdefinition}
 \vfill
-\begin{definition}[Symmetric matrix]
+\begin{importantdefinition}[Symmetric matrix]
 A square matrix $A\in\M_n$ is \textbf{symmetric} if $\forall i,j=1,\ldots,n$, $a_{ij}=a_{ji}$. In other words, $A\in\M_n$ is symmetric if $A=A^T$
-\end{definition}
+\end{importantdefinition}
 \end{frame}
 
 
@@ -846,9 +864,9 @@ a_{11} & a_{12} \\ a_{21} & a_{22}
 \end{frame}
 
 \begin{frame}{Two special matrices and their determinants}
-\begin{definition}
+\begin{importantdefinition}
 $A\in\M_n$ is \textbf{upper triangular} if $a_{ij}=0$ when $i>j$, \textbf{lower triangular} if $a_{ij}=0$ when $j>i$, \textbf{triangular} if it is \emph{either} upper or lower triangular and \textbf{diagonal} if it is \emph{both} upper and lower triangular
-\end{definition}
+\end{importantdefinition}
 When $A$ diagonal, we often write $A=\diag(a_{11},a_{22},\ldots,a_{nn})$
 \begin{importanttheorem}
 Let $A\in\M_n$ be triangular or diagonal. Then
@@ -859,20 +877,32 @@ Let $A\in\M_n$ be triangular or diagonal. Then
 \end{frame}
 
 \begin{frame}{Inversion/Singularity}
-\begin{definition}[Matrix inverse]
+\begin{importantdefinition}[Matrix inverse]
 $A\in\M_n$ is \textbf{invertible} (or \textbf{nonsingular}) if $\exists A^{-1}\in\M_n$ s.t.
 \[
 AA^{-1}=A^{-1}A=\II
 \]
 $A^{-1}$ is the \textbf{inverse} of $A$. If $A^{-1}$ does not exist, $A$ is \textbf{singular}
-\end{definition}
-\begin{importanttheorem}
-Let $A\in\M_n$, $\bx,\bb\in\IF^n$. Then
-\begin{itemize}
-	\item $A$ invertible $\iff$ $\det(A)\neq 0$
-	\item If $A$ invertible, $A^{-1}$ is unique
-	\item If $A$ invertible, then $A\bx=\bb$ has the unique solution $\bx=A^{-1}\bb$
-\end{itemize}
+\end{importantdefinition}
+\vfill
+If $A$ is invertible, its inverse $A^{-1}$ is unique
+\end{frame}
+
+\begin{frame}{Linear algebra in a nutshell}
+\begin{importanttheorem}\label{th:app_linalg_nutshell}
+Let $A\in\M_n$. The following statements are equivalent (TFAE):
+\begin{enumerate}
+	\item The matrix $A$ is invertible (or nonsingular)
+	\item $\forall\bb\in\IF^n$, $A\bx = \bb$ has a unique solution ($\bx=A^{-1}\bb$)
+	\item The only solution to $A\bx = \b0$ is the trivial solution $\bx = \b0$
+	\item $RREF(A)=\II_n$
+	\item The matrix $A$ is equal to a product of elementary matrices
+	\item $\forall\bb\in\IF^n$, $A\bx = \bb$ has a solution
+	\item There is a matrix $B\in\M_n$ such that $AB = \II_n$
+	\item There is an invertible matrix $B\in\M_n$ such that $AB = \II_n$
+	\item $\det(A)\neq 0$
+	\item $0$ is not an eigenvalue of $A$
+\end{enumerate}
 \end{importanttheorem}
 \end{frame}
 
@@ -894,13 +924,13 @@ With addition, subtraction, scalar multiplication, multiplication, transposition
 \SSsubsection{Eigenpairs}
 
 \begin{frame}{Eigenvalues / Eigenvectors / Eigenpairs}
-\begin{definition}
+\begin{importantdefinition}
 Let $A\in\M_n$. A vector $\bx\in\IF^n$ such that $\bx\neq\b0$ is an \textbf{eigenvector} of $A$ if $\exists\lambda\in\IF$ called an \textbf{eigenvalue}, s.t.
 \[
 A\bx=\lambda \bx
 \]
 A couple $(\lambda,\bx)$ with $\bx\neq\b0$ s.t. $A\bx=\lambda\bx$ is an \textbf{eigenpair}
-\end{definition}
+\end{importantdefinition}
 \end{frame}
 
 \begin{frame}[red]{Parallel eigenvectors}
@@ -928,12 +958,12 @@ So finally, moving $c$ again, $A(c\bx)=\lambda(c\bx)$, i.e., $c\bx$ is an eigenv
 \SSsubsection{Similarity and diagonalisation}
 
 \begin{frame}{Similarity}
-\begin{definition}[Similarity]
+\begin{importantdefinition}[Similarity]
 $A,B\in\M_n$ are \defword{similar} ($A\sim B$) if $\exists P\in\M_n$ invertible s.t.
 \[
 P^{-1}AP=B
 \]
-\end{definition}
+\end{importantdefinition}
 \vfill
 \begin{theorem}[$\sim$ is an equivalence relation]
 $A,B,C\in\M_n$, then
@@ -946,21 +976,21 @@ $A,B,C\in\M_n$, then
 \end{frame}
 
 \begin{frame}{Similarity (cont.)}
-\begin{theorem}
+\begin{importanttheorem}
 $A,B\in\M_n$ with $A\sim B$. Then
 \begin{itemize}
 	\item $\det\ A=\det\ B$
 	\item $A$ invertible $\iff$ $B$ invertible
 	\item $A$ and $B$ have the same eigenvalues
 \end{itemize}
-\end{theorem}
+\end{importanttheorem}
 \end{frame}
 
 
 \begin{frame}{Diagonalisation}
-\begin{definition}[Diagonalisability]
+\begin{importantdefinition}[Diagonalisability]
 $A\in\M_n$ is \defword{diagonalisable} if $\exists D\in\M_n$ diagonal s.t. $A\sim D$
-\end{definition}
+\end{importantdefinition}
 \vfill
 In other words, $A\in\M_n$ is diagonalisable if there exists a diagonal matrix $D\in\M_n$ and a nonsingular matrix $P\in\M_n$ s.t. $P^{-1}AP=D$
 \vfill
@@ -986,16 +1016,16 @@ For $P^{-1}AP=D$: in $P$, put the linearly independent eigenvectors as columns a
 \SSsubsection{Linear independence/Bases/Dimension}
 
 \begin{frame}{Linear combination and span}
-	\begin{definition}[Linear combination]
+	\begin{importantdefinition}[Linear combination]
 		Let $V$ be a vector space.
 		A \defword{linear combination} of a set $\{\bv_1,\ldots,\bv_k\}$ of vectors in $V$ is a \emph{vector}
 		\[
 		c_1\bv_1+\cdots+c_k\bv_k
 		\]
 		where $c_1,\ldots,c_k\in\IF$
-	\end{definition}
+	\end{importantdefinition}
 	\vfill
-	\begin{definition}[Span]
+	\begin{importantdefinition}[Span]
 		The set of all linear combinations of a set of vectors $\bv_1,\ldots,\bv_k$ is the \defword{span} of $\{\bv_1,\ldots,\bv_k\}$,
 		\[
 		\Span(\bv_1,\ldots,\bv_k)=
@@ -1003,7 +1033,7 @@ For $P^{-1}AP=D$: in $P$, put the linearly independent eigenvectors as columns a
 		c_1\bv_1+\cdots+c_k\bv_k:c_1,\ldots,c_k\in\IF
 		\right\}
 		\]
-	\end{definition}
+	\end{importantdefinition}
 \end{frame}
 
 
@@ -1024,7 +1054,7 @@ For $P^{-1}AP=D$: in $P$, put the linearly independent eigenvectors as columns a
 
 
 \begin{frame}{Linear (in)dependence}
-	\begin{definition}[Linear independence/Linear dependence]
+	\begin{importantdefinition}[Linear independence/Linear dependence]
 		A set $\{\bv_1,\ldots,\bv_k\}$ of vectors in a vector space $V$ is \defword{linearly independent} if
 		\[
 		\left(c_1\bv_1+\cdots+c_k\bv_k=0\right)
@@ -1033,7 +1063,7 @@ For $P^{-1}AP=D$: in $P$, put the linearly independent eigenvectors as columns a
 		\]
 		where $c_1,\ldots,c_k\in\IF$. 
 		A set of vectors is \defword{linearly dependent} if it is not linearly independent.
-	\end{definition}
+	\end{importantdefinition}
 	\vfill
 	If linearly dependent, assume w.l.o.g. that $c_1\neq 0$, then
 	\[
@@ -1053,9 +1083,9 @@ E.g., in $\IR^3$, a set with 4 or more vectors is automatically linearly depende
 
 
 \begin{frame}{Basis}
-	\begin{definition}[Basis]
+	\begin{importantdefinition}[Basis]
 		Let $V$ be a vector space. A \defword{basis} of $V$ is a set of vectors in $V$ that is both linearly independent and spanning
-	\end{definition}
+	\end{importantdefinition}
 	\vfill
 	\begin{theorem}[Criterion for a basis]
 		A set $\{\bv_1,\ldots,\bv_k\}$ of vectors in a vector space $V$ is a basis of $V$ $\iff$ $\forall \bv\in V$, $\bv$ can be written uniquely in the form
@@ -1075,9 +1105,9 @@ E.g., in $\IR^3$, a set with 4 or more vectors is automatically linearly depende
 		Any two bases of a finite-dimensional vector space have the same number of vectors
 	\end{importanttheorem}
 	\vfill
-	\begin{definition}[Dimension]
+	\begin{importantdefinition}[Dimension]
 		The \defword{dimension} $\dim V$ of a finite-dimensional vector space $V$ is the number of vectors in any basis of the vector space
-	\end{definition}
+	\end{importantdefinition}
 	\vfill
 	\begin{theorem}[Dimension of a subspace]
 		Let $V$ be a finite-dimensional vector space and $U\subset V$ be a subspace of $V$. Then $\dim U\leq \dim V$
@@ -1137,7 +1167,9 @@ Multivariable calculus extends this to functions of two or more variables, like 
 \begin{frame}{Partial derivatives}
   How do we measure the ``slope'' on a 3D surface?
   \vfill
-  A \defword{partial derivative} measures the slope in a direction parallel to one of the axes
+  \begin{importantdefinition}[Partial derivative]
+  Let $f:\IR^n \to \IR$ be a function of variables $x_1, \dots, x_n$. The \defword{partial derivative} of $f$ with respect to $x_i$, denoted $\dfrac{\partial f}{\partial x_i}$, is the derivative of $f$ with respect to $x_i$ while treating all other variables as constants
+  \end{importantdefinition}
   \vfill
   \begin{itemize}
     \item $\dfrac{\partial f}{\partial x}$ measures height change as we move only in the $x$ direction. Treat $y$ as a constant
@@ -1156,8 +1188,13 @@ Multivariable calculus extends this to functions of two or more variables, like 
 \end{frame}
 
 \begin{frame}{The Steepest path: the gradient}
-  The \defword{gradient}, denoted $\nabla f$, is a vector that combines all the partial derivatives:
-  $$ \nabla f(x, y) = \left( \frac{\partial f}{\partial x}, \frac{\partial f}{\partial y} \right) $$
+  \begin{importantdefinition}[Gradient]
+  The \defword{gradient} of a differentiable function $f:\IR^n \to \IR$, denoted $\nabla f$, is the vector-valued function composed of all its first-order partial derivatives:
+  \[
+  \nabla f(x_1, \dots, x_n) = \left( \frac{\partial f}{\partial x_1}, \dots, \frac{\partial f}{\partial x_n} \right)
+  \]
+  \end{importantdefinition}
+  \vfill
   What does it tell us?
   \begin{itemize}
     \item \textbf{Direction:} it points in the direction of the \textit{steepest ascent}

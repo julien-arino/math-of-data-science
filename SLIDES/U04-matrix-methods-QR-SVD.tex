@@ -98,12 +98,12 @@
 \SSsubsection{Orthogonality and projections}
 
 \begin{frame}
-\begin{definition}[Orthogonal set of vectors]
+\begin{importantdefinition}[Orthogonal set of vectors]
 The set of vectors $\{\bv_1,\ldots,\bv_k\}\in\IR^n$ is an \textbf{orthogonal set} if
 \[
 \forall i,j=1,\ldots,k,\quad i\neq j \implies \bv_i\bullet\bv_j=0
 \]
-\end{definition}
+\end{importantdefinition}
 \vfill
 \begin{theorem}\label{th:ortho_implies_LI}
 $\{\bv_1,\ldots,\bv_k\}\in\IR^n$ with $\forall i$, $\bv_i\neq\b0$, orthogonal set $\implies$ $\{\bv_1,\ldots,\bv_k\}\in\IR^n$ linearly independent
@@ -175,15 +175,15 @@ c_1\\c_2\\c_3
 \end{frame}
 
 \begin{frame}{Orthonormal version of things}
-\begin{definition}[Orthonormal set]
+\begin{importantdefinition}[Orthonormal set]
 The set of vectors $\{\bv_1,\ldots,\bv_k\}\in\IR^n$ is an \textbf{orthonormal set} if it is an orthogonal set and furthermore
 \[
 \forall i=1,\ldots,k,\quad \|\bv_i\|=1
 \]
-\end{definition}
-\begin{definition}[Orthonormal basis]
+\end{importantdefinition}
+\begin{importantdefinition}[Orthonormal basis]
 A basis of the subspace $W\subset\IR^n$ is an \textbf{orthonormal basis} if the vectors composing it are an orthonormal set
-\end{definition}
+\end{importantdefinition}
 \vfill
 $\{\bv_1,\ldots,\bv_k\}\in\IR^n$ is orthonormal if
 \[
@@ -207,7 +207,7 @@ To do this, we use the \emph{Gram-Schmidt orthogonalisation process}, which turn
 \end{frame}
 
 \begin{frame}{Projections}
-\begin{definition}[Orthogonal projection onto a subspace]
+\begin{importantdefinition}[Orthogonal projection onto a subspace]
 $W\subset\IR^n$ a subspace and $\{\bu_1,\ldots,\bu_k\}$ an orthogonal basis of $W$. $\forall\bv\in\IR^n$, the \textbf{orthogonal projection} of $\bv$ \textbf{onto} $W$ is
 \[
 \mathsf{proj}_W(\bv) =
@@ -215,14 +215,14 @@ $W\subset\IR^n$ a subspace and $\{\bu_1,\ldots,\bu_k\}$ an orthogonal basis of $
 +\cdots+
 \frac{\bu_k\bullet\bv}{\|\bu_k\|^2}\bu_k
 \]  
-\end{definition}
+\end{importantdefinition}
 \vfill
-\begin{definition}[Component orthogonal to a subspace]
+\begin{importantdefinition}[Component orthogonal to a subspace]
 $W\subset\IR^n$ a subspace and $\{\bu_1,\ldots,\bu_k\}$ an orthogonal basis of $W$. $\forall\bv\in\IR^n$, the \textbf{component} of  $\bv$ \textbf{orthogonal to} W is
 \[
 \mathsf{perp}_W(\bv)=\bv-\mathsf{proj}_W(\bv)
 \]
-\end{definition}	
+\end{importantdefinition}	
 \end{frame}
 
 \begin{frame}
@@ -283,16 +283,16 @@ Then $\forall i=1,\ldots,k$, $\{\tilde{\bv}_1,\ldots,\tilde{\bv}_i\}$ is an orth
 \SSsubsection{Orthogonal matrices}
 
 \begin{frame}
-\begin{theorem}
+\begin{importanttheorem}
 Let $Q\in\M_{mn}$. The columns of $Q$ form an orthonormal set if and only if
 \[
 Q^TQ=\II_n
 \]
-\end{theorem}
+\end{importanttheorem}
 \vfill
-\begin{definition}[Orthogonal matrix]
+\begin{importantdefinition}[Orthogonal matrix]
 $Q\in\M_n$ is an \textbf{orthogonal matrix} if its columns form an orthonormal set 
-\end{definition}
+\end{importantdefinition}
 So $Q\in\M_n$ orthogonal if $Q^TQ=\II$, i.e., $Q^T=Q^{-1}$
 \vfill
 \begin{importanttheorem}[NSC for orthogonality]
@@ -302,7 +302,7 @@ $Q\in\M_n$ orthogonal $\iff$ $Q^{-1} = Q^T$
 
 
 \begin{frame}{Orthogonal matrices ``encode" isometries}
-\begin{importanttheorem}[Orthogonal matrices ``encode" isometries]
+\begin{theorem}[Orthogonal matrices ``encode" isometries]
 \label{th:TFAE_orthogonal_matrices}
 Let $Q\in\M_n$. TFAE
 \begin{enumerate}
@@ -310,7 +310,7 @@ Let $Q\in\M_n$. TFAE
 \item $\forall\bx\in\IR^n$, $\|Q\bx\|=\|\bx\|$
 \item $\forall\bx,\by\in\IR^n$, $Q\bx\bullet Q\by=\bx\bullet\by$
 \end{enumerate}
-\end{importanttheorem}
+\end{theorem}
 \end{frame}
 
 
@@ -698,22 +698,26 @@ The singular value decomposition (known mostly by its acronym, SVD) is yet anoth
 \end{frame}
 
 \begin{frame}{Singular values}
-\begin{definition}[Singular value]
+\begin{importantdefinition}[Singular value]
 Let $A\in\M_{mn}(\IR)$. The \textbf{singular values} of $A$ are the real numbers 
 \[
 \sigma_1\geq \sigma_2\geq\cdots\sigma_n\geq 0
 \]
 that are the square roots of the eigenvalues of $A^TA$
-\end{definition}
+\end{importantdefinition}
 \end{frame}
 
 
 \begin{frame}{Singular values are real and nonnegative?}
 Recall that $\forall A\in\M_{mn}$, $A^TA$ is symmetric
 \vfill
-\textbf{Claim 1.} Real symmetric matrices have real eigenvalues
-\vfill
-\textbf{Proof.} $A\in\M_n(\IR)$ symmetric and $(\lambda,\bv)$ eigenpair of $A$, i.e, $A\bv=\lambda\bv$. Taking the complex conjugate, $\overline{A\bv}=\overline{\lambda\bv}$
+\begin{importanttheorem}\label{th:real_symmetric_real_eigs}
+Let $A\in\M_n(\IR)$ be symmetric. Then all eigenvalues of $A$ are real
+\end{importanttheorem}
+\end{frame}
+
+\begin{frame}{Proof of Theorem~\ref{th:real_symmetric_real_eigs}}
+$A\in\M_n(\IR)$ symmetric and $(\lambda,\bv)$ eigenpair of $A$, i.e, $A\bv=\lambda\bv$. Taking the complex conjugate, $\overline{A\bv}=\overline{\lambda\bv}$
 \vfill
 Since $A\in\M_n(\IR)$, $\overline{A}=A$\qquad ($z=\bar z\iff z\in\IR$)
 \vfill
@@ -724,7 +728,7 @@ A\bar\bv=\overline{A}\bar\bv=\overline{A\bv}=\overline{\lambda\bv}=\overline{\la
 i.e., if $(\lambda,\bv)$ eigenpair, $(\bar\lambda,\bar\bv)$ also eigenpair
 \end{frame}
 
-\begin{frame}
+\begin{frame}{Proof of Theorem~\ref{th:real_symmetric_real_eigs} (cont.)}
 Still assuming $A\in\M_n(\IR)$ symmetric and $(\lambda,\bv)$ eigenpair of $A$ and using what we just proved (that $(\bar\lambda,\bar\bv)$ also eigenpair), take transposes
 \begin{align*}
 A\bar\bv = \bar\lambda\bar\bv &\iff (A\bar\bv)^T = (\bar\lambda\bar\bv)^T \\
@@ -741,7 +745,7 @@ Let us now compute $\lambda (\bar\bv\bullet\bv)$. We have
 \end{align*}
 \end{frame}
 
-\begin{frame}
+\begin{frame}{Proof of Theorem~\ref{th:real_symmetric_real_eigs} (end)}
 We have shown
 \[
 (\lambda-\bar\lambda)(\bar\bv\bullet\bv) = 0
@@ -775,12 +779,14 @@ But $\bv$ eigenvector is $\neq\b0$, so $\bar\bv\bullet\bv\neq 0$, so
 \end{frame}
 
 
-\begin{frame}[red]
-\textbf{Claim 2.} For $A\in\M_{mn}(\IR)$, the eigenvalues of $A^TA$ are real and nonnegative
+\begin{frame}{Eigenvalues of $A^TA$ are real and nonnegative}
+\begin{importanttheorem}\label{th:eigenvalues_ATA_nonnegative}
+For $A\in\M_{mn}(\IR)$, the eigenvalues of $A^TA$ (and $AA^T$) are real and nonnegative
+\end{importanttheorem}
+\end{frame}
 
-\vfill
-\textbf{Proof.}
-We know that for $A\in\M_{mn}$, $A^TA$ symmetric and from previous claim, if $A\in\M_{mn}(\IR)$, then $A^TA$ is symmetric, real and with real eigenvalues
+\begin{frame}[red]{Proof of Theorem~\ref{th:eigenvalues_ATA_nonnegative}}
+We know that for $A\in\M_{mn}$, $A^TA$ symmetric and from Theorem~\ref{th:real_symmetric_real_eigs}, if $A\in\M_{mn}(\IR)$, then $A^TA$ is symmetric, real and with real eigenvalues
 \vfill
 Let $(\lambda,\bv)$ be an eigenpair of $A^TA$, with $\bv$ chosen so that $\|\bv\|=1$
 \vfill 
@@ -793,10 +799,12 @@ Norms are functions $V\to\IR_+$, so $\|A\bv\|$ and $\|A\bv\|^2$ are $\geq 0$ and
 \end{align*}
 \end{frame}
 
-\begin{frame}
-\textbf{Claim 3.} For $A\in\M_{mn}(\IR)$, the nonzero eigenvalues of $A^TA$ and $AA^T$ are the same
+\begin{frame}{Nonzero eigenvalues of $A^TA$ and $AA^T$}
+\begin{theorem}
+For $A\in\M_{mn}(\IR)$, the nonzero eigenvalues of $A^TA$ and $AA^T$ are the same
+\end{theorem}
 \vfill
-\textbf{Proof.}
+\begin{proof}
 Let $(\lambda,\bv)$ be an eigenpair of $A^TA$ with $\lambda\neq 0$. Then $\bv\neq\b0$ and
 \[
 	A^TA\bv=\lambda\bv\neq\b0
@@ -807,7 +815,8 @@ Left multiply by $A$
 \]
 Let $\bw=A\bv$, we thus have $AA^T\bw=\lambda\bw$; in other words, $A\bv$ is an eigenvector of $AA^T$ corresponding to the (nonzero) eigenvalue $\lambda$
 \vfill
-The reverse works the same way.. \qed
+The reverse works the same way..
+\end{proof}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%
@@ -839,9 +848,9 @@ A=U\Sigma V^T
 
 
 \begin{frame}
-\begin{definition}
+\begin{importantdefinition}
 We call a factorisation as in Theorem~\ref{th:SVD} the \textbf{singular value decomposition} of $A$. The columns of $U$ and $V$ are, respectively, the \textbf{left} and \textbf{right singular vectors} of $A$
-\end{definition}
+\end{importantdefinition}
 \vfill
 $U$ and $V^T$ are \emph{rotation} or \emph{reflection} matrices, $\Sigma$ is a \emph{scaling} matrix
 \vfill
@@ -1060,9 +1069,9 @@ Uses 14.07\% of the original information
 \begin{frame}{Computing the SVD (case of $\neq$ eigenvalues)}
 To compute the SVD, we use the following result
 \vfill
-\begin{theorem}\label{th:eigenvectors_of_symmetric_are_orthogonal}
+\begin{importanttheorem}\label{th:eigenvectors_of_symmetric_are_orthogonal}
 Let $A\in\M_n$ symmetric, $(\lambda_1,\bu_1)$ and $(\lambda_2,\bu_2)$ be eigenpairs, $\lambda_1\neq\lambda_2$. Then $\bu_1\bullet\bu_2=0$
-\end{theorem}
+\end{importanttheorem}
 \end{frame}
 
 \begin{frame}[red]{Proof of Theorem~\ref{th:eigenvectors_of_symmetric_are_orthogonal}}
