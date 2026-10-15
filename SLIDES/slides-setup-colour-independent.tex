@@ -61,6 +61,7 @@
 \def\bk{\bm{k}}
 \def\bn{\bm{n}}
 \def\bp{\bm{p}}
+\def\bq{\bm{q}}
 \def\br{\bm{r}}
 \def\bs{\bm{s}}
 \def\bu{\bm{u}}
@@ -169,12 +170,22 @@
 % The beamer bullet (in base colour)
 \def\bbullet{\leavevmode\usebeamertemplate{itemize item}\ }
 
+% Colorblind-friendly colors (Okabe-Ito palette)
+\definecolor{importantcolour}{RGB}{213,94,0}  % Vermilion (colorblind-safe highlight/alert)
+\definecolor{othercolour}{RGB}{0,114,178}     % Deep/Sky Blue (colorblind-safe standard)
+\colorlet{regularcolour}{othercolour}
+\colorlet{standardcolour}{othercolour}
+
 % Theorems and the like
 \newtheorem{importantdefinition}[theorem]{Definition}
+\newtheorem{importanttheorem}[theorem]{Theorem}
+\newtheorem{importantproperty}[theorem]{Property}
+\newtheorem{importantproposition}[theorem]{Proposition}
+\newtheorem{importantcorollary}[theorem]{Corollary}
+\newtheorem{importantlemma}[theorem]{Lemma}
+\newtheorem{importantremark}[theorem]{Remark}
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{property}[theorem]{Property}
-\newtheorem{importantproperty}[theorem]{Property}
-\newtheorem{importanttheorem}[theorem]{Theorem}
 %\newtheorem{lemma}[theorem]{Lemma}
 %\newtheorem{corollary}[theorem]{Corollary}
 \newtheorem{remark}[theorem]{Remark}
@@ -188,6 +199,8 @@
 \def\red{\color[rgb]{1,0,0}}
 \def\blue{\color[rgb]{0,0,1}}
 \def\green{\color[rgb]{0,1,0}}
+\def\important{\color{importantcolour}}
+\def\boldimportant#1{{\color{importantcolour}\textbf{#1}}}
 
 % Fix skipping lines after items in the bibliography
 \setbeamertemplate{bibliography entry title}{}
@@ -736,6 +749,9 @@ minimum height=2em]
 % CUSTOM SLIDE BACKGROUNDS
 %%%%%%%%%%%%%%%%%%%%%
 % Define custom background templates for different colors
+\defbeamertemplate*{background canvas}{importantcolour}{%
+  \color{importantcolour!15}\vrule width\paperwidth height\paperheight%
+}
 \defbeamertemplate*{background canvas}{blue}{%
   \color{blue!15}\vrule width\paperwidth height\paperheight%
 }
@@ -743,7 +759,7 @@ minimum height=2em]
   \color{green!15}\vrule width\paperwidth height\paperheight%
 }
 \defbeamertemplate*{background canvas}{red}{%
-  \color{red!15}\vrule width\paperwidth height\paperheight%
+  \color{importantcolour!15}\vrule width\paperwidth height\paperheight%
 }
 \defbeamertemplate*{background canvas}{yellow}{%
   \color{yellow!20}\vrule width\paperwidth height\paperheight%
@@ -757,9 +773,10 @@ minimum height=2em]
 
 % Define keys for the different background options
 \makeatletter
+\define@key{beamerframe}{importantcolour}[true]{\setbeamertemplate{background canvas}[importantcolour]}
 \define@key{beamerframe}{blue}[true]{\setbeamertemplate{background canvas}[blue]}
 \define@key{beamerframe}{green}[true]{\setbeamertemplate{background canvas}[green]}
-\define@key{beamerframe}{red}[true]{\setbeamertemplate{background canvas}[red]}
+\define@key{beamerframe}{red}[true]{\setbeamertemplate{background canvas}[importantcolour]}
 \define@key{beamerframe}{yellow}[true]{\setbeamertemplate{background canvas}[yellow]}
 \define@key{beamerframe}{purple}[true]{\setbeamertemplate{background canvas}[purple]}
 \define@key{beamerframe}{orange}[true]{\setbeamertemplate{background canvas}[orange]}

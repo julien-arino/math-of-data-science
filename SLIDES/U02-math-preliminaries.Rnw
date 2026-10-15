@@ -789,7 +789,7 @@ A square matrix $A\in\M_n$ is \textbf{symmetric} if $\forall i,j=1,\ldots,n$, $a
 \end{importanttheorem}
 \end{frame}
 
-\begin{frame}[red]
+\begin{frame}[importantcolour]
 \frametitle{Proof of Theorem~\ref{th:symmetric_matrices}}
 $X$ symmetric $\iff$ $X=X^T$, so use $X=$ the matrix whose symmetric property you want to check
 
@@ -894,7 +894,7 @@ A couple $(\lambda,\bx)$ with $\bx\neq\b0$ s.t. $A\bx=\lambda\bx$ is an \textbf{
 \end{importantdefinition}
 \end{frame}
 
-\begin{frame}[red]{Parallel eigenvectors}
+\begin{frame}[importantcolour]{Parallel eigenvectors}
 \begin{importanttheorem}
 If $(\lambda,\bx)$ eigenpair, then for $c\neq 0$, $(\lambda,c\bx)$ also eigenpair
 \end{importanttheorem}

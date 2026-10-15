@@ -105,6 +105,10 @@ if (plot_blackBG) {
   fill_colour <- "lightblue"
 }
 
+# Colorblind-friendly colors (Okabe-Ito palette)
+important_colour <- "#D55E00"  # Vermilion
+other_colour <- "#0072B2"      # Deep/Sky Blue
+
 ###
 ### KNITR OPTIONS
 ###

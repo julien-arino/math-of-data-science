@@ -705,7 +705,7 @@ For $A\in\M_{mn}(\IR)$, the eigenvalues of $A^TA$ (and $AA^T$) are real and nonn
 \end{importanttheorem}
 \end{frame}
 
-\begin{frame}[red]{Proof of Theorem~\ref{th:eigenvalues_ATA_nonnegative}}
+\begin{frame}[importantcolour]{Proof of Theorem~\ref{th:eigenvalues_ATA_nonnegative}}
 We know that for $A\in\M_{mn}$, $A^TA$ symmetric and from Theorem~\ref{th:real_symmetric_real_eigs}, if $A\in\M_{mn}(\IR)$, then $A^TA$ is symmetric, real and with real eigenvalues
 \vfill
 Let $(\lambda,\bv)$ be an eigenpair of $A^TA$, with $\bv$ chosen so that $\|\bv\|=1$
@@ -989,7 +989,7 @@ Let $A\in\M_n$ symmetric, $(\lambda_1,\bu_1)$ and $(\lambda_2,\bu_2)$ be eigenpa
 \end{importanttheorem}
 \end{frame}
 
-\begin{frame}[red]{Proof of Theorem~\ref{th:eigenvectors_of_symmetric_are_orthogonal}}
+\begin{frame}[importantcolour]{Proof of Theorem~\ref{th:eigenvectors_of_symmetric_are_orthogonal}}
 $A\in\M_n$ symmetric, $(\lambda_1,\bu_1)$ and $(\lambda_2,\bu_2)$ eigenpairs with $\lambda_1\neq\lambda_2$
 \begin{align*}
 \lambda_1(\bv_1\bullet\bv_2) 

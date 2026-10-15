@@ -159,46 +159,61 @@
 \lstset{style=JuliaStyle}
 
 %%%%%%% 
-%% Definitions in yellow boxes
+%% Theorem, definition, and result box colouring (Colorblind-friendly)
 \usepackage{etoolbox}
-\setbeamercolor{block title}{use=structure,fg=structure.fg,bg=structure.fg!40!bg}
-\setbeamercolor{block body}{parent=normal text,use=block title,bg=block title.bg!20!bg}
 
-% Important definition
-\BeforeBeginEnvironment{importantdefinition}{%
-	\setbeamercolor{block title}{fg=black,bg=yellow!20!white}
-	\setbeamercolor{block body}{fg=black, bg=yellow!05!white}
+% Macros for setting block colors
+\newcommand{\setImportantBlockColors}{%
+	\setbeamercolor{block title}{fg=black,bg=importantcolour!30!white}%
+	\setbeamercolor{block body}{fg=black,bg=importantcolour!08!white}%
 }
-\AfterEndEnvironment{importantdefinition}{
-	\setbeamercolor{block title}{use=structure,fg=structure.fg,bg=structure.fg!20!bg}
-	\setbeamercolor{block body}{parent=normal text,use=block title,bg=block title.bg!50!bg, fg=black}
+\newcommand{\setOtherBlockColors}{%
+	\setbeamercolor{block title}{fg=black,bg=othercolour!25!white}%
+	\setbeamercolor{block body}{fg=black,bg=othercolour!08!white}%
 }
-% Regular (less important) definition
-\BeforeBeginEnvironment{definition}{%
-	\setbeamercolor{block title}{fg=black,bg=black!15!white}
-	\setbeamercolor{block body}{fg=black, bg=black!05!white}
+\newcommand{\resetBlockColors}{%
+	\setbeamercolor{block title}{fg=black,bg=othercolour!25!white}%
+	\setbeamercolor{block body}{fg=black,bg=othercolour!08!white}%
 }
-\AfterEndEnvironment{definition}{
-	\setbeamercolor{block title}{use=structure,fg=structure.fg,bg=structure.fg!20!bg}
-	\setbeamercolor{block body}{parent=normal text,use=block title,bg=block title.bg!50!bg, fg=black}
-}
-% Important theorem (red)
-\BeforeBeginEnvironment{importanttheorem}{%
-	\setbeamercolor{block title}{fg=black,bg=red!20!white}
-	\setbeamercolor{block body}{fg=black, bg=red!05!white}
-}
-\AfterEndEnvironment{importanttheorem}{
-	\setbeamercolor{block title}{use=structure,fg=structure.fg,bg=structure.fg!20!bg}
-	\setbeamercolor{block body}{parent=normal text,use=block title,bg=block title.bg!50!bg, fg=black}
-}
-\BeforeBeginEnvironment{importantproperty}{%
-	\setbeamercolor{block title}{fg=black,bg=red!50!white}
-	\setbeamercolor{block body}{fg=black, bg=red!30!white}
-}
-\AfterEndEnvironment{importantproperty}{
-	\setbeamercolor{block title}{use=structure,fg=structure.fg,bg=structure.fg!20!bg}
-	\setbeamercolor{block body}{parent=normal text,use=block title,bg=block title.bg!50!bg, fg=black}
-}
+
+% Default block and example block coloring
+\resetBlockColors
+\setbeamercolor{block title example}{fg=black,bg=othercolour!25!white}
+\setbeamercolor{block body example}{fg=black,bg=othercolour!08!white}
+
+% Important environments (all use importantcolour)
+\BeforeBeginEnvironment{importantdefinition}{\setImportantBlockColors}
+\AfterEndEnvironment{importantdefinition}{\resetBlockColors}
+\BeforeBeginEnvironment{importanttheorem}{\setImportantBlockColors}
+\AfterEndEnvironment{importanttheorem}{\resetBlockColors}
+\BeforeBeginEnvironment{importantproperty}{\setImportantBlockColors}
+\AfterEndEnvironment{importantproperty}{\resetBlockColors}
+\BeforeBeginEnvironment{importantproposition}{\setImportantBlockColors}
+\AfterEndEnvironment{importantproposition}{\resetBlockColors}
+\BeforeBeginEnvironment{importantcorollary}{\setImportantBlockColors}
+\AfterEndEnvironment{importantcorollary}{\resetBlockColors}
+\BeforeBeginEnvironment{importantlemma}{\setImportantBlockColors}
+\AfterEndEnvironment{importantlemma}{\resetBlockColors}
+\BeforeBeginEnvironment{importantremark}{\setImportantBlockColors}
+\AfterEndEnvironment{importantremark}{\resetBlockColors}
+
+% All other environments (all use the same othercolour)
+\BeforeBeginEnvironment{definition}{\setOtherBlockColors}
+\AfterEndEnvironment{definition}{\resetBlockColors}
+\BeforeBeginEnvironment{theorem}{\setOtherBlockColors}
+\AfterEndEnvironment{theorem}{\resetBlockColors}
+\BeforeBeginEnvironment{proposition}{\setOtherBlockColors}
+\AfterEndEnvironment{proposition}{\resetBlockColors}
+\BeforeBeginEnvironment{property}{\setOtherBlockColors}
+\AfterEndEnvironment{property}{\resetBlockColors}
+\BeforeBeginEnvironment{corollary}{\setOtherBlockColors}
+\AfterEndEnvironment{corollary}{\resetBlockColors}
+\BeforeBeginEnvironment{lemma}{\setOtherBlockColors}
+\AfterEndEnvironment{lemma}{\resetBlockColors}
+\BeforeBeginEnvironment{remark}{\setOtherBlockColors}
+\AfterEndEnvironment{remark}{\resetBlockColors}
+\BeforeBeginEnvironment{example}{\setOtherBlockColors}
+\AfterEndEnvironment{example}{\resetBlockColors}
 
 %% Colours for title page, outline and the like
 \definecolor{UMbrown}{RGB}{79,44,29}
