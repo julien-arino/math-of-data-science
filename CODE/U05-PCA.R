@@ -110,6 +110,15 @@ cov(data$height, data$weight)
 cov(data[, c("height", "weight")])
 
 
+## ----example-3d-pca-----------------------------------------------------------
+S = matrix(c(15, 10, 4, 10, 14, 6, 4, 6, 7), nrow = 3, byrow = TRUE)
+ev = eigen(S)
+ev$values
+# Proportion and cumulative proportion of variance explained
+ev$values / sum(ev$values)
+cumsum(ev$values) / sum(ev$values)
+
+
 ## ----load-hockey-data-2, echo=FALSE-------------------------------------------
 # Load the hockey data (as in previous lecture) and centre
 # it.

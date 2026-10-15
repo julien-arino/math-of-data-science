@@ -922,7 +922,7 @@ The actual form of the matrix is below but the form above stems from the propert
 \end{frame}
 
 \begin{frame}{Sample covariance matrix}
-$X\in\M_{mp}$ the data, then the (sample) covariance matrix $S_X$ takes the form
+$X\in\M_{np}$ the data ($n$ observations, $p$ variables), then the (sample) covariance matrix $S_X$ takes the form
 \[
 S_X = \frac{1}{n-1}X^TX
 \]
@@ -930,6 +930,128 @@ where the data is centred!
 \vfill
 Sometimes you will see $S_X=1/(n-1)XX^T$. This is for matrices with observations in columns and variables in rows. Just remember that you want the covariance matrix to have size the number of variables, not observations, this will give you the order in which to take the product
 \end{frame}
+
+\begin{frame}{Why is $S_X = \frac{1}{n-1}X^TX$? -- Data matrix setup}
+Let us prove why the sample covariance matrix takes this matrix form
+\vfill
+Suppose we have $n$ observations of $p$ variables $X_1,\ldots,X_p$
+\vfill
+Organise the data into a matrix $X\in\M_{np}$ where each row is an observation and each column is a variable:
+\[
+X = \begin{pmatrix}
+x_{11} & x_{12} & \cdots & x_{1p} \\
+x_{21} & x_{22} & \cdots & x_{2p} \\
+\vdots & \vdots & \ddots & \vdots \\
+x_{n1} & x_{n2} & \cdots & x_{np}
+\end{pmatrix}
+= \begin{pmatrix} \bc_1 & \bc_2 & \cdots & \bc_p \end{pmatrix}
+\]
+where column $\bc_j = (x_{1j}, x_{2j}, \ldots, x_{nj})^T \in \IR^n$ contains all $n$ measurements of variable $X_j$
+\vfill
+Assume the data is \defword{centred}: $\bar x_j = \frac{1}{n}\sum_{i=1}^n x_{ij} = 0$ for all $j=1,\ldots,p$
+\end{frame}
+
+\begin{frame}{Why is $S_X = \frac{1}{n-1}X^TX$? -- Sample covariances}
+Recall the definition of the sample covariance between variables $X_j$ and $X_k$:
+\[
+\cov(X_j, X_k) = \frac{1}{n-1} \sum_{i=1}^n (x_{ij} - \bar x_j)(x_{ik} - \bar x_k)
+\]
+\vfill
+Since the data is centred ($\bar x_j = \bar x_k = 0$), this simplifies to:
+\[
+\cov(X_j, X_k) = \frac{1}{n-1} \sum_{i=1}^n x_{ij} x_{ik}
+\]
+\vfill
+In particular, when $j = k$, we obtain the sample variance of variable $X_j$:
+\[
+\Var X_j = \cov(X_j, X_j) = \frac{1}{n-1} \sum_{i=1}^n x_{ij}^2
+\]
+\vfill
+Notice: $\sum_{i=1}^n x_{ij} x_{ik} = \bc_j^T \bc_k$, the dot product of column $\bc_j$ and column $\bc_k$!
+\end{frame}
+
+\begin{frame}{Why is $S_X = \frac{1}{n-1}X^TX$? -- Matrix product $X^TX$}
+Now consider the matrix product $X^TX$:
+\vfill
+$X^T \in \M_{pn}$ has the columns of $X$ as its rows:
+\[
+X^T = \begin{pmatrix} \bc_1^T \\ \bc_2^T \\ \vdots \\ \bc_p^T \end{pmatrix}
+= \begin{pmatrix}
+x_{11} & x_{21} & \cdots & x_{n1} \\
+x_{12} & x_{22} & \cdots & x_{n2} \\
+\vdots & \vdots & \ddots & \vdots \\
+x_{1p} & x_{2p} & \cdots & x_{np}
+\end{pmatrix}
+\]
+\vfill
+Since $X^T\in\M_{pn}$ and $X\in\M_{np}$, the product $X^TX$ is a $p\times p$ matrix
+\vfill
+Its $(j,k)$-entry is the product of row $j$ of $X^T$ and column $k$ of $X$:
+\[
+(X^TX)_{jk} = \bc_j^T\bc_k = \sum_{i=1}^n x_{ij}x_{ik}
+\]
+\end{frame}
+
+\begin{frame}{Why is $S_X = \frac{1}{n-1}X^TX$? -- Conclusion}
+Dividing by $n-1$, each entry of $\frac{1}{n-1}X^TX$ is:
+\[
+\left(\frac{1}{n-1}X^TX\right)_{jk} = \frac{1}{n-1}\sum_{i=1}^n x_{ij}x_{ik} = 
+\begin{cases}
+\Var X_j & \text{if } j = k \\
+\cov(X_j, X_k) & \text{if } j \neq k
+\end{cases}
+\]
+\vfill
+Thus, writing out the matrix:
+\[
+\frac{1}{n-1}X^TX = \begin{pmatrix}
+\Var X_1 & \cov(X_1, X_2) & \cdots & \cov(X_1, X_p) \\
+\cov(X_2, X_1) & \Var X_2 & \cdots & \cov(X_2, X_p) \\
+\vdots & \vdots & \ddots & \vdots \\
+\cov(X_p, X_1) & \cov(X_p, X_2) & \cdots & \Var X_p
+\end{pmatrix} = S_X
+\]
+\vfill
+This proves that $S_X = \frac{1}{n-1}X^TX$ for centred data
+\end{frame}
+
+\begin{frame}{What if observations are in columns?}
+Suppose data is stored with observations in columns and variables in rows:
+\[
+Y = X^T \in \M_{pn}
+\]
+where row $j$ of $Y$ is $\bc_j^T = (x_{1j}, \ldots, x_{nj}) \in \IR^{1\times n}$ (variable $X_j$)
+\vfill
+Then $YY^T \in \M_p$, and its $(j,k)$-entry is:
+\[
+(YY^T)_{jk} = \bc_j^T\bc_k = \sum_{i=1}^n x_{ij}x_{ik}
+\]
+\vfill
+Dividing by $n-1$:
+\[
+S_Y = \frac{1}{n-1}YY^T = S_X
+\]
+\vfill
+The resulting sample covariance matrix is identical
+\end{frame}
+
+\begin{frame}{What if the data is not centred beforehand?}
+Suppose $\tilde X\in\M_{np}$ is \defword{uncentred}
+\vfill
+Let $\mathbf{1} = (1, 1, \ldots, 1)^T \in \IR^n$. The vector of column means is $\bar\bx^T = \frac{1}{n}\mathbf{1}^T\tilde X \in \IR^{1\times p}$
+\vfill
+Subtracting the means from each row of $\tilde X$:
+\[
+X = \tilde X - \mathbf{1}\bar\bx^T = \tilde X - \frac{1}{n}\mathbf{1}\mathbf{1}^T\tilde X = \left(I_n - \frac{1}{n}\mathbf{1}\mathbf{1}^T\right)\tilde X = C_n\tilde X
+\]
+where $C_n = I_n - \frac{1}{n}\mathbf{1}\mathbf{1}^T\in\M_n$ is the \defword{centering matrix}
+\vfill
+$C_n$ is symmetric ($C_n^T=C_n$) and idempotent ($C_n^2=C_n$), so:
+\[
+S_X = \frac{1}{n-1}X^TX = \frac{1}{n-1}\tilde X^TC_n^TC_n\tilde X = \frac{1}{n-1}\tilde X^TC_n\tilde X
+\]
+\end{frame}
+
 
 \begin{frame}[fragile]{Covariance matrix of hockey players in R}
 When passed a data frame or matrix, \code{cov} computes the covariance matrix:
@@ -1255,8 +1377,176 @@ z_i = \bv_i^T\bx
 \]
 where $\bv_i$ eigenvector of $S_X$ associated to the $i$th largest eigenvalue $\lambda_i$
 \vfill
-If $\bv_i$ is normalised, then $\lambda_i=\Var z_k$
+If $\bv_i$ is normalised, then $\lambda_i=\Var z_i$
 \end{frame}
+
+
+\begin{frame}{A 3D example -- Sample covariance matrix}
+Suppose we have a dataset with $p=3$ variables, $\bx = (x_1, x_2, x_3)^T$, centred so that sample means are zero
+\vfill
+After computing all sample variances and covariances, we obtain the sample covariance matrix:
+\[
+S_X = \begin{pmatrix}
+15 & 10 & 4 \\
+10 & 14 & 6 \\
+4 & 6 & 7
+\end{pmatrix}
+\]
+\vfill
+\begin{itemize}
+    \item Sample variances (diagonal): $\Var(x_1) = 15$, $\Var(x_2) = 14$, $\Var(x_3) = 7$
+    \item Sample covariances (off-diagonal): all variables are positively correlated ($\cov(x_1,x_2)=10$, $\cov(x_1,x_3)=4$, $\cov(x_2,x_3)=6$)
+    \item Total sample variance in the dataset is the trace:
+    \[
+    \tr(S_X) = 15 + 14 + 7 = 36
+    \]
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{A 3D example -- Eigenvalues}
+To compute the principal components, we find the eigenvalues of $S_X$ by solving $\det(S_X - \lambda I) = 0$:
+\[
+\det\begin{pmatrix}
+15 - \lambda & 10 & 4 \\
+10 & 14 - \lambda & 6 \\
+4 & 6 & 7 - \lambda
+\end{pmatrix} = 0
+\]
+\vfill
+This yields three distinct positive eigenvalues:
+\[
+\lambda_1 = 27, \qquad \lambda_2 = 6, \qquad \lambda_3 = 3
+\]
+\vfill
+Note that:
+\[
+\lambda_1 + \lambda_2 + \lambda_3 = 27 + 6 + 3 = 36 = \tr(S_X)
+\]
+As expected from theory, the total variance is preserved!
+\end{frame}
+
+
+\begin{frame}{A 3D example -- Variance explained}
+The variance of each principal component $z_i = \bv_i^T\bx$ is given by $\Var z_i = \lambda_i$ (for normalized $\bv_i$)
+\vfill
+Proportion of total variance explained by each principal component:
+\begin{itemize}
+    \item \textbf{1st PC ($z_1$)}: 
+    \[
+    \frac{\lambda_1}{\tr(S_X)} = \frac{27}{36} = \frac{3}{4} = 75\%
+    \]
+    \item \textbf{2nd PC ($z_2$)}: 
+    \[
+    \frac{\lambda_2}{\tr(S_X)} = \frac{6}{36} = \frac{1}{6} \approx 16.67\%
+    \]
+    \item \textbf{3rd PC ($z_3$)}: 
+    \[
+    \frac{\lambda_3}{\tr(S_X)} = \frac{3}{36} = \frac{1}{12} \approx 8.33\%
+    \]
+\end{itemize}
+\vfill
+The first two principal components together account for $\frac{27+6}{36} = \frac{33}{36} \approx 91.67\%$ of the total variance
+\end{frame}
+
+
+\begin{frame}{A 3D example -- Eigenvectors}
+Next, we find the associated normalized eigenvectors by solving $(S_X - \lambda_i I)\bv_i = \b0$ subject to $\|\bv_i\| = 1$:
+\vfill
+\begin{itemize}
+    \item For $\lambda_1 = 27$:
+    \[
+    \bv_1 = \frac{1}{3}\begin{pmatrix} 2 \\ 2 \\ 1 \end{pmatrix} = \begin{pmatrix} 2/3 \\ 2/3 \\ 1/3 \end{pmatrix}, \qquad \|\bv_1\|^2 = \frac{4+4+1}{9} = 1
+    \]
+    \item For $\lambda_2 = 6$:
+    \[
+    \bv_2 = \frac{1}{3}\begin{pmatrix} -2 \\ 1 \\ 2 \end{pmatrix} = \begin{pmatrix} -2/3 \\ 1/3 \\ 2/3 \end{pmatrix}, \qquad \|\bv_2\|^2 = \frac{4+1+4}{9} = 1
+    \]
+    \item For $\lambda_3 = 3$:
+    \[
+    \bv_3 = \frac{1}{3}\begin{pmatrix} 1 \\ -2 \\ 2 \end{pmatrix} = \begin{pmatrix} 1/3 \\ -2/3 \\ 2/3 \end{pmatrix}, \qquad \|\bv_3\|^2 = \frac{1+4+4}{9} = 1
+    \]
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{A 3D example -- Orthonormality check}
+Since $S_X$ is symmetric with distinct eigenvalues, the eigenvectors are mutually orthogonal:
+\begin{align*}
+\bv_1^T\bv_2 &= \frac{1}{9}\big(2(-2) + 2(1) + 1(2)\big) = \frac{-4 + 2 + 2}{9} = 0 \\
+\bv_1^T\bv_3 &= \frac{1}{9}\big(2(1) + 2(-2) + 1(2)\big) = \frac{2 - 4 + 2}{9} = 0 \\
+\bv_2^T\bv_3 &= \frac{1}{9}\big(-2(1) + 1(-2) + 2(2)\big) = \frac{-2 - 2 + 4}{9} = 0
+\end{align*}
+\vfill
+Hence, $V = \begin{pmatrix} \bv_1 & \bv_2 & \bv_3 \end{pmatrix}$ is an orthogonal matrix ($V^TV = I$), forming an orthonormal basis of $\IR^3$
+\end{frame}
+
+
+\begin{frame}{A 3D example -- The principal components}
+The principal components are the linear combinations $z_i = \bv_i^T\bx$:
+\begin{align*}
+z_1 &= \bv_1^T\bx = \frac{2}{3}x_1 + \frac{2}{3}x_2 + \frac{1}{3}x_3 \\
+z_2 &= \bv_2^T\bx = -\frac{2}{3}x_1 + \frac{1}{3}x_2 + \frac{2}{3}x_3 \\
+z_3 &= \bv_3^T\bx = \frac{1}{3}x_1 - \frac{2}{3}x_2 + \frac{2}{3}x_3
+\end{align*}
+\vfill
+Properties of these new variables:
+\begin{itemize}
+    \item $\Var z_1 = \lambda_1 = 27$, $\Var z_2 = \lambda_2 = 6$, $\Var z_3 = \lambda_3 = 3$
+    \item $\cov(z_i, z_j) = 0$ for all $i \neq j$ (uncorrelated)
+    \item In the new basis, the covariance matrix is diagonal:
+    \[
+    S_Z = V^T S_X V = \diag(27, 6, 3)
+    \]
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{A 3D example -- Dimensionality reduction}
+Suppose we want to reduce the dimension of the data from $3$ to $2$:
+\vfill
+\begin{itemize}
+    \item Keep only the first two components, $z_1$ and $z_2$
+    \item $z_1$ and $z_2$ together preserve $91.67\%$ of the total variance
+    \item Each 3D data point $\bx=(x_1,x_2,x_3)^T$ is mapped to its 2D coordinates $(z_1,z_2)^T$
+    \item Approximation of $\bx$ using only 2 components:
+    \[
+    \bx \approx z_1 \bv_1 + z_2 \bv_2
+    \]
+    \item Discarding $z_3$ loses only $8.33\%$ of the variance
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]{A 3D example -- Verifying in R}
+We can confirm our calculations directly in R:
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hldef{S} \hlkwb{=} \hlkwd{matrix}\hldef{(}\hlkwd{c}\hldef{(}\hlnum{15}\hldef{,} \hlnum{10}\hldef{,} \hlnum{4}\hldef{,} \hlnum{10}\hldef{,} \hlnum{14}\hldef{,} \hlnum{6}\hldef{,} \hlnum{4}\hldef{,} \hlnum{6}\hldef{,} \hlnum{7}\hldef{),} \hlkwc{nrow} \hldef{=} \hlnum{3}\hldef{,} \hlkwc{byrow} \hldef{=} \hlnum{TRUE}\hldef{)}
+\hldef{ev} \hlkwb{=} \hlkwd{eigen}\hldef{(S)}
+\hldef{ev}\hlopt{$}\hldef{values}
+\end{alltt}
+\begin{verbatim}
+## [1] 27  6  3
+\end{verbatim}
+\begin{alltt}
+\hlcom{# Proportion and cumulative proportion of variance explained}
+\hldef{ev}\hlopt{$}\hldef{values} \hlopt{/} \hlkwd{sum}\hldef{(ev}\hlopt{$}\hldef{values)}
+\end{alltt}
+\begin{verbatim}
+## [1] 0.75000000 0.16666667 0.08333333
+\end{verbatim}
+\begin{alltt}
+\hlkwd{cumsum}\hldef{(ev}\hlopt{$}\hldef{values)} \hlopt{/} \hlkwd{sum}\hldef{(ev}\hlopt{$}\hldef{values)}
+\end{alltt}
+\begin{verbatim}
+## [1] 0.7500000 0.9166667 1.0000000
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
 
 
 
