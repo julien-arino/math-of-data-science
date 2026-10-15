@@ -26,7 +26,7 @@ opts_knit$set(concordance = TRUE)
 summary(cars)
 
 
-## ----pressure-plot-rmd, echo=FALSE,fig.show='asis',out.width="0.65\\textwidth"----
+## ----pressure-plot-rmd, echo=FALSE,fig.show='asis',out.width="0.55\\textwidth"----
 plot(pressure, main="Pressure Data")
 
 
@@ -84,13 +84,13 @@ x
 x+1
 
 
-## ----flow_control, eval=FALSE-------------------------------------------------
+## ----flow_control, eval=FALSE, highlight=FALSE--------------------------------
 # if (condition_is_true) {
 #   list of stuff to do
 # }
 
 
-## ----flow_control_extended, eval=FALSE----------------------------------------
+## ----flow_control_extended, eval=FALSE, highlight=FALSE-----------------------
 # if (condition_is_true) {
 #   list of stuff to do
 # } else if (another_condition) {
@@ -100,7 +100,7 @@ x+1
 # }
 
 
-## ----for_loops, eval=FALSE----------------------------------------------------
+## ----for_loops, eval=FALSE, highlight=FALSE-----------------------------------
 # for (i in 1:10) {
 #   something using integer i
 # }
@@ -145,7 +145,7 @@ x+1
 # # [1]  2  4  6  8 10 12 14 16 18 20
 
 
-## ----expand_grid, eval=FALSE--------------------------------------------------
+## ----expand_grid, eval=FALSE, size="footnotesize"-----------------------------
 # # Suppose we want to vary 3 parameters
 # variations = list(
 #     p1 = seq(1, 10, length.out = 10),

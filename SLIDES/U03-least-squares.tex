@@ -370,18 +370,24 @@ To get a sense of that, we dump a few random rows
 \hldef{data_new[}\hlkwd{sort}\hldef{(}\hlkwd{unique}\hldef{(}\hlkwd{c}\hldef{(}\hlnum{1}\hldef{,}\hlkwd{sample}\hldef{(}\hlkwd{nrow}\hldef{(data_new),} \hlnum{4}\hldef{)))), ]}
 \end{alltt}
 \begin{verbatim}
-##      GEOGRAPHY.NAME                         CHARACTERISTIC YEAR.S.   TOTAL
-## 1            Canada              Population (in thousands)    1956 16081.0
-## 12           Canada              Population (in thousands)    2011 33477.0
-## 1981     Saint John % of the population aged 0 to 14 years    2011    16.4
-## 6778       Winnipeg             % of two-person households    2006    32.1
-## 7235         Regina           % of three-person households    2001    15.6
-##      FLAG_TOTAL
-## 1              
-## 12             
-## 1981           
-## 6778           
-## 7235
+##                GEOGRAPHY.NAME
+## 1                      Canada
+## 178                    Canada
+## 2924               Sherbrooke
+## 4773 St. Catharines - Niagara
+## 8998                 Victoria
+##                                                                             CHARACTERISTIC
+## 1                                                                Population (in thousands)
+## 178                                             Number of persons aged 65 and over, Canada
+## 2924 % of couples (married and common-law) with at least one child aged 24 years and under
+## 4773                                           Population by single years of age: 34 years
+## 8998                                           Population by single years of age: 60 years
+##      YEAR.S.  TOTAL FLAG_TOTAL
+## 1       1956  16081           
+## 178     1941 767815           
+## 2924    2001     48           
+## 4773    2011   4105           
+## 8998    2011   5280
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -899,7 +905,7 @@ Access slots using @. For instance, the GA finds the coefficients
 \end{alltt}
 \begin{verbatim}
 ##            x1        x2
-## [1,] 3.001388 0.4992915
+## [1,] 2.999633 0.5001911
 \end{verbatim}
 \end{kframe}
 \end{knitrout}

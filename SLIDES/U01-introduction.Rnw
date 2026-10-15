@@ -231,23 +231,23 @@ These definitions are a little less important, you will not be asked to state th
 In lecture notes, colour coding is only for important stuff
 \end{frame}
 
-\begin{frame}{Results are colour coded}
-Memorising some of the results is part of the course. To help, results are colour coded
-\vfill
-\begin{theorem}[Theorems]
-Theorems in blue boxes are worth knowing but you will not be asked to reproduce them
-\end{theorem}
+\begin{frame}{Results are colour coded too}
+Results are also colour coded, the same way are definitions. For example, with theorems (the same is true for propositions and others)...
 \vfill
 \begin{importanttheorem}[Important theorems]  
 Theorems in orange boxes are important, you should know them and be able to reproduce them
 \end{importanttheorem}
+\vfill
+\begin{theorem}[Theorems]
+Theorems in blue boxes are worth knowing but you will not be asked to reproduce them
+\end{theorem}
 \end{frame}
 
 
 \begin{frame}[importantcolour]{You must know how to do some proofs}
 There are a few proofs (not many!) that I want you to know how to do
 \vfill
-Such proofs appear on slides like the present one, with an orange background
+Such proofs appear on slides like the present one, with a background as on this slide (i.e., like important definitions and results)
 \end{frame}
 
 \begin{frame}[plain]
@@ -559,7 +559,7 @@ plot(pressure)
 
 \begin{center}
 % We cheat, of course, as this is Rnw not Rmd..
-<<pressure-plot-rmd, echo=FALSE,fig.show='asis',out.width="0.65\\textwidth">>=
+<<pressure-plot-rmd, echo=FALSE,fig.show='asis',out.width="0.55\\textwidth">>=
 plot(pressure, main="Pressure Data")
 @
 \end{center}
@@ -695,7 +695,7 @@ Beware of this in particular when addressing sets of indices in lists, vectors o
 \end{frame}
 
 \begin{frame}[fragile]{Flow control}
-<<flow_control, eval=FALSE>>=
+<<flow_control, eval=FALSE, highlight=FALSE>>=
 if (condition_is_true) {
   list of stuff to do
 }
@@ -703,7 +703,7 @@ if (condition_is_true) {
 
 Even if \texttt{list of stuff to do} is a single instruction, best to use curly braces
 
-<<flow_control_extended, eval=FALSE>>=
+<<flow_control_extended, eval=FALSE, highlight=FALSE>>=
 if (condition_is_true) {
   list of stuff to do
 } else if (another_condition) {
@@ -717,7 +717,7 @@ if (condition_is_true) {
 \begin{frame}[fragile]{For loops}
 \texttt{for} applies to lists or vectors
 
-<<for_loops, eval=FALSE>>=
+<<for_loops, eval=FALSE, highlight=FALSE>>=
 for (i in 1:10) {
   something using integer i
 }
@@ -782,7 +782,7 @@ Just recall: the argument to the function you define is a list entry (\texttt{l[
 \end{frame}
 
 \begin{frame}[fragile]{Avoid parameter variation loops with expand.grid}
-<<expand_grid, eval=FALSE>>=
+<<expand_grid, eval=FALSE, size="footnotesize">>=
 # Suppose we want to vary 3 parameters
 variations = list(
     p1 = seq(1, 10, length.out = 10),

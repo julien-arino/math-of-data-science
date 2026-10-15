@@ -93,7 +93,7 @@
 
 \begin{frame}{Foreword}
 \begin{itemize}
-\item "Numerical dates" are in the form YYYY-MM-DD (e.g, these slides were compiled on 2026-10-14)
+\item "Numerical dates" are in the form YYYY-MM-DD (e.g, these slides were compiled on 2026-10-15)
 \vfill
 \item Times are 24h (HHMM)
 \vfill
@@ -267,23 +267,23 @@ These definitions are a little less important, you will not be asked to state th
 In lecture notes, colour coding is only for important stuff
 \end{frame}
 
-\begin{frame}{Results are colour coded}
-Memorising some of the results is part of the course. To help, results are colour coded
-\vfill
-\begin{theorem}[Theorems]
-Theorems in blue boxes are worth knowing but you will not be asked to reproduce them
-\end{theorem}
+\begin{frame}{Results are colour coded too}
+Results are also colour coded, the same way are definitions. For example, with theorems (the same is true for propositions and others)...
 \vfill
 \begin{importanttheorem}[Important theorems]  
 Theorems in orange boxes are important, you should know them and be able to reproduce them
 \end{importanttheorem}
+\vfill
+\begin{theorem}[Theorems]
+Theorems in blue boxes are worth knowing but you will not be asked to reproduce them
+\end{theorem}
 \end{frame}
 
 
 \begin{frame}[importantcolour]{You must know how to do some proofs}
 There are a few proofs (not many!) that I want you to know how to do
 \vfill
-Such proofs appear on slides like the present one, with an orange background
+Such proofs appear on slides like the present one, with a background as on this slide (i.e., like important definitions and results)
 \end{frame}
 
 \begin{frame}[plain]
@@ -606,7 +606,7 @@ plot(pressure)
 % We cheat, of course, as this is Rnw not Rmd..
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
-\includegraphics[width=0.65\textwidth]{FIGS/U01-pressure-plot-rmd-1} 
+\includegraphics[width=0.55\textwidth]{FIGS/U01-pressure-plot-rmd-1} 
 \end{knitrout}
 \end{center}
 \end{frame}
@@ -826,11 +826,11 @@ Beware of this in particular when addressing sets of indices in lists, vectors o
 \begin{frame}[fragile]{Flow control}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlkwd{if} (condition_is_true) \{
+\begin{verbatim}
+if (condition_is_true) {
   list of stuff to do
-\}
-\end{alltt}
+}
+\end{verbatim}
 \end{kframe}
 \end{knitrout}
 
@@ -838,15 +838,15 @@ Even if \texttt{list of stuff to do} is a single instruction, best to use curly 
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlkwd{if} (condition_is_true) \{
+\begin{verbatim}
+if (condition_is_true) {
   list of stuff to do
-\} else \hlkwd{if} (another_condition) \{
+} else if (another_condition) {
   ...
-\} else \{
+} else {
   ...
-\}
-\end{alltt}
+}
+\end{verbatim}
 \end{kframe}
 \end{knitrout}
 \end{frame}
@@ -856,20 +856,20 @@ Even if \texttt{list of stuff to do} is a single instruction, best to use curly 
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlkwd{for} (i in 1:10) \{
+\begin{verbatim}
+for (i in 1:10) {
   something using integer i
-\}
-\hlkwd{for} (j in \hlkwd{c}(1,3,4)) \{
+}
+for (j in c(1,3,4)) {
   something using integer j
-\}
-\hlkwd{for} (n in \hlkwd{c}(\hlsng{"truc"}, \hlsng{"muche"}, \hlsng{"chose"})) \{
+}
+for (n in c("truc", "muche", "chose")) {
   something using string n
-\}
-\hlkwd{for} (m in \hlkwd{list}(\hlsng{"truc"}, \hlsng{"muche"}, \hlsng{"chose"}, 1, 2)) \{
+}
+for (m in list("truc", "muche", "chose", 1, 2)) {
   something using string n or integer n, depending
-\}
-\end{alltt}
+}
+\end{verbatim}
 \end{kframe}
 \end{knitrout}
 \end{frame}
@@ -943,7 +943,7 @@ Just recall: the argument to the function you define is a list entry (\texttt{l[
 \end{frame}
 
 \begin{frame}[fragile]{Avoid parameter variation loops with expand.grid}
-\begin{knitrout}
+\begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlcom{# Suppose we want to vary 3 parameters}
