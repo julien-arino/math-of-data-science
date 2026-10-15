@@ -1,0 +1,1004 @@
+\documentclass[aspectratio=169]{beamer}\usepackage[]{graphicx}\usepackage[]{xcolor}
+% maxwidth is the original width if it is less than linewidth
+% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlsng}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hldef}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+\let\hlipl\hlkwb
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+
+% Set lecture number for later use
+
+
+% Part common to all the lectures
+\subtitle{MATH 2740 -- Mathematics of Data Science -- Unit U06}
+\author{\texorpdfstring{Julien Arino\newline\url{julien.arino@umanitoba.ca}}{Julien Arino}}
+\institute{Department of Mathematics @ University of Manitoba}
+
+% Title of the lecture
+\title{Hyperplanes, SVM and least-squares classification}
+
+
+
+\input{slides-setup-whiteBG.tex}
+
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+% Set up cross-references and counter persistence
+\setcounter{theorem}{87}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% TITLE AND OUTLINE
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\SStitlepage
+\SSoutlinepage
+
+
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+\SSsection{Supervised vs unsupervised linear methods}
+
+\begin{frame}{Unsupervised vs supervised linear methods}
+    In Unit 05 (PCA), we studied \defword{unsupervised} dimensionality reduction:
+    \begin{itemize}
+        \item Given unlabelled feature vectors $\bx_1, \ldots, \bx_n \in \IR^d$
+        \item Find orthogonal directions that maximise total sample variance
+    \end{itemize}
+    \vfill
+    Here, we study \defword{supervised binary classification}:
+    \begin{itemize}
+        \item Given a labelled training dataset of $n$ observations
+        \[
+            (\bx_1, y_1), \ldots, (\bx_n, y_n)
+        \]
+        where $\bx_i \in \IR^d$ is a feature vector and $y_i \in \{-1, +1\}$ (or $\{1, 2\}$) indicates the class to which $\bx_i$ belongs
+        \item Find a linear decision boundary or 1D projection that separates the two classes and predicts the label $\hat{y}(\bx)$ of any new point $\bx \in \IR^d$
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Does maximum variance always separate classes?}
+    Suppose two classes form elongated, parallel point clouds that are closely spaced along their perpendicular direction
+    \vfill
+    \begin{itemize}
+        \item Because PCA ignores the class labels $y_i$, it pools all $n$ points together and finds the direction of largest overall spread
+        \vfill
+        \item When the spread \emph{along} the clouds is larger than the distance \emph{between} the clouds, the first principal component (PC1) runs parallel to the clouds
+        \vfill
+        \item Projecting onto PC1 mixes the two classes completely, whereas projecting onto the perpendicular direction separates them cleanly
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]{When PCA fails to separate classes}
+    Simulate two elongated parallel classes in $\IR^2$ and compare PC1 (red) with the supervised separating direction (green)
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{set.seed}\hldef{(}\hlnum{2740}\hldef{)}
+\hldef{n_c} \hlkwb{=} \hlnum{60}
+\hldef{t1} \hlkwb{=} \hlkwd{rnorm}\hldef{(n_c,} \hlnum{0}\hldef{,} \hlnum{2.5}\hldef{); t2} \hlkwb{=} \hlkwd{rnorm}\hldef{(n_c,} \hlnum{0}\hldef{,} \hlnum{2.5}\hldef{)}
+\hldef{X1} \hlkwb{=} \hlkwd{cbind}\hldef{(t1} \hlopt{+} \hlkwd{rnorm}\hldef{(n_c,} \hlnum{0}\hldef{,} \hlnum{0.25}\hldef{), t1} \hlopt{+} \hlnum{1.2} \hlopt{+} \hlkwd{rnorm}\hldef{(n_c,} \hlnum{0}\hldef{,} \hlnum{0.25}\hldef{))}
+\hldef{X2} \hlkwb{=} \hlkwd{cbind}\hldef{(t2} \hlopt{+} \hlkwd{rnorm}\hldef{(n_c,} \hlnum{0}\hldef{,} \hlnum{0.25}\hldef{), t2} \hlopt{-} \hlnum{1.2} \hlopt{+} \hlkwd{rnorm}\hldef{(n_c,} \hlnum{0}\hldef{,} \hlnum{0.25}\hldef{))}
+\hldef{X_all} \hlkwb{=} \hlkwd{rbind}\hldef{(X1, X2)}
+\hldef{y_all} \hlkwb{=} \hlkwd{c}\hldef{(}\hlkwd{rep}\hldef{(}\hlnum{1}\hldef{, n_c),} \hlkwd{rep}\hldef{(}\hlopt{-}\hlnum{1}\hldef{, n_c))}
+\hldef{pc1} \hlkwb{=} \hlkwd{eigen}\hldef{(}\hlkwd{cov}\hldef{(X_all))}\hlopt{$}\hldef{vectors[,} \hlnum{1}\hldef{]}
+\hldef{SW} \hlkwb{=} \hldef{(n_c} \hlopt{-} \hlnum{1}\hldef{)} \hlopt{*} \hldef{(}\hlkwd{cov}\hldef{(X1)} \hlopt{+} \hlkwd{cov}\hldef{(X2))}
+\hldef{w_sep} \hlkwb{=} \hlkwd{solve}\hldef{(SW,} \hlkwd{colMeans}\hldef{(X1)} \hlopt{-} \hlkwd{colMeans}\hldef{(X2))}
+\hldef{w_sep} \hlkwb{=} \hldef{w_sep} \hlopt{/} \hlkwd{sqrt}\hldef{(}\hlkwd{sum}\hldef{(w_sep}\hlopt{^}\hlnum{2}\hldef{))}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+
+\maxFrameImage{FIGS/U06-pca-vs-supervised-plot-1.pdf}
+
+
+\begin{frame}{Two linear classification frameworks in this unit}
+    Both methods use a linear score $f(\bx) = \bw^T \bx + b$ to classify points, but choose $\bw \in \IR^d$ and $b \in \IR$ using different linear algebraic principles:
+    \vfill
+    \begin{enumerate}
+        \item \textbf{Geometry of hyperplanes and support vector machines (SVM)}: characterise decision boundaries via normal vectors, orthogonal projections and maximum-margin separation
+        \vfill
+        \item \textbf{Least-squares classification}: treat binary labels $y_i \in \{-1, +1\}$ as regression targets and solve the normal equations $(X^T X)\tilde{\bw} = X^T \by$ from Unit 03
+    \end{enumerate}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+\SSsection{Geometry of hyperplanes and support vector machines}
+
+%%%%%%%%%%%%%%%%%%%
+\SSsubsection{Hyperplanes and normal vectors}
+
+\begin{frame}{Hyperplanes in $\IR^d$}
+    \begin{importantdefinition}[Hyperplane in $\IR^d$]
+        Let $\bw \in \IR^d \setminus \{\b0\}$ be a non-zero vector and $b \in \IR$ be a scalar. The \defword{hyperplane} determined by $\bw$ and $b$ is the set of points
+        \[
+            \H = \left\{\bx \in \IR^d : \bw^T \bx + b = 0\right\} = \left\{\bx \in \IR^d : \bw \bullet \bx + b = 0\right\}
+        \]
+        The vector $\bw$ is called a \defword{normal vector} to $\H$ and $b$ is called the \defword{offset} (or \defword{bias})
+    \end{importantdefinition}
+    \vfill
+    \begin{itemize}
+        \item In $\IR^2$, a hyperplane is a line $w_1 x_1 + w_2 x_2 + b = 0$
+        \item In $\IR^3$, a hyperplane is a plane $w_1 x_1 + w_2 x_2 + w_3 x_3 + b = 0$
+        \item Multiplying $\bw$ and $b$ by any non-zero constant $\alpha \neq 0$ leaves the set $\H$ unchanged
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Linear subspace vs affine subspace}
+    When is a hyperplane $\H = \{\bx \in \IR^d : \bw^T \bx + b = 0\}$ a vector subspace of $\IR^d$?
+    \vfill
+    \begin{itemize}
+        \item A vector subspace must contain the zero vector $\b0$, and $\b0 \in \H \iff \bw^T \b0 + b = 0 \iff b = 0$
+        \vfill
+        \item When $b = 0$, the set $\H_0 = \{\bx \in \IR^d : \bw^T \bx = 0\} = \{\bw\}^\perp$ is the orthogonal complement of $\Span(\bw)$, which is a $(d-1)$-dimensional vector subspace of $\IR^d$
+        \vfill
+        \item When $b \neq 0$, $\H$ does not pass through the origin; it is an \defword{affine subspace} obtained by translating $\H_0$ by any fixed point $\bx^* \in \H$:
+        \[
+            \H = \bx^* + \H_0 = \left\{\bx^* + \bu : \bw^T \bu = 0\right\}
+        \]
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Example in $\IR^2$ -- Hyperplanes with $b = 0$ and $b \neq 0$}
+    In $\IR^2$, hyperplanes are lines orthogonal to $\bw \neq \b0$
+    \setlength{\abovedisplayskip}{2pt}
+    \setlength{\belowdisplayskip}{2pt}
+    \begin{columns}[c, onlytextwidth]
+    \begin{column}{0.55\textwidth}
+        \begin{itemize}
+            \item \textbf{Line through the origin ($b = 0$):}
+            \[
+                \H_0 = \left\{\bx \in \IR^2 : \bw^T \bx = 0\right\} = \{\bw\}^\perp
+            \]
+            Since $\b0 \in \H_0$, it is a 1D \defword{vector subspace}
+            \vskip0.1cm
+            \item \textbf{Line not through origin ($b \neq 0$):}
+            \[
+                \H = \left\{\bx \in \IR^2 : \bw^T \bx + b = 0\right\}
+            \]
+            $\b0 \notin \H$; \defword{affine subspace} translated by $\bx^* \in \H$:
+            \[
+                \H = \bx^* + \H_0 = \left\{\bx^* + \bu : \bu \in \H_0\right\}
+            \]
+            \item Every $\bx \in \H$ satisfies $\bw^T \bx = -b$
+        \end{itemize}
+    \end{column}
+    \begin{column}{0.43\textwidth}
+        \centering
+        \begin{tikzpicture}[scale=0.70, >=Latex]
+            % Coordinate axes
+            \draw[->, gray!50, thick] (-2.2, 0) -- (3.2, 0) node[right, font=\footnotesize] {$x_1$};
+            \draw[->, gray!50, thick] (0, -1.5) -- (0, 2.7) node[above, font=\footnotesize] {$x_2$};
+            \node[below left, gray!70, font=\scriptsize] at (0, 0) {$\b0$};
+
+            % Line H_0 through origin
+            \draw[thick, blue!80!black, dashed] (-2.0, 1.25) -- (2.4, -1.5) 
+                node[right, font=\scriptsize, blue!80!black] {$\H_0: \bw^T\bx = 0$};
+
+            % Line H not through origin: parallel to H_0, shifted by x* = (0.75, 1.2)
+            \coordinate (XS) at (0.75, 1.2);
+            \draw[very thick, black] (-1.4, 2.54) -- (2.7, -0.02) 
+                node[above right, font=\scriptsize] {$\H: \bw^T\bx + b = 0$};
+
+            % Distance from origin to H along normal direction
+            \draw[<->, thick, orange!85!black] (0, 0) -- (XS) 
+                node[midway, left=3pt, font=\scriptsize, orange!85!black] {$\frac{|b|}{\|\bw\|}$};
+
+            % Normal vector w at x*
+            \draw[->, very thick, red!85!black] (XS) -- ++(0.6, 0.96) 
+                node[above right, font=\small] {$\bw$};
+
+            % Right angle at origin for H_0 and w direction
+            \coordinate (ra1) at (0.17, -0.106);
+            \coordinate (ra2) at (0.276, 0.064);
+            \coordinate (ra3) at (0.106, 0.17);
+            \draw[blue!70!black, thin] (ra1) -- (ra2) -- (ra3);
+
+            % Right angle at x* for H and w
+            \coordinate (raS1) at ($(XS) + (0.17, -0.106)$);
+            \coordinate (raS2) at ($(XS) + (0.276, 0.064)$);
+            \coordinate (raS3) at ($(XS) + (0.106, 0.17)$);
+            \draw[gray!60!black, thin] (raS1) -- (raS2) -- (raS3);
+
+            % Arbitrary point x on H
+            \coordinate (X) at ($(XS) + (1.2, -0.75)$);
+            \filldraw[purple!80!black] (X) circle (2pt) 
+                node[above right, font=\scriptsize, text=black] {$\bx \in \H$};
+
+            % Vector x from origin to x
+            \draw[->, thick, purple!80!black] (0, 0) -- (X) 
+                node[midway, below=2pt, font=\scriptsize] {$\bx$};
+
+            % Point x* on H
+            \filldraw[black] (XS) circle (1.8pt) 
+                node[above=3pt, left=1pt, font=\scriptsize] {$\bx^*$};
+
+            % Vector u along H from x* to x
+            \draw[->, thick, teal!80!black] (XS) -- (X) 
+                node[midway, above right, font=\scriptsize] {$\bu \in \H_0$};
+        \end{tikzpicture}
+    \end{column}
+    \end{columns}
+\end{frame}
+
+
+\begin{frame}[red]{Why $\bw$ is orthogonal to the hyperplane}
+    \begin{proposition}[Orthogonality of the normal vector]
+        Let $\H = \{\bx \in \IR^d : \bw^T \bx + b = 0\}$. For any two points $\bx_1, \bx_2 \in \H$, the displacement vector $\bx_1 - \bx_2$ lying along $\H$ is orthogonal to $\bw$:
+        \[
+            \bw \bullet (\bx_1 - \bx_2) = \bw^T(\bx_1 - \bx_2) = 0
+        \]
+    \end{proposition}
+    \vfill
+    \textbf{Proof:}
+    \begin{itemize}
+        \item Since $\bx_1 \in \H$ and $\bx_2 \in \H$, both points satisfy the hyperplane equation:
+        \[
+            \bw^T \bx_1 + b = 0 \qquad \text{and} \qquad \bw^T \bx_2 + b = 0
+        \]
+        \item Subtracting the second equation from the first eliminates $b$:
+        \[
+            (\bw^T \bx_1 + b) - (\bw^T \bx_2 + b) = \bw^T(\bx_1 - \bx_2) = 0
+        \]
+        \item Hence $\bw \perp (\bx_1 - \bx_2)$ for every pair of points $\bx_1, \bx_2$ on $\H$ \hfill $\square$
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Point-normal form of a (hyper)plane}
+    A hyperplane is determined by a \defword{point} $\bx_0 \in \H$ and a \defword{normal vector} $\bw \neq \b0$
+    \setlength{\abovedisplayskip}{3pt}
+    \setlength{\belowdisplayskip}{3pt}
+    \begin{columns}[c, onlytextwidth]
+    \begin{column}{0.54\textwidth}
+        \begin{itemize}
+            \item For any $\bx \in \H$, the displacement $\bx - \bx_0$ lies along $\H$, so $\bw \perp (\bx - \bx_0)$:
+            \[
+                \bw^T(\bx - \bx_0) = 0 \qquad \text{(\defword{point-normal form})}
+            \]
+            \item Expanding gives $\bw^T \bx - \bw^T \bx_0 = 0$, which is
+            \[
+                \bw^T \bx + b = 0 \qquad \text{with } b = -\bw^T \bx_0
+            \]
+            \item \textbf{Example in $\IR^3$:} Point $\bx_0 = (1, 1, 1)^T$ and normal $\bw = (1, 2, 2)^T$:
+            \[
+                1(x_1 - 1) + 2(x_2 - 1) + 2(x_3 - 1) = 0
+            \]
+            \[
+                \iff x_1 + 2x_2 + 2x_3 - 5 = 0
+            \]
+            Here $b = -\bw^T \bx_0 = -(1 + 2 + 2) = -5$
+        \end{itemize}
+    \end{column}
+    \begin{column}{0.44\textwidth}
+        \centering
+        \begin{tikzpicture}[x={(-0.65cm,-0.32cm)}, y={(0.85cm,0.1cm)}, z={(0cm,0.95cm)}, scale=0.88, >=Latex]
+            % Coordinate axes
+            \draw[->, gray!50, thick] (0,0,0) -- (3.2,0,0) node[below left, font=\footnotesize] {$x_1$};
+            \draw[->, gray!50, thick] (0,0,0) -- (0,3.5,0) node[right, font=\footnotesize] {$x_2$};
+            \draw[->, gray!50, thick] (0,0,0) -- (0,0,3.2) node[above, font=\footnotesize] {$x_3$};
+            \node[below left, gray!60, font=\scriptsize] at (0,0,0) {$\b0$};
+
+            % Origin to x0 vector (light dashed)
+            \coordinate (O) at (0,0,0);
+            \coordinate (X0) at (1, 1, 1);
+            \draw[->, gray!60, dashed, thick] (O) -- (X0);
+
+            % Plane H: patch centered around x0 = (1,1,1)
+            \coordinate (P1) at ($(X0) + (-1.4, 0.7, 0) + (-0.5, -1.0, 1.25)$);
+            \coordinate (P2) at ($(X0) + (1.4, -0.7, 0) + (-0.5, -1.0, 1.25)$);
+            \coordinate (P3) at ($(X0) + (1.4, -0.7, 0) + (0.5, 1.0, -1.25)$);
+            \coordinate (P4) at ($(X0) + (-1.4, 0.7, 0) + (0.5, 1.0, -1.25)$);
+
+            \fill[blue!15, opacity=0.7] (P1) -- (P2) -- (P3) -- (P4) -- cycle;
+            \draw[blue!70!black, thick] (P1) -- (P2) -- (P3) -- (P4) -- cycle;
+            \node[below=8pt, blue!80!black, font=\scriptsize] at ($(P3)!0.5!(P4)$) {$\H: x_1 + 2x_2 + 2x_3 - 5 = 0$};
+
+            % Arbitrary point x on H
+            \coordinate (X) at ($(X0) + (0.8, -0.4, 0) + (-0.3, -0.6, 0.75)$);
+            
+            % Displacement vector x - x0 in the plane
+            \draw[->, very thick, teal!80!black] (X0) -- (X) 
+                node[midway, below left, font=\scriptsize] {$\bx - \bx_0$};
+
+            % Normal vector w = (1, 2, 2) scaled by 0.75
+            \coordinate (W) at ($(X0) + (0.45, 0.9, 0.9)$);
+            \draw[->, very thick, red!85!black] (X0) -- ++(0.45, 0.9, 0.9) 
+                node[above right, font=\small] {$\bw = (1, 2, 2)^T$};
+
+            % Right-angle mark at X0 between w and (X - X0)
+            \coordinate (ra_u) at ($(X0)!0.22!(X)$);
+            \coordinate (ra_w) at ($(X0)!0.22!(W)$);
+            \coordinate (ra_c) at ($(ra_u) + (ra_w) - (X0)$);
+            \draw[gray!70!black, thin] (ra_u) -- (ra_c) -- (ra_w);
+
+            % Points x0 and x
+            \filldraw[black] (X0) circle (2pt) 
+                node[below right=2pt, font=\scriptsize] {$\bx_0 = (1,1,1)^T$};
+            \filldraw[purple!80!black] (X) circle (2pt) 
+                node[above left=1pt, font=\scriptsize, text=black] {$\bx \in \H$};
+
+        \end{tikzpicture}
+    \end{column}
+    \end{columns}
+\end{frame}
+
+
+\begin{frame}{Half-spaces and linear classifiers}
+    A hyperplane $\H$ divides $\IR^d \setminus \H$ into two open \defword{half-spaces}:
+    \begin{columns}[c]
+    \begin{column}{0.58\textwidth}
+        \begin{align*}
+            \H_+ &= \left\{\bx \in \IR^d : \bw^T \bx + b > 0\right\} \\
+            \H_- &= \left\{\bx \in \IR^d : \bw^T \bx + b < 0\right\}
+        \end{align*}
+        \begin{itemize}
+            \item The normal vector $\bw$ points into the positive half-space $\H_+$
+            \item The corresponding \defword{linear classifier} assigns class labels via the sign function:
+            \[
+                \hat{y}(\bx) = \sgn(\bw^T \bx + b) = \begin{cases} +1 & \text{if } \bx \in \H_+ \\ -1 & \text{if } \bx \in \H_- \end{cases}
+            \]
+        \end{itemize}
+    \end{column}
+    \begin{column}{0.42\textwidth}
+        \centering
+        \begin{tikzpicture}[scale=0.75, >=Latex]
+            \fill[blue!8] (-2, 1.5) -- (2.4, -0.7) -- (2.4, 2.4) -- (-2, 2.4) -- cycle;
+            \fill[red!8] (-2, 1.5) -- (2.4, -0.7) -- (2.4, -2) -- (-2, -2) -- cycle;
+            \draw[->, gray!60] (-2, 0) -- (2.5, 0) node[right, font=\footnotesize] {$x_1$};
+            \draw[->, gray!60] (0, -2) -- (0, 2.5) node[above, font=\footnotesize] {$x_2$};
+            \draw[very thick, black] (-2, 1.5) -- (2.4, -0.7) node[below left, font=\scriptsize] {$\H: \bw^T\bx + b = 0$};
+            \draw[->, very thick, blue!80!black] (0.5, 0.25) -- (1.1, 1.45) node[above right, font=\small] {$\bw$};
+            \draw[blue!80!black] (0.65, 0.175) -- (0.77, 0.415) -- (0.62, 0.49);
+            \node[blue!70!black, font=\footnotesize\bfseries] at (1.1, 2.0) {$\H_+: \bw^T\bx + b > 0$};
+            \node[red!70!black, font=\footnotesize\bfseries] at (-0.8, -1.4) {$\H_-: \bw^T\bx + b < 0$};
+        \end{tikzpicture}
+    \end{column}
+    \end{columns}
+\end{frame}
+
+
+\begin{frame}{Example -- Hyperplane geometry and classification in $\IR^2$}
+    Using the line $\H$ in $\IR^2$ given by $2x_1 - x_2 - 3 = 0$, classify $\bp = (3, 1)^T$ and $\bq = (0, 0)^T$
+    \vfill
+    \begin{itemize}
+        \item \textbf{Normal vector and offset:} $\bw = \begin{pmatrix} 2 \\ -1 \end{pmatrix}$ and $b = -3$, with norm $\|\bw\| = \sqrt{2^2 + (-1)^2} = \sqrt{5}$
+        \vfill
+        \item \textbf{Two points on $\H$:} setting $x_1 = 0$ gives $\bx_1 = \begin{pmatrix} 0 \\ -3 \end{pmatrix}$; setting $x_2 = 1$ gives $\bx_2 = \begin{pmatrix} 2 \\ 1 \end{pmatrix}$
+        \vfill
+        \item \textbf{Orthogonality check:} $\bx_2 - \bx_1 = \begin{pmatrix} 2 \\ 4 \end{pmatrix}$ and $\bw^T(\bx_2 - \bx_1) = 2(2) + (-1)(4) = 0$
+        \vfill
+        \item \textbf{Classifying test points with $\hat{y}(\bx) = \sgn(\bw^T \bx + b)$:}
+        \begin{itemize}
+            \item For $\bp = (3, 1)^T$: $\bw^T \bp + b = 2(3) - 1(1) - 3 = +2 > 0 \implies \hat{y}(\bp) = +1$ ($\bp \in \H_+$)
+            \item For $\bq = (0, 0)^T$: $\bw^T \bq + b = 2(0) - 1(0) - 3 = -3 < 0 \implies \hat{y}(\bq) = -1$ ($\bq \in \H_-$)
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%
+\SSsubsection{Orthogonal distance to a hyperplane}
+
+\begin{frame}{Orthogonal distance from a point to a hyperplane}
+    \begin{importanttheorem}[Distance from a point to a hyperplane]
+        \label{th:distance-point-hyperplane}
+        Let $\H = \{\bx \in \IR^d : \bw^T \bx + b = 0\}$ be a hyperplane with normal vector $\bw \neq \b0$, and let $\bx_0 \in \IR^d$ be any point. The Euclidean distance from $\bx_0$ to $\H$ is
+        \[
+            d(\bx_0, \H) = \min_{\bx \in \H} \|\bx_0 - \bx\| = \frac{|\bw^T \bx_0 + b|}{\|\bw\|}
+        \]
+    \end{importanttheorem}
+    \vfill
+    \begin{itemize}
+        \item Setting $\bx_0 = \b0$ gives the orthogonal distance from the origin to $\H$:
+        \[
+            d(\b0, \H) = \frac{|b|}{\|\bw\|}
+        \]
+        \item The quantity $\frac{\bw^T \bx_0 + b}{\|\bw\|}$ is the \defword{signed distance} from $\bx_0$ to $\H$ (positive on $\H_+$, negative on $\H_-$)
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}[red]{Proof -- Distance from a point to a hyperplane}
+    \begin{columns}[c]
+    \begin{column}{0.62\textwidth}
+        Let $\bx^* \in \H$ be the orthogonal projection of $\bx_0$ onto $\H$, and pick any $\bx_1 \in \H$
+        \begin{itemize}
+            \item Since $\bx_0 - \bx^* \perp \H$, it equals the orthogonal projection of $\bx_0 - \bx_1$ onto $\bw$:
+            \[
+                \bx_0 - \bx^* = \mathsf{proj}_{\bw}(\bx_0 - \bx_1) = \frac{\bw^T(\bx_0 - \bx_1)}{\|\bw\|^2}\bw
+            \]
+            \item Because $\bx_1 \in \H$, we have $\bw^T \bx_1 = -b$, so $\bw^T(\bx_0 - \bx_1) = \bw^T \bx_0 + b$
+            \item Taking the Euclidean norm gives
+            \[
+                d(\bx_0, \H) = \|\bx_0 - \bx^*\| = \frac{|\bw^T \bx_0 + b|}{\|\bw\|}
+            \]
+        \end{itemize}
+    \end{column}
+    \begin{column}{0.38\textwidth}
+        \centering
+        \begin{tikzpicture}[scale=0.8, >=Latex]
+            \draw[very thick, black] (-1.8, -0.9) -- (2.2, 1.1) node[right, font=\footnotesize] {$\H$};
+            \coordinate (X1) at (-1.0, -0.5);
+            \coordinate (XS) at (0.8, 0.4);
+            \coordinate (X0) at (0.0, 2.0);
+            \draw[->, thick, gray!70!black] (X1) -- (X0) node[midway, above left, font=\footnotesize] {$\bx_0 - \bx_1$};
+            \draw[->, very thick, red!80!black] (XS) -- (X0) node[midway, right, font=\footnotesize] {$\bx_0 - \bx^*$};
+            \draw[->, very thick, blue!80!black] (X1) -- (-1.5, 0.5) node[above left, font=\footnotesize] {$\bw$};
+            \draw (0.62, 0.31) -- (0.53, 0.49) -- (0.71, 0.58);
+            \filldraw (X1) circle (1.8pt) node[below right, font=\footnotesize] {$\bx_1 \in \H$};
+            \filldraw (XS) circle (1.8pt) node[below right, font=\footnotesize] {$\bx^* \in \H$};
+            \filldraw[red!80!black] (X0) circle (1.8pt) node[above, font=\footnotesize] {$\bx_0$};
+        \end{tikzpicture}
+    \end{column}
+    \end{columns}
+\end{frame}
+
+
+\begin{frame}{Example -- Distance to a line in $\IR^2$}
+    \textbf{Example 1 ($\IR^2$):} Find the distance from $\bx_0 = \begin{pmatrix} 4 \\ 3 \end{pmatrix}$ to the line $\H: 3x_1 - 4x_2 + 2 = 0$ and the closest point $\bx^* \in \H$
+    \begin{itemize}
+        \item Here $\bw = (3, -4)^T$ and $b = 2$, so $\|\bw\| = \sqrt{3^2 + (-4)^2} = \sqrt{25} = 5$
+        \item Signed numerator: $\bw^T \bx_0 + b = 3(4) - 4(3) + 2 = 2 > 0$ ($\bx_0$ lies in $\H_+$)
+        \item Distance: $d(\bx_0, \H) = \frac{|2|}{5} = \frac{2}{5} = 0.4$, and closest point:
+        \[
+            \bx^* = \bx_0 - \frac{\bw^T \bx_0 + b}{\|\bw\|^2}\bw = \begin{pmatrix} 4 \\ 3 \end{pmatrix} - \frac{2}{25}\begin{pmatrix} 3 \\ -4 \end{pmatrix} = \begin{pmatrix} 94/25 \\ 83/25 \end{pmatrix}
+        \]
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Example -- Distance to a plane in $\IR^3$}
+    \textbf{Example 2 ($\IR^3$):} Find the distance from $\bx_0 = (1, -2, 3)^T$ to the plane $\H: x_1 + 2x_2 + 2x_3 - 5 = 0$
+    \begin{itemize}
+        \item Here $\bw = (1, 2, 2)^T$, $b = -5$ and $\|\bw\| = \sqrt{1^2 + 2^2 + 2^2} = 3$, so
+        \[
+            d(\bx_0, \H) = \frac{|1(1) + 2(-2) + 2(3) - 5|}{3} = \frac{|-2|}{3} = \frac{2}{3}
+        \]
+    \end{itemize}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%
+\SSsubsection{Linear separability and hard-margin SVM}
+
+\begin{frame}{Linearly separable point sets}
+    \begin{importantdefinition}[Linear separability]
+        Two sets of points $X_+ = \{\bx_i : y_i = +1\}$ and $X_- = \{\bx_i : y_i = -1\}$ in $\IR^d$ are \defword{linearly separable} if there exist $\bw \in \IR^d \setminus \{\b0\}$ and $b \in \IR$ such that
+        \[
+            \bw^T \bx_i + b > 0 \quad \text{for all } \bx_i \in X_+ \qquad \text{and} \qquad \bw^T \bx_i + b < 0 \quad \text{for all } \bx_i \in X_-
+        \]
+    \end{importantdefinition}
+    \vfill
+    \begin{itemize}
+        \item Since $y_i \in \{-1, +1\}$, both inequalities can be written as a single condition:
+        \[
+            y_i(\bw^T \bx_i + b) > 0 \quad \text{for all } i = 1, \ldots, n
+        \]
+        \item Whenever a finite dataset is linearly separable, there are infinitely many separating hyperplanes -- how should we pick the most robust one?
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}[red]{When are point sets not linearly separable? The XOR example}
+    \begin{columns}[c]
+    \begin{column}{0.62\textwidth}
+        Not every two-class dataset in $\IR^2$ is linearly separable
+        \vskip0.1cm
+        \textbf{Example (XOR configuration):}
+        \begin{itemize}
+            \item Let $X_+ = \{(0, 0)^T, (1, 1)^T\}$ ($y = +1$) and $X_- = \{(1, 0)^T, (0, 1)^T\}$ ($y = -1$)
+            \item Suppose $\bw^T \bx + b > 0$ on $X_+$ and $\bw^T \bx + b < 0$ on $X_-$:
+            \begin{align*}
+                \text{on } X_+: &\quad b > 0 \;\;\text{and}\;\; w_1 + w_2 + b > 0 \\
+                \text{on } X_-: &\quad w_1 + b < 0 \;\;\text{and}\;\; w_2 + b < 0
+            \end{align*}
+            \item Adding the first pair gives $w_1 + w_2 + 2b > 0$, whereas adding the second pair gives $w_1 + w_2 + 2b < 0$ -- contradiction!
+        \end{itemize}
+    \end{column}
+    \begin{column}{0.38\textwidth}
+        \centering
+        \begin{tikzpicture}[scale=1.15, >=Latex]
+            \draw[step=1cm, gray!20, very thin] (-0.3, -0.3) grid (1.4, 1.4);
+            \draw[->, gray!60] (-0.3, 0) -- (1.5, 0) node[right, font=\footnotesize] {$x_1$};
+            \draw[->, gray!60] (0, -0.3) -- (0, 1.5) node[above, font=\footnotesize] {$x_2$};
+            \filldraw[blue!80!black] (0, 0) circle (2.5pt) node[below left, font=\scriptsize] {$(0,0): +1$};
+            \filldraw[blue!80!black] (1, 1) circle (2.5pt) node[above right, font=\scriptsize] {$(1,1): +1$};
+            \filldraw[red!80!black] (1, 0) circle (2.5pt) node[below right, font=\scriptsize] {$(1,0): -1$};
+            \filldraw[red!80!black] (0, 1) circle (2.5pt) node[above left, font=\scriptsize] {$(0,1): -1$};
+        \end{tikzpicture}
+    \end{column}
+    \end{columns}
+\end{frame}
+
+
+\begin{frame}{Support vectors and canonical margin hyperplanes}
+    Suppose $(\bw, b)$ separates a finite dataset, so $\min_{1 \le i \le n} y_i(\bw^T \bx_i + b) = m > 0$
+    \vfill
+    Dividing both $\bw$ and $b$ by $m$ does not change the decision boundary $\H = \{\bx : \bw^T \bx + b = 0\}$, and scales the minimum functional margin to $1$:
+    \[
+        y_i(\bw^T \bx_i + b) \ge 1 \quad \text{for all } i = 1, \ldots, n
+    \]
+    \vfill
+    In this \defword{canonical form}, the slab free of training points is bounded by two parallel hyperplanes:
+    \begin{itemize}
+        \item $\H_{+1} = \{\bx \in \IR^d : \bw^T \bx + b = +1\}$ (positive margin boundary)
+        \item $\H_{-1} = \{\bx \in \IR^d : \bw^T \bx + b = -1\}$ (negative margin boundary)
+    \end{itemize}
+    \vfill
+    The training points $\bx_i$ that lie directly on $\H_{+1}$ or $\H_{-1}$ (satisfying $y_i(\bw^T \bx_i + b) = 1$) are called \defword{support vectors}
+\end{frame}
+
+
+\begin{frame}{Geometric derivation of the SVM margin width}
+    Using Theorem~\ref{th:distance-point-hyperplane}, how wide is the margin between $\H_{+1}$ and $\H_{-1}$?
+    \begin{columns}[c]
+    \begin{column}{0.54\textwidth}
+        \vskip0.2cm
+        \begin{itemize}
+            \item For any point $\bx_+ \in \H_{+1}$, we have $\bw^T \bx_+ + b = +1$, so its distance to $\H$ is
+            \[
+                d(\bx_+, \H) = \frac{|\bw^T \bx_+ + b|}{\|\bw\|} = \frac{1}{\|\bw\|}
+            \]
+            \item For any point $\bx_- \in \H_{-1}$, we have $\bw^T \bx_- + b = -1$, so its distance to $\H$ is also $\frac{1}{\|\bw\|}$
+            \item Therefore, the total \defword{margin width} between $\H_{+1}$ and $\H_{-1}$ is
+            \[
+                \gamma = \frac{2}{\|\bw\|}
+            \]
+        \end{itemize}
+    \end{column}
+    \begin{column}{0.46\textwidth}
+        \centering
+        \begin{tikzpicture}[scale=0.78, >=Latex]
+            % Coordinate axes
+            \draw[->, gray!50, thick] (-0.3, 0) -- (4.2, 0) node[right, font=\footnotesize] {$x_1$};
+            \draw[->, gray!50, thick] (0, -0.3) -- (0, 4.2) node[above, font=\footnotesize] {$x_2$};
+            \node[below left, gray!60, font=\scriptsize] at (0, 0) {$\b0$};
+
+            % Support vectors legend in clear upper right
+            \node[font=\tiny, fill=white, inner sep=2.5pt, draw=gray!40] at (3.2, 4.0) {$\bigcirc$ support vectors};
+
+            \begin{scope}[shift={(1.4, 1.5)}, rotate=35]
+                % Margin slab (shaded)
+                \fill[orange!15, opacity=0.7] (-1.9, -1.0) rectangle (1.5, 1.0);
+
+                % Dividing hyperplane H
+                \draw[very thick, black] (-1.9, 0) -- (1.5, 0);
+                \node[right, font=\scriptsize] at (1.5, 0) {$\H: \bw^T\bx + b = 0$};
+
+                % Positive boundary H_+1
+                \draw[thick, blue!80!black, dashed] (-1.9, 1.0) -- (1.5, 1.0);
+                \node[right, font=\scriptsize, blue!80!black] at (1.5, 1.0) {$\H_{+1}: \bw^T\bx + b = +1$};
+
+                % Negative boundary H_-1
+                \draw[thick, red!80!black, dashed] (-1.9, -1.0) -- (1.5, -1.0);
+                \node[right, font=\scriptsize, red!80!black] at (1.5, -1.0) {$\H_{-1}: \bw^T\bx + b = -1$};
+
+                % Total margin width gamma on the far left
+                \draw[<->, thick, purple!85!black] (-1.55, -1.0) -- (-1.55, 1.0);
+                \node[font=\scriptsize, purple!85!black, anchor=center] at (-1.95, 0) {$\gamma = \frac{2}{\|\bw\|}$};
+
+                % Individual half-margins 1/||w||
+                \draw[<->, thick, orange!90!black] (-0.75, 0) -- (-0.75, 1.0);
+                \node[font=\scriptsize, orange!90!black, anchor=center] at (-0.4, 0.5) {$\frac{1}{\|\bw\|}$};
+                \draw[<->, thick, orange!90!black] (-0.75, 0) -- (-0.75, -1.0);
+                \node[font=\scriptsize, orange!90!black, anchor=center] at (-0.4, -0.5) {$\frac{1}{\|\bw\|}$};
+
+                % Normal vector w
+                \draw[->, very thick, black] (0.2, 0) -- (0.2, 1.25)
+                    node[above left=1pt, font=\small] {$\bw$};
+
+                % Right-angle mark for w
+                \draw[gray!60!black, thin] (0.38, 0) -- (0.38, 0.18) -- (0.2, 0.18);
+
+                % Class +1 points (blue circles)
+                \filldraw[blue!80!black] (-1.1, 1.5) circle (2.2pt);
+                \filldraw[blue!80!black] (-0.5, 1.8) circle (2.2pt);
+                \filldraw[blue!80!black] (0.4, 2.1) circle (2.2pt);
+                \filldraw[blue!80!black] (1.1, 1.5) circle (2.2pt);
+                \filldraw[blue!80!black] (-0.1, 2.3) circle (2.2pt);
+
+                % Support vectors for +1 (on H_+1)
+                \coordinate (SV1) at (-0.2, 1.0);
+                \coordinate (SV2) at (0.9, 1.0);
+                \filldraw[blue!80!black] (SV1) circle (2.4pt);
+                \draw[black, thick] (SV1) circle (4.2pt);
+                \filldraw[blue!80!black] (SV2) circle (2.4pt);
+                \draw[black, thick] (SV2) circle (4.2pt);
+
+                % Class -1 points (red dots)
+                \filldraw[red!75!black] (-1.3, -1.5) circle (2.2pt);
+                \filldraw[red!75!black] (-0.5, -1.7) circle (2.2pt);
+                \filldraw[red!75!black] (0.3, -1.7) circle (2.2pt);
+                \filldraw[red!75!black] (1.2, -1.4) circle (2.2pt);
+                \filldraw[red!75!black] (0.7, -2.0) circle (2.2pt);
+
+                % Support vector for -1 (on H_-1)
+                \coordinate (SV3) at (0.0, -1.0);
+                \filldraw[red!75!black] (SV3) circle (2.4pt);
+                \draw[black, thick] (SV3) circle (4.2pt);
+
+            \end{scope}
+
+        \end{tikzpicture}
+    \end{column}
+    \end{columns}
+\end{frame}
+
+
+\begin{frame}{Hard-margin support vector machine (SVM)}
+    To make the separating slab as wide as possible, we want to maximise $\gamma = \frac{2}{\|\bw\|}$, which is equivalent to minimising $\|\bw\|$ (or $\frac{1}{2}\|\bw\|^2$):
+    \[
+        \min_{\bw \in \IR^d,\, b \in \IR} \frac{1}{2}\|\bw\|^2 \quad \text{subject to} \quad y_i(\bw^T \bx_i + b) \ge 1 \quad \text{for } i = 1, \ldots, n
+    \]
+    \vfill
+    \begin{itemize}
+        \item This is the \defword{hard-margin support vector machine (SVM)} optimisation problem
+        \vfill
+        \item The optimal hyperplane is completely determined by the support vectors lying on the margin boundaries $\bw^T \bx_i + b = \pm 1$
+        \vfill
+        \item For small problems in $\IR^2$, we can find $(\bw, b)$ directly by \textbf{geometry and linear equations}, without any Lagrange multiplier machinery
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Example 1 -- Hard-margin SVM for 2 points in $\IR^2$}
+    \textbf{Problem:} Find the canonical maximum-margin hyperplane $(\bw, b)$, decision boundary and margin width $\gamma$ for
+    \[
+        \bx_1 = \begin{pmatrix} 1 \\ 1 \end{pmatrix} \;\; (y_1 = -1) \qquad \text{and} \qquad \bx_2 = \begin{pmatrix} 3 \\ 5 \end{pmatrix} \;\; (y_2 = +1)
+    \]
+    \vfill
+    \textbf{Step 1 (Geometry):}
+    \begin{itemize}
+        \item With one point in each class, both $\bx_1$ and $\bx_2$ are support vectors, and the decision boundary $\H$ is the perpendicular bisector of the segment $\bx_1 \bx_2$
+        \item The normal vector $\bw$ must point from $\bx_1$ ($y_1 = -1$) towards $\bx_2$ ($y_2 = +1$), so $\bw$ is a positive multiple of $\bx_2 - \bx_1$:
+        \[
+            \bx_2 - \bx_1 = \begin{pmatrix} 3 - 1 \\ 5 - 1 \end{pmatrix} = \begin{pmatrix} 2 \\ 4 \end{pmatrix} \quad \implies \quad \bw = \alpha \begin{pmatrix} 1 \\ 2 \end{pmatrix} \quad (\alpha > 0)
+        \]
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Example 1 -- Scaling $(\bw, b)$ and computing the margin}
+    \textbf{Step 2 (Canonical equations):} Since $\bx_1 \in \H_{-1}$ and $\bx_2 \in \H_{+1}$, we require
+    \[
+        \bw^T \bx_1 + b = -1 \qquad \text{and} \qquad \bw^T \bx_2 + b = +1
+    \]
+    \begin{itemize}
+        \item Subtracting the first equation from the second gives $\bw^T(\bx_2 - \bx_1) = 2$:
+        \[
+            \alpha \begin{pmatrix} 1 & 2 \end{pmatrix} \begin{pmatrix} 2 \\ 4 \end{pmatrix} = 2 \iff 10\alpha = 2 \iff \alpha = \frac{1}{5} \quad \implies \quad \bw = \begin{pmatrix} 1/5 \\ 2/5 \end{pmatrix}
+        \]
+        \item Substituting $\bw$ into $\bw^T \bx_1 + b = -1$ gives the offset $b$:
+        \[
+            \frac{1}{5}(1) + \frac{2}{5}(1) + b = -1 \quad \implies \quad b = -1 - \frac{3}{5} = -\frac{8}{5}
+        \]
+    \end{itemize}
+    \vfill
+    \textbf{Step 3 (Decision boundary and margin width):}
+    \begin{itemize}
+        \item Decision boundary: $\frac{1}{5}x_1 + \frac{2}{5}x_2 - \frac{8}{5} = 0 \iff x_1 + 2x_2 - 8 = 0$ (passes through the midpoint $\bm{m} = (2, 3)^T$)
+        \item Margin width: $\|\bw\| = \sqrt{(1/5)^2 + (2/5)^2} = \frac{1}{\sqrt{5}}$, so $\gamma = \frac{2}{\|\bw\|} = 2\sqrt{5} = \|\bx_2 - \bx_1\|$
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Example 2 -- Hard-margin SVM for 3 points in $\IR^2$}
+    \begin{columns}[c]
+    \begin{column}{0.58\textwidth}
+        \textbf{Problem:} Find $(\bw, b)$ and margin $\gamma$ for:
+        \begin{itemize}
+            \item Class $-1$: $\bx_1 = (1, 1)^T$ and $\bx_2 = (3, 1)^T$
+            \item Class $+1$: $\bx_3 = (2, 3)^T$
+        \end{itemize}
+        \vskip0.15cm
+        \textbf{Step 1 (Direction of the boundary):}
+        \begin{itemize}
+            \item Both $\bx_1$ and $\bx_2$ belong to class $-1$ and are equidistant from $\bx_3$, so all three points are support vectors
+            \item Since $\bx_1, \bx_2 \in \H_{-1}$, the vector $\bx_2 - \bx_1 = (2, 0)^T$ lies along $\H_{-1}$
+            \item By orthogonality, $\bw^T(\bx_2 - \bx_1) = 2w_1 = 0 \implies w_1 = 0$, so $\bw = (0, w_2)^T$
+        \end{itemize}
+    \end{column}
+    \begin{column}{0.42\textwidth}
+        \centering
+        \begin{tikzpicture}[scale=0.9, >=Latex]
+            \draw[step=1cm, gray!20, very thin] (0, 0) grid (4, 4);
+            \draw[->, gray!60] (0, 0) -- (4.2, 0) node[right, font=\footnotesize] {$x_1$};
+            \draw[->, gray!60] (0, 0) -- (0, 4.2) node[above, font=\footnotesize] {$x_2$};
+            \fill[gray!12] (0, 1) rectangle (4, 3);
+            \draw[dashed, thick, red!70!black] (0, 1) -- (4, 1) node[right, font=\scriptsize] {$\H_{-1}$};
+            \draw[very thick, black] (0, 2) -- (4, 2) node[right, font=\scriptsize] {$\H$};
+            \draw[dashed, thick, blue!70!black] (0, 3) -- (4, 3) node[right, font=\scriptsize] {$\H_{+1}$};
+            \filldraw[red!80!black] (1, 1) circle (2.5pt) node[below, font=\footnotesize] {$\bx_1(1,1)$};
+            \filldraw[red!80!black] (3, 1) circle (2.5pt) node[below, font=\footnotesize] {$\bx_2(3,1)$};
+            \filldraw[blue!80!black] (2, 3) circle (2.5pt) node[above, font=\footnotesize] {$\bx_3(2,3)$};
+            \draw[<->, thick, teal!80!black] (0.5, 1) -- (0.5, 3) node[midway, left, font=\scriptsize] {$\gamma=2$};
+        \end{tikzpicture}
+    \end{column}
+    \end{columns}
+\end{frame}
+
+
+\begin{frame}{Example 2 -- Solving the linear equations}
+    \textbf{Step 2 (Canonical equations):} Substituting $\bw = (0, w_2)^T$ into $\bw^T \bx_i + b = y_i$ for the support vectors gives
+    \begin{align*}
+        \text{at } \bx_1 = (1, 1)^T \text{ and } \bx_2 = (3, 1)^T: \quad w_2(1) + b &= -1 \\
+        \text{at } \bx_3 = (2, 3)^T: \quad w_2(3) + b &= +1
+    \end{align*}
+    \vfill
+    \begin{itemize}
+        \item Subtracting the first equation from the second gives $2w_2 = 2 \implies w_2 = 1$
+        \item Substituting $w_2 = 1$ into $w_2 + b = -1$ gives $b = -2$, so
+        \[
+            \bw = \begin{pmatrix} 0 \\ 1 \end{pmatrix} \qquad \text{and} \qquad b = -2
+        \]
+        \item Decision boundary: $x_2 - 2 = 0$ (the horizontal line $x_2 = 2$)
+        \item Margin width: $\|\bw\| = 1 \implies \gamma = \frac{2}{\|\bw\|} = 2$
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}{What if we add non-support-vector points?}
+    Suppose we add two more points to Example 2:
+    \[
+        \bx_4 = \begin{pmatrix} 2 \\ 5 \end{pmatrix} \;\; (y_4 = +1) \qquad \text{and} \qquad \bx_5 = \begin{pmatrix} 2 \\ -1 \end{pmatrix} \;\; (y_5 = -1)
+    \]
+    \vfill
+    \begin{itemize}
+        \item Check the functional margin $y_i(\bw^T \bx_i + b) = y_i(x_{i2} - 2)$ at the new points:
+        \begin{align*}
+            y_4(\bw^T \bx_4 + b) &= (+1)(5 - 2) = 3 > 1 \\
+            y_5(\bw^T \bx_5 + b) &= (-1)(-1 - 2) = 3 > 1
+        \end{align*}
+        \vfill
+        \item Because both points lie strictly outside the margin slab (with $y_i(\bw^T \bx_i + b) > 1$), they are \textbf{not support vectors}
+        \vfill
+        \item Moving or deleting $\bx_4$ and $\bx_5$ (as long as they stay outside the margin) does \textbf{not} change $(\bw, b)$ at all!
+    \end{itemize}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+\SSsection{Least-squares classification}
+
+\begin{frame}{Framing classification as linear least squares}
+    Can we fit a linear classifier $\hat{y}(\bx) = \sgn(\bw^T \bx + b)$ using the method of least squares from Unit 03?
+    \vfill
+    We ask the affine score $f(\bx_i) = \bw^T \bx_i + b$ to match the numeric class label $y_i \in \{-1, +1\}$ as closely as possible:
+    \[
+        \bw^T \bx_i + b \approx y_i \quad \text{for } i = 1, \ldots, n
+    \]
+    \vfill
+    To write this as a single matrix product, absorb the intercept $b$ by defining the \defword{augmented feature vector} and \defword{augmented weight vector}:
+    \[
+        \tilde{\bx}_i = \begin{pmatrix} \bx_i \\ 1 \end{pmatrix} \in \IR^{d+1}, \qquad \tilde{\bw} = \begin{pmatrix} \bw \\ b \end{pmatrix} \in \IR^{d+1}
+    \]
+    so that $\bw^T \bx_i + b = \tilde{\bx}_i^T \tilde{\bw}$
+\end{frame}
+
+
+\begin{frame}{Matrix formulation and normal equations}
+    Stack the augmented rows $\tilde{\bx}_i^T$ into the design matrix $X \in \M_{n, d+1}$ and the labels into $\by \in \{-1, +1\}^n$:
+    \[
+        X = \begin{pmatrix} \bx_1^T & 1 \\ \vdots & \vdots \\ \bx_n^T & 1 \end{pmatrix} \in \M_{n, d+1}, \qquad
+        \by = \begin{pmatrix} y_1 \\ \vdots \\ y_n \end{pmatrix} \in \IR^n
+    \]
+    \vfill
+    Minimising the sum of squared errors $\|X\tilde{\bw} - \by\|^2 = \sum_{i=1}^n (\bw^T \bx_i + b - y_i)^2$ yields the \defword{normal equations}:
+    \[
+        X^T X \tilde{\bw} = X^T \by \quad \implies \quad \tilde{\bw} = (X^T X)^{-1} X^T \by
+    \]
+    \vfill
+    \begin{itemize}
+        \item What we are explaining here \textbf{only works when we have more observations than features}: we require $n \ge d + 1$ and $\rank(X) = d + 1$ for $X^T X \in \M_{d+1}$ to be invertible
+        \vfill
+        \item If $n < d + 1$ or if features are collinear, $X^T X$ is singular and $(X^T X)^{-1}$ does not exist
+    \end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{Example -- 4-point least-squares classifier in $\IR^2$}
+    \textbf{Problem:} Find the least-squares linear classifier $(\bw, b)$ for the $n = 4$ points:
+    \begin{itemize}
+        \item Class $-1$ ($y_1 = y_2 = -1$): $\bx_1 = \begin{pmatrix} -1 \\ 0 \end{pmatrix}$ and $\bx_2 = \begin{pmatrix} 0 \\ -1 \end{pmatrix}$
+        \item Class $+1$ ($y_3 = y_4 = +1$): $\bx_3 = \begin{pmatrix} 1 \\ 0 \end{pmatrix}$ and $\bx_4 = \begin{pmatrix} 0 \\ 1 \end{pmatrix}$
+    \end{itemize}
+    \vfill
+    \textbf{Step 1 (Set up $X$ and $\by$):}
+    \[
+        X = \begin{pmatrix}
+            -1 & 0 & 1 \\
+             0 & -1 & 1 \\
+             1 & 0 & 1 \\
+             0 & 1 & 1
+        \end{pmatrix} \in \M_{4, 3}, \qquad
+        \by = \begin{pmatrix} -1 \\ -1 \\ 1 \\ 1 \end{pmatrix} \in \IR^4
+    \]
+\end{frame}
+
+
+\begin{frame}{Example -- Solving the normal equations by hand}
+    \textbf{Step 2 (Compute $X^T X$ and $X^T \by$):}
+    \[
+        X^T X = \begin{pmatrix}
+            -1 & 0 & 1 & 0 \\
+             0 & -1 & 0 & 1 \\
+             1 & 1 & 1 & 1
+        \end{pmatrix}
+        \begin{pmatrix}
+            -1 & 0 & 1 \\
+             0 & -1 & 1 \\
+             1 & 0 & 1 \\
+             0 & 1 & 1
+        \end{pmatrix}
+        = \begin{pmatrix}
+            2 & 0 & 0 \\
+            0 & 2 & 0 \\
+            0 & 0 & 4
+        \end{pmatrix}, \qquad
+        X^T \by = \begin{pmatrix} 2 \\ 2 \\ 0 \end{pmatrix}
+    \]
+    \vfill
+    \textbf{Step 3 (Solve for $\tilde{\bw}$):} Since $X^T X = \diag(2, 2, 4)$ is diagonal, its inverse is immediate:
+    \[
+        \tilde{\bw} = (X^T X)^{-1} X^T \by = \begin{pmatrix} 1/2 & 0 & 0 \\ 0 & 1/2 & 0 \\ 0 & 0 & 1/4 \end{pmatrix} \begin{pmatrix} 2 \\ 2 \\ 0 \end{pmatrix} = \begin{pmatrix} 1 \\ 1 \\ 0 \end{pmatrix}
+        \implies \bw = \begin{pmatrix} 1 \\ 1 \end{pmatrix}, \;\; b = 0
+    \]
+    \vfill
+    The decision boundary is $\bw^T \bx + b = x_1 + x_2 = 0$ (the line $x_2 = -x_1$), which separates the two classes cleanly
+\end{frame}
+
+
+\begin{frame}{Example -- Fitted values, residuals and classifying new points}
+    With $\tilde{\bw} = (1, 1, 0)^T$ ($\bw = (1, 1)^T$ and $b = 0$), let us check the fitted scores $\hat{\by} = X\tilde{\bw}$ and residual vector $\be = \by - \hat{\by}$:
+    \[
+        \hat{\by} = X\tilde{\bw} = \begin{pmatrix} -1 & 0 & 1 \\ 0 & -1 & 1 \\ 1 & 0 & 1 \\ 0 & 1 & 1 \end{pmatrix} \begin{pmatrix} 1 \\ 1 \\ 0 \end{pmatrix} = \begin{pmatrix} -1 \\ -1 \\ 1 \\ 1 \end{pmatrix} = \by \quad \implies \quad \be = \by - X\tilde{\bw} = \b0
+    \]
+    \vfill
+    \begin{itemize}
+        \item Because these 4 points happen to lie on the lines $x_1 + x_2 = -1$ and $x_1 + x_2 = +1$, the least-squares residual is zero!
+        \item For a new observation $\bx_{\text{new}} = \begin{pmatrix} 2 \\ -0.5 \end{pmatrix}$, we compute $\bw^T \bx_{\text{new}} + b = 2 - 0.5 = 1.5 > 0$, so $\hat{y}(\bx_{\text{new}}) = \sgn(1.5) = +1$
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Sensitivity of least-squares classification to outliers}
+    Why is least squares not always suitable for classification?
+    \vfill
+    \begin{itemize}
+        \item The squared error $(\bw^T \bx_i + b - y_i)^2$ penalises predictions that are \textbf{too far on the correct side} of the decision boundary
+        \vfill
+        \item Suppose a point with $y_i = +1$ lies deep inside $\H_+$ so that $\bw^T \bx_i + b = 10 > 0$: it is \emph{correctly classified}, yet least squares assigns a large squared penalty $(10 - 1)^2 = 81$
+        \vfill
+        \item To shrink that large residual, least squares tilts and shifts the hyperplane towards the extreme point, which can push the boundary across points near the margin and cause misclassifications
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]{R: least-squares classifier and outlier sensitivity}
+    Compare the 4-point least-squares boundary before and after adding a single ``easy'' Class $+1$ point at $\bx_5 = (8, -2)^T$ (which lies well inside $x_1 + x_2 > 0$)
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hldef{X4} \hlkwb{=} \hlkwd{matrix}\hldef{(}\hlkwd{c}\hldef{(}\hlopt{-}\hlnum{1}\hldef{,} \hlnum{0}\hldef{,} \hlnum{1}\hldef{,}  \hlnum{0}\hldef{,} \hlopt{-}\hlnum{1}\hldef{,} \hlnum{1}\hldef{,}  \hlnum{1}\hldef{,} \hlnum{0}\hldef{,} \hlnum{1}\hldef{,}  \hlnum{0}\hldef{,} \hlnum{1}\hldef{,} \hlnum{1}\hldef{),}
+            \hlkwc{nrow} \hldef{=} \hlnum{4}\hldef{,} \hlkwc{byrow} \hldef{=} \hlnum{TRUE}\hldef{)}
+\hldef{y4} \hlkwb{=} \hlkwd{c}\hldef{(}\hlopt{-}\hlnum{1}\hldef{,} \hlopt{-}\hlnum{1}\hldef{,} \hlnum{1}\hldef{,} \hlnum{1}\hldef{)}
+\hldef{w_tilde_4} \hlkwb{=} \hlkwd{solve}\hldef{(}\hlkwd{t}\hldef{(X4)} \hlopt{%*%} \hldef{X4,} \hlkwd{t}\hldef{(X4)} \hlopt{%*%} \hldef{y4)}
+\hlcom{# Add one outlier far on the correct (+1) side: x5 = (8, -2)^T}
+\hldef{X5} \hlkwb{=} \hlkwd{rbind}\hldef{(X4,} \hlkwd{c}\hldef{(}\hlnum{8}\hldef{,} \hlopt{-}\hlnum{2}\hldef{,} \hlnum{1}\hldef{)); y5} \hlkwb{=} \hlkwd{c}\hldef{(y4,} \hlnum{1}\hldef{)}
+\hldef{w_tilde_5} \hlkwb{=} \hlkwd{solve}\hldef{(}\hlkwd{t}\hldef{(X5)} \hlopt{%*%} \hldef{X5,} \hlkwd{t}\hldef{(X5)} \hlopt{%*%} \hldef{y5)}
+\hlkwd{cbind}\hldef{(}\hlkwc{w_4pts} \hldef{=} \hlkwd{round}\hldef{(w_tilde_4,} \hlnum{3}\hldef{),} \hlkwc{w_5pts} \hldef{=} \hlkwd{round}\hldef{(w_tilde_5,} \hlnum{3}\hldef{))}
+\end{alltt}
+\begin{verbatim}
+##      [,1]   [,2]
+## [1,]    1  0.433
+## [2,]    1  1.142
+## [3,]    0 -0.035
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+
+\maxFrameImage{FIGS/U06-ls-outlier-plot-1.pdf}
+
+
+\begin{frame}{Ridge regularisation when $X^T X$ is singular}
+    What if we have more features than observations ($n < d + 1$) or collinear features?
+    \vfill
+    \begin{itemize}
+        \item In that case, $\rank(X) < d + 1$, so $X^T X$ is singular and cannot be inverted
+        \vfill
+        \item To fix this, we add a \defword{ridge penalty} with regularisation parameter $\lambda > 0$:
+        \[
+            \min_{\tilde{\bw} \in \IR^{d+1}} \left(\|X\tilde{\bw} - \by\|^2 + \lambda \|\tilde{\bw}\|^2\right)
+        \]
+        \vfill
+        \item Setting the gradient to zero yields the regularised normal equations:
+        \[
+            (X^T X + \lambda \II) \tilde{\bw} = X^T \by \quad \implies \quad \tilde{\bw}_{\text{ridge}} = (X^T X + \lambda \II)^{-1} X^T \by
+        \]
+        \vfill
+        \item Adding $\lambda \II$ shifts all eigenvalues of $X^T X$ by $+\lambda > 0$: all its eigenvalues are strictly positive (we call such a matrix \defword{positive definite}; we will discuss this in more detail later), which guarantees that it is always invertible
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Summary -- Comparing linear projection and classification methods}
+    \centering
+    \renewcommand{\arraystretch}{1.45}
+    \scriptsize
+    \begin{tabular}{@{}lccc@{}}
+        \toprule
+        \textbf{Method} & \textbf{Supervised?} & \textbf{Criterion optimised} & \textbf{Linear algebraic solution} \\
+        \midrule
+        \textbf{PCA} (Unit 05) & No & Max variance $\bw^T \Sigma \bw$ & Top eigenvector of $\Sigma$ \\
+        \textbf{Hard-margin SVM} & Yes & Max margin $\dfrac{2}{\|\bw\|}$ & Support vectors $\bw^T \bx_i + b = \pm 1$ \\
+        \textbf{Least squares} & Yes & Min error $\|X\tilde{\bw} - \by\|^2$ & $\tilde{\bw} = (X^T X)^{-1} X^T \by$ \\
+        \bottomrule
+    \end{tabular}
+\end{frame}
+
+
+
+
+% Save counters for next file
+
+% Save theorem count for next file
+\end{document}
