@@ -38,29 +38,9 @@ Feel free to use the material in these slides or in the folders. If you find thi
 
 The file with [all the slides](https://julien-arino.github.io/math-of-data-science/SLIDES/all-slides.pdf)
 
-### Old slides
-The following are the slides I used in previous years. I am including them until I have completed the change to the new slide set.
-<ul>
-{% for file in site.static_files %}
-  {% if file.path contains 'OLD-SLIDES' %}
-    {% if file.path contains 'math-2740' %}
-      {% if file.path contains 'html' %}
-        <li><a href="https://julien-arino.github.io/math-of-data-science/OLD-SLIDES/{{ file.basename }}.html">{{ file.basename }}</a></li>
-      {% endif %}
-      {% if file.path contains 'pdf' %}
-        {% unless file.path contains 'LightBoard' %}
-          <li><a href="https://julien-arino.github.io/math-of-data-science/OLD-SLIDES/{{ file.basename }}.pdf">{{ file.basename }}</a></li>
-        {% endunless %}
-      {% endif %}
-    {% endif %}
-  {% endif %}
-{% endfor %}
-</ul>
-
-
 ### Lecture notes
 
-Some lecture notes are available [here](lecture-notes/MATH2740.pdf). Beware: these are not complete!
+Lecture notes are posted on UM Learn.
 
 ### Videos
 
