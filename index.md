@@ -6,9 +6,11 @@ Here, you will find the publicly available information: code, slides and some ge
 
 ### Fall 2026 format
 
+The course content is evolving this year, with graph theory becoming much less important in the second part of the course to avoid having to introduce another entire theoretical topic.
+
 The course evaluation consists of Lab Tests (held during tutorials), a two-hour Midterm Examination and a Final Examination.
 
-**Office Hours:** TBD. Because of the ongoing renovation of Machray Hall, office hours will be strictly limited to the posted times once they are determined.
+**Office Hours:** Tuesdays 14:00-16:00 in 316 St Paul's. I can also see you from 16:00-18:00 on Tuesdays in the same location but please get in touch by email or in person during class to ensure I am there for that second block. Because of the ongoing renovation of Machray Hall, office hours are strictly limited to the above.
 
 **Exercises:** The standalone booklet of exercises has answers, but these are posted after the corresponding tutorial.
 
