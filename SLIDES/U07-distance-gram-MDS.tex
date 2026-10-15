@@ -839,7 +839,7 @@ In particular, if the points in $X$ are already centred at the origin ($C_n X = 
 \end{importanttheorem}
 \end{frame}
 
-\begin{frame}[red]{Proof of Theorem~\ref{th:double_centring}}
+\begin{frame}{Proof of Theorem~\ref{th:double_centring}}
 By Theorem~\ref{th:D2_from_G}, $D^{(2)} = \bg\11^T - 2G + \11\bg^T$, where $G = XX^T$ and $\bg = \diag(G)$
 \vfill
 Multiply $D^{(2)}$ on the left by $C_n$ and on the right by $C_n$:
@@ -881,8 +881,6 @@ Consequently, every row sum and every column sum of $B$ is zero: $B\11 = \b0$ an
 \SSsubsection{Coordinate recovery via spectral decomposition}
 
 \begin{frame}{The classical MDS algorithm}
-Combining double centring (Theorem~\ref{th:double_centring}) with spectral factorisation (Theorem~\ref{th:psd_is_gram}) gives the complete algorithm for \defword{classical multidimensional scaling}:
-\vfill
 \begin{importantdefinition}[Classical MDS algorithm]
 Given an $n\times n$ distance or dissimilarity matrix $D = [d_{ij}]\in\M_n(\IR)$ and a target embedding dimension $k\in\{1,\ldots,n-1\}$:
 \begin{enumerate}
@@ -908,8 +906,8 @@ Let $D = [d_{ij}]\in\M_n(\IR)$ be a symmetric hollow matrix ($d_{ii}=0$, $d_{ij}
 \item The smallest dimension $r$ in which the $n$ points can be isometrically embedded in $\IR^r$ is $r = \rank(B)$ (the number of strictly positive eigenvalues of $B$), and $r \le n-1$
 \end{enumerate}
 \end{importanttheorem}
-\vfill
-\textbf{Proof idea}: ($\Rightarrow$) If $d_{ij} = \|\bx_i - \bx_j\|$ for points in $\IR^r$, then by Theorem~\ref{th:double_centring}, $B = \tilde{X}\tilde{X}^T$ is a Gram matrix, hence PSD of rank $\le r$ by Theorem~\ref{th:gram_properties}. ($\Leftarrow$) If $B$ is PSD of rank $r$, then by Theorem~\ref{th:psd_is_gram}, $B = XX^T$ for $X = V_r\Lambda_r^{1/2}\in\M_{nr}(\IR)$, whose squared distances satisfy $d_{ij}^2 = b_{ii} - 2b_{ij} + b_{jj}$ \hfill\qed
+% \vfill
+% \textbf{Proof idea}: ($\Rightarrow$) If $d_{ij} = \|\bx_i - \bx_j\|$ for points in $\IR^r$, then by Theorem~\ref{th:double_centring}, $B = \tilde{X}\tilde{X}^T$ is a Gram matrix, hence PSD of rank $\le r$ by Theorem~\ref{th:gram_properties}. ($\Leftarrow$) If $B$ is PSD of rank $r$, then by Theorem~\ref{th:psd_is_gram}, $B = XX^T$ for $X = V_r\Lambda_r^{1/2}\in\M_{nr}(\IR)$, whose squared distances satisfy $d_{ij}^2 = b_{ii} - 2b_{ij} + b_{jj}$ \hfill\qed
 \end{frame}
 
 \begin{frame}{Dimensionality reduction, strain and goodness of fit}
