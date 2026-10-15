@@ -337,7 +337,7 @@ How do we find what new basis to look at our data in?
 %%%%%%%%%%%%%%%%%%%%%
 \SSsubsection{A simple example}
 
-\begin{frame}{Worked example: change of basis}
+\begin{frame}{Example: change of basis}
 \begin{columns}[c]
 \begin{column}{0.58\textwidth}
 \textbf{Problem:} Find the change of basis matrix from basis $\B$ to basis $\C$ in $\IR^2$, where
@@ -733,18 +733,9 @@ More than the exact value, the sign is important:
 \end{itemize}
 \end{frame}
 
-\begin{frame}{The covariance matrix (we usually have more than 2 variables)}
-\begin{definition}
+\begin{frame}{The covariance matrix}
+\begin{definition}[Covariance matrix]
 Suppose $p$ random variables $X_1,\ldots,X_p$. Then the covariance matrix is the symmetric matrix
-\[
-\begin{pmatrix}
-\cov(X_1,X_1) & \cov(X_1,X_2) & \cdots & \cov(X_1,X_p) \\
-\cov(X_2,X_1) & \cov(X_2,X_2) & \cdots & \cov(X_2,X_p) \\
-\vdots & \vdots & & \vdots \\
-\cov(X_p,X_1) & \cov(X_p,X_2) & \cdots & \cov(X_p,X_p) 
-\end{pmatrix}
-\]
-i.e., using the properties of covariance,
 \[
 \begin{pmatrix}
 \Var X_1 & \cov(X_1,X_2) & \cdots & \cov(X_1,X_p) \\
@@ -754,11 +745,19 @@ i.e., using the properties of covariance,
 \end{pmatrix}
 \]
 \end{definition}
+\vfill
+The actual form of the matrix is below but the form above stems from the properties of covariance
+\[
+\begin{pmatrix}
+\cov(X_1,X_1) & \cov(X_1,X_2) & \cdots & \cov(X_1,X_p) \\
+\cov(X_2,X_1) & \cov(X_2,X_2) & \cdots & \cov(X_2,X_p) \\
+\vdots & \vdots & & \vdots \\
+\cov(X_p,X_1) & \cov(X_p,X_2) & \cdots & \cov(X_p,X_p) 
+\end{pmatrix}
+\]
 \end{frame}
 
-\begin{frame}{Covariance matrix}
-$\Sigma$ the covariance matrix of the random variable, $S_X$ the sample covariance matrix
-\vfill
+\begin{frame}{Sample covariance matrix}
 $X\in\M_{mp}$ the data, then the (sample) covariance matrix $S_X$ takes the form
 \[
 S_X = \frac{1}{n-1}X^TX
