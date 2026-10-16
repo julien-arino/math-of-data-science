@@ -49,9 +49,9 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 \vfill
 \item Computers cannot perform calculus or geometry directly on strings of characters
 \vfill
-\item In this unit, we turn discrete text corpora into \defword{sparse non-negative matrices} and apply three core tools of linear algebra:
+\item In this unit, we turn discrete text corpora into \defword{sparse non-negative data matrices} and apply three core tools of linear algebra:
 \begin{enumerate}
-\item \textbf{Diagonal matrix scaling} (TF-IDF) to reweight rows and columns
+\item \textbf{Diagonal matrix scaling} (TF-IDF) to normalise rows (documents) and reweight columns (terms)
 \item \textbf{Inner products and angles} (cosine similarity) to measure semantic similarity in high dimensions
 \item \textbf{Constrained low-rank factorisation} (Non-negative Matrix Factorisation via Alternating Least Squares) to discover latent topics
 \end{enumerate}
@@ -71,9 +71,9 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 \vfill
 \item Why? Mathematical models are built on vector spaces, inner products and matrix factorisations rather than dictionary definitions
 \vfill
-\item The \defword{vector space model} (\defword{VSM}), introduced in information retrieval by Salton, Wong and Yang (1975), represents documents and words as vectors in $\IR^m$ so that the geometry of the space reflects semantic relationships
+\item The \defword{vector space model} (\defword{VSM}), introduced in information retrieval by Salton, Wong and Yang (1975), represents documents and words as vectors in $\IR^p$ so that the geometry of the space reflects semantic relationships
 \vfill
-\item Documents or words with similar meaning are mapped to vectors pointing in similar directions in $\IR^m$
+\item Documents or words with similar meaning are mapped to vectors pointing in similar directions in $\IR^p$
 \end{itemize}
 \end{frame}
 
@@ -126,23 +126,23 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 [\code{"the"},\; \code{"cat"},\; \code{"sat"},\; \code{"on"},\; \code{"the"},\; \code{"mat"}]
 \]
 \vfill
-\item Each unique token in our collection is assigned an integer index $i \in \{1,\ldots,m\}$ from a fixed vocabulary, yielding an integer sequence such as $[1, 2, 3, 4, 1, 5]$
+\item Each unique token in our collection is assigned an integer feature index $j \in \{1,\ldots,p\}$ from a fixed vocabulary, yielding an integer sequence such as $[5, 1, 4, 3, 5, 2]$
 \end{itemize}
 \end{frame}
 
 
 \begin{frame}{Vocabulary and standard basis (one-hot) vectors}
 \begin{importantdefinition}[Vocabulary and tokenisation]
-A \defword{vocabulary} $V = \{w_1, w_2, \ldots, w_m\}$ is an ordered set of $m = |V|$ distinct tokens. \defword{Tokenisation} maps a raw document $d$ to a finite sequence of tokens $(t_1, t_2, \ldots, t_L)$ with each $t_\ell \in V$
+A \defword{vocabulary} $V = \{w_1, w_2, \ldots, w_p\}$ is an ordered set of $p = |V|$ distinct tokens (serving as the $p$ features). \defword{Tokenisation} maps a raw document $d$ to a finite sequence of tokens $(t_1, t_2, \ldots, t_L)$ with each $t_\ell \in V$
 \end{importantdefinition}
 \vfill
 \begin{importantdefinition}[One-hot representation of a token]
-Given a vocabulary $V = \{w_1, \ldots, w_m\}$ of size $m$, the \defword{one-hot vector} associated with token $w_i \in V$ is the $i$-th standard basis vector $\be_i \in \IR^m$, whose $k$-th entry is
+Given a vocabulary $V = \{w_1, \ldots, w_p\}$ of size $p$, the \defword{one-hot vector} associated with token $w_j \in V$ is the $j$-th standard basis vector $\be_j \in \IR^p$, whose $k$-th entry is
 \[
-(\be_i)_k = \delta_{ik} =
+(\be_j)_k = \delta_{jk} =
 \begin{cases}
-1 & \textrm{if } k = i \\
-0 & \textrm{if } k \neq i
+1 & \textrm{if } k = j \\
+0 & \textrm{if } k \neq j
 \end{cases}
 \]
 \end{importantdefinition}
@@ -162,18 +162,18 @@ Given a vocabulary $V = \{w_1, \ldots, w_m\}$ of size $m$, the \defword{one-hot 
     \node[left, xshift=-0.3cm, font=\small] at (vector-2-1.west) {Index 2: \code{"dog"}};
     \node[left, xshift=-0.3cm, font=\small\bfseries, color=orange!90!black] at (vector-3-1.west) {Index 3: \code{"matrix"}};
     \node[left, xshift=-0.3cm, font=\small] at (vector-4-1.west) {Index 4: \code{"vector"}};
-    \node[left, xshift=-0.3cm, font=\small] at (vector-6-1.west) {Index $m$: \code{"zebra"}};
-    \node[right, xshift=0.3cm, font=\normalsize] at (vector.east) {$= \be_3 \in \IR^m$};
+    \node[left, xshift=-0.3cm, font=\small] at (vector-6-1.west) {Index $p$: \code{"zebra"}};
+    \node[right, xshift=0.3cm, font=\normalsize] at (vector.east) {$= \be_3 \in \IR^p$};
 \end{tikzpicture}
 \end{center}
 \end{column}
 \begin{column}{0.55\textwidth}
 \begin{itemize}
-\item The set $\{\be_1, \ldots, \be_m\}$ is the standard orthonormal basis of $\IR^m$
+\item The set $\{\be_1, \ldots, \be_p\}$ is the standard orthonormal basis of $\IR^p$
 \vfill
-\item For any two distinct tokens $w_i \neq w_j$:
+\item For any two distinct tokens $w_j \neq w_k$:
 \[
-\be_i \bullet \be_j = 0 \quad\textrm{and}\quad \|\be_i - \be_j\|_2 = \sqrt{2}
+\be_j \bullet \be_k = 0 \quad\textrm{and}\quad \|\be_j - \be_k\|_2 = \sqrt{2}
 \]
 \vfill
 \item One-hot vectors alone treat every pair of distinct words as equally unrelated: \code{"matrix"} is as far from \code{"vector"} as it is from \code{"cat"}
@@ -184,23 +184,23 @@ Given a vocabulary $V = \{w_1, \ldots, w_m\}$ of size $m$, the \defword{one-hot 
 
 
 \begin{frame}{From tokens to documents: the bag-of-words model}
-How do we represent a whole document $d_j$ as a single vector in $\IR^m$?
+How do we represent a whole document $d_i$ ($i \in \{1, \ldots, n\}$) as a single feature vector in $\IR^p$?
 \vfill
 \begin{importantdefinition}[Bag-of-words document vector]
-Let $V = \{w_1, \ldots, w_m\}$ be a vocabulary of size $m$ and let $d_j$ be a tokenised document $(t_1, t_2, \ldots, t_{L_j})$. The \defword{bag-of-words} (\defword{BoW}) vector of document $d_j$ is
+Let $V = \{w_1, \ldots, w_p\}$ be a vocabulary of size $p$ and let $d_i$ be a tokenised document $(t_1, t_2, \ldots, t_{L_i})$. The \defword{bag-of-words} (\defword{BoW}) vector of document $d_i$ is
 \[
-\bx_j = \sum_{\ell=1}^{L_j} \be_{\mathsf{idx}(t_\ell)} = \sum_{i=1}^m f_{ij} \be_i =
+\bx_i = \sum_{\ell=1}^{L_i} \be_{\mathsf{idx}(t_\ell)} = \sum_{j=1}^p f_{ij} \be_j =
 \begin{pmatrix}
-f_{1j} \\ f_{2j} \\ \vdots \\ f_{mj}
-\end{pmatrix} \in \IRplus^m
+f_{i1} \\ f_{i2} \\ \vdots \\ f_{ip}
+\end{pmatrix} \in \IRplus^p
 \]
-where $f_{ij} \in \IN_0$ is the number of times term $w_i$ occurs in document $d_j$
+where $f_{ij} \in \IN_0$ is the number of times term $w_j$ occurs in document $d_i$
 \end{importantdefinition}
 \end{frame}
 
 
 \begin{frame}{Example -- Constructing bag-of-words vectors}
-Suppose our vocabulary has $m = 5$ terms:
+Suppose our vocabulary has $p = 5$ terms:
 \[
 V = \{w_1=\code{"cat"},\; w_2=\code{"dog"},\; w_3=\code{"mat"},\; w_4=\code{"sat"},\; w_5=\code{"the"}\}
 \]
@@ -221,9 +221,9 @@ Summing the standard basis vectors gives their bag-of-words vectors in $\IRplus^
 
 \begin{frame}{What bag-of-words preserves and what it discards}
 \begin{itemize}
-\item Because vector addition in $\IR^m$ is commutative ($\be_i + \be_k = \be_k + \be_i$), the bag-of-words map completely discards \textbf{word order} and grammar
+\item Because vector addition in $\IR^p$ is commutative ($\be_j + \be_k = \be_k + \be_j$), the bag-of-words map completely discards \textbf{word order} and grammar
 \vfill
-\item For example, ``dog bites man'' and ``man bites dog'' produce the exact same bag-of-words vector $\bx \in \IRplus^m$
+\item For example, ``dog bites man'' and ``man bites dog'' produce the exact same bag-of-words vector $\bx \in \IRplus^p$
 \vfill
 \item Despite this simplification, bag-of-words vectors are remarkably effective for \textbf{topic classification}, \textbf{document clustering} and \textbf{search}:
 \begin{itemize}
@@ -236,9 +236,9 @@ Summing the standard basis vectors gives their bag-of-words vectors in $\IRplus^
 
 \begin{frame}{Sparsity and non-negativity in high dimensions}
 \begin{definition}[Support and number of non-zero entries]
-For a vector $\bx = (x_1, \ldots, x_m)^T \in \IR^m$, its \defword{support} is the index set of non-zero entries
+For a vector $\bx = (x_1, \ldots, x_p)^T \in \IR^p$, its \defword{support} is the index set of non-zero entries
 \[
-\mathsf{supp}(\bx) = \{i \in \{1, \ldots, m\} : x_i \neq 0\}
+\mathsf{supp}(\bx) = \{j \in \{1, \ldots, p\} : x_j \neq 0\}
 \]
 and we write $\|\bx\|_0 = |\mathsf{supp}(\bx)|$ for the number of non-zero entries of $\bx$
 \end{definition}
@@ -246,25 +246,25 @@ and we write $\|\bx\|_0 = |\mathsf{supp}(\bx)|$ for the number of non-zero entri
 \begin{itemize}
 \item Note that $\|\bx\|_0$ is \emph{not} a true norm (since $\|\alpha \bx\|_0 = \|\bx\|_0$ for $\alpha \neq 0$), but it measures \defword{sparsity}
 \vfill
-\item In realistic text corpora, the vocabulary size $m$ is large ($10^4$ to $10^5$ terms), whereas a single document uses only a few hundred distinct words
+\item In realistic text corpora, the vocabulary size $p$ is large ($10^4$ to $10^5$ terms), whereas a single document uses only a few hundred distinct words
 \vfill
-\item Thus $\|\bx_j\|_0 \ll m$: every document vector $\bx_j \in \IRplus^m$ is a \textbf{high-dimensional, sparse, non-negative vector} ($98\%$ to $99.9\%$ of its entries are zero)
+\item Thus $\|\bx_i\|_0 \ll p$: every document vector $\bx_i \in \IRplus^p$ is a \textbf{high-dimensional, sparse, non-negative vector} ($98\%$ to $99.9\%$ of its entries are zero)
 \end{itemize}
 \end{frame}
 
 
-\begin{frame}{Vocabulary pre-processing as row selection}
-In practice, before forming document vectors $\bx_j \in \IRplus^m$, raw tokens undergo two standard pre-processing steps:
+\begin{frame}{Vocabulary pre-processing as feature selection}
+In practice, before forming document vectors $\bx_i \in \IRplus^p$, raw tokens undergo two standard pre-processing steps:
 \vfill
 \begin{enumerate}
 \item \textbf{Stop-word removal}: discarding high-frequency function words (\code{"the"}, \code{"and"}, \code{"of"}, \code{"to"}) that carry little topical meaning
-\item \textbf{Stemming or lemmatisation}: collapsing inflected forms (\code{"matrices"}, \code{"matrix"} $\to$ \code{"matrix"}; \code{"computing"}, \code{"computed"} $\to$ \code{"comput"}) into a single vocabulary row
+\item \textbf{Stemming or lemmatisation}: collapsing inflected forms (\code{"matrices"}, \code{"matrix"} $\to$ \code{"matrix"}; \code{"computing"}, \code{"computed"} $\to$ \code{"comput"}) into a single vocabulary feature
 \end{enumerate}
 \vfill
 \begin{itemize}
-\item \textbf{Linear algebra view}: Removing $m - m'$ stop words from a vocabulary of size $m$ is equivalent to left-multiplying each document vector $\bx_j \in \IRplus^m$ by a \textbf{row-selection matrix} $P \in \M_{m', m}(\{0, 1\})$ obtained by deleting the stop-word rows of $\II_m$:
+\item \textbf{Linear algebra view}: Removing $p - p'$ stop words from a vocabulary of size $p$ is equivalent to left-multiplying each document vector $\bx_i \in \IRplus^p$ by a \textbf{feature-selection matrix} $P \in \M_{p', p}(\{0, 1\})$ obtained by deleting the stop-word rows of $\II_p$:
 \[
-\bx_j^{\text{reduced}} = P \bx_j \in \IRplus^{m'}
+\bx_i^{\text{reduced}} = P \bx_i \in \IRplus^{p'} \quad\Longleftrightarrow\quad (\bx_i^{\text{reduced}})^T = \bx_i^T P^T \in \IRplus^{1 \times p'}
 \]
 \end{itemize}
 \end{frame}
@@ -274,34 +274,34 @@ In practice, before forming document vectors $\bx_j \in \IRplus^m$, raw tokens u
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
-\SSsection{Term-document matrices and TF-IDF scaling}
+\SSsection{Document-term matrices and TF-IDF scaling}
 
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
-\SSsubsection{The term-document matrix}
+\SSsubsection{The document-term data matrix}
 
-\begin{frame}{The term-document matrix}
-\begin{importantdefinition}[Term-document matrix]
-Given a vocabulary $V = \{w_1, \ldots, w_m\}$ of $m$ terms and a corpus $D = \{d_1, \ldots, d_n\}$ of $n$ documents, the \defword{term-document matrix} is the non-negative matrix
+\begin{frame}{The document-term data matrix}
+\begin{importantdefinition}[Document-term data matrix]
+Given a corpus $D = \{d_1, \ldots, d_n\}$ of $n$ documents (observations) and a vocabulary $V = \{w_1, \ldots, w_p\}$ of $p$ terms (features), the \defword{data matrix} (called in NLP and information retrieval the \defword{document-term matrix}) is the non-negative matrix
 \[
-X = [x_{ij}] = \begin{bmatrix} \bx_1 & \bx_2 & \cdots & \bx_n \end{bmatrix} \in \M_{mn}(\IRplus)
+X = [x_{ij}] = \begin{pmatrix} \bx_1^T \\ \bx_2^T \\ \vdots \\ \bx_n^T \end{pmatrix} = \begin{bmatrix} \bc_1 & \bc_2 & \cdots & \bc_p \end{bmatrix} \in \M_{np}(\IRplus)
 \]
 where:
 \begin{itemize}
-\item Row $i \in \{1, \ldots, m\}$ corresponds to vocabulary term $w_i$
-\item Column $j \in \{1, \ldots, n\}$ is the vector $\bx_j \in \IRplus^m$ of document $d_j$
-\item Entry $x_{ij} \ge 0$ is the weight (e.g., raw frequency $f_{ij}$) of term $w_i$ in document $d_j$
+\item Row $i \in \{1, \ldots, n\}$ is the row vector $\bx_i^T \in \IRplus^{1 \times p}$ of document (observation) $d_i$
+\item Column $j \in \{1, \ldots, p\}$ is the column vector $\bc_j \in \IRplus^n$ of vocabulary term (feature) $w_j$
+\item Entry $x_{ij} \ge 0$ is the weight (e.g., raw frequency $f_{ij}$) of term $w_j$ in document $d_i$
 \end{itemize}
 \end{importantdefinition}
 \vfill
 \begin{itemize}
-\item Some software libraries work with the transpose $X^T \in \M_{nm}(\IRplus)$, called the \defword{document-term matrix}; in linear algebra we prefer $X \in \M_{mn}(\IRplus)$ so that documents are column vectors in $\IRplus^m$
+\item Some authors work with the transpose $X^T \in \M_{pn}(\IRplus)$, called the \defword{term-document matrix}; we follow our standard data matrix convention with observations (documents) in rows and features (terms) in columns
 \end{itemize}
 \end{frame}
 
 
-\begin{frame}{Example -- A toy corpus of $n=4$ documents and $m=6$ terms}
-Consider $n=4$ short documents across two mathematical themes, tracked over the vocabulary $V = \{\code{matrix}, \code{vector}, \code{eigenvalue}, \code{graph}, \code{network}, \code{data}\}$ ($m=6$):
+\begin{frame}{Example -- A toy corpus of $n=4$ documents and $p=6$ terms}
+Consider $n=4$ short documents across two mathematical themes, tracked over the vocabulary $V = \{\code{matrix}, \code{vector}, \code{eigenvalue}, \code{graph}, \code{network}, \code{data}\}$ ($p=6$):
 \vfill
 \begin{itemize}
 \item \textbf{Document $d_1$ (linear algebra)}: mentions \code{matrix} (3 times), \code{vector} (2 times), \code{eigenvalue} (2 times) and \code{data} (4 times)
@@ -315,53 +315,49 @@ Consider $n=4$ short documents across two mathematical themes, tracked over the 
 \end{frame}
 
 
-\begin{frame}{Example -- Explicit $6 \times 4$ term-document matrix $X$}
-Assembling the document vectors $\bx_1, \bx_2, \bx_3, \bx_4 \in \IRplus^6$ as columns gives $X \in \M_{6,4}(\IRplus)$:
+\begin{frame}{Example -- Explicit $4 \times 6$ document-term matrix $X$}
+Assembling the document vectors $\bx_1^T, \bx_2^T, \bx_3^T, \bx_4^T \in \IRplus^{1 \times 6}$ as rows gives $X \in \M_{46}(\IRplus)$:
 \[
-\begin{array}{r|cccc}
-\textrm{Term} & d_1 & d_2 & d_3 & d_4 \\
+\begin{array}{r|cccccc}
+\textrm{Doc} & \code{matrix} & \code{vector} & \code{eigen} & \code{graph} & \code{network} & \code{data} \\
 \hline
-\code{matrix} & 3 & 2 & 0 & 0 \\
-\code{vector} & 2 & 3 & 0 & 1 \\
-\code{eigenvalue} & 2 & 0 & 0 & 0 \\
-\code{graph} & 0 & 0 & 3 & 2 \\
-\code{network} & 0 & 0 & 2 & 3 \\
-\code{data} & 4 & 3 & 5 & 4
+d_1 & 3 & 2 & 2 & 0 & 0 & 4 \\
+d_2 & 2 & 3 & 0 & 0 & 0 & 3 \\
+d_3 & 0 & 0 & 0 & 3 & 2 & 5 \\
+d_4 & 0 & 1 & 0 & 2 & 3 & 4
 \end{array}
-\qquad\implies\qquad
+\implies
 X = \begin{pmatrix}
-3 & 2 & 0 & 0 \\
-2 & 3 & 0 & 1 \\
-2 & 0 & 0 & 0 \\
-0 & 0 & 3 & 2 \\
-0 & 0 & 2 & 3 \\
-4 & 3 & 5 & 4
+3 & 2 & 2 & 0 & 0 & 4 \\
+2 & 3 & 0 & 0 & 0 & 3 \\
+0 & 0 & 0 & 3 & 2 & 5 \\
+0 & 1 & 0 & 2 & 3 & 4
 \end{pmatrix}
 \]
 \vfill
 \begin{itemize}
-\item Notice the near-block structure in rows $1$--$5$ separating $\{d_1, d_2\}$ from $\{d_3, d_4\}$
-\item In contrast, row $6$ (\code{data}) has large entries across \textbf{all four columns}, obscuring the two topics!
+\item Notice the near-block structure in columns $1$--$5$ separating $\{d_1, d_2\}$ from $\{d_3, d_4\}$
+\item In contrast, column $6$ (\code{data}) has large entries across \textbf{all four rows}, obscuring the two topics!
 \end{itemize}
 \end{frame}
 
 
-\begin{frame}{Dual geometric views of $X \in \M_{mn}(\IRplus)$}
-Every term-document matrix $X \in \M_{mn}(\IRplus)$ admits two complementary geometric interpretations:
+\begin{frame}{Dual geometric views of $X \in \M_{np}(\IRplus)$}
+Every document-term data matrix $X \in \M_{np}(\IRplus)$ admits two complementary geometric interpretations:
 \vfill
 \begin{columns}[t]
 \begin{column}{0.48\textwidth}
-\textbf{1. Column view (document space $\IRplus^m$)}
+\textbf{1. Row view (document space $\IRplus^p$)}
 \begin{itemize}
-\item Each column $\bx_j \in \IRplus^m$ ($j=1,\ldots,n$) represents a \textbf{document} as a point in $m$-dimensional term space
+\item Each transposed row $\bx_i \in \IRplus^p$ ($i=1,\ldots,n$) represents a \textbf{document} (observation) as a point in $p$-dimensional term space
 \item Used to compare, cluster or classify documents
 \end{itemize}
 \end{column}
 \begin{column}{0.48\textwidth}
-\textbf{2. Row view (term space $\IRplus^n$)}
+\textbf{2. Column view (term space $\IRplus^n$)}
 \begin{itemize}
-\item Each transposed row $\bt_i \in \IRplus^n$ ($i=1,\ldots,m$) represents a \textbf{term} via its occurrence profile across the $n$ documents
-\item Two words that co-occur in the same documents have similar row vectors
+\item Each column $\bc_j \in \IRplus^n$ ($j=1,\ldots,p$) represents a \textbf{term} (feature) via its occurrence profile across the $n$ documents
+\item Two words that co-occur in the same documents have similar column vectors
 \end{itemize}
 \end{column}
 \end{columns}
@@ -384,7 +380,7 @@ Using raw frequency counts $x_{ij} = f_{ij}$ directly in $X$ suffers from two ma
 \vfill
 \item \textbf{Document length distorts vector magnitude}
 \begin{itemize}
-\item A 20-page article and a 1-paragraph abstract on the exact same topic have proportional term frequencies, but the longer document has a much larger norm $\|\bx_j\|_2$
+\item A 20-page article and a 1-paragraph abstract on the exact same topic have proportional term frequencies, but the longer document has a much larger norm $\|\bx_i\|_2$
 \end{itemize}
 \end{enumerate}
 \end{frame}
@@ -392,30 +388,30 @@ Using raw frequency counts $x_{ij} = f_{ij}$ directly in $X$ suffers from two ma
 
 \begin{frame}{Term frequency and inverse document frequency (TF-IDF)}
 \begin{importantdefinition}[Document frequency, IDF and TF-IDF]
-Let $X = [f_{ij}] \in \M_{mn}(\IRplus)$ be a raw term-document count matrix for $m$ terms and $n$ documents:
+Let $X = [f_{ij}] \in \M_{np}(\IRplus)$ be a raw document-term count matrix for $n$ documents and $p$ terms:
 \begin{enumerate}
-\item The \defword{term frequency} $\mathsf{tf}_{ij}$ is the raw count $f_{ij}$ (or a scaled variant such as $f_{ij} / \sum_{k=1}^m f_{kj}$)
-\item The \defword{document frequency} $\mathsf{df}_i$ of term $w_i$ is the number of documents in which $w_i$ appears:
+\item The \defword{term frequency} $\mathsf{tf}_{ij}$ is the raw count $f_{ij}$ (or a scaled variant such as $f_{ij} / \sum_{k=1}^p f_{ik}$)
+\item The \defword{document frequency} $\mathsf{df}_j$ of term $w_j$ is the number of documents in which $w_j$ appears:
 \[
-\mathsf{df}_i = \left|\{j \in \{1, \ldots, n\} : f_{ij} > 0\}\right| \in \{1, \ldots, n\}
+\mathsf{df}_j = \left|\{i \in \{1, \ldots, n\} : f_{ij} > 0\}\right| = \|\bc_j\|_0 \in \{1, \ldots, n\}
 \]
-\item The \defword{inverse document frequency} of term $w_i$ is
+\item The \defword{inverse document frequency} of term $w_j$ is
 \[
-\mathsf{idf}_i = \log\!\left(\frac{n}{\mathsf{df}_i}\right) \ge 0
+\mathsf{idf}_j = \log\!\left(\frac{n}{\mathsf{df}_j}\right) \ge 0
 \]
-\item The \defword{TF-IDF weight} of term $w_i$ in document $d_j$ is $\mathsf{tfidf}_{ij} = \mathsf{tf}_{ij} \cdot \mathsf{idf}_i$
+\item The \defword{TF-IDF weight} of term $w_j$ in document $d_i$ is $\mathsf{tfidf}_{ij} = \mathsf{tf}_{ij} \cdot \mathsf{idf}_j$
 \end{enumerate}
 \end{importantdefinition}
 \end{frame}
 
 
-\begin{frame}{How $\mathsf{idf}_i = \log(n / \mathsf{df}_i)$ reweights vocabulary terms}
-Assume every vocabulary term $w_i \in V$ appears in at least one document ($1 \le \mathsf{df}_i \le n$):
+\begin{frame}{How $\mathsf{idf}_j = \log(n / \mathsf{df}_j)$ reweights vocabulary terms}
+Assume every vocabulary term $w_j \in V$ appears in at least one document ($1 \le \mathsf{df}_j \le n$):
 \vfill
 \begin{center}
 \begin{tabular}{lccl}
 \toprule
-\textbf{Term behaviour} & $\mathsf{df}_i$ & $\mathsf{idf}_i = \log(n/\mathsf{df}_i)$ & \textbf{Effect on row $i$ of $X$} \\
+\textbf{Term behaviour} & $\mathsf{df}_j$ & $\mathsf{idf}_j = \log(n/\mathsf{df}_j)$ & \textbf{Effect on column $j$ of $X$} \\
 \midrule
 Appears in all documents & $n$ & $\log(1) = 0$ & Zeroed out completely \\
 Appears in half of documents & $n/2$ & $\log(2) \approx 0.693$ & Moderately weighted \\
@@ -425,170 +421,170 @@ Appears in 1 document only & $1$ & $\log(n)$ (maximal) & Strongly amplified \\
 \end{center}
 \vfill
 \begin{itemize}
-\item Note: throughout this course, $\log(\cdot)$ denotes the natural logarithm $\ln(\cdot)$ (changing the base of the logarithm only multiplies all $\mathsf{idf}_i$ by a positive constant)
-\item In practice, when out-of-corpus queries might have $\mathsf{df}_i = 0$, smoothed variants such as $\log\!\left(\frac{n+1}{\mathsf{df}_i+1}\right) + 1$ are also used
+\item Note: throughout this course, $\log(\cdot)$ denotes the natural logarithm $\ln(\cdot)$ (changing the base of the logarithm only multiplies all $\mathsf{idf}_j$ by a positive constant)
+\item In practice, when out-of-corpus queries might have $\mathsf{df}_j = 0$, smoothed variants such as $\log\!\left(\frac{n+1}{\mathsf{df}_j+1}\right) + 1$ are also used
 \end{itemize}
 \end{frame}
 
 
 \begin{frame}{TF-IDF and length normalisation as diagonal matrix scaling}
 \begin{importanttheorem}[Row and column scaling via diagonal matrices]\label{th:tfidf_diag_scaling}
-Let $X = [x_{ij}] \in \M_{mn}(\IRplus)$ be a term-document matrix with non-zero columns $\bx_1, \ldots, \bx_n$. Define the two diagonal matrices
+Let $X = [x_{ij}] \in \M_{np}(\IRplus)$ be a document-term data matrix with non-zero rows $\bx_1^T, \ldots, \bx_n^T$. Define the two diagonal matrices
 \[
-D_{\text{IDF}} = \diag(\mathsf{idf}_1, \ldots, \mathsf{idf}_m) \in \M_m(\IRplus), \qquad
-D_{\text{len}}^{-1} = \diag\!\left(\frac{1}{\|\bx_1\|}, \ldots, \frac{1}{\|\bx_n\|}\right) \in \M_n(\IRplus)
+D_{\text{IDF}} = \diag(\mathsf{idf}_1, \ldots, \mathsf{idf}_p) \in \M_p(\IRplus), \qquad
+D_{\text{len}}^{-1} = \diag\!\left(\frac{1}{\|\bx_1^{\text{TF-IDF}}\|_2}, \ldots, \frac{1}{\|\bx_n^{\text{TF-IDF}}\|_2}\right) \in \M_n(\IRplus)
 \]
-Then:
+where $(\bx_i^{\text{TF-IDF}})^T = \bx_i^T D_{\text{IDF}}$ is the $i$-th row of $X D_{\text{IDF}}$. Then:
 \begin{enumerate}
-\item \textbf{Left-multiplication} $X_{\text{TF-IDF}} = D_{\text{IDF}} X$ scales the \textbf{rows} (terms) of $X$: entry $(i,j)$ is $\mathsf{idf}_i \, x_{ij}$
-\item \textbf{Right-multiplication} $X D_{\text{len}}^{-1}$ scales the \textbf{columns} (documents) of $X$: entry $(i,j)$ is $x_{ij} / \|\bx_j\|$
-\item The combined matrix $\tilde{X} = D_{\text{IDF}} X D_{\text{len}}^{-1} \in \M_{mn}(\IRplus)$ has entries $\tilde{x}_{ij} = \frac{\mathsf{idf}_i \, x_{ij}}{\|\bx_j\|}$
+\item \textbf{Right-multiplication} $X_{\text{TF-IDF}} = X D_{\text{IDF}}$ scales the \textbf{columns} (terms/features) of $X$: entry $(i,j)$ is $x_{ij} \, \mathsf{idf}_j$
+\item \textbf{Left-multiplication} $D_{\text{len}}^{-1} A$ scales the \textbf{rows} (documents/observations) of $A$: entry $(i,j)$ is $a_{ij} / \|\bx_i^{\text{TF-IDF}}\|_2$
+\item The combined matrix $\hat{X} = D_{\text{len}}^{-1} X D_{\text{IDF}} \in \M_{np}(\IRplus)$ has entries $\hat{x}_{ij} = \frac{x_{ij} \, \mathsf{idf}_j}{\|\bx_i^{\text{TF-IDF}}\|_2}$ and unit-norm document rows $\|\hat{\bx}_i\|_2 = 1$
 \end{enumerate}
 \end{importanttheorem}
 \end{frame}
 
 
 \begin{frame}[red]{Proof of Theorem~\ref{th:tfidf_diag_scaling}}
-Let $D_{\text{IDF}} = [d_{ik}] \in \M_m$ with $d_{ii} = \mathsf{idf}_i$ and $d_{ik} = 0$ for $k \neq i$. By definition of matrix multiplication, the $(i,j)$ entry of $D_{\text{IDF}} X$ is
+Let $D_{\text{IDF}} = [c_{kj}] \in \M_p$ with $c_{jj} = \mathsf{idf}_j$ and $c_{kj} = 0$ for $k \neq j$. By definition of matrix multiplication, the $(i,j)$ entry of $X D_{\text{IDF}}$ is
 \[
-(D_{\text{IDF}} X)_{ij} = \sum_{k=1}^m d_{ik} x_{kj} = d_{ii} x_{ij} = \mathsf{idf}_i \, x_{ij}
+(X D_{\text{IDF}})_{ij} = \sum_{k=1}^p x_{ik} c_{kj} = x_{ij} c_{jj} = x_{ij} \, \mathsf{idf}_j
 \]
-Thus row $i$ of $X$ is multiplied by the scalar $\mathsf{idf}_i$
+Thus column $j$ of $X$ is multiplied by the scalar $\mathsf{idf}_j$
 \vfill
-Similarly, let $D_{\text{len}}^{-1} = [c_{\ell j}] \in \M_n$ with $c_{jj} = 1/\|\bx_j\|$ and $c_{\ell j} = 0$ for $\ell \neq j$. For any matrix $A = [a_{i\ell}] \in \M_{mn}$, the $(i,j)$ entry of $A D_{\text{len}}^{-1}$ is
+Similarly, let $D_{\text{len}}^{-1} = [d_{i\ell}] \in \M_n$ with $d_{ii} = 1/\|\bx_i^{\text{TF-IDF}}\|_2$ and $d_{i\ell} = 0$ for $\ell \neq i$. For any matrix $A = [a_{\ell j}] \in \M_{np}$, the $(i,j)$ entry of $D_{\text{len}}^{-1} A$ is
 \[
-(A D_{\text{len}}^{-1})_{ij} = \sum_{\ell=1}^n a_{i\ell} c_{\ell j} = a_{ij} c_{jj} = \frac{a_{ij}}{\|\bx_j\|}
+(D_{\text{len}}^{-1} A)_{ij} = \sum_{\ell=1}^n d_{i\ell} a_{\ell j} = d_{ii} a_{ij} = \frac{a_{ij}}{\|\bx_i^{\text{TF-IDF}}\|_2}
 \]
-Setting $A = D_{\text{IDF}} X$ gives $\tilde{x}_{ij} = (D_{\text{IDF}} X D_{\text{len}}^{-1})_{ij} = \frac{\mathsf{idf}_i \, x_{ij}}{\|\bx_j\|}$ \hfill\qed
+Setting $A = X D_{\text{IDF}}$ gives $\hat{x}_{ij} = (D_{\text{len}}^{-1} X D_{\text{IDF}})_{ij} = \frac{x_{ij} \, \mathsf{idf}_j}{\|\bx_i^{\text{TF-IDF}}\|_2}$ \hfill\qed
 \end{frame}
 
 
-\begin{frame}{Visualising $\tilde{X} = D_{\text{IDF}} X D_{\text{len}}^{-1}$}
+\begin{frame}{Visualising $\hat{X} = D_{\text{len}}^{-1} X D_{\text{IDF}}$}
 \begin{center}
 \begin{tikzpicture}[scale=0.88, every node/.style={font=\small}]
-    % TilX
-    \draw[thick, fill=gray!15] (0,0) rectangle (2.2,3.2);
-    \node at (1.1,1.6) {$\tilde{X}$};
-    \node[below] at (1.1,0) {$m \times n$};
+    % HatX
+    \draw[thick, fill=gray!15] (0,1.0) rectangle (3.2,3.2);
+    \node at (1.6,2.1) {$\hat{X}$};
+    \node[below] at (1.6,1.0) {$n \times p$};
 
-    \node[font=\Large] at (2.7,1.6) {$=$};
-
-    % D_IDF
-    \draw[thick, fill=orange!20] (3.2,0) rectangle (6.4,3.2);
-    \draw[ultra thick, orange!85!black] (3.2,3.2) -- (6.4,0);
-    \node[above right] at (3.25,0.1) {$0$};
-    \node[below left] at (6.35,3.1) {$0$};
-    \node[fill=orange!20, inner sep=1pt] at (4.8,1.6) {$D_{\text{IDF}}$};
-    \node[below] at (4.8,0) {$m \times m$ (scales rows)};
-
-    % X
-    \draw[thick, fill=blue!15] (6.8,0) rectangle (9.0,3.2);
-    \node at (7.9,1.6) {$X$};
-    \node[below] at (7.9,0) {$m \times n$};
+    \node[font=\Large] at (3.7,2.1) {$=$};
 
     % D_len^-1
-    \draw[thick, fill=green!20] (9.4,1.0) rectangle (11.6,3.2);
-    \draw[ultra thick, green!60!black] (9.4,3.2) -- (11.6,1.0);
-    \node[fill=green!20, inner sep=1pt] at (10.5,2.1) {$D_{\text{len}}^{-1}$};
-    \node[below] at (10.5,1.0) {$n \times n$ (scales cols)};
+    \draw[thick, fill=green!20] (4.2,1.0) rectangle (6.4,3.2);
+    \draw[ultra thick, green!60!black] (4.2,3.2) -- (6.4,1.0);
+    \node[fill=green!20, inner sep=1pt] at (5.3,2.1) {$D_{\text{len}}^{-1}$};
+    \node[below] at (5.3,1.0) {$n \times n$ (scales rows)};
+
+    % X
+    \draw[thick, fill=blue!15] (6.8,1.0) rectangle (10.0,3.2);
+    \node at (8.4,2.1) {$X$};
+    \node[below] at (8.4,1.0) {$n \times p$};
+
+    % D_IDF
+    \draw[thick, fill=orange!20] (10.4,0) rectangle (13.6,3.2);
+    \draw[ultra thick, orange!85!black] (10.4,3.2) -- (13.6,0);
+    \node[above right] at (10.45,0.1) {$0$};
+    \node[below left] at (13.55,3.1) {$0$};
+    \node[fill=orange!20, inner sep=1pt] at (12.0,1.6) {$D_{\text{IDF}}$};
+    \node[below] at (12.0,0) {$p \times p$ (scales cols)};
 \end{tikzpicture}
 \end{center}
 \vfill
 \begin{itemize}
 \item Notice the fundamental pattern from elementary linear algebra:
 \begin{itemize}
-\item \textbf{Left-multiplying} by a diagonal matrix scales the \textbf{rows} (the $m$ vocabulary terms)
-\item \textbf{Right-multiplying} by a diagonal matrix scales the \textbf{columns} (the $n$ documents)
+\item \textbf{Left-multiplying} by a diagonal matrix scales the \textbf{rows} (the $n$ documents / observations)
+\item \textbf{Right-multiplying} by a diagonal matrix scales the \textbf{columns} (the $p$ vocabulary terms / features)
 \end{itemize}
 \end{itemize}
 \end{frame}
 
 
-\begin{frame}{Example -- Computing $D_{\text{IDF}} X$ by hand (Part 1)}
-Consider a corpus of $n = 4$ documents over $m = 4$ terms with raw term-document matrix $X \in \M_{4,4}(\IRplus)$:
+\begin{frame}{Example -- Computing $X D_{\text{IDF}}$ by hand (Part 1)}
+Consider a corpus of $n = 4$ documents over $p = 4$ terms with raw document-term matrix $X \in \M_{44}(\IRplus)$:
 \[
 \begin{array}{r|cccc}
-\textrm{Term} & d_1 & d_2 & d_3 & d_4 \\
+\textrm{Doc} & w_1\ (\code{matrix}) & w_2\ (\code{eigenvalue}) & w_3\ (\code{graph}) & w_4\ (\code{data}) \\
 \hline
-w_1\ (\code{matrix}) & 3 & 2 & 0 & 0 \\
-w_2\ (\code{eigenvalue}) & 2 & 0 & 0 & 0 \\
-w_3\ (\code{graph}) & 0 & 0 & 1 & 3 \\
-w_4\ (\code{data}) & 5 & 4 & 6 & 5
+d_1 & 3 & 2 & 0 & 5 \\
+d_2 & 2 & 0 & 0 & 4 \\
+d_3 & 0 & 0 & 1 & 6 \\
+d_4 & 0 & 0 & 3 & 5
 \end{array}
-\qquad\implies\qquad
+\implies
 X = \begin{pmatrix}
-3 & 2 & 0 & 0 \\
-2 & 0 & 0 & 0 \\
-0 & 0 & 1 & 3 \\
-5 & 4 & 6 & 5
+3 & 2 & 0 & 5 \\
+2 & 0 & 0 & 4 \\
+0 & 0 & 1 & 6 \\
+0 & 0 & 3 & 5
 \end{pmatrix}
 \]
 \vfill
-\textbf{Step 1: Count non-zero entries in each row to find $\mathsf{df}_i$ and $\mathsf{idf}_i = \log(4/\mathsf{df}_i)$}:
+\textbf{Step 1: Count non-zero entries in each column to find $\mathsf{df}_j$ and $\mathsf{idf}_j = \log(4/\mathsf{df}_j)$}:
 \begin{itemize}
-\item Row 1 ($w_1$): appears in $d_1, d_2 \implies \mathsf{df}_1 = 2 \implies \mathsf{idf}_1 = \log(4/2) = \log 2$
-\item Row 2 ($w_2$): appears in $d_1$ only $\implies \mathsf{df}_2 = 1 \implies \mathsf{idf}_2 = \log(4/1) = \log 4 = 2\log 2$
-\item Row 3 ($w_3$): appears in $d_3, d_4 \implies \mathsf{df}_3 = 2 \implies \mathsf{idf}_3 = \log(4/2) = \log 2$
-\item Row 4 ($w_4$): appears in $d_1, d_2, d_3, d_4 \implies \mathsf{df}_4 = 4 \implies \mathsf{idf}_4 = \log(4/4) = \log 1 = 0$
+\item Column 1 ($w_1$): appears in $d_1, d_2 \implies \mathsf{df}_1 = 2 \implies \mathsf{idf}_1 = \log(4/2) = \log 2$
+\item Column 2 ($w_2$): appears in $d_1$ only $\implies \mathsf{df}_2 = 1 \implies \mathsf{idf}_2 = \log(4/1) = \log 4 = 2\log 2$
+\item Column 3 ($w_3$): appears in $d_3, d_4 \implies \mathsf{df}_3 = 2 \implies \mathsf{idf}_3 = \log(4/2) = \log 2$
+\item Column 4 ($w_4$): appears in $d_1, d_2, d_3, d_4 \implies \mathsf{df}_4 = 4 \implies \mathsf{idf}_4 = \log(4/4) = \log 1 = 0$
 \end{itemize}
 \end{frame}
 
 
-\begin{frame}{Example -- Computing $D_{\text{IDF}} X$ by hand (Part 2)}
-\textbf{Step 2: Form $D_{\text{IDF}}$ and left-multiply $X$}:
+\begin{frame}{Example -- Computing $X D_{\text{IDF}}$ by hand (Part 2)}
+\textbf{Step 2: Form $D_{\text{IDF}}$ and right-multiply $X$}:
 \[
 D_{\text{IDF}} = \diag(\log 2,\; 2\log 2,\; \log 2,\; 0) = (\log 2)\begin{pmatrix} 1 & 0 & 0 & 0 \\ 0 & 2 & 0 & 0 \\ 0 & 0 & 1 & 0 \\ 0 & 0 & 0 & 0 \end{pmatrix}
 \]
 \vfill
-Multiplying each row of $X$ by its diagonal entry gives
+Multiplying each column of $X$ by its diagonal entry gives
 \[
-X_{\text{TF-IDF}} = D_{\text{IDF}} X = (\log 2)
+X_{\text{TF-IDF}} = X D_{\text{IDF}} = (\log 2)
 \begin{pmatrix}
-3 & 2 & 0 & 0 \\
-4 & 0 & 0 & 0 \\
-0 & 0 & 1 & 3 \\
-0 & 0 & 0 & 0
+3 & 4 & 0 & 0 \\
+2 & 0 & 0 & 0 \\
+0 & 0 & 1 & 0 \\
+0 & 0 & 3 & 0
 \end{pmatrix}
 \approx
 \begin{pmatrix}
-2.08 & 1.39 & 0 & 0 \\
-2.77 & 0 & 0 & 0 \\
-0 & 0 & 0.69 & 2.08 \\
-0 & 0 & 0 & 0
+2.08 & 2.77 & 0 & 0 \\
+1.39 & 0 & 0 & 0 \\
+0 & 0 & 0.69 & 0 \\
+0 & 0 & 2.08 & 0
 \end{pmatrix}
 \]
 \vfill
 \begin{itemize}
-\item Row 4 (\code{data}) is annihilated because it carries zero discriminative information across this corpus, whereas the rare term \code{eigenvalue} in Row 2 has its relative weight doubled!
+\item Column 4 (\code{data}) is annihilated because it carries zero discriminative information across this corpus, whereas the rare term \code{eigenvalue} in Column 2 has its relative weight doubled!
 \end{itemize}
 \end{frame}
 
 
-\begin{frame}{Example -- Column normalisation $D_{\text{IDF}} X D_{\text{len}}^{-1}$ (Part 3)}
-\textbf{Step 3: Right-multiply $X_{\text{TF-IDF}}$ by $D_{\text{len}}^{-1}$ to normalise the columns in $\ell_2$ norm}:
+\begin{frame}{Example -- Row normalisation $D_{\text{len}}^{-1} X D_{\text{IDF}}$ (Part 3)}
+\textbf{Step 3: Left-multiply $X_{\text{TF-IDF}}$ by $D_{\text{len}}^{-1}$ to normalise the document rows in $\ell_2$ norm}:
 \begin{itemize}
-\item The Euclidean norms of the four columns of $X_{\text{TF-IDF}} = D_{\text{IDF}} X$ are:
+\item The Euclidean norms of the four rows of $X_{\text{TF-IDF}} = X D_{\text{IDF}}$ are:
 \begin{align*}
 \|\bx_1^{\text{TF-IDF}}\|_2 &= (\log 2)\sqrt{3^2 + 4^2} = 5\log 2, &
 \|\bx_2^{\text{TF-IDF}}\|_2 &= (\log 2)\sqrt{2^2 + 0^2} = 2\log 2 \\
 \|\bx_3^{\text{TF-IDF}}\|_2 &= (\log 2)\sqrt{1^2} = \log 2, &
 \|\bx_4^{\text{TF-IDF}}\|_2 &= (\log 2)\sqrt{3^2} = 3\log 2
 \end{align*}
-\item Right-multiplying by $D_{\text{len}}^{-1} = (\log 2)^{-1}\diag(1/5,\; 1/2,\; 1,\; 1/3)$ cancels $\log 2$ and yields unit-norm columns:
+\item Left-multiplying by $D_{\text{len}}^{-1} = (\log 2)^{-1}\diag(1/5,\; 1/2,\; 1,\; 1/3)$ cancels $\log 2$ and yields unit-norm document rows:
 \[
-\tilde{X} = D_{\text{IDF}} X D_{\text{len}}^{-1} =
+\hat{X} = D_{\text{len}}^{-1} X D_{\text{IDF}} =
 \begin{pmatrix}
-3/5 & 1 & 0 & 0 \\
-4/5 & 0 & 0 & 0 \\
-0 & 0 & 1 & 1 \\
-0 & 0 & 0 & 0
+3/5 & 4/5 & 0 & 0 \\
+1 & 0 & 0 & 0 \\
+0 & 0 & 1 & 0 \\
+0 & 0 & 1 & 0
 \end{pmatrix}
 =
 \begin{pmatrix}
-0.6 & 1 & 0 & 0 \\
-0.8 & 0 & 0 & 0 \\
-0 & 0 & 1 & 1 \\
-0 & 0 & 0 & 0
+0.6 & 0.8 & 0 & 0 \\
+1 & 0 & 0 & 0 \\
+0 & 0 & 1 & 0 \\
+0 & 0 & 1 & 0
 \end{pmatrix}
 \]
 \end{itemize}
@@ -602,10 +598,10 @@ X_{\text{TF-IDF}} = D_{\text{IDF}} X = (\log 2)
 \SSsection{Angles and cosine similarity in high dimensions}
 
 \begin{frame}{Why Euclidean distance fails for sparse document vectors}
-Suppose we want to measure how similar two documents $\bx, \by \in \IRplus^m$ are. Why not use the Euclidean distance $\|\bx - \by\|_2$?
+Suppose we want to measure how similar two documents $\bx, \by \in \IRplus^p$ are. Why not use the Euclidean distance $\|\bx - \by\|_2$?
 \vfill
 \begin{itemize}
-\item Consider three documents over $V = \{\code{matrix}, \code{vector}, \code{graph}\}$:
+\item Consider three documents over $V = \{\code{matrix}, \code{vector}, \code{graph}\}$ ($p = 3$):
 \[
 \bx_1 = \begin{pmatrix} 1 \\ 1 \\ 0 \end{pmatrix}, \qquad
 \bx_2 = \begin{pmatrix} 5 \\ 5 \\ 0 \end{pmatrix} = 5\bx_1, \qquad
@@ -655,10 +651,10 @@ Suppose we want to measure how similar two documents $\bx, \by \in \IRplus^m$ ar
 
 \begin{frame}{Cosine similarity}
 \begin{importantdefinition}[Cosine similarity]
-Let $\bx, \by \in \IR^m$ be two non-zero vectors. The \defword{cosine similarity} between $\bx$ and $\by$ is the cosine of the angle $\theta \in [0, \pi]$ between them:
+Let $\bx, \by \in \IR^p$ be two non-zero vectors. The \defword{cosine similarity} between $\bx$ and $\by$ is the cosine of the angle $\theta \in [0, \pi]$ between them:
 \[
 \mathsf{sim}(\bx, \by) = \cos(\theta) = \frac{\bx \bullet \by}{\|\bx\|_2 \, \|\by\|_2}
-= \frac{\sum_{i=1}^m x_i y_i}{\sqrt{\sum_{i=1}^m x_i^2}\sqrt{\sum_{i=1}^m y_i^2}}
+= \frac{\sum_{j=1}^p x_j y_j}{\sqrt{\sum_{j=1}^p x_j^2}\sqrt{\sum_{j=1}^p y_j^2}}
 \]
 Equivalently, in terms of the $\ell_2$-normalised unit vectors $\hat{\bx} = \frac{\bx}{\|\bx\|_2}$ and $\hat{\by} = \frac{\by}{\|\by\|_2}$,
 \[
@@ -670,18 +666,18 @@ Equivalently, in terms of the $\ell_2$-normalised unit vectors $\hat{\bx} = \fra
 
 \begin{frame}{Fundamental properties of cosine similarity}
 \begin{proposition}[Properties of cosine similarity]\label{prop:cosine_properties}
-Let $\bx, \by \in \IR^m$ be non-zero vectors. Then:
+Let $\bx, \by \in \IR^p$ be non-zero vectors. Then:
 \begin{enumerate}
 \item \textbf{Positive scale invariance}: For any scalars $\alpha > 0$ and $\beta > 0$,
 \[
 \mathsf{sim}(\alpha \bx, \beta \by) = \mathsf{sim}(\bx, \by)
 \]
 \item \textbf{General bounds}: By the Cauchy-Schwarz inequality, $\mathsf{sim}(\bx, \by) \in [-1, 1]$, with $\mathsf{sim}(\bx, \by) = 1 \iff \by = c\bx$ for some $c > 0$
-\item \textbf{Non-negative orthant bounds}: If $\bx, \by \in \IRplus^m$ are non-negative vectors, then
+\item \textbf{Non-negative orthant bounds}: If $\bx, \by \in \IRplus^p$ are non-negative vectors, then
 \[
 0 \le \mathsf{sim}(\bx, \by) \le 1
 \]
-Furthermore, for $\bx, \by \in \IRplus^m$,
+Furthermore, for $\bx, \by \in \IRplus^p$,
 \[
 \mathsf{sim}(\bx, \by) = 0 \iff \mathsf{supp}(\bx) \cap \mathsf{supp}(\by) = \emptyset
 \]
@@ -691,7 +687,7 @@ Furthermore, for $\bx, \by \in \IRplus^m$,
 
 
 \begin{frame}[red]{Proof of Proposition~\ref{prop:cosine_properties} (Part 1: scale invariance)}
-Let $\bx, \by \in \IR^m \setminus \{\b0\}$ and let $\alpha, \beta > 0$. Using the bilinearity of the dot product and the positive homogeneity of the Euclidean norm ($\|\alpha \bx\|_2 = |\alpha|\,\|\bx\|_2 = \alpha \|\bx\|_2$ since $\alpha > 0$), we compute
+Let $\bx, \by \in \IR^p \setminus \{\b0\}$ and let $\alpha, \beta > 0$. Using the bilinearity of the dot product and the positive homogeneity of the Euclidean norm ($\|\alpha \bx\|_2 = |\alpha|\,\|\bx\|_2 = \alpha \|\bx\|_2$ since $\alpha > 0$), we compute
 \begin{align*}
 \mathsf{sim}(\alpha \bx, \beta \by)
 &= \frac{(\alpha \bx) \bullet (\beta \by)}{\|\alpha \bx\|_2 \, \|\beta \by\|_2} \\
@@ -705,31 +701,31 @@ Let $\bx, \by \in \IR^m \setminus \{\b0\}$ and let $\alpha, \beta > 0$. Using th
 
 
 \begin{frame}[red]{Proof of Proposition~\ref{prop:cosine_properties} (Part 2: non-negative vectors)}
-Assume $\bx, \by \in \IRplus^m \setminus \{\b0\}$, so $x_i \ge 0$ and $y_i \ge 0$ for every $i \in \{1, \ldots, m\}$
+Assume $\bx, \by \in \IRplus^p \setminus \{\b0\}$, so $x_j \ge 0$ and $y_j \ge 0$ for every $j \in \{1, \ldots, p\}$
 \vfill
 \begin{enumerate}
-\item Since the product of two non-negative real numbers is non-negative, $x_i y_i \ge 0$ for all $i = 1, \ldots, m$. Summing over $i$ yields
+\item Since the product of two non-negative real numbers is non-negative, $x_j y_j \ge 0$ for all $j = 1, \ldots, p$. Summing over $j$ yields
 \[
-\bx \bullet \by = \sum_{i=1}^m x_i y_i \ge 0
+\bx \bullet \by = \sum_{j=1}^p x_j y_j \ge 0
 \]
 Dividing by $\|\bx\|_2 \|\by\|_2 > 0$ and combining with Cauchy-Schwarz gives $0 \le \mathsf{sim}(\bx, \by) \le 1$
 \vfill
-\item Because each summand $x_i y_i$ is non-negative, a sum of non-negative terms $\sum_{i=1}^m x_i y_i$ equals $0$ if and only if \textbf{every individual term is zero}:
+\item Because each summand $x_j y_j$ is non-negative, a sum of non-negative terms $\sum_{j=1}^p x_j y_j$ equals $0$ if and only if \textbf{every individual term is zero}:
 \[
-\mathsf{sim}(\bx, \by) = 0 \iff \sum_{i=1}^m x_i y_i = 0 \iff \forall i \in \{1,\ldots,m\},\; x_i y_i = 0
+\mathsf{sim}(\bx, \by) = 0 \iff \sum_{j=1}^p x_j y_j = 0 \iff \forall j \in \{1,\ldots,p\},\; x_j y_j = 0
 \]
-Since $x_i y_i = 0 \iff (x_i = 0 \textrm{ or } y_i = 0)$, there is no index $i$ with both $x_i > 0$ and $y_i > 0$, which means $\mathsf{supp}(\bx) \cap \mathsf{supp}(\by) = \emptyset$ \hfill\qed
+Since $x_j y_j = 0 \iff (x_j = 0 \textrm{ or } y_j = 0)$, there is no index $j$ with both $x_j > 0$ and $y_j > 0$, which means $\mathsf{supp}(\bx) \cap \mathsf{supp}(\by) = \emptyset$ \hfill\qed
 \end{enumerate}
 \end{frame}
 
 
 \begin{frame}{Interpretation of Proposition~\ref{prop:cosine_properties} for text}
 \begin{itemize}
-\item Because bag-of-words and TF-IDF vectors lie in the non-negative orthant $\IRplus^m$, two documents can \textbf{never} have negative cosine similarity ($\theta \in [0, \pi/2]$)
+\item Because bag-of-words and TF-IDF vectors lie in the non-negative orthant $\IRplus^p$, two documents can \textbf{never} have negative cosine similarity ($\theta \in [0, \pi/2]$)
 \vfill
-\item $\mathsf{sim}(\bx_i, \bx_j) = 0$ ($\theta = \pi/2$, orthogonal vectors) occurs \textbf{if and only if the two documents share no vocabulary words in common} (after any zero-IDF stop words are removed)
+\item $\mathsf{sim}(\bx_i, \bx_k) = 0$ ($\theta = \pi/2$, orthogonal vectors) occurs \textbf{if and only if the two documents share no vocabulary words in common} (after any zero-IDF stop words are removed)
 \vfill
-\item Moreover, for $\ell_2$-normalised vectors $\hat{\bx} = \bx/\|\bx\|_2$ and $\hat{\by} = \by/\|\by\|_2$ on the unit sphere $S^{m-1}$, Euclidean distance and cosine similarity are monotonically related:
+\item Moreover, for $\ell_2$-normalised vectors $\hat{\bx} = \bx/\|\bx\|_2$ and $\hat{\by} = \by/\|\by\|_2$ on the unit sphere $S^{p-1}$, Euclidean distance and cosine similarity are monotonically related:
 \[
 \|\hat{\bx} - \hat{\by}\|_2^2 = \|\hat{\bx}\|_2^2 + \|\hat{\by}\|_2^2 - 2(\hat{\bx} \bullet \hat{\by}) = 2\left(1 - \mathsf{sim}(\bx, \by)\right)
 \]
@@ -738,18 +734,18 @@ Since $x_i y_i = 0 \iff (x_i = 0 \textrm{ or } y_i = 0)$, there is no index $i$ 
 
 
 \begin{frame}{All-pairs cosine similarity via the Gram matrix}
-How do we compute the cosine similarity between \textbf{all pairs} of $n$ documents in a matrix $X = [\bx_1 \cdots \bx_n] \in \M_{mn}$ at once?
+How do we compute the cosine similarity between \textbf{all pairs} of $n$ documents in a data matrix $X \in \M_{np}$ with rows $\bx_1^T, \ldots, \bx_n^T$ at once?
 \vfill
 \begin{importanttheorem}[Cosine similarity Gram matrix]\label{th:cosine_gram}
-Let $X = [\bx_1 \cdots \bx_n] \in \M_{mn}$ have non-zero columns and let
+Let $X \in \M_{np}$ have non-zero document rows $\bx_1^T, \ldots, \bx_n^T \in \IR^{1 \times p}$ and let
 \[
-\hat{X} = X D_{\text{norm}}^{-1} = \begin{bmatrix} \hat{\bx}_1 & \hat{\bx}_2 & \cdots & \hat{\bx}_n \end{bmatrix} \in \M_{mn}
+\hat{X} = D_{\text{norm}}^{-1} X = \begin{pmatrix} \hat{\bx}_1^T \\ \hat{\bx}_2^T \\ \vdots \\ \hat{\bx}_n^T \end{pmatrix} \in \M_{np}
 \quad\textrm{where}\quad
 D_{\text{norm}}^{-1} = \diag\!\left(\frac{1}{\|\bx_1\|_2}, \ldots, \frac{1}{\|\bx_n\|_2}\right)
 \]
 Then the symmetric \defword{Gram matrix}
 \[
-S = \hat{X}^T \hat{X} \in \M_n(\IR)
+S = \hat{X} \hat{X}^T \in \M_n(\IR)
 \]
 has $(i,j)$ entry equal to the pairwise cosine similarity $s_{ij} = \hat{\bx}_i^T \hat{\bx}_j = \mathsf{sim}(\bx_i, \bx_j)$, with $s_{ii} = 1$ along the diagonal
 \end{importanttheorem}
@@ -757,7 +753,7 @@ has $(i,j)$ entry equal to the pairwise cosine similarity $s_{ij} = \hat{\bx}_i^
 
 
 \begin{frame}{Example -- Pairwise cosine similarity by hand (Part 1)}
-Consider $n=3$ sparse document vectors in $\IRplus^5$:
+Consider $n=3$ sparse document vectors in $\IRplus^5$ ($p = 5$):
 \[
 \bx_1 = \begin{pmatrix} 3 \\ 4 \\ 0 \\ 0 \\ 0 \end{pmatrix}, \qquad
 \bx_2 = \begin{pmatrix} 6 \\ 8 \\ 0 \\ 0 \\ 0 \end{pmatrix}, \qquad
@@ -781,14 +777,14 @@ Consider $n=3$ sparse document vectors in $\IRplus^5$:
 \bx_2 \bullet \bx_3 &= 8(2) = 16
 \end{align*}
 \vfill
-\textbf{Step 3: Divide by norms to form the Gram matrix $S = \hat{X}^T \hat{X}$}:
+\textbf{Step 3: Divide by norms to form the Gram matrix $S = \hat{X} \hat{X}^T$}:
 \[
 \mathsf{sim}(\bx_1, \bx_2) = \frac{50}{5 \times 10} = 1, \quad
 \mathsf{sim}(\bx_1, \bx_3) = \frac{8}{5 \times 3} = \frac{8}{15}, \quad
 \mathsf{sim}(\bx_2, \bx_3) = \frac{16}{10 \times 3} = \frac{8}{15}
 \]
 \[
-\implies S = \hat{X}^T \hat{X} =
+\implies S = \hat{X} \hat{X}^T =
 \begin{pmatrix}
 1 & 1 & 8/15 \\
 1 & 1 & 8/15 \\
@@ -815,15 +811,15 @@ Consider $n=3$ sparse document vectors in $\IRplus^5$:
 \SSsubsection{SVD vs NMF on non-negative data}
 
 \begin{frame}{Recall from Unit 04: low-rank approximation via SVD}
-In Unit 04, we saw that any matrix $X \in \M_{mn}(\IR)$ admits a Singular Value Decomposition $X = U \Sigma V^T = \sum_{r=1}^{\rank(X)} \sigma_r \bu_r \bv_r^T$
+In Unit 04, we saw that any matrix $X \in \M_{np}(\IR)$ admits a Singular Value Decomposition $X = U \Sigma V^T = \sum_{r=1}^{\rank(X)} \sigma_r \bu_r \bv_r^T$
 \vfill
 \begin{itemize}
-\item By the \textbf{Eckart-Young theorem}, the best rank-$k$ approximation to $X$ in the Frobenius norm $\|A\|_F = \sqrt{\sum_{i=1}^m \sum_{j=1}^n a_{ij}^2}$ is the \defword{truncated SVD}:
+\item By the \textbf{Eckart-Young theorem}, the best rank-$k$ approximation to $X$ in the Frobenius norm $\|A\|_F = \sqrt{\sum_{i=1}^n \sum_{j=1}^p a_{ij}^2}$ is the \defword{truncated SVD}:
 \[
 X_k = \sum_{r=1}^k \sigma_r \bu_r \bv_r^T = U_k \Sigma_k V_k^T
 \]
 \vfill
-\item Applied to a term-document matrix $X$, truncated SVD is known in information retrieval as \defword{Latent Semantic Analysis} (\defword{LSA}, Deerwester et al.\ 1990)
+\item Applied to a document-term matrix $X$, truncated SVD is known in information retrieval as \defword{Latent Semantic Analysis} (\defword{LSA}, Deerwester et al.\ 1990)
 \end{itemize}
 \end{frame}
 
@@ -831,35 +827,35 @@ X_k = \sum_{r=1}^k \sigma_r \bu_r \bv_r^T = U_k \Sigma_k V_k^T
 \begin{frame}{Why truncated SVD is awkward on non-negative data}
 Many real-world data matrices are inherently \textbf{non-negative} ($x_{ij} \ge 0$):
 \begin{itemize}
-\item Term-document word count and TF-IDF matrices
+\item Document-term word count and TF-IDF matrices
 \item Pixel intensities in greyscale or colour images
 \item Audio spectrograms, chemical concentrations and gene expression counts
 \end{itemize}
 \vfill
-Why does truncated SVD struggle with interpretability on $X \in \M_{mn}(\IRplus)$?
+Why does truncated SVD struggle with interpretability on $X \in \M_{np}(\IRplus)$?
 \begin{itemize}
 \item By the Perron-Frobenius theorem, the first singular vectors $\bu_1, \bv_1$ can be chosen non-negative
 \item However, $U_k$ and $V_k$ have \textbf{orthonormal columns}: for every $r \ge 2$,
 \[
 \bu_r \bullet \bu_1 = 0 \quad\textrm{and}\quad \bv_r \bullet \bv_1 = 0
 \]
-\item As proved in Proposition~\ref{prop:cosine_properties}, a non-zero vector orthogonal to a strictly positive vector $\bu_1$ \textbf{must contain both positive and negative entries}!
+\item As proved in Proposition~\ref{prop:cosine_properties}, a non-zero vector orthogonal to a strictly positive vector $\bv_1$ \textbf{must contain both positive and negative entries}!
 \end{itemize}
 \end{frame}
 
 
 \begin{frame}{Subtractive cancellation vs additive parts}
 \begin{itemize}
-\item Because $\bu_2, \ldots, \bu_k$ and $\bv_2, \ldots, \bv_k$ contain negative numbers, SVD reconstructs a document $\bx_j \approx \sum_{r=1}^k (\sigma_r v_{jr}) \bu_r$ through \textbf{subtractive cancellation}:
+\item Because $\bu_2, \ldots, \bu_k$ and $\bv_2, \ldots, \bv_k$ contain negative numbers, SVD reconstructs a document $\bx_i \approx \sum_{r=1}^k (\sigma_r u_{ir}) \bv_r$ through \textbf{subtractive cancellation}:
 \begin{itemize}
-\item What does it mean for a ``topic'' vector $\bu_2$ to contain $-0.42 \times \code{"matrix"}$?
+\item What does it mean for a ``topic'' vector $\bv_2$ to contain $-0.54 \times \code{"matrix"}$?
 \item What does it mean to subtract $0.3$ of Topic 2 from a document so that negative word counts cancel out?
 \end{itemize}
 \vfill
-\item For example, on our $6 \times 4$ corpus matrix $X$, the first two left singular vectors in $U_2$ are
+\item For example, on our $4 \times 6$ document-term matrix $X$, the first two right singular vectors (term-topic directions) in $V_2$ are
 \[
-\bu_1 = \begin{pmatrix} 0.30 \\ 0.30 \\ 0.11 \\ 0.32 \\ 0.31 \\ 0.78 \end{pmatrix} \ge \b0, \qquad
-\bu_2 = \begin{pmatrix} \boldred{-0.54} \\ \boldred{-0.47} \\ \boldred{-0.24} \\ 0.45 \\ 0.45 \\ 0.14 \end{pmatrix} \notin \IRplus^6
+\bv_1 = \begin{pmatrix} 0.30 \\ 0.30 \\ 0.11 \\ 0.32 \\ 0.31 \\ 0.78 \end{pmatrix} \ge \b0, \qquad
+\bv_2 = \begin{pmatrix} \boldred{-0.54} \\ \boldred{-0.47} \\ \boldred{-0.24} \\ 0.45 \\ 0.45 \\ 0.14 \end{pmatrix} \notin \IRplus^6
 \]
 \item To obtain directly interpretable topics (or parts of an image), we drop the orthogonality constraint and instead enforce \defword{non-negativity} on both factors!
 \end{itemize}
@@ -868,14 +864,14 @@ Why does truncated SVD struggle with interpretability on $X \in \M_{mn}(\IRplus)
 
 \begin{frame}{Non-negative Matrix Factorisation (NMF)}
 \begin{importantdefinition}[Non-negative Matrix Factorisation (NMF)]
-Given a non-negative matrix $X \in \M_{mn}(\IRplus)$ and a target rank $k < \min(m, n)$, \defword{Non-negative Matrix Factorisation} (\defword{NMF}, Paatero \& Tapper 1994; Lee \& Seung 1999) seeks two non-negative matrices
+Given a non-negative data matrix $X \in \M_{np}(\IRplus)$ and a target rank $k < \min(n, p)$, \defword{Non-negative Matrix Factorisation} (\defword{NMF}, Paatero \& Tapper 1994; Lee \& Seung 1999) seeks two non-negative matrices
 \[
-W \in \M_{mk}(\IRplus) \quad\textrm{and}\quad H \in \M_{kn}(\IRplus)
+W \in \M_{nk}(\IRplus) \quad\textrm{and}\quad H \in \M_{kp}(\IRplus)
 \]
 such that $X \approx W H$, by solving the constrained optimisation problem
 \[
-\min_{W \in \M_{mk}(\IRplus),\; H \in \M_{kn}(\IRplus)} \|X - W H\|_F^2
-= \sum_{i=1}^m \sum_{j=1}^n \left(x_{ij} - \sum_{r=1}^k w_{ir} h_{rj}\right)^2
+\min_{W \in \M_{nk}(\IRplus),\; H \in \M_{kp}(\IRplus)} \|X - W H\|_F^2
+= \sum_{i=1}^n \sum_{j=1}^p \left(x_{ij} - \sum_{r=1}^k w_{ir} h_{rj}\right)^2
 \]
 subject to $w_{ir} \ge 0$ and $h_{rj} \ge 0$ for all $i, r, j$
 \end{importantdefinition}
@@ -886,31 +882,31 @@ subject to $w_{ir} \ge 0$ and $h_{rj} \ge 0$ for all $i, r, j$
 \begin{center}
 \begin{tikzpicture}[scale=0.9, every node/.style={font=\small}]
     % X matrix
-    \draw[thick, fill=blue!15] (0,0) rectangle (3.0,3.6);
-    \node[font=\large\bfseries] at (1.5,1.8) {$X \ge 0$};
-    \node[left] at (0,1.8) {$m$ terms};
-    \node[above] at (1.5,3.6) {$n$ documents};
-    \node[below] at (1.5,0) {$m \times n$};
+    \draw[thick, fill=blue!15] (0,0) rectangle (3.6,3.0);
+    \node[font=\large\bfseries] at (1.8,1.5) {$X \ge 0$};
+    \node[left] at (0,1.5) {$n$ documents};
+    \node[above] at (1.8,3.0) {$p$ terms};
+    \node[below] at (1.8,0) {$n \times p$};
 
-    \node[font=\Large\bfseries] at (3.7,1.8) {$\approx$};
+    \node[font=\Large\bfseries] at (4.3,1.5) {$\approx$};
 
     % W matrix
-    \draw[thick, fill=orange!20] (4.4,0) rectangle (5.6,3.6);
-    \node[font=\large\bfseries] at (5.0,1.8) {$W \ge 0$};
-    \node[above] at (5.0,3.6) {$k$ topics};
-    \node[below] at (5.0,0) {$m \times k$};
+    \draw[thick, fill=orange!20] (5.0,0) rectangle (6.2,3.0);
+    \node[font=\large\bfseries] at (5.6,1.5) {$W \ge 0$};
+    \node[above] at (5.6,3.0) {$k$ topics};
+    \node[below] at (5.6,0) {$n \times k$};
 
     % H matrix
-    \draw[thick, fill=green!20] (6.1,2.4) rectangle (9.1,3.6);
-    \node[font=\large\bfseries] at (7.6,3.0) {$H \ge 0$};
-    \node[above] at (7.6,3.6) {$n$ documents};
-    \node[right] at (9.1,3.0) {$k$ topics};
-    \node[below] at (7.6,2.4) {$k \times n$};
+    \draw[thick, fill=green!20] (6.7,1.8) rectangle (10.3,3.0);
+    \node[font=\large\bfseries] at (8.5,2.4) {$H \ge 0$};
+    \node[above] at (8.5,3.0) {$p$ terms};
+    \node[right] at (10.3,2.4) {$k$ topics};
+    \node[below] at (8.5,1.8) {$k \times p$};
 \end{tikzpicture}
 \end{center}
 \vfill
 \begin{itemize}
-\item When $k \ll \min(m, n)$, NMF compresses $mn$ entries into $k(m + n)$ non-negative parameters while preserving an \textbf{additive, parts-based} structure
+\item When $k \ll \min(n, p)$, NMF compresses $np$ entries into $k(n + p)$ non-negative parameters while preserving an \textbf{additive, parts-based} structure
 \end{itemize}
 \end{frame}
 
@@ -937,30 +933,30 @@ Nested factors across $k$ & Yes (first $k$ cols stay fixed) & No (recomputed for
 %%%%%%%%%%%%%%%%%%%%%
 \SSsubsection{Topic modelling interpretation of W and H}
 
-\begin{frame}{Column-wise view: documents as additive mixtures of topics}
-Write $W = \begin{bmatrix} \bw_1 & \cdots & \bw_k \end{bmatrix} \in \M_{mk}(\IRplus)$ in terms of its columns $\bw_r \in \IRplus^m$ and $H = \begin{bmatrix} \bh_1 & \cdots & \bh_n \end{bmatrix} \in \M_{kn}(\IRplus)$ in terms of its columns $\bh_j \in \IRplus^k$
+\begin{frame}{Row-wise view: documents as additive mixtures of topics}
+Write $W = \begin{bmatrix} \bw_1^T \\ \vdots \\ \bw_n^T \end{bmatrix} \in \M_{nk}(\IRplus)$ in terms of its rows $\bw_i^T \in \IRplus^{1 \times k}$ and $H = \begin{bmatrix} \bh_1^T \\ \vdots \\ \bh_k^T \end{bmatrix} \in \M_{kp}(\IRplus)$ in terms of its rows $\bh_r^T \in \IRplus^{1 \times p}$
 \vfill
-By standard column-wise matrix multiplication, the $j$-th column of $X \approx W H$ is
+By standard row-wise matrix multiplication, the $i$-th row of $X \approx W H$ is $\bx_i^T \approx \bw_i^T H = \sum_{r=1}^k w_{ir} \bh_r^T$, or in column-vector form:
 \[
-\bx_j \approx W \bh_j = h_{1j} \bw_1 + h_{2j} \bw_2 + \cdots + h_{kj} \bw_k = \sum_{r=1}^k h_{rj} \bw_r
+\bx_i \approx H^T \bw_i = w_{i1} \bh_1 + w_{i2} \bh_2 + \cdots + w_{ik} \bh_k = \sum_{r=1}^k w_{ir} \bh_r
 \]
 \vfill
 \begin{itemize}
-\item \textbf{Columns of $W$ ($\bw_r \in \IRplus^m$, the dictionary / topic basis)}:
+\item \textbf{Rows of $H$ ($\bh_r^T \in \IRplus^{1 \times p}$, the dictionary / topic basis)}:
 \begin{itemize}
-\item Column $\bw_r$ gives the weight of each of the $m$ vocabulary words in \defword{topic $r$}
-\item The largest entries of $\bw_r$ identify the signature keywords of topic $r$
+\item Row $\bh_r^T$ gives the weight of each of the $p$ vocabulary words in \defword{topic $r$}
+\item The largest entries of $\bh_r$ identify the signature keywords of topic $r$
 \end{itemize}
 \vfill
-\item \textbf{Columns of $H$ ($\bh_j \in \IRplus^k$, the document topic encodings)}:
+\item \textbf{Rows of $W$ ($\bw_i^T \in \IRplus^{1 \times k}$, the document topic encodings)}:
 \begin{itemize}
-\item Entry $h_{rj} \ge 0$ tells how strongly document $d_j$ expresses topic $r$
+\item Entry $w_{ir} \ge 0$ tells how strongly document $d_i$ expresses topic $r$
 \end{itemize}
 \end{itemize}
 \end{frame}
 
 
-\begin{frame}{Geometric interpretation: the conical hull of $W$}
+\begin{frame}{Geometric interpretation: the conical hull of $H^T$}
 \begin{columns}[c]
 \begin{column}{0.48\textwidth}
 \begin{center}
@@ -970,27 +966,27 @@ By standard column-wise matrix multiplication, the $j$-th column of $X \approx W
     \draw[->, thick] (0,0) -- (0,3.8) node[above, font=\small] {$w_3$};
     \draw[->, thick] (0,0) -- (-1.8,-1.4) node[below left, font=\small] {$w_2$};
 
-    % Shaded cone between w_1 and w_2
+    % Shaded cone between h_1 and h_2
     \fill[orange!25, opacity=0.7] (0,0) -- (3.4,0.8) -- (0.8,3.2) -- cycle;
 
     % Topic vectors
-    \draw[->, ultra thick, orange!85!black] (0,0) -- (3.4,0.8) node[right, font=\small\bfseries] {$\bw_1$ (Topic 1)};
-    \draw[->, ultra thick, orange!85!black] (0,0) -- (0.8,3.2) node[above right, font=\small\bfseries] {$\bw_2$ (Topic 2)};
+    \draw[->, ultra thick, orange!85!black] (0,0) -- (3.4,0.8) node[right, font=\small\bfseries] {$\bh_1$ (Topic 1)};
+    \draw[->, ultra thick, orange!85!black] (0,0) -- (0.8,3.2) node[above right, font=\small\bfseries] {$\bh_2$ (Topic 2)};
 
     % Document points inside the cone
-    \fill[blue!75!black] (2.4,1.1) circle (2.5pt) node[below, font=\footnotesize] {$W\bh_1$};
-    \fill[blue!75!black] (1.3,2.3) circle (2.5pt) node[left, font=\footnotesize] {$W\bh_2$};
-    \fill[blue!75!black] (2.0,1.8) circle (2.5pt) node[right, font=\footnotesize] {$W\bh_3$};
+    \fill[blue!75!black] (2.4,1.1) circle (2.5pt) node[below, font=\footnotesize] {$H^T\bw_1$};
+    \fill[blue!75!black] (1.3,2.3) circle (2.5pt) node[left, font=\footnotesize] {$H^T\bw_2$};
+    \fill[blue!75!black] (2.0,1.8) circle (2.5pt) node[right, font=\footnotesize] {$H^T\bw_3$};
 \end{tikzpicture}
 \end{center}
 \end{column}
 \begin{column}{0.52\textwidth}
 \begin{itemize}
-\item In unconstrained linear algebra, $\{W\bh : \bh \in \IR^k\}$ is the $k$-dimensional subspace $\Span(\bw_1, \ldots, \bw_k)$
+\item In unconstrained linear algebra, $\{H^T\bw : \bw \in \IR^k\}$ is the $k$-dimensional subspace $\Span(\bh_1, \ldots, \bh_k)$
 \vfill
-\item In NMF, because $\bh_j \in \IRplus^k$ has non-negative weights $h_{rj} \ge 0$, the reconstructed documents $W\bh_j$ must lie inside the \defword{conical hull} (or simplicial cone) generated by the columns of $W$:
+\item In NMF, because $\bw_i \in \IRplus^k$ has non-negative weights $w_{ir} \ge 0$, the reconstructed documents $H^T\bw_i$ must lie inside the \defword{conical hull} (or simplicial cone) generated by the rows of $H$:
 \[
-\mathsf{cone}(W) = \left\{\sum_{r=1}^k h_r \bw_r : h_1, \ldots, h_k \ge 0\right\} \subset \IRplus^m
+\mathsf{cone}(H^T) = \left\{\sum_{r=1}^k w_r \bh_r : w_1, \ldots, w_k \ge 0\right\} \subset \IRplus^p
 \]
 \end{itemize}
 \end{column}
@@ -1001,47 +997,45 @@ By standard column-wise matrix multiplication, the $j$-th column of $X \approx W
 \begin{frame}{Rank-one outer product expansion and polysemy}
 Just as the SVD writes $X_k = \sum_{r=1}^k \sigma_r \bu_r \bv_r^T$ as a sum of $k$ rank-one matrices, NMF decomposes $W H$ into $k$ \textbf{non-negative rank-one layers}:
 \[
-W H = \sum_{r=1}^k \bw_r \tilde{\bh}_r^T
+W H = \sum_{r=1}^k \bu_r \bh_r^T
 \]
-where $\bw_r \in \IRplus^m$ is the $r$-th column of $W$ and $\tilde{\bh}_r^T \in \IRplus^{1 \times n}$ is the $r$-th row of $H$
+where $\bu_r \in \IRplus^n$ is the $r$-th column of $W$ and $\bh_r^T \in \IRplus^{1 \times p}$ is the $r$-th row of $H$
 \vfill
 \begin{itemize}
-\item Each outer product $M_r = \bw_r \tilde{\bh}_r^T \in \M_{mn}(\IRplus)$ displays the contribution of \textbf{topic $r$ alone} across all $m$ words and all $n$ documents
-\item Because columns of $W$ do not have to be orthogonal, a single word $w_i$ with multiple meanings (\defword{polysemy}, e.g., \code{"degree"} in polynomial algebra vs vertex degree in graphs) can have positive weight $w_{ir} > 0$ in \textbf{more than one topic column}!
+\item Each outer product $M_r = \bu_r \bh_r^T \in \M_{np}(\IRplus)$ displays the contribution of \textbf{topic $r$ alone} across all $n$ documents and all $p$ words
+\item Because rows of $H$ do not have to be orthogonal, a single word $w_j$ with multiple meanings (\defword{polysemy}, e.g., \code{"degree"} in polynomial algebra vs vertex degree in graphs) can have positive weight $h_{rj} > 0$ in \textbf{more than one topic row}!
 \end{itemize}
 \end{frame}
 
 
 \begin{frame}{Example -- Interpreting $W$ and $H$ (Part 1)}
-Suppose a corpus of $n=4$ documents over $m=5$ terms $\{\code{matrix}, \code{vector}, \code{rank}, \code{graph}, \code{vertex}\}$ has term-document matrix $X \in \M_{5,4}(\IRplus)$ and rank-$2$ NMF gives $X \approx W H$:
+Suppose a corpus of $n=4$ documents over $p=5$ terms $\{\code{matrix}, \code{vector}, \code{rank}, \code{graph}, \code{vertex}\}$ has document-term matrix $X \in \M_{45}(\IRplus)$ and rank-$2$ NMF gives $X \approx W H$:
 \[
 X = \begin{pmatrix}
-6 & 4 & 0 & 2 \\
-3 & 2 & 0 & 1 \\
-3 & 2 & 0 & 1 \\
-0 & 0 & 6 & 4 \\
-0 & 0 & 3 & 2
+6 & 3 & 3 & 0 & 0 \\
+4 & 2 & 2 & 0 & 0 \\
+0 & 0 & 0 & 6 & 3 \\
+2 & 1 & 1 & 4 & 2
 \end{pmatrix},
 \qquad
 W = \begin{pmatrix}
+3 & 0 \\
 2 & 0 \\
-1 & 0 \\
-1 & 0 \\
-0 & 2 \\
-0 & 1
+0 & 3 \\
+1 & 2
 \end{pmatrix},
 \qquad
 H = \begin{pmatrix}
-3 & 2 & 0 & 1 \\
-0 & 0 & 3 & 2
+2 & 1 & 1 & 0 & 0 \\
+0 & 0 & 0 & 2 & 1
 \end{pmatrix}
 \]
-(where rows $1,\ldots,5$ of $X$ and $W$ are $\code{matrix}, \code{vector}, \code{rank}, \code{graph}, \code{vertex}$ while columns $1,\ldots,4$ of $X$ and $H$ are $d_1, d_2, d_3, d_4$)
+(where rows $1,\ldots,4$ of $X$ and $W$ are $d_1, d_2, d_3, d_4$ while columns $1,\ldots,5$ of $X$ and $H$ are $\code{matrix}, \code{vector}, \code{rank}, \code{graph}, \code{vertex}$)
 \vfill
 \textbf{Questions}:
 \begin{enumerate}
-\item How should we label Topic 1 ($\bw_1$) and Topic 2 ($\bw_2$) from $W$?
-\item How should we characterise documents $d_1, d_2, d_3, d_4$ from $H$?
+\item How should we label Topic 1 ($\bh_1^T$) and Topic 2 ($\bh_2^T$) from $H$?
+\item How should we characterise documents $d_1, d_2, d_3, d_4$ from $W$?
 \item What is the reconstruction error $\|X - WH\|_F^2$?
 \end{enumerate}
 \end{frame}
@@ -1049,17 +1043,17 @@ H = \begin{pmatrix}
 
 \begin{frame}{Example -- Interpreting $W$ and $H$ (Part 2)}
 \begin{enumerate}
-\item \textbf{Labelling topics from the columns of $W$}:
+\item \textbf{Labelling topics from the rows of $H$}:
 \begin{itemize}
-\item Column $\bw_1 = (2, 1, 1, 0, 0)^T$ has non-zero weights only on \code{matrix}, \code{vector} and \code{rank} $\implies$ \textbf{Topic 1 is Linear Algebra}
-\item Column $\bw_2 = (0, 0, 0, 2, 1)^T$ has non-zero weights only on \code{graph} and \code{vertex} $\implies$ \textbf{Topic 2 is Graph Theory}
+\item Row $\bh_1^T = (2, 1, 1, 0, 0)$ has non-zero weights only on \code{matrix}, \code{vector} and \code{rank} $\implies$ \textbf{Topic 1 is Linear Algebra}
+\item Row $\bh_2^T = (0, 0, 0, 2, 1)$ has non-zero weights only on \code{graph} and \code{vertex} $\implies$ \textbf{Topic 2 is Graph Theory}
 \end{itemize}
 \vfill
-\item \textbf{Classifying documents from the columns of $H$}:
+\item \textbf{Classifying documents from the rows of $W$}:
 \begin{itemize}
-\item $\bh_1 = (3, 0)^T$ and $\bh_2 = (2, 0)^T$ load purely on Topic 1 (Linear Algebra)
-\item $\bh_3 = (0, 3)^T$ loads purely on Topic 2 (Graph Theory)
-\item $\bh_4 = (1, 2)^T$ is a \textbf{multi-topic document}: $\bx_4 = 1\bw_1 + 2\bw_2$ ($1/3$ Linear Algebra, $2/3$ Graph Theory, e.g., spectral graph theory!)
+\item $\bw_1^T = (3, 0)$ and $\bw_2^T = (2, 0)$ load purely on Topic 1 (Linear Algebra)
+\item $\bw_3^T = (0, 3)$ loads purely on Topic 2 (Graph Theory)
+\item $\bw_4^T = (1, 2)$ is a \textbf{multi-topic document}: $\bx_4 = 1\bh_1 + 2\bh_2$ ($1/3$ Linear Algebra, $2/3$ Graph Theory, e.g., spectral graph theory!)
 \end{itemize}
 \vfill
 \item \textbf{Reconstruction error}: Multiplying $W H$ reproduces $X$ exactly, so $\|X - WH\|_F^2 = 0$ and $\rank(X) = 2$
@@ -1074,7 +1068,7 @@ H = \begin{pmatrix}
 \begin{frame}{Why computing NMF is an optimisation challenge}
 Consider the NMF objective function
 \[
-f(W, H) = \|X - W H\|_F^2 = \sum_{i=1}^m \sum_{j=1}^n \left(x_{ij} - \sum_{r=1}^k w_{ir} h_{rj}\right)^2
+f(W, H) = \|X - W H\|_F^2 = \sum_{i=1}^n \sum_{j=1}^p \left(x_{ij} - \sum_{r=1}^k w_{ir} h_{rj}\right)^2
 \]
 \vfill
 \begin{enumerate}
@@ -1095,30 +1089,30 @@ f(W, H) = \|X - W H\|_F^2 = \sum_{i=1}^m \sum_{j=1}^n \left(x_{ij} - \sum_{r=1}^
 Although $f(W, H) = \|X - W H\|_F^2$ is non-convex jointly in $(W, H)$, it is \defword{bi-convex} (convex in $H$ when $W$ is fixed and convex in $W$ when $H$ is fixed)!
 \vfill
 \begin{enumerate}
-\item \textbf{Hold $W \in \M_{mk}(\IRplus)$ fixed}:
+\item \textbf{Hold $W \in \M_{nk}(\IRplus)$ fixed}: Denoting the $j$-th columns of $X$ and $H$ by $\bc_j \in \IRplus^n$ and $\bh_{\cdot j} \in \IRplus^k$,
 \[
-\|X - W H\|_F^2 = \sum_{j=1}^n \|\bx_j - W \bh_j\|_2^2
+\|X - W H\|_F^2 = \sum_{j=1}^p \|\bc_j - W \bh_{\cdot j}\|_2^2
 \]
-Each term $\|\bx_j - W \bh_j\|_2^2$ is a standard \textbf{linear least-squares problem} $W \bh_j \approx \bx_j$ of the exact form studied in Unit 03 and Unit 04!
+Each term $\|\bc_j - W \bh_{\cdot j}\|_2^2$ is a standard \textbf{linear least-squares problem} $W \bh_{\cdot j} \approx \bc_j$ of the exact form studied in Unit 03 and Unit 04!
 \vfill
-\item \textbf{Hold $H \in \M_{kn}(\IRplus)$ fixed}: Using $\|A\|_F^2 = \|A^T\|_F^2$ and $(WH)^T = H^T W^T$,
+\item \textbf{Hold $H \in \M_{kp}(\IRplus)$ fixed}: Using $\|A\|_F^2 = \|A^T\|_F^2$ and $(WH)^T = H^T W^T$,
 \[
-\|X - W H\|_F^2 = \|X^T - H^T W^T\|_F^2
+\|X - W H\|_F^2 = \|X^T - H^T W^T\|_F^2 = \sum_{i=1}^n \|\bx_i - H^T \bw_i\|_2^2
 \]
-This is again a linear least-squares problem for the columns of $W^T$ with design matrix $H^T \in \M_{nk}$!
+This is again a linear least-squares problem for the rows $\bw_i^T$ of $W$ (columns $\bw_i$ of $W^T$) with design matrix $H^T \in \M_{pk}$!
 \end{enumerate}
 \end{frame}
 
 
 \begin{frame}{Deriving the projected least-squares update for $H$}
 \begin{proposition}[Projected least-squares step for $H$]\label{prop:als_H_step}
-Suppose $W \in \M_{mk}(\IRplus)$ is fixed and has full column rank ($\rank(W) = k$, so $W^T W \in \M_k$ is invertible). Then:
+Suppose $W \in \M_{nk}(\IRplus)$ is fixed and has full column rank ($\rank(W) = k$, so $W^T W \in \M_k$ is invertible). Then:
 \begin{enumerate}
-\item For each column $j \in \{1, \ldots, n\}$, the unconstrained least-squares problem $\min_{\bh_j \in \IR^k} \|\bx_j - W \bh_j\|_2^2$ has the unique normal-equations solution
+\item For each column $j \in \{1, \ldots, p\}$, the unconstrained least-squares problem $\min_{\bh_{\cdot j} \in \IR^k} \|\bc_j - W \bh_{\cdot j}\|_2^2$ has the unique normal-equations solution
 \[
-\bh_j^{\text{LS}} = (W^T W)^{-1} W^T \bx_j
+\bh_{\cdot j}^{\text{LS}} = (W^T W)^{-1} W^T \bc_j
 \]
-\item Stacking all $n$ columns side by side into $H_{\text{LS}} = [\bh_1^{\text{LS}} \cdots \bh_n^{\text{LS}}] \in \M_{kn}(\IR)$ gives the matrix formula
+\item Stacking all $p$ columns side by side into $H_{\text{LS}} = [\bh_{\cdot 1}^{\text{LS}} \cdots \bh_{\cdot p}^{\text{LS}}] \in \M_{kp}(\IR)$ gives the matrix formula
 \[
 H_{\text{LS}} = (W^T W)^{-1} W^T X
 \]
@@ -1133,7 +1127,7 @@ H \leftarrow \max(0, H_{\text{LS}}) \quad\textrm{i.e.,}\quad h_{rj} = \max\!\lef
 
 \begin{frame}{Deriving the projected least-squares update for $W$}
 \begin{proposition}[Projected least-squares step for $W$]\label{prop:als_W_step}
-Suppose $H \in \M_{kn}(\IRplus)$ is fixed and has full row rank ($\rank(H) = k$, so $H H^T \in \M_k$ is invertible). Then:
+Suppose $H \in \M_{kp}(\IRplus)$ is fixed and has full row rank ($\rank(H) = k$, so $H H^T \in \M_k$ is invertible). Then:
 \begin{enumerate}
 \item Minimising $\|X - W H\|_F^2 = \|X^T - H^T W^T\|_F^2$ without sign constraints yields the normal equations for $W^T$:
 \[
@@ -1156,8 +1150,8 @@ W \leftarrow \max(0, W_{\text{LS}})
 Putting Propositions~\ref{prop:als_H_step} and~\ref{prop:als_W_step} together yields the \defword{Projected Alternating Least Squares} (\defword{ALS}) algorithm (Paatero \& Tapper 1994; Berry et al.\ 2007):
 \vfill
 \begin{enumerate}
-\item \textbf{Input}: Non-negative matrix $X \in \M_{mn}(\IRplus)$ and target rank $k < \min(m, n)$
-\item \textbf{Initialise}: Choose a non-negative initial matrix $W^{(0)} \in \M_{mk}(\IRplus)$ with $\rank(W^{(0)}) = k$ (e.g., using positive random numbers)
+\item \textbf{Input}: Non-negative data matrix $X \in \M_{np}(\IRplus)$ and target rank $k < \min(n, p)$
+\item \textbf{Initialise}: Choose a non-negative initial matrix $W^{(0)} \in \M_{nk}(\IRplus)$ with $\rank(W^{(0)}) = k$ (e.g., using positive random numbers)
 \item \textbf{Repeat for $t = 0, 1, 2, \ldots$ until convergence}:
 \begin{enumerate}
 \item \textbf{Update $H$ (fixing $W^{(t)}$)}: Solve $(W^{(t)T} W^{(t)}) H_{\text{LS}} = W^{(t)T} X$ and project:
@@ -1168,14 +1162,14 @@ H^{(t+1)} = \max\!\left(0,\; (W^{(t)T} W^{(t)})^{-1} W^{(t)T} X\right)
 \[
 W^{(t+1)} = \max\!\left(0,\; X H^{(t+1)T} (H^{(t+1)} H^{(t+1)T})^{-1}\right)
 \]
-\item \emph{(Optional)} Normalise each column of $W^{(t+1)}$ to unit $\ell_2$ or $\ell_1$ norm to prevent scaling drift
+\item \emph{(Optional)} Normalise each row of $H^{(t+1)}$ (or column of $W^{(t+1)}$) to unit $\ell_2$ or $\ell_1$ norm to prevent scaling drift
 \end{enumerate}
 \end{enumerate}
 \end{frame}
 
 
 \begin{frame}{Example -- One ALS update step by hand (Part 1)}
-Let $X \in \M_{3,3}(\IRplus)$ and let the initial rank-$2$ dictionary matrix $W^{(0)} \in \M_{3,2}(\IRplus)$ be
+Let $X \in \M_{33}(\IRplus)$ and let the initial rank-$2$ factor matrix $W^{(0)} \in \M_{32}(\IRplus)$ be
 \[
 X = \begin{pmatrix} 3 & 0 & 2 \\ 0 & 3 & 3 \\ 0 & 3 & 1 \end{pmatrix}, \qquad
 W^{(0)} = \begin{pmatrix} 1 & 0 \\ 1 & 1 \\ 0 & 1 \end{pmatrix}
@@ -1197,7 +1191,7 @@ Since $\det(W^{(0)T} W^{(0)}) = 2(2) - 1(1) = 3 \neq 0$, the $2 \times 2$ invers
 
 
 \begin{frame}{Example -- One ALS update step by hand (Part 2)}
-\textbf{Step 2: Compute $W^{(0)T} X \in \M_{2,3}$}:
+\textbf{Step 2: Compute $W^{(0)T} X \in \M_{23}$}:
 \[
 W^{(0)T} X =
 \begin{pmatrix} 1 & 1 & 0 \\ 0 & 1 & 1 \end{pmatrix}
@@ -1215,7 +1209,7 @@ H_{\text{LS}}^{(1)} = (W^{(0)T} W^{(0)})^{-1} W^{(0)T} X
 \vfill
 \textbf{Step 4: Project onto $\IRplus$ by clipping negative entries to zero}:
 \[
-H^{(1)} = \max\!\left(0, H_{\text{LS}}^{(1)}\right) = \begin{pmatrix} 2 & 0 & 2 \\ \boldred{0} & 3 & 1 \end{pmatrix} \in \M_{2,3}(\IRplus)
+H^{(1)} = \max\!\left(0, H_{\text{LS}}^{(1)}\right) = \begin{pmatrix} 2 & 0 & 2 \\ \boldred{0} & 3 & 1 \end{pmatrix} \in \M_{23}(\IRplus)
 \]
 Notice how unconstrained least squares produced $-1$ in entry $(2,1)$, which the projection step clips to $0$!
 \end{frame}
@@ -1248,7 +1242,7 @@ X - W^{(0)} H^{(1)} = \begin{pmatrix} 1 & 0 & 0 \\ -2 & 0 & 0 \\ 0 & 0 & 0 \end{
 \item \textbf{Projected ALS vs exact Non-Negative Least Squares (NNLS)}:
 \begin{itemize}
 \item Solving unconstrained least squares and clipping $\max(0, \cdot)$ is fast (requiring only a $k \times k$ linear system $W^T W$ per iteration) and works well when $k$ is small and $X$ is sparse
-\item A more accurate variant solves each column subproblem $\min_{\bh_j \ge \b0} \|\bx_j - W \bh_j\|_2^2$ using an exact active-set \defword{NNLS} solver (Lawson \& Hanson 1974), guaranteeing that $\|X - W^{(t)}H^{(t)}\|_F^2$ decreases monotonically at every step
+\item A more accurate variant solves each subproblem $\min_{\bw_i \ge \b0} \|\bx_i - H^T \bw_i\|_2^2$ and $\min_{\bh_{\cdot j} \ge \b0} \|\bc_j - W \bh_{\cdot j}\|_2^2$ using an exact active-set \defword{NNLS} solver (Lawson \& Hanson 1974), guaranteeing that $\|X - W^{(t)}H^{(t)}\|_F^2$ decreases monotonically at every step
 \end{itemize}
 \vfill
 \item \textbf{Lee \& Seung (1999) multiplicative updates}:
@@ -1265,7 +1259,7 @@ w_{ir} \leftarrow w_{ir} \frac{(X H^T)_{ir}}{(W H H^T)_{ir}}
 
 
 \begin{frame}[fragile]{R demonstration -- TF-IDF and cosine similarity}
-Let us build an $8 \times 6$ term-document matrix in R with $6$ documents (3 on linear algebra, 3 on graphs) and compute $\tilde{X} = D_{\text{IDF}} X D_{\text{len}}^{-1}$ and $S = \hat{X}^T \hat{X}$:
+Let us build a $6 \times 8$ document-term matrix in R with $n=6$ documents (rows: 3 on linear algebra, 3 on graphs) and $p=8$ terms (columns) and compute $\hat{X} = D_{\text{len}}^{-1} X D_{\text{IDF}}$ and $S = \hat{X} \hat{X}^T$:
 \vfill
 <<r-tfidf-cosine,echo=TRUE>>=
 terms = c("matrix", "vector", "eigen", "rank", "graph", "vertex", "edge", "data")
@@ -1276,17 +1270,17 @@ X = matrix(c(
   0, 0, 0, 0, 4, 3, 2, 5,  # d4: graph theory
   0, 0, 0, 0, 3, 2, 4, 4,  # d5: graph theory
   0, 1, 0, 0, 2, 4, 3, 5   # d6: graph theory (mentions "vector" once)
-), nrow = 8, ncol = 6, dimnames = list(terms, paste0("d", 1:6)))
+), nrow = 6, ncol = 8, byrow = TRUE, dimnames = list(paste0("d", 1:6), terms))
 
-# Diagonal IDF scaling: D_IDF %*% X
-df_i = rowSums(X > 0)
-idf_i = log(ncol(X) / df_i)
-X_tfidf = diag(idf_i) %*% X
+# Right-multiplication by diagonal IDF matrix: X %*% D_IDF
+df_j = colSums(X > 0)
+idf_j = log(nrow(X) / df_j)
+X_tfidf = X %*% diag(idf_j)
 
-# Column l2 normalisation: X_hat = X_tfidf %*% D_norm^{-1}
-col_norms = sqrt(colSums(X_tfidf^2))
-X_hat = X_tfidf %*% diag(1 / col_norms)
-S_gram = round(t(X_hat) %*% X_hat, 2)
+# Row l2 normalisation: X_hat = D_len^{-1} %*% X_tfidf
+row_norms = sqrt(rowSums(X_tfidf^2))
+X_hat = diag(1 / row_norms) %*% X_tfidf
+S_gram = round(X_hat %*% t(X_hat), 2)
 @
 \end{frame}
 
@@ -1294,9 +1288,9 @@ S_gram = round(t(X_hat) %*% X_hat, 2)
 <<plot-cosine-gram,echo=FALSE,fig.width=8,fig.height=4.5>>=
 par(mfrow = c(1, 2), mar = c(4, 5, 3, 2))
 # Raw cosine similarity (with common word "data" included)
-raw_norms = sqrt(colSums(X^2))
-X_raw_hat = X %*% diag(1 / raw_norms)
-S_raw = t(X_raw_hat) %*% X_raw_hat
+raw_norms = sqrt(rowSums(X^2))
+X_raw_hat = diag(1 / raw_norms) %*% X
+S_raw = X_raw_hat %*% t(X_raw_hat)
 
 image(1:6, 1:6, S_raw[, 6:1], col = hcl.colors(20, "YlOrRd", rev = TRUE),
       zlim = c(0, 1), axes = FALSE, xlab = "Document", ylab = "Document",
@@ -1335,22 +1329,22 @@ for (iter in 1:30) {
   H = pmax(0, solve(t(W) %*% W + 1e-8 * diag(k), t(W) %*% X_tfidf))
   # Update W by least squares and clip negatives to 0
   W = pmax(0, t(solve(H %*% t(H) + 1e-8 * diag(k), H %*% t(X_tfidf))))
-  # Normalise columns of W and rescale rows of H accordingly
-  w_norms = sqrt(colSums(W^2))
-  W = W %*% diag(1 / w_norms)
-  H = diag(w_norms) %*% H
+  # Normalise rows of H and rescale columns of W accordingly
+  h_norms = sqrt(rowSums(H^2))
+  H = diag(1 / h_norms) %*% H
+  W = W %*% diag(h_norms)
   err_history[iter] = sum((X_tfidf - W %*% H)^2)
 }
-rownames(W) = terms; colnames(W) = c("Topic_1", "Topic_2")
-rownames(H) = c("Topic_1", "Topic_2"); colnames(H) = paste0("d", 1:6)
+rownames(W) = paste0("d", 1:6); colnames(W) = c("Topic_1", "Topic_2")
+rownames(H) = c("Topic_1", "Topic_2"); colnames(H) = terms
 @
 \end{frame}
 
 
 \begin{frame}[fragile]{R demonstration -- Inspecting the learned $W$ and $H$ factors}
 <<r-nmf-inspect,echo=TRUE>>=
-round(W, 3)
-round(H, 2)
+round(W, 2)
+round(H, 3)
 @
 \end{frame}
 
@@ -1362,12 +1356,12 @@ plot(1:30, err_history, type = "b", pch = 19, col = "dodgerblue4", lwd = 2,
      main = "ALS convergence on TF-IDF matrix")
 grid()
 
-barplot(t(W[8:1, ]), beside = TRUE, horiz = TRUE, las = 1,
+barplot(H[, 8:1], beside = TRUE, horiz = TRUE, las = 1,
         col = c("darkorange2", "steelblue3"),
         legend.text = c("Topic 1", "Topic 2"),
         args.legend = list(x = "bottomright", bty = "n"),
-        xlab = "Non-negative word weight in W",
-        main = "Learned topic dictionary columns of W")
+        xlab = "Non-negative word weight in H",
+        main = "Learned topic dictionary rows of H")
 @
 
 \maxFrameImage{\Sexpr{knitr::fig_chunk("plot-nmf-results", "pdf")}}
@@ -1375,16 +1369,16 @@ barplot(t(W[8:1, ]), beside = TRUE, horiz = TRUE, las = 1,
 
 \begin{frame}{Summary of Unit \Sexpr{lecture_number}}
 \begin{itemize}
-\item \textbf{Tokenisation and bag-of-words}: A vocabulary $V = \{w_1, \ldots, w_m\}$ maps each token to $\be_i \in \IR^m$ and each document $d_j$ to a sparse count vector $\bx_j = \sum_{i=1}^m f_{ij} \be_i \in \IRplus^m$ with $\|\bx_j\|_0 \ll m$
+\item \textbf{Tokenisation and bag-of-words}: A vocabulary $V = \{w_1, \ldots, w_p\}$ maps each token to $\be_j \in \IR^p$ and each document $d_i$ to a sparse count vector $\bx_i = \sum_{j=1}^p x_{ij} \be_j \in \IRplus^p$ with $\|\bx_i\|_0 \ll p$
 \vfill
-\item \textbf{Term-document matrices and TF-IDF scaling}: Stacking document vectors as columns forms $X \in \M_{mn}(\IRplus)$ where TF-IDF with length normalisation is the two-sided diagonal matrix product
+\item \textbf{Document-term matrices and TF-IDF scaling}: Stacking document vectors as rows forms $X \in \M_{np}(\IRplus)$ where TF-IDF with length normalisation is the two-sided diagonal matrix product
 \[
-\tilde{X} = D_{\text{IDF}} X D_{\text{len}}^{-1}
+\hat{X} = D_{\text{len}}^{-1} X D_{\text{IDF}}
 \]
 \vfill
-\item \textbf{Cosine similarity in high dimensions}: Semantic similarity is measured by the scale-invariant angle $\mathsf{sim}(\bx, \by) = \frac{\bx \bullet \by}{\|\bx\|_2 \|\by\|_2} \in [0, 1]$ on $\IRplus^m$ whose pairwise values form the Gram matrix $S = \hat{X}^T \hat{X}$
+\item \textbf{Cosine similarity in high dimensions}: Semantic similarity is measured by the scale-invariant angle $\mathsf{sim}(\bx, \by) = \frac{\bx \bullet \by}{\|\bx\|_2 \|\by\|_2} \in [0, 1]$ on $\IRplus^p$ whose pairwise values form the Gram matrix $S = \hat{X} \hat{X}^T \in \M_n(\IR)$
 \vfill
-\item \textbf{Non-negative Matrix Factorisation (NMF)}: Approximating $X \approx W H$ with $W \in \M_{mk}(\IRplus)$ and $H \in \M_{kn}(\IRplus)$ avoids the subtractive cancellation of SVD, yielding additive topic columns $\bw_r$ and document encodings $\bh_j$ computed via projected \textbf{Alternating Least Squares (ALS)}
+\item \textbf{Non-negative Matrix Factorisation (NMF)}: Approximating $X \approx W H$ with $W \in \M_{nk}(\IRplus)$ and $H \in \M_{kp}(\IRplus)$ avoids the subtractive cancellation of SVD, yielding additive topic rows $\bh_r^T$ and document encodings $\bw_i^T$ computed via projected \textbf{Alternating Least Squares (ALS)}
 \end{itemize}
 \end{frame}
 

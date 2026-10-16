@@ -103,15 +103,15 @@ Their zero/non-zero sparsity pattern is naturally encoded by a \defword{directed
 
 \begin{frame}{Non-negative and positive vectors and matrices}
 \begin{importantdefinition}[Non-negative and positive matrices]
-Let $A = [a_{ij}] \in \M_{m,n}(\IR)$ be a real matrix
+Let $A = [a_{ij}] \in \M_{np}(\IR)$ be a real matrix
 \begin{itemize}
-\item $A$ is \defword{non-negative}, written $A \ge 0$ (or $A \in \M_{m,n}(\IRplus)$), if
+\item $A$ is \defword{non-negative}, written $A \ge 0$ (or $A \in \M_{np}(\IRplus)$), if
 \[
-a_{ij} \ge 0 \quad \text{for all } i = 1,\ldots,m \text{ and } j = 1,\ldots,n
+a_{ij} \ge 0 \quad \text{for all } i = 1,\ldots,n \text{ and } j = 1,\ldots,p
 \]
 \item $A$ is \defword{positive} (or \defword{strictly positive}), written $A > 0$, if
 \[
-a_{ij} > 0 \quad \text{for all } i = 1,\ldots,m \text{ and } j = 1,\ldots,n
+a_{ij} > 0 \quad \text{for all } i = 1,\ldots,n \text{ and } j = 1,\ldots,p
 \]
 \end{itemize}
 \end{importantdefinition}
@@ -124,7 +124,7 @@ The same notation applies to vectors $\bx = (x_1,\ldots,x_n)^T \in \IR^n$:
 \end{frame}
 
 \begin{frame}{Componentwise inequalities and basic properties}
-For two matrices $A, B \in \M_{m,n}(\IR)$, we write $A \ge B$ if $A - B \ge 0$, and $A > B$ if $A - B > 0$
+For two matrices $A, B \in \M_{np}(\IR)$, we write $A \ge B$ if $A - B \ge 0$, and $A > B$ if $A - B > 0$
 \vfill
 \begin{proposition}[Arithmetic of non-negative matrices]
 Let $A, B \in \M_n(\IRplus)$ and $\bx \in \IRplus^n$

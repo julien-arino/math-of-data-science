@@ -115,7 +115,7 @@ When a matrix $M \in \M_n(\IR)$ is symmetric ($M^T = M$), the spectral theorem g
 
 \begin{frame}{Roadmap of Unit 10}
 \begin{enumerate}
-\item \textbf{Undirected graphs and similarity graphs:} turning point clouds $\bx_1, \ldots, \bx_n \in \IR^d$ into symmetric adjacency and weight matrices
+\item \textbf{Undirected graphs and similarity graphs:} turning point clouds $\bx_1, \ldots, \bx_n \in \IR^p$ into symmetric adjacency and weight matrices
 \vfill
 \item \textbf{The combinatorial graph Laplacian $L = D - A$:} degree matrix, incidence factorisation $L = B^T B$ and the quadratic form $\bx^T L \bx = \sum_{\{i,j\}\in E} a_{ij}(x_i - x_j)^2$
 \vfill
@@ -207,7 +207,7 @@ Here $w_{ij} > 0$ if $\{i, j\} \in E$ and $w_{ij} = 0$ if $\{i, j\} \notin E$
 
 
 \begin{frame}{Why turn a dataset into a similarity graph?}
-Suppose we are given $n$ data points $\bx_1, \bx_2, \ldots, \bx_n \in \IR^d$ and want to partition them into clusters
+Suppose we are given $n$ observations $\bx_1, \bx_2, \ldots, \bx_n \in \IR^p$ and want to partition them into clusters
 \vfill
 \begin{columns}[c]
 \begin{column}{0.56\textwidth}
@@ -216,7 +216,7 @@ Suppose we are given $n$ data points $\bx_1, \bx_2, \ldots, \bx_n \in \IR^d$ and
 \vfill
 \item They work well when clusters are compact, convex clouds
 \vfill
-\item They fail completely when clusters have \textbf{non-convex geometry} (such as concentric rings, spirals or interlocking crescents), where points in the same cluster are far apart in $\IR^d$ but connected through a chain of nearby neighbours
+\item They fail completely when clusters have \textbf{non-convex geometry} (such as concentric rings, spirals or interlocking crescents), where points in the same cluster are far apart in $\IR^p$ but connected through a chain of nearby neighbours
 \end{itemize}
 \end{column}
 \begin{column}{0.44\textwidth}
@@ -243,7 +243,7 @@ Representing the data as a \textbf{local similarity graph} turns non-convex geom
 
 
 \begin{frame}{Constructing similarity graphs from data points}
-Given data points $\bx_1, \ldots, \bx_n \in \IR^d$ with pairwise distances $d(\bx_i, \bx_j) = \|\bx_i - \bx_j\|_2$, there are three standard ways to build a symmetric similarity graph:
+Given observations $\bx_1, \ldots, \bx_n \in \IR^p$ with pairwise distances $d(\bx_i, \bx_j) = \|\bx_i - \bx_j\|_2$, there are three standard ways to build a symmetric similarity graph:
 \vfill
 \begin{enumerate}
 \item \defword{$\varepsilon$-neighbourhood graph}: Fix a threshold $\varepsilon > 0$ and connect $i \neq j$ with an unweighted edge ($a_{ij} = 1$) if and only if
@@ -579,7 +579,7 @@ Every row and column of $L$ still sums to $0$, and $\tr(L) = \sum_{i=1}^n d_i = 
 We can also factor $L$ as a Gram matrix $B^T B$ by assigning an arbitrary orientation to each edge of $G = (V, E)$
 \vfill
 \begin{definition}[Oriented edge-vertex incidence matrix]
-Let $G = (V, E)$ have $n = |V|$ vertices and $m = |E|$ edges $e_1, \ldots, e_m$. Choose an arbitrary direction $e_k = (i, j)$ for each edge ($i \to j$). The \defword{oriented incidence matrix} $B = [b_{kv}] \in \M_{m, n}(\{-1, 0, 1\})$ has one row per edge and one column per vertex:
+Let $G = (V, E)$ have $n = |V|$ vertices and $m = |E|$ edges $e_1, \ldots, e_m$. Choose an arbitrary direction $e_k = (i, j)$ for each edge ($i \to j$). The \defword{oriented incidence matrix} $B = [b_{kv}] \in \M_{mn}(\{-1, 0, 1\})$ has one row per edge and one column per vertex:
 \[
 b_{kv} = \begin{cases}
 +1 & \text{if } v = i \text{ (tail of } e_k\text{)} \\
@@ -712,19 +712,19 @@ Since each undirected edge $\{i, j\} \in E$ appears twice in the double sum (as 
 
 
 \begin{frame}[red]{Proof of Theorem~\ref{th:laplacian-quadratic-form} (Method 2: via the incidence matrix)}
-For an unweighted graph $G = (V, E)$, Proposition~\ref{prop:incidence-laplacian} gives $L = B^T B$, where $B \in \M_{|E|, n}$ is the oriented incidence matrix
+For an unweighted graph $G = (V, E)$ with $m = |E|$ edges, Proposition~\ref{prop:incidence-laplacian} gives $L = B^T B$, where $B \in \M_{mn}$ is the oriented incidence matrix
 \vfill
-For any $\bx \in \IR^n$, the $k$th entry of $B\bx \in \IR^{|E|}$ corresponding to oriented edge $e_k = (i, j)$ is
+For any $\bx \in \IR^n$, the $k$th entry of $B\bx \in \IR^m$ corresponding to oriented edge $e_k = (i, j)$ is
 \[
 (B\bx)_k = x_i - x_j
 \]
 \vfill
 Therefore,
 \[
-\bx^T L \bx = \bx^T (B^T B) \bx = (B\bx)^T (B\bx) = \|B\bx\|_2^2 = \sum_{k=1}^{|E|} (B\bx)_k^2 = \sum_{\{i, j\} \in E} (x_i - x_j)^2
+\bx^T L \bx = \bx^T (B^T B) \bx = (B\bx)^T (B\bx) = \|B\bx\|_2^2 = \sum_{k=1}^m (B\bx)_k^2 = \sum_{\{i, j\} \in E} (x_i - x_j)^2
 \]
 \vfill
-(For a weighted graph with diagonal edge-weight matrix $W_E = \diag(w_{e_1}, \ldots, w_{e_{|E|}})$, writing $L = B^T W_E B = (W_E^{1/2} B)^T (W_E^{1/2} B)$ gives $\bx^T L \bx = \|W_E^{1/2} B\bx\|_2^2 = \sum_{\{i,j\}\in E} w_{ij}(x_i - x_j)^2$) \hfill $\qed$
+(For a weighted graph with diagonal edge-weight matrix $W_E = \diag(w_{e_1}, \ldots, w_{e_m})$, writing $L = B^T W_E B = (W_E^{1/2} B)^T (W_E^{1/2} B)$ gives $\bx^T L \bx = \|W_E^{1/2} B\bx\|_2^2 = \sum_{\{i,j\}\in E} w_{ij}(x_i - x_j)^2$) \hfill $\qed$
 \end{frame}
 
 
@@ -1314,7 +1314,7 @@ What if a graph (or dataset) has $k > 2$ clusters, or vertices with wildly diffe
 \item \textbf{$k$-way spectral clustering:}
 \begin{enumerate}
 \item Compute the first $k$ eigenvectors $\bv_1, \bv_2, \ldots, \bv_k$ of $L$ associated with the $k$ smallest eigenvalues $0 = \lambda_1 \le \lambda_2 \le \cdots \le \lambda_k$
-\item Stack them as columns of the matrix $U = [\bv_1 \;\; \bv_2 \;\; \cdots \;\; \bv_k] \in \M_{n, k}(\IR)$
+\item Stack them as columns of the matrix $U = [\bv_1 \;\; \bv_2 \;\; \cdots \;\; \bv_k] \in \M_{nk}(\IR)$
 \item Treat row $i$ of $U$ as the new embedding $\by_i \in \IR^k$ of vertex $i$, and run $k$-means on $\{\by_1, \ldots, \by_n\} \subset \IR^k$
 \end{enumerate}
 \vfill

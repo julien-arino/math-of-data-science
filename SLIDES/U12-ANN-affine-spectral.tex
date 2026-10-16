@@ -123,11 +123,11 @@ In this unit, we unify the major threads of the course:
 \begin{frame}{The single artificial neuron as an affine functional}
 \begin{importantdefinition}[Single artificial neuron]
 \label{def:single-neuron}
-Given an input feature vector $\bx = (x_1, \ldots, x_d)^T \in \IR^d$, a \defword{single artificial neuron} is parameterised by a \defword{weight vector} $\bw = (w_1, \ldots, w_d)^T \in \IR^d$ and a scalar \defword{bias} $b \in \IR$. It computes:
+Given an input feature vector $\bx = (x_1, \ldots, x_p)^T \in \IR^p$, a \defword{single artificial neuron} is parameterised by a \defword{weight vector} $\bw = (w_1, \ldots, w_p)^T \in \IR^p$ and a scalar \defword{bias} $b \in \IR$. It computes:
 \begin{enumerate}
 \item An \defword{affine pre-activation} (or \defword{logit}):
 \[
-z = \bw^T \bx + b = \sum_{j=1}^d w_j x_j + b \in \IR
+z = \bw^T \bx + b = \sum_{j=1}^p w_j x_j + b \in \IR
 \]
 \item A scalar \defword{activation} (output):
 \[
@@ -144,13 +144,13 @@ In classical perceptron notation, a threshold $\theta$ is used so the neuron fir
 \vfill
 Just as in homogeneous coordinates, we can absorb the bias $b$ into the weight vector by introducing a constant ``dummy'' input feature $x_0 = 1$:
 \[
-\tilde{\bx} = \begin{pmatrix} \bx \\ 1 \end{pmatrix} = \begin{pmatrix} x_1 \\ \vdots \\ x_d \\ 1 \end{pmatrix} \in \IR^{d+1}, \qquad
-\tilde{\bw} = \begin{pmatrix} \bw \\ b \end{pmatrix} = \begin{pmatrix} w_1 \\ \vdots \\ w_d \\ b \end{pmatrix} \in \IR^{d+1}
+\hat{\bx} = \begin{pmatrix} \bx \\ 1 \end{pmatrix} = \begin{pmatrix} x_1 \\ \vdots \\ x_p \\ 1 \end{pmatrix} \in \IR^{p+1}, \qquad
+\hat{\bw} = \begin{pmatrix} \bw \\ b \end{pmatrix} = \begin{pmatrix} w_1 \\ \vdots \\ w_p \\ b \end{pmatrix} \in \IR^{p+1}
 \]
 \vfill
-Then the affine pre-activation becomes a pure inner product in $\IR^{d+1}$:
+Then the affine pre-activation becomes a pure inner product in $\IR^{p+1}$:
 \[
-z = \bw^T \bx + b = \tilde{\bw}^T \tilde{\bx}
+z = \bw^T \bx + b = \hat{\bw}^T \hat{\bx}
 \]
 \end{frame}
 
@@ -161,29 +161,29 @@ z = \bw^T \bx + b = \tilde{\bw}^T \tilde{\bx}
     \node[cloud, fill=blue!15, minimum width=1.4cm] (x1) at (0, 2.4) {$x_1$};
     \node[cloud, fill=blue!15, minimum width=1.4cm] (x2) at (0, 1.0) {$x_2$};
     \node at (0, 0.1) {$\vdots$};
-    \node[cloud, fill=blue!15, minimum width=1.4cm] (xd) at (0, -0.8) {$x_d$};
+    \node[cloud, fill=blue!15, minimum width=1.4cm] (xd) at (0, -0.8) {$x_p$};
     \node[cloud, fill=orange!25, minimum width=1.4cm] (x0) at (0, -2.2) {$1$};
 
-    \node[draw, circle, thick, fill=yellow!20, minimum size=1.8cm] (sum) at (5.2, 0.2) {$z = \tilde{\bw}^T\tilde{\bx}$};
+    \node[draw, circle, thick, fill=yellow!20, minimum size=1.8cm] (sum) at (5.2, 0.2) {$z = \hat{\bw}^T\hat{\bx}$};
     \node[draw, rectangle, rounded corners, thick, fill=red!15, minimum width=1.8cm, minimum height=1.2cm] (act) at (9.0, 0.2) {$\sigma(z)$};
     \node (out) at (11.8, 0.2) {$a = \sigma(\bw^T\bx + b)$};
 
     \draw[->, thick] (x1) -- node[midway, above, sloped] {$w_1$} (sum);
     \draw[->, thick] (x2) -- node[midway, above, sloped] {$w_2$} (sum);
-    \draw[->, thick] (xd) -- node[midway, above, sloped] {$w_d$} (sum);
+    \draw[->, thick] (xd) -- node[midway, above, sloped] {$w_p$} (sum);
     \draw[->, thick, orange!80!black] (x0) -- node[midway, below, sloped] {$b$ (bias)} (sum);
     \draw[->, very thick] (sum) -- node[midway, above] {$z$} (act);
     \draw[->, very thick] (act) -- (out);
 \end{tikzpicture}
 \end{center}
 \vfill
-Geometrically, the locus $\{ \bx \in \IR^d : \bw^T \bx + b = 0 \}$ is an \defword{affine hyperplane} with normal vector $\bw$, partitioning $\IR^d$ into two half-spaces $\{ \bw^T \bx + b > 0 \}$ and $\{ \bw^T \bx + b < 0 \}$
+Geometrically, the locus $\{ \bx \in \IR^p : \bw^T \bx + b = 0 \}$ is an \defword{affine hyperplane} with normal vector $\bw$, partitioning $\IR^p$ into two half-spaces $\{ \bw^T \bx + b > 0 \}$ and $\{ \bw^T \bx + b < 0 \}$
 \end{frame}
 
 
 \begin{frame}{Common scalar activation functions}
 \begin{definition}[Component-wise activation functions]
-When applied to a vector $\bz \in \IR^m$ or matrix $Z \in \M_{B, m}$, a scalar activation function $\sigma: \IR \to \IR$ acts \defword{entrywise}: $\big[\sigma(Z)\big]_{ij} = \sigma(z_{ij})$. Standard choices include:
+When applied to a vector $\bz \in \IR^p$ or matrix $Z \in \M_{np}$, a scalar activation function $\sigma: \IR \to \IR$ acts \defword{entrywise}: $\big[\sigma(Z)\big]_{ij} = \sigma(z_{ij})$. Standard choices include:
 \begin{itemize}
 \item \defword{Heaviside step (threshold)}: $H(z) = \begin{cases} 0 & \text{if } z \le 0 \\ 1 & \text{if } z > 0 \end{cases}$
 \item \defword{Rectified linear unit (ReLU)}: $\operatorname{ReLU}(z) = \max(0, z) = \begin{cases} 0 & \text{if } z \le 0 \\ z & \text{if } z > 0 \end{cases}$
@@ -242,38 +242,38 @@ In both cases, a single line $x_1 + x_2 + b = 0$ separates the class-$0$ points 
 
 
 \begin{frame}{The perceptron and Widrow-Hoff learning rule in vector form}
-How does a single neuron learn its augmented weight vector $\tilde{\bw} = (\bw^T, b)^T \in \IR^{d+1}$ from labelled training pairs $\big\{(\bx_i, y_i)\big\}_{i=1}^n$ with $y_i \in \{0, 1\}$?
+How does a single neuron learn its augmented weight vector $\hat{\bw} = (\bw^T, b)^T \in \IR^{p+1}$ from labelled training pairs $\big\{(\bx_i, y_i)\big\}_{i=1}^n$ with $y_i \in \{0, 1\}$?
 \vfill
-In \defword{supervised error-correction learning} (Widrow-Hoff / delta rule), when input $\tilde{\bx}_i = (\bx_i^T, 1)^T$ produces output $\hat{y}_i = H\big(\tilde{\bw}^{(t)T} \tilde{\bx}_i\big)$, we update the weight vector by
+In \defword{supervised error-correction learning} (Widrow-Hoff / delta rule), when input $\hat{\bx}_i = (\bx_i^T, 1)^T$ produces output $\hat{y}_i = H\big((\hat{\bw}^{(t)})^T \hat{\bx}_i\big)$, we update the weight vector by
 \[
-\tilde{\bw}^{(t+1)} = \tilde{\bw}^{(t)} + \eta \big(y_i - \hat{y}_i\big) \tilde{\bx}_i
+\hat{\bw}^{(t+1)} = \hat{\bw}^{(t)} + \eta \big(y_i - \hat{y}_i\big) \hat{\bx}_i
 \]
 where $\eta > 0$ is the \defword{learning rate}
 \vfill
 \textbf{Geometric meaning via inner products}:
 \begin{itemize}
-\item If $\hat{y}_i = y_i$ (correct prediction), $\tilde{\bw}^{(t+1)} = \tilde{\bw}^{(t)}$ (no change)
-\item If $y_i = 1$ but $\hat{y}_i = 0$ (false negative), $\tilde{\bw}^{(t+1)} = \tilde{\bw}^{(t)} + \eta \tilde{\bx}_i$, so the new pre-activation on $\tilde{\bx}_i$ strictly increases:
+\item If $\hat{y}_i = y_i$ (correct prediction), $\hat{\bw}^{(t+1)} = \hat{\bw}^{(t)}$ (no change)
+\item If $y_i = 1$ but $\hat{y}_i = 0$ (false negative), $\hat{\bw}^{(t+1)} = \hat{\bw}^{(t)} + \eta \hat{\bx}_i$, so the new pre-activation on $\hat{\bx}_i$ strictly increases:
 \[
-\big(\tilde{\bw}^{(t+1)}\big)^T \tilde{\bx}_i = \big(\tilde{\bw}^{(t)}\big)^T \tilde{\bx}_i + \eta \|\tilde{\bx}_i\|_2^2 > \big(\tilde{\bw}^{(t)}\big)^T \tilde{\bx}_i
+\big(\hat{\bw}^{(t+1)}\big)^T \hat{\bx}_i = \big(\hat{\bw}^{(t)}\big)^T \hat{\bx}_i + \eta \|\hat{\bx}_i\|_2^2 > \big(\hat{\bw}^{(t)}\big)^T \hat{\bx}_i
 \]
-tilting the hyperplane normal $\tilde{\bw}$ towards $\tilde{\bx}_i$!
+tilting the hyperplane normal $\hat{\bw}$ towards $\hat{\bx}_i$!
 \end{itemize}
 \end{frame}
 
 
 \begin{frame}{Worked trace: two perceptron updates to learn OR}
-Let us trace the update rule $\tilde{\bw}^{(t+1)} = \tilde{\bw}^{(t)} + \eta(y_i - \hat{y}_i)\tilde{\bx}_i$ with $\eta = 0.1$ and augmented inputs $\tilde{\bx} = (x_1, x_2, 1)^T$, starting from $\tilde{\bw}^{(0)} = (0, 0, 0)^T$:
+Let us trace the update rule $\hat{\bw}^{(t+1)} = \hat{\bw}^{(t)} + \eta(y_i - \hat{y}_i)\hat{\bx}_i$ with $\eta = 0.1$ and augmented inputs $\hat{\bx} = (x_1, x_2, 1)^T$, starting from $\hat{\bw}^{(0)} = (0, 0, 0)^T$:
 \vfill
 \begin{enumerate}
-\item \textbf{Step 1}: Present $\bx = (1, 1)^T$, so $\tilde{\bx} = (1, 1, 1)^T$ with target $y = 1$. Since $\big(\tilde{\bw}^{(0)}\big)^T \tilde{\bx} = 0 \le 0$, we predict $\hat{y} = 0$ (error $y - \hat{y} = 1$):
+\item \textbf{Step 1}: Present $\bx = (1, 1)^T$, so $\hat{\bx} = (1, 1, 1)^T$ with target $y = 1$. Since $\big(\hat{\bw}^{(0)}\big)^T \hat{\bx} = 0 \le 0$, we predict $\hat{y} = 0$ (error $y - \hat{y} = 1$):
 \[
-\tilde{\bw}^{(1)} = \begin{pmatrix} 0 \\ 0 \\ 0 \end{pmatrix} + 0.1 (1 - 0) \begin{pmatrix} 1 \\ 1 \\ 1 \end{pmatrix} = \begin{pmatrix} 0.1 \\ 0.1 \\ 0.1 \end{pmatrix}
+\hat{\bw}^{(1)} = \begin{pmatrix} 0 \\ 0 \\ 0 \end{pmatrix} + 0.1 (1 - 0) \begin{pmatrix} 1 \\ 1 \\ 1 \end{pmatrix} = \begin{pmatrix} 0.1 \\ 0.1 \\ 0.1 \end{pmatrix}
 \]
 \vfill
-\item \textbf{Step 2}: Present $\bx = (0, 0)^T$, so $\tilde{\bx} = (0, 0, 1)^T$ with target $y = 0$. Since $\big(\tilde{\bw}^{(1)}\big)^T \tilde{\bx} = 0.1 > 0$, we predict $\hat{y} = 1$ (error $y - \hat{y} = -1$):
+\item \textbf{Step 2}: Present $\bx = (0, 0)^T$, so $\hat{\bx} = (0, 0, 1)^T$ with target $y = 0$. Since $\big(\hat{\bw}^{(1)}\big)^T \hat{\bx} = 0.1 > 0$, we predict $\hat{y} = 1$ (error $y - \hat{y} = -1$):
 \[
-\tilde{\bw}^{(2)} = \begin{pmatrix} 0.1 \\ 0.1 \\ 0.1 \end{pmatrix} + 0.1 (0 - 1) \begin{pmatrix} 0 \\ 0 \\ 1 \end{pmatrix} = \begin{pmatrix} 0.1 \\ 0.1 \\ 0 \end{pmatrix}
+\hat{\bw}^{(2)} = \begin{pmatrix} 0.1 \\ 0.1 \\ 0.1 \end{pmatrix} + 0.1 (0 - 1) \begin{pmatrix} 0 \\ 0 \\ 1 \end{pmatrix} = \begin{pmatrix} 0.1 \\ 0.1 \\ 0 \end{pmatrix}
 \]
 \end{enumerate}
 \vfill
@@ -337,32 +337,32 @@ To solve non-linearly separable problems, we must \defword{compose} multiple lay
 \begin{center}
 \begin{tikzpicture}[scale=0.82, every node/.style={transform shape}, >=Latex]
     % Input layer
-    \foreach \idx/\y/\lbl in {1/2.2/x_1, 2/0.8/x_2, 3/-1.2/x_{d_0}} {
+    \foreach \idx/\y/\lbl in {1/2.2/x_1, 2/0.8/x_2, 3/-1.2/x_{p_0}} {
         \node[cloud, fill=blue!15, minimum width=1.2cm] (i-\idx) at (0, \y) {$\lbl$};
     }
     \node at (0, -0.1) {$\vdots$};
-    \node[font=\bfseries\small, align=center] at (0, 3.3) {Input layer\\$\ba^{(0)} = \bx \in \IR^{d_0}$};
+    \node[font=\bfseries\small, align=center] at (0, 3.3) {Input layer\\$\ba^{(0)} = \bx \in \IR^{p_0}$};
 
     % Hidden layer 1
-    \foreach \idx/\y/\lbl in {1/2.6/a_1^{(1)}, 2/1.2/a_2^{(1)}, 3/-0.4/a_3^{(1)}, 4/-2.0/a_{d_1}^{(1)}} {
+    \foreach \idx/\y/\lbl in {1/2.6/a_1^{(1)}, 2/1.2/a_2^{(1)}, 3/-0.4/a_3^{(1)}, 4/-2.0/a_{p_1}^{(1)}} {
         \node[cloud, fill=yellow!25, minimum width=1.3cm] (h1-\idx) at (4.5, \y) {$\lbl$};
     }
     \node at (4.5, -1.1) {$\vdots$};
-    \node[font=\bfseries\small, align=center] at (4.5, 3.6) {Hidden layer 1\\$\ba^{(1)} \in \IR^{d_1}$};
+    \node[font=\bfseries\small, align=center] at (4.5, 3.6) {Hidden layer 1\\$\ba^{(1)} \in \IR^{p_1}$};
 
     % Hidden layer 2
-    \foreach \idx/\y/\lbl in {1/2.0/a_1^{(2)}, 2/0.4/a_2^{(2)}, 3/-1.6/a_{d_2}^{(2)}} {
+    \foreach \idx/\y/\lbl in {1/2.0/a_1^{(2)}, 2/0.4/a_2^{(2)}, 3/-1.6/a_{p_2}^{(2)}} {
         \node[cloud, fill=yellow!25, minimum width=1.3cm] (h2-\idx) at (9.0, \y) {$\lbl$};
     }
     \node at (9.0, -0.5) {$\vdots$};
-    \node[font=\bfseries\small, align=center] at (9.0, 3.3) {Hidden layer 2\\$\ba^{(2)} \in \IR^{d_2}$};
+    \node[font=\bfseries\small, align=center] at (9.0, 3.3) {Hidden layer 2\\$\ba^{(2)} \in \IR^{p_2}$};
 
     % Output layer
-    \foreach \idx/\y/\lbl in {1/1.2/a_1^{(L)}, 2/-0.8/a_{d_L}^{(L)}} {
+    \foreach \idx/\y/\lbl in {1/1.2/a_1^{(L)}, 2/-0.8/a_{p_L}^{(L)}} {
         \node[cloud, fill=red!20, minimum width=1.3cm] (o-\idx) at (13.2, \y) {$\lbl$};
     }
     \node at (13.2, 0.3) {$\vdots$};
-    \node[font=\bfseries\small, align=center] at (13.2, 3.3) {Output layer\\$\hat{\by} = \ba^{(L)} \in \IR^{d_L}$};
+    \node[font=\bfseries\small, align=center] at (13.2, 3.3) {Output layer\\$\hat{\by} = \ba^{(L)} \in \IR^{p_L}$};
 
     % Edges
     \foreach \i in {1, 2, 3} {
@@ -381,9 +381,9 @@ To solve non-linearly separable problems, we must \defword{compose} multiple lay
         }
     }
 
-    \node[font=\small, text=UMbrown] at (2.25, -2.9) {$W^{(1)} \in \M_{d_1, d_0},\; \bb^{(1)} \in \IR^{d_1}$};
-    \node[font=\small, text=UMbrown] at (6.75, -2.9) {$W^{(2)} \in \M_{d_2, d_1},\; \bb^{(2)} \in \IR^{d_2}$};
-    \node[font=\small, text=UMbrown] at (11.1, -2.9) {$W^{(L)} \in \M_{d_L, d_{L-1}},\; \bb^{(L)} \in \IR^{d_L}$};
+    \node[font=\small, text=UMbrown] at (2.25, -2.9) {$W^{(1)} \in \M_{p_1, p_0},\; \bb^{(1)} \in \IR^{p_1}$};
+    \node[font=\small, text=UMbrown] at (6.75, -2.9) {$W^{(2)} \in \M_{p_2, p_1},\; \bb^{(2)} \in \IR^{p_2}$};
+    \node[font=\small, text=UMbrown] at (11.1, -2.9) {$W^{(L)} \in \M_{p_L, p_{L-1}},\; \bb^{(L)} \in \IR^{p_L}$};
 \end{tikzpicture}
 \end{center}
 \end{frame}
@@ -392,86 +392,86 @@ To solve non-linearly separable problems, we must \defword{compose} multiple lay
 \begin{frame}{Single-vector formulation of an MLP layer}
 \begin{importantdefinition}[Affine neural network layer -- vector form]
 \label{def:mlp-vector-layer}
-An $L$-layer \defword{multi-layer perceptron (MLP)} has layer widths $d_0, d_1, \ldots, d_L \in \IN_+$. Given a single input column vector $\ba^{(0)} = \bx \in \IR^{d_0}$, each layer $\ell \in \{1, \ldots, L\}$ maps $\ba^{(\ell-1)} \in \IR^{d_{\ell-1}}$ to $\ba^{(\ell)} \in \IR^{d_\ell}$ via
+An $L$-layer \defword{multi-layer perceptron (MLP)} has layer widths $p_0, p_1, \ldots, p_L \in \IN_+$ (where $p_0 = p$ is the number of input features). Given a single input column vector $\ba^{(0)} = \bx \in \IR^{p_0}$, each layer $\ell \in \{1, \ldots, L\}$ maps $\ba^{(\ell-1)} \in \IR^{p_{\ell-1}}$ to $\ba^{(\ell)} \in \IR^{p_\ell}$ via
 \[
-\bz^{(\ell)} = W^{(\ell)} \ba^{(\ell-1)} + \bb^{(\ell)} \in \IR^{d_\ell}, \qquad
-\ba^{(\ell)} = \sigma_\ell\big(\bz^{(\ell)}\big) \in \IR^{d_\ell}
+\bz^{(\ell)} = W^{(\ell)} \ba^{(\ell-1)} + \bb^{(\ell)} \in \IR^{p_\ell}, \qquad
+\ba^{(\ell)} = \sigma_\ell\big(\bz^{(\ell)}\big) \in \IR^{p_\ell}
 \]
 where:
 \begin{itemize}
-\item $W^{(\ell)} = \big[w_{ij}^{(\ell)}\big] \in \M_{d_\ell, d_{\ell-1}}$ is the \defword{weight matrix} of layer $\ell$ ($d_\ell$ rows for outputs, $d_{\ell-1}$ columns for inputs)
-\item $\bb^{(\ell)} \in \IR^{d_\ell}$ is the \defword{bias vector} of layer $\ell$
-\item $\sigma_\ell: \IR^{d_\ell} \to \IR^{d_\ell}$ is the component-wise activation function of layer $\ell$
+\item $W^{(\ell)} = \big[w_{ij}^{(\ell)}\big] \in \M_{p_\ell, p_{\ell-1}}$ is the \defword{weight matrix} of layer $\ell$ ($p_\ell$ rows for outputs, $p_{\ell-1}$ columns for inputs)
+\item $\bb^{(\ell)} \in \IR^{p_\ell}$ is the \defword{bias vector} of layer $\ell$
+\item $\sigma_\ell: \IR^{p_\ell} \to \IR^{p_\ell}$ is the component-wise activation function of layer $\ell$
 \end{itemize}
 \end{importantdefinition}
 \end{frame}
 
 
 \begin{frame}{From single vectors to batch matrices}
-In data science (Units 04 and 05), a dataset of $B$ observations (a \defword{batch} or \defword{mini-batch}) with $d_0$ features is stored as a matrix $X \in \M_{B, d_0}$ whose \textbf{rows} are transposed sample vectors:
+In data science (Units 04 and 05), a dataset of $n$ observations with $p_0 = p$ features is stored as a data matrix $X \in \M_{n, p_0}$ whose \textbf{rows} are transposed observation vectors (in deep learning, a subset of $n$ observations is called a \defword{batch} or \defword{mini-batch}, often denoted $B$, and $X$ is called the \defword{batch input matrix}):
 \[
 X = \begin{pmatrix}
-\big(\bx_1\big)^T \\
-\big(\bx_2\big)^T \\
+\bx_1^T \\
+\bx_2^T \\
 \vdots \\
-\big(\bx_B\big)^T
-\end{pmatrix} \in \M_{B, d_0}
+\bx_n^T
+\end{pmatrix} \in \M_{n, p_0}
 \]
 \vfill
-For sample $i \in \{1, \ldots, B\}$, the column vector pre-activation in layer 1 is $\bz_i^{(1)} = W^{(1)} \bx_i + \bb^{(1)} \in \IR^{d_1}$. Taking transposes to store outputs as \textbf{rows} gives:
+For observation $i \in \{1, \ldots, n\}$, the column vector pre-activation in layer 1 is $\bz_i^{(1)} = W^{(1)} \bx_i + \bb^{(1)} \in \IR^{p_1}$. Taking transposes to store outputs as \textbf{rows} gives:
 \[
-\big(\bz_i^{(1)}\big)^T = \bx_i^T \big(W^{(1)}\big)^T + \big(\bb^{(1)}\big)^T \in \M_{1, d_1}
+\big(\bz_i^{(1)}\big)^T = \bx_i^T \big(W^{(1)}\big)^T + \big(\bb^{(1)}\big)^T \in \M_{1, p_1}
 \]
 \vfill
-How do we stack all $B$ rows simultaneously into a single matrix equation?
+How do we stack all $n$ rows simultaneously into a single matrix equation?
 \end{frame}
 
 
 \begin{frame}{Batch matrix formulation and rank-1 bias broadcasting}
 \begin{importantdefinition}[Batch matrix forward propagation]
 \label{def:mlp-batch-layer}
-Given a batch matrix $A^{(0)} = X \in \M_{B, d_0}$ whose $B$ rows are input samples, layer $\ell \in \{1, \ldots, L\}$ computes the pre-activation matrix $Z^{(\ell)} \in \M_{B, d_\ell}$ and activation matrix $A^{(\ell)} \in \M_{B, d_\ell}$ via
+Given a data matrix (batch input matrix) $A^{(0)} = X \in \M_{n, p_0}$ whose $n$ rows are input observations, layer $\ell \in \{1, \ldots, L\}$ computes the pre-activation matrix $Z^{(\ell)} \in \M_{n, p_\ell}$ and activation matrix $A^{(\ell)} \in \M_{n, p_\ell}$ via
 \[
-Z^{(\ell)} = A^{(\ell-1)} \big(W^{(\ell)}\big)^T + \11_B \big(\bb^{(\ell)}\big)^T \in \M_{B, d_\ell}, \qquad
-A^{(\ell)} = \sigma_\ell\big(Z^{(\ell)}\big) \in \M_{B, d_\ell}
+Z^{(\ell)} = A^{(\ell-1)} \big(W^{(\ell)}\big)^T + \11_n \big(\bb^{(\ell)}\big)^T \in \M_{n, p_\ell}, \qquad
+A^{(\ell)} = \sigma_\ell\big(Z^{(\ell)}\big) \in \M_{n, p_\ell}
 \]
-where $\11_B = (1, 1, \ldots, 1)^T \in \IR^B$ is the all-ones column vector
+where $\11_n = (1, 1, \ldots, 1)^T \in \IR^n$ is the all-ones column vector
 \end{importantdefinition}
 \vfill
-Why does $\11_B \big(\bb^{(\ell)}\big)^T$ appear? Because the outer product of $\11_B \in \M_{B, 1}$ and $\big(\bb^{(\ell)}\big)^T \in \M_{1, d_\ell}$ is a \defword{rank-1 matrix} that replicates the bias row vector across all $B$ samples:
+Why does $\11_n \big(\bb^{(\ell)}\big)^T$ appear? Because the outer product of $\11_n \in \M_{n1}$ and $\big(\bb^{(\ell)}\big)^T \in \M_{1, p_\ell}$ is a \defword{rank-1 matrix} that replicates the bias row vector across all $n$ observations:
 \[
-\11_B \big(\bb^{(\ell)}\big)^T =
+\11_n \big(\bb^{(\ell)}\big)^T =
 \begin{pmatrix} 1 \\ 1 \\ \vdots \\ 1 \end{pmatrix}
-\begin{pmatrix} b_1^{(\ell)} & b_2^{(\ell)} & \cdots & b_{d_\ell}^{(\ell)} \end{pmatrix}
+\begin{pmatrix} b_1^{(\ell)} & b_2^{(\ell)} & \cdots & b_{p_\ell}^{(\ell)} \end{pmatrix}
 =
 \begin{pmatrix}
-b_1^{(\ell)} & b_2^{(\ell)} & \cdots & b_{d_\ell}^{(\ell)} \\
-b_1^{(\ell)} & b_2^{(\ell)} & \cdots & b_{d_\ell}^{(\ell)} \\
+b_1^{(\ell)} & b_2^{(\ell)} & \cdots & b_{p_\ell}^{(\ell)} \\
+b_1^{(\ell)} & b_2^{(\ell)} & \cdots & b_{p_\ell}^{(\ell)} \\
 \vdots & \vdots & \ddots & \vdots \\
-b_1^{(\ell)} & b_2^{(\ell)} & \cdots & b_{d_\ell}^{(\ell)}
-\end{pmatrix} \in \M_{B, d_\ell}
+b_1^{(\ell)} & b_2^{(\ell)} & \cdots & b_{p_\ell}^{(\ell)}
+\end{pmatrix} \in \M_{n, p_\ell}
 \]
 \end{frame}
 
 
 \begin{frame}{Block matrix view: absorbing the bias column into $A^{(\ell-1)}$}
-Just as for a single vector, we can also express the batch affine transformation as a single block matrix product by appending a column of ones $\11_B$ to $A^{(\ell-1)}$ and the bias column $\bb^{(\ell)}$ to $W^{(\ell)}$:
+Just as for a single vector, we can also express the batch affine transformation as a single block matrix product by appending a column of ones $\11_n$ to $A^{(\ell-1)}$ and the bias column $\bb^{(\ell)}$ to $W^{(\ell)}$:
 \[
-\widetilde{A}^{(\ell-1)} = \big[\, A^{(\ell-1)} \;\big|\; \11_B \,\big] \in \M_{B, d_{\ell-1}+1}, \qquad
-\widetilde{W}^{(\ell)} = \big[\, W^{(\ell)} \;\big|\; \bb^{(\ell)} \,\big] \in \M_{d_\ell, d_{\ell-1}+1}
+\hat{A}^{(\ell-1)} = \big[\, A^{(\ell-1)} \;\big|\; \11_n \,\big] \in \M_{n, p_{\ell-1}+1}, \qquad
+\hat{W}^{(\ell)} = \big[\, W^{(\ell)} \;\big|\; \bb^{(\ell)} \,\big] \in \M_{p_\ell, p_{\ell-1}+1}
 \]
 \vfill
 By block matrix multiplication,
 \[
-\widetilde{A}^{(\ell-1)} \big(\widetilde{W}^{(\ell)}\big)^T
+\hat{A}^{(\ell-1)} \big(\hat{W}^{(\ell)}\big)^T
 =
-\big[\, A^{(\ell-1)} \;\big|\; \11_B \,\big]
+\big[\, A^{(\ell-1)} \;\big|\; \11_n \,\big]
 \begin{bmatrix} \big(W^{(\ell)}\big)^T \\[3pt] \big(\bb^{(\ell)}\big)^T \end{bmatrix}
 =
-A^{(\ell-1)} \big(W^{(\ell)}\big)^T + \11_B \big(\bb^{(\ell)}\big)^T = Z^{(\ell)}
+A^{(\ell-1)} \big(W^{(\ell)}\big)^T + \11_n \big(\bb^{(\ell)}\big)^T = Z^{(\ell)}
 \]
 \vfill
-Both views are algebraically identical: the rank-1 outer product $\11_B \big(\bb^{(\ell)}\big)^T$ is simply the contribution of the constant column $\11_B$!
+Both views are algebraically identical: the rank-1 outer product $\11_n \big(\bb^{(\ell)}\big)^T$ is simply the contribution of the constant column $\11_n$!
 \end{frame}
 
 
@@ -479,38 +479,38 @@ Both views are algebraically identical: the rank-1 outer product $\11_B \big(\bb
 In software (such as R or PyTorch), shape mismatches are the most common source of bugs. Tracking dimensions systematically is essential
 \vfill
 \begin{proposition}[Dimension and parameter count of an $L$-layer MLP]
-For a batch of size $B$ passing through an MLP with widths $d_0, d_1, \ldots, d_L$:
+For a batch of $n$ observations passing through an MLP with widths $p_0, p_1, \ldots, p_L$:
 \begin{itemize}
 \item At layer $\ell \in \{1, \ldots, L\}$:
 \[
-\underbrace{A^{(\ell-1)}}_{B \times d_{\ell-1}}
-\underbrace{\big(W^{(\ell)}\big)^T}_{d_{\ell-1} \times d_\ell}
+\underbrace{A^{(\ell-1)}}_{n \times p_{\ell-1}}
+\underbrace{\big(W^{(\ell)}\big)^T}_{p_{\ell-1} \times p_\ell}
 +
-\underbrace{\11_B}_{B \times 1}
-\underbrace{\big(\bb^{(\ell)}\big)^T}_{1 \times d_\ell}
+\underbrace{\11_n}_{n \times 1}
+\underbrace{\big(\bb^{(\ell)}\big)^T}_{1 \times p_\ell}
 =
-\underbrace{Z^{(\ell)}}_{B \times d_\ell}
+\underbrace{Z^{(\ell)}}_{n \times p_\ell}
 \xrightarrow{\sigma_\ell}
-\underbrace{A^{(\ell)}}_{B \times d_\ell}
+\underbrace{A^{(\ell)}}_{n \times p_\ell}
 \]
 \item The total number of trainable scalar parameters (weights and biases) is
 \[
-P = \sum_{\ell=1}^L \big(d_\ell d_{\ell-1} + d_\ell\big) = \sum_{\ell=1}^L d_\ell\big(d_{\ell-1} + 1\big)
+P = \sum_{\ell=1}^L \big(p_\ell p_{\ell-1} + p_\ell\big) = \sum_{\ell=1}^L p_\ell\big(p_{\ell-1} + 1\big)
 \]
-Notice that $P$ is \textbf{independent of the batch size $B$}
+Notice that $P$ is \textbf{independent of the number of observations $n$}
 \end{itemize}
 \end{proposition}
 \end{frame}
 
 
 \begin{frame}{Example: dimension tracking and parameter counting}
-\textbf{Problem:} Consider a 3-layer MLP with input dimension $d_0 = 4$, hidden widths $d_1 = 5$ and $d_2 = 3$ and output dimension $d_3 = 2$, evaluated on a batch of $B = 10$ observations. Track all matrix dimensions and count the total number of trainable parameters
+\textbf{Problem:} Consider a 3-layer MLP with input dimension $p_0 = 4$, hidden widths $p_1 = 5$ and $p_2 = 3$ and output dimension $p_3 = 2$, evaluated on a batch of $n = 10$ observations. Track all matrix dimensions and count the total number of trainable parameters
 \vfill
 \begin{center}
 \renewcommand{\arraystretch}{1.25}
 \begin{tabular}{ccccccc}
 \toprule
-Layer $\ell$ & $A^{(\ell-1)}$ & $W^{(\ell)}$ & $\big(W^{(\ell)}\big)^T$ & $\bb^{(\ell)}$ & $\11_B\big(\bb^{(\ell)}\big)^T$ & $Z^{(\ell)}, A^{(\ell)}$ \\
+Layer $\ell$ & $A^{(\ell-1)}$ & $W^{(\ell)}$ & $\big(W^{(\ell)}\big)^T$ & $\bb^{(\ell)}$ & $\11_n\big(\bb^{(\ell)}\big)^T$ & $Z^{(\ell)}, A^{(\ell)}$ \\
 \midrule
 $\ell = 1$ & $10 \times 4$ & $5 \times 4$ & $4 \times 5$ & $5 \times 1$ & $10 \times 5$ & $10 \times 5$ \\
 $\ell = 2$ & $10 \times 5$ & $3 \times 5$ & $5 \times 3$ & $3 \times 1$ & $10 \times 3$ & $10 \times 3$ \\
@@ -521,23 +521,23 @@ $\ell = 3$ & $10 \times 3$ & $2 \times 3$ & $3 \times 2$ & $2 \times 1$ & $10 \t
 \vfill
 \textbf{Total trainable scalar parameters:}
 \begin{itemize}
-\item Layer 1: $d_1 d_0 + d_1 = 5 \times 4 + 5 = 25$
-\item Layer 2: $d_2 d_1 + d_2 = 3 \times 5 + 3 = 18$
-\item Layer 3: $d_3 d_2 + d_3 = 2 \times 3 + 2 = 8$
+\item Layer 1: $p_1 p_0 + p_1 = 5 \times 4 + 5 = 25$
+\item Layer 2: $p_2 p_1 + p_2 = 3 \times 5 + 3 = 18$
+\item Layer 3: $p_3 p_2 + p_3 = 2 \times 3 + 2 = 8$
 \item \textbf{Total:} $P = 25 + 18 + 8 = 51$ parameters
 \end{itemize}
 \end{frame}
 
 
 \begin{frame}{Example by hand: solving XOR with a 2-layer ReLU network}
-\textbf{Problem:} Evaluate a 2-layer network ($d_0 = 2, d_1 = 2, d_2 = 1$) on all $B = 4$ points of $\{0,1\}^2$ simultaneously, with ReLU hidden activation $\sigma_1(z) = \max(0, z)$ and linear output $\sigma_2(z) = z$:
+\textbf{Problem:} Evaluate a 2-layer network ($p_0 = 2, p_1 = 2, p_2 = 1$) on all $n = 4$ points of $\{0,1\}^2$ simultaneously, with ReLU hidden activation $\sigma_1(z) = \max(0, z)$ and linear output $\sigma_2(z) = z$:
 \[
-X = \begin{pmatrix} 0 & 0 \\ 1 & 0 \\ 0 & 1 \\ 1 & 1 \end{pmatrix} \in \M_{4,2}, \quad
-W^{(1)} = \begin{pmatrix} 1 & 1 \\ 1 & 1 \end{pmatrix} \in \M_{2,2}, \quad
+X = \begin{pmatrix} 0 & 0 \\ 1 & 0 \\ 0 & 1 \\ 1 & 1 \end{pmatrix} \in \M_{42}, \quad
+W^{(1)} = \begin{pmatrix} 1 & 1 \\ 1 & 1 \end{pmatrix} \in \M_{22}, \quad
 \bb^{(1)} = \begin{pmatrix} 0 \\ -1 \end{pmatrix} \in \IR^2
 \]
 \[
-W^{(2)} = \big(\bw^{(2)}\big)^T = \begin{pmatrix} 1 & -2 \end{pmatrix} \in \M_{1,2}, \quad
+W^{(2)} = \big(\bw^{(2)}\big)^T = \begin{pmatrix} 1 & -2 \end{pmatrix} \in \M_{12}, \quad
 b^{(2)} = 0 \in \IR
 \]
 \vfill
@@ -564,7 +564,7 @@ Z^{(1)} =
 \[
 A^{(1)} = \max\!\left(0, \begin{pmatrix} 0 & -1 \\ 1 & 0 \\ 1 & 0 \\ 2 & 1 \end{pmatrix}\right)
 =
-\begin{pmatrix} 0 & 0 \\ 1 & 0 \\ 1 & 0 \\ 2 & 1 \end{pmatrix} \in \M_{4,2}
+\begin{pmatrix} 0 & 0 \\ 1 & 0 \\ 1 & 0 \\ 2 & 1 \end{pmatrix} \in \M_{42}
 \]
 \vfill
 \textbf{Step 3 -- Output layer} $\hat{\by} = Z^{(2)} = A^{(1)} \big(W^{(2)}\big)^T + \11_4 b^{(2)}$:
@@ -634,8 +634,8 @@ Look at the rows of the hidden activation matrix $A^{(1)}$ as coordinates in the
 \begin{alltt}
 \hldef{X} \hlkwb{=} \hlkwd{matrix}\hldef{(}\hlkwd{c}\hldef{(}\hlnum{0}\hldef{,} \hlnum{0}\hldef{,}  \hlnum{1}\hldef{,} \hlnum{0}\hldef{,}  \hlnum{0}\hldef{,} \hlnum{1}\hldef{,}  \hlnum{1}\hldef{,} \hlnum{1}\hldef{),} \hlkwc{nrow} \hldef{=} \hlnum{4}\hldef{,} \hlkwc{byrow} \hldef{=} \hlnum{TRUE}\hldef{)}
 \hldef{W1} \hlkwb{=} \hlkwd{matrix}\hldef{(}\hlkwd{c}\hldef{(}\hlnum{1}\hldef{,} \hlnum{1}\hldef{,}  \hlnum{1}\hldef{,} \hlnum{1}\hldef{),} \hlkwc{nrow} \hldef{=} \hlnum{2}\hldef{,} \hlkwc{byrow} \hldef{=} \hlnum{TRUE}\hldef{)}
-\hldef{b1} \hlkwb{=} \hlkwd{c}\hldef{(}\hlnum{0}\hldef{,} \hlopt{-}\hlnum{1}\hldef{);  one_B} \hlkwb{=} \hlkwd{rep}\hldef{(}\hlnum{1}\hldef{,} \hlkwd{nrow}\hldef{(X))}
-\hldef{Z1} \hlkwb{=} \hldef{X} \hlopt{%*%} \hlkwd{t}\hldef{(W1)} \hlopt{+} \hldef{one_B} \hlopt{%*%} \hlkwd{t}\hldef{(b1)}
+\hldef{b1} \hlkwb{=} \hlkwd{c}\hldef{(}\hlnum{0}\hldef{,} \hlopt{-}\hlnum{1}\hldef{);  one_n} \hlkwb{=} \hlkwd{rep}\hldef{(}\hlnum{1}\hldef{,} \hlkwd{nrow}\hldef{(X))}
+\hldef{Z1} \hlkwb{=} \hldef{X} \hlopt{%*%} \hlkwd{t}\hldef{(W1)} \hlopt{+} \hldef{one_n} \hlopt{%*%} \hlkwd{t}\hldef{(b1)}
 \hldef{A1} \hlkwb{=} \hlkwd{pmax}\hldef{(}\hlnum{0}\hldef{, Z1)}
 \hldef{y_hat} \hlkwb{=} \hldef{A1} \hlopt{%*%} \hlkwd{c}\hldef{(}\hlnum{1}\hldef{,} \hlopt{-}\hlnum{2}\hldef{)}
 \end{alltt}
@@ -676,20 +676,20 @@ What is the expressive power of composing $L$ affine transformations in sequence
 \begin{frame}{Collapse of composed affine maps}
 \begin{importanttheorem}[Collapse of deep linear networks]
 \label{th:affine-collapse}
-Let $f_\ell(\bu) = W^{(\ell)} \bu + \bb^{(\ell)}$ be affine maps with $W^{(\ell)} \in \M_{d_\ell, d_{\ell-1}}$ and $\bb^{(\ell)} \in \IR^{d_\ell}$ for $\ell = 1, \ldots, L$. Their composition $f = f_L \circ f_{L-1} \circ \cdots \circ f_1 : \IR^{d_0} \to \IR^{d_L}$ is a \textbf{single affine map}
+Let $f_\ell(\bu) = W^{(\ell)} \bu + \bb^{(\ell)}$ be affine maps with $W^{(\ell)} \in \M_{p_\ell, p_{\ell-1}}$ and $\bb^{(\ell)} \in \IR^{p_\ell}$ for $\ell = 1, \ldots, L$. Their composition $f = f_L \circ f_{L-1} \circ \cdots \circ f_1 : \IR^{p_0} \to \IR^{p_L}$ is a \textbf{single affine map}
 \[
 f(\bx) = W \bx + \bb
 \]
-where the effective weight matrix $W \in \M_{d_L, d_0}$ and effective bias $\bb \in \IR^{d_L}$ are given by
+where the effective weight matrix $W \in \M_{p_L, p_0}$ and effective bias $\bb \in \IR^{p_L}$ are given by
 \[
 W = W^{(L)} W^{(L-1)} \cdots W^{(1)}, \qquad
 \bb = \sum_{\ell=1}^{L-1} \left(W^{(L)} \cdots W^{(\ell+1)}\right) \bb^{(\ell)} + \bb^{(L)}
 \]
 \end{importanttheorem}
 \vfill
-In batch matrix form on $X \in \M_{B, d_0}$, the $L$-layer linear network collapses to
+In batch matrix form on $X \in \M_{n, p_0}$, the $L$-layer linear network collapses to
 \[
-A^{(L)} = X W^T + \11_B \bb^T
+A^{(L)} = X W^T + \11_n \bb^T
 \]
 \end{frame}
 
@@ -718,31 +718,31 @@ Not only does a deep linear network collapse into a single matrix $W = W^{(L)} \
 \vfill
 \begin{importanttheorem}[Rank bottleneck bound]
 \label{th:rank-bottleneck}
-Let $W = W^{(L)} W^{(L-1)} \cdots W^{(1)} \in \M_{d_L, d_0}$ with $W^{(\ell)} \in \M_{d_\ell, d_{\ell-1}}$ for $\ell = 1, \ldots, L$. Then
+Let $W = W^{(L)} W^{(L-1)} \cdots W^{(1)} \in \M_{p_L, p_0}$ with $W^{(\ell)} \in \M_{p_\ell, p_{\ell-1}}$ for $\ell = 1, \ldots, L$. Then
 \[
-\rank(W) \le \min_{1 \le \ell \le L} \rank\big(W^{(\ell)}\big) \le \min_{0 \le \ell \le L} d_\ell
+\rank(W) \le \min_{1 \le \ell \le L} \rank\big(W^{(\ell)}\big) \le \min_{0 \le \ell \le L} p_\ell
 \]
 \end{importanttheorem}
 \vfill
-Before proving Theorem~\ref{th:rank-bottleneck}, recall the fundamental definitions for $M \in \M_{m, n}$:
+Before proving Theorem~\ref{th:rank-bottleneck}, recall the fundamental definitions for $M \in \M_{np}$:
 \[
-\range(M) = \big\{ M\bx : \bx \in \IR^n \big\} \subseteq \IR^m, \qquad
-\nullspace(M) = \big\{ \bx \in \IR^n : M\bx = \b0 \big\} \subseteq \IR^n
+\range(M) = \big\{ M\bx : \bx \in \IR^p \big\} \subseteq \IR^n, \qquad
+\nullspace(M) = \big\{ \bx \in \IR^p : M\bx = \b0 \big\} \subseteq \IR^p
 \]
-and the \textbf{rank-nullity theorem}: $\rank(M) + \nullity(M) = \dim\range(M) + \dim\nullspace(M) = n$
+and the \textbf{rank-nullity theorem}: $\rank(M) + \nullity(M) = \dim\range(M) + \dim\nullspace(M) = p$
 \end{frame}
 
 
 \begin{frame}[red]{Proof of Theorem \ref{th:rank-bottleneck} -- part 1: subspace inclusions}
-Let $A \in \M_{m, k}$ and $B \in \M_{k, n}$ so that $AB \in \M_{m, n}$. We prove two fundamental inclusions:
+Let $A \in \M_{np}$ and $B \in \M_{pq}$ so that $AB \in \M_{nq}$. We prove two fundamental inclusions:
 \vfill
 \begin{enumerate}
 \item \textbf{Range inclusion} $\range(AB) \subseteq \range(A)$:
-Let $\by \in \range(AB)$. Then there exists $\bx \in \IR^n$ such that
+Let $\by \in \range(AB)$. Then there exists $\bx \in \IR^q$ such that
 \[
 \by = (AB)\bx = A(B\bx)
 \]
-Setting $\bu = B\bx \in \IR^k$, we have $\by = A\bu \in \range(A)$. Thus $\range(AB) \subseteq \range(A)$, which implies
+Setting $\bu = B\bx \in \IR^p$, we have $\by = A\bu \in \range(A)$. Thus $\range(AB) \subseteq \range(A)$, which implies
 \[
 \rank(AB) = \dim\range(AB) \le \dim\range(A) = \rank(A)
 \]
@@ -761,9 +761,9 @@ Thus $\nullspace(B) \subseteq \nullspace(AB)$, so $\nullity(B) \le \nullity(AB)$
 \begin{enumerate}
 \setcounter{enumi}{2}
 \item \textbf{Combining with the rank-nullity theorem}:
-Since $B \in \M_{k, n}$ and $AB \in \M_{m, n}$ both have $n$ columns, the rank-nullity theorem gives
+Since $B \in \M_{pq}$ and $AB \in \M_{nq}$ both have $q$ columns, the rank-nullity theorem gives
 \[
-\rank(AB) = n - \nullity(AB) \le n - \nullity(B) = \rank(B)
+\rank(AB) = q - \nullity(AB) \le q - \nullity(B) = \rank(B)
 \]
 Combining parts 1 and 2 yields the fundamental inequality for any compatible matrices $A$ and $B$:
 \[
@@ -775,7 +775,7 @@ Applying $\rank(AB) \le \min(\rank(A), \rank(B))$ inductively to $W = W^{(L)} W^
 \[
 \rank(W) \le \min_{1 \le \ell \le L} \rank\big(W^{(\ell)}\big)
 \]
-Finally, since $W^{(\ell)} \in \M_{d_\ell, d_{\ell-1}}$, its rank cannot exceed its number of rows $d_\ell$ or columns $d_{\ell-1}$, so $\rank(W^{(\ell)}) \le \min(d_\ell, d_{\ell-1})$, which gives $\rank(W) \le \min_{0 \le \ell \le L} d_\ell \qed$
+Finally, since $W^{(\ell)} \in \M_{p_\ell, p_{\ell-1}}$, its rank cannot exceed its number of rows $p_\ell$ or columns $p_{\ell-1}$, so $\rank(W^{(\ell)}) \le \min(p_\ell, p_{\ell-1})$, which gives $\rank(W) \le \min_{0 \le \ell \le L} p_\ell \qed$
 \end{enumerate}
 \end{frame}
 
@@ -827,7 +827,7 @@ W = W^{(2)} W^{(1)} =
 
 
 \begin{frame}{Example by hand: verifying the rank bottleneck}
-Although $W \in \M_{3,3}$ is a $3 \times 3$ matrix, Theorem~\ref{th:rank-bottleneck} guarantees that because the hidden layer has width $d_1 = 2$,
+Although $W \in \M_3$ is a $3 \times 3$ matrix, Theorem~\ref{th:rank-bottleneck} guarantees that because the hidden layer has width $p_1 = 2$,
 \[
 \rank(W) \le \min(3, 2, 3) = 2 < 3
 \]
@@ -852,30 +852,30 @@ Since $R_1$ and $R_2$ are not scalar multiples of each other, $\rank(W) = 2$
 \begin{frame}{When a rank bottleneck is a feature, not a bug!}
 In supervised classification, an unintended rank bottleneck restricts the expressive power of a linear network
 \vfill
-In \defword{unsupervised representation learning} and \defword{dimensionality reduction} (Units 04 and 05), however, we \textbf{deliberately} introduce a narrow hidden layer of width $k < d$ to force the network to compress $d$-dimensional data into $k$ latent coordinates!
+In \defword{unsupervised representation learning} and \defword{dimensionality reduction} (Units 04 and 05), however, we \textbf{deliberately} introduce a narrow hidden layer of width $k < p$ to force the network to compress $p$-dimensional data into $k$ latent coordinates!
 \vfill
 \begin{center}
 \begin{tikzpicture}[scale=0.85, every node/.style={transform shape}, >=Latex]
     % Input
     \draw[fill=blue!15, thick] (0, -1.6) rectangle (1.1, 1.6);
-    \node[align=center, font=\small\bfseries] at (0.55, 0) {$\bx \in \IR^d$};
-    \node[font=\footnotesize] at (0.55, -2.0) {Input ($d$)};
+    \node[align=center, font=\small\bfseries] at (0.55, 0) {$\bx \in \IR^p$};
+    \node[font=\footnotesize] at (0.55, -2.0) {Input ($p$)};
 
     % Bottleneck
     \draw[fill=orange!25, thick] (4.8, -0.7) rectangle (5.9, 0.7);
     \node[align=center, font=\small\bfseries] at (5.35, 0) {$\bz \in \IR^k$};
-    \node[font=\footnotesize] at (5.35, -1.2) {Bottleneck ($k < d$)};
+    \node[font=\footnotesize] at (5.35, -1.2) {Bottleneck ($k < p$)};
 
     % Output
     \draw[fill=green!15, thick] (9.6, -1.6) rectangle (10.7, 1.6);
-    \node[align=center, font=\small\bfseries] at (10.15, 0) {$\hat{\bx} \in \IR^d$};
-    \node[font=\footnotesize] at (10.15, -2.0) {Reconstruction ($d$)};
+    \node[align=center, font=\small\bfseries] at (10.15, 0) {$\hat{\bx} \in \IR^p$};
+    \node[font=\footnotesize] at (10.15, -2.0) {Reconstruction ($p$)};
 
     % Trapezoid lines
-    \draw[->, very thick, UMbrown] (1.2, 0.5) -- node[above, sloped, font=\small\bfseries] {Encoder $W_1 \in \M_{d, k}$} (4.7, 0.25);
+    \draw[->, very thick, UMbrown] (1.2, 0.5) -- node[above, sloped, font=\small\bfseries] {Encoder $W_1 \in \M_{pk}$} (4.7, 0.25);
     \draw[->, very thick, UMbrown] (1.2, -0.5) -- (4.7, -0.25);
 
-    \draw[->, very thick, UMbrown] (6.0, 0.25) -- node[above, sloped, font=\small\bfseries] {Decoder $W_2 \in \M_{k, d}$} (9.5, 0.5);
+    \draw[->, very thick, UMbrown] (6.0, 0.25) -- node[above, sloped, font=\small\bfseries] {Decoder $W_2 \in \M_{kp}$} (9.5, 0.5);
     \draw[->, very thick, UMbrown] (6.0, -0.25) -- (9.5, -0.5);
 \end{tikzpicture}
 \end{center}
@@ -885,21 +885,21 @@ In \defword{unsupervised representation learning} and \defword{dimensionality re
 \begin{frame}{Linear autoencoders}
 \begin{importantdefinition}[Linear autoencoder]
 \label{def:linear-autoencoder}
-Let $X \in \M_{n, d}$ be a centred data matrix ($n$ observations in $\IR^d$, column means zero) and let $1 \le k < d$ be the bottleneck dimension. A \defword{linear autoencoder} consists of:
+Let $\widetilde{X} = C_n X \in \M_{np}$ be a centred data matrix ($n$ observations in $\IR^p$, column means zero) and let $1 \le k < p$ be the bottleneck dimension. A \defword{linear autoencoder} consists of:
 \begin{enumerate}
-\item An \defword{encoder matrix} $W_1 \in \M_{d, k}$ mapping data to a low-dimensional \defword{latent code}
+\item An \defword{encoder matrix} $W_1 \in \M_{pk}$ mapping data to a low-dimensional \defword{latent code}
 \[
-Z = X W_1 \in \M_{n, k}
+Z = \widetilde{X} W_1 \in \M_{nk}
 \]
-\item A \defword{decoder matrix} $W_2 \in \M_{k, d}$ mapping the latent code back to a reconstruction
+\item A \defword{decoder matrix} $W_2 \in \M_{kp}$ mapping the latent code back to a reconstruction
 \[
-\hat{X} = Z W_2 = X W_1 W_2 \in \M_{n, d}
+\hat{X} = Z W_2 = \widetilde{X} W_1 W_2 \in \M_{np}
 \]
 \end{enumerate}
 The autoencoder is trained to minimise the squared Frobenius reconstruction error:
 \[
-\min_{W_1 \in \M_{d, k},\; W_2 \in \M_{k, d}} \|X - X W_1 W_2\|_F^2
-= \min_{W_1 \in \M_{d, k},\; W_2 \in \M_{k, d}} \sum_{i=1}^n \big\|\bx_i - W_2^T W_1^T \bx_i\big\|_2^2
+\min_{W_1 \in \M_{pk},\; W_2 \in \M_{kp}} \|\widetilde{X} - \widetilde{X} W_1 W_2\|_F^2
+= \min_{W_1 \in \M_{pk},\; W_2 \in \M_{kp}} \sum_{i=1}^n \big\|\tilde{\bx}_i - W_2^T W_1^T \tilde{\bx}_i\big\|_2^2
 \]
 \end{importantdefinition}
 \end{frame}
@@ -909,17 +909,17 @@ The autoencoder is trained to minimise the squared Frobenius reconstruction erro
 Let us connect the linear autoencoder problem directly to the Eckart-Young theorem (Unit 04) and principal component analysis (Unit 05)
 \vfill
 \begin{itemize}
-\item Recall that the centred data matrix $X \in \M_{n, d}$ has singular value decomposition
+\item Recall that the centred data matrix $\widetilde{X} \in \M_{np}$ has singular value decomposition
 \[
-X = U \Sigma V^T = \sum_{j=1}^r \sigma_j \bu_j \bv_j^T, \qquad \sigma_1 \ge \sigma_2 \ge \cdots \ge \sigma_r > 0
+\widetilde{X} = U \Sigma V^T = \sum_{j=1}^r \sigma_j \bu_j \bv_j^T, \qquad \sigma_1 \ge \sigma_2 \ge \cdots \ge \sigma_r > 0
 \]
-where the right singular vectors $\bv_1, \ldots, \bv_d \in \IR^d$ are the orthonormal eigenvectors of the sample covariance matrix $S_X = \frac{1}{n-1} X^T X$ (\ie, the \textbf{principal axes})
+where the right singular vectors $\bv_1, \ldots, \bv_p \in \IR^p$ are the orthonormal eigenvectors of the sample covariance matrix $S_X = \frac{1}{n-1} \widetilde{X}^T \widetilde{X}$ (\ie, the \textbf{principal axes})
 \vfill
-\item Let $V_k = [\bv_1, \ldots, \bv_k] \in \M_{d, k}$ collect the top $k$ principal axes. In Unit 05, the rank-$k$ PCA reconstruction of $X$ was shown to be
+\item Let $V_k = [\bv_1, \ldots, \bv_k] \in \M_{pk}$ collect the top $k$ principal axes. In Unit 05, the rank-$k$ PCA reconstruction of $\widetilde{X}$ was shown to be
 \[
-X_k = U_k \Sigma_k V_k^T = (X V_k) V_k^T = X \big(V_k V_k^T\big)
+\widetilde{X}_k = U_k \Sigma_k V_k^T = (\widetilde{X} V_k) V_k^T = \widetilde{X} \big(V_k V_k^T\big)
 \]
-where $P_k = V_k V_k^T \in \M_d$ is the \defword{orthogonal projector} onto $\Span\{\bv_1, \ldots, \bv_k\}$
+where $P_k = V_k V_k^T \in \M_p$ is the \defword{orthogonal projector} onto $\Span\{\bv_1, \ldots, \bv_k\}$
 \end{itemize}
 \end{frame}
 
@@ -927,13 +927,13 @@ where $P_k = V_k V_k^T \in \M_d$ is the \defword{orthogonal projector} onto $\Sp
 \begin{frame}{Optimal linear autoencoders recover the PCA subspace}
 \begin{importanttheorem}[Baldi and Hornik, 1989 -- Eckart-Young corollary]
 \label{th:baldi-hornik}
-Let $X \in \M_{n, d}$ have singular values $\sigma_1 \ge \cdots \ge \sigma_d \ge 0$ and right singular vectors $V = [\bv_1, \ldots, \bv_d] \in \M_d$. For any $k < \rank(X)$, consider
+Let $\widetilde{X} \in \M_{np}$ have singular values $\sigma_1 \ge \cdots \ge \sigma_p \ge 0$ and right singular vectors $V = [\bv_1, \ldots, \bv_p] \in \M_p$. For any $k < \rank(\widetilde{X})$, consider
 \[
-\min_{W_1 \in \M_{d, k},\; W_2 \in \M_{k, d}} \|X - X W_1 W_2\|_F^2
+\min_{W_1 \in \M_{pk},\; W_2 \in \M_{kp}} \|\widetilde{X} - \widetilde{X} W_1 W_2\|_F^2
 \]
 \begin{enumerate}
-\item The minimum reconstruction error is $\displaystyle \sum_{j=k+1}^d \sigma_j^2$
-\item When $\sigma_k > \sigma_{k+1}$, the global minimum on $\range(X^T)$ is achieved when
+\item The minimum reconstruction error is $\displaystyle \sum_{j=k+1}^p \sigma_j^2$
+\item When $\sigma_k > \sigma_{k+1}$, the global minimum on $\range(\widetilde{X}^T)$ is achieved when
 \[
 P = W_1 W_2 = V_k V_k^T
 \]
@@ -949,21 +949,21 @@ W_1 = V_k C, \qquad W_2 = C^{-1} V_k^T \qquad \text{for any invertible } C \in \
 \begin{frame}[red]{Proof of Theorem \ref{th:baldi-hornik} (Baldi-Hornik / Eckart-Young corollary)}
 \begin{enumerate}
 \item \textbf{Lower bound via the rank bottleneck bound and Eckart-Young}:
-For any $W_1 \in \M_{d, k}$ and $W_2 \in \M_{k, d}$, Theorem~\ref{th:rank-bottleneck} implies
+For any $W_1 \in \M_{pk}$ and $W_2 \in \M_{kp}$, Theorem~\ref{th:rank-bottleneck} implies
 \[
-\rank(W_1 W_2) \le \min(d, k, d) = k \implies \rank(X W_1 W_2) \le \rank(W_1 W_2) \le k
+\rank(W_1 W_2) \le \min(p, k, p) = k \implies \rank(\widetilde{X} W_1 W_2) \le \rank(W_1 W_2) \le k
 \]
-Hence $\hat{X} = X W_1 W_2 \in \M_{n, d}$ is a matrix of rank at most $k$. By the Eckart-Young theorem (Unit 04), the best rank-$k$ approximation to $X$ in the Frobenius norm is the truncated SVD $X_k = U_k \Sigma_k V_k^T$, so for all $W_1, W_2$:
+Hence $\hat{X} = \widetilde{X} W_1 W_2 \in \M_{np}$ is a matrix of rank at most $k$. By the Eckart-Young theorem (Unit 04), the best rank-$k$ approximation to $\widetilde{X}$ in the Frobenius norm is the truncated SVD $\widetilde{X}_k = U_k \Sigma_k V_k^T$, so for all $W_1, W_2$:
 \[
-\|X - X W_1 W_2\|_F^2 \ge \|X - X_k\|_F^2 = \sum_{j=k+1}^d \sigma_j^2
+\|\widetilde{X} - \widetilde{X} W_1 W_2\|_F^2 \ge \|\widetilde{X} - \widetilde{X}_k\|_F^2 = \sum_{j=k+1}^p \sigma_j^2
 \]
 \vfill
 \item \textbf{Attaining the bound}:
-Let $C \in \GL_k(\IR)$ be any invertible $k \times k$ matrix and set $W_1 = V_k C \in \M_{d, k}$ and $W_2 = C^{-1} V_k^T \in \M_{k, d}$. Then
+Let $C \in \GL_k(\IR)$ be any invertible $k \times k$ matrix and set $W_1 = V_k C \in \M_{pk}$ and $W_2 = C^{-1} V_k^T \in \M_{kp}$. Then
 \[
 W_1 W_2 = (V_k C)(C^{-1} V_k^T) = V_k (C C^{-1}) V_k^T = V_k \II_k V_k^T = V_k V_k^T
 \]
-Since $X V_k = U \Sigma V^T V_k = U_k \Sigma_k$, we obtain $X W_1 W_2 = X V_k V_k^T = U_k \Sigma_k V_k^T = X_k$, achieving the exact Eckart-Young minimum $\sum_{j=k+1}^d \sigma_j^2 \qed$
+Since $\widetilde{X} V_k = U \Sigma V^T V_k = U_k \Sigma_k$, we obtain $\widetilde{X} W_1 W_2 = \widetilde{X} V_k V_k^T = U_k \Sigma_k V_k^T = \widetilde{X}_k$, achieving the exact Eckart-Young minimum $\sum_{j=k+1}^p \sigma_j^2 \qed$
 \end{enumerate}
 \end{frame}
 
@@ -972,7 +972,7 @@ Since $X V_k = U \Sigma V^T V_k = U_k \Sigma_k$, we obtain $X W_1 W_2 = X V_k V_
 Notice a subtle and important distinction in Theorem~\ref{th:baldi-hornik}:
 \vfill
 \begin{itemize}
-\item \textbf{What is unique}: The product $P = W_1 W_2 = V_k V_k^T \in \M_d$ is the unique orthogonal projector onto the $k$-dimensional principal subspace $\S_k = \Span\{\bv_1, \ldots, \bv_k\}$ (satisfying $P^2 = P$ and $P^T = P$)
+\item \textbf{What is unique}: The product $P = W_1 W_2 = V_k V_k^T \in \M_p$ is the unique orthogonal projector onto the $k$-dimensional principal subspace $\S_k = \Span\{\bv_1, \ldots, \bv_k\}$ (satisfying $P^2 = P$ and $P^T = P$)
 \vfill
 \item \textbf{What is not unique (gauge freedom)}: Because $W_1 = V_k C$ and $W_2 = C^{-1} V_k^T$ give the exact same product $W_1 W_2 = V_k V_k^T$ for \textbf{any} invertible $C \in \GL_k(\IR)$, a linear autoencoder without extra constraints learns a basis for the principal subspace $\S_k$, not necessarily the orthogonal principal axes $V_k$ themselves
 \vfill
@@ -982,7 +982,7 @@ Notice a subtle and important distinction in Theorem~\ref{th:baldi-hornik}:
 
 
 \begin{frame}{Orthogonal projector properties and Pythagorean error decomposition}
-Let us verify that $P_k = V_k V_k^T \in \M_d$ is an \defword{orthogonal projection matrix}:
+Let us verify that $P_k = V_k V_k^T \in \M_p$ is an \defword{orthogonal projection matrix}:
 \begin{itemize}
 \item \textbf{Symmetric}: $P_k^T = \big(V_k V_k^T\big)^T = \big(V_k^T\big)^T V_k^T = V_k V_k^T = P_k$
 \item \textbf{Idempotent}: Since the columns of $V_k$ are orthonormal ($V_k^T V_k = \II_k$),
@@ -991,52 +991,52 @@ P_k^2 = \big(V_k V_k^T\big)\big(V_k V_k^T\big) = V_k \big(V_k^T V_k\big) V_k^T =
 \]
 \end{itemize}
 \vfill
-Every data matrix $X \in \M_{n, d}$ decomposes into two mutually orthogonal components:
+Every centred data matrix $\widetilde{X} \in \M_{np}$ decomposes into two mutually orthogonal components:
 \[
-X = \underbrace{X P_k}_{\text{projection onto } \S_k} + \underbrace{X (\II_d - P_k)}_{\text{residual in } \S_k^\perp}
+\widetilde{X} = \underbrace{\widetilde{X} P_k}_{\text{projection onto } \S_k} + \underbrace{\widetilde{X} (\II_p - P_k)}_{\text{residual in } \S_k^\perp}
 \]
-Because $P_k(\II_d - P_k) = P_k - P_k^2 = 0$, the squared Frobenius norm splits by Pythagoras:
+Because $P_k(\II_p - P_k) = P_k - P_k^2 = 0$, the squared Frobenius norm splits by Pythagoras:
 \[
-\|X - X P_k\|_F^2 = \|X\|_F^2 - \|X P_k\|_F^2 = \sum_{j=1}^d \sigma_j^2 - \sum_{j=1}^k \sigma_j^2 = \sum_{j=k+1}^d \sigma_j^2
+\|\widetilde{X} - \widetilde{X} P_k\|_F^2 = \|\widetilde{X}\|_F^2 - \|\widetilde{X} P_k\|_F^2 = \sum_{j=1}^p \sigma_j^2 - \sum_{j=1}^k \sigma_j^2 = \sum_{j=k+1}^p \sigma_j^2
 \]
 \end{frame}
 
 
 \begin{frame}{Example by hand: rank-1 linear autoencoder vs PCA}
-Consider the centred $4 \times 2$ data matrix $X \in \M_{4, 2}$ and bottleneck dimension $k = 1$:
+Consider the centred $4 \times 2$ data matrix $\widetilde{X} \in \M_{42}$ and bottleneck dimension $k = 1$:
 \[
-X = \begin{pmatrix} 3 & 4 \\ -3 & -4 \\ 3 & 4 \\ -3 & -4 \end{pmatrix}, \qquad
-X^T X = \begin{pmatrix} 36 & 48 \\ 48 & 64 \end{pmatrix} = 100 \begin{pmatrix} 0.36 & 0.48 \\ 0.48 & 0.64 \end{pmatrix}
+\widetilde{X} = \begin{pmatrix} 3 & 4 \\ -3 & -4 \\ 3 & 4 \\ -3 & -4 \end{pmatrix}, \qquad
+\widetilde{X}^T \widetilde{X} = \begin{pmatrix} 36 & 48 \\ 48 & 64 \end{pmatrix} = 100 \begin{pmatrix} 0.36 & 0.48 \\ 0.48 & 0.64 \end{pmatrix}
 \]
 \vfill
 \begin{itemize}
-\item The unit eigenvector of $X^T X$ for $\lambda_1 = \sigma_1^2 = 100$ is $\bv_1 = \begin{pmatrix} 0.6 \\ 0.8 \end{pmatrix}$ (and $\sigma_2^2 = 0$ for $\bv_2 = \begin{pmatrix} -0.8 \\ 0.6 \end{pmatrix}$)
+\item The unit eigenvector of $\widetilde{X}^T \widetilde{X}$ for $\lambda_1 = \sigma_1^2 = 100$ is $\bv_1 = \begin{pmatrix} 0.6 \\ 0.8 \end{pmatrix}$ (and $\sigma_2^2 = 0$ for $\bv_2 = \begin{pmatrix} -0.8 \\ 0.6 \end{pmatrix}$)
 \item The PCA choice ($C = 1$) uses $W_1 = \bv_1 = \begin{pmatrix} 0.6 \\ 0.8 \end{pmatrix}$ and $W_2 = \bv_1^T = \begin{pmatrix} 0.6 & 0.8 \end{pmatrix}$
 \item Any scaled pair $\widetilde{W}_1 = c \bv_1 = \begin{pmatrix} 1.2 \\ 1.6 \end{pmatrix}$ and $\widetilde{W}_2 = c^{-1} \bv_1^T = \begin{pmatrix} 0.3 & 0.4 \end{pmatrix}$ (with $c = 2$) gives the \textbf{exact same orthogonal projector}:
 \[
-P = W_1 W_2 = \widetilde{W}_1 \widetilde{W}_2 = \bv_1 \bv_1^T = \begin{pmatrix} 0.36 & 0.48 \\ 0.48 & 0.64 \end{pmatrix}, \qquad \hat{X} = X P = X
+P = W_1 W_2 = \widetilde{W}_1 \widetilde{W}_2 = \bv_1 \bv_1^T = \begin{pmatrix} 0.36 & 0.48 \\ 0.48 & 0.64 \end{pmatrix}, \qquad \hat{X} = \widetilde{X} P = \widetilde{X}
 \]
 \end{itemize}
 \end{frame}
 
 
 \begin{frame}[fragile]{R demonstration: training a linear autoencoder recovers PCA}
-Generate a centred 3D dataset ($n = 150, d = 3$) and train a linear autoencoder ($k = 2$) by minimising $\|X - X W_1 W_2\|_F^2$ from random initial weights:
+Generate a centred 3D dataset ($n = 150, p = 3$) and train a linear autoencoder ($k = 2$) by minimising $\|\widetilde{X} - \widetilde{X} W_1 W_2\|_F^2$ from random initial weights:
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{set.seed}\hldef{(}\hlnum{2740}\hldef{); n} \hlkwb{=} \hlnum{150}\hldef{; d} \hlkwb{=} \hlnum{3}\hldef{; k} \hlkwb{=} \hlnum{2}
+\hlkwd{set.seed}\hldef{(}\hlnum{2740}\hldef{); n} \hlkwb{=} \hlnum{150}\hldef{; p} \hlkwb{=} \hlnum{3}\hldef{; k} \hlkwb{=} \hlnum{2}
 \hldef{M_mix} \hlkwb{=} \hlkwd{matrix}\hldef{(}\hlkwd{c}\hldef{(}\hlnum{3}\hldef{,} \hlnum{2}\hldef{,} \hlnum{1}\hldef{,} \hlnum{0}\hldef{,} \hlnum{1.5}\hldef{,} \hlnum{1}\hldef{,} \hlnum{0}\hldef{,} \hlnum{0}\hldef{,} \hlnum{0.3}\hldef{),} \hlkwc{nrow} \hldef{=} \hlnum{3}\hldef{,} \hlkwc{byrow} \hldef{=} \hlnum{TRUE}\hldef{)}
-\hldef{X} \hlkwb{=} \hlkwd{scale}\hldef{(}\hlkwd{matrix}\hldef{(}\hlkwd{rnorm}\hldef{(n} \hlopt{*} \hldef{d), n, d)} \hlopt{%*%} \hldef{M_mix,} \hlkwc{center} \hldef{=} \hlnum{TRUE}\hldef{,} \hlkwc{scale} \hldef{=} \hlnum{FALSE}\hldef{)}
-\hldef{V_k} \hlkwb{=} \hlkwd{svd}\hldef{(X)}\hlopt{$}\hldef{v[,} \hlnum{1}\hlopt{:}\hldef{k];  P_pca} \hlkwb{=} \hldef{V_k} \hlopt{%*%} \hlkwd{t}\hldef{(V_k)}
+\hldef{X_tilde} \hlkwb{=} \hlkwd{scale}\hldef{(}\hlkwd{matrix}\hldef{(}\hlkwd{rnorm}\hldef{(n} \hlopt{*} \hldef{p), n, p)} \hlopt{%*%} \hldef{M_mix,} \hlkwc{center} \hldef{=} \hlnum{TRUE}\hldef{,} \hlkwc{scale} \hldef{=} \hlnum{FALSE}\hldef{)}
+\hldef{V_k} \hlkwb{=} \hlkwd{svd}\hldef{(X_tilde)}\hlopt{$}\hldef{v[,} \hlnum{1}\hlopt{:}\hldef{k];  P_pca} \hlkwb{=} \hldef{V_k} \hlopt{%*%} \hlkwd{t}\hldef{(V_k)}
 
 \hldef{ae_loss} \hlkwb{=} \hlkwa{function}\hldef{(}\hlkwc{th}\hldef{) \{}
-  \hldef{W1} \hlkwb{=} \hlkwd{matrix}\hldef{(th[}\hlnum{1}\hlopt{:}\hlnum{6}\hldef{], d, k);  W2} \hlkwb{=} \hlkwd{matrix}\hldef{(th[}\hlnum{7}\hlopt{:}\hlnum{12}\hldef{], k, d)}
-  \hlkwd{sum}\hldef{((X} \hlopt{-} \hldef{X} \hlopt{%*%} \hldef{W1} \hlopt{%*%} \hldef{W2)}\hlopt{^}\hlnum{2}\hldef{)}
+  \hldef{W1} \hlkwb{=} \hlkwd{matrix}\hldef{(th[}\hlnum{1}\hlopt{:}\hlnum{6}\hldef{], p, k);  W2} \hlkwb{=} \hlkwd{matrix}\hldef{(th[}\hlnum{7}\hlopt{:}\hlnum{12}\hldef{], k, p)}
+  \hlkwd{sum}\hldef{((X_tilde} \hlopt{-} \hldef{X_tilde} \hlopt{%*%} \hldef{W1} \hlopt{%*%} \hldef{W2)}\hlopt{^}\hlnum{2}\hldef{)}
 \hldef{\}}
 \hldef{opt} \hlkwb{=} \hlkwd{optim}\hldef{(}\hlkwd{rnorm}\hldef{(}\hlnum{12}\hldef{,} \hlkwc{sd} \hldef{=} \hlnum{0.5}\hldef{), ae_loss,} \hlkwc{method} \hldef{=} \hlsng{"BFGS"}\hldef{,}
             \hlkwc{control} \hldef{=} \hlkwd{list}\hldef{(}\hlkwc{maxit} \hldef{=} \hlnum{500}\hldef{,} \hlkwc{reltol} \hldef{=} \hlnum{1e-12}\hldef{))}
-\hldef{W1_hat} \hlkwb{=} \hlkwd{matrix}\hldef{(opt}\hlopt{$}\hldef{par[}\hlnum{1}\hlopt{:}\hlnum{6}\hldef{], d, k);  W2_hat} \hlkwb{=} \hlkwd{matrix}\hldef{(opt}\hlopt{$}\hldef{par[}\hlnum{7}\hlopt{:}\hlnum{12}\hldef{], k, d)}
+\hldef{W1_hat} \hlkwb{=} \hlkwd{matrix}\hldef{(opt}\hlopt{$}\hldef{par[}\hlnum{1}\hlopt{:}\hlnum{6}\hldef{], p, k);  W2_hat} \hlkwb{=} \hlkwd{matrix}\hldef{(opt}\hlopt{$}\hldef{par[}\hlnum{7}\hlopt{:}\hlnum{12}\hldef{], k, p)}
 \hldef{P_ae} \hlkwb{=} \hldef{W1_hat} \hlopt{%*%} \hldef{W2_hat}
 \end{alltt}
 \end{kframe}
@@ -1093,34 +1093,34 @@ Even though $W_1$ and $V_k$ differ by an invertible change of basis $C \in \GL_2
 \SSsubsection{Left-multiplication vs right-multiplication on X}
 
 \begin{frame}{What when the rows of $X$ are connected by a graph?}
-In a standard MLP or autoencoder, the rows of $X \in \M_{n, d}$ are treated as independent samples
+In a standard MLP or autoencoder, the rows of $X \in \M_{np}$ are treated as independent observations
 \vfill
-In many applications (Units 08 to 10), however, the $n$ rows of $X \in \M_{n, d}$ are the \textbf{vertices of a graph} $G = (V, E)$ with adjacency matrix $A \in \M_n$:
+In many applications (Units 08 to 10), however, the $n$ rows of $X \in \M_{np}$ are the \textbf{vertices of a graph} $G = (V, E)$ with adjacency matrix $A \in \M_n$ (in graph machine learning, the data matrix $X$ is called the \defword{vertex feature matrix} or \defword{node feature matrix}):
 \begin{itemize}
-\item \textbf{Citation networks}: vertices are scientific papers, rows $\bx_i^T \in \IR^d$ are word-frequency vectors and edges are citations
+\item \textbf{Citation networks}: vertices are scientific papers, rows $\bx_i^T \in \IR^p$ are word-frequency vectors and edges are citations
 \item \textbf{Social and epidemiological networks}: vertices are individuals or cities, features are demographic variables and edges are contact or mobility links
 \item \textbf{Molecular graphs}: vertices are atoms, features are atomic properties and edges are chemical bonds
 \end{itemize}
 \vfill
-How can a neural network layer use \textbf{both} the vertex features $X \in \M_{n, d}$ and the graph structure $A \in \M_n$?
+How can a neural network layer use \textbf{both} the vertex features $X \in \M_{np}$ and the graph structure $A \in \M_n$?
 \end{frame}
 
 
 \begin{frame}{The fundamental linear algebra duality: left vs right multiplication}
-Given a vertex feature matrix $X \in \M_{n, d}$ ($n$ vertices in rows, $d$ features in columns), consider what happens when we multiply $X$ on the \textbf{right} versus on the \textbf{left}:
+Given a data matrix (vertex feature matrix) $X \in \M_{np}$ ($n$ vertices in rows, $p$ features in columns), consider what happens when we multiply $X$ on the \textbf{right} versus on the \textbf{left}:
 \vfill
 \begin{importantproperty}[Right-multiplication mixes features; left-multiplication mixes vertices]
 \label{prop:left-vs-right}
-Let $X \in \M_{n, d}$ have rows $\bx_1^T, \ldots, \bx_n^T \in \IR^{1 \times d}$ and columns $\bc_1, \ldots, \bc_d \in \IR^n$:
+Let $X \in \M_{np}$ have rows $\bx_1^T, \ldots, \bx_n^T \in \IR^{1 \times p}$ and columns $\bc_1, \ldots, \bc_p \in \IR^n$:
 \begin{enumerate}
-\item \textbf{Right-multiplication by a weight matrix $W \in \M_{d, p}$}:
+\item \textbf{Right-multiplication by a weight matrix $W \in \M_{pq}$}:
 \[
-(XW)_{i\bullet} = \bx_i^T W \in \IR^{1 \times p} \qquad (i = 1, \ldots, n)
+(XW)_{i\bullet} = \bx_i^T W \in \IR^{1 \times q} \qquad (i = 1, \ldots, n)
 \]
 Each vertex $i$ transforms its \textbf{own features} independently of all other vertices (this is a standard MLP layer, completely ignoring the graph $G$)
 \item \textbf{Left-multiplication by a graph operator $S \in \M_n$}:
 \[
-(SX)_{i\bullet} = \sum_{j=1}^n s_{ij} \bx_j^T \in \IR^{1 \times d} \qquad (i = 1, \ldots, n)
+(SX)_{i\bullet} = \sum_{j=1}^n s_{ij} \bx_j^T \in \IR^{1 \times p} \qquad (i = 1, \ldots, n)
 \]
 Each vertex $i$ forms a linear combination of the \textbf{feature vectors of neighbouring vertices} across the graph!
 \end{enumerate}
@@ -1129,22 +1129,22 @@ Each vertex $i$ forms a linear combination of the \textbf{feature vectors of nei
 
 
 \begin{frame}{Visualising the two-sided sandwich product $S X W$}
-Combining left-multiplication by a graph operator $S \in \M_n$ and right-multiplication by a feature weight matrix $W \in \M_{d, p}$ produces the \defword{sandwich product} $S X W \in \M_{n, p}$:
+Combining left-multiplication by a graph operator $S \in \M_n$ and right-multiplication by a feature weight matrix $W \in \M_{pq}$ produces the \defword{sandwich product} $S X W \in \M_{nq}$:
 \vfill
 \[
 \underbrace{S}_{\substack{n \times n \\ \text{mixes rows} \\ \text{(graph neighbours)}}}
 \;\;
-\underbrace{X}_{\substack{n \times d \\ \text{vertex features} \\ \text{(data matrix)}}}
+\underbrace{X}_{\substack{n \times p \\ \text{vertex features} \\ \text{(data matrix)}}}
 \;\;
-\underbrace{W}_{\substack{d \times p \\ \text{mixes columns} \\ \text{(trainable weights)}}}
+\underbrace{W}_{\substack{p \times q \\ \text{mixes columns} \\ \text{(trainable weights)}}}
 \;=\;
-\underbrace{Z}_{\substack{n \times p \\ \text{updated vertex} \\ \text{representations}}}
+\underbrace{Z}_{\substack{n \times q \\ \text{updated vertex} \\ \text{representations}}}
 \]
 \vfill
 By associativity of matrix multiplication, $(SX)W = S(XW)$:
 \begin{itemize}
-\item Viewing it as $(SX)W$: first \textbf{aggregate/smooth features} across graph neighbours ($SX \in \M_{n, d}$), then \textbf{project features} using trainable weights $W$
-\item Viewing it as $S(XW)$: first \textbf{project each vertex's features} into $\IR^p$ ($XW \in \M_{n, p}$), then \textbf{aggregate the projected vectors} across graph neighbours via $S$
+\item Viewing it as $(SX)W$: first \textbf{aggregate/smooth features} across graph neighbours ($SX \in \M_{np}$), then \textbf{project features} using trainable weights $W$
+\item Viewing it as $S(XW)$: first \textbf{project each vertex's features} into $\IR^q$ ($XW \in \M_{nq}$), then \textbf{aggregate the projected vectors} across graph neighbours via $S$
 \end{itemize}
 \end{frame}
 
@@ -1217,11 +1217,11 @@ Here $S_{\text{sym}}$ is \textbf{symmetric} ($S_{\text{sym}}^T = S_{\text{sym}}$
 \begin{frame}{The graph convolutional network (GCN) layer}
 \begin{importantdefinition}[Graph convolutional network layer]
 \label{def:gcn-layer}
-Given a graph $G = (V, E)$ with augmented adjacency matrix $\tilde{A} = A + \II_n$, augmented degree matrix $\tilde{D} = D + \II_n$ and propagation operator $S \in \big\{\tilde{D}^{-1}\tilde{A},\; \tilde{D}^{-1/2}\tilde{A}\tilde{D}^{-1/2}\big\}$, an $L$-layer \defword{Graph Convolutional Network (GCN)} sets $H^{(0)} = X \in \M_{n, d_0}$ and updates vertex representations at layer $\ell \in \{1, \ldots, L\}$ via
+Given a graph $G = (V, E)$ with augmented adjacency matrix $\tilde{A} = A + \II_n$, augmented degree matrix $\tilde{D} = D + \II_n$ and propagation operator $S \in \big\{\tilde{D}^{-1}\tilde{A},\; \tilde{D}^{-1/2}\tilde{A}\tilde{D}^{-1/2}\big\}$, an $L$-layer \defword{Graph Convolutional Network (GCN)} with layer widths $p_0, p_1, \ldots, p_L$ sets $H^{(0)} = X \in \M_{n, p_0}$ (where $p_0 = p$) and updates vertex representations at layer $\ell \in \{1, \ldots, L\}$ via
 \[
-H^{(\ell)} = \sigma_\ell\!\big(S H^{(\ell-1)} W^{(\ell)}\big) \in \M_{n, d_\ell}
+H^{(\ell)} = \sigma_\ell\!\big(S H^{(\ell-1)} W^{(\ell)}\big) \in \M_{n, p_\ell}
 \]
-where $W^{(\ell)} \in \M_{d_{\ell-1}, d_\ell}$ is the trainable feature weight matrix of layer $\ell$ and $\sigma_\ell$ is a component-wise activation function
+where $W^{(\ell)} \in \M_{p_{\ell-1}, p_\ell}$ is the trainable feature weight matrix of layer $\ell$ and $\sigma_\ell$ is a component-wise activation function
 \end{importantdefinition}
 \vfill
 Notice that if the graph has \textbf{no edges} ($A = 0$), then $\tilde{A} = \tilde{D} = \II_n$, so $S = \II_n$ and the GCN layer reduces to a standard MLP layer $H^{(\ell)} = \sigma_\ell\big(H^{(\ell-1)} W^{(\ell)}\big)$!
@@ -1248,7 +1248,7 @@ What happens as we stack $L$ GCN layers?
 
 
 \begin{frame}{Brief remark: Transformers and self-attention as dynamic graph operators}
-In large language models (Transformers), a sequence of $n$ tokens is represented by an embedding matrix $X \in \M_{n, d}$. A \defword{self-attention head} projects $X$ using three weight matrices $W_Q, W_K \in \M_{d, d_k}$ and $W_V \in \M_{d, d_v}$:
+In large language models (Transformers), a sequence of $n$ tokens is represented by a data matrix (token embedding matrix) $X \in \M_{np}$. A \defword{self-attention head} projects $X$ using three weight matrices $W_Q, W_K \in \M_{p, d_k}$ and $W_V \in \M_{p, d_v}$:
 \[
 Q = X W_Q, \qquad K = X W_K, \qquad V = X W_V
 \]
@@ -1287,7 +1287,7 @@ S(X) = \operatorname{softmax}\!\left(\frac{Q K^T}{\sqrt{2}}\right) \approx \begi
 \begin{frame}{Example by hand: 1-layer GCN forward pass on a 3-vertex path}
 \begin{columns}[c]
 \begin{column}{0.64\textwidth}
-\textbf{Problem:} Consider the 3-vertex path graph $1 - 2 - 3$ with vertex feature matrix $X \in \M_{3, 2}$ and weight matrix $W \in \M_{2, 2}$:
+\textbf{Problem:} Consider the 3-vertex path graph $1 - 2 - 3$ with vertex feature matrix $X \in \M_{32}$ and weight matrix $W \in \M_{22}$:
 \[
 X = \begin{pmatrix} 2 & 0 \\ 0 & 6 \\ 4 & 0 \end{pmatrix}, \qquad
 W = \begin{pmatrix} 2 & -1 \\ -1 & 1 \end{pmatrix}
@@ -1448,12 +1448,12 @@ Applying $S_{\text{rw}} = \tilde{D}^{-1}\tilde{A}$ for $k = 1, 5, 50$ steps to i
 \renewcommand{\arraystretch}{1.35}
 \begin{tabular}{lll}
 \toprule
-\textbf{Architecture} & \textbf{Layer operator on $X \in \M_{n, d}$} & \textbf{Core linear algebra mechanism} \\
+\textbf{Architecture} & \textbf{Layer operator on $X \in \M_{np}$} & \textbf{Core linear algebra mechanism} \\
 \midrule
 Single neuron & $\sigma\big(X\bw + b\11_n\big)$ & Affine hyperplane $\bw^T\bx + b = 0$ (Unit 06) \\
 MLP layer & $\sigma\big(X W^T + \11_n \bb^T\big)$ & Right-multiplication + rank-1 bias broadcast \\
-Deep linear net & $X \big(W^{(L)}\cdots W^{(1)}\big)^T + \11_n \bb^T$ & Collapses to 1 matrix; $\rank(W) \le \min_\ell d_\ell$ \\
-Linear autoencoder & $\hat{X} = X W_1 W_2 \;\; (k < d)$ & Optimal $W_1 W_2 = V_k V_k^T$ is PCA (Units 04--05) \\
+Deep linear net & $X \big(W^{(L)}\cdots W^{(1)}\big)^T + \11_n \bb^T$ & Collapses to 1 matrix; $\rank(W) \le \min_\ell p_\ell$ \\
+Linear autoencoder & $\hat{X} = \widetilde{X} W_1 W_2 \;\; (k < p)$ & Optimal $W_1 W_2 = V_k V_k^T$ is PCA (Units 04--05) \\
 GCN layer & $\sigma\big(\tilde{D}^{-1}\tilde{A} X W\big)$ & Left graph smoothing $\times$ right feature projection \\
 Self-attention & $\operatorname{softmax}\!\big(\frac{XW_QW_K^TX^T}{\sqrt{d_k}}\big) X W_V$ & Data-dependent row-stochastic left multiplier \\
 \bottomrule

@@ -338,7 +338,7 @@ Reordering the states as $(S_1, S_5, S_2, S_3, S_4)$ via the permutation matrix 
 
 \begin{frame}{Canonical block form of an absorbing chain}
 \begin{importantdefinition}[Canonical block form]
-For an absorbing Markov chain with $r$ absorbing states (listed first) and $m = n - r$ transient states (listed last), the column-stochastic transition matrix takes the \defword{canonical block form} (or \textbf{standard form})
+For an absorbing Markov chain with $r$ absorbing states (listed first) and $m = n - r$ transient states (listed last), the column-stochastic transition matrix takes the \defword{canonical block form} (or \defword{standard form})
 \[
 P = \begin{pmatrix}
 \II_r & R \\
@@ -348,8 +348,8 @@ P = \begin{pmatrix}
 where:
 \begin{itemize}
 \item $\II_r \in \M_r$ is the $r \times r$ identity matrix (absorbing states stay put)
-\item $\b0_{m,r} \in \M_{m,r}$ is the $m \times r$ zero matrix (absorbing states never move to transient states)
-\item $R \in \M_{r,m}$ contains the one-step transition probabilities from transient states to absorbing states
+\item $\b0_{m,r} \in \M_{mr}$ is the $m \times r$ zero matrix (absorbing states never move to transient states)
+\item $R \in \M_{rm}$ contains the one-step transition probabilities from transient states to absorbing states
 \item $Q \in \M_m$ contains the one-step transition probabilities among transient states
 \end{itemize}
 \end{importantdefinition}
@@ -362,8 +362,8 @@ In our column-stochastic convention, columns correspond to the \textbf{from} sta
 \renewcommand{\arraystretch}{1.5}
 \begin{tabular}{c|cc}
 & \textbf{From absorbing} ($r$ cols) & \textbf{From transient} ($m$ cols) \\ \hline
-\textbf{To absorbing} ($r$ rows) & $\II_r \in \M_r$ & $R \in \M_{r,m}$ \\
-\textbf{To transient} ($m$ rows) & $\b0_{m,r} \in \M_{m,r}$ & $Q \in \M_m$
+\textbf{To absorbing} ($r$ rows) & $\II_r \in \M_r$ & $R \in \M_{rm}$ \\
+\textbf{To transient} ($m$ rows) & $\b0_{m,r} \in \M_{mr}$ & $Q \in \M_m$
 \end{tabular}
 \end{center}
 \vfill
@@ -502,7 +502,7 @@ Let $P = \begin{pmatrix} \II_r & R \\ \b0_{m,r} & Q \end{pmatrix}$ be in canonic
 \begin{enumerate}
 \item \textbf{Expected visits to transient states:} $n_{ij}$ is the expected total number of times the chain is in the $i$th transient state, given that it starts in the $j$th transient state
 \item \textbf{Expected time to absorption:} Let $\bt^T = \11_m^T N = (t_1, \ldots, t_m)$. Then $t_j = \sum_{i=1}^m n_{ij}$ (the $j$th column sum of $N$) is the expected number of steps before absorption when starting in the $j$th transient state
-\item \textbf{Absorption probabilities:} Let $B = [b_{ij}] = R N \in \M_{r,m}$. Then $b_{ij}$ is the probability of eventually being absorbed in the $i$th absorbing state when starting in the $j$th transient state
+\item \textbf{Absorption probabilities:} Let $B = [b_{ij}] = R N \in \M_{rm}$. Then $b_{ij}$ is the probability of eventually being absorbed in the $i$th absorbing state when starting in the $j$th transient state
 \end{enumerate}
 \end{importanttheorem}
 \end{frame}
@@ -870,7 +870,7 @@ Each arc $j \to i$ is treated as one ``vote'' for the importance of vertex $i$
 Instead of summing $1$ for each incoming neighbour $j \to i$, we sum the \emph{importance scores} $x_j$ of those neighbours and require $x_i$ to be proportional to that sum
 \vfill
 \begin{importantdefinition}[Eigenvector centrality]
-Let $A = [a_{ij}] \in \M_n$ be the adjacency matrix of a graph or digraph (with $a_{ij} = 1$ if $j \to i$). The \defword{eigenvector centrality} (or \textbf{prestige score}) of vertex $i$ is the $i$th entry of the non-negative eigenvector $\bx \ge \b0$ satisfying
+Let $A = [a_{ij}] \in \M_n$ be the adjacency matrix of a graph or digraph (with $a_{ij} = 1$ if $j \to i$). The \defword{eigenvector centrality} (or \defword{prestige score}) of vertex $i$ is the $i$th entry of the non-negative eigenvector $\bx \ge \b0$ satisfying
 \[
 \lambda x_i = \sum_{j=1}^n a_{ij} x_j, \quad i=1,\ldots,n \iff A \bx = \lambda \bx
 \]

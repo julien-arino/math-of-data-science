@@ -41,26 +41,26 @@ abline(h = c(-1, 0, 1), v = 0, col = "gray70", lty = 2)
 ## ----xor-batch-forward--------------------------------------------------------
 X = matrix(c(0, 0,  1, 0,  0, 1,  1, 1), nrow = 4, byrow = TRUE)
 W1 = matrix(c(1, 1,  1, 1), nrow = 2, byrow = TRUE)
-b1 = c(0, -1);  one_B = rep(1, nrow(X))
-Z1 = X %*% t(W1) + one_B %*% t(b1)
+b1 = c(0, -1);  one_n = rep(1, nrow(X))
+Z1 = X %*% t(W1) + one_n %*% t(b1)
 A1 = pmax(0, Z1)
 y_hat = A1 %*% c(1, -2)
 cbind(X, A1 = A1, y_hat = as.vector(y_hat))
 
 
 ## ----linear-autoencoder-pca---------------------------------------------------
-set.seed(2740); n = 150; d = 3; k = 2
+set.seed(2740); n = 150; p = 3; k = 2
 M_mix = matrix(c(3, 2, 1, 0, 1.5, 1, 0, 0, 0.3), nrow = 3, byrow = TRUE)
-X = scale(matrix(rnorm(n * d), n, d) %*% M_mix, center = TRUE, scale = FALSE)
-V_k = svd(X)$v[, 1:k];  P_pca = V_k %*% t(V_k)
+X_tilde = scale(matrix(rnorm(n * p), n, p) %*% M_mix, center = TRUE, scale = FALSE)
+V_k = svd(X_tilde)$v[, 1:k];  P_pca = V_k %*% t(V_k)
 
 ae_loss = function(th) {
-  W1 = matrix(th[1:6], d, k);  W2 = matrix(th[7:12], k, d)
-  sum((X - X %*% W1 %*% W2)^2)
+  W1 = matrix(th[1:6], p, k);  W2 = matrix(th[7:12], k, p)
+  sum((X_tilde - X_tilde %*% W1 %*% W2)^2)
 }
 opt = optim(rnorm(12, sd = 0.5), ae_loss, method = "BFGS",
             control = list(maxit = 500, reltol = 1e-12))
-W1_hat = matrix(opt$par[1:6], d, k);  W2_hat = matrix(opt$par[7:12], k, d)
+W1_hat = matrix(opt$par[1:6], p, k);  W2_hat = matrix(opt$par[7:12], k, p)
 P_ae = W1_hat %*% W2_hat
 
 
@@ -71,20 +71,20 @@ max(abs(P_pca - P_ae))
 
 
 ## ----plot-ae-pca,echo=FALSE,fig.width=7.5,fig.height=4.2----------------------
-X_pca = X %*% P_pca
-X_ae = X %*% P_ae
+X_pca = X_tilde %*% P_pca
+X_ae = X_tilde %*% P_ae
 par(mfrow = c(1, 2), mar = c(4, 4, 2.5, 1), mgp = c(2.2, 0.7, 0))
-plot(X[, 1], X[, 2], pch = 19, col = "gray70",
+plot(X_tilde[, 1], X_tilde[, 2], pch = 19, col = "gray70",
      xlab = "Feature 1 (centred)", ylab = "Feature 2 (centred)",
      main = "PCA vs Autoencoder reconstruction (x1, x2)")
 points(X_pca[, 1], X_pca[, 2], pch = 1, col = "dodgerblue4", cex = 1.3, lwd = 1.5)
 points(X_ae[, 1], X_ae[, 2], pch = 4, col = "firebrick", cex = 1.1, lwd = 1.5)
-legend("topleft", legend = c("Original 3D data", "PCA (X V_k V_k^T)", "Autoencoder (X W_1 W_2)"),
+legend("topleft", legend = c("Original 3D data", "PCA (X_tilde V_k V_k^T)", "Autoencoder (X_tilde W_1 W_2)"),
        col = c("gray70", "dodgerblue4", "firebrick"), pch = c(19, 1, 4), bty = "n", cex = 0.85)
 
 # Latent space comparison
-Z_pca = X %*% V_k
-Z_ae = X %*% W1_hat
+Z_pca = X_tilde %*% V_k
+Z_ae = X_tilde %*% W1_hat
 # Align Z_ae to Z_pca via C = (V_k^T W1_hat)^{-1}
 C_mat = t(V_k) %*% W1_hat
 Z_ae_aligned = Z_ae %*% solve(C_mat)
@@ -92,7 +92,7 @@ plot(Z_pca[, 1], Z_pca[, 2], pch = 1, col = "dodgerblue4", cex = 1.3, lwd = 1.5,
      xlab = "Principal coordinate 1", ylab = "Principal coordinate 2",
      main = "Latent code after basis alignment C^{-1}")
 points(Z_ae_aligned[, 1], Z_ae_aligned[, 2], pch = 4, col = "firebrick", cex = 1.1, lwd = 1.5)
-legend("topleft", legend = c("PCA scores Z = X V_k", "Aligned AE code Z_AE C^{-1}"),
+legend("topleft", legend = c("PCA scores Z = X_tilde V_k", "Aligned AE code Z_AE C^{-1}"),
        col = c("dodgerblue4", "firebrick"), pch = c(1, 4), bty = "n", cex = 0.85)
 
 

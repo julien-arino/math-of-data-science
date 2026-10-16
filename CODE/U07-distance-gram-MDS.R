@@ -15,9 +15,9 @@ cat(input_setup)
 
 ## ----pca-mds-duality-check----------------------------------------------------
 set.seed(2740)
-X = scale(matrix(rnorm(15), nrow = 5, ncol = 3), center = TRUE, scale = FALSE)
-pca_scores = prcomp(X, center = FALSE)$x[, 1:2]
-mds_coords = cmdscale(dist(X), k = 2)
+X_tilde = scale(matrix(rnorm(15), nrow = 5, ncol = 3), center = TRUE, scale = FALSE)
+pca_scores = prcomp(X_tilde, center = FALSE)$x[, 1:2]
+mds_coords = cmdscale(dist(X_tilde), k = 2)
 # Compare absolute values (eigenvectors are defined up to a sign +/- 1)
 max(abs(abs(pca_scores) - abs(mds_coords)))
 

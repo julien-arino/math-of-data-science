@@ -27,25 +27,25 @@ X = matrix(c(
   0, 0, 0, 0, 4, 3, 2, 5,  # d4: graph theory
   0, 0, 0, 0, 3, 2, 4, 4,  # d5: graph theory
   0, 1, 0, 0, 2, 4, 3, 5   # d6: graph theory (mentions "vector" once)
-), nrow = 8, ncol = 6, dimnames = list(terms, paste0("d", 1:6)))
+), nrow = 6, ncol = 8, byrow = TRUE, dimnames = list(paste0("d", 1:6), terms))
 
-# Diagonal IDF scaling: D_IDF %*% X
-df_i = rowSums(X > 0)
-idf_i = log(ncol(X) / df_i)
-X_tfidf = diag(idf_i) %*% X
+# Right-multiplication by diagonal IDF matrix: X %*% D_IDF
+df_j = colSums(X > 0)
+idf_j = log(nrow(X) / df_j)
+X_tfidf = X %*% diag(idf_j)
 
-# Column l2 normalisation: X_hat = X_tfidf %*% D_norm^{-1}
-col_norms = sqrt(colSums(X_tfidf^2))
-X_hat = X_tfidf %*% diag(1 / col_norms)
-S_gram = round(t(X_hat) %*% X_hat, 2)
+# Row l2 normalisation: X_hat = D_len^{-1} %*% X_tfidf
+row_norms = sqrt(rowSums(X_tfidf^2))
+X_hat = diag(1 / row_norms) %*% X_tfidf
+S_gram = round(X_hat %*% t(X_hat), 2)
 
 
 ## ----plot-cosine-gram,echo=FALSE,fig.width=8,fig.height=4.5-------------------
 par(mfrow = c(1, 2), mar = c(4, 5, 3, 2))
 # Raw cosine similarity (with common word "data" included)
-raw_norms = sqrt(colSums(X^2))
-X_raw_hat = X %*% diag(1 / raw_norms)
-S_raw = t(X_raw_hat) %*% X_raw_hat
+raw_norms = sqrt(rowSums(X^2))
+X_raw_hat = diag(1 / raw_norms) %*% X
+S_raw = X_raw_hat %*% t(X_raw_hat)
 
 image(1:6, 1:6, S_raw[, 6:1], col = hcl.colors(20, "YlOrRd", rev = TRUE),
       zlim = c(0, 1), axes = FALSE, xlab = "Document", ylab = "Document",
@@ -78,19 +78,19 @@ for (iter in 1:30) {
   H = pmax(0, solve(t(W) %*% W + 1e-8 * diag(k), t(W) %*% X_tfidf))
   # Update W by least squares and clip negatives to 0
   W = pmax(0, t(solve(H %*% t(H) + 1e-8 * diag(k), H %*% t(X_tfidf))))
-  # Normalise columns of W and rescale rows of H accordingly
-  w_norms = sqrt(colSums(W^2))
-  W = W %*% diag(1 / w_norms)
-  H = diag(w_norms) %*% H
+  # Normalise rows of H and rescale columns of W accordingly
+  h_norms = sqrt(rowSums(H^2))
+  H = diag(1 / h_norms) %*% H
+  W = W %*% diag(h_norms)
   err_history[iter] = sum((X_tfidf - W %*% H)^2)
 }
-rownames(W) = terms; colnames(W) = c("Topic_1", "Topic_2")
-rownames(H) = c("Topic_1", "Topic_2"); colnames(H) = paste0("d", 1:6)
+rownames(W) = paste0("d", 1:6); colnames(W) = c("Topic_1", "Topic_2")
+rownames(H) = c("Topic_1", "Topic_2"); colnames(H) = terms
 
 
 ## ----r-nmf-inspect,echo=TRUE--------------------------------------------------
-round(W, 3)
-round(H, 2)
+round(W, 2)
+round(H, 3)
 
 
 ## ----plot-nmf-results,echo=FALSE,fig.width=8.5,fig.height=4.5-----------------
@@ -100,12 +100,12 @@ plot(1:30, err_history, type = "b", pch = 19, col = "dodgerblue4", lwd = 2,
      main = "ALS convergence on TF-IDF matrix")
 grid()
 
-barplot(t(W[8:1, ]), beside = TRUE, horiz = TRUE, las = 1,
+barplot(H[, 8:1], beside = TRUE, horiz = TRUE, las = 1,
         col = c("darkorange2", "steelblue3"),
         legend.text = c("Topic 1", "Topic 2"),
         args.legend = list(x = "bottomright", bty = "n"),
-        xlab = "Non-negative word weight in W",
-        main = "Learned topic dictionary columns of W")
+        xlab = "Non-negative word weight in H",
+        main = "Learned topic dictionary rows of H")
 
 
 ## ----convert-Rnw-to-R,warning=FALSE,message=FALSE,echo=FALSE,results='hide'----
