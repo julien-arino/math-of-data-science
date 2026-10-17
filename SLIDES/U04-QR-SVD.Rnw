@@ -242,9 +242,9 @@ Then $\forall i=1,\ldots,k$, $\{\tilde{\bv}_1,\ldots,\tilde{\bv}_i\}$ is an orth
 
 \begin{frame}
 \begin{importanttheorem}
-Let $Q\in\M_{mn}$. The columns of $Q$ form an orthonormal set if and only if
+Let $Q\in\M_{np}$. The columns of $Q$ form an orthonormal set if and only if
 \[
-Q^TQ=\II_n
+Q^TQ=\II_p
 \]
 \end{importanttheorem}
 \vfill
@@ -381,11 +381,11 @@ From 2 in Theorem~\ref{th:TFAE_orthogonal_matrices}, $\|Q\bx\|=\|\bx\|$ and from
 
 \begin{frame}{The QR factorisation}
 \begin{importanttheorem}\label{th:QR_factorisation}
-Let $A\in\M_{mn}$ with LI columns. Then $A$ can be factored as
+Let $A\in\M_{np}$ with LI columns. Then $A$ can be factored as
 \[
 A=QR
 \]
-where $Q\in\M_{mn}$ has orthonormal columns and $R\in\M_n$ is nonsingular upper triangular
+where $Q\in\M_{np}$ has orthonormal columns and $R\in\M_p$ is nonsingular upper triangular
 \end{importanttheorem}
 \end{frame}
 
@@ -395,7 +395,7 @@ So what was the point of all that..?
 \vfill
 \begin{importanttheorem}[Least squares with QR factorisation]
 \label{th:LSQ_with_QR}
-$A\in\M_{mn}$ with linearly independent columns, $\bb\in\IR^m$. If $A=QR$ is a QR factorisation of $A$, then the unique least squares solution $\tilde\bx$ of $A\bx=\bb$ is
+$A\in\M_{np}$ with linearly independent columns, $\bb\in\IR^n$. If $A=QR$ is a QR factorisation of $A$, then the unique least squares solution $\tilde\bx$ of $A\bx=\bb$ is
 \[
 \tilde\bx = R^{-1}Q^T\bb
 \]
@@ -407,13 +407,13 @@ $A\in\M_{mn}$ with linearly independent columns, $\bb\in\IR^m$. If $A=QR$ is a Q
 $A$ has LI columns so 
 \begin{itemize}
 \item least squares $A\bx=\bb$ has unique solution $\tilde\bx=(A^TA)^{-1}A^T\bb$
-\item by Theorem~\ref{th:QR_factorisation}, $A$ can be written as $A=QR$ with $Q\in\M_{mn}$ with orthonormal columns and $R\in\M_n$ nonsingular and upper triangular
+\item by Theorem~\ref{th:QR_factorisation}, $A$ can be written as $A=QR$ with $Q\in\M_{np}$ with orthonormal columns and $R\in\M_p$ nonsingular and upper triangular
 \end{itemize}
 So
 \begin{align*}
 A^TA\tilde\bx= A^T\bb &\implies (QR)^TQR\tilde\bx = (QR)^T\bb \\
 &\implies R^TQ^TQR\tilde\bx = R^TQ^T\bb \\
-&\implies R^T\II_nR\tilde\bx = R^TQ^T\bb \\
+&\implies R^T\II_pR\tilde\bx = R^TQ^T\bb \\
 &\implies R^TR\tilde\bx = R^TQ^T\bb \\
 &\implies (R^T)^{-1}R\tilde\bx = (R^T)^{-1}R^TQ^T\bb \\
 &\implies R\tilde\bx = Q^T\bb \\
@@ -619,9 +619,9 @@ The singular value decomposition (known mostly by its acronym, SVD) is yet anoth
 
 \begin{frame}{Singular values}
 \begin{importantdefinition}[Singular value]
-Let $A\in\M_{mn}(\IR)$. The \textbf{singular values} of $A$ are the real numbers 
+Let $A\in\M_{np}(\IR)$. The \textbf{singular values} of $A$ are the real numbers 
 \[
-\sigma_1\geq \sigma_2\geq\cdots\sigma_n\geq 0
+\sigma_1\geq \sigma_2\geq\cdots\sigma_p\geq 0
 \]
 that are the square roots of the eigenvalues of $A^TA$
 \end{importantdefinition}
@@ -629,7 +629,7 @@ that are the square roots of the eigenvalues of $A^TA$
 
 
 \begin{frame}{Singular values are real and nonnegative?}
-Recall that $\forall A\in\M_{mn}$, $A^TA$ is symmetric
+Recall that $\forall A\in\M_{np}$, $A^TA$ is symmetric
 \vfill
 \begin{importanttheorem}\label{th:real_symmetric_real_eigs}
 Let $A\in\M_n(\IR)$ be symmetric. Then all eigenvalues of $A$ are real
@@ -701,12 +701,12 @@ But $\bv$ eigenvector is $\neq\b0$, so $\bar\bv\bullet\bv\neq 0$, so
 
 \begin{frame}{Eigenvalues of $A^TA$ are real and nonnegative}
 \begin{importanttheorem}\label{th:eigenvalues_ATA_nonnegative}
-For $A\in\M_{mn}(\IR)$, the eigenvalues of $A^TA$ (and $AA^T$) are real and nonnegative
+For $A\in\M_{np}(\IR)$, the eigenvalues of $A^TA$ (and $AA^T$) are real and nonnegative
 \end{importanttheorem}
 \end{frame}
 
 \begin{frame}[importantcolour]{Proof of Theorem~\ref{th:eigenvalues_ATA_nonnegative}}
-We know that for $A\in\M_{mn}$, $A^TA$ symmetric and from Theorem~\ref{th:real_symmetric_real_eigs}, if $A\in\M_{mn}(\IR)$, then $A^TA$ is symmetric, real and with real eigenvalues
+We know that for $A\in\M_{np}$, $A^TA$ symmetric and from Theorem~\ref{th:real_symmetric_real_eigs}, if $A\in\M_{np}(\IR)$, then $A^TA$ is symmetric, real and with real eigenvalues
 \vfill
 Let $(\lambda,\bv)$ be an eigenpair of $A^TA$, with $\bv$ chosen so that $\|\bv\|=1$
 \vfill 
@@ -721,7 +721,7 @@ Norms are functions $V\to\IR_+$, so $\|A\bv\|$ and $\|A\bv\|^2$ are $\geq 0$ and
 
 \begin{frame}{Nonzero eigenvalues of $A^TA$ and $AA^T$}
 \begin{theorem}
-For $A\in\M_{mn}(\IR)$, the nonzero eigenvalues of $A^TA$ and $AA^T$ are the same
+For $A\in\M_{np}(\IR)$, the nonzero eigenvalues of $A^TA$ and $AA^T$ are the same
 \end{theorem}
 \vfill
 \begin{proof}
@@ -745,14 +745,14 @@ The reverse works the same way..
 
 \begin{frame}{The singular value decomposition (SVD)}
 \begin{importanttheorem}[SVD]\label{th:SVD}
-$A\in\M_{mn}$ with singular values $\sigma_1\geq\cdots\geq\sigma_r>0$ and $\sigma_{r+1}=\cdots=\sigma_n=0$
+$A\in\M_{np}$ with singular values $\sigma_1\geq\cdots\geq\sigma_r>0$ and $\sigma_{r+1}=\cdots=\sigma_p=0$
 \vskip0.5cm
-Then there exists $U\in\M_m$ orthogonal, $V\in\M_n$ orthogonal and a block matrix $\Sigma\in\M_{mn}$ taking the form
+Then there exists $U\in\M_n$ orthogonal, $V\in\M_p$ orthogonal and a block matrix $\Sigma\in\M_{np}$ taking the form
 \[
 \Sigma=
 \begin{pmatrix}
-D & \b0_{r\times n-r} \\
-\b0_{m-r\times r} & \b0_{m-r\times n-r}
+D & \b0_{r, p-r} \\
+\b0_{n-r, r} & \b0_{n-r, p-r}
 \end{pmatrix}
 \]
 where 
@@ -774,16 +774,16 @@ We call a factorisation as in Theorem~\ref{th:SVD} the \textbf{singular value de
 \vfill
 $U$ and $V^T$ are \emph{rotation} or \emph{reflection} matrices, $\Sigma$ is a \emph{scaling} matrix
 \vfill
-$U\in\M_m$ orthogonal matrix with columns the eigenvectors of $AA^T$
+$U\in\M_n$ orthogonal matrix with columns the eigenvectors of $AA^T$
 \vfill
-$V\in\M_n$ orthogonal matrix with columns the eigenvectors of $A^TA$
+$V\in\M_p$ orthogonal matrix with columns the eigenvectors of $A^TA$
 \end{frame}
 
 
 \begin{frame}{Outer product form of the SVD}
 \begin{theorem}[Outer product form of the SVD]
 \label{th:SVD_outer_product_form}
-$A\in\M_{mn}$ with singular values $\sigma_1\geq\cdots\geq\sigma_r>0$ and $\sigma_{r+1}=\cdots=\sigma_n=0$, $\bu_1,\ldots,\bu_r$ and $\bv_1,\ldots,\bv_r$, respectively, left and right singular vectors of $A$ corresponding to these singular values
+$A\in\M_{np}$ with singular values $\sigma_1\geq\cdots\geq\sigma_r>0$ and $\sigma_{r+1}=\cdots=\sigma_p=0$, $\bu_1,\ldots,\bu_r$ and $\bv_1,\ldots,\bv_r$, respectively, left and right singular vectors of $A$ corresponding to these singular values
 \vskip0.5cm
 Then 
 \begin{equation}\label{eq:outer-product-form-SVD}
@@ -811,7 +811,7 @@ Many applications of the SVD, both theoretical and practical..
 
 \begin{frame}{Compressing images}
 Consider an image (for simplicity, assume in shades of grey). 
-This can be stored in a matrix $A\in\M_{mn}$
+This can be stored in a matrix $A\in\M_{np}$
 \vfill
 Take the SVD of $A$. Then the small singular values carry information about the regions with little variation and can perhaps be omitted, whereas the large singular values carry information about more ``dynamic'' regions of the image
 \vfill
@@ -1011,10 +1011,10 @@ So $(\lambda_1-\lambda_2)(\bv_1\bullet\bv_2)=0$. But $\lambda_1\neq\lambda_2$, s
 If all eigenvalues of $A^TA$ (or $AA^T$) are distinct, we can use Theorem~\ref{th:eigenvectors_of_symmetric_are_orthogonal}
 \vfill
 \begin{enumerate}
-\item Compute $A^TA\in\M_n$
-\item Compute eigenvalues $\lambda_1,\ldots,\lambda_n$ of $A^TA$; order them as $\lambda_1>\cdots>\lambda_n\geq 0$ ($>$ not $\geq$ since $\neq$)
-\item Compute singular values $\sigma_1=\sqrt{\lambda_1},\ldots,\sigma_n=\sqrt{\lambda_n}$
-\item Diagonal matrix $D$ in $\Sigma$ is either in $\M_n$ (if $\sigma_n>0$) or in $\M_{n-1}$ (if $\sigma_n=0$)
+\item Compute $A^TA\in\M_p$
+\item Compute eigenvalues $\lambda_1,\ldots,\lambda_p$ of $A^TA$; order them as $\lambda_1>\cdots>\lambda_p\geq 0$ ($>$ not $\geq$ since $\neq$)
+\item Compute singular values $\sigma_1=\sqrt{\lambda_1},\ldots,\sigma_p=\sqrt{\lambda_p}$
+\item Diagonal matrix $D$ in $\Sigma$ is either in $\M_p$ (if $\sigma_p>0$) or in $\M_{p-1}$ (if $\sigma_p=0$)
 \end{enumerate}
 \end{frame}
 
@@ -1023,7 +1023,7 @@ If all eigenvalues of $A^TA$ (or $AA^T$) are distinct, we can use Theorem~\ref{t
 \begin{enumerate}
 \setcounter{enumi}{4}
 \item Since eigenvalues are distinct, Theorem~\ref{th:eigenvectors_of_symmetric_are_orthogonal} $\implies$ eigenvectors are orthogonal set. Compute these eigenvectors in the same order as the eigenvalues
-\item Normalise them and use them to make the matrix $V$, i.e., $V=[\bv_1\cdots\bv_n]$
+\item Normalise them and use them to make the matrix $V$, i.e., $V=[\bv_1\cdots\bv_p]$
 \item To find the $\bu_i$, compute, for $i=1,\ldots,r$,
 \[
 \bu_i = \frac{1}{\sigma_i}A\bv_i
@@ -1177,9 +1177,9 @@ im = list(u=U, d=sv, v=V)
 
 \begin{frame}{Computing the SVD (case where some eigenvalues are $=$)}
 \begin{enumerate}
-\item Compute $A^TA\in\M_n$
-\item Compute eigenvalues $\lambda_1,\ldots,\lambda_n$ of $A^TA$; order them as $\lambda_1\geq\cdots\geq\lambda_n\geq 0$
-\item Compute singular values $\sigma_1=\sqrt{\lambda_1},\ldots,\sigma_n=\sqrt{\lambda_n}$, with $r\leq n$ the index of the last positive singular value
+\item Compute $A^TA\in\M_p$
+\item Compute eigenvalues $\lambda_1,\ldots,\lambda_p$ of $A^TA$; order them as $\lambda_1\geq\cdots\geq\lambda_p\geq 0$
+\item Compute singular values $\sigma_1=\sqrt{\lambda_1},\ldots,\sigma_p=\sqrt{\lambda_p}$, with $r\leq p$ the index of the last positive singular value
 \item For eigenvalues that are distinct, proceed as before
 \item For eigenvalues with multiplicity $>1$, we need to ensure that the resulting eigenvectors are LI \emph{and} orthogonal
 \end{enumerate}
@@ -1290,7 +1290,7 @@ Normalising gives $\bv_1 = \frac{1}{\sqrt{2}}\begin{pmatrix} 1 \\ -1 \\ 0 \end{p
 
 \begin{frame}{Pseudoinverse of a matrix}
 \begin{definition}[Pseudoinverse]
-$A=U\Sigma V^T$ an SVD for $A\in\M_{mn}$, where 
+$A=U\Sigma V^T$ an SVD for $A\in\M_{np}$, where 
 \[
 \Sigma = \begin{pmatrix}
 D & 0 \\ 0 & 0
@@ -1300,7 +1300,7 @@ D=\mathsf{diag}(\sigma_1,\ldots,\sigma_r)
 \]
 ($D$ contains the nonzero singular values of $A$ ordered as usual)
 \vskip0.5cm
-The \textbf{pseudoinverse} (or \textbf{Moore-Penrose inverse}) of $A$ is $A^+\in\M_{nm}$ given by
+The \textbf{pseudoinverse} (or \textbf{Moore-Penrose inverse}) of $A$ is $A^+\in\M_{pn}$ given by
 \[
 A^+ = V\Sigma^+ U^T
 \]
@@ -1309,7 +1309,7 @@ with
 \Sigma^+ =
 \begin{pmatrix}
 D^{-1} & 0 \\ 0 & 0
-\end{pmatrix}\in\M_{nm}
+\end{pmatrix}\in\M_{pn}
 \]
 \end{definition}
 \end{frame}
@@ -1338,7 +1338,7 @@ Other useful properties:
 
 \begin{frame}{Least squares revisited}
 \begin{importanttheorem}
-Let $A\in\M_{mn}$, $\bx\in\IR^n$ and $\bb\in\IR^m$. The least squares problem $A\bx=\bb$ has a unique least squares solution $\tilde\bx$ of \emph{minimal length} (closest to the origin) given by
+Let $A\in\M_{np}$, $\bx\in\IR^p$ and $\bb\in\IR^n$. The least squares problem $A\bx=\bb$ has a unique least squares solution $\tilde\bx$ of \emph{minimal length} (closest to the origin) given by
 \[
 \tilde\bx = A^+\bb
 \]
@@ -1355,7 +1355,7 @@ However, if the columns of $A$ are \emph{linearly dependent}, the matrix $A^T A$
 \vfill
 Among all these possible solutions, the pseudoinverse $A^+$ selects the unique solution $\tilde\bx = A^+\bb$ that has the \textbf{smallest Euclidean norm} $\|\tilde\bx\|$
 \vfill
-Geometrically, it is the solution closest to the origin in $\IR^n$
+Geometrically, it is the solution closest to the origin in $\IR^p$
 \end{frame}
 
 \begin{frame}{Example: Computing the pseudoinverse}
@@ -1403,9 +1403,9 @@ which is indeed the point on the line $x_1+x_2=2$ closest to the origin
 \begin{frame}{The least squares problem}
 \textbf{Problem Statement:}
 \vfill
-Given a system $A\bx = \bb$ where $A\in\M_{mn}$, $\bx\in\IR^n$, $\bb\in\IR^m$ (typically $m>n$), find $\tilde\bx$ that minimizes
+Given a system $A\bx = \bb$ where $A\in\M_{np}$, $\bx\in\IR^p$, $\bb\in\IR^n$ (typically $n>p$), find $\tilde\bx$ that minimizes
 $$
-\|\bb - A\bx\|^2 = \sum_{i=1}^m (b_i - \sum_{j=1}^n A_{ij}x_j)^2
+\|\bb - A\bx\|^2 = \sum_{i=1}^n (b_i - \sum_{j=1}^p A_{ij}x_j)^2
 $$
 \vfill
 \textbf{Geometric interpretation:}
@@ -1433,14 +1433,14 @@ $$A^TA\tilde\bx = A^T\bb$$
 \end{frame}
 
 \begin{frame}{Method 2: when $A$ Has linearly independent columns}
-\textbf{Condition:} $A\in\M_{mn}$ has linearly independent columns
+\textbf{Condition:} $A\in\M_{np}$ has linearly independent columns
 \vfill
 \textbf{Then:} $A^TA$ is invertible and the least squares solution is \textbf{unique}
 $$\tilde\bx = (A^TA)^{-1}A^T\bb$$
 \vfill
 \textbf{Properties:}
 \begin{itemize}
-\item $A^TA \in \M_n$ is square, symmetric, and positive definite
+\item $A^TA \in \M_p$ is square, symmetric, and positive definite
 \item $(A^TA)^{-1}A^T$ is called the \emph{left pseudoinverse} of $A$
 \item This gives the unique least squares solution
 \end{itemize}
@@ -1449,9 +1449,9 @@ $$\tilde\bx = (A^TA)^{-1}A^T\bb$$
 \end{frame}
 
 \begin{frame}{Method 3: QR factorization}
-\textbf{QR Factorization:} If $A\in\M_{mn}$ has linearly independent columns, then
+\textbf{QR Factorization:} If $A\in\M_{np}$ has linearly independent columns, then
 $$A = QR$$
-where $Q\in\M_{mn}$ has orthonormal columns and $R\in\M_n$ is upper triangular and nonsingular
+where $Q\in\M_{np}$ has orthonormal columns and $R\in\M_p$ is upper triangular and nonsingular
 \vfill
 \textbf{Least squares solution:}
 $$\tilde\bx = R^{-1}Q^T\bb$$
@@ -1466,9 +1466,9 @@ $$\tilde\bx = R^{-1}Q^T\bb$$
 \end{frame}
 
 \begin{frame}{Method 4: Singular Value Decomposition (SVD)}
-\textbf{SVD:} For any $A\in\M_{mn}$,
+\textbf{SVD:} For any $A\in\M_{np}$,
 $$A = U\Sigma V^T$$
-where $U\in\M_m$ orthogonal, $V\in\M_n$ orthogonal, $\Sigma\in\M_{mn}$ with $\Sigma_{ii} = \sigma_i \geq 0$ (singular values)
+where $U\in\M_n$ orthogonal, $V\in\M_p$ orthogonal, $\Sigma\in\M_{np}$ with $\Sigma_{ii} = \sigma_i \geq 0$ (singular values)
 \vfill
 \textbf{Pseudoinverse:} $A^+ = V\Sigma^+ U^T$ where $\Sigma^+$ has $(\Sigma^+)_{ii} = 1/\sigma_i$ if $\sigma_i > 0$, else $0$
 \vfill

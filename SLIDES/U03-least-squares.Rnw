@@ -713,9 +713,9 @@ plot(GA)
 
 \begin{frame}{The least squares problem (reformulated)}
 \begin{importantdefinition}[Least squares solutions]
-Consider a collection of points $(x_1,y_1),\ldots,(x_n,y_n)$, a matrix $A\in\M_{mn}$, $\bb\in\IR^m$. A \textbf{least squares solution} of $A\bx=\bb$ is a vector $\tilde \bx\in\IR^n$ s.t.
+Consider a collection of points $(x_1,y_1),\ldots,(x_n,y_n)$, a matrix $A\in\M_{np}$, $\bb\in\IR^n$. A \textbf{least squares solution} of $A\bx=\bb$ is a vector $\tilde \bx\in\IR^p$ s.t.
 \[
-\forall \bx\in\IR^n,\quad \|\bb-A\tilde\bx\|\leq \|\bb-A\bx\|
+\forall \bx\in\IR^p,\quad \|\bb-A\tilde\bx\|\leq \|\bb-A\bx\|
 \]
 \end{importantdefinition}
 \end{frame}
@@ -737,9 +737,9 @@ Let $V$ be a vector space with an inner product, $W\subset V$ and $\mathbf{v}\in
 
 
 \begin{frame}{Let us find the least squares solution}
-$\forall \bx\IR^n$, $A\bx$ is a vector in the \textbf{column space} of $A$ (the space spanned by the vectors making up the columns of $A$)
+$\forall \bx\in\IR^p$, $A\bx$ is a vector in the \textbf{column space} of $A$ (the space spanned by the vectors making up the columns of $A$)
 \vfill
-Since $\bx\in\IR^n$, $A\bx\in\mathsf{col}(A)$
+Since $\bx\in\IR^p$, $A\bx\in\mathsf{col}(A)$
 \vfill
 $\implies$ least squares solution of $A\bx=\bb$ is a vector $\tilde\by\in\mathsf{col}(A)$ s.t.
 \[
@@ -812,11 +812,11 @@ The latter system constitutes the \defword{normal equations} for $\tilde\bx$
 
 \begin{frame}{Invertibility of $A^TA$}
 \begin{theorem}[Invertibility of $A^TA$]
-Let $A \in \M_{mn}$. Then $A$ has linearly independent columns $\iff$ $A^TA$ invertible
+Let $A \in \M_{np}$. Then $A$ has linearly independent columns $\iff$ $A^TA$ invertible
 \end{theorem}
 \vfill
 \textbf{Proof.}
-Since $A^TA \in \M_n$ is square, it is invertible $\iff$ $A^TA \bx = \b0 \implies \bx = \b0$.
+Since $A^TA \in \M_p$ is square, it is invertible $\iff$ $A^TA \bx = \b0 \implies \bx = \b0$.
 
 Also, $A$ has linearly independent columns $\iff$ $A \bx = \b0 \implies \bx = \b0$. 
 Thus, it suffices to show that $A^TA \bx = \b0 \iff A \bx = \b0$.
@@ -834,7 +834,7 @@ But $\bx^T A^T A \bx = (A\bx)^T (A\bx) = \|A\bx\|^2$. Since the norm of a vector
 
 \begin{frame}{Least squares theorem}
 \begin{importanttheorem}[Least squares theorem]\label{th:least_squares}
-$A\in\M_{mn}$, $\bb\in\IR^m$. Then
+$A\in\M_{np}$, $\bb\in\IR^n$. Then
 \begin{enumerate}
 \item $A\bx=\bb$ always has at least one least squares solution $\tilde\bx$
 \item $\tilde\bx$ least squares solution to $A\bx=\bb$ $\iff$ $\tilde\bx$ is a solution to the normal equations $A^TA\tilde\bx = A^T\bb$

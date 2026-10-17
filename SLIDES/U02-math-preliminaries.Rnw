@@ -621,19 +621,19 @@ The dot product is a special case of \defword{inner product}
 
 \begin{frame}{Linear systems}
 \begin{definition}[Linear system]
-	A \defword{linear system} of $m$ equations in $n$ unknowns takes the form
+	A \defword{linear system} of $n$ equations in $p$ unknowns takes the form
 	\begin{equation}\label{sys:linear_system}
 	\begin{matrix}
-	a_{11}x_1 &+& a_{12}x_2 &+& \cdots &+& a_{1n}x_n &=& b_1 \\
-	a_{21}x_1 &+& a_{22}x_2 &+& \cdots &+& a_{2n}x_n &=& b_2 \\
+	a_{11}x_1 &+& a_{12}x_2 &+& \cdots &+& a_{1p}x_p &=& b_1 \\
+	a_{21}x_1 &+& a_{22}x_2 &+& \cdots &+& a_{2p}x_p &=& b_2 \\
 	\vdots && \vdots && \vdots && \vdots && \vdots \\
-	a_{m1}x_1 &+& a_{m2}x_2 &+& \cdots &+& a_{mn}x_n &=& b_n
+	a_{n1}x_1 &+& a_{n2}x_2 &+& \cdots &+& a_{np}x_p &=& b_n
 	\end{matrix}
 	\end{equation}
 \end{definition}
-The $a_{ij}$, $x_j$ and $b_j$ could be in $\IR$ or $\IC$, although here we typically assume they are in $\IR$
+The $a_{ij}$, $x_j$ and $b_i$ could be in $\IR$ or $\IC$, although here we typically assume they are in $\IR$
 \vfill
-The aim is to find $x_1,x_2,\ldots,x_n$ that satisfy all equations simultaneously
+The aim is to find $x_1,x_2,\ldots,x_p$ that satisfy all equations simultaneously
 \end{frame}
 
 \begin{frame}
@@ -664,14 +664,14 @@ Writing
 \[
 A=
 \begin{pmatrix}
-a_{11} & a_{12} & \cdots & a_{1n} \\
-a_{21} & a_{22} & \cdots & a_{2n} \\
+a_{11} & a_{12} & \cdots & a_{1p} \\
+a_{21} & a_{22} & \cdots & a_{2p} \\
 \vdots &\vdots & & \vdots \\
-a_{m1} & a_{m2} & \cdots & a_{mn}
+a_{n1} & a_{n2} & \cdots & a_{np}
 \end{pmatrix},\quad
 \bx=
 \begin{pmatrix}
-x_1\\ x_2 \\ \vdots \\ x_n
+x_1\\ x_2 \\ \vdots \\ x_p
 \end{pmatrix}
 \quad\textrm{and}\quad
 \bb=
@@ -679,7 +679,7 @@ x_1\\ x_2 \\ \vdots \\ x_n
 b_1\\ b_2 \\ \vdots \\ b_n
 \end{pmatrix}
 \]
-where $A$ is an $m\times n$ \textbf{matrix}, $\bx$ and $\bb$ are $n$ (column) \textbf{vectors} (or $n\times 1$ matrices), then the linear system in the previous slide takes the form
+where $A$ is an $n\times p$ \textbf{matrix}, $\bx$ is a $p$ (column) \textbf{vector} (or $p\times 1$ matrix) and $\bb$ is an $n$ (column) \textbf{vector} (or $n\times 1$ matrix), then the linear system in the previous slide takes the form
 \[
 A\bx=\bb
 \]
@@ -717,26 +717,26 @@ If $\bb=\b0$, the system is \defword{homogeneous} and always has the solution $\
 
 \begin{frame}
 	\begin{importantdefinition}[Matrix]
-		An $m$-by-$n$ or $m\times n$ matrix is a rectangular array of elements of $\IR$ or $\IC$ with $m$ rows and $n$ columns,
+		An $n$-by-$p$ or $n\times p$ matrix is a rectangular array of elements of $\IR$ or $\IC$ with $n$ rows and $p$ columns,
 		\[
 		A=[a_{ij}]=
 		\begin{pmatrix}
-		a_{11} & \cdots & a_{1n} \\
+		a_{11} & \cdots & a_{1p} \\
 		\vdots & & \vdots \\
-		a_{m1} & \cdots & a_{mn}
+		a_{n1} & \cdots & a_{np}
 		\end{pmatrix}
 		\]
 	\end{importantdefinition}
 	\vfill
 	We always list indices as ``row,column''
 	\vfill
-	We denote $\M_{mn}(\IF)$ or $\IF^{mn}$ the set of $m\times n$ matrices with entries in $\IF=\{\IR,\IC\}$. Often, we omit $\IF$ in $\M_{mn}$ if the nature of $\IF$ is not important
+	We denote $\M_{np}(\IF)$ or $\IF^{np}$ the set of $n\times p$ matrices with entries in $\IF=\{\IR,\IC\}$. Often, we omit $\IF$ in $\M_{np}$ if the nature of $\IF$ is not important
 	\vfill
-	When $m=n$, we usually write $\M_n$
+	When $n=p$, we usually write $\M_n$
 \end{frame}
 
 \begin{frame}{Basic matrix arithmetic}
-Let $A\in\M_{mn},B\in\M_{mn}$ be matrices (of the same size) and $c\in\IF=\{\IR,\IC\}$ be a scalar
+Let $A\in\M_{np},B\in\M_{np}$ be matrices (of the same size) and $c\in\IF=\{\IR,\IC\}$ be a scalar
 \begin{itemize}
 	\item \textbf{Scalar multiplication}
 	\[
@@ -750,9 +750,9 @@ Let $A\in\M_{mn},B\in\M_{mn}$ be matrices (of the same size) and $c\in\IF=\{\IR,
 	\[
 	A-B=A+(-1)B=[a_{ij}+(-1)b_{ij}]=[a_{ij}-b_{ij}]
 	\]
-	\item \textbf{Transposition} of $A$ gives a matrix $A^T=\M_{nm}$ with
+	\item \textbf{Transposition} of $A$ gives a matrix $A^T\in\M_{pn}$ with
 	\[
-	A^T=[a_{ji}],\quad j=1,\ldots,n,\quad i=1,\ldots,m
+	A^T=[a_{ji}],\quad j=1,\ldots,p,\quad i=1,\ldots,n
 	\]
 \end{itemize}
 \end{frame}
@@ -760,9 +760,9 @@ Let $A\in\M_{mn},B\in\M_{mn}$ be matrices (of the same size) and $c\in\IF=\{\IR,
 \begin{frame}{Matrix multiplication}
 The (matrix) \textbf{product} of $A$ and $B$, $AB$, requires the ``inner dimensions'' to match, i.e., the number of columns in $A$ must equal the number of rows in $B$
 \vfill
-Suppose that is the case, i.e., let $A\in\M_{mn}$, $B\in\M_{np}$. Then the $i,j$ entry in $C:=AB$ takes the form
+Suppose that is the case, i.e., let $A\in\M_{np}$, $B\in\M_{pq}$. Then the $i,j$ entry in $C:=AB\in\M_{nq}$ takes the form
 \[
-c_{ij} = \sum_{k=1}^n a_{ik}b_{kj}
+c_{ij} = \sum_{k=1}^p a_{ik}b_{kj}
 \]
 \vfill
 Recall that the matrix product is not commutative, i.e., in general, $AB\neq BA$ (when both those products are defined, i.e., when $A,B\in\M_n$)
@@ -770,7 +770,7 @@ Recall that the matrix product is not commutative, i.e., in general, $AB\neq BA$
 
 \begin{frame}{Special matrices}
 \begin{importantdefinition}[Zero and identity matrices]
-The \textbf{zero} matrix is the matrix $0_{mn}$ whose entries are all zero.
+The \textbf{zero} matrix is the matrix $0_{np}$ whose entries are all zero.
 The \textbf{identity} matrix is a square $n\times n$ matrix $\II_n$ with all entries on the main diagonal equal to one and all off diagonal entries equal to zero
 \end{importantdefinition}
 \vfill
@@ -784,7 +784,7 @@ A square matrix $A\in\M_n$ is \textbf{symmetric} if $\forall i,j=1,\ldots,n$, $a
 \begin{importanttheorem}\label{th:symmetric_matrices}
 \begin{enumerate}
 	\item If $A\in\M_n$, then $A+A^T$ is symmetric
-	\item If $A\in\M_{mn}$, then $AA^T\in\M_m$ and $A^TA\in\M_n$ are symmetric
+	\item If $A\in\M_{np}$, then $AA^T\in\M_n$ and $A^TA\in\M_p$ are symmetric
 \end{enumerate}
 \end{importanttheorem}
 \end{frame}
