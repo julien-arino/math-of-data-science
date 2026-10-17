@@ -87,7 +87,7 @@
 \begin{frame}{Unsupervised vs supervised linear methods}
     In Unit 05 (PCA), we studied \defword{unsupervised} dimensionality reduction:
     \begin{itemize}
-        \item Given unlabelled feature vectors $\bx_1, \ldots, \bx_n \in \IR^d$
+        \item Given unlabelled feature vectors $\bx_1, \ldots, \bx_n \in \IR^p$ (rows of the data matrix $X \in \M_{np}$)
         \item Find orthogonal directions that maximise total sample variance
     \end{itemize}
     \vfill
@@ -97,8 +97,8 @@
         \[
             (\bx_1, y_1), \ldots, (\bx_n, y_n)
         \]
-        where $\bx_i \in \IR^d$ is a feature vector and $y_i \in \{-1, +1\}$ (or $\{1, 2\}$) indicates the class to which $\bx_i$ belongs
-        \item Find a linear decision boundary or 1D projection that separates the two classes and predicts the label $\hat{y}(\bx)$ of any new point $\bx \in \IR^d$
+        where $\bx_i \in \IR^p$ is a vector of $p$ features and $y_i \in \{-1, +1\}$ (or $\{1, 2\}$) indicates the class to which observation $\bx_i$ belongs
+        \item Find a linear decision boundary or 1D projection that separates the two classes and predicts the label $\hat{y}(\bx)$ of any new point $\bx \in \IR^p$
     \end{itemize}
 \end{frame}
 
@@ -143,7 +143,7 @@
 
 
 \begin{frame}{Two linear classification frameworks in this unit}
-    Both methods use a linear score $f(\bx) = \bw^T \bx + b$ to classify points, but choose $\bw \in \IR^d$ and $b \in \IR$ using different linear algebraic principles:
+    Both methods use a linear score $f(\bx) = \bw^T \bx + b$ to classify points, but choose $\bw \in \IR^p$ and $b \in \IR$ using different linear algebraic principles:
     \vfill
     \begin{enumerate}
         \item \textbf{Geometry of hyperplanes and support vector machines (SVM)}: characterise decision boundaries via normal vectors, orthogonal projections and maximum-margin separation
@@ -160,11 +160,11 @@
 %%%%%%%%%%%%%%%%%%%
 \SSsubsection{Hyperplanes and normal vectors}
 
-\begin{frame}{Hyperplanes in $\IR^d$}
-    \begin{importantdefinition}[Hyperplane in $\IR^d$]
-        Let $\bw \in \IR^d \setminus \{\b0\}$ be a non-zero vector and $b \in \IR$ be a scalar. The \defword{hyperplane} determined by $\bw$ and $b$ is the set of points
+\begin{frame}{Hyperplanes in $\IR^p$}
+    \begin{importantdefinition}[Hyperplane in $\IR^p$]
+        Let $\bw \in \IR^p \setminus \{\b0\}$ be a non-zero vector and $b \in \IR$ be a scalar. The \defword{hyperplane} determined by $\bw$ and $b$ is the set of points
         \[
-            \H = \left\{\bx \in \IR^d : \bw^T \bx + b = 0\right\} = \left\{\bx \in \IR^d : \bw \bullet \bx + b = 0\right\}
+            \H = \left\{\bx \in \IR^p : \bw^T \bx + b = 0\right\} = \left\{\bx \in \IR^p : \bw \bullet \bx + b = 0\right\}
         \]
         The vector $\bw$ is called a \defword{normal vector} to $\H$ and $b$ is called the \defword{offset} (or \defword{bias})
     \end{importantdefinition}
@@ -178,12 +178,12 @@
 
 
 \begin{frame}{Linear subspace vs affine subspace}
-    When is a hyperplane $\H = \{\bx \in \IR^d : \bw^T \bx + b = 0\}$ a vector subspace of $\IR^d$?
+    When is a hyperplane $\H = \{\bx \in \IR^p : \bw^T \bx + b = 0\}$ a vector subspace of $\IR^p$?
     \vfill
     \begin{itemize}
         \item A vector subspace must contain the zero vector $\b0$, and $\b0 \in \H \iff \bw^T \b0 + b = 0 \iff b = 0$
         \vfill
-        \item When $b = 0$, the set $\H_0 = \{\bx \in \IR^d : \bw^T \bx = 0\} = \{\bw\}^\perp$ is the orthogonal complement of $\Span(\bw)$, which is a $(d-1)$-dimensional vector subspace of $\IR^d$
+        \item When $b = 0$, the set $\H_0 = \{\bx \in \IR^p : \bw^T \bx = 0\} = \{\bw\}^\perp$ is the orthogonal complement of $\Span(\bw)$, which is a $(p-1)$-dimensional vector subspace of $\IR^p$
         \vfill
         \item When $b \neq 0$, $\H$ does not pass through the origin; it is an \defword{affine subspace} obtained by translating $\H_0$ by any fixed point $\bx^* \in \H$:
         \[
@@ -278,7 +278,7 @@
 
 \begin{frame}[importantcolour]{Why $\bw$ is orthogonal to the hyperplane}
     \begin{proposition}[Orthogonality of the normal vector]
-        Let $\H = \{\bx \in \IR^d : \bw^T \bx + b = 0\}$. For any two points $\bx_1, \bx_2 \in \H$, the displacement vector $\bx_1 - \bx_2$ lying along $\H$ is orthogonal to $\bw$:
+        Let $\H = \{\bx \in \IR^p : \bw^T \bx + b = 0\}$. For any two points $\bx_1, \bx_2 \in \H$, the displacement vector $\bx_1 - \bx_2$ lying along $\H$ is orthogonal to $\bw$:
         \[
             \bw \bullet (\bx_1 - \bx_2) = \bw^T(\bx_1 - \bx_2) = 0
         \]
@@ -379,12 +379,12 @@
 
 
 \begin{frame}{Half-spaces and linear classifiers}
-    A hyperplane $\H$ divides $\IR^d \setminus \H$ into two open \defword{half-spaces}:
+    A hyperplane $\H$ divides $\IR^p \setminus \H$ into two open \defword{half-spaces}:
     \begin{columns}[c]
     \begin{column}{0.58\textwidth}
         \begin{align*}
-            \H_+ &= \left\{\bx \in \IR^d : \bw^T \bx + b > 0\right\} \\
-            \H_- &= \left\{\bx \in \IR^d : \bw^T \bx + b < 0\right\}
+            \H_+ &= \left\{\bx \in \IR^p : \bw^T \bx + b > 0\right\} \\
+            \H_- &= \left\{\bx \in \IR^p : \bw^T \bx + b < 0\right\}
         \end{align*}
         \begin{itemize}
             \item The normal vector $\bw$ points into the positive half-space $\H_+$
@@ -437,7 +437,7 @@
 \begin{frame}{Orthogonal distance from a point to a hyperplane}
     \begin{importanttheorem}[Distance from a point to a hyperplane]
         \label{th:distance-point-hyperplane}
-        Let $\H = \{\bx \in \IR^d : \bw^T \bx + b = 0\}$ be a hyperplane with normal vector $\bw \neq \b0$, and let $\bx_0 \in \IR^d$ be any point. The Euclidean distance from $\bx_0$ to $\H$ is
+        Let $\H = \{\bx \in \IR^p : \bw^T \bx + b = 0\}$ be a hyperplane with normal vector $\bw \neq \b0$, and let $\bx_0 \in \IR^p$ be any point. The Euclidean distance from $\bx_0$ to $\H$ is
         \[
             d(\bx_0, \H) = \min_{\bx \in \H} \|\bx_0 - \bx\| = \frac{|\bw^T \bx_0 + b|}{\|\bw\|}
         \]
@@ -517,7 +517,7 @@
 
 \begin{frame}{Linearly separable point sets}
     \begin{importantdefinition}[Linear separability]
-        Two sets of points $X_+ = \{\bx_i : y_i = +1\}$ and $X_- = \{\bx_i : y_i = -1\}$ in $\IR^d$ are \defword{linearly separable} if there exist $\bw \in \IR^d \setminus \{\b0\}$ and $b \in \IR$ such that
+        Two sets of points $X_+ = \{\bx_i : y_i = +1\}$ and $X_- = \{\bx_i : y_i = -1\}$ in $\IR^p$ are \defword{linearly separable} if there exist $\bw \in \IR^p \setminus \{\b0\}$ and $b \in \IR$ such that
         \[
             \bw^T \bx_i + b > 0 \quad \text{for all } \bx_i \in X_+ \qquad \text{and} \qquad \bw^T \bx_i + b < 0 \quad \text{for all } \bx_i \in X_-
         \]
@@ -575,8 +575,8 @@
     \vfill
     In this \defword{canonical form}, the slab free of training points is bounded by two parallel hyperplanes:
     \begin{itemize}
-        \item $\H_{+1} = \{\bx \in \IR^d : \bw^T \bx + b = +1\}$ (positive margin boundary)
-        \item $\H_{-1} = \{\bx \in \IR^d : \bw^T \bx + b = -1\}$ (negative margin boundary)
+        \item $\H_{+1} = \{\bx \in \IR^p : \bw^T \bx + b = +1\}$ (positive margin boundary)
+        \item $\H_{-1} = \{\bx \in \IR^p : \bw^T \bx + b = -1\}$ (negative margin boundary)
     \end{itemize}
     \vfill
     The training points $\bx_i$ that lie directly on $\H_{+1}$ or $\H_{-1}$ (satisfying $y_i(\bw^T \bx_i + b) = 1$) are called \defword{support vectors}
@@ -682,7 +682,7 @@
 \begin{frame}{Hard-margin support vector machine (SVM)}
     To make the separating slab as wide as possible, we want to maximise $\gamma = \frac{2}{\|\bw\|}$, which is equivalent to minimising $\|\bw\|$ (or $\frac{1}{2}\|\bw\|^2$):
     \[
-        \min_{\bw \in \IR^d,\, b \in \IR} \frac{1}{2}\|\bw\|^2 \quad \text{subject to} \quad y_i(\bw^T \bx_i + b) \ge 1 \quad \text{for } i = 1, \ldots, n
+        \min_{\bw \in \IR^p,\, b \in \IR} \frac{1}{2}\|\bw\|^2 \quad \text{subject to} \quad y_i(\bw^T \bx_i + b) \ge 1 \quad \text{for } i = 1, \ldots, n
     \]
     \vfill
     \begin{itemize}
@@ -825,16 +825,16 @@
     \vfill
     To write this as a single matrix product, absorb the intercept $b$ by defining the \defword{augmented feature vector} and \defword{augmented weight vector}:
     \[
-        \tilde{\bx}_i = \begin{pmatrix} \bx_i \\ 1 \end{pmatrix} \in \IR^{d+1}, \qquad \tilde{\bw} = \begin{pmatrix} \bw \\ b \end{pmatrix} \in \IR^{d+1}
+        \tilde{\bx}_i = \begin{pmatrix} \bx_i \\ 1 \end{pmatrix} \in \IR^{p+1}, \qquad \tilde{\bw} = \begin{pmatrix} \bw \\ b \end{pmatrix} \in \IR^{p+1}
     \]
     so that $\bw^T \bx_i + b = \tilde{\bx}_i^T \tilde{\bw}$
 \end{frame}
 
 
 \begin{frame}{Matrix formulation and normal equations}
-    Stack the augmented rows $\tilde{\bx}_i^T$ into the design matrix $X \in \M_{n, d+1}$ and the labels into $\by \in \{-1, +1\}^n$:
+    Stack the augmented rows $\tilde{\bx}_i^T$ into the (augmented) \defword{data matrix} $X \in \M_{n, p+1}$ (in regression and classification, often called the \defword{design matrix} or \defword{feature matrix}) and the labels into $\by \in \{-1, +1\}^n$:
     \[
-        X = \begin{pmatrix} \bx_1^T & 1 \\ \vdots & \vdots \\ \bx_n^T & 1 \end{pmatrix} \in \M_{n, d+1}, \qquad
+        X = \begin{pmatrix} \bx_1^T & 1 \\ \vdots & \vdots \\ \bx_n^T & 1 \end{pmatrix} \in \M_{n, p+1}, \qquad
         \by = \begin{pmatrix} y_1 \\ \vdots \\ y_n \end{pmatrix} \in \IR^n
     \]
     \vfill
@@ -844,9 +844,9 @@
     \]
     \vfill
     \begin{itemize}
-        \item What we are explaining here \textbf{only works when we have more observations than features}: we require $n \ge d + 1$ and $\rank(X) = d + 1$ for $X^T X \in \M_{d+1}$ to be invertible
+        \item What we are explaining here \textbf{only works when we have more observations than features}: we require $n \ge p + 1$ and $\rank(X) = p + 1$ for $X^T X \in \M_{p+1}$ to be invertible
         \vfill
-        \item If $n < d + 1$ or if features are collinear, $X^T X$ is singular and $(X^T X)^{-1}$ does not exist
+        \item If $n < p + 1$ or if features are collinear, $X^T X$ is singular and $(X^T X)^{-1}$ does not exist
     \end{itemize}
 \end{frame}
 
@@ -866,7 +866,7 @@
              0 & -1 & 1 \\
              1 & 0 & 1 \\
              0 & 1 & 1
-        \end{pmatrix} \in \M_{4, 3}, \qquad
+        \end{pmatrix} \in \M_{43}, \qquad
         \by = \begin{pmatrix} -1 \\ -1 \\ 1 \\ 1 \end{pmatrix} \in \IR^4
     \]
 \end{frame}
@@ -960,14 +960,14 @@
 
 
 \begin{frame}{Ridge regularisation when $X^T X$ is singular}
-    What if we have more features than observations ($n < d + 1$) or collinear features?
+    What if we have more features than observations ($n < p + 1$) or collinear features?
     \vfill
     \begin{itemize}
-        \item In that case, $\rank(X) < d + 1$, so $X^T X$ is singular and cannot be inverted
+        \item In that case, $\rank(X) < p + 1$, so $X^T X$ is singular and cannot be inverted
         \vfill
         \item To fix this, we add a \defword{ridge penalty} with regularisation parameter $\lambda > 0$:
         \[
-            \min_{\tilde{\bw} \in \IR^{d+1}} \left(\|X\tilde{\bw} - \by\|^2 + \lambda \|\tilde{\bw}\|^2\right)
+            \min_{\tilde{\bw} \in \IR^{p+1}} \left(\|X\tilde{\bw} - \by\|^2 + \lambda \|\tilde{\bw}\|^2\right)
         \]
         \vfill
         \item Setting the gradient to zero yields the regularised normal equations:

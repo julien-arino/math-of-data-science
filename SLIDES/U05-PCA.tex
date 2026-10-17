@@ -256,9 +256,9 @@ To be extra careful, could check as well that there are no major variations on p
 
 
 \begin{frame}{Setting things up}
-Each player is a row in the matrix (an \emph{observation}), each variable (\emph{height} and \emph{weight}) is a column
+Each player is a row in the data matrix (an \emph{observation}), each feature or variable (\emph{height} and \emph{weight}) is a column
 \vfill
-After deduplication, we have an 3278$\times 2$ matrix (actually, 3278$\times 4$ if we consider the uncentred and centred variables, but we will use one or the other, not both uncentred and centred)
+After deduplication, we have an 3278$\times 2$ matrix (actually, 3278$\times 4$ if we consider the uncentred and centred features, but we will use one or the other, not both uncentred and centred)
 \vfill
 We want to find what carries the most information
 \vfill
@@ -922,80 +922,80 @@ The actual form of the matrix is below but the form above stems from the propert
 \end{frame}
 
 \begin{frame}{Sample covariance matrix}
-$X\in\M_{np}$ the data ($n$ observations, $p$ variables), then the (sample) covariance matrix $S_X$ takes the form
+Let $X\in\M_{np}$ be the data matrix ($n$ observations in rows, $p$ features or variables in columns) and $\widetilde{X}\in\M_{np}$ be the \textbf{centred data matrix}. Then the (sample) covariance matrix $S_X\in\M_p$ takes the form
 \[
-S_X = \frac{1}{n-1}X^TX
+S_X = \frac{1}{n-1}\widetilde{X}^T\widetilde{X}
 \]
 where the data is centred!
 \vfill
-Sometimes you will see $S_X=1/(n-1)XX^T$. This is for matrices with observations in columns and variables in rows. Just remember that you want the covariance matrix to have size the number of variables, not observations, this will give you the order in which to take the product
+Sometimes you will see $S_X=1/(n-1)\widetilde{X}\widetilde{X}^T$. This is for matrices with observations in columns and features (variables) in rows. Just remember that you want the covariance matrix to have size the number of features ($p$), not observations ($n$), this will give you the order in which to take the product
 \end{frame}
 
-\begin{frame}{Why is $S_X = \frac{1}{n-1}X^TX$? -- Data matrix setup}
+\begin{frame}{Why is $S_X = \frac{1}{n-1}\widetilde{X}^T\widetilde{X}$? -- Data matrix setup}
 Let us prove why the sample covariance matrix takes this matrix form
 \vfill
-Suppose we have $n$ observations of $p$ variables $X_1,\ldots,X_p$
+Suppose we have $n$ observations of $p$ features (variables) $X_1,\ldots,X_p$
 \vfill
-Organise the data into a matrix $X\in\M_{np}$ where each row is an observation and each column is a variable:
+Organise the centred data into the \defword{centred data matrix} $\widetilde{X}\in\M_{np}$ where each row is an observation and each column is a centred feature:
 \[
-X = \begin{pmatrix}
-x_{11} & x_{12} & \cdots & x_{1p} \\
-x_{21} & x_{22} & \cdots & x_{2p} \\
+\widetilde{X} = \begin{pmatrix}
+\tilde{x}_{11} & \tilde{x}_{12} & \cdots & \tilde{x}_{1p} \\
+\tilde{x}_{21} & \tilde{x}_{22} & \cdots & \tilde{x}_{2p} \\
 \vdots & \vdots & \ddots & \vdots \\
-x_{n1} & x_{n2} & \cdots & x_{np}
+\tilde{x}_{n1} & \tilde{x}_{n2} & \cdots & \tilde{x}_{np}
 \end{pmatrix}
-= \begin{pmatrix} \bc_1 & \bc_2 & \cdots & \bc_p \end{pmatrix}
+= \begin{pmatrix} \tilde{\bc}_1 & \tilde{\bc}_2 & \cdots & \tilde{\bc}_p \end{pmatrix}
 \]
-where column $\bc_j = (x_{1j}, x_{2j}, \ldots, x_{nj})^T \in \IR^n$ contains all $n$ measurements of variable $X_j$
+where $\tilde{x}_{ij} = x_{ij} - \bar{x}_j$ and column $\tilde{\bc}_j = (\tilde{x}_{1j}, \tilde{x}_{2j}, \ldots, \tilde{x}_{nj})^T \in \IR^n$ contains all $n$ centred measurements of feature $X_j$
 \vfill
-Assume the data is \defword{centred}: $\bar x_j = \frac{1}{n}\sum_{i=1}^n x_{ij} = 0$ for all $j=1,\ldots,p$
+Because the data is \defword{centred}, $\frac{1}{n}\sum_{i=1}^n \tilde{x}_{ij} = 0$ for all $j=1,\ldots,p$
 \end{frame}
 
-\begin{frame}{Why is $S_X = \frac{1}{n-1}X^TX$? -- Sample covariances}
-Recall the definition of the sample covariance between variables $X_j$ and $X_k$:
+\begin{frame}{Why is $S_X = \frac{1}{n-1}\widetilde{X}^T\widetilde{X}$? -- Sample covariances}
+Recall the definition of the sample covariance between features $X_j$ and $X_k$:
 \[
 \cov(X_j, X_k) = \frac{1}{n-1} \sum_{i=1}^n (x_{ij} - \bar x_j)(x_{ik} - \bar x_k)
 \]
 \vfill
-Since the data is centred ($\bar x_j = \bar x_k = 0$), this simplifies to:
+Writing $\tilde{x}_{ij} = x_{ij} - \bar x_j$ and $\tilde{x}_{ik} = x_{ik} - \bar x_k$, this simplifies to:
 \[
-\cov(X_j, X_k) = \frac{1}{n-1} \sum_{i=1}^n x_{ij} x_{ik}
+\cov(X_j, X_k) = \frac{1}{n-1} \sum_{i=1}^n \tilde{x}_{ij} \tilde{x}_{ik}
 \]
 \vfill
-In particular, when $j = k$, we obtain the sample variance of variable $X_j$:
+In particular, when $j = k$, we obtain the sample variance of feature $X_j$:
 \[
-\Var X_j = \cov(X_j, X_j) = \frac{1}{n-1} \sum_{i=1}^n x_{ij}^2
+\Var X_j = \cov(X_j, X_j) = \frac{1}{n-1} \sum_{i=1}^n \tilde{x}_{ij}^2
 \]
 \vfill
-Notice: $\sum_{i=1}^n x_{ij} x_{ik} = \bc_j^T \bc_k$, the dot product of column $\bc_j$ and column $\bc_k$!
+Notice: $\sum_{i=1}^n \tilde{x}_{ij} \tilde{x}_{ik} = \tilde{\bc}_j^T \tilde{\bc}_k$, the dot product of column $\tilde{\bc}_j$ and column $\tilde{\bc}_k$!
 \end{frame}
 
-\begin{frame}{Why is $S_X = \frac{1}{n-1}X^TX$? -- Matrix product $X^TX$}
-Now consider the matrix product $X^TX$:
+\begin{frame}{Why is $S_X = \frac{1}{n-1}\widetilde{X}^T\widetilde{X}$? -- Matrix product $\widetilde{X}^T\widetilde{X}$}
+Now consider the matrix product $\widetilde{X}^T\widetilde{X}$:
 \vfill
-$X^T \in \M_{pn}$ has the columns of $X$ as its rows:
+$\widetilde{X}^T \in \M_{pn}$ has the columns of $\widetilde{X}$ as its rows:
 \[
-X^T = \begin{pmatrix} \bc_1^T \\ \bc_2^T \\ \vdots \\ \bc_p^T \end{pmatrix}
+\widetilde{X}^T = \begin{pmatrix} \tilde{\bc}_1^T \\ \tilde{\bc}_2^T \\ \vdots \\ \tilde{\bc}_p^T \end{pmatrix}
 = \begin{pmatrix}
-x_{11} & x_{21} & \cdots & x_{n1} \\
-x_{12} & x_{22} & \cdots & x_{n2} \\
+\tilde{x}_{11} & \tilde{x}_{21} & \cdots & \tilde{x}_{n1} \\
+\tilde{x}_{12} & \tilde{x}_{22} & \cdots & \tilde{x}_{n2} \\
 \vdots & \vdots & \ddots & \vdots \\
-x_{1p} & x_{2p} & \cdots & x_{np}
+\tilde{x}_{1p} & \tilde{x}_{2p} & \cdots & \tilde{x}_{np}
 \end{pmatrix}
 \]
 \vfill
-Since $X^T\in\M_{pn}$ and $X\in\M_{np}$, the product $X^TX$ is a $p\times p$ matrix
+Since $\widetilde{X}^T\in\M_{pn}$ and $\widetilde{X}\in\M_{np}$, the product $\widetilde{X}^T\widetilde{X}$ is a $p\times p$ matrix
 \vfill
-Its $(j,k)$-entry is the product of row $j$ of $X^T$ and column $k$ of $X$:
+Its $(j,k)$-entry is the product of row $j$ of $\widetilde{X}^T$ and column $k$ of $\widetilde{X}$:
 \[
-(X^TX)_{jk} = \bc_j^T\bc_k = \sum_{i=1}^n x_{ij}x_{ik}
+(\widetilde{X}^T\widetilde{X})_{jk} = \tilde{\bc}_j^T\tilde{\bc}_k = \sum_{i=1}^n \tilde{x}_{ij}\tilde{x}_{ik}
 \]
 \end{frame}
 
-\begin{frame}{Why is $S_X = \frac{1}{n-1}X^TX$? -- Conclusion}
-Dividing by $n-1$, each entry of $\frac{1}{n-1}X^TX$ is:
+\begin{frame}{Why is $S_X = \frac{1}{n-1}\widetilde{X}^T\widetilde{X}$? -- Conclusion}
+Dividing by $n-1$, each entry of $\frac{1}{n-1}\widetilde{X}^T\widetilde{X}$ is:
 \[
-\left(\frac{1}{n-1}X^TX\right)_{jk} = \frac{1}{n-1}\sum_{i=1}^n x_{ij}x_{ik} = 
+\left(\frac{1}{n-1}\widetilde{X}^T\widetilde{X}\right)_{jk} = \frac{1}{n-1}\sum_{i=1}^n \tilde{x}_{ij}\tilde{x}_{ik} = 
 \begin{cases}
 \Var X_j & \text{if } j = k \\
 \cov(X_j, X_k) & \text{if } j \neq k
@@ -1004,7 +1004,7 @@ Dividing by $n-1$, each entry of $\frac{1}{n-1}X^TX$ is:
 \vfill
 Thus, writing out the matrix:
 \[
-\frac{1}{n-1}X^TX = \begin{pmatrix}
+\frac{1}{n-1}\widetilde{X}^T\widetilde{X} = \begin{pmatrix}
 \Var X_1 & \cov(X_1, X_2) & \cdots & \cov(X_1, X_p) \\
 \cov(X_2, X_1) & \Var X_2 & \cdots & \cov(X_2, X_p) \\
 \vdots & \vdots & \ddots & \vdots \\
@@ -1012,43 +1012,43 @@ Thus, writing out the matrix:
 \end{pmatrix} = S_X
 \]
 \vfill
-This proves that $S_X = \frac{1}{n-1}X^TX$ for centred data
+This proves that $S_X = \frac{1}{n-1}\widetilde{X}^T\widetilde{X}$ for the centred data matrix $\widetilde{X}$
 \end{frame}
 
 \begin{frame}{What if observations are in columns?}
-Suppose data is stored with observations in columns and variables in rows:
+Suppose the centred data is stored with observations in columns and features (variables) in rows:
 \[
-Y = X^T \in \M_{pn}
+\widetilde{Y} = \widetilde{X}^T \in \M_{pn}
 \]
-where row $j$ of $Y$ is $\bc_j^T = (x_{1j}, \ldots, x_{nj}) \in \IR^{1\times n}$ (variable $X_j$)
+where row $j$ of $\widetilde{Y}$ is $\tilde{\bc}_j^T = (\tilde{x}_{1j}, \ldots, \tilde{x}_{nj}) \in \IR^{1\times n}$ (feature $X_j$)
 \vfill
-Then $YY^T \in \M_p$, and its $(j,k)$-entry is:
+Then $\widetilde{Y}\widetilde{Y}^T \in \M_p$, and its $(j,k)$-entry is:
 \[
-(YY^T)_{jk} = \bc_j^T\bc_k = \sum_{i=1}^n x_{ij}x_{ik}
+(\widetilde{Y}\widetilde{Y}^T)_{jk} = \tilde{\bc}_j^T\tilde{\bc}_k = \sum_{i=1}^n \tilde{x}_{ij}\tilde{x}_{ik}
 \]
 \vfill
 Dividing by $n-1$:
 \[
-S_Y = \frac{1}{n-1}YY^T = S_X
+S_Y = \frac{1}{n-1}\widetilde{Y}\widetilde{Y}^T = S_X
 \]
 \vfill
 The resulting sample covariance matrix is identical
 \end{frame}
 
 \begin{frame}{What if the data is not centred beforehand?}
-Suppose $\tilde X\in\M_{np}$ is \defword{uncentred}
+Suppose $X\in\M_{np}$ is the \defword{uncentred} data matrix
 \vfill
-Let $\mathbf{1} = (1, 1, \ldots, 1)^T \in \IR^n$. The vector of column means is $\bar\bx^T = \frac{1}{n}\mathbf{1}^T\tilde X \in \IR^{1\times p}$
+Let $\mathbf{1} = (1, 1, \ldots, 1)^T \in \IR^n$. The vector of column means is $\bar\bx^T = \frac{1}{n}\mathbf{1}^T X \in \IR^{1\times p}$
 \vfill
-Subtracting the means from each row of $\tilde X$:
+Subtracting the means from each row of $X$ gives the \defword{centred data matrix} $\widetilde{X}\in\M_{np}$:
 \[
-X = \tilde X - \mathbf{1}\bar\bx^T = \tilde X - \frac{1}{n}\mathbf{1}\mathbf{1}^T\tilde X = \left(I_n - \frac{1}{n}\mathbf{1}\mathbf{1}^T\right)\tilde X = C_n\tilde X
+\widetilde{X} = X - \mathbf{1}\bar\bx^T = X - \frac{1}{n}\mathbf{1}\mathbf{1}^T X = \left(\II_n - \frac{1}{n}\mathbf{1}\mathbf{1}^T\right) X = C_n X
 \]
-where $C_n = I_n - \frac{1}{n}\mathbf{1}\mathbf{1}^T\in\M_n$ is the \defword{centering matrix}
+where $C_n = \II_n - \frac{1}{n}\mathbf{1}\mathbf{1}^T\in\M_n$ is the \defword{centring matrix}
 \vfill
 $C_n$ is symmetric ($C_n^T=C_n$) and idempotent ($C_n^2=C_n$), so:
 \[
-S_X = \frac{1}{n-1}X^TX = \frac{1}{n-1}\tilde X^TC_n^TC_n\tilde X = \frac{1}{n-1}\tilde X^TC_n\tilde X
+S_X = \frac{1}{n-1}\widetilde{X}^T\widetilde{X} = \frac{1}{n-1}X^T C_n^T C_n X = \frac{1}{n-1}X^T C_n X
 \]
 \end{frame}
 
