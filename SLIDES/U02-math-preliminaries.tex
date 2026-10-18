@@ -101,9 +101,7 @@ I also add (for some of you) a few things that will be handy and establish some 
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
-\section{Sets and logic}
-% The section page
-\newSectionSlide{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
+\SSsection{Sets and logic}
 
 \begin{frame}
 \frametitle{Sets and elements}
@@ -230,9 +228,7 @@ In mathematics, or=and/or in common parlance. We also have an \textbf{exclusive 
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
-\section{Complex numbers}
-% The section page
-\newSectionSlide{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
+\SSsection{Complex numbers}
 
 \begin{frame}{Complex numbers}
 	\begin{importantdefinition}[Complex numbers]
@@ -463,9 +459,7 @@ $\begin{pmatrix}
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
-\section{Vectors and vector spaces}
-% The section page
-\newSectionSlide{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
+\SSsection{Vectors and vector spaces}
 
 \begin{frame}{Vectors}
 	A \textbf{vector} $\bv$ is an ordered $n$-tuple of real or complex numbers
@@ -1132,16 +1126,12 @@ E.g., in $\IR^3$, a set with 4 or more vectors is automatically linearly depende
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
-\section{A crash course in multivariable calculus}
-% The section page
-\newSectionSlide{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
+\SSsection{A crash course in multivariable calculus}
 
 
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
-\subsection{What is Multivariable Calculus?}
-% The subsection page
-\newSubSectionSlide{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
+\SSsubsection{What is Multivariable Calculus?}
 
 \begin{frame}{One dimension}
 MATH 1500 \& 1700 deal with functions of one variable, like $f(x) = x^2$
@@ -1216,9 +1206,7 @@ At a peak or a valley (a local max/min), the ground is flat. So, $\nabla f = (0,
 
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
-\subsection{Optimization with Constraints}
-% The subsection page
-\newSubSectionSlide{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
+\SSsubsection{Optimization with Constraints}
 
 \begin{frame}{The real-world problem}
   Often, we want to maximize or minimize a function, but we don't have unlimited freedom. We have \defword{constraints}
@@ -1273,9 +1261,7 @@ At the optimal point on the path, the path will be perfectly \textbf{tangent} to
 
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
-\subsection{The Lagrangian Method}
-% The subsection page
-\newSubSectionSlide{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
+\SSsubsection{The Lagrangian Method}
 
 \begin{frame}{The Lagrangian function}
   The condition $\nabla f = \lambda \nabla g$ is clever, but solving it can be messy
@@ -1335,25 +1321,6 @@ At the optimal point on the path, the path will be perfectly \textbf{tangent} to
   $$ x = 10 $$
   \vfill
   Since $x=y$, we have $y=10$, i.e., optimal dimensions are 10m by 10m (a square), giving a maximum area of 100 $m^2$
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%
-\subsection{Conclusion}
-% The subsection page
-\newSubSectionSlide{FIGS-slides-admin/a_robot_looking_at_a_desolate_tree_in_the_style_of_Magritte.png}
-
-\begin{frame}{What does $\lambda$ mean?}
-  The Lagrange multiplier $\lambda$ has a very useful interpretation
-  \vfill
-  It tells you how much the optimal value of your function $f$ will change if you slightly relax the constraint $c$
-  \vfill
-  $$ \lambda = \frac{df_{optimal}}{dc} $$
-  \vfill
-  \textbf{In our example:} If we had 41 meters of fence instead of 40 (so $c$ changes by 1), how much would the max area increase?
-  \vfill
-  $x=y=2\lambda$, so $\lambda = x/2 = 10/2 = 5$.
-  The maximum area would increase by approximately 5 $m^2$
 \end{frame}
 
 
