@@ -1132,6 +1132,21 @@ We have
 \]
 \end{frame}
 
+
+\begin{frame}{Computation of $\Var(\bm{\alpha}_1^T\bx)$}
+\begin{align*}
+\Var(\bm{\alpha}_1^T\bx) 
+&= E\left[\left(\bm{\alpha}_1^T\bx - E\left(\bm{\alpha}_1^T\bx\right)\right)^2\right] \\
+&= E\left[\left(\bm{\alpha}_1^T\bx - \bm{\alpha}_1^T E(\bx)\right)^2\right] \\
+&= E\left[\left(\bm{\alpha}_1^T(\bx - E(\bx))\right)^2\right] \\
+&= E\left[\left(\bm{\alpha}_1^T(\bx - E(\bx))\right)\left(\bm{\alpha}_1^T(\bx - E(\bx))\right)^T\right] \\
+&= E\left[\bm{\alpha}_1^T(\bx - E(\bx))(\bx - E(\bx))^T\bm{\alpha}_1\right] \\
+&= \bm{\alpha}_1^T E\left[(\bx - E(\bx))(\bx - E(\bx))^T\right]\bm{\alpha}_1 \\
+&= \bm{\alpha}_1^T\Sigma\bm{\alpha}_1
+\end{align*}
+\end{frame}
+
+
 \begin{frame}{Objective}
 We want to maximise $\Var \bm{\alpha}_1^T\bx$, i.e.,
 \[
@@ -1144,39 +1159,21 @@ $\implies$ use \textbf{Lagrange multipliers}
 
 
 \begin{frame}{Maximisation using Lagrange multipliers}
-\framesubtitle{(A.k.a. super-brief intro to multivariable calculus)}
-We want the max of $f(x_1,\ldots,x_n)$ under the constraint $g(x_1,\ldots,x_n)=k$
+\framesubtitle{(Recall from the mathematical preliminaries slides)}
+As presented in Unit~02 (\emph{Mathematical preliminaries}), the method of \textbf{Lagrange multipliers} establishes that to find the extremum of a function $f(x_1,\ldots,x_n)$ under the constraint $g(x_1,\ldots,x_n)=k$:
 \begin{enumerate}
 \item Solve
 \begin{align*}
 \nabla f(x_1,\ldots,x_n) &= \lambda\nabla g(x_1,\ldots,x_n) \\
 g(x_1,\ldots,x_n) &= k
 \end{align*}
-where $\nabla=(\frac{\partial}{\partial x_1},\ldots,\frac{\partial}{\partial x_n})$ is the \textbf{gradient operator}
+where $\nabla=\left(\frac{\partial}{\partial x_1},\ldots,\frac{\partial}{\partial x_n}\right)$ is the \textbf{gradient operator}
 \item Plug all solutions into $f(x_1,\ldots,x_n)$ and find maximum values (provided values exist and $\nabla g\neq \b0$ there)
 \end{enumerate}
 \vfill
-$\lambda$ is the \textbf{Lagrange multiplier}
-\end{frame}
-
-
-\begin{frame}{The gradient}
-\framesubtitle{(Continuing our super-brief intro to multivariable calculus)}
-$f:\IR^n\to\IR$ function of several variables, $\nabla=\left(\frac{\partial}{\partial x_1},\ldots,\frac{\partial}{\partial x_n}\right)$ the gradient operator
+$\lambda\in\IR$ is the \textbf{Lagrange multiplier}
 \vfill
-Then
-\[
-\nabla f = \left(
-\frac{\partial}{\partial x_1}f,\ldots,
-\frac{\partial}{\partial x_n}f
-\right)
-\]
-\vfill
-So $\nabla f$ is a \emph{vector-valued} function, $\nabla f:\IR^n\to\IR^n$; also written as
-\[
-\nabla f = f_{x_1}(x_1,\ldots,x_n)\be_1+\cdots f_{x_n}(x_1,\ldots,x_n)\be_n
-\]
-where $f_{x_i}$ is the partial derivative of $f$ with respect to $x_i$ and $\{\be_1,\ldots,\be_n\}$ is the standard basis of $\IR^n$
+Geometrically, this corresponds to the tangency condition: gradient vectors are \textbf{parallel} ($\nabla f = \lambda \nabla g$)
 \end{frame}
 
 
@@ -1557,10 +1554,10 @@ We can confirm our calculations directly in R:
 
 
 
-\begin{frame}[fragile]\frametitle{Covariance}
-The function \code{cov} returns the covariance of two samples
+\begin{frame}[fragile]\frametitle{Covariance of height and weight}
+The function \code{cov} returns the sample covariance of two variables
 \vfill
-Note that the functions deals equally well with data that is not centred as with data that is centred
+Recall that \code{cov} yields the same result whether the data is centred or uncentred:
 \vfill
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -1568,68 +1565,69 @@ Note that the functions deals equally well with data that is not centred as with
 \hlkwd{cov}\hldef{(data}\hlopt{$}\hldef{height, data}\hlopt{$}\hldef{weight)}
 \end{alltt}
 \begin{verbatim}
-## [1] 25.98646
+## [1] 26.63506
 \end{verbatim}
 \begin{alltt}
 \hlkwd{cov}\hldef{(data}\hlopt{$}\hldef{height.c, data}\hlopt{$}\hldef{weight.c)}
 \end{alltt}
 \begin{verbatim}
-## [1] 25.98646
+## [1] 26.63506
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
+\vfill
+As seen in the scatter plot, there is a positive linear relationship between height and weight
 \end{frame}
 
 
-\begin{frame}[fragile]\frametitle{Covariance matrix}
-As we could see from plotting the data, there is a positive linear relationship between the two variables
-\vfill
-Let us compute the sample covariance matrix
+\begin{frame}[fragile]\frametitle{Sample covariance matrix}
+Let us form the $n\times 2$ centred data matrix $\widetilde{X}$ and compute the sample covariance matrix $S = \frac{1}{n-1}\widetilde{X}^T\widetilde{X}$
 \vfill
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hldef{X} \hlkwb{=} \hlkwd{as.matrix}\hldef{(data[,}\hlkwd{c}\hldef{(}\hlsng{"height.c"}\hldef{,} \hlsng{"weight.c"}\hldef{)])}
-\hldef{S} \hlkwb{=} \hlnum{1}\hlopt{/}\hldef{(}\hlkwd{dim}\hldef{(X)[}\hlnum{1}\hldef{]}\hlopt{-}\hlnum{1}\hldef{)}\hlopt{*}\hlkwd{t}\hldef{(X)} \hlopt{%*%} \hldef{X}
+\hldef{X} \hlkwb{=} \hlkwd{as.matrix}\hldef{(data[,} \hlkwd{c}\hldef{(}\hlsng{"height.c"}\hldef{,} \hlsng{"weight.c"}\hldef{)])}
+\hldef{S} \hlkwb{=} \hlnum{1} \hlopt{/} \hldef{(}\hlkwd{dim}\hldef{(X)[}\hlnum{1}\hldef{]} \hlopt{-} \hlnum{1}\hldef{)} \hlopt{*} \hlkwd{t}\hldef{(X)} \hlopt{%*%} \hldef{X}
 \hldef{S}
 \end{alltt}
 \begin{verbatim}
 ##          height.c weight.c
-## height.c 28.98592 25.98646
-## weight.c 25.98646 48.49557
+## height.c 29.66176 26.63506
+## weight.c 26.63506 47.81112
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
+\vfill
+The off-diagonal entries match $\cov(X_1, X_2)$
 \end{frame}
 
-\begin{frame}[fragile]\frametitle{Covariance matrix}
-The off-diagonal entries do match the computed covariance. Let us check that the variances are indeed a match too.
 
-
+\begin{frame}[fragile]\frametitle{Sample covariance matrix -- Variances}
+Let us check that the diagonal entries indeed match the individual sample variances:
+\vfill
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{var}\hldef{(X[,}\hlnum{1}\hldef{])}
+\hlkwd{var}\hldef{(X[,} \hlnum{1}\hldef{])}
 \end{alltt}
 \begin{verbatim}
-## [1] 28.98592
+## [1] 29.66176
 \end{verbatim}
 \begin{alltt}
-\hlkwd{var}\hldef{(X[,}\hlnum{2}\hldef{])}
+\hlkwd{var}\hldef{(X[,} \hlnum{2}\hldef{])}
 \end{alltt}
 \begin{verbatim}
-## [1] 48.49557
+## [1] 47.81112
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-
-
-Hey, that works. Is math not cool? ;)
+\vfill
+Both match perfectly
 \end{frame}
 
 
-\begin{frame}[fragile]\frametitle{Principal components}
-Now compute the principal components. We need eigenvalues and eigenvectors
+\begin{frame}[fragile]\frametitle{Computing the principal components}
+We compute the eigenvalues and eigenvectors of $S$ using \code{eigen}
 \vfill
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -1640,34 +1638,54 @@ Now compute the principal components. We need eigenvalues and eigenvectors
 \begin{verbatim}
 ## eigen() decomposition
 ## $values
-## [1] 66.49777 10.98372
+## [1] 66.87496 10.59793
 ## 
 ## $vectors
 ##           [,1]       [,2]
-## [1,] 0.5694576 -0.8220207
-## [2,] 0.8220207  0.5694576
+## [1,] 0.5820222 -0.8131729
+## [2,] 0.8131729  0.5820222
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
 \vfill
-(\code{eigen} returns eigenvalues sorted in decreasing order and normalised eigenvectors)
+\code{eigen} returns eigenvalues in decreasing order and orthonormal eigenvectors
 \end{frame}
 
 
-
-\begin{frame}[fragile]\frametitle{First principal component}
-Let us plot this first eigenvector (well, the line carrying this first eigenvector) 
+\begin{frame}\frametitle{Variance explained}
+The total variance is
+\[
+\tr(S) = \lambda_1 + \lambda_2 = 66.87 + 10.6 = 77.47
+\]
 \vfill
-To use the function \code{abline}, we need to give the coefficients of the line in the form of (intercept,slope). Intercept is easy, as the line goes through the origin (by construction and because we have centred the data). The slope is also quite simple..
+The first principal component explains
+\[
+\frac{\lambda_1}{\lambda_1+\lambda_2} = \frac{66.87}{77.47} \approx 86.3\%
+\]
+of the total variance in the height and weight data
+\vfill
+The second principal component accounts for the remaining $13.7\%$
+\end{frame}
+
+
+\begin{frame}[fragile]\frametitle{Plotting the first principal component}
+We superimpose the line spanned by the first eigenvector $\bv_1$ on the centred data
+\vfill
+The line passes through $(0,0)$ and has slope $b = v_{21}/v_{11}$
+\vfill
+To avoid visual distortion of angles, we use a square plot (\code{pty = "s"}, \code{asp = 1}) with equal ranges on both axes
 \vfill
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
+\hlkwd{par}\hldef{(}\hlkwc{pty} \hldef{=} \hlsng{"s"}\hldef{)}
+\hldef{lims} \hlkwb{=} \hlkwd{range}\hldef{(}\hlkwd{c}\hldef{(data}\hlopt{$}\hldef{height.c, data}\hlopt{$}\hldef{weight.c))}
 \hlkwd{plot}\hldef{(data}\hlopt{$}\hldef{height.c, data}\hlopt{$}\hldef{weight.c,}
-    \hlkwc{pch} \hldef{=} \hlnum{19}\hldef{,} \hlkwc{col} \hldef{=} \hlsng{"dodgerblue4"}\hldef{,}
-    \hlkwc{main} \hldef{=} \hlsng{"IIHF players 2001-2016 (with first component)"}\hldef{,}
-    \hlkwc{xlab} \hldef{=} \hlsng{"Height (cm)"}\hldef{,} \hlkwc{ylab} \hldef{=} \hlsng{"Weight (kg)"}\hldef{)}
-\hlkwd{abline}\hldef{(}\hlkwc{a} \hldef{=} \hlnum{0}\hldef{,} \hlkwc{b} \hldef{= ev}\hlopt{$}\hldef{vectors[}\hlnum{2}\hldef{,}\hlnum{1}\hldef{]}\hlopt{/}\hldef{ev}\hlopt{$}\hldef{vectors[}\hlnum{1}\hldef{,}\hlnum{1}\hldef{],}
+     \hlkwc{xlim} \hldef{= lims,} \hlkwc{ylim} \hldef{= lims,} \hlkwc{asp} \hldef{=} \hlnum{1}\hldef{,}
+     \hlkwc{pch} \hldef{=} \hlnum{19}\hldef{,} \hlkwc{col} \hldef{=} \hlsng{"dodgerblue4"}\hldef{,}
+     \hlkwc{main} \hldef{=} \hlsng{"IIHF players 2001-2016 (with first component)"}\hldef{,}
+     \hlkwc{xlab} \hldef{=} \hlsng{"Centred height (cm)"}\hldef{,} \hlkwc{ylab} \hldef{=} \hlsng{"Centred weight (kg)"}\hldef{)}
+\hlkwd{abline}\hldef{(}\hlkwc{a} \hldef{=} \hlnum{0}\hldef{,} \hlkwc{b} \hldef{= ev}\hlopt{$}\hldef{vectors[}\hlnum{2}\hldef{,} \hlnum{1}\hldef{]} \hlopt{/} \hldef{ev}\hlopt{$}\hldef{vectors[}\hlnum{1}\hldef{,} \hlnum{1}\hldef{],}
        \hlkwc{col} \hldef{=} \hlsng{"red"}\hldef{,} \hlkwc{lwd} \hldef{=} \hlnum{3}\hldef{)}
 \end{alltt}
 \end{kframe}
@@ -1676,47 +1694,81 @@ To use the function \code{abline}, we need to give the coefficients of the line 
 
 \maxFrameImage{FIGS/U05-plot-hockey-centred-evector-1.pdf}
 
-\begin{frame}[fragile]\frametitle{Rotating the data}
-Let us rotate the data so that the red line becomes the $x$-axis
-\vfill
-To do that, we use a rotation matrix
-$$
-R_\theta = \begin{pmatrix}
-\cos\theta & -\sin\theta \\
-\sin\theta & \cos\theta
-\end{pmatrix}
-$$
-\vfill
-To find the angle $\theta$, recall that $\tan\theta$ is equal to opposite length over adjacent length, i.e.,
-$$
-\tan\theta = \frac{\tt ev\$vectors[2,1]}{\tt ev\$vectors[1,1]}
-$$
-So we just use the $\arctan$ of this 
-\vfill 
-Note that angles are in radians
-\end{frame}
 
-
-\begin{frame}[fragile]\frametitle{Rotating the data}
+\begin{frame}[fragile]\frametitle{First principal component vs.\ least squares}
+How does the first principal component line compare with ordinary least squares (OLS) regression?
+\vfill
+Fit a linear model with zero intercept (since data is centred):
+\vfill
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hldef{theta} \hlkwb{=} \hlkwd{atan}\hldef{(ev}\hlopt{$}\hldef{vectors[}\hlnum{2}\hldef{,}\hlnum{1}\hldef{]}\hlopt{/}\hldef{ev}\hlopt{$}\hldef{vectors[}\hlnum{1}\hldef{,}\hlnum{1}\hldef{])}
+\hldef{z} \hlkwb{=} \hlkwd{lm}\hldef{(weight.c} \hlopt{~} \hlnum{0} \hlopt{+} \hldef{height.c,} \hlkwc{data} \hldef{= data)}
+\hlkwd{coef}\hldef{(z)}
+\end{alltt}
+\begin{verbatim}
+##  height.c 
+## 0.8979593
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\vfill
+
+\end{frame}
+
+\maxFrameImage{FIGS/U05-plot-hockey-lm-compare-1.pdf}
+
+
+\begin{frame}{Why are the two lines different?}
+\textbf{Ordinary least squares (OLS)}:
+\begin{itemize}
+\item Treats \code{height.c} as an exact predictor
+\item Minimises the sum of squared \textbf{vertical} residuals (errors parallel to the $y$-axis)
+\end{itemize}
+\vfill
+\textbf{Principal component analysis (PCA)}:
+\begin{itemize}
+\item Treats both variables \textbf{symmetrically}
+\item Maximises the variance of the orthogonal projection
+\item Equivalently, minimises the sum of squared \textbf{orthogonal (perpendicular)} distances from points to the line
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}\frametitle{Rotating the data}
+Let us rotate the data so that the first principal component becomes the horizontal axis
+\vfill
+A counter-clockwise rotation by an angle $\phi$ in $\IR^2$ is represented by
+\[
+R_\phi = \begin{pmatrix} \cos\phi & -\sin\phi \\ \sin\phi & \cos\phi \end{pmatrix}
+\]
+\vfill
+The first eigenvector makes an angle $\theta > 0$ with the positive $x$-axis, $\tan\theta = v_{21}/v_{11}$
+\vfill
+To align it with the horizontal axis, we rotate \textbf{clockwise} by $\theta$, i.e., by $\phi = -\theta$
+\end{frame}
+
+
+\begin{frame}[fragile]\frametitle{Computing the rotation matrix}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hldef{theta} \hlkwb{=} \hlkwd{atan}\hldef{(ev}\hlopt{$}\hldef{vectors[}\hlnum{2}\hldef{,} \hlnum{1}\hldef{]} \hlopt{/} \hldef{ev}\hlopt{$}\hldef{vectors[}\hlnum{1}\hldef{,} \hlnum{1}\hldef{])}
 \hldef{theta}
 \end{alltt}
 \begin{verbatim}
-## [1] 0.9649505
+## [1] 0.949583
 \end{verbatim}
 \begin{alltt}
-\hldef{R_theta} \hlkwb{=} \hlkwd{matrix}\hldef{(}\hlkwd{c}\hldef{(}\hlkwd{cos}\hldef{(theta),} \hlopt{-}\hlkwd{sin}\hldef{(theta),}
-                  \hlkwd{sin}\hldef{(theta),} \hlkwd{cos}\hldef{(theta)),}
-                \hlkwc{nr} \hldef{=} \hlnum{2}\hldef{,} \hlkwc{byrow} \hldef{=} \hlnum{TRUE}\hldef{)}
-\hldef{R_theta}
+\hldef{R_minus_theta} \hlkwb{=} \hlkwd{matrix}\hldef{(}\hlkwd{c}\hldef{(}\hlkwd{cos}\hldef{(}\hlopt{-}\hldef{theta),} \hlopt{-}\hlkwd{sin}\hldef{(}\hlopt{-}\hldef{theta),}
+                         \hlkwd{sin}\hldef{(}\hlopt{-}\hldef{theta),}  \hlkwd{cos}\hldef{(}\hlopt{-}\hldef{theta)),}
+                       \hlkwc{nr} \hldef{=} \hlnum{2}\hldef{,} \hlkwc{byrow} \hldef{=} \hlnum{TRUE}\hldef{)}
+\hldef{R_minus_theta}
 \end{alltt}
 \begin{verbatim}
-##           [,1]       [,2]
-## [1,] 0.5694576 -0.8220207
-## [2,] 0.8220207  0.5694576
+##            [,1]      [,2]
+## [1,]  0.5820222 0.8131729
+## [2,] -0.8131729 0.5820222
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1724,70 +1776,43 @@ Note that angles are in radians
 
 
 \begin{frame}[fragile]\frametitle{Rotating the data}
-And now we rotate the points
-\vfill
-(In this case, we think of the points as vectors, of course)
+Apply the rotation matrix to each observation:
 \vfill
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hldef{tmp_in} \hlkwb{=} \hlkwd{matrix}\hldef{(}\hlkwd{c}\hldef{(data}\hlopt{$}\hldef{weight.c, data}\hlopt{$}\hldef{height.c),}
-                \hlkwc{nc} \hldef{=} \hlnum{2}\hldef{)}
-\hldef{tmp_out} \hlkwb{=} \hlkwd{c}\hldef{()}
-\hlkwa{for} \hldef{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlkwd{dim}\hldef{(tmp_in)[}\hlnum{1}\hldef{]) \{}
-    \hldef{tmp_out} \hlkwb{=} \hlkwd{rbind}\hldef{(tmp_out,}
-                    \hlkwd{t}\hldef{(R_theta} \hlopt{%*%} \hldef{tmp_in[i,]))}
-\hldef{\}}
-\hldef{data}\hlopt{$}\hldef{weight.c_r} \hlkwb{=} \hldef{tmp_out[,}\hlnum{1}\hldef{]}
-\hldef{data}\hlopt{$}\hldef{height.c_r} \hlkwb{=} \hldef{tmp_out[,}\hlnum{2}\hldef{]}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
-\end{frame}
-
-
-
-
-\maxFrameImage{FIGS/U05-plot-hockey-centred-evector-2-1.pdf}
-
-
-\begin{frame}[fragile]\frametitle{Principal components}
-Note that the axes have changed quite a lot, hence the very different aspect
-\vfill
-Let us plot with the same range as for the non-rotated data for the y-axis
-\vfill
-
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
+\hldef{rot_pts} \hlkwb{=} \hldef{X} \hlopt{%*%} \hlkwd{t}\hldef{(R_minus_theta)}
+\hldef{data}\hlopt{$}\hldef{height.c_r} \hlkwb{=} \hldef{rot_pts[,} \hlnum{1}\hldef{]}
+\hldef{data}\hlopt{$}\hldef{weight.c_r} \hlkwb{=} \hldef{rot_pts[,} \hlnum{2}\hldef{]}
 \hlkwd{plot}\hldef{(data}\hlopt{$}\hldef{height.c_r, data}\hlopt{$}\hldef{weight.c_r,}
-    \hlkwc{pch} \hldef{=} \hlnum{19}\hldef{,} \hlkwc{col} \hldef{=} \hlsng{"dodgerblue4"}\hldef{,}
-    \hlkwc{xlab} \hldef{=} \hlsng{"x-axis"}\hldef{,} \hlkwc{ylab} \hldef{=} \hlsng{"y-axis"}\hldef{,}
-    \hlkwc{main} \hldef{=} \hlsng{"IIHF players 2001-2016 (rotated to first component)"}\hldef{,}
-    \hlkwc{ylim} \hldef{=} \hlkwd{range}\hldef{(data}\hlopt{$}\hldef{weight.c))}
+     \hlkwc{xlim} \hldef{= lims,} \hlkwc{ylim} \hldef{= lims,} \hlkwc{asp} \hldef{=} \hlnum{1}\hldef{,}
+     \hlkwc{pch} \hldef{=} \hlnum{19}\hldef{,} \hlkwc{col} \hldef{=} \hlsng{"dodgerblue4"}\hldef{,}
+     \hlkwc{xlab} \hldef{=} \hlsng{"Rotated x-axis (1st component)"}\hldef{,}
+     \hlkwc{ylab} \hldef{=} \hlsng{"Rotated y-axis"}\hldef{,}
+     \hlkwc{main} \hldef{=} \hlsng{"IIHF players 2001-2016 (rotated to first component)"}\hldef{)}
 \hlkwd{abline}\hldef{(}\hlkwc{h} \hldef{=} \hlnum{0}\hldef{,} \hlkwc{col} \hldef{=} \hlsng{"red"}\hldef{,} \hlkwc{lwd} \hldef{=} \hlnum{2}\hldef{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
 \end{frame}
 
-
 \maxFrameImage{FIGS/U05-plot-hockey-centred-rotated-1.pdf}
 
 
 \begin{frame}[fragile]\frametitle{First and second principal components}
-Plot the first and second eigenvectors
+Plot both eigenvectors on the centred data. Since $S$ is symmetric, the eigenvectors are orthogonal ($90^\circ$ angle):
 \vfill
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{plot}\hldef{(data}\hlopt{$}\hldef{height.c, data}\hlopt{$}\hldef{weight.c,}
-    \hlkwc{pch} \hldef{=} \hlnum{19}\hldef{,} \hlkwc{col} \hldef{=} \hlsng{"dodgerblue4"}\hldef{,}
-    \hlkwc{main} \hldef{=} \hlsng{"IIHF players 2001-2016 (with first and second components)"}\hldef{,}
-    \hlkwc{xlab} \hldef{=} \hlsng{"Height (cm)"}\hldef{,} \hlkwc{ylab} \hldef{=} \hlsng{"Weight (kg)"}\hldef{)}
-\hlkwd{abline}\hldef{(}\hlkwc{a} \hldef{=} \hlnum{0}\hldef{,} \hlkwc{b} \hldef{= ev}\hlopt{$}\hldef{vectors[}\hlnum{2}\hldef{,}\hlnum{1}\hldef{]}\hlopt{/}\hldef{ev}\hlopt{$}\hldef{vectors[}\hlnum{1}\hldef{,}\hlnum{1}\hldef{],}
+     \hlkwc{xlim} \hldef{= lims,} \hlkwc{ylim} \hldef{= lims,} \hlkwc{asp} \hldef{=} \hlnum{1}\hldef{,}
+     \hlkwc{pch} \hldef{=} \hlnum{19}\hldef{,} \hlkwc{col} \hldef{=} \hlsng{"dodgerblue4"}\hldef{,}
+     \hlkwc{main} \hldef{=} \hlsng{"IIHF players 2001-2016 (1st and 2nd eigenvectors)"}\hldef{,}
+     \hlkwc{xlab} \hldef{=} \hlsng{"Centred height (cm)"}\hldef{,} \hlkwc{ylab} \hldef{=} \hlsng{"Centred weight (kg)"}\hldef{)}
+\hlkwd{abline}\hldef{(}\hlkwc{a} \hldef{=} \hlnum{0}\hldef{,} \hlkwc{b} \hldef{= ev}\hlopt{$}\hldef{vectors[}\hlnum{2}\hldef{,} \hlnum{1}\hldef{]} \hlopt{/} \hldef{ev}\hlopt{$}\hldef{vectors[}\hlnum{1}\hldef{,} \hlnum{1}\hldef{],}
        \hlkwc{col} \hldef{=} \hlsng{"red"}\hldef{,} \hlkwc{lwd} \hldef{=} \hlnum{3}\hldef{)}
-\hlkwd{abline}\hldef{(}\hlkwc{a} \hldef{=} \hlnum{0}\hldef{,} \hlkwc{b} \hldef{= ev}\hlopt{$}\hldef{vectors[}\hlnum{2}\hldef{,}\hlnum{2}\hldef{]}\hlopt{/}\hldef{ev}\hlopt{$}\hldef{vectors[}\hlnum{1}\hldef{,}\hlnum{2}\hldef{],}
+\hlkwd{abline}\hldef{(}\hlkwc{a} \hldef{=} \hlnum{0}\hldef{,} \hlkwc{b} \hldef{= ev}\hlopt{$}\hldef{vectors[}\hlnum{2}\hldef{,} \hlnum{2}\hldef{]} \hlopt{/} \hldef{ev}\hlopt{$}\hldef{vectors[}\hlnum{1}\hldef{,} \hlnum{2}\hldef{],}
        \hlkwc{col} \hldef{=} \hlsng{"darkgreen"}\hldef{,} \hlkwc{lwd} \hldef{=} \hlnum{3}\hldef{)}
 \end{alltt}
 \end{kframe}
@@ -1797,109 +1822,53 @@ Plot the first and second eigenvectors
 \maxFrameImage{FIGS/U05-plot-hockey-centred-2evectors-1.pdf}
 
 
-\begin{frame}\frametitle{Proper change of basis}
-Let us change the basis so that, in the new basis, the first component is the $x$-axis and the second component is the $y$-axis
+\begin{frame}[fragile]\frametitle{Representing data in the new coordinate system}
+Rather than 2D trigonometry, express data in the orthonormal eigenbasis using our general change-of-basis machinery
 \vfill
-We want to use Theorem~\ref{th:change-basis-construction}
+Enforce orthonormality with \code{pracma::gramSchmidt} and compute the change-of-basis matrix using \code{pracma::rref}:
 \vfill
-We need the coordinates of the new basis in the canonical basis of $\IR^2$
-\vfill
-Since both axes go through the origin, we can just use $y=ax$, with $a$ the slope of the lines and, say, $x=1$, i.e., $(x,y)=(1,a)$
-\vfill
-We then normalise the resulting vectors
-\end{frame}
-
-
-\begin{frame}[fragile]\frametitle{Proper change of basis}
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hldef{red_line} \hlkwb{=} \hlkwd{c}\hldef{(}\hlnum{1}\hldef{, ev}\hlopt{$}\hldef{vectors[}\hlnum{2}\hldef{,}\hlnum{1}\hldef{]}\hlopt{/}\hldef{ev}\hlopt{$}\hldef{vectors[}\hlnum{1}\hldef{,}\hlnum{1}\hldef{])}
-\hldef{red_line} \hlkwb{=} \hldef{red_line}\hlopt{/}\hlkwd{sqrt}\hldef{(}\hlkwd{sum}\hldef{(red_line}\hlopt{^}\hlnum{2}\hldef{))}
-\hldef{green_line} \hlkwb{=} \hlkwd{c}\hldef{(}\hlnum{1}\hldef{, ev}\hlopt{$}\hldef{vectors[}\hlnum{2}\hldef{,}\hlnum{2}\hldef{]}\hlopt{/}\hldef{ev}\hlopt{$}\hldef{vectors[}\hlnum{1}\hldef{,}\hlnum{2}\hldef{])}
-\hldef{green_line} \hlkwb{=} \hldef{green_line}\hlopt{/}\hlkwd{sqrt}\hldef{(}\hlkwd{sum}\hldef{(green_line}\hlopt{^}\hlnum{2}\hldef{))}
-\hldef{augmented_M} \hlkwb{=} \hlkwd{cbind}\hldef{(red_line,green_line,} \hlkwd{diag}\hldef{(}\hlnum{2}\hldef{))}
-\hldef{P} \hlkwb{=} \hlkwd{rref}\hldef{(augmented_M)[,}\hlnum{3}\hlopt{:}\hlnum{4}\hldef{]}
-
-\hldef{tmp_in} \hlkwb{=} \hlkwd{matrix}\hldef{(}\hlkwd{c}\hldef{(data}\hlopt{$}\hldef{weight.c, data}\hlopt{$}\hldef{height.c),} \hlkwc{nc} \hldef{=} \hlnum{2}\hldef{)}
-\hldef{tmp_out} \hlkwb{=} \hlkwd{c}\hldef{()}
-\hlkwa{for} \hldef{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlkwd{dim}\hldef{(tmp_in)[}\hlnum{1}\hldef{]) \{}
-    \hldef{tmp_out} \hlkwb{=} \hlkwd{rbind}\hldef{(tmp_out,} \hlkwd{t}\hldef{(P} \hlopt{%*%} \hldef{tmp_in[i,]))}
-\hldef{\}}
-\hldef{data}\hlopt{$}\hldef{weight.c_r2} \hlkwb{=} \hldef{tmp_out[,}\hlnum{1}\hldef{]}
-\hldef{data}\hlopt{$}\hldef{height.c_r2} \hlkwb{=} \hldef{tmp_out[,}\hlnum{2}\hldef{]}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
-\end{frame}
-
-\maxFrameImage{FIGS/U05-plot-hockey-proper-changed-basis-1.pdf}
-
-
-\begin{frame}[fragile]\frametitle{PCA using built-in functions}
-Now do things ``properly''
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hldef{GS} \hlkwb{=} \hldef{pracma}\hlopt{::}\hlkwd{gramSchmidt}\hldef{(}\hlkwc{A} \hldef{= ev}\hlopt{$}\hldef{vectors,} \hlkwc{tol} \hldef{=} \hlnum{1e-10}\hldef{)}
-\hldef{GS}
-\end{alltt}
-\begin{verbatim}
-## $Q
-##           [,1]       [,2]
-## [1,] 0.5694576 -0.8220207
-## [2,] 0.8220207  0.5694576
-## 
-## $R
-##      [,1]          [,2]
-## [1,]    1 -5.551115e-17
-## [2,]    0  1.000000e+00
-\end{verbatim}
-\end{kframe}
-\end{knitrout}
-\end{frame}
-
-
-\begin{frame}[fragile]\frametitle{PCA using built-in functions}
-Now recall we saw a theorem that told us how to construct a new basis..
-\vfill
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hldef{A}\hlkwb{=}\hlkwd{matrix}\hldef{(}\hlkwd{c}\hldef{(GS}\hlopt{$}\hldef{Q,}\hlnum{1}\hldef{,}\hlnum{0}\hldef{,}\hlnum{0}\hldef{,}\hlnum{1}\hldef{),} \hlkwc{nr} \hldef{=} \hlnum{2}\hldef{)}
-\hldef{A}
-\end{alltt}
-\begin{verbatim}
-##           [,1]       [,2] [,3] [,4]
-## [1,] 0.5694576 -0.8220207    1    0
-## [2,] 0.8220207  0.5694576    0    1
-\end{verbatim}
-\begin{alltt}
+\hldef{A} \hlkwb{=} \hlkwd{cbind}\hldef{(GS}\hlopt{$}\hldef{Q,} \hlkwd{diag}\hldef{(}\hlnum{2}\hldef{))}
 \hldef{pracma}\hlopt{::}\hlkwd{rref}\hldef{(A)}
 \end{alltt}
 \begin{verbatim}
 ##      [,1] [,2]       [,3]      [,4]
-## [1,]    1    0  0.5694576 0.8220207
-## [2,]    0    1 -0.8220207 0.5694576
+## [1,]    1    0  0.5820222 0.8131729
+## [2,]    0    1 -0.8131729 0.5820222
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
+\vfill
+$P = Q^{-1} = Q^T$ is the change-of-basis matrix (right-hand block)
 \end{frame}
 
-\begin{frame}[fragile]\frametitle{PCA using built-in functions}
+
+\begin{frame}[fragile]\frametitle{Projecting into the new basis}
+Multiplying $\widetilde{X}$ by $P^T$ gives coordinates $X_{\text{new}}$ in the new PC coordinate system:
+\vfill
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hldef{P} \hlkwb{=} \hldef{pracma}\hlopt{::}\hlkwd{rref}\hldef{(A)[,}\hlkwd{c}\hldef{(}\hlnum{3}\hldef{,}\hlnum{4}\hldef{)]}
+\hldef{P} \hlkwb{=} \hldef{pracma}\hlopt{::}\hlkwd{rref}\hldef{(A)[,} \hlkwd{c}\hldef{(}\hlnum{3}\hldef{,} \hlnum{4}\hldef{)]}
+\hldef{P}
 \end{alltt}
 \begin{verbatim}
 ##            [,1]      [,2]
-## [1,]  0.5694576 0.8220207
-## [2,] -0.8220207 0.5694576
+## [1,]  0.5820222 0.8131729
+## [2,] -0.8131729 0.5820222
 \end{verbatim}
 \begin{alltt}
 \hldef{X.new} \hlkwb{=} \hldef{X} \hlopt{%*%} \hlkwd{t}\hldef{(P)}
+\hlkwd{cov}\hldef{(X.new)}
 \end{alltt}
+\begin{verbatim}
+##               [,1]          [,2]
+## [1,]  6.687496e+01 -2.328994e-13
+## [2,] -2.328994e-13  1.059793e+01
+\end{verbatim}
 \end{kframe}
 \end{knitrout}
 \end{frame}
@@ -1907,211 +1876,203 @@ Now recall we saw a theorem that told us how to construct a new basis..
 \maxFrameImage{FIGS/U05-plot-hockey-centred-evector-3-1.pdf}
 
 
-
-% %%%%%%%%%%%%%%%%%%%%%
-% %%%%%%%%%%%%%%%%%%%%%
-% \subsection{Back to fingerprints}
-% \newSubSectionSlide{FIGS-slides-admin/Gemini_Generated_Image_ut188hut188hut18.jpeg}
-% 
-% 
-% \begin{frame}
-% We get the data from \href{https://repository.lboro.ac.uk/articles/dataset/Height_weight_and_fingerprint_measurements_collected_from_200_participants/7539206}{here}
-% \vfill
-% This time, we first download the data, then open the file
-% \vfill
-% The file is an excel table, so we need to use a library for doing that
-% \end{frame}
-% 
-% 
-% \begin{frame}[fragile]\frametitle{Loading the excel fingerprint data}
-% <<open-file>>=
-% download.file(url = "https://repository.lboro.ac.uk/ndownloader/files/14015774",
-%              destfile = "../CODE/fingerprint_data.xlsx")
-% data = openxlsx::read.xlsx("../CODE/fingerprint_data.xlsx")
-% head(data, n=3)
-% @
-% \end{frame}
-% 
-% 
-% \begin{frame}[fragile]\frametitle{Some wrangling}
-% Let us rework the names of columns a bit, for convenience. Let us also get rid of a few columns we are not using
-% \vfill
-% <<start-wrangling>>=
-% data = data[,2:dim(data)[2]]
-% colnames(data) = c("gender", "age", "handedness", "height", "weight",
-%                   "fing_temp", "fing_height", "fing_width",
-%                   "fing_area", "fing_circ")
-% head(data, n=3)
-% @
-% \end{frame}
-% 
-% 
-% 
-% \begin{frame}\frametitle{Some wrangling -- Centering}
-% Plotting all these variables is complicated, so we forgo this for the time being
-% \vfill
-% Let us centre the data. That there are some \code{NA} values, so we remove them using the function \code{complete.cases}, which identifies rows where at least one of the variables is \code{NA}
-% \vfill
-% (We could also use \code{na.rm = TRUE} when taking the average to remove these values.) 
-% \vfill
-% We make new columns with the prefix \code{.c}, just to still have the initial data handy if need be.
-% \end{frame}
-% 
-% \begin{frame}[fragile]\frametitle{Some wrangling -- Centering}
-% <<center-the-data>>=
-% data = data[complete.cases(data),]
-% to_centre = c("age", "height", 
-%               "weight", "fing_temp", 
-%               "fing_height", "fing_width",
-%               "fing_area", "fing_circ")
-% for (c in to_centre) {
-%     new_c = sprintf("%s.c", c)
-%     data[[new_c]] = data[[c]] - mean(data[[c]], na.rm = TRUE)
-% }
-% head(data)
-% @
-% \end{frame}
-% 
-% 
-% 
-% \begin{frame}[fragile]\frametitle{Covariance matrix}
-% <<compute-sample-covariance-matrix>>=
-% X = as.matrix(data[, to_centre])
-% S = 1/(dim(X)[1]-1)*t(X) %*% X
-% S
-% @
-% \end{frame}
-% 
-% 
-% 
-% 
-% \begin{frame}[fragile]\frametitle{Eigenvalues}
-% <<>>=
-% ev = eigen(S)
-% ev$values
-% @
-% \vfill
-% Let us add the singular values to \code{ev}
-% \vfill
-% <<>>=
-% ev$sing_values = sqrt(ev$values)
-% @
-% \end{frame}
-% 
-% 
-% 
-% \begin{frame}[fragile]\frametitle{Use built-in functions}
-% <<>>=
-% GS = pracma::gramSchmidt(A = ev$vectors)
-% GS$Q
-% # Just to check that Q is indeed with normalised columns
-% colSums(GS$Q[,1:dim(GS$Q)[2]]^2)
-% GS$Q[,1] %*% GS$Q[,2]
-% @
-% So \code{Q} is indeed an orthogonal matrix
-% \end{frame}
-% 
-% 
-% 
-% \begin{frame}[fragile]\frametitle{Some wrangling}
-% Now recall we saw a theorem that told us how to construct a new basis..
-% 
-% 
-% <<>>=
-% # Make an identity matrix
-% Id = diag(dim(GS$Q)[1])
-% # Make the augmented matrix
-% A = cbind(GS$Q, Id)
-% # Compute the RREF and extract the relevant matrix
-% P = pracma::rref(A)[,(dim(GS$Q)[2]+1):dim(A)[2]]
-% X.new = X %*% t(P)
-% @
-% \end{frame}
-% 
-% 
-% \begin{frame}[fragile]\frametitle{Use built-in functions}
-% Use the built in function \code{prcomp} or \code{PCA} from the \code{FactoMineR} package
-% \vfill
-% <<>>=
-% # data.pca = prcomp(X, center = TRUE, scale = TRUE)
-% data.pca = PCA(X, scale.unit = TRUE, graph = FALSE)
-% summary(data.pca)
-% @
-% \end{frame}
-% 
-% 
-% \begin{frame}[fragile]\frametitle{Percentage of variance}
-% The ``proportion of variance'' (or ``percentage of variance'') information is actually the proportion (and then cumulative proportion) represented by the singular value associated to each principal component
-% \vfill
-% We check this (approximately) by comparing with the singular values we computed
-% \vfill
-% <<>>=
-% ev$sing_values/(sum(ev$sing_values))
-% cumsum(ev$sing_values)/(sum(ev$sing_values))
-% @
-% \end{frame}
-% 
-% 
-% 
-% % \begin{frame}[fragile]\frametitle{Some wrangling}
-% % <<>>=
-% % str(data.pca)
-% % @
-% % 
-% % 
-% % <<>>=
-% % #library(devtools)
-% % #install_github("vqv/ggbiplot")
-% % library(ggbiplot)
-% % @
-% % 
-% % \end{frame}
-% % 
-% % 
-% % \begin{frame}[fragile]\frametitle{Some wrangling}
-% % <<>>=
-% % ggbiplot(data.pca, groups = data$handedness)
-% % @
-% % \end{frame}
-% 
-% \begin{frame}[fragile]\frametitle{Plot results}
-% <<plot-PCA-1>>=
-% plot.PCA(data.pca, axes = c(1,2), choix = "ind", habillage = 4)
-% @
-% \end{frame}
-% 
-% \maxFrameImage{knitr::fig_chunk("plot-PCA-1", "pdf")}
-
-% \begin{frame}[fragile]\frametitle{Plot results with ellipses}
-% <<plot-PCA-2>>=
-% plotellipses(data.pca)
-% @
-% \end{frame}
-% 
-% \maxFrameImage{knitr::fig_chunk("plot-PCA-2", "pdf")}
+\begin{frame}[fragile]\frametitle{Diagonal covariance in the new basis}
+As confirmed by \code{cov(X.new)}:
+\vfill
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{cov}\hldef{(X.new)}
+\end{alltt}
+\begin{verbatim}
+##               [,1]          [,2]
+## [1,]  6.687496e+01 -2.328994e-13
+## [2,] -2.328994e-13  1.059793e+01
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\vfill
+\begin{itemize}
+\item The sample covariance matrix in the new coordinate system is \textbf{diagonal}
+\item Diagonal entries equal $\lambda_1 = 66.87$ and $\lambda_2 = 10.6$
+\item Off-diagonal entry is zero: the new coordinates are completely \textbf{uncorrelated}
+\end{itemize}
+\end{frame}
 
 
-% \begin{frame}[fragile]\frametitle{Some wrangling}
-% Not that it makes much difference, but here we realise that handedness is badly encoded, in the sense that there are some individuals with lowercase handedness and others where the word starts with a capital letter. Let us fix this and plot again
-% 
-% <<>>=
-% data$handedness = tolower(data$handedness)
-% ggbiplot(data.pca, groups = data$handedness)
-% @
-% \end{frame}
-% 
-% 
-% \begin{frame}[fragile]\frametitle{Some wrangling}
-% Something else you can plot: ellipses containing most elements in a group, for the groups we have selected (here, handedness).
-% 
-% 
-% <<>>=
-% ggbiplot(data.pca, groups = data$handedness, ellipse = TRUE)
-% @
-% \end{frame}
+%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
+\SSsubsection{PCA with dedicated R packages}
+
+\begin{frame}[fragile]\frametitle{Multivariate hockey dataset}
+In practice, we use dedicated packages such as \code{prcomp}, \code{FactoMineR} and \code{ggbiplot}, especially with $> 2$ variables
+\vfill
+We retain 4 numerical attributes (\code{height}, \code{weight}, \code{age}, \code{bmi}) and player \code{position} (\code{Defence}, \code{Forward}, \code{Goalkeeper}):
+\vfill
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hldef{agg_num} \hlkwb{=} \hlkwd{aggregate}\hldef{(}\hlkwd{cbind}\hldef{(height, weight, age, bmi)} \hlopt{~} \hldef{name,}
+                    \hlkwc{data} \hldef{= raw_data,} \hlkwc{FUN} \hldef{= mean)}
+\hldef{agg_pos} \hlkwb{=} \hlkwd{aggregate}\hldef{(position} \hlopt{~} \hldef{name,} \hlkwc{data} \hldef{= raw_data,}
+                    \hlkwc{FUN} \hldef{=} \hlkwa{function}\hldef{(}\hlkwc{x}\hldef{) x[}\hlnum{1}\hldef{])}
+\hldef{hockey_multi} \hlkwb{=} \hlkwd{merge}\hldef{(agg_pos, agg_num,} \hlkwc{by} \hldef{=} \hlsng{"name"}\hldef{)}
+\hldef{hockey_multi}\hlopt{$}\hldef{position} \hlkwb{=} \hlkwd{factor}\hldef{(}
+  \hldef{hockey_multi}\hlopt{$}\hldef{position,}
+  \hlkwc{levels} \hldef{=} \hlkwd{c}\hldef{(}\hlsng{"D"}\hldef{,} \hlsng{"F"}\hldef{,} \hlsng{"G"}\hldef{),}
+  \hlkwc{labels} \hldef{=} \hlkwd{c}\hldef{(}\hlsng{"Defence"}\hldef{,} \hlsng{"Forward"}\hldef{,} \hlsng{"Goalkeeper"}\hldef{)}
+\hldef{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{frame}
 
 
+\begin{frame}[fragile]\frametitle{Multivariate hockey dataset}
+The aggregated multivariate dataset:
+\vfill
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{head}\hldef{(hockey_multi,} \hlkwc{n} \hldef{=} \hlnum{4}\hldef{)}
+\end{alltt}
+\begin{verbatim}
+##                 name position height weight      age      bmi
+## 1     aagaard mikkel  Forward    180     81 20.53662 25.00000
+## 2       aalto antti   Forward    187     96 27.15948 27.45289
+## 3 aaltonen juhamatti  Forward    184     87 27.15606 25.69707
+## 4  abdelkader justin  Forward    185     97 26.17933 28.34186
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
 
+
+\begin{frame}[fragile]\frametitle{PCA using \code{prcomp}}
+Because variables are in different physical units (cm, kg, years, $\text{kg}/\text{m}^2$), we standardise to unit variance (\code{scale. = TRUE}):
+\vfill
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hldef{hockey.pca} \hlkwb{=} \hlkwd{prcomp}\hldef{(}
+  \hldef{hockey_multi[,} \hlkwd{c}\hldef{(}\hlsng{"height"}\hldef{,} \hlsng{"weight"}\hldef{,} \hlsng{"age"}\hldef{,} \hlsng{"bmi"}\hldef{)],}
+  \hlkwc{center} \hldef{=} \hlnum{TRUE}\hldef{,} \hlkwc{scale.} \hldef{=} \hlnum{TRUE}
+\hldef{)}
+\hlkwd{summary}\hldef{(hockey.pca)}
+\end{alltt}
+\begin{verbatim}
+## Importance of components:
+##                           PC1    PC2    PC3     PC4
+## Standard deviation     1.3933 1.1044 0.9154 0.03081
+## Proportion of Variance 0.4853 0.3049 0.2095 0.00024
+## Cumulative Proportion  0.4853 0.7903 0.9998 1.00000
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+\begin{frame}\frametitle{Importance of components}
+\begin{itemize}
+\item PC1 ($48.5\%$) and PC2 ($30.5\%$) explain $79.0\%$ of the total variance across the four standardised variables
+\vfill
+\item The first three components capture $99.98\%$ of the total variance
+\vfill
+\item PC4 accounts for almost zero variance ($0.02\%$):
+\[
+\text{BMI} = \frac{\text{weight}}{\text{height}^2}
+\]
+Around the sample mean, BMI is nearly a linear combination of \code{height} and \code{weight}, so the 4D point cloud is practically three-dimensional!
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]\frametitle{PCA biplot with \code{ggbiplot}}
+The \code{ggbiplot} package overlays projected observations and variable loadings (arrows) with confidence ellipses:
+\vfill
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{library}\hldef{(ggbiplot)}
+\hldef{p_biplot} \hlkwb{=} \hlkwd{ggbiplot}\hldef{(hockey.pca,} \hlkwc{obs.scale} \hldef{=} \hlnum{1}\hldef{,} \hlkwc{var.scale} \hldef{=} \hlnum{1}\hldef{,}
+         \hlkwc{groups} \hldef{= hockey_multi}\hlopt{$}\hldef{position,} \hlkwc{ellipse} \hldef{=} \hlnum{TRUE}\hldef{,}
+         \hlkwc{circle} \hldef{=} \hlnum{TRUE}\hldef{,} \hlkwc{alpha} \hldef{=} \hlnum{0.2}\hldef{)} \hlopt{+}
+  \hlkwd{theme_minimal}\hldef{()} \hlopt{+}
+  \hlkwd{labs}\hldef{(}\hlkwc{title} \hldef{=} \hlsng{"PCA biplot of IIHF players by position"}\hldef{,}
+       \hlkwc{color} \hldef{=} \hlsng{"Position"}\hldef{,} \hlkwc{fill} \hldef{=} \hlsng{"Position"}\hldef{)}
+\hlkwd{print}\hldef{(p_biplot)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+\maxFrameImage{FIGS/U05-plot-pca-ggbiplot-1.pdf}
+
+
+\begin{frame}\frametitle{Interpreting the biplot}
+\textbf{Variable loadings (arrows)}:
+\begin{itemize}
+\item \code{weight} points along positive PC1 (overall body size)
+\item PC2 contrasts \code{age} and \code{bmi} (pointing upward) against \code{height} (pointing downward)
+\end{itemize}
+\vfill
+\textbf{Group ellipses (positions)}:
+\begin{itemize}
+\item Defencemen tend to have higher PC1 scores (taller and heavier on average)
+\item Forwards and goalkeepers cluster at lower PC1 scores
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]\frametitle{Multivariate analysis with \code{FactoMineR}}
+\code{FactoMineR::PCA} supports supplementary qualitative variables (\code{quali.sup = 1} for \code{position}):
+\vfill
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{library}\hldef{(FactoMineR)}
+\hldef{res.pca} \hlkwb{=} \hlkwd{PCA}\hldef{(hockey_multi[,} \hlkwd{c}\hldef{(}\hlsng{"position"}\hldef{,} \hlsng{"height"}\hldef{,} \hlsng{"weight"}\hldef{,}
+                               \hlsng{"age"}\hldef{,} \hlsng{"bmi"}\hldef{)],}
+              \hlkwc{quali.sup} \hldef{=} \hlnum{1}\hldef{,} \hlkwc{scale.unit} \hldef{=} \hlnum{TRUE}\hldef{,} \hlkwc{graph} \hldef{=} \hlnum{FALSE}\hldef{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\vfill
+Provides two key diagnostic visualisations:
+\begin{enumerate}
+\item \textbf{Variable correlation circle}: correlations with PC1 and PC2 inside the unit circle
+\item \textbf{Factor map with group ellipses}: observations and barycentres by position
+\end{enumerate}
+\end{frame}
+
+
+\begin{frame}[fragile]\frametitle{Variable correlation circle (\code{FactoMineR})}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{plot.PCA}\hldef{(res.pca,} \hlkwc{axes} \hldef{=} \hlkwd{c}\hldef{(}\hlnum{1}\hldef{,} \hlnum{2}\hldef{),} \hlkwc{choix} \hldef{=} \hlsng{"var"}\hldef{,}
+         \hlkwc{title} \hldef{=} \hlsng{"Variable correlation circle (FactoMineR)"}\hldef{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+\maxFrameImage{FIGS/U05-plot-factominer-var-1.pdf}
+
+
+\begin{frame}[fragile]\frametitle{Position ellipses and barycentres (\code{FactoMineR})}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{plotellipses}\hldef{(res.pca,} \hlkwc{keepvar} \hldef{=} \hlnum{1}\hldef{,} \hlkwc{label} \hldef{=} \hlsng{"quali"}\hldef{,}
+             \hlkwc{title} \hldef{=} \hlsng{"Individuals and position barycentres"}\hldef{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+\maxFrameImage{FIGS/U05-plot-factominer-ellipses-1.pdf}
 
 
 

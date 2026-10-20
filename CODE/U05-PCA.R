@@ -120,12 +120,18 @@ cumsum(ev$values) / sum(ev$values)
 
 
 ## ----load-hockey-data-2, echo=FALSE-------------------------------------------
-# Load the hockey data (as in previous lecture) and centre
-# it.
-# From https://figshare.com/ndownloader/files/5303173
-data = read.csv("https://github.com/julien-arino/math-of-data-science/raw/refs/heads/main/DATA/hockey-players.csv")
-data$weight.c = data$weight-mean(data$weight)
-data$height.c = data$height-mean(data$height)
+# Ensure hockey data is loaded and deduplicated
+if (!exists("data") || !all(c("height.c", "weight.c") %in% colnames(data))) {
+  raw_data = if (file.exists("../DATA/hockey-players.csv")) {
+    read.csv("../DATA/hockey-players.csv")
+  } else {
+    read.csv("https://github.com/julien-arino/math-of-data-science/raw/refs/heads/main/DATA/hockey-players.csv")
+  }
+  data_simplified = aggregate(cbind(height, weight) ~ name, data = raw_data, FUN = mean)
+  data_simplified$weight.c = data_simplified$weight - mean(data_simplified$weight)
+  data_simplified$height.c = data_simplified$height - mean(data_simplified$height)
+  data = data_simplified
+}
 
 
 ## -----------------------------------------------------------------------------
@@ -134,14 +140,14 @@ cov(data$height.c, data$weight.c)
 
 
 ## -----------------------------------------------------------------------------
-X = as.matrix(data[,c("height.c", "weight.c")])
-S = 1/(dim(X)[1]-1)*t(X) %*% X
+X = as.matrix(data[, c("height.c", "weight.c")])
+S = 1 / (dim(X)[1] - 1) * t(X) %*% X
 S
 
 
 ## -----------------------------------------------------------------------------
-var(X[,1])
-var(X[,2])
+var(X[, 1])
+var(X[, 2])
 
 
 ## -----------------------------------------------------------------------------
@@ -149,107 +155,156 @@ ev = eigen(S)
 ev
 
 
-## ----plot-hockey-centred-evector----------------------------------------------
+## ----plot-hockey-centred-evector, fig.width=6, fig.height=6, crop=TRUE--------
+par(pty = "s")
+lims = range(c(data$height.c, data$weight.c))
 plot(data$height.c, data$weight.c,
-    pch = 19, col = "dodgerblue4",
-    main = "IIHF players 2001-2016 (with first component)",
-    xlab = "Height (cm)", ylab = "Weight (kg)")
-abline(a = 0, b = ev$vectors[2,1]/ev$vectors[1,1],
+     xlim = lims, ylim = lims, asp = 1,
+     pch = 19, col = "dodgerblue4",
+     main = "IIHF players 2001-2016 (with first component)",
+     xlab = "Centred height (cm)", ylab = "Centred weight (kg)")
+abline(a = 0, b = ev$vectors[2, 1] / ev$vectors[1, 1],
        col = "red", lwd = 3)
 
 
 ## -----------------------------------------------------------------------------
-theta = atan(ev$vectors[2,1]/ev$vectors[1,1])
-theta
-R_theta = matrix(c(cos(theta), -sin(theta),
-                  sin(theta), cos(theta)),
-                nr = 2, byrow = TRUE)
-R_theta
+z = lm(weight.c ~ 0 + height.c, data = data)
+coef(z)
+
+
+## ----plot-hockey-lm-compare, fig.width=6, fig.height=6, echo=FALSE, crop=TRUE----
+par(pty = "s")
+plot(data$height.c, data$weight.c,
+     xlim = lims, ylim = lims, asp = 1,
+     pch = 19, col = "dodgerblue4",
+     main = "First PC (red) vs. least squares fit (green)",
+     xlab = "Centred height (cm)", ylab = "Centred weight (kg)")
+abline(a = 0, b = ev$vectors[2, 1] / ev$vectors[1, 1],
+       col = "red", lwd = 3)
+abline(a = 0, b = coef(z), col = "green", lwd = 3)
 
 
 ## -----------------------------------------------------------------------------
-tmp_in = matrix(c(data$weight.c, data$height.c),
-                nc = 2)
-tmp_out = c()
-for (i in 1:dim(tmp_in)[1]) {
-    tmp_out = rbind(tmp_out,
-                    t(R_theta %*% tmp_in[i,]))
-}
-data$weight.c_r = tmp_out[,1]
-data$height.c_r = tmp_out[,2]
+theta = atan(ev$vectors[2, 1] / ev$vectors[1, 1])
+theta
+R_minus_theta = matrix(c(cos(-theta), -sin(-theta),
+                         sin(-theta),  cos(-theta)),
+                       nr = 2, byrow = TRUE)
+R_minus_theta
 
 
-## ----plot-hockey-centred-evector-2,echo=FALSE---------------------------------
+## ----plot-hockey-centred-rotated, fig.width=6, fig.height=6, echo=2:8, crop=TRUE----
+par(pty = "s")
+rot_pts = X %*% t(R_minus_theta)
+data$height.c_r = rot_pts[, 1]
+data$weight.c_r = rot_pts[, 2]
 plot(data$height.c_r, data$weight.c_r,
-    pch = 19, col = "dodgerblue4",
-    main = "IIHF players 2001-2016 (rotated to first component)",
-    xlab = "x-axis", ylab = "y-axis")
-
-
-## ----plot-hockey-centred-rotated----------------------------------------------
-plot(data$height.c_r, data$weight.c_r,
-    pch = 19, col = "dodgerblue4",
-    xlab = "x-axis", ylab = "y-axis",
-    main = "IIHF players 2001-2016 (rotated to first component)",
-    ylim = range(data$weight.c))
+     xlim = lims, ylim = lims, asp = 1,
+     pch = 19, col = "dodgerblue4",
+     xlab = "Rotated x-axis (1st component)",
+     ylab = "Rotated y-axis",
+     main = "IIHF players 2001-2016 (rotated to first component)")
 abline(h = 0, col = "red", lwd = 2)
 
 
-## ----plot-hockey-centred-2evectors--------------------------------------------
+## ----plot-hockey-centred-2evectors, fig.width=6, fig.height=6, echo=2:9, crop=TRUE----
+par(pty = "s")
 plot(data$height.c, data$weight.c,
-    pch = 19, col = "dodgerblue4",
-    main = "IIHF players 2001-2016 (with first and second components)",
-    xlab = "Height (cm)", ylab = "Weight (kg)")
-abline(a = 0, b = ev$vectors[2,1]/ev$vectors[1,1],
+     xlim = lims, ylim = lims, asp = 1,
+     pch = 19, col = "dodgerblue4",
+     main = "IIHF players 2001-2016 (1st and 2nd eigenvectors)",
+     xlab = "Centred height (cm)", ylab = "Centred weight (kg)")
+abline(a = 0, b = ev$vectors[2, 1] / ev$vectors[1, 1],
        col = "red", lwd = 3)
-abline(a = 0, b = ev$vectors[2,2]/ev$vectors[1,2],
+abline(a = 0, b = ev$vectors[2, 2] / ev$vectors[1, 2],
        col = "darkgreen", lwd = 3)
 
 
-## ----plot-hockey-proper-changed-basis,echo=1:12-------------------------------
-red_line = c(1, ev$vectors[2,1]/ev$vectors[1,1])
-red_line = red_line/sqrt(sum(red_line^2))
-green_line = c(1, ev$vectors[2,2]/ev$vectors[1,2])
-green_line = green_line/sqrt(sum(green_line^2))
-augmented_M = cbind(red_line,green_line, diag(2))
-P = rref(augmented_M)[,3:4]
+## -----------------------------------------------------------------------------
+GS = pracma::gramSchmidt(A = ev$vectors, tol = 1e-10)
+A = cbind(GS$Q, diag(2))
+pracma::rref(A)
 
-tmp_in = matrix(c(data$weight.c, data$height.c), nc = 2)
-tmp_out = c()
-for (i in 1:dim(tmp_in)[1]) {
-    tmp_out = rbind(tmp_out, t(P %*% tmp_in[i,]))
-}
-data$weight.c_r2 = tmp_out[,1]
-data$height.c_r2 = tmp_out[,2]
-plot(data$height.c_r2, data$weight.c_r2,
-    pch = 19, col = "dodgerblue4",
-    xlab = "x-axis", ylab = "y-axis",
-    main = "IIHF players 2001-2016 (rotated to first component)",
-    ylim = range(data$weight.c))
+
+## ----plot-hockey-centred-evector-3, fig.width=6, fig.height=6, echo=c(2:5), crop=TRUE----
+par(pty = "s")
+P = pracma::rref(A)[, c(3, 4)]
+P
+X.new = X %*% t(P)
+cov(X.new)
+plot(X.new[, 1], X.new[, 2],
+     xlim = lims, ylim = lims, asp = 1,
+     xlab = "PC1 score (z1)", ylab = "PC2 score (z2)",
+     main = "IIHF players in principal component coordinates",
+     pch = 19, col = "dodgerblue4")
 abline(h = 0, col = "red", lwd = 2)
 abline(v = 0, col = "darkgreen", lwd = 2)
 
 
 ## -----------------------------------------------------------------------------
-GS = pracma::gramSchmidt(A = ev$vectors, tol = 1e-10)
-GS
+cov(X.new)
 
 
-## ----pca-built-in-functions---------------------------------------------------
-A=matrix(c(GS$Q,1,0,0,1), nr = 2)
-A
-pracma::rref(A)
+## ----echo=FALSE---------------------------------------------------------------
+if (!exists("raw_data")) {
+  raw_data = if (file.exists("../DATA/hockey-players.csv")) {
+    read.csv("../DATA/hockey-players.csv")
+  } else {
+    read.csv("https://github.com/julien-arino/math-of-data-science/raw/refs/heads/main/DATA/hockey-players.csv")
+  }
+}
+
+## -----------------------------------------------------------------------------
+agg_num = aggregate(cbind(height, weight, age, bmi) ~ name,
+                    data = raw_data, FUN = mean)
+agg_pos = aggregate(position ~ name, data = raw_data,
+                    FUN = function(x) x[1])
+hockey_multi = merge(agg_pos, agg_num, by = "name")
+hockey_multi$position = factor(
+  hockey_multi$position,
+  levels = c("D", "F", "G"),
+  labels = c("Defence", "Forward", "Goalkeeper")
+)
 
 
-## ----plot-hockey-centred-evector-3,echo=c(1,3,4)------------------------------
-P = pracma::rref(A)[,c(3,4)]
-P
-X.new = X %*% t(P)
+## -----------------------------------------------------------------------------
+head(hockey_multi, n = 4)
 
-plot(X.new[,1], X.new[,2],
-     xlab = "x-axis", ylab = "y-axis",
-     main = "IIHF players 2001-2016 (rotated to first component)",
-     pch = 19, col = "dodgerblue4")
+
+## -----------------------------------------------------------------------------
+hockey.pca = prcomp(
+  hockey_multi[, c("height", "weight", "age", "bmi")],
+  center = TRUE, scale. = TRUE
+)
+summary(hockey.pca)
+
+
+## ----plot-pca-ggbiplot, fig.width=7.5, fig.height=4.8, echo=1:7, crop=TRUE----
+library(ggbiplot)
+p_biplot = ggbiplot(hockey.pca, obs.scale = 1, var.scale = 1,
+         groups = hockey_multi$position, ellipse = TRUE,
+         circle = TRUE, alpha = 0.2) +
+  theme_minimal() +
+  labs(title = "PCA biplot of IIHF players by position",
+       color = "Position", fill = "Position")
+print(p_biplot)
+
+
+## ----pca-factominer-run, message=FALSE, warning=FALSE-------------------------
+library(FactoMineR)
+res.pca = PCA(hockey_multi[, c("position", "height", "weight",
+                               "age", "bmi")],
+              quali.sup = 1, scale.unit = TRUE, graph = FALSE)
+
+
+## ----plot-factominer-var, fig.width=6, fig.height=5, crop=TRUE----------------
+plot.PCA(res.pca, axes = c(1, 2), choix = "var",
+         title = "Variable correlation circle (FactoMineR)")
+
+
+## ----plot-factominer-ellipses, fig.width=7, fig.height=5, crop=TRUE-----------
+plotellipses(res.pca, keepvar = 1, label = "quali",
+             title = "Individuals and position barycentres")
 
 
 ## ----convert-Rnw-to-R-part2,warning=FALSE,message=FALSE,echo=FALSE,results='hide'----
