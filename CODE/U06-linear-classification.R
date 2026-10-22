@@ -51,6 +51,45 @@ axis(2, at = c(1, 2), labels = c("PC1", "Supervised"), las = 1)
 abline(h = c(1, 2), col = "grey80", lty = 3)
 
 
+## ----svm-larger-dataset-demo,echo=TRUE,size='footnotesize'--------------------
+library(e1071)
+set.seed(42); n = 25
+X1 = matrix(rnorm(2 * n, mean = 2, sd = 0.6), n, 2)
+X2 = matrix(rnorm(2 * n, mean = -1, sd = 0.6), n, 2)
+dat = data.frame(x1 = c(X1[, 1], X2[, 1]), x2 = c(X1[, 2], X2[, 2]),
+                 y = factor(c(rep(1, n), rep(-1, n))))
+fit = svm(y ~ ., data = dat, kernel = "linear",
+          cost = 1000, scale = FALSE)
+w = drop(t(fit$coefs) %*% fit$SV)
+b = -fit$rho
+cat("Support vectors:", length(fit$index), "out of", nrow(dat), "\n")
+cat("w:", round(w, 4), " b:", round(b, 4),
+    " gamma:", round(2 / sqrt(sum(w^2)), 4), "\n")
+
+
+## ----plot-svm-larger-dataset,echo=FALSE,fig.width=7.5,fig.height=4.5----------
+par(mar = c(4, 4, 3, 1), pty = "s")
+plot(dat$x1, dat$x2,
+     col = ifelse(dat$y == 1, "dodgerblue4", "firebrick3"),
+     pch = 19, asp = 1,
+     xlim = c(-3, 4), ylim = c(-3, 4),
+     xlab = expression(x[1]), ylab = expression(x[2]),
+     main = "Hard-margin SVM on 50 points in R (e1071)")
+grid()
+# Highlight support vectors with open circles
+points(dat$x1[fit$index], dat$x2[fit$index], cex = 2.2, lwd = 2.2, col = "black")
+# Decision boundary and margin hyperplanes
+abline(a = -b / w[2], b = -w[1] / w[2], col = "black", lwd = 2.5)
+abline(a = -(b - 1) / w[2], b = -w[1] / w[2], col = "dodgerblue4", lty = 2, lwd = 1.8)
+abline(a = -(b + 1) / w[2], b = -w[1] / w[2], col = "firebrick3", lty = 2, lwd = 1.8)
+legend("topleft",
+       legend = c("Class +1", "Class -1", "Support vectors (3)",
+                  "Boundary H", expression(H[+1]~"&"~H[-1])),
+       col = c("dodgerblue4", "firebrick3", "black", "black", "gray40"),
+       pch = c(19, 19, 1, NA, NA), lty = c(NA, NA, NA, 1, 2),
+       lwd = c(NA, NA, 2, 2.5, 1.8), bg = "white")
+
+
 ## ----ls-outlier-demo,echo=TRUE------------------------------------------------
 X4 = matrix(c(-1, 0, 1,  0, -1, 1,  1, 0, 1,  0, 1, 1),
             nrow = 4, byrow = TRUE)

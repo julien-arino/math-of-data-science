@@ -541,21 +541,51 @@ abline(h = c(1, 2), col = "grey80", lty = 3)
 \end{frame}
 
 
-\begin{frame}{Support vectors and canonical margin hyperplanes}
-    Suppose $(\bw, b)$ separates a finite dataset, so $\min_{1 \le i \le n} y_i(\bw^T \bx_i + b) = m > 0$
+\begin{frame}{Scale invariance of separating hyperplanes}
+    Let $\H = \{\bx \in \IR^p : \bw^T \bx + b = 0\}$ be a hyperplane.
+    For any constant $k > 0$, consider the rescaled parameters $\widetilde{\bw} = k\bw$ and $\widetilde{b} = kb$:
+    \begin{itemize}
+        \item \textbf{Same geometric hyperplane:} for all $\bx \in \IR^p$,
+        \[
+            \widetilde{\bw}^T \bx + \widetilde{b} = (k\bw)^T \bx + kb = k(\bw^T \bx + b) = 0 \iff \bw^T \bx + b = 0
+        \]
+        Thus, $\{\bx : \widetilde{\bw}^T \bx + \widetilde{b} = 0\}$ and $\{\bx : \bw^T \bx + b = 0\}$ describe the exact same hyperplane $\H$
+        \item \textbf{Same classification decisions:} since $k > 0$, signs are preserved:
+        \[
+            \sgn(\widetilde{\bw}^T \bx + \widetilde{b}) = \sgn(k(\bw^T \bx + b)) = \sgn(\bw^T \bx + b)
+        \]
+        Every point $\bx$ is assigned to the exact same class ($+1$ or $-1$)
+        \item \textbf{Same geometric distance:} by Theorem~\ref{th:distance-point-hyperplane}, $\frac{|\widetilde{\bw}^T \bx + \widetilde{b}|}{\|\widetilde{\bw}\|} = \frac{k|\bw^T \bx + b|}{k\|\bw\|} = \frac{|\bw^T \bx + b|}{\|\bw\|}$
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \textbf{Takeaway:} Multiplying or dividing both $\bw$ and $b$ by any positive scalar $k > 0$ does not change the decision boundary or the classifications
     \vfill
-    Dividing both $\bw$ and $b$ by $m$ does not change the decision boundary $\H = \{\bx : \bw^T \bx + b = 0\}$, and scales the minimum functional margin to $1$:
+    Suppose $(\bw, b)$ separates a finite dataset, so
+    \[
+        \min_{1 \le i \le n} y_i(\bw^T \bx_i + b) = m > 0
+    \]
+    \vfill
+    By scale invariance, dividing both $\bw$ and $b$ by $m$ (setting $\widetilde{\bw} = \frac{\bw}{m}$ and $\widetilde{b} = \frac{b}{m}$) does not change the decision boundary $\H$, and scales the minimum to $1$:
+    \[
+        y_i(\widetilde{\bw}^T \bx_i + \widetilde{b}) = \frac{1}{m} y_i(\bw^T \bx_i + b) \ge \frac{m}{m} = 1
+    \]
+\end{frame}
+
+\begin{frame}{Support vectors and canonical margin hyperplanes}
+    Dropping the tildes gives the \defword{canonical form}:
     \[
         y_i(\bw^T \bx_i + b) \ge 1 \quad \text{for all } i = 1, \ldots, n
     \]
     \vfill
-    In this \defword{canonical form}, the slab free of training points is bounded by two parallel hyperplanes:
+    The slab free of training points is bounded by two parallel hyperplanes:
     \begin{itemize}
         \item $\H_{+1} = \{\bx \in \IR^p : \bw^T \bx + b = +1\}$ (positive margin boundary)
         \item $\H_{-1} = \{\bx \in \IR^p : \bw^T \bx + b = -1\}$ (negative margin boundary)
     \end{itemize}
     \vfill
-    The training points $\bx_i$ that lie directly on $\H_{+1}$ or $\H_{-1}$ (satisfying $y_i(\bw^T \bx_i + b) = 1$) are called \defword{support vectors}
+    Points on $\H_{+1}$ or $\H_{-1}$ (satisfying $y_i(\bw^T \bx_i + b) = 1$) are \defword{support vectors}
 \end{frame}
 
 
@@ -767,24 +797,111 @@ abline(h = c(1, 2), col = "grey80", lty = 3)
 \end{frame}
 
 
-\begin{frame}{What if we add non-support-vector points?}
-    Suppose we add two more points to Example 2:
+\begin{frame}{Example 1 revisited -- Solving via Lagrange multipliers}
+    Recall Example~1: $\bx_1 = (1, 1)^T$ ($y_1 = -1$) and $\bx_2 = (3, 5)^T$ ($y_2 = +1$)
+    \vfill
+    With multipliers $\alpha_1, \alpha_2 \ge 0$, form the Lagrangian for the hard-margin SVM:
     \[
-        \bx_4 = \begin{pmatrix} 2 \\ 5 \end{pmatrix} \;\; (y_4 = +1) \qquad \text{and} \qquad \bx_5 = \begin{pmatrix} 2 \\ -1 \end{pmatrix} \;\; (y_5 = -1)
+        L(\bw, b, \alpha_1, \alpha_2) = \frac{1}{2}\|\bw\|^2 - \sum_{i=1}^2 \alpha_i\bigl[y_i(\bw^T \bx_i + b) - 1\bigr]
     \]
     \vfill
+    Setting partial derivatives to zero gives the stationarity conditions:
     \begin{itemize}
-        \item Check the functional margin $y_i(\bw^T \bx_i + b) = y_i(x_{i2} - 2)$ at the new points:
-        \begin{align*}
-            y_4(\bw^T \bx_4 + b) &= (+1)(5 - 2) = 3 > 1 \\
-            y_5(\bw^T \bx_5 + b) &= (-1)(-1 - 2) = 3 > 1
-        \end{align*}
-        \vfill
-        \item Because both points lie strictly outside the margin slab (with $y_i(\bw^T \bx_i + b) > 1$), they are \textbf{not support vectors}
-        \vfill
-        \item Moving or deleting $\bx_4$ and $\bx_5$ (as long as they stay outside the margin) does \textbf{not} change $(\bw, b)$ at all!
+        \item $\nabla_{\bw} L = \mathbf{0} \implies \bw = \sum_{i=1}^2 \alpha_i y_i \bx_i = -\alpha_1 (1, 1)^T + \alpha_2 (3, 5)^T$
+        \item $\frac{\partial L}{\partial b} = 0 \implies \sum_{i=1}^2 \alpha_i y_i = -\alpha_1 + \alpha_2 = 0 \implies \alpha_1 = \alpha_2 = \alpha$
+    \end{itemize}
+    \vfill
+    Therefore $\bw = \alpha(\bx_2 - \bx_1) = \alpha (2, 4)^T = (2\alpha, 4\alpha)^T$
+\end{frame}
+
+
+\begin{frame}{Example 1 revisited -- Determining $\alpha$, $\bw$ and $b$}
+    Since both points are support vectors ($\alpha > 0$), their margin constraints are active ($= 1$):
+    \begin{itemize}
+        \item At $\bx_1$: $y_1(\bw^T \bx_1 + b) = -[2\alpha(1) + 4\alpha(1) + b] = 1 \implies 6\alpha + b = -1$
+        \item At $\bx_2$: $y_2(\bw^T \bx_2 + b) = 2\alpha(3) + 4\alpha(5) + b = 1 \implies 26\alpha + b = 1$
+    \end{itemize}
+    \vfill
+    Subtracting the first equation from the second:
+    \[
+        20\alpha = 2 \implies \alpha = \frac{1}{10}
+    \]
+    \vfill
+    Substituting $\alpha = 1/10$ gives the exact same parameters as the geometric approach:
+    \[
+        \bw = \begin{pmatrix} 2(1/10) \\ 4(1/10) \end{pmatrix} = \begin{pmatrix} 1/5 \\ 2/5 \end{pmatrix}, \qquad b = -1 - 6\left(\frac{1}{10}\right) = -\frac{8}{5}
+    \]
+    \vfill
+    \textbf{Key insight:} In general, $\bw = \sum_{i=1}^n \alpha_i y_i \bx_i$ is a linear combination of only the support vectors (points with $\alpha_i > 0$)
+\end{frame}
+
+
+\begin{frame}{Solving hard-margin SVMs on larger sets with \textsf{R}}
+    For larger datasets ($n \gg 2$) or in higher dimensions ($p > 2$), quadratic programming solvers find the optimal multipliers $\alpha_i \ge 0$ numerically
+    \vfill
+    In \textsf{R}, the package \code{e1071} (interface to \textsf{LIBSVM}) provides \code{svm()}:
+    \vskip0.1cm
+    \centering\code{fit = svm(y \textasciitilde{} ., data = dat, kernel = "linear", cost = 1000, scale = FALSE)}
+    \vskip0.15cm
+    \raggedright
+    \begin{itemize}
+        \item \code{kernel = "linear"}: fits the linear decision boundary $\bw^T \bx + b = 0$
+        \item \code{cost = 1000}: a large cost penalty enforces a hard margin (no margin violations)
+        \item \code{scale = FALSE}: operates directly in raw feature coordinates
+    \end{itemize}
+    \vfill
+    The fitted object contains:
+    \begin{itemize}
+        \item \code{fit\$index}: indices of the support vectors ($\alpha_i > 0$)
+        \item \code{fit\$coefs}: the signed multipliers $\alpha_i y_i$ for each support vector
+        \item $\bw = \sum_{i \in \text{SV}} \alpha_i y_i \bx_i$: computed via \code{drop(t(fit\$coefs) \%*\% fit\$SV)}
+        \item Bias $b$: given by \code{-fit\$rho}
     \end{itemize}
 \end{frame}
+
+
+\begin{frame}[fragile]\frametitle{Fitting a linear SVM in \textsf{R} -- 50-point dataset}
+<<svm-larger-dataset-demo,echo=TRUE,size='footnotesize'>>=
+library(e1071)
+set.seed(42); n = 25
+X1 = matrix(rnorm(2 * n, mean = 2, sd = 0.6), n, 2)
+X2 = matrix(rnorm(2 * n, mean = -1, sd = 0.6), n, 2)
+dat = data.frame(x1 = c(X1[, 1], X2[, 1]), x2 = c(X1[, 2], X2[, 2]),
+                 y = factor(c(rep(1, n), rep(-1, n))))
+fit = svm(y ~ ., data = dat, kernel = "linear",
+          cost = 1000, scale = FALSE)
+w = drop(t(fit$coefs) %*% fit$SV)
+b = -fit$rho
+cat("Support vectors:", length(fit$index), "out of", nrow(dat), "\n")
+cat("w:", round(w, 4), " b:", round(b, 4),
+    " gamma:", round(2 / sqrt(sum(w^2)), 4), "\n")
+@
+\end{frame}
+
+<<plot-svm-larger-dataset,echo=FALSE,fig.width=7.5,fig.height=4.5>>=
+par(mar = c(4, 4, 3, 1), pty = "s")
+plot(dat$x1, dat$x2,
+     col = ifelse(dat$y == 1, "dodgerblue4", "firebrick3"),
+     pch = 19, asp = 1,
+     xlim = c(-3, 4), ylim = c(-3, 4),
+     xlab = expression(x[1]), ylab = expression(x[2]),
+     main = "Hard-margin SVM on 50 points in R (e1071)")
+grid()
+# Highlight support vectors with open circles
+points(dat$x1[fit$index], dat$x2[fit$index], cex = 2.2, lwd = 2.2, col = "black")
+# Decision boundary and margin hyperplanes
+abline(a = -b / w[2], b = -w[1] / w[2], col = "black", lwd = 2.5)
+abline(a = -(b - 1) / w[2], b = -w[1] / w[2], col = "dodgerblue4", lty = 2, lwd = 1.8)
+abline(a = -(b + 1) / w[2], b = -w[1] / w[2], col = "firebrick3", lty = 2, lwd = 1.8)
+legend("topleft",
+       legend = c("Class +1", "Class -1", "Support vectors (3)",
+                  "Boundary H", expression(H[+1]~"&"~H[-1])),
+       col = c("dodgerblue4", "firebrick3", "black", "black", "gray40"),
+       pch = c(19, 19, 1, NA, NA), lty = c(NA, NA, NA, 1, 2),
+       lwd = c(NA, NA, 2, 2.5, 1.8), bg = "white")
+@
+
+\maxFrameImage{\Sexpr{knitr::fig_chunk("plot-svm-larger-dataset", "pdf")}}
 
 
 %%%%%%%%%%%%%%%%%%%
