@@ -921,7 +921,11 @@ legend("topleft",
     \[
         \tilde{\bx}_i = \begin{pmatrix} \bx_i \\ 1 \end{pmatrix} \in \IR^{p+1}, \qquad \tilde{\bw} = \begin{pmatrix} \bw \\ b \end{pmatrix} \in \IR^{p+1}
     \]
-    so that $\bw^T \bx_i + b = \tilde{\bx}_i^T \tilde{\bw}$
+    so that, by symmetry of the dot product ($\tilde{\bw}^T \tilde{\bx}_i = \tilde{\bx}_i^T \tilde{\bw}$):
+    \[
+        \bw^T \bx_i + b = \tilde{\bw}^T \tilde{\bx}_i = \tilde{\bx}_i^T \tilde{\bw}
+    \]
+    We write $\tilde{\bx}_i^T \tilde{\bw}$ so that the row vector $\tilde{\bx}_i^T$ naturally matches the $i$-th row of the data matrix $X$ (next slide).
 \end{frame}
 
 
