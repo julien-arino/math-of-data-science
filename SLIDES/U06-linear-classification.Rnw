@@ -742,6 +742,44 @@ abline(h = c(1, 2), col = "grey80", lty = 3)
 \end{frame}
 
 
+\begin{frame}{Example 1 revisited -- Solving via Lagrange multipliers}
+    Recall Example~1: $\bx_1 = (1, 1)^T$ ($y_1 = -1$) and $\bx_2 = (3, 5)^T$ ($y_2 = +1$)
+    \vfill
+    With multipliers $\alpha_1, \alpha_2 \ge 0$, form the Lagrangian for the hard-margin SVM:
+    \[
+        L(\bw, b, \alpha_1, \alpha_2) = \frac{1}{2}\|\bw\|^2 - \sum_{i=1}^2 \alpha_i\bigl[y_i(\bw^T \bx_i + b) - 1\bigr]
+    \]
+    \vfill
+    Setting partial derivatives to zero gives the stationarity conditions:
+    \begin{itemize}
+        \item $\nabla_{\bw} L = \mathbf{0} \implies \bw = \sum_{i=1}^2 \alpha_i y_i \bx_i = -\alpha_1 (1, 1)^T + \alpha_2 (3, 5)^T$
+        \item $\frac{\partial L}{\partial b} = 0 \implies \sum_{i=1}^2 \alpha_i y_i = -\alpha_1 + \alpha_2 = 0 \implies \alpha_1 = \alpha_2 = \alpha$
+    \end{itemize}
+    \vfill
+    Therefore $\bw = \alpha(\bx_2 - \bx_1) = \alpha (2, 4)^T = (2\alpha, 4\alpha)^T$
+\end{frame}
+
+
+\begin{frame}{Example 1 revisited -- Determining $\alpha$, $\bw$ and $b$}
+    Since both points are support vectors ($\alpha > 0$), their margin constraints are active ($= 1$):
+    \begin{itemize}
+        \item At $\bx_1$: $y_1(\bw^T \bx_1 + b) = -[2\alpha(1) + 4\alpha(1) + b] = 1 \implies 6\alpha + b = -1$
+        \item At $\bx_2$: $y_2(\bw^T \bx_2 + b) = 2\alpha(3) + 4\alpha(5) + b = 1 \implies 26\alpha + b = 1$
+    \end{itemize}
+    \vfill
+    Subtracting the first equation from the second:
+    \[
+        20\alpha = 2 \implies \alpha = \frac{1}{10}
+    \]
+    \vfill
+    Substituting $\alpha = 1/10$ gives the exact same parameters as the geometric approach:
+    \[
+        \bw = \begin{pmatrix} 2(1/10) \\ 4(1/10) \end{pmatrix} = \begin{pmatrix} 1/5 \\ 2/5 \end{pmatrix}, \qquad b = -1 - 6\left(\frac{1}{10}\right) = -\frac{8}{5}
+    \]
+    \vfill
+    \textbf{Key insight:} In general, $\bw = \sum_{i=1}^n \alpha_i y_i \bx_i$ is a linear combination of only the support vectors (points with $\alpha_i > 0$)
+\end{frame}
+
 \begin{frame}{Example 2 -- Hard-margin SVM for 3 points in $\IR^2$}
     \begin{columns}[c]
     \begin{column}{0.58\textwidth}
@@ -797,43 +835,6 @@ abline(h = c(1, 2), col = "grey80", lty = 3)
 \end{frame}
 
 
-\begin{frame}{Example 1 revisited -- Solving via Lagrange multipliers}
-    Recall Example~1: $\bx_1 = (1, 1)^T$ ($y_1 = -1$) and $\bx_2 = (3, 5)^T$ ($y_2 = +1$)
-    \vfill
-    With multipliers $\alpha_1, \alpha_2 \ge 0$, form the Lagrangian for the hard-margin SVM:
-    \[
-        L(\bw, b, \alpha_1, \alpha_2) = \frac{1}{2}\|\bw\|^2 - \sum_{i=1}^2 \alpha_i\bigl[y_i(\bw^T \bx_i + b) - 1\bigr]
-    \]
-    \vfill
-    Setting partial derivatives to zero gives the stationarity conditions:
-    \begin{itemize}
-        \item $\nabla_{\bw} L = \mathbf{0} \implies \bw = \sum_{i=1}^2 \alpha_i y_i \bx_i = -\alpha_1 (1, 1)^T + \alpha_2 (3, 5)^T$
-        \item $\frac{\partial L}{\partial b} = 0 \implies \sum_{i=1}^2 \alpha_i y_i = -\alpha_1 + \alpha_2 = 0 \implies \alpha_1 = \alpha_2 = \alpha$
-    \end{itemize}
-    \vfill
-    Therefore $\bw = \alpha(\bx_2 - \bx_1) = \alpha (2, 4)^T = (2\alpha, 4\alpha)^T$
-\end{frame}
-
-
-\begin{frame}{Example 1 revisited -- Determining $\alpha$, $\bw$ and $b$}
-    Since both points are support vectors ($\alpha > 0$), their margin constraints are active ($= 1$):
-    \begin{itemize}
-        \item At $\bx_1$: $y_1(\bw^T \bx_1 + b) = -[2\alpha(1) + 4\alpha(1) + b] = 1 \implies 6\alpha + b = -1$
-        \item At $\bx_2$: $y_2(\bw^T \bx_2 + b) = 2\alpha(3) + 4\alpha(5) + b = 1 \implies 26\alpha + b = 1$
-    \end{itemize}
-    \vfill
-    Subtracting the first equation from the second:
-    \[
-        20\alpha = 2 \implies \alpha = \frac{1}{10}
-    \]
-    \vfill
-    Substituting $\alpha = 1/10$ gives the exact same parameters as the geometric approach:
-    \[
-        \bw = \begin{pmatrix} 2(1/10) \\ 4(1/10) \end{pmatrix} = \begin{pmatrix} 1/5 \\ 2/5 \end{pmatrix}, \qquad b = -1 - 6\left(\frac{1}{10}\right) = -\frac{8}{5}
-    \]
-    \vfill
-    \textbf{Key insight:} In general, $\bw = \sum_{i=1}^n \alpha_i y_i \bx_i$ is a linear combination of only the support vectors (points with $\alpha_i > 0$)
-\end{frame}
 
 
 \begin{frame}{Solving hard-margin SVMs on larger sets with \textsf{R}}
