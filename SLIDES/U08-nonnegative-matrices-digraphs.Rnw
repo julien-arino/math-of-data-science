@@ -1,0 +1,1747 @@
+\documentclass[aspectratio=169]{beamer}
+
+% Set lecture number for later use
+<<set-lecture-number,echo=FALSE>>=
+lecture_number = "U08"
+@
+
+% Part common to all the lectures
+\subtitle{MATH 2740 -- Mathematics of Data Science -- Unit \Sexpr{lecture_number}}
+\author{\texorpdfstring{Julien Arino\newline\url{julien.arino@umanitoba.ca}}{Julien Arino}}
+\institute{Department of Mathematics @ University of Manitoba}
+
+% Title of the lecture
+\title{Non-negative matrices, digraphs and regular Markov chains}
+
+<<set-options,echo=FALSE,warning=FALSE,message=FALSE>>=
+# Source the code common to all lectures
+source("common-code.R")
+@
+
+<<set-slide-background,echo=FALSE,results='asis'>>=
+# Are we plotting for a dark background? Setting is in common-code.R, but
+# cat command must run here.
+cat(input_setup)
+@
+
+<<setup, include=FALSE>>=
+# Set global chunk options
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+@
+
+\begin{document}
+
+% Set up cross-references and counter persistence
+\setcounter{theorem}{106}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% TITLE AND OUTLINE
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\SStitlepage
+\SSoutlinepage
+
+
+%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%
+\SSsection{Non-negative matrices and their digraphs}
+
+\begin{frame}{Why study non-negative matrices and digraphs together?}
+Many matrices in data science have entries that represent quantities that cannot be negative:
+\begin{itemize}
+\item counts, weights, distances or similarity scores
+\item transition probabilities between states in a stochastic process
+\item hyperlinks between web pages or flows in a network
+\end{itemize}
+\vfill
+Such matrices have a rich geometric and spectral theory (Perron-Frobenius theory)
+\vfill
+Their zero/non-zero sparsity pattern is naturally encoded by a \defword{directed graph} (\defword{digraph}), turning algebraic questions about matrix powers into visual questions about walks on a graph
+\end{frame}
+
+\begin{frame}{Non-negative and positive vectors and matrices}
+\begin{importantdefinition}[Non-negative and positive matrices]
+Let $A = [a_{ij}] \in \M_{np}(\IR)$ be a real matrix
+\begin{itemize}
+\item $A$ is \defword{non-negative}, written $A \ge 0$ (or $A \in \M_{np}(\IRplus)$), if
+\[
+a_{ij} \ge 0 \quad \text{for all } i = 1,\ldots,n \text{ and } j = 1,\ldots,p
+\]
+\item $A$ is \defword{positive} (or \defword{strictly positive}), written $A > 0$, if
+\[
+a_{ij} > 0 \quad \text{for all } i = 1,\ldots,n \text{ and } j = 1,\ldots,p
+\]
+\end{itemize}
+\end{importantdefinition}
+\vfill
+The same notation applies to vectors $\bx = (x_1,\ldots,x_n)^T \in \IR^n$:
+\begin{itemize}
+\item $\bx \ge \b0$ means $x_i \ge 0$ for all $i = 1,\ldots,n$
+\item $\bx > \b0$ means $x_i > 0$ for all $i = 1,\ldots,n$
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Componentwise inequalities and basic properties}
+For two matrices $A, B \in \M_{np}(\IR)$, we write $A \ge B$ if $A - B \ge 0$, and $A > B$ if $A - B > 0$
+\vfill
+\begin{proposition}[Arithmetic of non-negative matrices]
+Let $A, B \in \M_n(\IRplus)$ and $\bx \in \IRplus^n$
+\begin{enumerate}
+\item $A + B \ge 0$ and $AB \ge 0$
+\item For any integer $k \ge 1$, $A^k \ge 0$
+\item If $A > 0$ and $\bx \ge \b0$ with $\bx \neq \b0$, then $A\bx > \b0$
+\item If $A \ge 0$ and $\bx > \b0$, then $A\bx > \b0$ if and only if $A$ has no zero row
+\end{enumerate}
+\end{proposition}
+\vfill
+Why does property 3 hold? Because $\bx \neq \b0$ has at least one entry $x_{j_0} > 0$, so for every row $i$,
+\[
+(A\bx)_i = \sum_{j=1}^n a_{ij} x_j \ge a_{i,j_0} x_{j_0} > 0
+\]
+\end{frame}
+
+\begin{frame}{Directed graphs (digraphs)}
+\begin{importantdefinition}[Directed graph]
+A \defword{directed graph} (or \defword{digraph}) is a pair $G = (V, A)$ where:
+\begin{itemize}
+\item $V = \{1, 2, \ldots, n\}$ is a finite set of elements called \defword{vertices} (or \defword{nodes})
+\item $A \subseteq V \times V$ is a set of ordered pairs of vertices called \defword{arcs} (or \defword{directed edges})
+\end{itemize}
+\end{importantdefinition}
+\vfill
+\begin{definition}[Arc, tail, head and loop]
+An \defword{arc} $e = (u, v) \in A$ represents a directed connection from vertex $u$ to vertex $v$
+\begin{itemize}
+\item $u$ is the \defword{initial endpoint} (or \defword{tail}) and $v$ is the \defword{terminal endpoint} (or \defword{head})
+\item $u$ is a \defword{predecessor} of $v$ and $v$ is a \defword{successor} of $u$
+\item An arc of the form $(u, u) \in A$ from a vertex to itself is called a \defword{loop} (or \defword{self-loop})
+\end{itemize}
+\end{definition}
+\end{frame}
+
+\begin{frame}{Indegree, outdegree, sources and sinks}
+Let $G = (V, A)$ be a digraph and $v \in V$
+\begin{definition}[Outdegree and indegree]
+\begin{itemize}
+\item The \defword{outdegree} $d_G^+(v)$ is the number of arcs directed away from $v$:
+\[
+d_G^+(v) = |\{w \in V : (v, w) \in A\}|
+\]
+\item The \defword{indegree} $d_G^-(v)$ is the number of arcs directed towards $v$:
+\[
+d_G^-(v) = |\{u \in V : (u, v) \in A\}|
+\]
+\item A vertex with $d_G^-(v) = 0$ is a \defword{source}; a vertex with $d_G^+(v) = 0$ is a \defword{sink}
+\end{itemize}
+\end{definition}
+\vfill
+Since every arc has one tail and one head,
+\[
+\sum_{v \in V} d_G^+(v) = \sum_{v \in V} d_G^-(v) = |A|
+\]
+\end{frame}
+
+\begin{frame}{The digraph associated with a non-negative matrix}
+\begin{importantdefinition}[Digraph of a matrix and adjacency matrix]
+\begin{itemize}
+\item Given a square non-negative matrix $M = [m_{ij}] \in \M_n(\IRplus)$, its associated \defword{digraph} is $\G(M) = (V, A)$ with vertex set $V = \{1, \ldots, n\}$ and arc set
+\[
+A = \{(i, j) \in V \times V : m_{ij} > 0\}
+\]
+If we attach weight $m_{ij}$ to each arc $(i, j) \in A$, we obtain a \defword{weighted digraph} (or \defword{directed network})
+\item Conversely, given a digraph $G = (V, A)$ on $V = \{1, \ldots, n\}$, its (binary) \defword{adjacency matrix} is $A(G) = [a_{ij}] \in \M_n(\IRplus)$ defined by
+\[
+a_{ij} = \begin{cases}
+1 & \text{if } (i, j) \in A \\
+0 & \text{otherwise}
+\end{cases}
+\]
+\end{itemize}
+\end{importantdefinition}
+\vfill
+Note that diagonal entries $m_{ii} > 0$ correspond to self-loops $(i, i)$ at vertex $i$
+\end{frame}
+
+\begin{frame}{Orientation convention: general matrices vs Markov chains}
+There are two natural conventions for drawing arcs from a matrix $M = [m_{ij}]$:
+\vfill
+\begin{enumerate}
+\item \textbf{Row-to-column (adjacency) convention}: arc $(i, j)$ goes from $i$ to $j$ when $m_{ij} > 0$
+\begin{itemize}
+\item Row $i$ lists outgoing arcs from $i$; column $j$ lists incoming arcs into $j$
+\end{itemize}
+\vfill
+\item \textbf{Column-to-row (transition) convention}: in column-stochastic Markov chains, $p_{ij} = \IP(S_i(t+1) \mid S_j(t))$ is the probability of moving \textbf{from $j$ to $i$}, so we draw an arc from $j$ to $i$ when $p_{ij} > 0$
+\begin{itemize}
+\item Column $j$ lists outgoing transitions from state $j$ (summing to $1$); row $i$ lists incoming transitions into state $i$
+\item This transition digraph is simply $\G(P^T)$, obtained by reversing all arrows of $\G(P)$
+\end{itemize}
+\end{enumerate}
+\vfill
+\textbf{Crucial fact}: Reversing all arrows preserves closed walks, cycle lengths and strong connectedness, so irreducibility and primitivity of $M$ and $M^T$ are identical
+\end{frame}
+
+\begin{frame}{Example: $3 \times 3$ non-negative matrix and its digraph $\G(M)$}
+Consider the $3 \times 3$ non-negative matrix $M$ and its binary sparsity pattern $A(\G(M))$:
+\[
+M = \begin{pmatrix}
+2 & 0 & 4 \\
+1 & 3 & 0 \\
+0 & 5 & 0
+\end{pmatrix},
+\qquad
+A(\G(M)) = \begin{pmatrix}
+1 & 0 & 1 \\
+1 & 1 & 0 \\
+0 & 1 & 0
+\end{pmatrix}
+\]
+\vfill
+\begin{columns}[c]
+\begin{column}{0.48\textwidth}
+\centering
+\textbf{Weighted digraph $\G(M)$}\\[0.3cm]
+\begin{tikzpicture}[
+    ->,
+    >=Latex,
+    every path/.style={thick},
+    state_node/.style={circle, draw=UMbrown, fill=HighlightGold!25, thick, minimum size=9mm, font=\bfseries}
+]
+    \node[state_node] (1) at (0, 2) {$1$};
+    \node[state_node] (2) at (-1.8, 0) {$2$};
+    \node[state_node] (3) at (1.8, 0) {$3$};
+    \path (1) edge [loop above] node[above] {$2$} (1);
+    \path (1) edge [bend left=15] node[right] {$4$} (3);
+    \path (2) edge [bend left=15] node[left] {$1$} (1);
+    \path (2) edge [loop left] node[left] {$3$} (2);
+    \path (3) edge [bend left=15] node[below] {$5$} (2);
+\end{tikzpicture}
+\end{column}
+\begin{column}{0.52\textwidth}
+Reading $\G(M)$ directly from $M$:
+\begin{itemize}
+\item $m_{11} = 2 > 0 \implies$ self-loop $(1, 1)$
+\item $m_{13} = 4 > 0 \implies$ arc $(1, 3)$
+\item $m_{21} = 1 > 0 \implies$ arc $(2, 1)$
+\item $m_{22} = 3 > 0 \implies$ self-loop $(2, 2)$
+\item $m_{32} = 5 > 0 \implies$ arc $(3, 2)$
+\item All other entries are $0$ (no other arcs)
+\end{itemize}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Example: $4 \times 4$ sparse matrix and its digraph $\G(M)$}
+\begin{columns}[c]
+\begin{column}{0.45\textwidth}
+\[
+M = \begin{pmatrix}
+0 & 1 & 0 & 0 \\
+0 & 0 & 1 & 1 \\
+1 & 0 & 0 & 0 \\
+0 & 0 & 1 & 1
+\end{pmatrix}
+\]
+\vspace{0.2cm}
+\begin{itemize}
+\item Row sums of $A(\G(M))$ give the outdegrees:
+\[
+d^+ = (1, 2, 1, 2)^T
+\]
+\item Column sums of $A(\G(M))$ give the indegrees:
+\[
+d^- = (1, 1, 2, 2)^T
+\]
+\end{itemize}
+\end{column}
+\begin{column}{0.55\textwidth}
+\centering
+\begin{tikzpicture}[
+    ->,
+    >=Latex,
+    every path/.style={thick},
+    state_node/.style={circle, draw=DeepGreen, fill=LightGreen!35, thick, minimum size=9mm, font=\bfseries}
+]
+    \node[state_node] (1) at (0, 2.2) {$1$};
+    \node[state_node] (2) at (2.8, 2.2) {$2$};
+    \node[state_node] (3) at (0, 0) {$3$};
+    \node[state_node] (4) at (2.8, 0) {$4$};
+    \path (1) edge node[above] {$1$} (2);
+    \path (2) edge node[above, sloped] {$1$} (3);
+    \path (2) edge node[right] {$1$} (4);
+    \path (3) edge node[left] {$1$} (1);
+    \path (4) edge node[below] {$1$} (3);
+    \path (4) edge [loop right] node[right] {$1$} (4);
+\end{tikzpicture}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Building a digraph from a matrix in \code{igraph}}
+<<u08-igraph-digraph>>=
+M <- matrix(c(0, 1, 0, 0,
+              0, 0, 1, 1,
+              1, 0, 0, 0,
+              0, 0, 1, 1), nrow = 4, byrow = TRUE)
+G <- graph_from_adjacency_matrix(M, mode = "directed")
+degree(G, mode = "out")
+degree(G, mode = "in")
+plot(G, edge.arrow.size = 0.7, vertex.color = "lightblue",
+     vertex.size = 30, main = "Digraph G(M) from adjacency matrix M")
+@
+\end{frame}
+
+\maxFrameImage{\Sexpr{knitr::fig_chunk("u08-igraph-digraph", "pdf")}}
+
+
+%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%
+\SSsection{Matrix powers, walks and connectivity}
+
+%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%
+\SSsubsection{Walks and powers of the adjacency matrix}
+
+\begin{frame}{Walks, trails, paths and cycles in a digraph}
+Let $G = (V, A)$ be a digraph
+\begin{importantdefinition}[Directed walk, length and closed walk]
+\begin{itemize}
+\item A \defword{directed walk} from vertex $v_0$ to vertex $v_k$ in $G$ is a sequence of vertices $v_0, v_1, \ldots, v_k$ such that $(v_{r-1}, v_r) \in A$ is an arc in $G$ for all $r = 1, \ldots, k$
+\item The \defword{length} of the directed walk is $k$, the number of arcs traversed
+\item The walk is \defword{closed} if its initial and terminal vertices coincide ($v_0 = v_k$)
+\end{itemize}
+\end{importantdefinition}
+\vfill
+\begin{definition}[Directed trail, path and cycle]
+\begin{itemize}
+\item A \defword{directed trail} is a directed walk in which all arcs are distinct
+\item A \defword{directed path} is a directed walk in which all vertices $v_0, v_1, \ldots, v_k$ are distinct
+\item A \defword{directed cycle} (of length $k \ge 1$) is a closed walk $v_0, v_1, \ldots, v_k = v_0$ in which $v_0, v_1, \ldots, v_{k-1}$ are distinct (a cycle of length $1$ is a self-loop)
+\end{itemize}
+\end{definition}
+\end{frame}
+
+\begin{frame}{Powers of a matrix and walks in its digraph}
+\begin{importanttheorem}[Matrix powers count walks]
+\label{th:matrix-powers-walks}
+Let $A = [a_{ij}] \in \M_n(\IRplus)$ and denote the $(i, j)$ entry of $A^k$ by $a_{ij}^{(k)}$ for $k \in \IN_+$. Then
+\[
+a_{ij}^{(k)} = \sum_{r_1=1}^n \sum_{r_2=1}^n \cdots \sum_{r_{k-1}=1}^n a_{i, r_1} a_{r_1, r_2} \cdots a_{r_{k-1}, j}
+\]
+In particular:
+\begin{enumerate}
+\item $a_{ij}^{(k)} > 0$ if and only if there is at least one directed walk of length $k$ from $i$ to $j$ in $\G(A)$
+\item If $A \in \{0, 1\}^{n \times n}$ is a binary adjacency matrix, then $a_{ij}^{(k)}$ equals the exact number of directed walks of length $k$ from vertex $i$ to vertex $j$ in $\G(A)$
+\end{enumerate}
+\end{importanttheorem}
+\end{frame}
+
+\begin{frame}[red]{Proof of Theorem~\ref{th:matrix-powers-walks}}
+We prove the formula by mathematical induction on the walk length $k \ge 1$
+\vfill
+\textbf{Base case ($k = 1$)}: $A^1 = A$, and $a_{ij}^{(1)} = a_{ij}$ is the weight of the single arc $(i, j)$ (a walk of length $1$ from $i$ to $j$), which equals $1$ if $(i, j)$ is an arc in the binary case and $0$ otherwise
+\vfill
+\textbf{Inductive step}: Suppose the result holds for $k \ge 1$. Since $A^{k+1} = A^k A$, the definition of matrix multiplication gives
+\[
+a_{ij}^{(k+1)} = \sum_{r=1}^n a_{ir}^{(k)} a_{rj}
+\]
+In the binary case $A \in \{0, 1\}^{n \times n}$, any walk of length $k+1$ from $i$ to $j$ decomposes uniquely into a walk of length $k$ from $i$ to some penultimate vertex $r$, followed by the arc $(r, j)$. For a fixed $r$, there are $a_{ir}^{(k)} a_{rj}$ such walks. Summing over all $r \in \{1, \ldots, n\}$ gives $a_{ij}^{(k+1)}$, completing the induction \qed
+\end{frame}
+
+\begin{frame}{Example: counting walks of length $2$ and $3$}
+Consider the binary adjacency matrix $A$ and its digraph $\G(A)$:
+\begin{columns}[c]
+\begin{column}{0.45\textwidth}
+\centering
+\begin{tikzpicture}[
+    ->,
+    >=Latex,
+    every path/.style={thick},
+    state_node/.style={circle, draw=UMbrown, fill=HighlightGold!25, thick, minimum size=9mm, font=\bfseries}
+]
+    \node[state_node] (1) at (0, 1.8) {$1$};
+    \node[state_node] (2) at (-1.6, 0) {$2$};
+    \node[state_node] (3) at (1.6, 0) {$3$};
+    \path (1) edge [loop above] (1);
+    \path (1) edge [bend left=15] (2);
+    \path (2) edge [bend left=15] (1);
+    \path (2) edge (3);
+    \path (3) edge (1);
+\end{tikzpicture}
+\end{column}
+\begin{column}{0.55\textwidth}
+\[
+A = \begin{pmatrix}
+1 & 1 & 0 \\
+1 & 0 & 1 \\
+1 & 0 & 0
+\end{pmatrix},
+\quad
+A^2 = \begin{pmatrix}
+2 & 1 & 1 \\
+2 & 1 & 0 \\
+1 & 1 & 0
+\end{pmatrix}
+\]
+\[
+A^3 = A^2 A = \begin{pmatrix}
+4 & 2 & 1 \\
+3 & 2 & 1 \\
+2 & 1 & 1
+\end{pmatrix}
+\]
+\end{column}
+\end{columns}
+\vfill
+Let us verify individual entries directly from $\G(A)$:
+\begin{itemize}
+\item $(A^2)_{11} = 2$: the two walks of length $2$ from $1$ to $1$ are $1 \to 1 \to 1$ and $1 \to 2 \to 1$
+\item $(A^2)_{23} = 0$: from $2$, length-$1$ steps reach $1$ or $3$, neither of which has an arc to $3$
+\item $(A^3)_{11} = 4$: the four walks of length $3$ from $1$ to $1$ are
+\[
+1 \to 1 \to 1 \to 1, \quad 1 \to 1 \to 2 \to 1, \quad 1 \to 2 \to 1 \to 1, \quad 1 \to 2 \to 3 \to 1
+\]
+\end{itemize}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%
+\SSsubsection{Irreducibility and strong connectedness}
+
+\begin{frame}{Strong connectedness and strongly connected components}
+\begin{importantdefinition}[Strongly connected digraph]
+A digraph $G = (V, A)$ is \defword{strongly connected} if for every ordered pair of vertices $(i, j) \in V \times V$ with $i \neq j$, there exists a directed walk (and hence a directed path) in $G$ from $i$ to $j$ and from $j$ to $i$
+\end{importantdefinition}
+\vfill
+Define the mutual reachability relation $i \equiv j$ on $V$ by:
+\[
+i \equiv j \iff i = j \text{ or there is a directed walk from } i \text{ to } j \text{ and from } j \text{ to } i
+\]
+\begin{itemize}
+\item $\equiv$ is reflexive, symmetric and transitive, so it is an \defword{equivalence relation} on $V$
+\item Its equivalence classes partition $V$ into maximal strongly connected subdigraphs called the \defword{strongly connected components} (SCCs) of $G$
+\item $G$ is strongly connected if and only if it has a single strongly connected component
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Reducible and irreducible matrices}
+\begin{importantdefinition}[Reducible and irreducible matrices]
+A matrix $A \in \M_n(\IRplus)$ ($n \ge 2$) is \defword{reducible} if there exists a permutation matrix $P_\pi \in \M_n$ such that
+\[
+P_\pi^T A P_\pi = \begin{pmatrix}
+A_{11} & A_{12} \\
+\b0 & A_{22}
+\end{pmatrix}
+\]
+where $A_{11} \in \M_r$ and $A_{22} \in \M_{n-r}$ are square blocks with $1 \le r < n$, and $\b0$ is the $(n-r) \times r$ zero matrix
+\vskip0.2cm
+The matrix $A$ is \defword{irreducible} if no such permutation matrix exists (by convention, any $1 \times 1$ matrix is irreducible)
+\end{importantdefinition}
+\vfill
+Note that $P_\pi^T A P_\pi$ simply relabels the rows and columns of $A$ using the same permutation $\pi$ of the vertices $\{1, \ldots, n\}$
+\end{frame}
+
+\begin{frame}{Why block upper-triangular form prevents strong connectedness}
+Suppose $A$ has been relabelled into the reducible block form
+\[
+\tilde{A} = P_\pi^T A P_\pi = \begin{pmatrix}
+A_{11} & A_{12} \\
+\b0 & A_{22}
+\end{pmatrix}
+\begin{array}{l}
+\}\; V_1 = \{1, \ldots, r\} \\
+\}\; V_2 = \{r+1, \ldots, n\}
+\end{array}
+\]
+\vfill
+\begin{itemize}
+\item The bottom-left block is $\b0$, which means $\tilde{a}_{ij} = 0$ for all $i \in V_2$ and $j \in V_1$: there is \textbf{no arc} from any vertex in $V_2$ to any vertex in $V_1$
+\item Furthermore, for every power $k \ge 1$, block multiplication yields
+\[
+\tilde{A}^k = \begin{pmatrix}
+A_{11}^k & * \\
+\b0 & A_{22}^k
+\end{pmatrix}
+\]
+so $(\tilde{A}^k)_{ij} = 0$ for all $i \in V_2$ and $j \in V_1$
+\item Thus no walk of any length $k \ge 1$ can ever go from $V_2$ to $V_1$: the vertex set $V_2$ is a \defword{closed trap} under the row-to-column walk dynamics
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Characterisations of irreducibility}
+\begin{importanttheorem}[Characterisations of irreducible matrices]
+\label{th:irreducible-tfae}
+For a non-negative matrix $A \in \M_n(\IRplus)$, the following statements are equivalent:
+\begin{enumerate}
+\item $A$ is irreducible
+\item The associated digraph $\G(A)$ is strongly connected
+\item $\II_n + A + A^2 + \cdots + A^{n-1} > 0$ (strictly positive entrywise)
+\item $(\II_n + A)^{n-1} > 0$ (strictly positive entrywise)
+\end{enumerate}
+\end{importanttheorem}
+\vfill
+Items 3 and 4 provide a purely algebraic test for irreducibility without searching over all $n!$ permutation matrices
+\end{frame}
+
+\begin{frame}[red]{Proof of Theorem~\ref{th:irreducible-tfae}}
+\textbf{(1) $\iff$ (2)}: $A$ is reducible $\iff$ vertices can be partitioned into non-empty sets $V_1, V_2$ with no arc from $V_2$ to $V_1$ $\iff$ no walk can go from $V_2$ to $V_1$ $\iff$ $\G(A)$ is not strongly connected
+\vfill
+\textbf{(2) $\iff$ (3)}: By Theorem~\ref{th:matrix-powers-walks}, $(A^k)_{ij} > 0 \iff$ there is a walk of length $k$ from $i$ to $j$. Any shortest walk between two distinct vertices $i \neq j$ is a simple path visiting at most $n$ vertices, so its length is $k \in \{1, \ldots, n-1\}$. With $(\II_n)_{ii} = 1 > 0$ covering $i = j$, $\G(A)$ is strongly connected $\iff$ for every pair $(i, j)$ there is some $k \in \{0, 1, \ldots, n-1\}$ with $(A^k)_{ij} > 0$ $\iff$ $\sum_{k=0}^{n-1} A^k > 0$
+\vfill
+\textbf{(3) $\iff$ (4)}: By the binomial expansion with positive coefficients $\binom{n-1}{k} > 0$ and $A^k \ge 0$,
+\[
+(\II_n + A)^{n-1} = \sum_{k=0}^{n-1} \binom{n-1}{k} A^k
+\]
+A sum of non-negative terms with positive weights is strictly positive if and only if at least one term is strictly positive, so $(\II_n + A)^{n-1} > 0 \iff \sum_{k=0}^{n-1} A^k > 0$ \qed
+\end{frame}
+
+\begin{frame}{Exam-style example 1: testing irreducibility via $\G(A)$}
+\textbf{Problem}: Determine whether the following $4 \times 4$ matrix is irreducible:
+\[
+A = \begin{pmatrix}
+0 & 2 & 0 & 0 \\
+0 & 0 & 1 & 3 \\
+0 & 0 & 0 & 1 \\
+4 & 0 & 0 & 0
+\end{pmatrix}
+\]
+\begin{columns}[c]
+\begin{column}{0.45\textwidth}
+\centering
+\begin{tikzpicture}[
+    ->,
+    >=Latex,
+    every path/.style={thick},
+    state_node/.style={circle, draw=UMbrown, fill=HighlightGold!25, thick, minimum size=8.5mm, font=\bfseries}
+]
+    \node[state_node] (1) at (0, 1.8) {$1$};
+    \node[state_node] (2) at (2.4, 1.8) {$2$};
+    \node[state_node] (3) at (2.4, 0) {$3$};
+    \node[state_node] (4) at (0, 0) {$4$};
+    \path (1) edge node[above] {$2$} (2);
+    \path (2) edge node[right] {$1$} (3);
+    \path (2) edge node[above, sloped] {$3$} (4);
+    \path (3) edge node[below] {$1$} (4);
+    \path (4) edge node[left] {$4$} (1);
+\end{tikzpicture}
+\end{column}
+\begin{column}{0.55\textwidth}
+\textbf{Solution}:
+\begin{itemize}
+\item Draw the 4-node digraph $\G(A)$
+\item Observe the directed Hamiltonian cycle
+\[
+1 \to 2 \to 3 \to 4 \to 1
+\]
+\item Since this cycle visits all 4 vertices, every vertex can reach every other vertex along the cycle
+\item Therefore $\G(A)$ is \textbf{strongly connected}, so $A$ is \textbf{irreducible}
+\end{itemize}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Exam-style example 2: reducible matrix and block triangular form}
+\textbf{Problem}: Show that $B$ is reducible, find its SCCs and write $P_\pi^T B P_\pi$ in block upper-triangular form:
+\[
+B = \begin{pmatrix}
+0 & 0 & 1 & 0 \\
+1 & 0 & 0 & 1 \\
+1 & 0 & 0 & 0 \\
+0 & 1 & 1 & 0
+\end{pmatrix}
+\]
+\begin{columns}[c]
+\begin{column}{0.42\textwidth}
+\centering
+\begin{tikzpicture}[
+    ->,
+    >=Latex,
+    every path/.style={thick},
+    scc1/.style={circle, draw=DeepGreen, fill=LightGreen!40, thick, minimum size=8mm, font=\bfseries},
+    scc2/.style={circle, draw=AccentRed, fill=AccentRed!20, thick, minimum size=8mm, font=\bfseries}
+]
+    \node[scc2] (2) at (0, 1.8) {$2$};
+    \node[scc2] (4) at (0, 0) {$4$};
+    \node[scc1] (1) at (2.4, 1.8) {$1$};
+    \node[scc1] (3) at (2.4, 0) {$3$};
+    \path (2) edge [bend left=15] (4);
+    \path (4) edge [bend left=15] (2);
+    \path (2) edge (1);
+    \path (4) edge (3);
+    \path (1) edge [bend left=15] (3);
+    \path (3) edge [bend left=15] (1);
+\end{tikzpicture}
+\end{column}
+\begin{column}{0.58\textwidth}
+\begin{itemize}
+\item SCCs are $C_1 = \{2, 4\}$ and $C_2 = \{1, 3\}$
+\item Arcs go from $C_1$ to $C_2$, but \textbf{no arc goes from $C_2$ to $C_1$}, so $\G(B)$ is not strongly connected ($B$ is \textbf{reducible})
+\item Ordering vertices as $(2, 4, 1, 3)$ gives
+\[
+P_\pi^T B P_\pi = \left(\begin{array}{cc|cc}
+0 & 1 & 1 & 0 \\
+1 & 0 & 0 & 1 \\ \hline
+0 & 0 & 0 & 1 \\
+0 & 0 & 1 & 0
+\end{array}\right) = \begin{pmatrix} B_{11} & B_{12} \\ \b0 & B_{22} \end{pmatrix}
+\]
+\end{itemize}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Checking strong connectedness and $(\II_n + A)^{n-1}$ in R}
+<<u08-check-irreducible-r>>=
+A <- matrix(c(0, 2, 0, 0,
+              0, 0, 1, 3,
+              0, 0, 0, 1,
+              4, 0, 0, 0), nrow = 4, byrow = TRUE)
+is_connected(graph_from_adjacency_matrix(A > 0), mode = "strong")
+# Compute (I_4 + A)^3
+I4_plus_A <- diag(4) + A
+I4_plus_A %*% I4_plus_A %*% I4_plus_A
+@
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%
+\SSsubsection{Primitivity and aperiodicity}
+
+\begin{frame}{Primitive matrices}
+\begin{importantdefinition}[Primitive matrix]
+A non-negative matrix $A \in \M_n(\IRplus)$ is \defword{primitive} if there exists a positive integer $m \in \IN_+$ such that
+\[
+A^m > 0 \quad (\text{every entry of } A^m \text{ is strictly positive})
+\]
+The smallest positive integer $m$ such that $A^m > 0$ is called the \defword{index of primitivity} of $A$, denoted $\gamma(A)$
+\vskip0.2cm
+An irreducible non-negative matrix that is not primitive is called \defword{imprimitive} (or \defword{periodic})
+\end{importantdefinition}
+\vfill
+\begin{proposition}
+\begin{enumerate}
+\item Every primitive matrix is irreducible
+\item If $A^m > 0$ for some $m \in \IN_+$, then $A^k > 0$ for all $k \ge m$
+\end{enumerate}
+\end{proposition}
+\end{frame}
+
+\begin{frame}{Irreducible does not imply primitive!}
+Consider the $2 \times 2$ and $3 \times 3$ cyclic permutation matrices:
+\[
+C_2 = \begin{pmatrix} 0 & 1 \\ 1 & 0 \end{pmatrix},
+\qquad
+C_3 = \begin{pmatrix} 0 & 1 & 0 \\ 0 & 0 & 1 \\ 1 & 0 & 0 \end{pmatrix}
+\]
+\begin{columns}[c]
+\begin{column}{0.4\textwidth}
+\centering
+\begin{tikzpicture}[
+    ->,
+    >=Latex,
+    every path/.style={thick},
+    state_node/.style={circle, draw=UMbrown, fill=HighlightGold!25, thick, minimum size=8.5mm, font=\bfseries}
+]
+    \node[state_node] (1) at (0, 1.6) {$1$};
+    \node[state_node] (2) at (1.8, 0.2) {$2$};
+    \node[state_node] (3) at (-1.8, 0.2) {$3$};
+    \path (1) edge [bend left=20] (2);
+    \path (2) edge [bend left=20] (3);
+    \path (3) edge [bend left=20] (1);
+\end{tikzpicture}
+\end{column}
+\begin{column}{0.6\textwidth}
+\begin{itemize}
+\item Both $\G(C_2)$ and $\G(C_3)$ are single directed cycles, so $C_2$ and $C_3$ are \textbf{irreducible}
+\item Yet for $C_2$: $C_2^{2k} = \II_2$ and $C_2^{2k+1} = C_2$
+\item And for $C_3$: $C_3^2 = \begin{pmatrix} 0 & 0 & 1 \\ 1 & 0 & 0 \\ 0 & 1 & 0 \end{pmatrix}$, $C_3^3 = \II_3$, $C_3^4 = C_3, \ldots$
+\item Every power $C_2^m$ and $C_3^m$ contains zeros, so neither matrix is primitive!
+\end{itemize}
+\end{column}
+\end{columns}
+\vfill
+Why? Because walks from $i$ to $j$ only occur at lengths $m$ belonging to a fixed congruence class modulo $2$ (for $C_2$) or modulo $3$ (for $C_3$)
+\end{frame}
+
+\begin{frame}{Period of a digraph and characterisation of primitivity}
+\begin{importantdefinition}[Period and aperiodicity]
+Let $G = (V, A)$ be a strongly connected digraph. The \defword{period} (or \defword{index of imprimitivity}) $d(G)$ of $G$ is the greatest common divisor of the lengths of all directed cycles (or closed walks) in $G$:
+\[
+d(G) = \gcd\{\text{length}(C) : C \text{ is a directed cycle in } G\}
+\]
+\begin{itemize}
+\item If $d(G) = 1$, we say that $G$ (and its matrix $A$) is \defword{aperiodic}
+\item If $d(G) > 1$, we say that $G$ (and its matrix $A$) is \defword{periodic} with period $d(G)$
+\end{itemize}
+\end{importantdefinition}
+\vfill
+\begin{importanttheorem}[Graphical characterisation of primitive matrices]
+\label{th:primitive-iff-sc-aperiodic}
+A non-negative matrix $A \in \M_n(\IRplus)$ is \textbf{primitive} if and only if $\G(A)$ is \textbf{strongly connected} and \textbf{aperiodic} ($d(\G(A)) = 1$)
+\end{importanttheorem}
+\end{frame}
+
+\begin{frame}{Practical corollaries for exams}
+Checking $\gcd$ of cycle lengths is immediate in two common situations:
+\vfill
+\begin{corollary}[Self-loop test for primitivity]
+\label{cor:self-loop-primitive}
+If $A \in \M_n(\IRplus)$ is irreducible ($\G(A)$ is strongly connected) and has \textbf{at least one positive diagonal entry} $a_{ii} > 0$ for some $i \in \{1, \ldots, n\}$, then $A$ is \textbf{primitive}
+\end{corollary}
+\textbf{Reason}: $a_{ii} > 0$ gives a self-loop $i \to i$ of length $1$ in $\G(A)$, and $\gcd(1, \ldots) = 1$
+\vfill
+\begin{corollary}[Coprime cycle lengths]
+If $\G(A)$ is strongly connected and contains two directed cycles of coprime lengths $\ell_1$ and $\ell_2$ (i.e. $\gcd(\ell_1, \ell_2) = 1$, such as a $2$-cycle and a $3$-cycle), then $A$ is \textbf{primitive}
+\end{corollary}
+\end{frame}
+
+\begin{frame}{Visualising periodic vs primitive digraphs}
+\begin{columns}[T]
+\begin{column}{0.32\textwidth}
+\centering
+\textbf{Case 1: Irreducible, periodic ($d = 3$)}\\[0.2cm]
+\begin{tikzpicture}[
+    ->, >=Latex, every path/.style={thick},
+    state_node/.style={circle, draw=AccentRed, fill=AccentRed!15, thick, minimum size=7.5mm, font=\bfseries}
+]
+    \node[state_node] (1) at (0, 1.4) {$1$};
+    \node[state_node] (2) at (1.2, 0) {$2$};
+    \node[state_node] (3) at (-1.2, 0) {$3$};
+    \path (1) edge [bend left=18] (2);
+    \path (2) edge [bend left=18] (3);
+    \path (3) edge [bend left=18] (1);
+\end{tikzpicture}
+\\[0.2cm]
+\[
+A_1 = \begin{pmatrix} 0 & 1 & 0 \\ 0 & 0 & 1 \\ 1 & 0 & 0 \end{pmatrix}
+\]
+Cycle length: $\{3\}$\\
+$\gcd(3) = 3 \implies$ \textbf{not primitive}
+\end{column}
+\begin{column}{0.32\textwidth}
+\centering
+\textbf{Case 2: Adding one self-loop ($d = 1$)}\\[0.2cm]
+\begin{tikzpicture}[
+    ->, >=Latex, every path/.style={thick},
+    state_node/.style={circle, draw=DeepGreen, fill=LightGreen!35, thick, minimum size=7.5mm, font=\bfseries}
+]
+    \node[state_node] (1) at (0, 1.4) {$1$};
+    \node[state_node] (2) at (1.2, 0) {$2$};
+    \node[state_node] (3) at (-1.2, 0) {$3$};
+    \path (1) edge [loop above] (1);
+    \path (1) edge [bend left=18] (2);
+    \path (2) edge [bend left=18] (3);
+    \path (3) edge [bend left=18] (1);
+\end{tikzpicture}
+\\[0.2cm]
+\[
+A_2 = \begin{pmatrix} 1 & 1 & 0 \\ 0 & 0 & 1 \\ 1 & 0 & 0 \end{pmatrix}
+\]
+Cycle lengths: $\{1, 3\}$\\
+$\gcd(1, 3) = 1 \implies$ \textbf{primitive} ($A_2^4 > 0$)
+\end{column}
+\begin{column}{0.32\textwidth}
+\centering
+\textbf{Case 3: Zero trace, coprime cycles ($d = 1$)}\\[0.2cm]
+\begin{tikzpicture}[
+    ->, >=Latex, every path/.style={thick},
+    state_node/.style={circle, draw=DeepGreen, fill=LightGreen!35, thick, minimum size=7.5mm, font=\bfseries}
+]
+    \node[state_node] (1) at (0, 1.4) {$1$};
+    \node[state_node] (2) at (1.2, 0) {$2$};
+    \node[state_node] (3) at (-1.2, 0) {$3$};
+    \path (1) edge [bend left=18] (2);
+    \path (2) edge [bend left=18] (1);
+    \path (2) edge [bend left=18] (3);
+    \path (3) edge [bend left=18] (1);
+\end{tikzpicture}
+\\[0.2cm]
+\[
+A_3 = \begin{pmatrix} 0 & 1 & 0 \\ 1 & 0 & 1 \\ 1 & 0 & 0 \end{pmatrix}
+\]
+Cycles: $1 \leftrightarrow 2$ ($2$), $1 \to 2 \to 3 \to 1$ ($3$)\\
+$\gcd(2, 3) = 1 \implies$ \textbf{primitive} ($A_3^5 > 0$)
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Exam-style comparison: two $4 \times 4$ irreducible matrices}
+Both matrices below are irreducible with zero diagonal ($\tr = 0$). Which one is primitive?
+\begin{columns}[T]
+\begin{column}{0.48\textwidth}
+\centering
+\[
+M_1 = \begin{pmatrix}
+0 & 1 & 0 & 0 \\
+1 & 0 & 1 & 0 \\
+0 & 0 & 0 & 1 \\
+1 & 0 & 0 & 0
+\end{pmatrix}
+\]
+\begin{tikzpicture}[
+    ->, >=Latex, every path/.style={thick},
+    state_node/.style={circle, draw=AccentRed, fill=AccentRed!15, thick, minimum size=7.5mm, font=\bfseries}
+]
+    \node[state_node] (1) at (0, 1.2) {$1$};
+    \node[state_node] (2) at (2.0, 1.2) {$2$};
+    \node[state_node] (3) at (2.0, 0) {$3$};
+    \node[state_node] (4) at (0, 0) {$4$};
+    \path (1) edge [bend left=15] (2);
+    \path (2) edge [bend left=15] (1);
+    \path (2) edge (3);
+    \path (3) edge (4);
+    \path (4) edge (1);
+\end{tikzpicture}
+\begin{itemize}
+\item Directed cycles: $1 \to 2 \to 1$ (length $2$) and $1 \to 2 \to 3 \to 4 \to 1$ (length $4$)
+\item $d = \gcd(2, 4) = 2 > 1$: \textbf{imprimitive} (periodic with period $2$)
+\end{itemize}
+\end{column}
+\begin{column}{0.48\textwidth}
+\centering
+\[
+M_2 = \begin{pmatrix}
+0 & 1 & 0 & 0 \\
+0 & 0 & 1 & 1 \\
+0 & 0 & 0 & 1 \\
+1 & 0 & 0 & 0
+\end{pmatrix}
+\]
+\begin{tikzpicture}[
+    ->, >=Latex, every path/.style={thick},
+    state_node/.style={circle, draw=DeepGreen, fill=LightGreen!35, thick, minimum size=7.5mm, font=\bfseries}
+]
+    \node[state_node] (1) at (0, 1.2) {$1$};
+    \node[state_node] (2) at (2.0, 1.2) {$2$};
+    \node[state_node] (3) at (2.0, 0) {$3$};
+    \node[state_node] (4) at (0, 0) {$4$};
+    \path (1) edge (2);
+    \path (2) edge (3);
+    \path (2) edge (4);
+    \path (3) edge (4);
+    \path (4) edge (1);
+\end{tikzpicture}
+\begin{itemize}
+\item Directed cycles: $1 \to 2 \to 4 \to 1$ (length $3$) and $1 \to 2 \to 3 \to 4 \to 1$ (length $4$)
+\item $d = \gcd(3, 4) = 1$: \textbf{primitive} ($M_2^{10} > 0$)
+\end{itemize}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Wielandt's bound on the index of primitivity}
+How large can the smallest exponent $\gamma(A)$ with $A^{\gamma(A)} > 0$ be for an $n \times n$ primitive matrix?
+\vfill
+\begin{importanttheorem}[Wielandt's theorem]
+\label{th:wielandt}
+Let $A \in \M_n(\IRplus)$ with $n \ge 2$. Then $A$ is primitive if and only if
+\[
+A^{n^2 - 2n + 2} > 0
+\]
+Moreover, if $A$ is irreducible and has $d \ge 1$ positive diagonal entries, then
+\[
+\gamma(A) \le 2n - d - 1
+\]
+\end{importanttheorem}
+\vfill
+\begin{itemize}
+\item For $n = 3$, $n^2 - 2n + 2 = 5$: the matrix $A_3$ has $A_3^4 \not> 0$ and $A_3^5 > 0$
+\item For $n = 4$, $n^2 - 2n + 2 = 10$: the matrix $M_2$ on the previous slide has $M_2^9 \not> 0$ and $M_2^{10} > 0$, showing that Wielandt's bound $n^2 - 2n + 2$ is sharp!
+\end{itemize}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%
+\SSsection{The Perron-Frobenius theorem}
+
+\begin{frame}{Spectrum and spectral radius}
+\begin{importantdefinition}[Spectrum and spectral radius]
+Let $A \in \M_n(\IC)$ be a square matrix
+\begin{itemize}
+\item The \defword{spectrum} of $A$, denoted $\sigma(A)$, is the set of all eigenvalues of $A$:
+\[
+\sigma(A) = \{\lambda \in \IC : \det(A - \lambda \II_n) = 0\}
+\]
+\item The \defword{spectral radius} of $A$, denoted $\rho(A)$, is the maximum modulus of its eigenvalues:
+\[
+\rho(A) = \max_{\lambda \in \sigma(A)} |\lambda|
+\]
+\end{itemize}
+\end{importantdefinition}
+\vfill
+Geometrically, in the complex plane $\IC$, all eigenvalues of $A$ lie inside or on the closed disc $\{z \in \IC : |z| \le \rho(A)\}$ of radius $\rho(A)$ centred at the origin
+\end{frame}
+
+\begin{frame}{Geometric intuition in $\IR^2$: trapping an invariant ray}
+Why must a positive matrix $A > 0$ have a positive eigenvalue with a positive eigenvector?
+\begin{columns}[c]
+\begin{column}{0.48\textwidth}
+\centering
+\begin{tikzpicture}[scale=1.05, >=Latex]
+    % Shaded positive quadrant
+    \fill[HighlightGold!15] (0,0) rectangle (3.4,2.8);
+    % Shaded image cone A(R_+^2)
+    \fill[MediumGreen!30] (0,0) -- (3.4, 0.9) -- (3.4, 2.8) -- (1.1, 2.8) -- cycle;
+    % Axes
+    \draw[->, thick] (-0.3,0) -- (3.6,0) node[right] {$x_1$};
+    \draw[->, thick] (0,-0.3) -- (0,3.0) node[above] {$x_2$};
+    % Standard basis images A e_1 and A e_2
+    \draw[->, very thick, DeepGreen] (0,0) -- (3.1, 0.82) node[below right] {$A\be_1$};
+    \draw[->, very thick, DeepGreen] (0,0) -- (0.95, 2.45) node[above left] {$A\be_2$};
+    % Perron ray
+    \draw[->, ultra thick, AccentRed] (0,0) -- (2.8, 1.95) node[above right] {$\bx_P$ ($A\bx_P = \rho(A)\bx_P$)};
+    % Simplex segment
+    \draw[thick, dashed, UMbrown] (2.2,0) -- (0,2.2);
+\end{tikzpicture}
+\end{column}
+\begin{column}{0.52\textwidth}
+\begin{itemize}
+\item Consider the non-negative quadrant $\IRplus^2 = \{\bx \ge \b0\}$
+\item Since $A > 0$, both columns $A\be_1 > \b0$ and $A\be_2 > \b0$ lie \textbf{strictly inside} the open first quadrant
+\item Thus $A$ maps the entire quadrant $\IRplus^2 \setminus \{\b0\}$ into a narrower cone strictly inside the first quadrant
+\item By Brouwer's fixed-point theorem (or the intermediate value theorem on the angle of $\bx$), $A$ must map a unique ray in the first quadrant onto itself!
+\end{itemize}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Perron's theorem for positive matrices}
+\begin{importanttheorem}[Perron's theorem, 1907]
+\label{th:perron}
+Let $A \in \M_n(\IR)$ be a strictly positive matrix ($A > 0$). Then:
+\begin{enumerate}
+\item $\rho(A) > 0$ is an eigenvalue of $A$ (the \defword{Perron root} or \defword{dominant eigenvalue})
+\item $\rho(A)$ is algebraically and geometrically simple (multiplicity $1$)
+\item $\rho(A)$ strictly dominates every other eigenvalue: $|\lambda| < \rho(A)$ for all $\lambda \in \sigma(A) \setminus \{\rho(A)\}$
+\item There exists a \textbf{unique} strictly positive right eigenvector $\bx > \b0$ such that
+\[
+A\bx = \rho(A)\bx \quad \text{and} \quad \11^T\bx = \sum_{i=1}^n x_i = 1
+\]
+(the \defword{right Perron vector}, and similarly a unique left Perron vector $\by > \b0$)
+\item No other eigenvalue of $A$ has a non-negative eigenvector
+\end{enumerate}
+\end{importanttheorem}
+\end{frame}
+
+\begin{frame}{The Perron-Frobenius theorem for primitive and irreducible matrices}
+Frobenius (1912) extended Perron's theorem to irreducible non-negative matrices:
+\begin{importanttheorem}[Perron-Frobenius theorem]
+\label{th:perron-frobenius}
+Let $A \in \M_n(\IRplus)$ be an \textbf{irreducible} non-negative matrix
+\begin{enumerate}
+\item $\rho(A) > 0$ is a simple eigenvalue of $A$ (algebraic and geometric multiplicity $1$)
+\item There exists a unique strictly positive right eigenvector $\bx > \b0$ with $A\bx = \rho(A)\bx$ and $\11^T\bx = 1$ (and no other eigenvalue has a non-negative eigenvector)
+\item \textbf{If $A$ is primitive} ($d = 1$): $|\lambda| < \rho(A)$ for all $\lambda \in \sigma(A)$ with $\lambda \neq \rho(A)$
+\item \textbf{If $A$ is imprimitive with period $d > 1$}: $A$ has exactly $d$ eigenvalues of modulus $\rho(A)$, given by $\lambda_k = \rho(A) e^{2\pi i k / d}$ ($k = 0, 1, \ldots, d-1$), and $|\lambda| < \rho(A)$ for all others
+\end{enumerate}
+\end{importanttheorem}
+\end{frame}
+
+\begin{frame}{Spectral circle: primitive ($d = 1$) vs periodic ($d = 3$)}
+\begin{columns}[c]
+\begin{column}{0.48\textwidth}
+\centering
+\textbf{Primitive matrix ($d = 1$)}\\[0.2cm]
+\begin{tikzpicture}[scale=1.1, >=Latex]
+    \draw[dashed, thick, UMbrown] (0,0) circle (1.6cm);
+    \draw[->, thin, gray] (-2.1,0) -- (2.3,0) node[right, black] {$\Re(\lambda)$};
+    \draw[->, thin, gray] (0,-2.0) -- (0,2.0) node[above, black] {$\Im(\lambda)$};
+    % Dominant eigenvalue
+    \fill[AccentRed] (1.6, 0) circle (3pt) node[above right] {$\rho(A)$};
+    % Other eigenvalues strictly inside
+    \fill[DeepGreen] (-0.7, 0.6) circle (2.5pt);
+    \fill[DeepGreen] (-0.7, -0.6) circle (2.5pt);
+    \fill[DeepGreen] (0.4, 0) circle (2.5pt);
+\end{tikzpicture}
+\\[0.2cm]
+Strict spectral gap $|\lambda_j| < \rho(A)$ for $j \ge 2$\\
+$\implies \left(\frac{1}{\rho(A)} A\right)^k$ \textbf{converges} as $k \to \infty$
+\end{column}
+\begin{column}{0.48\textwidth}
+\centering
+\textbf{Irreducible periodic matrix ($d = 3$)}\\[0.2cm]
+\begin{tikzpicture}[scale=1.1, >=Latex]
+    \draw[dashed, thick, UMbrown] (0,0) circle (1.6cm);
+    \draw[->, thin, gray] (-2.1,0) -- (2.3,0) node[right, black] {$\Re(\lambda)$};
+    \draw[->, thin, gray] (0,-2.0) -- (0,2.0) node[above, black] {$\Im(\lambda)$};
+    % 3 eigenvalues on spectral circle
+    \fill[AccentRed] (1.6, 0) circle (3pt) node[above right] {$\rho(A)$};
+    \fill[AccentRed] (-0.8, 1.386) circle (3pt) node[above left] {$\rho(A)e^{2\pi i/3}$};
+    \fill[AccentRed] (-0.8, -1.386) circle (3pt) node[below left] {$\rho(A)e^{4\pi i/3}$};
+    % Interior eigenvalue
+    \fill[DeepGreen] (0.3, 0) circle (2.5pt);
+\end{tikzpicture}
+\\[0.2cm]
+$d = 3$ eigenvalues on the circle $|\lambda| = \rho(A)$\\
+$\implies \left(\frac{1}{\rho(A)} A\right)^k$ \textbf{oscillates} with period $3$
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Summary of Perron-Frobenius across all non-negative matrices}
+Let $A \in \M_n(\IRplus)$ have Perron root $\lambda_P = \rho(A)$ and right/left Perron vectors $\bx_P, \by_P$:
+\vfill
+\begin{center}
+\begin{tikzpicture}[
+    scale=0.78, every node/.style={transform shape},
+    box/.style={draw=UMbrown, thick, rounded corners=3pt, fill=HighlightGold!12, align=left, inner sep=5pt}
+]
+    \node[box, fill=UMbrown!15, font=\bfseries] (nonneg) at (0, 0) {Non-negative matrix $A \ge 0$};
+    \node[box, text width=4.4cm] (reduc) at (-4.8, -2.5) {
+        \textbf{Reducible}\\
+        $\bullet\;\lambda_P = \rho(A) \ge 0 \in \sigma(A)$\\
+        $\bullet\;\bx_P \ge \b0,\; \by_P \ge \b0$ (may have $0$s)\\
+        $\bullet\;|\lambda_j| \le \lambda_P$
+    };
+    \node[box, fill=UMbrown!15, font=\bfseries] (irred) at (3.2, -1.5) {Irreducible ($\G(A)$ strongly connected)};
+    \node[box, text width=4.6cm, fill=AccentRed!10] (imprim) at (0.4, -4.3) {
+        \textbf{Imprimitive (periodic, $d > 1$)}\\
+        $\bullet\;\lambda_P > 0$ simple, $\bx_P > \b0, \by_P > \b0$\\
+        $\bullet\;|\lambda_j| = \lambda_P$ for $j = 1,\ldots,d$\\
+        $\bullet\;|\lambda_j| < \lambda_P$ for $j > d$
+    };
+    \node[box, text width=4.6cm, fill=LightGreen!25] (prim) at (5.8, -4.3) {
+        \textbf{Primitive (aperiodic, $d = 1$)}\\
+        $\bullet\;\lambda_P > 0$ simple, $\bx_P > \b0, \by_P > \b0$\\
+        $\bullet\;\lambda_P > |\lambda_j|$ for all $j \neq 1$\\
+        $\bullet\;(A/\lambda_P)^k$ converges to $\bx_P \by_P^T$
+    };
+    \draw[->, >=Latex, thick] (nonneg) -- (reduc);
+    \draw[->, >=Latex, thick] (nonneg) -- (irred);
+    \draw[->, >=Latex, thick] (irred) -- (imprim);
+    \draw[->, >=Latex, thick] (irred) -- (prim);
+\end{tikzpicture}
+\end{center}
+\end{frame}
+
+\begin{frame}{Asymptotic behaviour of powers of a primitive matrix}
+\begin{importanttheorem}[Asymptotics of primitive matrices]
+\label{th:primitive-limit}
+Let $A \in \M_n(\IRplus)$ be a primitive matrix with Perron root $\rho(A) > 0$. Let $\bx > \b0$ and $\by > \b0$ be the unique positive right and left eigenvectors satisfying $A\bx = \rho(A)\bx$, $\by^T A = \rho(A)\by^T$, $\11^T\bx = 1$ and $\by^T\bx = 1$. Then
+\[
+\lim_{k \to \infty} \left(\frac{1}{\rho(A)} A\right)^k = \bx \by^T > 0
+\]
+\end{importanttheorem}
+\vfill
+\textbf{Why this holds}: Write $\bz = (\by^T\bz)\bx + \sum_{j=2}^n c_j \bv_j$. Since $|\lambda_j / \rho(A)| < 1$ for all $j \ge 2$,
+\[
+\left(\frac{1}{\rho(A)} A\right)^k \bz = (\by^T\bz)\bx + \sum_{j=2}^n c_j \left(\frac{\lambda_j}{\rho(A)}\right)^k \bv_j \xrightarrow[k \to \infty]{} (\by^T\bz)\bx = (\bx \by^T)\bz
+\]
+\end{frame}
+
+\begin{frame}[fragile]{Inspecting the Perron-Frobenius spectrum in R}
+Compare the eigenvalues of the periodic matrix $A_1$ ($d = 3$) and primitive matrix $A_2$ ($d = 1$):
+<<u08-pf-spectrum-r>>=
+A1 <- matrix(c(0, 1, 0,  0, 0, 1,  1, 0, 0), nrow = 3, byrow = TRUE)
+A2 <- matrix(c(1, 1, 0,  0, 0, 1,  1, 0, 0), nrow = 3, byrow = TRUE)
+# Moduli of eigenvalues of A1 (all 3 have modulus 1)
+round(Mod(eigen(A1)$values), 4)
+# Eigenvalues and moduli for primitive A2 (unique dominant Perron root)
+round(eigen(A2)$values, 4)
+round(Mod(eigen(A2)$values), 4)
+@
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%
+\SSsection{Regular discrete-time Markov chains}
+
+%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%
+\SSsubsection{Markov chains and column-stochastic matrices}
+
+\begin{frame}{Discrete-time Markov chains}
+A \defword{Markov chain} is a discrete-time stochastic process whose evolution depends \textbf{only on the current state} of the system (the \defword{memoryless} or \defword{Markov property}):
+\begin{itemize}
+\item Consider a system that can be in one of $n$ finite states $S = \{S_1, \ldots, S_n\}$ at discrete times $t = 0, 1, 2, \ldots$
+\item The probability of moving to state $S_i$ at time $t+1$ given that the system is in state $S_j$ at time $t$ is
+\[
+p_{ij} = \IP(S_i(t+1) \mid S_j(t))
+\]
+\item Note the index order carefully: $p_{ij}$ is the transition probability \textbf{from state $S_j$ (column $j$) to state $S_i$ (row $i$)}
+\end{itemize}
+\vfill
+Markov chains are a cornerstone of data science: they underpin PageRank, Hidden Markov Models (HMMs), Markov Chain Monte Carlo (MCMC) sampling and reinforcement learning
+\end{frame}
+
+\begin{frame}{The transition matrix $P$}
+\begin{importantdefinition}[Discrete-time Markov chain and transition matrix]
+A sequence of random states from $S = \{S_1, \ldots, S_n\}$ is a (time-homogeneous) \defword{discrete-time Markov chain} (DTMC) if for all $t = 0, 1, 2, \ldots$ and all $1 \le i, j \le n$, the transition probability
+\[
+p_{ij} = \IP(S_i(t+1) \mid S_j(t))
+\]
+depends only on $i$ and $j$. The matrix $P = [p_{ij}] \in \M_n(\IRplus)$ is called the \defword{transition matrix} of the Markov chain
+\end{importantdefinition}
+\vfill
+If the system is in state $S_j$ at time $t$, it must transition to one of $S_1, \ldots, S_n$ at time $t+1$, so the entries in \textbf{column $j$} of $P$ must sum to $1$:
+\[
+p_{1j} + p_{2j} + \cdots + p_{nj} = \sum_{i=1}^n p_{ij} = 1 \quad \text{for all } j = 1, \ldots, n
+\]
+\end{frame}
+
+\begin{frame}{How do we get to state $S_i$ at time $t+1$?}
+For $1 \le i \le n$, let $p_i(t) = \IP(S_i(t))$ be the probability that the system is in state $S_i$ at time $t$
+\vfill
+List all $n$ mutually exclusive ways to arrive in state $S_i$ at time $t+1$:
+\begin{enumerate}
+\item We were in $S_1$ at time $t$ (probability $p_1(t)$) and transitioned from $S_1$ to $S_i$ (probability $p_{i1}$), contributing $p_{i1} p_1(t)$
+\item We were in $S_2$ at time $t$ (probability $p_2(t)$) and transitioned from $S_2$ to $S_i$ (probability $p_{i2}$), contributing $p_{i2} p_2(t)$
+\item[$\vdots$]
+\item[$n$.] We were in $S_n$ at time $t$ (probability $p_n(t)$) and transitioned from $S_n$ to $S_i$ (probability $p_{in}$), contributing $p_{in} p_n(t)$
+\end{enumerate}
+\vfill
+Summing over all $j = 1, \ldots, n$ gives the law of total probability:
+\[
+p_i(t+1) = \sum_{j=1}^n p_{ij} p_j(t) = p_{i1}p_1(t) + p_{i2}p_2(t) + \cdots + p_{in}p_n(t)
+\]
+\end{frame}
+
+\begin{frame}{State distribution update in matrix form}
+Collecting the state probabilities into the column \defword{probability vector}
+\[
+\bp(t) = \begin{pmatrix} p_1(t) \\ \vdots \\ p_n(t) \end{pmatrix} \ge \b0, \qquad \11^T \bp(t) = \sum_{i=1}^n p_i(t) = 1
+\]
+the update equations for $i = 1, \ldots, n$ take the compact matrix form
+\[
+\begin{pmatrix}
+p_1(t+1) \\ \vdots \\ p_n(t+1)
+\end{pmatrix}
+=
+\begin{pmatrix}
+p_{11} & p_{12} & \cdots & p_{1n} \\
+\vdots & \vdots & \ddots & \vdots \\
+p_{n1} & p_{n2} & \cdots & p_{nn}
+\end{pmatrix}
+\begin{pmatrix}
+p_1(t) \\ \vdots \\ p_n(t)
+\end{pmatrix}
+\qquad \Longleftrightarrow \qquad
+\bp(t+1) = P\bp(t)
+\]
+\vfill
+Iterating from the initial distribution $\bp(0)$ gives $\bp(1) = P\bp(0)$, $\bp(2) = P\bp(1) = P^2\bp(0)$ and for any $t \in \IN$:
+\[
+\bp(t) = P^t \bp(0)
+\]
+\end{frame}
+
+\begin{frame}{Transition matrix and transition digraph}
+For a column-stochastic transition matrix $P = [p_{ij}]$, recall that $p_{ij} > 0$ represents a transition \textbf{from state $S_j$ to state $S_i$}:
+\begin{columns}[c]
+\begin{column}{0.46\textwidth}
+\centering
+\textbf{Column-stochastic matrix $P$}
+\[
+P = \begin{pmatrix}
+0.5 & 0.8 & 0.1 \\
+0.5 & 0   & 0.2 \\
+0   & 0.2 & 0.7
+\end{pmatrix}
+\]
+\vspace{0.1cm}
+\begin{itemize}
+\item Column 1 (from $S_1$): $0.5 + 0.5 + 0 = 1$
+\item Column 2 (from $S_2$): $0.8 + 0 + 0.2 = 1$
+\item Column 3 (from $S_3$): $0.1 + 0.2 + 0.7 = 1$
+\end{itemize}
+\end{column}
+\begin{column}{0.54\textwidth}
+\centering
+\textbf{Transition digraph}\\[0.2cm]
+\begin{tikzpicture}[
+    ->,
+    >=Latex,
+    node distance=2.2cm,
+    every path/.style={thick},
+    state_node/.style={circle, draw=UMbrown, fill=HighlightGold!25, thick, minimum size=9mm, font=\bfseries}
+]
+    \node[state_node] (S1) at (0, 2.0) {$S_1$};
+    \node[state_node] (S2) at (-2.0, 0) {$S_2$};
+    \node[state_node] (S3) at (2.0, 0) {$S_3$};
+    \path (S1) edge [loop above] node[above] {$0.5$} (S1);
+    \path (S1) edge [bend left=12] node[right] {$0.5$} (S2);
+    \path (S2) edge [bend left=12] node[left] {$0.8$} (S1);
+    \path (S2) edge [bend left=12] node[above] {$0.2$} (S3);
+    \path (S3) edge node[right] {$0.1$} (S1);
+    \path (S3) edge [bend left=12] node[below] {$0.2$} (S2);
+    \path (S3) edge [loop right] node[right] {$0.7$} (S3);
+\end{tikzpicture}
+\end{column}
+\end{columns}
+\vfill
+Out-weights from each vertex $S_j$ in the transition digraph correspond to \textbf{column $j$} of $P$ and always sum to $1$
+\end{frame}
+
+\begin{frame}{Stochastic matrices}
+\begin{importantdefinition}[Column-stochastic, row-stochastic and doubly stochastic matrices]
+Let $M = [m_{ij}] \in \M_n(\IRplus)$ be a non-negative matrix and $\11 = (1, \ldots, 1)^T \in \IR^n$
+\begin{itemize}
+\item $M$ is \defword{column-stochastic} if every column sums to $1$:
+\[
+\sum_{i=1}^n m_{ij} = 1 \quad \text{for all } j = 1, \ldots, n \qquad \Longleftrightarrow \qquad \11^T M = \11^T
+\]
+\item $M$ is \defword{row-stochastic} if every row sums to $1$:
+\[
+\sum_{j=1}^n m_{ij} = 1 \quad \text{for all } i = 1, \ldots, n \qquad \Longleftrightarrow \qquad M\11 = \11
+\]
+\item $M$ is \defword{doubly stochastic} if it is both column-stochastic and row-stochastic ($\11^T M = \11^T$ and $M\11 = \11$)
+\end{itemize}
+\end{importantdefinition}
+\vfill
+Throughout this course, \defword{stochastic matrix} and \defword{transition matrix} mean \textbf{column-stochastic} unless explicitly stated otherwise
+\end{frame}
+
+\begin{frame}[red]{Products and powers of column-stochastic matrices}
+\begin{theorem}
+\label{th:product-stochastic}
+\begin{enumerate}
+\item If $M, N \in \M_n(\IRplus)$ are column-stochastic matrices, then their product $MN$ is also column-stochastic
+\item For any column-stochastic matrix $P \in \M_n(\IRplus)$ and any integer $t \ge 1$, $P^t$ is column-stochastic, and if $\bp(0)$ is a probability vector, then $\bp(t) = P^t\bp(0)$ is a probability vector
+\end{enumerate}
+\end{theorem}
+\vfill
+\textbf{Proof}:
+\begin{enumerate}
+\item Since $M \ge 0$ and $N \ge 0$, their product satisfies $MN \ge 0$. Furthermore, using the associativity of matrix multiplication and $\11^T M = \11^T$, $\11^T N = \11^T$:
+\[
+\11^T (MN) = (\11^T M) N = \11^T N = \11^T
+\]
+Thus $MN$ is non-negative and its columns sum to $1$, so $MN$ is column-stochastic
+\item By induction on $t \ge 1$, $P^t$ is column-stochastic, and $\bp(t) = P^t \bp(0) \ge \b0$ with $\11^T \bp(t) = (\11^T P^t)\bp(0) = \11^T \bp(0) = 1$ \qed
+\end{enumerate}
+\end{frame}
+
+\begin{frame}[red]{Spectral radius of a column-stochastic matrix}
+\begin{importanttheorem}[Spectrum of a stochastic matrix]
+\label{th:spectrum-stochastic}
+Let $P \in \M_n(\IRplus)$ be a column-stochastic matrix. Then:
+\begin{enumerate}
+\item $\lambda_1 = 1$ is an eigenvalue of $P$
+\item Every eigenvalue $\lambda \in \sigma(P)$ satisfies $|\lambda| \le 1$, so the spectral radius is $\rho(P) = 1$
+\end{enumerate}
+\end{importanttheorem}
+\vfill
+\textbf{Proof}:
+\begin{enumerate}
+\item Since $P$ is column-stochastic, $\11^T P = \11^T$. Taking the transpose gives $P^T \11 = \11$ with $\11 \neq \b0$, so $\lambda = 1$ is an eigenvalue of $P^T$. Since $\det(P^T - \lambda \II_n) = \det(P - \lambda \II_n)$, $P$ and $P^T$ have the same eigenvalues ($\sigma(P) = \sigma(P^T)$), so $1 \in \sigma(P)$
+\item Let $\lambda \in \sigma(P) = \sigma(P^T)$ and let $\bx \neq \b0$ be a right eigenvector of $P^T$: $P^T \bx = \lambda \bx$. Pick an index $k$ maximising $|x_k| = \max_{1 \le j \le n} |x_j| > 0$. Then from row $k$ of $P^T \bx = \lambda \bx$:
+\[
+|\lambda|\, |x_k| = |\lambda x_k| = \left|\sum_{i=1}^n p_{ik} x_i\right| \le \sum_{i=1}^n p_{ik} |x_i| \le \left(\sum_{i=1}^n p_{ik}\right) |x_k| = 1 \cdot |x_k|
+\]
+Dividing by $|x_k| > 0$ yields $|\lambda| \le 1$, and since $1 \in \sigma(P)$, we have $\rho(P) = 1$ \qed
+\end{enumerate}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%
+\SSsubsection{The fundamental limit theorem for regular Markov chains}
+
+\begin{frame}{Regular Markov chains}
+\begin{importantdefinition}[Regular Markov chain]
+A discrete-time Markov chain with column-stochastic transition matrix $P \in \M_n(\IRplus)$ is \defword{regular} if $P$ is \textbf{primitive}, i.e. there exists a positive integer $k \ge 1$ such that
+\[
+P^k > 0 \quad (\text{every entry of } P^k \text{ is strictly positive})
+\]
+\end{importantdefinition}
+\vfill
+\textbf{Interpretation}:
+\begin{itemize}
+\item The entry $(P^k)_{ij}$ is the $k$-step transition probability of moving from state $S_j$ to state $S_i$ in exactly $k$ steps
+\item Thus a Markov chain is regular if and only if there is some time horizon $k \ge 1$ such that from \textbf{any} starting state $S_j$, there is a strictly positive probability of being in \textbf{any} target state $S_i$ after $k$ steps
+\item By Theorem~\ref{th:primitive-iff-sc-aperiodic}, a Markov chain is regular $\iff$ its transition digraph is \textbf{strongly connected} (irreducible) and \textbf{aperiodic} ($d = 1$, e.g. at least one state has a self-loop $p_{ii} > 0$)
+\end{itemize}
+\end{frame}
+
+\begin{frame}{The fundamental limit theorem for regular Markov chains}
+Applying Theorem~\ref{th:primitive-limit} with $\rho(P) = 1$ and left Perron vector $\by = \11$ yields:
+\begin{importanttheorem}[Fundamental limit theorem for regular Markov chains]
+\label{th:regular-mc-limit}
+Let $P \in \M_n(\IRplus)$ be the column-stochastic transition matrix of a \textbf{regular} Markov chain. Then:
+\begin{enumerate}
+\item There exists a \textbf{unique} strictly positive probability vector $\bv = (v_1, \ldots, v_n)^T > \b0$ satisfying $P\bv = \bv$ and $\11^T\bv = \sum_{i=1}^n v_i = 1$, called the \defword{stationary distribution} (or \defword{equilibrium} / \defword{steady-state distribution}) of the Markov chain
+\item As $t \to \infty$, the matrix powers $P^t$ converge to the rank-one column-stochastic matrix
+\[
+\lim_{t \to \infty} P^t = W = \begin{pmatrix} \bv & \bv & \cdots & \bv \end{pmatrix} = \bv \11^T > 0
+\]
+\item For \textbf{any} initial probability distribution $\bp(0)$, the state vector $\bp(t) = P^t\bp(0)$ converges to $\bv$:
+\[
+\lim_{t \to \infty} \bp(t) = W\bp(0) = \bv(\11^T \bp(0)) = \bv
+\]
+\end{enumerate}
+\end{importanttheorem}
+\end{frame}
+
+\begin{frame}{Finding the stationary distribution $\bv$ in practice}
+How do we compute the unique stationary distribution $\bv$ of a regular transition matrix $P \in \M_n(\IRplus)$ on an exam or by hand?
+\vfill
+\begin{enumerate}
+\item \textbf{Write the fixed-point equation $P\bv = \bv$ as a homogeneous linear system}:
+\[
+(P - \II_n)\bv = \b0 \qquad (\text{so } \bv \in \nullspace(P - \II_n))
+\]
+\begin{itemize}
+\item Since $\lambda_1 = 1$ is a simple eigenvalue of $P$, $\dim\nullspace(P - \II_n) = 1$
+\item Because $\11^T(P - \II_n) = \b0^T$, the rows of $P - \II_n$ always sum to zero (one row is redundant)
+\end{itemize}
+\vfill
+\item \textbf{Row-reduce $P - \II_n$} (or solve the first $n-1$ equations) to express $v_1, \ldots, v_n$ in terms of a single free parameter, giving a positive basis vector $\bw \in \nullspace(P - \II_n)$
+\vfill
+\item \textbf{Normalise to a probability vector} using $\11^T\bv = v_1 + \cdots + v_n = 1$:
+\[
+\bv = \frac{\bw}{\|\bw\|_1} = \frac{\bw}{w_1 + \cdots + w_n}
+\]
+\end{enumerate}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%
+\SSsubsection{Examples and running example: orange cats}
+
+\begin{frame}{Exam-style example 1: general $2 \times 2$ regular Markov chain}
+Consider a two-state Markov chain with transition probabilities $\alpha = \IP(S_2 \mid S_1)$ and $\beta = \IP(S_1 \mid S_2)$, where $0 < \alpha, \beta < 1$:
+\begin{columns}[c]
+\begin{column}{0.45\textwidth}
+\centering
+\begin{tikzpicture}[
+    ->, >=Latex, every path/.style={thick},
+    state_node/.style={circle, draw=UMbrown, fill=HighlightGold!25, thick, minimum size=9mm, font=\bfseries}
+]
+    \node[state_node] (S1) at (0, 0) {$S_1$};
+    \node[state_node] (S2) at (2.8, 0) {$S_2$};
+    \path (S1) edge [loop left] node[left] {$1-\alpha$} (S1);
+    \path (S1) edge [bend left=20] node[above] {$\alpha$} (S2);
+    \path (S2) edge [bend left=20] node[below] {$\beta$} (S1);
+    \path (S2) edge [loop right] node[right] {$1-\beta$} (S2);
+\end{tikzpicture}
+\end{column}
+\begin{column}{0.55\textwidth}
+\[
+P = \begin{pmatrix}
+1 - \alpha & \beta \\
+\alpha & 1 - \beta
+\end{pmatrix} > 0
+\]
+Since $P > 0$, the chain is regular ($P^1 > 0$)
+\end{column}
+\end{columns}
+\vfill
+\textbf{Finding the stationary distribution $\bv = (v_1, v_2)^T$}:
+\[
+(P - \II_2)\bv = \begin{pmatrix} -\alpha & \beta \\ \alpha & -\beta \end{pmatrix} \begin{pmatrix} v_1 \\ v_2 \end{pmatrix} = \begin{pmatrix} 0 \\ 0 \end{pmatrix} \iff -\alpha v_1 + \beta v_2 = 0 \iff v_2 = \frac{\alpha}{\beta} v_1
+\]
+Imposing $v_1 + v_2 = 1$ gives $v_1\left(1 + \frac{\alpha}{\beta}\right) = 1$, hence:
+\[
+\bv = \frac{1}{\alpha + \beta} \begin{pmatrix} \beta \\ \alpha \end{pmatrix},
+\qquad
+\lim_{t \to \infty} P^t = W = \frac{1}{\alpha + \beta} \begin{pmatrix} \beta & \beta \\ \alpha & \alpha \end{pmatrix}
+\]
+\end{frame}
+
+\begin{frame}{Exam-style example 2: $3 \times 3$ regular chain via row reduction}
+\textbf{Problem}: Show that the Markov chain with transition matrix $P$ is regular and find its stationary distribution $\bv$ and $\lim_{t \to \infty} P^t$:
+\[
+P = \begin{pmatrix}
+0.5 & 0.4 & 0 \\
+0.5 & 0.2 & 0.5 \\
+0   & 0.4 & 0.5
+\end{pmatrix}
+\]
+\vfill
+\textbf{Step 1 (Regularity)}:
+\begin{itemize}
+\item From $P$, we have transitions $S_1 \to S_2 \to S_3 \to S_2 \to S_1$, so all 3 states communicate ($\G(P^T)$ is strongly connected, $P$ is irreducible)
+\item Diagonal entries $p_{11} = 0.5 > 0$, $p_{22} = 0.2 > 0$, $p_{33} = 0.5 > 0$ give self-loops, so by Corollary~\ref{cor:self-loop-primitive}, $P$ is \textbf{primitive} (in fact $P^2 > 0$) and the chain is \textbf{regular}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Exam-style example 2 (continued): solving $(P - \II_3)\bv = \b0$}
+\textbf{Step 2 (Nullspace of $P - \II_3$)}: Form $P - \II_3$ (notice the columns sum to $0$):
+{\small
+\[
+P - \II_3 = \begin{pmatrix}
+-0.5 & 0.4 & 0 \\
+0.5 & -0.8 & 0.5 \\
+0 & 0.4 & -0.5
+\end{pmatrix}
+\xrightarrow{R_2 + R_1}
+\begin{pmatrix}
+-0.5 & 0.4 & 0 \\
+0 & -0.4 & 0.5 \\
+0 & 0.4 & -0.5
+\end{pmatrix}
+\xrightarrow{R_3 + R_2}
+\begin{pmatrix}
+-0.5 & 0.4 & 0 \\
+0 & -0.4 & 0.5 \\
+0 & 0 & 0
+\end{pmatrix}
+\]
+}
+From the two pivot rows with $v_3$ as free variable:
+\begin{itemize}
+\item Row 2: $-0.4 v_2 + 0.5 v_3 = 0 \implies v_2 = \frac{5}{4} v_3$
+\item Row 1: $-0.5 v_1 + 0.4 v_2 = 0 \implies v_1 = \frac{4}{5} v_2 = \frac{4}{5} \cdot \frac{5}{4} v_3 = v_3$
+\end{itemize}
+\textbf{Step 3 (Normalisation)}: Impose $v_1 + v_2 + v_3 = 1$, i.e. $\left(1 + \frac{5}{4} + 1\right) v_3 = \frac{13}{4} v_3 = 1 \implies v_3 = \frac{4}{13}$, giving:
+\[
+\bv = \begin{pmatrix} 4/13 \\ 5/13 \\ 4/13 \end{pmatrix},
+\qquad
+\lim_{t \to \infty} P^t = W = \begin{pmatrix}
+4/13 & 4/13 & 4/13 \\
+5/13 & 5/13 & 5/13 \\
+4/13 & 4/13 & 4/13
+\end{pmatrix}
+\]
+\end{frame}
+
+\begin{frame}{Running example: the ``orange'' gene in cats}
+A cat's coat colour is determined by many genes; the ``orange'' trait comes from a specific gene called the \textbf{orange locus}
+\vfill
+It has two \emph{alleles} (versions):
+\begin{itemize}
+\item \textbf{O} $\implies$ produces \emph{phaeomelanin} (red/orange pigment)
+\item \textbf{o} $\implies$ produces \emph{eumelanin} (black/brown pigment)
+\end{itemize}
+\vfill
+This gene is \emph{sex-linked}: it is located on the \textbf{X chromosome}
+\begin{itemize}
+\item Females have two X chromosomes (\textbf{XX}), receiving one allele from each parent: genotypes $X^O X^O$, $X^o X^o$ or $X^O X^o$
+\item Males have one X and one Y chromosome (\textbf{XY}), receiving only one allele (always from the mother): genotypes $X^O Y$ or $X^o Y$
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Genotype vs phenotype in cats}
+\textbf{Males (simple)}:
+\begin{itemize}
+\item $X^O Y \implies$ \textbf{orange cat}
+\item $X^o Y \implies$ \textbf{non-orange cat} (e.g. black)
+\end{itemize}
+\vfill
+\textbf{Females (the special case)}:
+\begin{itemize}
+\item $X^O X^O \implies$ \textbf{orange cat} ($S_1$)
+\item $X^o X^o \implies$ \textbf{non-orange cat} ($S_2$, e.g. black)
+\item $X^O X^o \implies$ \textbf{tortoiseshell cat} ($S_3$)
+\end{itemize}
+\vfill
+A ``tortie'' is not a simple blend: because of random X-inactivation in female cells, both alleles ($O$ and $o$) are active in different patches of skin, creating the mottled orange and black pattern (male tortoiseshells are extremely rare genetic anomalies with \textbf{XXY} genotype $X^O X^o Y$)
+\end{frame}
+
+\begin{frame}{Punnett square warm-up: crossing two parents}
+\begin{columns}[T]
+\begin{column}{0.48\textwidth}
+\textbf{Cross 1: orange dad ($X^O Y$) + black mum ($X^o X^o$)}
+\vfill
+\punnett{$X^O$ & $Y$} {
+    \textbf{Mother} & $X^o$ & $X^O X^o$ & $X^o Y$ \\ \cmidrule(lr){2-4}
+    & $X^o$ & $X^O X^o$ & $X^o Y$
+}
+\vfill
+\begin{itemize}
+\item All daughters ($X^O X^o$) are \textbf{tortoiseshell}
+\item All sons ($X^o Y$) are \textbf{black}
+\end{itemize}
+\end{column}
+\begin{column}{0.48\textwidth}
+\textbf{Cross 2: black dad ($X^o Y$) + tortie mum ($X^O X^o$)}
+\vfill
+\punnett{$X^o$ & $Y$} {
+    \textbf{Mother} & $X^O$ & $X^O X^o$ & $X^O Y$ \\ \cmidrule(lr){2-4}
+    & $X^o$ & $X^o X^o$ & $X^o Y$
+}
+\vfill
+\begin{itemize}
+\item Daughters: $50\%$ tortie ($X^O X^o$), $50\%$ black ($X^o X^o$)
+\item Sons: $50\%$ orange ($X^O Y$), $50\%$ black ($X^o Y$)
+\end{itemize}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Setting up the regular Markov chain for female genotypes}
+Track the 3 female genotypes across generations:
+\begin{itemize}
+\item $S_1$: $X^O X^O$ (orange female)
+\item $S_2$: $X^o X^o$ (black female)
+\item $S_3$: $X^O X^o$ (tortoiseshell female)
+\end{itemize}
+\vfill
+In each generation, we mate the current female with a male chosen at random from a \textbf{fixed population} consisting of:
+\begin{itemize}
+\item $50\%$ orange males ($X^O Y$)
+\item $50\%$ black males ($X^o Y$)
+\end{itemize}
+and select one of her daughters at random as the next generation's female
+\end{frame}
+
+\begin{frame}{State 1: orange female ($X^O X^O$)}
+The mother is $X^O X^O$. We pick a father with $50/50$ probability:
+\vfill
+\begin{columns}[T]
+\begin{column}{.5\textwidth}
+\centering
+\textbf{Case 1: father is $X^O Y$}\\[0.2cm]
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{c c | c | c |}
+\multicolumn{2}{c}{} & \multicolumn{1}{c}{$X^O$} & \multicolumn{1}{c}{$Y$} \\ \cline{3-4}
+\multirow{2}{*}{\rotatebox{90}{Mother}} & $X^O$ & \cellcolor{punnettorange}$X^O X^O$ ($S_1$) & \cellcolor{punnettorange}Male \\ \cline{2-4}
+& $X^O$ & \cellcolor{punnettorange}$X^O X^O$ ($S_1$) & \cellcolor{punnettorange}Male \\ \cline{2-4}
+\end{tabular}
+\\[0.2cm]
+Daughters: $100\%\; S_1$
+\end{column}
+\begin{column}{.5\textwidth}
+\centering
+\textbf{Case 2: father is $X^o Y$}\\[0.2cm]
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{c c | c | c |}
+\multicolumn{2}{c}{} & \multicolumn{1}{c}{$X^o$} & \multicolumn{1}{c}{$Y$} \\ \cline{3-4}
+\multirow{2}{*}{\rotatebox{90}{Mother}} & $X^O$ & \cellcolor{punnetttortie}$X^O X^o$ ($S_3$) & \cellcolor{punnettorange}Male \\ \cline{2-4}
+& $X^O$ & \cellcolor{punnetttortie}$X^O X^o$ ($S_3$) & \cellcolor{punnettorange}Male \\ \cline{2-4}
+\end{tabular}
+\\[0.2cm]
+Daughters: $100\%\; S_3$
+\end{column}
+\end{columns}
+\vfill
+\textbf{Transitions from $S_1$ (column 1 of $P$)}:
+\begin{itemize}
+\item $p_{11} = \IP(S_1 \mid S_1) = 0.5 \times 1.0 = \mathbf{0.5}$
+\item $p_{21} = \IP(S_2 \mid S_1) = \mathbf{0}$
+\item $p_{31} = \IP(S_3 \mid S_1) = 0.5 \times 1.0 = \mathbf{0.5}$
+\end{itemize}
+\end{frame}
+
+\begin{frame}{State 2: black female ($X^o X^o$)}
+The mother is $X^o X^o$. We pick a father with $50/50$ probability:
+\vfill
+\begin{columns}[T]
+\begin{column}{.5\textwidth}
+\centering
+\textbf{Case 1: father is $X^O Y$}\\[0.2cm]
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{c c | c | c |}
+\multicolumn{2}{c}{} & \multicolumn{1}{c}{$X^O$} & \multicolumn{1}{c}{$Y$} \\ \cline{3-4}
+\multirow{2}{*}{\rotatebox{90}{Mother}} & $X^o$ & \cellcolor{punnetttortie}$X^O X^o$ ($S_3$)& \cellcolor{punnettblack}Male \\ \cline{2-4}
+& $X^o$ & \cellcolor{punnetttortie}$X^O X^o$ ($S_3$)& \cellcolor{punnettblack}Male \\ \cline{2-4}
+\end{tabular}
+\\[0.2cm]
+Daughters: $100\%\; S_3$
+\end{column}
+\begin{column}{.5\textwidth}
+\centering
+\textbf{Case 2: father is $X^o Y$}\\[0.2cm]
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{c c | c | c |}
+\multicolumn{2}{c}{} & \multicolumn{1}{c}{$X^o$} & \multicolumn{1}{c}{$Y$} \\ \cline{3-4}
+\multirow{2}{*}{\rotatebox{90}{Mother}} & $X^o$ & \cellcolor{punnettblack}$X^o X^o$ ($S_2$)& \cellcolor{punnettblack}Male \\ \cline{2-4}
+& $X^o$ & \cellcolor{punnettblack}$X^o X^o$ ($S_2$)& \cellcolor{punnettblack}Male \\ \cline{2-4}
+\end{tabular}
+\\[0.2cm]
+Daughters: $100\%\; S_2$
+\end{column}
+\end{columns}
+\vfill
+\textbf{Transitions from $S_2$ (column 2 of $P$)}:
+\begin{itemize}
+\item $p_{12} = \IP(S_1 \mid S_2) = \mathbf{0}$
+\item $p_{22} = \IP(S_2 \mid S_2) = 0.5 \times 1.0 = \mathbf{0.5}$
+\item $p_{32} = \IP(S_3 \mid S_2) = 0.5 \times 1.0 = \mathbf{0.5}$
+\end{itemize}
+\end{frame}
+
+\begin{frame}{State 3: tortoiseshell female ($X^O X^o$)}
+The mother is $X^O X^o$. We pick a father with $50/50$ probability:
+\vfill
+\begin{columns}[T]
+\begin{column}{0.48\textwidth}
+\centering
+\textbf{Case 1: father is $X^O Y$}\\[0.2cm]
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{c c | c | c |}
+\multicolumn{2}{c}{} & \multicolumn{1}{c}{$X^O$} & \multicolumn{1}{c}{$Y$} \\ \cline{3-4}
+\multirow{2}{*}{\rotatebox{90}{Mother}} & $X^O$ & \cellcolor{punnettorange}$X^O X^O$ ($S_1$) & \cellcolor{punnettorange}Male \\ \cline{2-4}
+& $X^o$ & \cellcolor{punnetttortie}$X^O X^o$ ($S_3$) & \cellcolor{punnettblack}Male \\ \cline{2-4}
+\end{tabular}
+\\[0.2cm]
+Daughters: $50\%\; S_1$, $50\%\; S_3$
+\end{column}
+\begin{column}{0.48\textwidth}
+\centering
+\textbf{Case 2: father is $X^o Y$}\\[0.2cm]
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{c c | c | c |}
+\multicolumn{2}{c}{} & \multicolumn{1}{c}{$X^o$} & \multicolumn{1}{c}{$Y$} \\ \cline{3-4}
+\multirow{2}{*}{\rotatebox{90}{Mother}} & $X^O$ & \cellcolor{punnetttortie}$X^O X^o$ ($S_3$) & \cellcolor{punnettorange}Male \\ \cline{2-4}
+& $X^o$ & \cellcolor{punnettblack}$X^o X^o$ ($S_2$) & \cellcolor{punnettblack}Male \\ \cline{2-4}
+\end{tabular}
+\\[0.2cm]
+Daughters: $50\%\; S_2$, $50\%\; S_3$
+\end{column}
+\end{columns}
+\vfill
+\textbf{Transitions from $S_3$ (column 3 of $P$)}:
+\begin{itemize}
+\item $p_{13} = \IP(S_1 \mid S_3) = 0.5 \times 0.5 = \mathbf{0.25}$
+\item $p_{23} = \IP(S_2 \mid S_3) = 0.5 \times 0.5 = \mathbf{0.25}$
+\item $p_{33} = \IP(S_3 \mid S_3) = 0.5 \times 0.5 + 0.5 \times 0.5 = \mathbf{0.5}$
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Transition matrix and digraph of the orange cat chain}
+\begin{columns}[c]
+\begin{column}{0.45\textwidth}
+\[
+P = \begin{pmatrix}
+0.5 & 0   & 0.25 \\
+0   & 0.5 & 0.25 \\
+0.5 & 0.5 & 0.5
+\end{pmatrix}
+\]
+\vspace{0.2cm}
+\textbf{Is this Markov chain regular?}
+\begin{itemize}
+\item \textbf{Strongly connected}: $S_1 \to S_3 \to S_2$ and $S_2 \to S_3 \to S_1$, so all states communicate ($P$ is irreducible)
+\item \textbf{Aperiodic}: $p_{11}, p_{22}, p_{33} > 0$ (self-loops), so $P$ is \textbf{primitive} ($P^2 > 0$) and the chain is \textbf{regular}
+\end{itemize}
+\end{column}
+\begin{column}{0.55\textwidth}
+\centering
+\begin{tikzpicture}[
+    ->,
+    >=Latex,
+    node distance=2.5cm,
+    every path/.style={thick}
+]
+    \node[state, fill=punnettorange] (S1) at (0, 2.1) {$X^OX^O$};
+    \node[state, fill=punnettblack, text=white] (S2) at (-2.1, 0) {$X^oX^o$};
+    \node[state, fill=punnetttortie, text=white] (S3) at (2.1, 0) {$X^OX^o$};
+    \path (S1) edge [loop left] node[left] {$0.5$} (S1);
+    \path (S1) edge [bend left=12] node[above, sloped] {$0.5$} (S3);
+    \path (S2) edge [loop left] node[left] {$0.5$} (S2);
+    \path (S2) edge [bend left=12] node[above] {$0.5$} (S3);
+    \path (S3) edge [loop right] node[right] {$0.5$} (S3);
+    \path (S3) edge [bend left=12] node[sloped, below] {$0.25$} (S1);
+    \path (S3) edge [bend left=12] node[below] {$0.25$} (S2);
+\end{tikzpicture}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Stationary distribution of the orange cat chain}
+We solve $(P - \II_3)\bv = \b0$ with $v_1 + v_2 + v_3 = 1$:
+\[
+(P - \II_3)\bv = \begin{pmatrix}
+-0.5 & 0    & 0.25 \\
+0    & -0.5 & 0.25 \\
+0.5  & 0.5  & -0.5
+\end{pmatrix}
+\begin{pmatrix} v_1 \\ v_2 \\ v_3 \end{pmatrix}
+= \begin{pmatrix} 0 \\ 0 \\ 0 \end{pmatrix}
+\]
+From the first two equations:
+\begin{itemize}
+\item $-0.5 v_1 + 0.25 v_3 = 0 \implies v_1 = 0.5 v_3$
+\item $-0.5 v_2 + 0.25 v_3 = 0 \implies v_2 = 0.5 v_3$
+\end{itemize}
+Substituting into the normalisation condition $v_1 + v_2 + v_3 = 1$:
+\[
+0.5 v_3 + 0.5 v_3 + v_3 = 2 v_3 = 1 \implies v_3 = 0.5, \quad v_1 = 0.25, \quad v_2 = 0.25
+\]
+\vfill
+Thus the unique stationary distribution is $\bv = (0.25, 0.25, 0.5)^T$: in the long run, regardless of the initial female's genotype, $25\%$ of females are orange, $25\%$ are black and $50\%$ are tortoiseshell
+\end{frame}
+
+\begin{frame}[fragile]{Computing matrix powers and stationary distributions in R}
+Let us verify the convergence of $P^t$ and the eigenpair $P\bv = \bv$ in \code{R}:
+<<u08-cat-eigen>>=
+P_reg <- matrix(c(0.5, 0,   0.25,
+                  0,   0.5, 0.25,
+                  0.5, 0.5, 0.5),
+                nrow = 3, byrow = TRUE)
+# Dominant right eigenvector corresponding to eigenvalue 1
+ev <- eigen(P_reg)
+v_stat <- Re(ev$vectors[, 1])
+v_stat <- v_stat / sum(v_stat)
+v_stat
+# Compare with P^20 computed by repeated multiplication
+P_20 <- Reduce(`%*%`, replicate(20, P_reg, simplify = FALSE))
+round(P_20, 6)
+@
+\end{frame}
+
+\begin{frame}[fragile]{Convergence of $\bp(t) = P^t \bp(0)$ from an initial state}
+<<u08-convergence-plot,echo=TRUE>>=
+t_max <- 12
+p_hist <- matrix(0, nrow = 3, ncol = t_max + 1)
+p_hist[, 1] <- c(1, 0, 0) # Start with 100% orange female (S_1)
+for (t in 1:t_max) {
+  p_hist[, t + 1] <- P_reg %*% p_hist[, t]
+}
+matplot(0:t_max, t(p_hist), type = "b", pch = 19, lty = 1, lwd = 2,
+        col = c("darkorange", "black", "brown"),
+        xlab = "Generation t", ylab = "Probability p_i(t)",
+        ylim = c(0, 1), main = "Convergence to stationary distribution v = (0.25, 0.25, 0.5)")
+legend("topright", legend = c("S1 (orange)", "S2 (black)", "S3 (tortie)"),
+       col = c("darkorange", "black", "brown"), lty = 1, pch = 19, lwd = 2)
+@
+\end{frame}
+
+\maxFrameImage{\Sexpr{knitr::fig_chunk("u08-convergence-plot", "pdf")}}
+
+\begin{frame}[fragile]{Simulating a single realisation of the regular Markov chain}
+In a column-stochastic chain, when in state $j$ at step $t$, the next state at step $t+1$ is drawn with probabilities given by \textbf{column $j$} of $P$:
+<<u08-dtmc-realisation,echo=TRUE>>=
+set.seed(2740)
+n_steps <- 40
+states <- numeric(n_steps + 1)
+states[1] <- 1 # Start in state S_1 (orange female)
+for (t in 1:n_steps) {
+  states[t + 1] <- sample(1:3, size = 1, prob = P_reg[, states[t]])
+}
+plot(0:n_steps, states, type = "b", pch = 19, lwd = 1.8, col = "darkblue",
+     yaxt = "n", xlab = "Generation t", ylab = "State",
+     main = "Single realisation of the orange cat Markov chain (40 generations)")
+axis(2, at = 1:3, labels = c("S1 (orange)", "S2 (black)", "S3 (tortie)"))
+@
+\end{frame}
+
+\maxFrameImage{\Sexpr{knitr::fig_chunk("u08-dtmc-realisation", "pdf")}}
+
+\begin{frame}[fragile]{Empirical state frequencies vs stationary distribution $\bv$}
+By the ergodic theorem for regular Markov chains, the long-run fraction of time spent in each state along a single trajectory converges to $\bv = (0.25, 0.25, 0.5)^T$:
+<<u08-ergodic-check>>=
+set.seed(2740)
+n_long <- 10000
+traj <- numeric(n_long)
+traj[1] <- 1
+for (t in 1:(n_long - 1)) {
+  traj[t + 1] <- sample(1:3, size = 1, prob = P_reg[, traj[t]])
+}
+# Empirical frequencies over 10,000 generations vs exact v
+rbind(empirical = prop.table(table(factor(traj, levels = 1:3))),
+      stationary = v_stat)
+@
+\end{frame}
+
+
+<<convert-Rnw-to-R,warning=FALSE,message=FALSE,echo=FALSE,results='hide'>>=
+rmd_chunks_to_r_temp()
+@
+
+\end{document}

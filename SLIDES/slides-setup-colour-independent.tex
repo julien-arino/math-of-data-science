@@ -11,6 +11,7 @@
 \usepackage{pifont}
 % To cross reference between slide files
 \usepackage{zref-xr,zref-user}
+\zxrsetup{tozreflabel=true,toltxlabel=true}
 % Use something like
 % \zexternaldocument{fileI}
 % in the tex files. And cite using \zref instead of \ref
@@ -59,11 +60,15 @@
 \def\bi{\bm{i}}
 \def\bj{\bm{j}}
 \def\bk{\bm{k}}
+\def\bl{\bm{l}}
+% Note: \bm is the command from the bm package, so \bm cannot be defined as \bm{m}
 \def\bn{\bm{n}}
+\def\bo{\bm{o}}
 \def\bp{\bm{p}}
 \def\bq{\bm{q}}
 \def\br{\bm{r}}
 \def\bs{\bm{s}}
+\def\bt{\bm{t}}
 \def\bu{\bm{u}}
 \def\bv{\bm{v}}
 \def\bw{\bm{w}}
@@ -73,22 +78,37 @@
 \newcommand{\vect}[1]{\bm{#1}}
 
 % Bold capitals
+\def\bA{\bm{A}}
 \def\bB{\bm{B}}
+\def\bC{\bm{C}}
 \def\bD{\bm{D}}
 \def\bE{\bm{E}}
 \def\bF{\bm{F}}
 \def\bG{\bm{G}}
+\def\bH{\bm{H}}
 \def\bI{\bm{I}}
+\def\bJ{\bm{J}}
+\def\bK{\bm{K}}
 \def\bL{\bm{L}}
+\def\bM{\bm{M}}
 \def\bN{\bm{N}}
+\def\bO{\bm{O}}
 \def\bP{\bm{P}}
+\def\bQ{\bm{Q}}
 \def\bR{\bm{R}}
 \def\bS{\bm{S}}
 \def\bT{\bm{T}}
+\def\bU{\bm{U}}
+\def\bV{\bm{V}}
+\def\bW{\bm{W}}
 \def\bX{\bm{X}}
+\def\bY{\bm{Y}}
+\def\bZ{\bm{Z}}
 
 % Bold numbers
 \def\b0{\bm{0}}
+\def\bzero{\bm{0}}
+\def\bone{\bm{1}}
 
 % Bold greek
 \bmdefine{\bmu}{\bm{\mu}}
