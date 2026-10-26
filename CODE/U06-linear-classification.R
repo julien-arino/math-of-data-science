@@ -90,22 +90,23 @@ legend("topleft",
        lwd = c(NA, NA, 2, 2.5, 1.8), bg = "white")
 
 
-## ----ls-outlier-demo,echo=TRUE------------------------------------------------
-X4 = matrix(c(-1, 0, 1,  0, -1, 1,  1, 0, 1,  0, 1, 1),
-            nrow = 4, byrow = TRUE)
+## ----ls-outlier-demo,echo=TRUE,size='scriptsize'------------------------------
+X4 = matrix(c(-1, 0, 1,  0, -1, 1,  1, 0, 1,  0, 1, 1), nrow = 4, byrow = TRUE)
 y4 = c(-1, -1, 1, 1)
 w_tilde_4 = solve(t(X4) %*% X4, t(X4) %*% y4)
-# Add one outlier far on the correct (+1) side: x5 = (8, -2)^T
-X5 = rbind(X4, c(8, -2, 1)); y5 = c(y4, 1)
+# Add one outlier far on the correct (+1) side: x5 = (6, 2)^T
+X5 = rbind(X4, c(6, 2, 1)); y5 = c(y4, 1)
 w_tilde_5 = solve(t(X5) %*% X5, t(X5) %*% y5)
-cbind(w_4pts = round(w_tilde_4, 3), w_5pts = round(w_tilde_5, 3))
+cbind(w_4pts = round(as.vector(w_tilde_4), 3), w_5pts = round(as.vector(w_tilde_5), 3))
+# Fitted scores for all five points:
+rbind(y = y5, score = round(as.vector(X5 %*% w_tilde_5), 3))
 
 
 ## ----ls-outlier-plot,echo=FALSE,fig.width=7.5,fig.height=4.2------------------
 par(mar = c(4, 4, 3, 1))
 plot(X5[, 1], X5[, 2], col = ifelse(y5 == 1, "dodgerblue4", "firebrick"),
      pch = c(19, 19, 19, 19, 17), cex = 1.6, asp = 1,
-     xlim = c(-2.5, 8.5), ylim = c(-2.5, 2.5),
+     xlim = c(-2.5, 7.5), ylim = c(-2.5, 2.8),
      xlab = expression(x[1]), ylab = expression(x[2]),
      main = "Sensitivity of least-squares classification to a far-side point")
 grid()
@@ -113,9 +114,9 @@ abline(a = -w_tilde_4[3] / w_tilde_4[2], b = -w_tilde_4[1] / w_tilde_4[2],
        col = "darkgreen", lwd = 3)
 abline(a = -w_tilde_5[3] / w_tilde_5[2], b = -w_tilde_5[1] / w_tilde_5[2],
        col = "purple", lwd = 3, lty = 2)
-text(8, -2, labels = "x5 = (8, -2), y5 = +1", pos = 1, col = "dodgerblue4", cex = 0.85)
-text(0, 1, labels = "x4 = (0, 1)\n(now misclassified!)", pos = 4, col = "dodgerblue4", cex = 0.8)
-legend("topright",
+text(6, 2, labels = "x5 = (6, 2), y5 = +1", pos = 1, col = "dodgerblue4", cex = 0.85)
+text(1, 0, labels = "x3 = (1, 0)\n(now misclassified!)", pos = 1, col = "dodgerblue4", cex = 0.8)
+legend("topleft",
        legend = c("Class -1", "Class +1", "LS boundary (4 pts)", "LS boundary (with x5)"),
        col = c("firebrick", "dodgerblue4", "darkgreen", "purple"),
        pch = c(19, 19, NA, NA), lty = c(NA, NA, 1, 2), lwd = c(NA, NA, 3, 3), cex = 0.82)
