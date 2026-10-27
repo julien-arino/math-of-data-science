@@ -90,7 +90,7 @@ This family of methods is called \defword{multidimensional scaling} (\defword{MD
 \begin{frame}{Non-uniqueness: rigid motions preserve distances}
 Before trying to recover coordinates $\bx_1,\ldots,\bx_n\in\IR^p$ from pairwise distances $d_{ij} = \|\bx_i - \bx_j\|$, observe that coordinates can \emph{never} be unique!
 \vfill
-\begin{proposition}[Invariance of Euclidean distances under rigid motions]
+\begin{importantproposition}[Invariance of Euclidean distances under rigid motions]
 \label{prop:rigid_motions}
 Let $\bx_1,\ldots,\bx_n\in\IR^p$, let $\bs\in\IR^p$ be a translation vector and let $Q\in\M_p(\IR)$ be an orthogonal matrix ($Q^TQ = \II_p$). Define transformed points
 \[
@@ -100,7 +100,7 @@ Then all pairwise Euclidean distances are preserved:
 \[
 \|\by_i - \by_j\| = \|\bx_i - \bx_j\| \qquad \forall i,j=1,\ldots,n
 \]
-\end{proposition}
+\end{importantproposition}
 \vfill
 Thus, distances only determine a point configuration up to \textbf{translation}, \textbf{rotation} and \textbf{reflection} (collectively called \defword{rigid motions} or \defword{Euclidean isometries})
 \end{frame}
@@ -204,7 +204,7 @@ Every entry of the Gram matrix $G = XX^T$ encodes geometric information relative
 g_{ii} = \bx_i^T \bx_i = \|\bx_i\|^2 \ge 0, \qquad i=1,\ldots,n
 \]
 \vfill
-\item \textbf{Off-diagonal entries} encode lengths and angles $\theta_{ij}$ between vectors $\bx_i$ and $\bx_j$:
+\item \textbf{Off-diagonal entries} give lengths and angles $\theta_{ij}$ between vectors $\bx_i$ and $\bx_j$:
 \[
 g_{ij} = \bx_i^T \bx_j = \|\bx_i\|\,\|\bx_j\|\cos\theta_{ij}, \qquad i\neq j
 \]
@@ -234,9 +234,11 @@ Let $A\in\M_n(\IR)$ be a symmetric matrix ($A^T = A$).
 \end{frame}
 
 \begin{frame}
-Recall from Theorem~\zref{th:real_symmetric_real_eigs} (Unit~U04) that all eigenvalues of a real symmetric matrix $A\in\M_n(\IR)$ are real. Equivalently:
+Recall from Theorem~\zref{th:real_symmetric_real_eigs} (Unit~U04) that all eigenvalues of a real symmetric matrix $A\in\M_n(\IR)$ are real. Equivalently
+\vfill
 \begin{itemize}
 \item $A$ is positive semi-definite $\iff$ all eigenvalues of $A$ satisfy $\lambda_i \ge 0$
+\vfill
 \item $A$ is positive definite $\iff$ all eigenvalues of $A$ satisfy $\lambda_i > 0$ (in which case $A$ is invertible)
 \end{itemize}
 \end{frame}
@@ -270,22 +272,11 @@ Notice that for a data matrix $X\in\M_{np}(\IR)$, its Gram matrix $G = XX^T\in\M
 \label{th:gram_properties}
 Let $X\in\M_{np}(\IR)$ and let $G = XX^T\in\M_n(\IR)$ be its Gram matrix. Then:
 \begin{enumerate}
-\item $G$ is symmetric ($G^T = G$) and positive semi-definite ($\bv^T G\bv \ge 0$ for all $\bv\in\IR^n$), with real non-negative eigenvalues $\lambda_1 \ge \cdots \ge \lambda_n \ge 0$
+\item $G$ is symmetric and positive semi-definite, with real non-negative eigenvalues $\lambda_1 \ge \cdots \ge \lambda_n \ge 0$
 \item $\rank(G) = \rank(X) \le \min(n,p)$
-\item $\tr(G) = \sum_{i=1}^n \|\bx_i\|^2 = \|X\|_F^2$
+\item $\tr(G) = \sum_{i=1}^n \|\bx_i\|^2$
 \end{enumerate}
 \end{importanttheorem}
-\end{frame}
-
-\begin{frame}{Proof of Theorem~\ref{th:gram_properties}}
-\textbf{1. Symmetry and positive semi-definiteness}: Setting $A = X$ in Theorem~\zref{th:symmetric_matrices} (Unit~U02), $G = XX^T$ is symmetric. By Theorem~\zref{th:eigenvalues_ATA_nonnegative} (Unit~U04), the eigenvalues of $XX^T$ are real and non-negative, and as in the proof of Theorem~\zref{th:eigenvalues_ATA_nonnegative} (applied to $X^T$), for any $\bv\in\IR^n$,
-\[
-\bv^T G \bv = \bv^T (XX^T) \bv = (X^T \bv)^T (X^T \bv) = \|X^T \bv\|^2 \ge 0
-\]
-\vfill
-\textbf{2. Rank}: By the same nullspace argument used for $A^TA$ in Unit~U03 (applied to $A = X^T$), $XX^T\bv = \b0 \iff \|X^T\bv\|^2 = 0 \iff X^T\bv = \b0$, so $\nullspace(XX^T) = \nullspace(X^T)$. By the rank-nullity theorem (or because $\rank(X)$ in Theorem~\zref{th:SVD} equals the number $r$ of positive eigenvalues of $XX^T$), $\rank(G) = \rank(X^T) = \rank(X) \le \min(n,p)$
-\vfill
-\textbf{3. Trace}: $\tr(G) = \sum_{i=1}^n g_{ii} = \sum_{i=1}^n \bx_i^T\bx_i = \sum_{i=1}^n \|\bx_i\|^2 = \sum_{i=1}^n\sum_{m=1}^p x_{im}^2 = \|X\|_F^2$ \hfill\qed
 \end{frame}
 
 \begin{frame}{Characterisation of Gram matrices via spectral factorisation}
@@ -297,7 +288,7 @@ where $\lambda_i = \sigma_i^2 > 0$ are the positive eigenvalues of $XX^T$
 \vfill
 Conversely, \emph{any} symmetric PSD matrix $B$ can be factored as a Gram matrix $B = XX^T$ by reversing this step, as shown by Theorem~\ref{th:psd_is_gram} later
 \vfill
-Before stating that, we need to define the square root of a matrix...
+Before stating that theorem, we need to define the square root of a matrix...
 \end{frame}
 
 \begin{frame}{Square root of a matrix}
@@ -310,7 +301,11 @@ For a diagonal matrix with non-negative diagonal entries $\lambda_i \ge 0$, its 
 \Lambda^{1/2} = \diag(\sqrt{\lambda_1},\ldots,\sqrt{\lambda_n})
 \]
 \vfill
-\textbf{Example} (a simple $2\times 2$ diagonal matrix):
+Because a symmetric PSD matrix has eigenvalues $\lambda_i \ge 0$, the square roots $\sqrt{\lambda_i}$ are always real numbers
+\end{frame}
+
+
+\begin{frame}{Example (a simple $2\times 2$ diagonal matrix)}
 \[
 \Lambda = \begin{pmatrix} 4 & 0 \\ 0 & 9 \end{pmatrix}
 \implies
@@ -320,8 +315,6 @@ since
 \[
 \begin{pmatrix} 2 & 0 \\ 0 & 3 \end{pmatrix} \begin{pmatrix} 2 & 0 \\ 0 & 3 \end{pmatrix} = \begin{pmatrix} 2^2 & 0 \\ 0 & 3^2 \end{pmatrix} = \begin{pmatrix} 4 & 0 \\ 0 & 9 \end{pmatrix}
 \]
-\vfill
-Because a symmetric PSD matrix has eigenvalues $\lambda_i \ge 0$, the square roots $\sqrt{\lambda_i}$ are always real numbers!
 \end{frame}
 
 \begin{frame}
@@ -339,23 +332,8 @@ V_r = \begin{pmatrix} \bv_1 & \cdots & \bv_r \end{pmatrix} \in \M_{nr}(\IR), \qq
 Then the matrix $X = V_r \Lambda_r^{1/2} \in \M_{nr}(\IR)$ satisfies $XX^T = B$
 \end{importanttheorem}
 \vfill
-Hey, lookee here, another matrix factorisation :)
+Hey, lookee here, another matrix factorisation :) Conditions are much more restrictive than in past factorisations, though, since we need a PSD matrix as input
 \end{frame}
-
-\begin{frame}{Proof of Theorem~\ref{th:psd_is_gram}}
-Since $B\in\M_n(\IR)$ is real and symmetric, its eigenvalues are real (Theorem~\zref{th:real_symmetric_real_eigs}, Unit~U04) and it has an orthonormal basis of eigenvectors $\bv_1,\ldots,\bv_n\in\IR^n$ (Theorem~\zref{th:eigenvectors_of_symmetric_are_orthogonal}, Unit~U04), giving $B = V \Lambda V^T$ with $V = [\bv_1 \;\cdots\; \bv_n]\in\M_n(\IR)$ orthogonal and $\Lambda = \diag(\lambda_1,\ldots,\lambda_n)$
-\vfill
-Just as in the outer product form of the SVD (Theorem~\zref{th:SVD_outer_product_form}, Unit~U04), only the $r = \rank(B)$ positive eigenvalues $\lambda_1 \ge \cdots \ge \lambda_r > 0$ contribute:
-\[
-B = \sum_{i=1}^r \lambda_i \bv_i \bv_i^T = V_r \Lambda_r V_r^T
-\]
-\vfill
-Exactly as we defined singular values $\sigma_i = \sqrt{\lambda_i}$ in Unit~U04 (valid since $B$ is PSD, so $\lambda_i > 0$ for $i=1,\ldots,r$), define $\Lambda_r^{1/2} = \diag(\sqrt{\lambda_1},\ldots,\sqrt{\lambda_r})$. Since $\Lambda_r^{1/2}$ is diagonal, $(\Lambda_r^{1/2})^T = \Lambda_r^{1/2}$ and $\Lambda_r^{1/2}(\Lambda_r^{1/2})^T = \Lambda_r$. Setting $X = V_r\Lambda_r^{1/2}\in\M_{nr}(\IR)$ gives
-\[
-XX^T = \big(V_r \Lambda_r^{1/2}\big)\big(V_r \Lambda_r^{1/2}\big)^T = V_r \Lambda_r^{1/2} (\Lambda_r^{1/2})^T V_r^T = V_r \Lambda_r V_r^T = B \hfill\qed
-\]
-\end{frame}
-
 
 
 %%%%%%%%%%%%%%%%%%%%%
@@ -370,7 +348,7 @@ Let $\bx_1,\ldots,\bx_n\in\IR^p$ be the rows of $X\in\M_{np}(\IR)$
 \[
 d_{ij} = \|\bx_i - \bx_j\| = \sqrt{\sum_{m=1}^p (x_{im} - x_{jm})^2}, \qquad i,j=1,\ldots,n
 \]
-\item The \defword{squared Euclidean distance matrix} is $D^{(2)} = [d_{ij}^2]\in\M_n(\IR)$, obtained by squaring each entry of $D$ elementwise (\defword{Hadamard square} $D^{(2)} = D \odot D$):
+\item The \defword{squared Euclidean distance matrix} is $D^{(2)} = [d_{ij}^2]\in\M_n(\IR)$, obtained by squaring each entry of $D$ elementwise (\defword{Hadamard square} $D^{(2)} = D \circ D$):
 \[
 \big[D^{(2)}\big]_{ij} = d_{ij}^2 = \|\bx_i - \bx_j\|^2, \qquad i,j=1,\ldots,n
 \]
@@ -416,7 +394,7 @@ d_{ij}^2 = \|\bx_i - \bx_j\|^2 &= (\bx_i - \bx_j) \bullet (\bx_i - \bx_j) \\
 \vfill
 In terms of the entries $g_{ij} = \bx_i^T\bx_j$ of the Gram matrix $G = XX^T$:
 \[
-\boxed{d_{ij}^2 = g_{ii} - 2g_{ij} + g_{jj}} \qquad \forall i,j=1,\ldots,n
+d_{ij}^2 = g_{ii} - 2g_{ij} + g_{jj} \qquad \forall i,j=1,\ldots,n
 \]
 \vfill
 Notice that this is the law of cosines: $c^2 = a^2 + b^2 - 2ab\cos\theta$
@@ -478,9 +456,9 @@ X = \begin{pmatrix}
 1 & 2 \\
 3 & 1 \\
 -1 & 0
-\end{pmatrix} \in \M_{32}(\IR), \qquad
-\bx_1 = \begin{pmatrix} 1 \\ 2 \end{pmatrix}, \quad
-\bx_2 = \begin{pmatrix} 3 \\ 1 \end{pmatrix}, \quad
+\end{pmatrix} \in \M_{32}(\IR), \qquad\text{i.e., }
+\bx_1 = \begin{pmatrix} 1 \\ 2 \end{pmatrix},
+\bx_2 = \begin{pmatrix} 3 \\ 1 \end{pmatrix},
 \bx_3 = \begin{pmatrix} -1 \\ 0 \end{pmatrix}
 \]
 \vfill
@@ -630,46 +608,8 @@ C_4 = \frac{1}{4}\begin{pmatrix}
 Notice that in every $C_n$, each row and each column sums to zero!
 \end{frame}
 
-\begin{frame}{Action of $C_n$ on a vector: subtracting the mean}
-Why is $C_n$ called the \emph{centring matrix}? Let $\bv = (v_1,\ldots,v_n)^T\in\IR^n$ be a column vector of $n$ observations of a feature
-\vfill
-First note that the inner product $\11^T\bv$ is the sum of the entries of $\bv$:
-\[
-\11^T\bv = \sum_{i=1}^n v_i = n\bar{v}, \qquad\text{where}\quad \bar{v} = \frac{1}{n}\sum_{i=1}^n v_i
-\]
-\vfill
-Multiplying $\bv$ on the left by $C_n$ gives:
-\[
-C_n\bv = \left(\II_n - \frac{1}{n}\11\11^T\right)\bv = \bv - \frac{1}{n}\11(\11^T\bv) = \bv - \bar{v}\11 = \begin{pmatrix} v_1 - \bar{v} \\ v_2 - \bar{v} \\ \vdots \\ v_n - \bar{v} \end{pmatrix}
-\]
-\vfill
-Thus, $C_n\bv$ subtracts the arithmetic mean $\bar{v}$ from every component of $\bv$, producing a \textbf{zero-mean} (centred) vector!
-\end{frame}
-
-\begin{frame}{Action of $C_n$ on a data matrix and link to covariance}
-Now let $X\in\M_{np}(\IR)$ be a data matrix with columns $\bc_1,\ldots,\bc_p\in\IR^n$ (the $p$ features) and rows $\bx_1^T,\ldots,\bx_n^T\in\IR^p$ (the $n$ observations)
-\vfill
-\begin{itemize}
-\item \textbf{Column-wise view}: left-multiplying $X$ by $C_n$ centres every column of $X$ simultaneously:
-\[
-\widetilde{X} = C_n X = \begin{pmatrix} C_n\bc_1 & C_n\bc_2 & \cdots & C_n\bc_p \end{pmatrix}
-\]
-\vfill
-\item \textbf{Row-wise view}: if $\bar{\bx} = \frac{1}{n}\sum_{i=1}^n \bx_i = \frac{1}{n}X^T\11\in\IR^p$ is the centroid of the $n$ points, then
-\[
-\widetilde{X} = C_n X = X - \frac{1}{n}\11\11^T X = X - \11\bar{\bx}^T = \begin{pmatrix} (\bx_1 - \bar{\bx})^T \\ \vdots \\ (\bx_n - \bar{\bx})^T \end{pmatrix}
-\]
-shifts the centroid of the $n$ points to the origin $\b0\in\IR^p$
-\vfill
-\item \textbf{Link to Unit U05}: the sample covariance matrix $S_X\in\M_p(\IR)$ of $X$ can be written compactly as
-\[
-S_X = \frac{1}{n-1}\widetilde{X}^T\widetilde{X} = \frac{1}{n-1}(C_n X)^T(C_n X) = \frac{1}{n-1}X^T C_n^T C_n X = \frac{1}{n-1}X^T C_n X
-\]
-\end{itemize}
-\end{frame}
-
 \begin{frame}{Algebraic and geometric properties of the centring matrix}
-\begin{importanttheorem}[Properties of the centring matrix $C_n$]
+\begin{theorem}[Properties of the centring matrix $C_n$]
 \label{th:centring_properties}
 Let $C_n = \II_n - \frac{1}{n}\11\11^T \in \M_n(\IR)$. Then:
 \begin{enumerate}
@@ -680,12 +620,9 @@ Let $C_n = \II_n - \frac{1}{n}\11\11^T \in \M_n(\IR)$. Then:
 \[
 W = \Span(\11)^\perp = \left\{\bv\in\IR^n : \11^T\bv = \sum_{i=1}^n v_i = 0\right\}
 \]
-\item \textbf{Spectrum, trace and rank}: the eigenvalues of $C_n$ are $\lambda = 0$ (with multiplicity $1$, eigenspace $\Span(\11)$) and $\lambda = 1$ (with multiplicity $n-1$, eigenspace $W$). Consequently,
-\[
-\rank(C_n) = \tr(C_n) = n-1
-\]
+\item \textbf{Spectrum, trace and rank}: the eigenvalues of $C_n$ are $\lambda = 0$ (with multiplicity $1$, eigenspace $\Span(\11)$) and $\lambda = 1$ (with multiplicity $n-1$, eigenspace $W$). Consequently, $\rank(C_n) = \tr(C_n) = n-1$
 \end{enumerate}
-\end{importanttheorem}
+\end{theorem}
 \end{frame}
 
 \begin{frame}{Proof of Theorem~\ref{th:centring_properties} -- Parts 1 and 2}
@@ -762,6 +699,50 @@ Finally, the trace equals the sum of the diagonal entries (and the sum of the ei
 \]
 \end{frame}
 
+\begin{frame}{Action of $C_n$ on a vector: subtracting the mean}
+Why is $C_n$ called the \emph{centring matrix}? Let $\bv = (v_1,\ldots,v_n)^T\in\IR^n$ be a column vector of $n$ observations of a feature
+\vfill
+First note that the inner product $\11^T\bv$ is the sum of the entries of $\bv$:
+\[
+\11^T\bv = \sum_{i=1}^n v_i = n\bar{v}, \qquad\text{where}\quad \bar{v} = \frac{1}{n}\sum_{i=1}^n v_i
+\]
+\vfill
+Multiplying $\bv$ on the left by $C_n$ gives:
+\[
+C_n\bv = \left(\II_n - \frac{1}{n}\11\11^T\right)\bv = \bv - \frac{1}{n}\11(\11^T\bv) = \bv - \bar{v}\11 = \begin{pmatrix} v_1 - \bar{v} \\ v_2 - \bar{v} \\ \vdots \\ v_n - \bar{v} \end{pmatrix}
+\]
+\vfill
+Thus, $C_n\bv$ subtracts the arithmetic mean $\bar{v}$ from every component of $\bv$, producing a \textbf{zero-mean} (centred) vector
+\end{frame}
+
+\begin{frame}{Action of $C_n$ on a data matrix}
+Now let $X\in\M_{np}(\IR)$ be a data matrix with columns $\bc_1,\ldots,\bc_p\in\IR^n$ (the $p$ features) and rows $\bx_1^T,\ldots,\bx_n^T\in\IR^p$ (the $n$ observations)
+\vfill
+\begin{itemize}
+\item \textbf{Column-wise view}: left-multiplying $X$ by $C_n$ centres every column of $X$ simultaneously:
+\[
+\widetilde{X} = C_n X = \begin{pmatrix} C_n\bc_1 & C_n\bc_2 & \cdots & C_n\bc_p \end{pmatrix}
+\]
+\vfill
+\item \textbf{Row-wise view}: if $\bar{\bx} = \frac{1}{n}\sum_{i=1}^n \bx_i = \frac{1}{n}X^T\11\in\IR^p$ is the centroid of the $n$ points, then
+\[
+\widetilde{X} = C_n X = X - \frac{1}{n}\11\11^T X = X - \11\bar{\bx}^T = \begin{pmatrix} (\bx_1 - \bar{\bx})^T \\ \vdots \\ (\bx_n - \bar{\bx})^T \end{pmatrix}
+\]
+shifts the centroid of the $n$ points to the origin $\b0\in\IR^p$
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Link to covariance (Unit 05)}
+The sample covariance matrix $S_X\in\M_p(\IR)$ of $X$ can be written compactly as
+\begin{align*}
+S_X &= \frac{1}{n-1}\widetilde{X}^T\widetilde{X} \\
+&= \frac{1}{n-1}(C_n X)^T(C_n X) \\
+&= \frac{1}{n-1}X^T C_n^T C_n X \\
+&= \frac{1}{n-1}X^T C_n C_n X &\textrm{as $C_n$ is symmetric}\\
+&= \frac{1}{n-1}X^T C_n X &\textrm{as $C_n$ is idempotent}
+\end{align*}
+\end{frame}
+
 
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
@@ -796,7 +777,7 @@ Let $X\in\M_{np}(\IR)$ be a data matrix with squared Euclidean distance matrix $
 \[
 B = -\frac{1}{2} C_n D^{(2)} C_n = \widetilde{X}\widetilde{X}^T
 \]
-In particular, if the points in $X$ are already centred at the origin ($C_n X = X$, so $\sum_{i=1}^n \bx_i = \b0$), then $B = -\frac{1}{2} C_n D^{(2)} C_n = G = XX^T$ recovers the exact Gram matrix of $X$
+In particular, if the points in $X$ are already centred at the origin ($C_n X = X$, so $\sum_{i=1}^n \bx_i = \b0$), then $B = -\frac{1}{2} C_n D^{(2)} C_n = G = XX^T$ recovers the Gram matrix of $X$
 \end{importanttheorem}
 \end{frame}
 
@@ -856,49 +837,10 @@ X_k = V_k \Lambda_k^{1/2} = \begin{pmatrix} \sqrt{\lambda_1}\,\bv_1 & \sqrt{\lam
 \end{importantdefinition}
 \end{frame}
 
-\begin{frame}{Schoenberg's theorem: when is a distance matrix Euclidean?}
-What if the input matrix $D = [d_{ij}]$ did \emph{not} come from Euclidean points in $\IR^p$, or came from geodesic/road distances on a curved surface?
-\vfill
-\begin{importanttheorem}[Schoenberg, 1935; Young and Householder, 1938]
-\label{th:schoenberg}
-Let $D = [d_{ij}]\in\M_n(\IR)$ be a symmetric hollow matrix ($d_{ii}=0$, $d_{ij}=d_{ji}\ge 0$) and let $B = -\frac{1}{2}C_n D^{(2)} C_n$. Then:
-\begin{enumerate}
-\item There exist points $\bx_1,\ldots,\bx_n\in\IR^r$ whose pairwise Euclidean distances equal $d_{ij}$ if and only if $B$ is \textbf{positive semi-definite} with $\rank(B) \le r$
-\item The smallest dimension $r$ in which the $n$ points can be isometrically embedded in $\IR^r$ is $r = \rank(B)$ (the number of strictly positive eigenvalues of $B$), and $r \le n-1$
-\end{enumerate}
-\end{importanttheorem}
-% \vfill
-% \textbf{Proof idea}: ($\Rightarrow$) If $d_{ij} = \|\bx_i - \bx_j\|$ for points in $\IR^r$, then by Theorem~\ref{th:double_centring}, $B = \widetilde{X}\widetilde{X}^T$ is a Gram matrix, hence PSD of rank $\le r$ by Theorem~\ref{th:gram_properties}. ($\Leftarrow$) If $B$ is PSD of rank $r$, then by Theorem~\ref{th:psd_is_gram}, $B = XX^T$ for $X = V_r\Lambda_r^{1/2}\in\M_{nr}(\IR)$, whose squared distances satisfy $d_{ij}^2 = b_{ii} - 2b_{ij} + b_{jj}$ \hfill\qed
-\end{frame}
-
-\begin{frame}{Dimensionality reduction, strain and goodness of fit}
-When $B = -\frac{1}{2}C_n D^{(2)} C_n$ has rank $r > k$ (or small negative eigenvalues due to non-Euclidean noise) and we keep only the top $k$ positive eigenpairs:
-\vfill
-\begin{itemize}
-\item By the \textbf{Eckart-Young-Mirsky theorem} (Unit U04), $B_k = X_k X_k^T = \sum_{i=1}^k \lambda_i \bv_i\bv_i^T$ is the best rank-$k$ positive semi-definite approximation to $B$ in the Frobenius norm, minimising the \defword{classical MDS strain}:
-\[
-\mathsf{Strain}(X_k) = \|B - X_k X_k^T\|_F^2 = \sum_{i=k+1}^n \lambda_i^2
-\]
-\vfill
-\item The \defword{goodness of fit} (proportion of variance or dispersion explained) by the first $k$ MDS dimensions:
-\begin{itemize}
-\item When $B$ is positive semi-definite ($\lambda_i \ge 0$ for all $i$):
-\[
-\mathsf{GOF}_1(k) = \frac{\sum_{i=1}^k \lambda_i}{\sum_{i=1}^n \lambda_i} = \frac{\sum_{i=1}^k \lambda_i}{\tr(B)}
-\]
-\item When $B$ has some negative eigenvalues (two standard conventions in \code{cmdscale}):
-\[
-\mathsf{GOF}_1(k) = \frac{\sum_{i=1}^k \lambda_i}{\sum_{i=1}^n |\lambda_i|}
-\qquad\text{or}\qquad
-\mathsf{GOF}_2(k) = \frac{\sum_{i=1}^k \lambda_i}{\sum_{\lambda_i > 0} \lambda_i}
-\]
-\end{itemize}
-\end{itemize}
-\end{frame}
 
 
 %%%%%%%%%%%%%%%%%%%%%
-\SSsubsection{Worked exam-style examples}
+\SSsubsection{Examples}
 
 \begin{frame}{Example 1 -- Recovering 1D coordinates from $D^{(2)}$ (1/4)}
 Suppose $n=3$ objects have the squared Euclidean distance matrix
@@ -1126,7 +1068,7 @@ X_2 = \begin{pmatrix}
 \SSsubsection{Equivalence via the singular value decomposition}
 
 \begin{frame}{Two $n\times p$ products: $\widetilde{X}^T \widetilde{X}$ versus $\widetilde{X} \widetilde{X}^T$}
-Suppose we have a data matrix $X\in\M_{np}(\IR)$ ($n$ observations and $p$ features) and its column-centred data matrix $\widetilde{X} = C_n X \in \M_{np}(\IR)$. From $\widetilde{X}$, we can form two symmetric positive semi-definite matrices:
+Suppose we have a data matrix $X\in\M_{np}(\IR)$ and its column-centred data matrix $\widetilde{X} = C_n X \in \M_{np}(\IR)$. From $\widetilde{X}$, we can form two symmetric positive semi-definite matrices:
 \vfill
 \begin{columns}[t]
 \begin{column}{0.48\textwidth}
@@ -1155,7 +1097,7 @@ B = \widetilde{X} \widetilde{X}^T = -\frac{1}{2}C_n D^{(2)} C_n \in \M_n(\IR)
 \end{frame}
 
 \begin{frame}{Connecting PCA and classical MDS via the SVD}
-Let $\widetilde{X} = C_n X \in \M_{np}(\IR)$ be the column-centred data matrix of rank $r \le \min(n,p)$, and write its thin singular value decomposition (Unit U04):
+Let $\widetilde{X} = C_n X \in \M_{np}(\IR)$ be the column-centred data matrix of rank $r \le \min(n-1,p) < n$, and write its singular value decomposition (Unit U04):
 \[
 \widetilde{X} = U_r \Sigma_r V_r^T
 \]
@@ -1175,9 +1117,9 @@ B = \widetilde{X} \widetilde{X}^T = U_r \Sigma_r^2 U_r^T \in \M_n(\IR)
 \end{frame}
 
 \begin{frame}{Duality theorem: PCA scores equal classical MDS coordinates}
-\begin{importanttheorem}[Equivalence of PCA and Euclidean classical MDS]
+\begin{theorem}[Equivalence of PCA and Euclidean classical MDS]
 \label{th:pca_mds_duality}
-Let $X\in\M_{np}(\IR)$ be a data matrix with column-centred data matrix $\widetilde{X} = C_n X$ having thin SVD $\widetilde{X} = U_r \Sigma_r V_r^T$, and let $D = [\|\bx_i - \bx_j\|]\in\M_n(\IR)$ be the Euclidean distance matrix between the rows of $X$. Then for any $k \le r$:
+Let $X\in\M_{np}(\IR)$ be a data matrix with column-centred data matrix $\widetilde{X} = C_n X$ of rank $r \le \min(n-1,p) < n$ having singular value decomposition $\widetilde{X} = U_r \Sigma_r V_r^T$, and let $D = [\|\bx_i - \bx_j\|]\in\M_n(\IR)$ be the Euclidean distance matrix between the rows of $X$. Then for any $k \le r$:
 \begin{enumerate}
 \item The non-zero eigenvalues of $\widetilde{X}^T \widetilde{X}\in\M_p(\IR)$ and $B = -\frac{1}{2}C_n D^{(2)} C_n = \widetilde{X} \widetilde{X}^T\in\M_n(\IR)$ are identical:
 \[
@@ -1188,18 +1130,25 @@ Let $X\in\M_{np}(\IR)$ be a data matrix with column-centred data matrix $\wideti
 Y_k = \widetilde{X} V_k = U_k \Sigma_k = U_k \Lambda_k^{1/2} = X_k
 \]
 \end{enumerate}
-\end{importanttheorem}
+\end{theorem}
 \end{frame}
 
-\begin{frame}[red]{Proof of Theorem~\ref{th:pca_mds_duality}}
+\begin{frame}{Proof of Theorem~\ref{th:pca_mds_duality}}
 Let $\widetilde{X} = U_r \Sigma_r V_r^T$, where $U_r = [\bu_1 \;\cdots\; \bu_r]$, $V_r = [\bv_1 \;\cdots\; \bv_r]$ and $\Sigma_r = \diag(\sigma_1,\ldots,\sigma_r)$
 \vfill
 \textbf{1. PCA projection onto top $k$ right singular vectors}:
-The columns of $V_k = [\bv_1 \;\cdots\; \bv_k]\in\M_{pk}(\IR)$ are the top $k$ orthonormal eigenvectors of $\widetilde{X}^T \widetilde{X}$ (and of $S_X = \frac{1}{n-1}\widetilde{X}^T \widetilde{X}$). Using $V_r^T V_k = \begin{pmatrix} \II_k \\ \b0_{(r-k)\times k} \end{pmatrix}$, the PCA score matrix is
+The columns of $V_k = [\bv_1 \;\cdots\; \bv_k]\in\M_{pk}(\IR)$ are the top $k$ orthonormal eigenvectors of $\widetilde{X}^T \widetilde{X}$ (and of $S_X = \frac{1}{n-1}\widetilde{X}^T \widetilde{X}$). 
+Using 
+\[
+V_r^T V_k = \begin{pmatrix} \II_k \\ \b0_{(r-k)\times k} \end{pmatrix}
+\]
+the PCA score matrix is
 \[
 Y_k = \widetilde{X} V_k = (U_r \Sigma_r V_r^T) V_k = U_k \Sigma_k
 \]
-\vfill
+\end{frame}
+
+\begin{frame}
 \textbf{2. Classical MDS on Euclidean distances of $X$}:
 By Theorem~\ref{th:double_centring}, double centring $D^{(2)}$ yields $B = -\frac{1}{2}C_n D^{(2)} C_n = \widetilde{X} \widetilde{X}^T = U_r \Sigma_r^2 U_r^T$. Thus the top $k$ eigenvalues of $B$ are $\lambda_i = \sigma_i^2$ ($\Lambda_k^{1/2} = \Sigma_k$) with orthonormal eigenvectors $U_k = [\bu_1 \;\cdots\; \bu_k]\in\M_{nk}(\IR)$. The classical MDS coordinate matrix is therefore
 \[
