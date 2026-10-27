@@ -130,34 +130,20 @@ We then use the function \code{head} to show the first few lines in the result
 \hlkwd{head}\hldef{(data_old)}
 \end{alltt}
 \begin{verbatim}
-##    X Series.A2.14.
-## 1 NA              
-## 2 NA          Year
-## 3 NA              
-## 4 NA              
-## 5 NA              
-## 6 NA              
-##   Population.of.Canada..by.province..census.dates..1851.to.1976 X.1       X.2
-## 1                                                                NA          
-## 2                                                        Canada  NA Newfound-
-## 3                                                                NA      land
-## 4                                                                NA          
-## 5                                                             2  NA         3
-## 6                                                                NA          
-##      X.3 X.4    X.5       X.6    X.7     X.8       X.9 X.10    X.11 X.12
-## 1         NA                                             NA           NA
-## 2 Prince  NA   Nova       New Quebec Ontario  Manitoba   NA Saskat-   NA
-## 3 Edward  NA Scotia Brunswick                            NA  chewan   NA
-## 4 Island  NA                                             NA           NA
-## 5      4  NA      5         6      7       8         9   NA      10   NA
-## 6         NA                                             NA           NA
-##      X.13 X.14     X.15 X.16      X.17        X.18 X.19 X.20
-## 1           NA            NA                         NA   NA
-## 2 Alberta   NA  British   NA     Yukon   Northwest   NA   NA
-## 3           NA Columbia   NA Territory Territories   NA   NA
-## 4           NA            NA                         NA   NA
-## 5      11   NA       12   NA        13          14   NA   NA
-## 6           NA            NA                         NA   NA
+##                                                                                             X....Last.modified.Dec.16
+## 1                                                                                                     <!DOCTYPE html>
+## 2                                                                                                              <html>
+## 3                                                                                                              <head>
+## 4     <title>Statistics Canada - We're sorry! The website is currently unavailable / Statistique Canada : Nous sommes
+## 5                                                    désolés! Le site Web n'est pas disponible pour le moment</title>
+## 6                                                                                                <meta charset=UTF-8>
+##   X2021.by.Hasan.Skaiky...
+## 1                         
+## 2                         
+## 3                         
+## 4                         
+## 5                         
+## 6
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -171,12 +157,8 @@ Obviously, this does not make a lot of sense. This is normal: take a look at the
 \hlkwd{head}\hldef{(data_old,} \hlkwc{n} \hldef{=} \hlnum{1}\hldef{)}
 \end{alltt}
 \begin{verbatim}
-##    X Series.A2.14.
-## 1 NA              
-##   Population.of.Canada..by.province..census.dates..1851.to.1976 X.1 X.2 X.3 X.4
-## 1                                                                NA          NA
-##   X.5 X.6 X.7 X.8 X.9 X.10 X.11 X.12 X.13 X.14 X.15 X.16 X.17 X.18 X.19 X.20
-## 1                       NA        NA        NA        NA             NA   NA
+##   X....Last.modified.Dec.16 X2021.by.Hasan.Skaiky...
+## 1           <!DOCTYPE html>
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -196,15 +178,9 @@ The second line is also empty, so let us skip it too
 \hlkwd{head}\hldef{(data_old,} \hlkwc{n} \hldef{=} \hlnum{2}\hldef{)}
 \end{alltt}
 \begin{verbatim}
-##    X Year Canada X.1 Newfound. Prince X.2   Nova       New Quebec Ontario
-## 1 NA              NA      land Edward  NA Scotia Brunswick               
-## 2 NA              NA           Island  NA                                
-##   Manitoba X.3 Saskat. X.4 Alberta X.5  British X.6     Yukon   Northwest X.7
-## 1           NA  chewan  NA          NA Columbia  NA Territory Territories  NA
-## 2           NA          NA          NA           NA                        NA
-##   X.8
-## 1  NA
-## 2  NA
+##   X..DOCTYPE.html.
+## 1           <html>
+## 2           <head>
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -222,14 +198,18 @@ Because we are only interested in the total population of the country and the ye
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hldef{data_old} \hlkwb{=} \hldef{data_old[}\hlnum{5}\hlopt{:}\hlkwd{dim}\hldef{(data_old)[}\hlnum{1}\hldef{],} \hlnum{2}\hlopt{:}\hlnum{3}\hldef{]}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in `[.data.frame`:\\\#\# ! undefined columns selected}}\begin{alltt}
 \hlkwd{head}\hldef{(data_old,} \hlkwc{n}\hldef{=}\hlnum{4}\hldef{)}
 \end{alltt}
 \begin{verbatim}
-##   Year     Canada
-## 5 1976 22,992,604
-## 6                
-## 7 1971 21,568,311
-## 8 1966 20,014,880
+##                                                                                                      X..DOCTYPE.html.
+## 1                                                                                                              <html>
+## 2                                                                                                              <head>
+## 3     <title>Statistics Canada - We're sorry! The website is currently unavailable / Statistique Canada : Nous sommes
+## 4                                                    désolés! Le site Web n'est pas disponible pour le moment</title>
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -243,18 +223,18 @@ Because we are only interested in the total population of the country and the ye
 \hlkwd{head}\hldef{(data_old,} \hlkwc{n}\hldef{=}\hlnum{3}\hldef{)}
 \end{alltt}
 \begin{verbatim}
-##   Year     Canada
-## 5 1976 22,992,604
-## 6                
-## 7 1971 21,568,311
+##                                                                                                      X..DOCTYPE.html.
+## 1                                                                                                              <html>
+## 2                                                                                                              <head>
+## 3     <title>Statistics Canada - We're sorry! The website is currently unavailable / Statistique Canada : Nous sommes
 \end{verbatim}
 \begin{alltt}
 \hlkwd{tail}\hldef{(data_old,} \hlkwc{n}\hldef{=}\hlnum{2}\hldef{)}
 \end{alltt}
 \begin{verbatim}
-##                           Year Canada
-## 28 see notes to series A15-53.       
-## 29                1848 figure.
+##     X..DOCTYPE.html.
+## 362          </body>
+## 363          </html>
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -287,20 +267,34 @@ Finally, as remarked above, for now, both the year and the population are consid
 \begin{alltt}
 \hldef{data_old} \hlkwb{=} \hldef{data_old[}\hlkwd{which}\hldef{(data_old}\hlopt{$}\hldef{Canada} \hlopt{!=} \hlsng{""}\hldef{),]}
 \hldef{data_old}\hlopt{$}\hldef{Canada} \hlkwb{=} \hlkwd{gsub}\hldef{(}\hlsng{","}\hldef{,} \hlsng{""}\hldef{, data_old}\hlopt{$}\hldef{Canada)}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in `data\_old\$Canada`:\\\#\# ! \$ operator is invalid for atomic vectors}}\begin{alltt}
 \hldef{order_data} \hlkwb{=} \hlkwd{order}\hldef{(data_old}\hlopt{$}\hldef{Year)}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in `data\_old\$Year`:\\\#\# ! \$ operator is invalid for atomic vectors}}\begin{alltt}
 \hldef{data_old} \hlkwb{=} \hldef{data_old[order_data,]}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error:\\\#\# ! object 'order\_data' not found}}\begin{alltt}
 \hldef{data_old}\hlopt{$}\hldef{Year} \hlkwb{=} \hlkwd{as.numeric}\hldef{(data_old}\hlopt{$}\hldef{Year)}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in `data\_old\$Year`:\\\#\# ! \$ operator is invalid for atomic vectors}}\begin{alltt}
 \hldef{data_old}\hlopt{$}\hldef{Canada} \hlkwb{=} \hlkwd{as.numeric}\hldef{(data_old}\hlopt{$}\hldef{Canada)}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in `data\_old\$Canada`:\\\#\# ! \$ operator is invalid for atomic vectors}}\begin{alltt}
 \hlkwd{head}\hldef{(data_old)}
 \end{alltt}
 \begin{verbatim}
-##    Year  Canada
-## 23 1851 2436297
-## 22 1861 3229633
-## 21 1871 3689257
-## 20 1881 4324810
-## 19 1891 4833239
-## 17 1901 5371315
+## character(0)
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -313,16 +307,14 @@ Row numbers are a little weird
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{row.names}\hldef{(data_old)} \hlkwb{=} \hlnum{1}\hlopt{:}\hlkwd{dim}\hldef{(data_old)[}\hlnum{1}\hldef{]}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in `1:dim(data\_old)[1]`:\\\#\# ! argument of length 0}}\begin{alltt}
 \hlkwd{head}\hldef{(data_old)}
 \end{alltt}
 \begin{verbatim}
-##   Year  Canada
-## 1 1851 2436297
-## 2 1861 3229633
-## 3 1871 3689257
-## 4 1881 4324810
-## 5 1891 4833239
-## 6 1901 5371315
+## character(0)
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -338,8 +330,9 @@ Well, that looks about right! Let's see what this looks like in a graph
     \hlkwc{type} \hldef{=} \hlsng{"b"}\hldef{,} \hlkwc{lwd} \hldef{=} \hlnum{2}\hldef{,}
     \hlkwc{xlab} \hldef{=} \hlsng{"Year"}\hldef{,} \hlkwc{ylab} \hldef{=} \hlsng{"Population"}\hldef{)}
 \end{alltt}
-\end{kframe}
-\includegraphics[width=\maxwidth]{FIGS/U03-plot-old-Canada-census-data-1} 
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in `h()`:\\\#\# ! error in evaluating the argument 'x' in selecting a method for function 'plot': \$ operator is invalid for atomic vectors}}\end{kframe}
 \end{knitrout}
 \end{frame}
 
@@ -370,24 +363,24 @@ To get a sense of that, we dump a few random rows
 \hldef{data_new[}\hlkwd{sort}\hldef{(}\hlkwd{unique}\hldef{(}\hlkwd{c}\hldef{(}\hlnum{1}\hldef{,}\hlkwd{sample}\hldef{(}\hlkwd{nrow}\hldef{(data_new),} \hlnum{4}\hldef{)))), ]}
 \end{alltt}
 \begin{verbatim}
-##                GEOGRAPHY.NAME
-## 1                      Canada
-## 58                     Canada
-## 1598            New Brunswick
-## 4718 St. Catharines - Niagara
-## 5546                   London
-##                                            CHARACTERISTIC YEAR.S.   TOTAL
-## 1                               Population (in thousands)    1956 16081.0
-## 58   Population change by broad age groups: 0 to 14 years    2011     0.5
-## 1598          Population by single years of age: 38 years    2011  9855.0
-## 4718               % of the population aged 0 to 14 years    1996    19.3
-## 5546          Population by single years of age: 75 years    2011  2780.0
-##      FLAG_TOTAL
-## 1              
-## 58             
-## 1598           
-## 4718           
-## 5546
+##                 GEOGRAPHY.NAME
+## 1                       Canada
+## 453  Newfoundland and Labrador
+## 3126            Trois-Rivières
+## 5586                    London
+## 5636                   Windsor
+##                                                    CHARACTERISTIC YEAR.S.
+## 1                                       Population (in thousands)    1956
+## 453                   Population by single years of age: 76 years    2011
+## 3126                                 % of three-person households    2006
+## 5586 % of private households containing a couple without children    2011
+## 5636                       % of the population aged 0 to 14 years    2011
+##        TOTAL FLAG_TOTAL
+## 1    16081.0           
+## 453   3145.0           
+## 3126    14.3           
+## 5586    28.8           
+## 5636    17.6
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -469,6 +462,10 @@ To do this, we need the two data frames to have the same number of columns, same
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{colnames}\hldef{(data_old)} \hlkwb{=} \hlkwd{c}\hldef{(}\hlsng{"year"}\hldef{,} \hlsng{"population"}\hldef{)}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in `colnames<-`:\\\#\# ! attempt to set 'colnames' on an object with less than two dimensions}}\begin{alltt}
 \hldef{data_new} \hlkwb{=} \hldef{data_new[,}\hlkwd{c}\hldef{(}\hlsng{"YEAR.S."}\hldef{,}\hlsng{"TOTAL"}\hldef{)]}
 \hlkwd{colnames}\hldef{(data_new)} \hlkwb{=} \hlkwd{c}\hldef{(}\hlsng{"year"}\hldef{,} \hlsng{"population"}\hldef{)}
 \hldef{data_new}\hlopt{$}\hldef{year} \hlkwb{=} \hlkwd{as.numeric}\hldef{(data_new}\hlopt{$}\hldef{year)}
@@ -905,7 +902,7 @@ Access slots using @. For instance, the GA finds the coefficients
 \end{alltt}
 \begin{verbatim}
 ##            x1        x2
-## [1,] 3.001446 0.4992848
+## [1,] 2.999243 0.5004865
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
