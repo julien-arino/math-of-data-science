@@ -100,6 +100,110 @@ d_{ij} = \|\bx_i - \bx_j\| = \sqrt{(\bx_i - \bx_j)\bullet(\bx_i - \bx_j)}, \qqua
 \textbf{The inverse problem}: what if we do \emph{not} know the coordinates $X$, and only have a table of pairwise distances or dissimilarities $D = [d_{ij}]\in\M_n(\IR)$ between $n$ objects?
 \end{frame}
 
+\begin{frame}{Running example: four points on a square}
+Consider $n=4$ points in $p=2$ dimensions forming a unit square (in counterclockwise order):
+\[
+\bx_1 = \begin{pmatrix} 0 \\ 0 \end{pmatrix}, \qquad
+\bx_2 = \begin{pmatrix} 1 \\ 0 \end{pmatrix}, \qquad
+\bx_3 = \begin{pmatrix} 1 \\ 1 \end{pmatrix}, \qquad
+\bx_4 = \begin{pmatrix} 0 \\ 1 \end{pmatrix}
+\]
+\vfill
+\begin{columns}[c]
+\begin{column}{0.48\textwidth}
+The coordinate matrix $X\in\M_{42}(\IR)$ is:
+\[
+X = \begin{pmatrix}
+\bx_1^T \\ \bx_2^T \\ \bx_3^T \\ \bx_4^T
+\end{pmatrix}
+= \begin{pmatrix}
+0 & 0 \\
+1 & 0 \\
+1 & 1 \\
+0 & 1
+\end{pmatrix}
+\]
+\end{column}
+\begin{column}{0.48\textwidth}
+\centering
+\begin{tikzpicture}[scale=1.9, >=Latex]
+    \draw[->, gray!60] (-0.25, 0) -- (1.45, 0) node[right, font=\footnotesize] {$x_1$};
+    \draw[->, gray!60] (0, -0.25) -- (0, 1.45) node[above, font=\footnotesize] {$x_2$};
+    \draw[dashed, gray!40, thick] (0,0) -- (1,0) -- (1,1) -- (0,1) -- cycle;
+    \filldraw[blue!80!black] (0, 0) circle (2.2pt) node[below left, font=\footnotesize] {$\bx_1(0,0)$};
+    \filldraw[blue!80!black] (1, 0) circle (2.2pt) node[below right, font=\footnotesize] {$\bx_2(1,0)$};
+    \filldraw[blue!80!black] (1, 1) circle (2.2pt) node[above right, font=\footnotesize] {$\bx_3(1,1)$};
+    \filldraw[blue!80!black] (0, 1) circle (2.2pt) node[above left, font=\footnotesize] {$\bx_4(0,1)$};
+\end{tikzpicture}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Running example: distance matrix of the square}
+Pairwise Euclidean distances $d_{ij} = \|\bx_i - \bx_j\|$ between the vertices are easy to compute here:
+\vfill
+\begin{itemize}
+\item \textbf{Adjacent vertices (edges of length 1)}:
+\[
+d_{12} = d_{23} = d_{34} = d_{14} = 1
+\]
+\vfill
+\item \textbf{Opposite vertices (diagonals of length $\sqrt{2}$)}:
+\[
+d_{13} = d_{24} = \sqrt{1^2 + 1^2} = \sqrt{2}
+\]
+\vfill
+\item \textbf{Self-distances}: $d_{ii} = 0$ for $i=1,\ldots,4$
+\end{itemize}
+\vfill
+This gives the pairwise distance matrix $D\in\M_4(\IR)$:
+\[
+D = \begin{pmatrix}
+0 & 1 & \sqrt{2} & 1 \\
+1 & 0 & 1 & \sqrt{2} \\
+\sqrt{2} & 1 & 0 & 1 \\
+1 & \sqrt{2} & 1 & 0
+\end{pmatrix}
+\]
+\end{frame}
+
+\begin{frame}{Running example: reconstructing $X$ from $D$}
+The fundamental question of this unit, formulated on our running example:
+\vfill
+\begin{columns}[c]
+\begin{column}{0.48\textwidth}
+\textbf{Given} the distance matrix:
+\[
+D = \begin{pmatrix}
+0 & 1 & \sqrt{2} & 1 \\
+1 & 0 & 1 & \sqrt{2} \\
+\sqrt{2} & 1 & 0 & 1 \\
+1 & \sqrt{2} & 1 & 0
+\end{pmatrix}
+\]
+\end{column}
+\begin{column}{0.48\textwidth}
+\textbf{Can we reconstruct} coordinates:
+\[
+X = \begin{pmatrix}
+0 & 0 \\
+1 & 0 \\
+1 & 1 \\
+0 & 1
+\end{pmatrix} ?
+\]
+\end{column}
+\end{columns}
+\vfill
+\begin{itemize}
+\item Can we deduce from $D$ alone that the points embed in dimension $p=2$?
+\vfill
+\item Can we recover the vertices of the square (up to translation, rotation and reflection)?
+\vfill
+\item What mathematical operations take us from the distance matrix $D$ to the coordinates $X$?
+\end{itemize}
+\end{frame}
+
 \begin{frame}{Where do distance-only datasets arise?}
 In many scientific applications, objects do not come with explicit coordinates in $\IR^p$, or only pairwise comparisons are measured:
 \vfill
@@ -165,6 +269,78 @@ Next, compute the squared Euclidean norm using the orthogonality of $Q$:
 Taking the non-negative square root yields $\|\by_i - \by_j\| = \|\bx_i - \bx_j\|$ \hfill\qed
 \end{frame}
 
+\begin{frame}{Running example: rigid motion of the square}
+Apply a rigid motion $\by_i = Q\bx_i + \bs$ to our four vertices, with rotation counterclockwise by $\theta = \pi/4$ and translation down and left:
+\[
+Q = \begin{pmatrix} \cos(\pi/4) & -\sin(\pi/4) \\ \sin(\pi/4) & \cos(\pi/4) \end{pmatrix} = \frac{\sqrt{2}}{2}\begin{pmatrix} 1 & -1 \\ 1 & 1 \end{pmatrix}, \qquad
+\bs = \begin{pmatrix} -2 \\ -1 \end{pmatrix}
+\]
+\vfill
+\centering
+\begin{tikzpicture}[scale=1.15, >=Latex]
+    % Coordinate axes
+    \draw[->, gray!60] (-3.1, 0) -- (1.5, 0) node[right, font=\footnotesize] {$x_1$};
+    \draw[->, gray!60] (0, -1.4) -- (0, 1.4) node[above, font=\footnotesize] {$x_2$};
+    
+    % Original square (blue)
+    \draw[thick, blue!80!black] (0,0) -- (1,0) -- (1,1) -- (0,1) -- cycle;
+    \filldraw[blue!80!black] (0, 0) circle (2pt) node[below left, font=\scriptsize] {$\bx_1$};
+    \filldraw[blue!80!black] (1, 0) circle (2pt) node[below right, font=\scriptsize] {$\bx_2$};
+    \filldraw[blue!80!black] (1, 1) circle (2pt) node[above right, font=\scriptsize] {$\bx_3$};
+    \filldraw[blue!80!black] (0, 1) circle (2pt) node[above left, font=\scriptsize] {$\bx_4$};
+    
+    % Transformed square (red)
+    \draw[thick, red!75!black] (-2, -1) -- (-1.293, -0.293) -- (-2, 0.414) -- (-2.707, -0.293) -- cycle;
+    \filldraw[red!75!black] (-2, -1) circle (2pt) node[below, font=\scriptsize] {$\by_1$};
+    \filldraw[red!75!black] (-1.293, -0.293) circle (2pt) node[right, font=\scriptsize] {$\by_2$};
+    \filldraw[red!75!black] (-2, 0.414) circle (2pt) node[above, font=\scriptsize] {$\by_3$};
+    \filldraw[red!75!black] (-2.707, -0.293) circle (2pt) node[left, font=\scriptsize] {$\by_4$};
+
+    % Translation vector from x1 to y1
+    \draw[->, dashed, thick, orange!85!black] (0, 0) -- (-2, -1) node[midway, below right=1pt, font=\scriptsize] {$\bs$};
+
+    % Rotation arc at the origin
+    \draw[->, purple, thin] (0.35, 0) arc (0:45:0.35) node[midway, right=1pt, font=\tiny] {$\pi/4$};
+
+    % Explanatory legend on the right
+    \node[font=\footnotesize, align=left, anchor=west] at (3.3, 0) {
+        \textbf{Rigid motion}: $\by_i = Q\bx_i + \bs$\\[0.2cm]
+        \textcolor{blue!80!black}{$\bullet$ Original square $X$}\\[0.1cm]
+        \textcolor{red!75!black}{$\bullet$ Transformed square $Y$}\\[0.2cm]
+        \textbf{Distances preserved}:\\[0.05cm]
+        $\|\by_i - \by_j\| = \|\bx_i - \bx_j\|$\\[0.05cm]
+        $D_Y = D$
+    };
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}{Running example: computing transformed coordinates}
+Apply the transformation $\by_i = Q\bx_i + \bs$ to each vertex of the square:
+\vfill
+\begin{itemize}
+\item \textbf{Vertex $\bx_1 = (0,0)^T$}:
+\[
+\by_1 = Q\bx_1 + \bs = Q\begin{pmatrix} 0 \\ 0 \end{pmatrix} + \begin{pmatrix} -2 \\ -1 \end{pmatrix} = \begin{pmatrix} -2 \\ -1 \end{pmatrix}
+\]
+\vfill
+\item \textbf{Vertex $\bx_2 = (1,0)^T$ (in detail)}:
+\[
+\by_2 = Q\bx_2 + \bs = \frac{\sqrt{2}}{2}\begin{pmatrix} 1 & -1 \\ 1 & 1 \end{pmatrix}\begin{pmatrix} 1 \\ 0 \end{pmatrix} + \begin{pmatrix} -2 \\ -1 \end{pmatrix}
+= \begin{pmatrix} \frac{\sqrt{2}}{2}-2 \\ \frac{\sqrt{2}}{2}-1 \end{pmatrix} \approx \begin{pmatrix} -1.293 \\ -0.293 \end{pmatrix}
+\]
+\vfill
+\item \textbf{Remaining vertices $\bx_3 = (1,1)^T$ and $\bx_4 = (0,1)^T$ (briefly)}:
+\[
+\by_3 = Q\bx_3 + \bs = \begin{pmatrix} 0 \\ \sqrt{2} \end{pmatrix} + \begin{pmatrix} -2 \\ -1 \end{pmatrix} = \begin{pmatrix} -2 \\ \sqrt{2}-1 \end{pmatrix} \approx \begin{pmatrix} -2 \\ 0.414 \end{pmatrix}
+\]
+\[
+\by_4 = Q\bx_4 + \bs = \begin{pmatrix} -\frac{\sqrt{2}}{2} \\ \frac{\sqrt{2}}{2} \end{pmatrix} + \begin{pmatrix} -2 \\ -1 \end{pmatrix} = \begin{pmatrix} -\frac{\sqrt{2}}{2}-2 \\ \frac{\sqrt{2}}{2}-1 \end{pmatrix} \approx \begin{pmatrix} -2.707 \\ -0.293 \end{pmatrix}
+\]
+\end{itemize}
+\vfill
+The resulting configuration $Y$ has the \textbf{exact same} pairwise distance matrix $D$ as $X$
+\end{frame}
+
 \begin{frame}{Removing translation ambiguity by centring at the origin}
 Because shifting all points by a constant vector $\bs\in\IR^p$ leaves every pairwise distance unchanged, we must fix a reference location to obtain a well-defined reconstruction
 \vfill
@@ -178,6 +354,50 @@ Because shifting all points by a constant vector $\bs\in\IR^p$ leaves every pair
 \item Any remaining ambiguity is purely an orthogonal transformation $Q\in\M_p(\IR)$ (rotation or reflection about the origin)
 \item Algebraically, why does fixing the origin help? Because once an origin is fixed, \textbf{distances determine inner products}, and inner products give us a \textbf{Gram matrix} that we can diagonalise!
 \end{itemize}
+\end{frame}
+
+\begin{frame}{Running example: centring the square at the origin}
+The centroid (sample mean) of the original four points is:
+\[
+\bar{\bx} = \frac{1}{4}\sum_{i=1}^4 \bx_i = \frac{1}{4}\begin{pmatrix} 0+1+1+0 \\ 0+0+1+1 \end{pmatrix} = \begin{pmatrix} 1/2 \\ 1/2 \end{pmatrix}
+\]
+\vfill
+\begin{columns}[c]
+\begin{column}{0.50\textwidth}
+Subtracting $\bar{\bx}$ centres the points at the origin, giving the centred data matrix
+\[
+\widetilde{X} = \begin{pmatrix}
+-1/2 & -1/2 \\
+1/2 & -1/2 \\
+1/2 & 1/2 \\
+-1/2 & 1/2
+\end{pmatrix}\in\M_{42}(\IR)
+\]
+\end{column}
+\begin{column}{0.48\textwidth}
+\centering
+\begin{tikzpicture}[scale=1.7, >=Latex]
+    % Axes
+    \draw[->, gray!60] (-0.9, 0) -- (1.4, 0) node[right, font=\footnotesize] {$x_1$};
+    \draw[->, gray!60] (0, -0.9) -- (0, 1.4) node[above, font=\footnotesize] {$x_2$};
+
+    % Original square (dashed gray)
+    \draw[dashed, gray!45, thick] (0,0) -- (1,0) -- (1,1) -- (0,1) -- cycle;
+    \node[gray!60, font=\scriptsize, above right] at (1, 1) {$X$};
+
+    % Shift arrow from centroid (0.5,0.5) to origin
+    \draw[->, thick, orange!85!black] (0.5, 0.5) -- (0.05, 0.05) node[midway, left=2pt, font=\scriptsize] {$-\bar{\bx}$};
+
+    % Centred square (solid blue)
+    \draw[thick, blue!80!black] (-0.5, -0.5) -- (0.5, -0.5) -- (0.5, 0.5) -- (-0.5, 0.5) -- cycle;
+    \filldraw[blue!80!black] (-0.5, -0.5) circle (2pt) node[below left, font=\scriptsize] {$\tilde{\bx}_1$};
+    \filldraw[blue!80!black] (0.5, -0.5) circle (2pt) node[below right, font=\scriptsize] {$\tilde{\bx}_2$};
+    \filldraw[blue!80!black] (0.5, 0.5) circle (2pt) node[above right, font=\scriptsize] {$\tilde{\bx}_3$};
+    \filldraw[blue!80!black] (-0.5, 0.5) circle (2pt) node[above left, font=\scriptsize] {$\tilde{\bx}_4$};
+    \filldraw[red!80!black] (0, 0) circle (1.5pt) node[below left=1pt, font=\tiny, text=red!80!black] {$\b0$};
+\end{tikzpicture}
+\end{column}
+\end{columns}
 \end{frame}
 
 
@@ -255,6 +475,44 @@ g_{ij} = \bx_i^T \bx_j = \|\bx_i\|\,\|\bx_j\|\cos\theta_{ij}, \qquad i\neq j
 \[
 (XQ^T)(XQ^T)^T = X Q^T Q X^T = X \II_p X^T = XX^T = G
 \]
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Running example: Gram matrix of the square}
+Recall our four points $X\in\M_{42}(\IR)$:
+\[
+\bx_1 = \begin{pmatrix} 0 \\ 0 \end{pmatrix}, \qquad
+\bx_2 = \begin{pmatrix} 1 \\ 0 \end{pmatrix}, \qquad
+\bx_3 = \begin{pmatrix} 1 \\ 1 \end{pmatrix}, \qquad
+\bx_4 = \begin{pmatrix} 0 \\ 1 \end{pmatrix}
+\]
+\vfill
+The Gram matrix $G = XX^T \in \M_4(\IR)$ is:
+\[
+G = XX^T = \begin{pmatrix}
+0 & 0 \\
+1 & 0 \\
+1 & 1 \\
+0 & 1
+\end{pmatrix}
+\begin{pmatrix}
+0 & 1 & 1 & 0 \\
+0 & 0 & 1 & 1
+\end{pmatrix}
+= \begin{pmatrix}
+0 & 0 & 0 & 0 \\
+0 & 1 & 1 & 0 \\
+0 & 1 & 2 & 1 \\
+0 & 0 & 1 & 1
+\end{pmatrix}
+\]
+\vfill
+\textbf{Geometric interpretation of the entries}:
+\begin{itemize}
+\item \textbf{Diagonal entries} $g_{ii} = \|\bx_i\|^2$: squared distances from $\b0$ are $(0, 1, 2, 1)$
+\item \textbf{First row/column}: all zero because $\bx_1 = \b0$ is at the origin
+\item \textbf{Orthogonality}: $g_{24} = 0$ because $\bx_2 = (1,0)^T \perp \bx_4 = (0,1)^T$ ($\theta_{24} = \pi/2$)
+\item \textbf{Angle}: $g_{23} = 1$ because $\|\bx_2\|\|\bx_3\|\cos(\pi/4) = 1 \cdot \sqrt{2} \cdot \frac{\sqrt{2}}{2} = 1$
 \end{itemize}
 \end{frame}
 
@@ -423,6 +681,32 @@ d_{ij} \le d_{ik} + d_{kj} \qquad \forall i,j,k=1,\ldots,n
 \end{enumerate}
 \end{frame}
 
+\begin{frame}{Running example: squared distance matrix of the square}
+We previously found the Euclidean distance matrix $D$ of our running example.
+Squaring each entry elementwise ($d_{ij}^2$) gives the \defword{squared Euclidean distance matrix} $D^{(2)}\in\M_4(\IR)$:
+\[
+D^{(2)} = D\circ D = \begin{pmatrix}
+0^2 & 1^2 & (\sqrt{2})^2 & 1^2 \\
+1^2 & 0^2 & 1^2 & (\sqrt{2})^2 \\
+(\sqrt{2})^2 & 1^2 & 0^2 & 1^2 \\
+1^2 & (\sqrt{2})^2 & 1^2 & 0^2
+\end{pmatrix}
+= \begin{pmatrix}
+0 & 1 & 2 & 1 \\
+1 & 0 & 1 & 2 \\
+2 & 1 & 0 & 1 \\
+1 & 2 & 1 & 0
+\end{pmatrix}
+\]
+\vfill
+As expected from the basic properties:
+\begin{itemize}
+\item $D^{(2)}$ is symmetric: $(D^{(2)})^T = D^{(2)}$
+\item $D^{(2)}$ has a zero diagonal: $\diag(D^{(2)}) = \b0$ and $\tr(D^{(2)}) = 0$
+\item All off-diagonal entries are strictly positive
+\end{itemize}
+\end{frame}
+
 \begin{frame}{Relating squared distances to inner products}
 Why do we work with the \emph{squared} distance matrix $D^{(2)}$ rather than $D$? Because squared Euclidean norms expand directly in terms of inner products!
 \vfill
@@ -489,6 +773,50 @@ Therefore, for every $(i,j)\in\{1,\ldots,n\}^2$,
 \[
 \big[\bg\11^T - 2G + \11\bg^T\big]_{ij} = g_{ii} - 2g_{ij} + g_{jj} = \|\bx_i\|^2 - 2\bx_i^T\bx_j + \|\bx_j\|^2 = \|\bx_i - \bx_j\|^2 = d_{ij}^2 \hfill\qed
 \]
+\end{frame}
+
+\begin{frame}{Running example: computing $D^{(2)}$ from $G$}
+We have already computed the Gram matrix $G = XX^T$ of our running example:
+\[
+G = \begin{pmatrix}
+0 & 0 & 0 & 0 \\
+0 & 1 & 1 & 0 \\
+0 & 1 & 2 & 1 \\
+0 & 0 & 1 & 1
+\end{pmatrix}
+\implies
+\bg = \diag(G) = \begin{pmatrix} 0 \\ 1 \\ 2 \\ 1 \end{pmatrix}
+\]
+\vfill
+Using Theorem~\ref{th:D2_from_G}, we form $\bg\11^T$, $\11\bg^T$ and compute $D^{(2)} = \bg\11^T - 2G + \11\bg^T$:
+\[
+D^{(2)} = \begin{pmatrix}
+0 & 0 & 0 & 0 \\
+1 & 1 & 1 & 1 \\
+2 & 2 & 2 & 2 \\
+1 & 1 & 1 & 1
+\end{pmatrix}
+- 2\begin{pmatrix}
+0 & 0 & 0 & 0 \\
+0 & 1 & 1 & 0 \\
+0 & 1 & 2 & 1 \\
+0 & 0 & 1 & 1
+\end{pmatrix}
++ \begin{pmatrix}
+0 & 1 & 2 & 1 \\
+0 & 1 & 2 & 1 \\
+0 & 1 & 2 & 1 \\
+0 & 1 & 2 & 1
+\end{pmatrix}
+= \begin{pmatrix}
+0 & 1 & 2 & 1 \\
+1 & 0 & 1 & 2 \\
+2 & 1 & 0 & 1 \\
+1 & 2 & 1 & 0
+\end{pmatrix}
+\]
+\vfill
+This matches the squared Euclidean distance matrix $D^{(2)}$ of the square we found earlier!
 \end{frame}
 
 \begin{frame}{Example -- Computing $G$ and $D^{(2)}$ from $X$ (1/2)}
@@ -882,7 +1210,385 @@ X_k = V_k \Lambda_k^{1/2} = \begin{pmatrix} \sqrt{\lambda_1}\,\bv_1 & \sqrt{\lam
 
 
 %%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%
 \SSsubsection{Examples}
+
+\begin{frame}{Running example: reconstructing the square from $D^{(2)}$ (1/15)}
+We now apply the classical MDS algorithm to our running example
+\vfill
+\textbf{Input}: the squared Euclidean distance matrix $D^{(2)}\in\M_4(\IR)$ computed earlier:
+\[
+D^{(2)} = \begin{pmatrix}
+0 & 1 & 2 & 1 \\
+1 & 0 & 1 & 2 \\
+2 & 1 & 0 & 1 \\
+1 & 2 & 1 & 0
+\end{pmatrix}
+\]
+\vfill
+\textbf{Objective}:
+\begin{enumerate}
+\item Double-centre $D^{(2)}$ to obtain the inner product matrix $B = -\frac{1}{2} C_4 D^{(2)} C_4$
+\item Find the eigenvalues and orthonormal eigenvectors of $B$
+\item Deduce the intrinsic embedding dimension $r = \rank(B)$
+\item Construct the centred coordinate matrix $X_r \in \M_{4r}(\IR)$
+\item Verify that pairwise distances are preserved and compare with $\widetilde{X}$
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Running example: double-centring $D^{(2)}$ (2/15)}
+\textbf{Step 1}: Compute the row, column, and grand means of $D^{(2)}$
+\vfill
+Using the entrywise double-centring formula:
+\[
+b_{ij} = -\frac{1}{2}\left(d_{ij}^2 - \bar{d}_{i\cdot}^2 - \bar{d}_{\cdot j}^2 + \bar{d}_{\cdot\cdot}^2\right)
+\]
+\vfill
+\begin{itemize}
+\item \textbf{Row means}: every row of $D^{(2)}$ has the same sum $0 + 1 + 2 + 1 = 4$:
+\[
+\bar{d}_{i\cdot}^2 = \frac{1}{4}(0 + 1 + 2 + 1) = \frac{4}{4} = 1, \qquad i = 1, 2, 3, 4
+\]
+\vfill
+\item \textbf{Column means}: by symmetry of $D^{(2)}$,
+\[
+\bar{d}_{\cdot j}^2 = 1, \qquad j = 1, 2, 3, 4
+\]
+\vfill
+\item \textbf{Grand mean}:
+\[
+\bar{d}_{\cdot\cdot}^2 = \frac{1}{4}\sum_{i=1}^4 \bar{d}_{i\cdot}^2 = \frac{1}{4}(1 + 1 + 1 + 1) = 1
+\]
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Running example: the double-centred Gram matrix $B$ (3/15)}
+\textbf{Step 2}: Form the matrix $B = -\frac{1}{2} C_4 D^{(2)} C_4$
+\vfill
+Substituting the means $\bar{d}_{i\cdot}^2 = \bar{d}_{\cdot j}^2 = \bar{d}_{\cdot\cdot}^2 = 1$ into the entrywise formula:
+\[
+b_{ij} = -\frac{1}{2}\left(d_{ij}^2 - 1 - 1 + 1\right) = -\frac{1}{2}\left(d_{ij}^2 - 1\right) = \frac{1 - d_{ij}^2}{2}
+\]
+\vfill
+This yields the double-centred matrix:
+\[
+B = -\frac{1}{2} C_4 D^{(2)} C_4 = \frac{1}{2}\begin{pmatrix}
+1 & 0 & -1 & 0 \\
+0 & 1 & 0 & -1 \\
+-1 & 0 & 1 & 0 \\
+0 & -1 & 0 & 1
+\end{pmatrix}
+\]
+\vfill
+\textbf{Properties of $B$}:
+\begin{itemize}
+\item \textbf{Centring}: row and column sums are zero, $B\11 = \b0$ and $\11^T B = \b0^T$
+\item \textbf{Trace}: $\tr(B) = \frac{1}{2}(1 + 1 + 1 + 1) = 2$
+\item \textbf{Exact match}: $B$ is identical to $\widetilde{X}\widetilde{X}^T$, the Gram matrix of the centred square $\widetilde{X} = C_4 X$ computed earlier!
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Running example: rank and intrinsic dimension of $B$ (4/15)}
+\textbf{Step 3}: Analyze the rank and geometry of
+\[
+B = \frac{1}{2}\begin{pmatrix}
+1 & 0 & -1 & 0 \\
+0 & 1 & 0 & -1 \\
+-1 & 0 & 1 & 0 \\
+0 & -1 & 0 & 1
+\end{pmatrix}
+\]
+\vfill
+\begin{itemize}
+\item \textbf{Row relationships}:
+\[
+\text{row}_3(B) = -\text{row}_1(B) \qquad\text{and}\qquad \text{row}_4(B) = -\text{row}_2(B)
+\]
+\item \textbf{Linearly independent rows}: rows 1 and 2 are orthogonal and linearly independent
+\vfill
+\item \textbf{Rank}: therefore,
+\[
+r = \rank(B) = 2
+\]
+\vfill
+\item \textbf{Intrinsic dimension}: By Schoenberg's theorem, the $4$ points lie intrinsically in an $r = 2$ dimensional Euclidean space (a plane), with zero out-of-plane distortion!
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Running example: eigenvalues of $B$ (5/15)}
+To find the eigenvalues of $B$, notice that pairs $\{1, 3\}$ and $\{2, 4\}$ decouple:
+\vfill
+Permuting rows and columns to ordering $(1, 3, 2, 4)$ yields the block-diagonal matrix:
+\[
+P B P^T = \frac{1}{2}\begin{pmatrix}
+1 & -1 & 0 & 0 \\
+-1 & 1 & 0 & 0 \\
+0 & 0 & 1 & -1 \\
+0 & 0 & -1 & 1
+\end{pmatrix}
+= \begin{pmatrix}
+M & \b0 \\
+\b0 & M
+\end{pmatrix},
+\quad\text{where } M = \frac{1}{2}\begin{pmatrix} 1 & -1 \\ -1 & 1 \end{pmatrix}
+\]
+\vfill
+\begin{itemize}
+\item Each $2\times 2$ block $M$ has $\tr(M) = 1$ and $\det(M) = 0$, giving eigenvalues $1$ and $0$:
+\[
+\det(M - \lambda\II_2) = \lambda^2 - \lambda = \lambda(\lambda - 1) = 0 \implies \lambda \in \{1, 0\}
+\]
+\item Since $PBP^T$ has two identical blocks $M$, the $4$ ordered eigenvalues of $B$ are:
+\[
+\lambda_1 = 1, \qquad \lambda_2 = 1, \qquad \lambda_3 = 0, \qquad \lambda_4 = 0
+\]
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Running example: linear system for the positive eigenvalues (6/15)}
+The positive eigenvalue is $\lambda = 1$ with algebraic multiplicity $2$
+\vfill
+To find the corresponding eigenvectors, we solve $(B - 1\cdot\II_4)\bv = \b0$:
+\[
+\frac{1}{2}\begin{pmatrix}
+-1 & 0 & -1 & 0 \\
+0 & -1 & 0 & -1 \\
+-1 & 0 & -1 & 0 \\
+0 & -1 & 0 & -1
+\end{pmatrix}
+\begin{pmatrix} v_1 \\ v_2 \\ v_3 \\ v_4 \end{pmatrix} = \begin{pmatrix} 0 \\ 0 \\ 0 \\ 0 \end{pmatrix}
+\]
+\vfill
+Multiplying out yields the linear system:
+\[
+\begin{cases}
+-\frac{1}{2}(v_1 + v_3) = 0 \\
+-\frac{1}{2}(v_2 + v_4) = 0 \\
+-\frac{1}{2}(v_1 + v_3) = 0 \\
+-\frac{1}{2}(v_2 + v_4) = 0
+\end{cases}
+\iff
+\begin{cases}
+v_3 = -v_1 \\
+v_4 = -v_2
+\end{cases}
+\]
+\vfill
+Thus $v_1$ and $v_2$ are free variables, while $v_3$ and $v_4$ are completely determined
+\end{frame}
+
+\begin{frame}{Running example: the 2-dimensional eigenspace $E_B(1)$ (7/15)}
+With free parameters $v_1 = a \in \IR$ and $v_2 = b \in \IR$, every eigenvector $\bv$ for $\lambda = 1$ has the form:
+\[
+\bv = \begin{pmatrix} a \\ b \\ -a \\ -b \end{pmatrix} = a \begin{pmatrix} 1 \\ 0 \\ -1 \\ 0 \end{pmatrix} + b \begin{pmatrix} 0 \\ 1 \\ 0 \\ -1 \end{pmatrix}, \qquad (a, b) \ne (0, 0)
+\]
+\vfill
+The eigenspace associated with $\lambda = 1$ is therefore two-dimensional:
+\[
+E_B(1) = \Span\left\{ \bu_1 = \begin{pmatrix} 1 \\ 0 \\ -1 \\ 0 \end{pmatrix}, \; \bu_2 = \begin{pmatrix} 0 \\ 1 \\ 0 \\ -1 \end{pmatrix} \right\}
+\]
+\vfill
+\textbf{Geometric interpretation}:
+\begin{itemize}
+\item $\bu_1$ separates opposite vertices 1 and 3 along the first coordinate direction
+\item $\bu_2$ separates opposite vertices 2 and 4 along the second coordinate direction
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Running example: orthonormal eigenvectors of $B$ (8/15)}
+To construct the coordinate matrix, we choose an \textbf{orthonormal basis} $\{\bv_1, \bv_2\}$ for $E_B(1)$:
+\[
+\bv_1 = \frac{1}{\sqrt{2}}\begin{pmatrix} 1 \\ 0 \\ -1 \\ 0 \end{pmatrix}, \qquad
+\bv_2 = \frac{1}{\sqrt{2}}\begin{pmatrix} 0 \\ 1 \\ 0 \\ -1 \end{pmatrix}
+\]
+\vfill
+\textbf{Verification of orthonormality}:
+\begin{itemize}
+\item \textbf{Unit norm}:
+\[
+\|\bv_1\|^2 = \frac{1}{2}(1^2 + 0^2 + (-1)^2 + 0^2) = 1, \quad
+\|\bv_2\|^2 = \frac{1}{2}(0^2 + 1^2 + 0^2 + (-1)^2) = 1
+\]
+\item \textbf{Orthogonality}:
+\[
+\bv_1^T \bv_2 = \frac{1}{2}(1\cdot 0 + 0\cdot 1 + (-1)\cdot 0 + 0\cdot (-1)) = 0
+\]
+\end{itemize}
+\vfill
+Thus $V_2 = [\bv_1 \;\; \bv_2] \in \M_{42}(\IR)$ has orthonormal columns: $V_2^T V_2 = \II_2$
+\end{frame}
+
+\begin{frame}{Running example: coordinate recovery (9/15)}
+\textbf{Step 4}: With $k = 2$ and $\Lambda_2 = \diag(1, 1) = \II_2$, the coordinate matrix is:
+\[
+X_2 = V_2 \Lambda_2^{1/2} = \begin{pmatrix} \bv_1 & \bv_2 \end{pmatrix} \II_2 =
+\frac{1}{\sqrt{2}}\begin{pmatrix}
+1 & 0 \\
+0 & 1 \\
+-1 & 0 \\
+0 & -1
+\end{pmatrix}
+= \begin{pmatrix}
+\frac{\sqrt{2}}{2} & 0 \\
+0 & \frac{\sqrt{2}}{2} \\
+-\frac{\sqrt{2}}{2} & 0 \\
+0 & -\frac{\sqrt{2}}{2}
+\end{pmatrix} \in \M_{42}(\IR)
+\]
+\vfill
+The reconstructed points in $\IR^2$ (the rows of $X_2$) are:
+\[
+\hat{\bx}_1 = \begin{pmatrix} \frac{\sqrt{2}}{2} \\ 0 \end{pmatrix}, \qquad
+\hat{\bx}_2 = \begin{pmatrix} 0 \\ \frac{\sqrt{2}}{2} \end{pmatrix}, \qquad
+\hat{\bx}_3 = \begin{pmatrix} -\frac{\sqrt{2}}{2} \\ 0 \end{pmatrix}, \qquad
+\hat{\bx}_4 = \begin{pmatrix} 0 \\ -\frac{\sqrt{2}}{2} \end{pmatrix}
+\]
+\end{frame}
+
+\begin{frame}{Running example: verification of centroid and edges (10/15)}
+We verify that the reconstructed configuration $X_2$ satisfies all requirements:
+\vfill
+\begin{itemize}
+\item \textbf{Centroid at origin}:
+\[
+\bar{\hat{\bx}} = \frac{1}{4}\sum_{i=1}^4 \hat{\bx}_i = \frac{1}{4}\begin{pmatrix} \frac{\sqrt{2}}{2} + 0 - \frac{\sqrt{2}}{2} + 0 \\ 0 + \frac{\sqrt{2}}{2} + 0 - \frac{\sqrt{2}}{2} \end{pmatrix} = \begin{pmatrix} 0 \\ 0 \end{pmatrix}
+\]
+\vfill
+\item \textbf{Adjacent vertices (edge lengths)}:
+\[
+\|\hat{\bx}_1 - \hat{\bx}_2\|^2 = \left(\frac{\sqrt{2}}{2} - 0\right)^2 + \left(0 - \frac{\sqrt{2}}{2}\right)^2 = \frac{1}{2} + \frac{1}{2} = 1 \implies \hat{d}_{12} = 1
+\]
+\[
+\|\hat{\bx}_2 - \hat{\bx}_3\|^2 = \left(0 - \left(-\frac{\sqrt{2}}{2}\right)\right)^2 + \left(\frac{\sqrt{2}}{2} - 0\right)^2 = \frac{1}{2} + \frac{1}{2} = 1 \implies \hat{d}_{23} = 1
+\]
+By symmetry, $\hat{d}_{34} = 1$ and $\hat{d}_{41} = 1$. All four edge lengths are $1$!
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Running example: verification of diagonals and distance matrix (11/15)}
+\begin{itemize}
+\item \textbf{Opposite vertices (diagonal lengths)}:
+\[
+\|\hat{\bx}_1 - \hat{\bx}_3\|^2 = \left(\frac{\sqrt{2}}{2} - \left(-\frac{\sqrt{2}}{2}\right)\right)^2 + (0 - 0)^2 = (\sqrt{2})^2 = 2 \implies \hat{d}_{13} = \sqrt{2}
+\]
+\[
+\|\hat{\bx}_2 - \hat{\bx}_4\|^2 = (0 - 0)^2 + \left(\frac{\sqrt{2}}{2} - \left(-\frac{\sqrt{2}}{2}\right)\right)^2 = (\sqrt{2})^2 = 2 \implies \hat{d}_{24} = \sqrt{2}
+\]
+\vfill
+\item \textbf{Reconstructed distance matrices}:
+\[
+\widehat{D} = \begin{pmatrix}
+0 & 1 & \sqrt{2} & 1 \\
+1 & 0 & 1 & \sqrt{2} \\
+\sqrt{2} & 1 & 0 & 1 \\
+1 & \sqrt{2} & 1 & 0
+\end{pmatrix} = D,
+\qquad
+\widehat{D}^{(2)} = \begin{pmatrix}
+0 & 1 & 2 & 1 \\
+1 & 0 & 1 & 2 \\
+2 & 1 & 0 & 1 \\
+1 & 2 & 1 & 0
+\end{pmatrix} = D^{(2)}
+\]
+\vfill
+\item Pairwise distances are \textbf{isometrically and perfectly reconstructed}!
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Running example: algebraic comparison with centred square (12/15)}
+Why did classical MDS yield vertices on the coordinate axes rather than $[\pm 1/2, \pm 1/2]^2$?
+\vfill
+\begin{itemize}
+\item Recall the original square centred at the origin ($\widetilde{X} = C_4 X$):
+\[
+\tilde{\bx}_1 = \begin{pmatrix} -1/2 \\ -1/2 \end{pmatrix}, \quad
+\tilde{\bx}_2 = \begin{pmatrix} 1/2 \\ -1/2 \end{pmatrix}, \quad
+\tilde{\bx}_3 = \begin{pmatrix} 1/2 \\ 1/2 \end{pmatrix}, \quad
+\tilde{\bx}_4 = \begin{pmatrix} -1/2 \\ 1/2 \end{pmatrix}
+\]
+\vfill
+\item Both configurations share the exact same distance from the origin:
+\[
+\|\tilde{\bx}_i\| = \sqrt{(-1/2)^2 + (-1/2)^2} = \frac{\sqrt{2}}{2} = \|\hat{\bx}_i\|
+\]
+\vfill
+\item The reconstructed configuration $X_2$ is related to $\widetilde{X}$ by a rigid rotation by $\theta = -45^\circ$ ($-\pi/4$):
+\[
+Q = \begin{pmatrix} \cos(-\pi/4) & -\sin(-\pi/4) \\ \sin(-\pi/4) & \cos(-\pi/4) \end{pmatrix} = \frac{\sqrt{2}}{2}\begin{pmatrix} 1 & 1 \\ -1 & 1 \end{pmatrix} \in \mathcal{SO}(2)
+\]
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Running example: explicit rotation calculation (13/15)}
+Applying the rotation matrix $Q = \frac{\sqrt{2}}{2}\begin{pmatrix} 1 & 1 \\ -1 & 1 \end{pmatrix}$ to each centred point $\tilde{\bx}_i$:
+\vfill
+\begin{itemize}
+\item Vertices 1 and 2:
+\[
+Q\tilde{\bx}_1 = \frac{\sqrt{2}}{2}\begin{pmatrix} 1 & 1 \\ -1 & 1 \end{pmatrix}\begin{pmatrix} -1/2 \\ -1/2 \end{pmatrix} = \begin{pmatrix} -\frac{\sqrt{2}}{2} \\ 0 \end{pmatrix} = \hat{\bx}_3
+\]
+\[
+Q\tilde{\bx}_2 = \frac{\sqrt{2}}{2}\begin{pmatrix} 1 & 1 \\ -1 & 1 \end{pmatrix}\begin{pmatrix} 1/2 \\ -1/2 \end{pmatrix} = \begin{pmatrix} 0 \\ -\frac{\sqrt{2}}{2} \end{pmatrix} = \hat{\bx}_4
+\]
+\vfill
+\item Vertices 3 and 4:
+\[
+Q\tilde{\bx}_3 = \frac{\sqrt{2}}{2}\begin{pmatrix} 1 & 1 \\ -1 & 1 \end{pmatrix}\begin{pmatrix} 1/2 \\ 1/2 \end{pmatrix} = \begin{pmatrix} \frac{\sqrt{2}}{2} \\ 0 \end{pmatrix} = \hat{\bx}_1
+\]
+\[
+Q\tilde{\bx}_4 = \frac{\sqrt{2}}{2}\begin{pmatrix} 1 & 1 \\ -1 & 1 \end{pmatrix}\begin{pmatrix} -1/2 \\ 1/2 \end{pmatrix} = \begin{pmatrix} 0 \\ \frac{\sqrt{2}}{2} \end{pmatrix} = \hat{\bx}_2
+\]
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Running example: geometric visualization (14/15)}
+\centering
+\begin{tikzpicture}[scale=2.2, >=Latex]
+    % Axes
+    \draw[->, gray!60] (-1.2, 0) -- (1.4, 0) node[right, font=\footnotesize] {$x_1$};
+    \draw[->, gray!60] (0, -1.2) -- (0, 1.4) node[above, font=\footnotesize] {$x_2$};
+
+    % Centred square \widetilde{X} (dashed blue)
+    \draw[dashed, blue!75!black, thick] (-0.5,-0.5) -- (0.5,-0.5) -- (0.5,0.5) -- (-0.5,0.5) -- cycle;
+    \filldraw[blue!75!black] (-0.5,-0.5) circle (1.8pt) node[below left, font=\scriptsize] {$\tilde{\bx}_1$};
+    \filldraw[blue!75!black] (0.5,-0.5) circle (1.8pt) node[below right, font=\scriptsize] {$\tilde{\bx}_2$};
+    \filldraw[blue!75!black] (0.5,0.5) circle (1.8pt) node[above right, font=\scriptsize] {$\tilde{\bx}_3$};
+    \filldraw[blue!75!black] (-0.5,0.5) circle (1.8pt) node[above left, font=\scriptsize] {$\tilde{\bx}_4$};
+
+    % Recovered square \hat{X} (solid red)
+    \draw[thick, red!75!black] (0.707,0) -- (0,0.707) -- (-0.707,0) -- (0,-0.707) -- cycle;
+    \filldraw[red!75!black] (0.707,0) circle (2pt) node[right, font=\scriptsize] {$\hat{\bx}_1$};
+    \filldraw[red!75!black] (0,0.707) circle (2pt) node[above, font=\scriptsize] {$\hat{\bx}_2$};
+    \filldraw[red!75!black] (-0.707,0) circle (2pt) node[left, font=\scriptsize] {$\hat{\bx}_3$};
+    \filldraw[red!75!black] (0,-0.707) circle (2pt) node[below, font=\scriptsize] {$\hat{\bx}_4$};
+
+    % Rotation arc from \tilde{x}_3 to \hat{x}_1
+    \draw[->, thick, purple!80!black] (0.42, 0.42) arc (45:0:0.6) node[midway, right=2pt, font=\scriptsize] {$-45^\circ$};
+
+    % Legend
+    \node[blue!75!black, font=\scriptsize, anchor=west] at (-1.2, -1.35) {-- $\widetilde{X}$ (original centred)};
+    \node[red!75!black, font=\scriptsize, anchor=west] at (0.1, -1.35) {-- $X_2$ (recovered by MDS)};
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}{Running example: fundamental takeaways of classical MDS (15/15)}
+Key insights illustrated by the running example:
+\vfill
+\begin{itemize}
+\item \textbf{Exact isometric reconstruction}:
+When $D$ is an exact Euclidean distance matrix, classical MDS recovers the configuration with zero distortion in $r = \rank(B)$ dimensions
+\vfill
+\item \textbf{Centroid at origin}:
+The reconstructed configuration is automatically centred: $\sum_{i=1}^n \hat{\bx}_i = \b0$
+\vfill
+\item \textbf{Orthogonal indeterminacy}:
+The reconstruction is unique only \textbf{up to an orthogonal transformation} (rotation or reflection about the origin)
+\vfill
+\item \textbf{Basis of the eigenspace}:
+Any orthonormal basis of $E_B(1)$ yields a valid MDS embedding; different choices of basis simply correspond to different orientations (rotations/reflections) of the same shape
+\end{itemize}
+\end{frame}
 
 \begin{frame}{Example 1 -- Recovering 1D coordinates from $D^{(2)}$ (1/4)}
 Suppose $n=3$ objects have the squared Euclidean distance matrix
@@ -1006,7 +1712,7 @@ which reproduces $D^{(2)}$ exactly! (Choosing $-\bv_1$ gives $X_1 = (2, 0, -2)^T
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Example 2 -- Recovering a 2D triangle from distances (1/4)}
+\begin{frame}{Example 2 -- Recovering a 2D triangle from distances (1/5)}
 Now consider $n=3$ points with squared Euclidean distance matrix
 \[
 D^{(2)} = \begin{pmatrix}
@@ -1032,7 +1738,7 @@ Let us compute $B = -\frac{1}{2}C_3 D^{(2)} C_3$ using the row/column mean formu
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Example 2 -- Forming $B$ and finding its eigenpairs (2/4)}
+\begin{frame}{Example 2 -- Forming $B$ and finding its eigenpairs (2/5)}
 Computing each entry $b_{ij} = -\frac{1}{2}\big(d_{ij}^2 - \bar{d}_{i\cdot}^2 - \bar{d}_{\cdot j}^2 + \frac{16}{3}\big)$ (or multiplying $-\frac{1}{2}C_3 D^{(2)} C_3$ directly):
 \[
 B = -\frac{1}{2}C_3 D^{(2)} C_3 = \frac{1}{3}\begin{pmatrix}
@@ -1058,7 +1764,7 @@ B\bv_1 = \frac{1}{3\sqrt{2}}\begin{pmatrix} 4 & -2 & -2 \\ -2 & 10 & -8 \\ -2 & 
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Example 2 -- Second eigenpair and 2D coordinates (3/4)}
+\begin{frame}{Example 2 -- Second eigenpair and 2D coordinates (3/5)}
 \begin{itemize}
 \item Since $\tr(B) = \frac{4 + 10 + 10}{3} = 8 = \lambda_1 + \lambda_2 + \lambda_3$ and $\lambda_1 = 6, \lambda_3 = 0$, the remaining eigenvalue is
 \[
@@ -1074,7 +1780,7 @@ B\bv_1 = \frac{1}{3\sqrt{2}}\begin{pmatrix} 4 & -2 & -2 \\ -2 & 10 & -8 \\ -2 & 
 Since $\lambda_1 = 6 > 0$, $\lambda_2 = 2 > 0$ and $\lambda_3 = 0$, $\rank(B) = 2$, so the $3$ points embed isometrically in $\IR^2$!
 \end{frame}
 
-\begin{frame}{Example 2 -- Constructing $X_2$ and verifying distances (4/4)}
+\begin{frame}{Example 2 -- Constructing $X_2$ (4/5)}
 Using $X_2 = V_2 \Lambda_2^{1/2} = \begin{pmatrix} \sqrt{\lambda_1}\,\bv_1 & \sqrt{\lambda_2}\,\bv_2 \end{pmatrix}$ with $\sqrt{\lambda_1} = \sqrt{6}$ and $\sqrt{\lambda_2} = \sqrt{2}$:
 \[
 X_2 = \begin{pmatrix}
@@ -1089,16 +1795,358 @@ X_2 = \begin{pmatrix}
 \end{pmatrix} \in \M_{32}(\IR)
 \]
 \vfill
-\textbf{Verification}:
 \begin{itemize}
-\item Column sums are zero: $0 + \sqrt{3} - \sqrt{3} = 0$ and $\frac{2}{\sqrt{3}} - \frac{1}{\sqrt{3}} - \frac{1}{\sqrt{3}} = 0$
-\item Pairwise squared distances between rows $\bx_1^T, \bx_2^T, \bx_3^T$ of $X_2$:
+\item The rows $\bx_1^T, \bx_2^T, \bx_3^T$ are the reconstructed 2D coordinates:
+\[
+\bx_1 = \begin{pmatrix} 0 \\ 2/\sqrt{3} \end{pmatrix}, \qquad
+\bx_2 = \begin{pmatrix} \sqrt{3} \\ -1/\sqrt{3} \end{pmatrix}, \qquad
+\bx_3 = \begin{pmatrix} -\sqrt{3} \\ -1/\sqrt{3} \end{pmatrix}
+\]
+\item Centred at the origin (column sums are zero):
+\[
+0 + \sqrt{3} - \sqrt{3} = 0, \qquad \frac{2}{\sqrt{3}} - \frac{1}{\sqrt{3}} - \frac{1}{\sqrt{3}} = 0
+\]
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Example 2 -- Verifying reconstructed distances (5/5)}
+Pairwise squared Euclidean distances between the rows $\bx_1^T, \bx_2^T, \bx_3^T$ of $X_2$:
+\vfill
 \begin{align*}
-\|\bx_1 - \bx_2\|^2 &= (0 - \sqrt{3})^2 + \left(\frac{2}{\sqrt{3}} + \frac{1}{\sqrt{3}}\right)^2 = 3 + 3 = 6 = d_{12}^2 \\
-\|\bx_1 - \bx_3\|^2 &= (0 + \sqrt{3})^2 + \left(\frac{2}{\sqrt{3}} + \frac{1}{\sqrt{3}}\right)^2 = 3 + 3 = 6 = d_{13}^2 \\
+\|\bx_1 - \bx_2\|^2 &= (0 - \sqrt{3})^2 + \left(\frac{2}{\sqrt{3}} + \frac{1}{\sqrt{3}}\right)^2 = 3 + 3 = 6 = d_{12}^2 \\[0.2cm]
+\|\bx_1 - \bx_3\|^2 &= (0 + \sqrt{3})^2 + \left(\frac{2}{\sqrt{3}} + \frac{1}{\sqrt{3}}\right)^2 = 3 + 3 = 6 = d_{13}^2 \\[0.2cm]
 \|\bx_2 - \bx_3\|^2 &= (\sqrt{3} + \sqrt{3})^2 + 0^2 = (2\sqrt{3})^2 = 12 = d_{23}^2
 \end{align*}
+\vfill
+\begin{itemize}
+\item All pairwise squared distances match $D^{(2)}$ exactly
+\item The $3$ points form an isosceles right triangle centred at the origin in $\IR^2$!
 \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Example 3 -- 4 points in $\IR^3$ forming a pyramid (1/6)}
+Consider $n = 4$ points in $\IR^3$ forming a triangular pyramid (tetrahedron):
+\vfill
+\begin{itemize}
+\item \textbf{Base triangle in the $xy$-plane ($z=0$)}:
+\[
+\bx_1 = \begin{pmatrix} 1 \\ 0 \\ 0 \end{pmatrix}, \qquad
+\bx_2 = \begin{pmatrix} -1 \\ 0 \\ 0 \end{pmatrix}, \qquad
+\bx_3 = \begin{pmatrix} 0 \\ 1 \\ 0 \end{pmatrix}
+\]
+\item \textbf{Apex elevated along the $z$-axis at height $h = 1$}:
+\[
+\bx_4 = \begin{pmatrix} 0 \\ 0 \\ 1 \end{pmatrix}
+\]
+\end{itemize}
+\vfill
+\textbf{Pairwise squared Euclidean distances}:
+\begin{itemize}
+\item Base edges: $d_{12}^2 = (1 - (-1))^2 = 4$, \quad $d_{13}^2 = 1^2 + (-1)^2 = 2$, \quad $d_{23}^2 = 2$
+\item Lateral edges (apex to base): $d_{14}^2 = 1^2 + 1^2 = 2$, \quad $d_{24}^2 = 2$, \quad $d_{34}^2 = 2$
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Example 3 -- Double-centring $D^{(2)}$ (2/6)}
+The squared Euclidean distance matrix $D^{(2)} \in \M_4(\IR)$ is:
+\[
+D^{(2)} = \begin{pmatrix}
+0 & 4 & 2 & 2 \\
+4 & 0 & 2 & 2 \\
+2 & 2 & 0 & 2 \\
+2 & 2 & 2 & 0
+\end{pmatrix}
+\]
+\vfill
+To compute $B = -\frac{1}{2} C_4 D^{(2)} C_4$ via $b_{ij} = -\frac{1}{2}(d_{ij}^2 - \bar{d}_{i\cdot}^2 - \bar{d}_{\cdot j}^2 + \bar{d}_{\cdot\cdot}^2)$:
+\vfill
+\begin{itemize}
+\item \textbf{Row (and column) means}:
+\[
+\bar{d}_{1\cdot}^2 = \frac{0 + 4 + 2 + 2}{4} = 2, \qquad
+\bar{d}_{2\cdot}^2 = \frac{4 + 0 + 2 + 2}{4} = 2
+\]
+\[
+\bar{d}_{3\cdot}^2 = \frac{2 + 2 + 0 + 2}{4} = \frac{3}{2}, \qquad
+\bar{d}_{4\cdot}^2 = \frac{2 + 2 + 2 + 0}{4} = \frac{3}{2}
+\]
+\item \textbf{Grand mean}:
+\[
+\bar{d}_{\cdot\cdot}^2 = \frac{1}{4}\left(2 + 2 + \frac{3}{2} + \frac{3}{2}\right) = \frac{7}{4}
+\]
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Example 3 -- The double-centred Gram matrix $B$ (3/6)}
+Substituting the means into $b_{ij} = -\frac{1}{2}\big(d_{ij}^2 - \bar{d}_{i\cdot}^2 - \bar{d}_{\cdot j}^2 + \frac{7}{4}\big)$:
+\[
+B = -\frac{1}{2} C_4 D^{(2)} C_4 = \frac{1}{8}\begin{pmatrix}
+9 & -7 & -1 & -1 \\
+-7 & 9 & -1 & -1 \\
+-1 & -1 & 5 & -3 \\
+-1 & -1 & -3 & 5
+\end{pmatrix}
+\]
+\vfill
+\textbf{Properties of $B$}:
+\begin{itemize}
+\item \textbf{Centring}: each row and column sum is zero ($B\11 = \b0$):
+\[
+\text{Row 1: } 9 - 7 - 1 - 1 = 0, \qquad \text{Row 3: } -1 - 1 + 5 - 3 = 0
+\]
+\item \textbf{Trace}:
+\[
+\tr(B) = \frac{9 + 9 + 5 + 5}{8} = \frac{28}{8} = \frac{7}{2} = 3.5
+\]
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Example 3 -- Spectral decomposition and dimension (4/6)}
+Finding the eigenpairs of $B = \frac{1}{8}\begin{pmatrix} 9 & -7 & -1 & -1 \\ -7 & 9 & -1 & -1 \\ -1 & -1 & 5 & -3 \\ -1 & -1 & -3 & 5 \end{pmatrix}$:
+\vfill
+\begin{itemize}
+\item $\bv_1 = \frac{1}{\sqrt{2}}(1, -1, 0, 0)^T \implies B\bv_1 = 2\bv_1 \implies \lambda_1 = 2$
+\item $\bv_2 = \frac{1}{\sqrt{2}}(0, 0, -1, 1)^T \implies B\bv_2 = 1\bv_2 \implies \lambda_2 = 1$
+\item $\bv_3 = \frac{1}{2}(1, 1, -1, -1)^T \implies B\bv_3 = \frac{1}{2}\bv_3 \implies \lambda_3 = \frac{1}{2}$
+\item $\bv_4 = \frac{1}{2}(1, 1, 1, 1)^T \implies B\bv_4 = \b0 \implies \lambda_4 = 0$
+\end{itemize}
+\vfill
+\textbf{Minimum embedding dimension}:
+\begin{itemize}
+\item Notice that $\lambda_1 + \lambda_2 + \lambda_3 = 2 + 1 + 0.5 = 3.5 = \tr(B)$
+\item Exactly $3$ eigenvalues are strictly positive: $\lambda_1, \lambda_2, \lambda_3 > 0$
+\item Hence $\rank(B) = 3 \implies$ the points require a \textbf{minimum of 3 dimensions} to embed isometrically!
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Example 3 -- Recovering 3D coordinates (5/6)}
+With $r = 3$ and $\Lambda_3 = \diag(2, 1, 1/2)$, the coordinate matrix is:
+\[
+X_3 = V_3 \Lambda_3^{1/2} = \begin{pmatrix} \sqrt{2}\,\bv_1 & 1\,\bv_2 & \frac{1}{\sqrt{2}}\,\bv_3 \end{pmatrix}
+= \begin{pmatrix}
+1 & 0 & \frac{\sqrt{2}}{4} \\[0.15cm]
+-1 & 0 & \frac{\sqrt{2}}{4} \\[0.15cm]
+0 & -\frac{\sqrt{2}}{2} & -\frac{\sqrt{2}}{4} \\[0.15cm]
+0 & \frac{\sqrt{2}}{2} & -\frac{\sqrt{2}}{4}
+\end{pmatrix} \in \M_{43}(\IR)
+\]
+\vfill
+\textbf{Geometric verification}:
+\begin{itemize}
+\item Column sums are zero: centroid $\bar{\bx} = \b0$
+\item Pairwise squared distances between rows:
+\[
+\|\hat{\bx}_1 - \hat{\bx}_2\|^2 = 2^2 + 0^2 + 0^2 = 4 = d_{12}^2
+\]
+\[
+\|\hat{\bx}_1 - \hat{\bx}_3\|^2 = 1^2 + \left(\frac{\sqrt{2}}{2}\right)^2 + \left(\frac{\sqrt{2}}{2}\right)^2 = 1 + \frac{1}{2} + \frac{1}{2} = 2 = d_{13}^2
+\]
+Exact isometry in $\IR^3$!
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Example 3 -- Geometric visualization of the 3D pyramid (6/6)}
+\centering
+\begin{tikzpicture}[scale=1.9, >=Latex, line join=round]
+    % Coordinates
+    \coordinate (X1) at (1.6, -0.3);
+    \coordinate (X2) at (-1.6, 0.2);
+    \coordinate (X3) at (0.2, 0.9);
+    \coordinate (X4) at (0, 1.7); % apex
+    \coordinate (O)  at (0, 0);
+
+    % Base triangle
+    \draw[thick, blue!75!black, fill=blue!10, fill opacity=0.4] (X1) -- (X3) -- (X2) -- cycle;
+    % Height from base to apex
+    \draw[dashed, gray!70] (O) -- (X4) node[midway, left=1pt, font=\scriptsize] {$h = 1$};
+    % Edges to apex
+    \draw[thick, red!75!black] (X1) -- (X4) node[midway, right=2pt, font=\tiny] {$d=\sqrt{2}$};
+    \draw[thick, red!75!black] (X2) -- (X4) node[midway, left=2pt, font=\tiny] {$d=\sqrt{2}$};
+    \draw[thick, red!75!black] (X3) -- (X4);
+
+    % Vertices
+    \filldraw[blue!75!black] (X1) circle (2pt) node[below right, font=\scriptsize] {$\bx_1 = (1,0,0)^T$};
+    \filldraw[blue!75!black] (X2) circle (2pt) node[left, font=\scriptsize] {$\bx_2 = (-1,0,0)^T$};
+    \filldraw[blue!75!black] (X3) circle (2pt) node[above right, font=\scriptsize] {$\bx_3 = (0,1,0)^T$};
+    \filldraw[red!75!black] (X4) circle (2pt) node[above, font=\scriptsize] {$\bx_4 = (0,0,1)^T$ (apex)};
+    \filldraw[gray!70] (O) circle (1.2pt) node[below, font=\tiny] {$(0,0,0)^T$};
+
+    % Caption
+    \node[font=\footnotesize, align=center] at (0, -0.85) {
+        \textbf{3D Pyramid}: $r = \rank(B) = 3$ positive eigenvalues ($\lambda_1=2, \lambda_2=1, \lambda_3=1/2$)\\
+        The positive eigenvalue $\lambda_3 = 1/2$ captures the elevation $h = 1$ of the apex
+    };
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}{Example 3b -- Flattening the pyramid into the base plane (1/6)}
+Now suppose the apex $\bx_4$ is flattened down into the base plane ($z=0$):
+\vfill
+\begin{itemize}
+\item The apex descends from $(0, 0, 1)^T$ to the origin: $\bx_4 = (0, 0, 0)^T$
+\item The 4 points now lie in the same 2D plane:
+\[
+\bx_1 = \begin{pmatrix} 1 \\ 0 \end{pmatrix}, \qquad
+\bx_2 = \begin{pmatrix} -1 \\ 0 \end{pmatrix}, \qquad
+\bx_3 = \begin{pmatrix} 0 \\ 1 \end{pmatrix}, \qquad
+\bx_4 = \begin{pmatrix} 0 \\ 0 \end{pmatrix}
+\]
+\end{itemize}
+\vfill
+\textbf{New pairwise squared distances}:
+\begin{itemize}
+\item Base distances are unchanged: $d_{12}^2 = 4, \quad d_{13}^2 = 2, \quad d_{23}^2 = 2$
+\item Distances from $\bx_4 = \b0$ become:
+\[
+d_{14}^2 = 1^2 + 0^2 = 1, \qquad d_{24}^2 = (-1)^2 + 0^2 = 1, \qquad d_{34}^2 = 0^2 + 1^2 = 1
+\]
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Example 3b -- Double-centring $D^{(2)}_{\text{flat}}$ (2/6)}
+The squared distance matrix of the flattened configuration is:
+\[
+D^{(2)}_{\text{flat}} = \begin{pmatrix}
+0 & 4 & 2 & 1 \\
+4 & 0 & 2 & 1 \\
+2 & 2 & 0 & 1 \\
+1 & 1 & 1 & 0
+\end{pmatrix}
+\]
+\vfill
+To compute $B_{\text{flat}} = -\frac{1}{2} C_4 D^{(2)}_{\text{flat}} C_4$ via $b_{ij} = -\frac{1}{2}(d_{ij}^2 - \bar{d}_{i\cdot}^2 - \bar{d}_{\cdot j}^2 + \bar{d}_{\cdot\cdot}^2)$:
+\vfill
+\begin{itemize}
+\item \textbf{Row (and column) means}:
+\[
+\bar{d}_{1\cdot}^2 = \frac{0 + 4 + 2 + 1}{4} = \frac{7}{4}, \qquad
+\bar{d}_{2\cdot}^2 = \frac{4 + 0 + 2 + 1}{4} = \frac{7}{4}
+\]
+\[
+\bar{d}_{3\cdot}^2 = \frac{2 + 2 + 0 + 1}{4} = \frac{5}{4}, \qquad
+\bar{d}_{4\cdot}^2 = \frac{1 + 1 + 1 + 0}{4} = \frac{3}{4}
+\]
+\item \textbf{Grand mean}:
+\[
+\bar{d}_{\cdot\cdot}^2 = \frac{1}{4}\left(\frac{7}{4} + \frac{7}{4} + \frac{5}{4} + \frac{3}{4}\right) = \frac{22}{16} = \frac{11}{8}
+\]
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Example 3b -- The double-centred Gram matrix $B_{\text{flat}}$ (3/6)}
+Substituting the means into $b_{ij} = -\frac{1}{2}\big(d_{ij}^2 - \bar{d}_{i\cdot}^2 - \bar{d}_{\cdot j}^2 + \frac{11}{8}\big)$:
+\[
+B_{\text{flat}} = -\frac{1}{2} C_4 D^{(2)}_{\text{flat}} C_4 = \frac{1}{16}\begin{pmatrix}
+17 & -15 & -3 & 1 \\
+-15 & 17 & -3 & 1 \\
+-3 & -3 & 9 & -3 \\
+1 & 1 & -3 & 1
+\end{pmatrix}
+\]
+\vfill
+\textbf{Properties of $B_{\text{flat}}$}:
+\begin{itemize}
+\item \textbf{Centring}: each row and column sum is zero ($B_{\text{flat}}\11 = \b0$):
+\[
+\text{Row 1: } 17 - 15 - 3 + 1 = 0, \qquad \text{Row 3: } -3 - 3 + 9 - 3 = 0
+\]
+\item \textbf{Trace}:
+\[
+\tr(B_{\text{flat}}) = \frac{17 + 17 + 9 + 1}{16} = \frac{44}{16} = \frac{11}{4} = 2.75
+\]
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Example 3b -- Dimensional collapse from 3D to 2D (4/6)}
+Finding the eigenpairs of $B_{\text{flat}}$:
+\vfill
+\begin{itemize}
+\item $\bv_1 = \frac{1}{\sqrt{2}}(1, -1, 0, 0)^T \implies B_{\text{flat}}\bv_1 = 2\bv_1 \implies \lambda_1 = 2$
+\item $\bv_2 = \frac{1}{2\sqrt{3}}(1, 1, -3, 1)^T \implies B_{\text{flat}}\bv_2 = \frac{3}{4}\bv_2 \implies \lambda_2 = \frac{3}{4} = 0.75$
+\item Trace check: $\lambda_1 + \lambda_2 = 2 + 0.75 = 2.75 = \tr(B_{\text{flat}})$
+\item Therefore, the remaining eigenvalues are:
+\[
+\lambda_3 = 0, \qquad \lambda_4 = 0
+\]
+\end{itemize}
+\vfill
+\textbf{Comparison of eigenvalues and dimension}:
+\[
+\begin{array}{lcccc}
+\hline
+\textbf{Configuration} & \lambda_1 & \lambda_2 & \lambda_3 & \rank(B) \\
+\hline
+\text{3D Pyramid ($h=1$)} & 2 & 1 & \mathbf{1/2} & \mathbf{3} \\
+\text{Flattened ($h=0$)} & 2 & 3/4 & \mathbf{0} & \mathbf{2} \\
+\hline
+\end{array}
+\]
+The out-of-plane eigenvalue has collapsed: $\lambda_3 = 1/2 \longrightarrow 0$!
+\end{frame}
+
+\begin{frame}{Example 3b -- Recovering 2D coordinates (5/6)}
+With $r = 2$ and $\Lambda_2 = \diag(2, 3/4)$, the coordinate matrix is:
+\[
+X_2 = V_2 \Lambda_2^{1/2} = \begin{pmatrix} \sqrt{2}\,\bv_1 & \frac{\sqrt{3}}{2}\,\bv_2 \end{pmatrix}
+= \begin{pmatrix}
+1 & \frac{1}{4} \\[0.15cm]
+-1 & \frac{1}{4} \\[0.15cm]
+0 & -\frac{3}{4} \\[0.15cm]
+0 & \frac{1}{4}
+\end{pmatrix} \in \M_{42}(\IR)
+\]
+\vfill
+\textbf{Verification of pairwise distances}:
+\begin{itemize}
+\item $\|\hat{\bx}_1 - \hat{\bx}_2\|^2 = 2^2 + 0^2 = 4 = d_{12}^2$
+\item $\|\hat{\bx}_1 - \hat{\bx}_3\|^2 = 1^2 + (1/4 - (-3/4))^2 = 1 + 1 = 2 = d_{13}^2$
+\item $\|\hat{\bx}_1 - \hat{\bx}_4\|^2 = 1^2 + (1/4 - 1/4)^2 = 1 = d_{14}^2$
+\item $\|\hat{\bx}_3 - \hat{\bx}_4\|^2 = 0^2 + (-3/4 - 1/4)^2 = 1 = d_{34}^2$
+\end{itemize}
+\vfill
+All pairwise distances are preserved perfectly in $\IR^2$!
+\end{frame}
+
+\begin{frame}{Example 3b -- Comparative geometric visualization (6/6)}
+\begin{columns}[c]
+\begin{column}{0.48\textwidth}
+\centering
+\begin{tikzpicture}[scale=1.6, >=Latex]
+    % Axes
+    \draw[->, gray!60] (-1.35, 0) -- (1.45, 0) node[right, font=\tiny] {$x_1$};
+    \draw[->, gray!60] (0, -1.05) -- (0, 0.75) node[above, font=\tiny] {$x_2$};
+
+    % Points
+    \coordinate (A) at (1, 0.25);
+    \coordinate (B) at (-1, 0.25);
+    \coordinate (C) at (0, -0.75);
+    \coordinate (D) at (0, 0.25);
+
+    \draw[thick, blue!75!black, fill=blue!10, fill opacity=0.3] (A) -- (C) -- (B) -- cycle;
+    \draw[dashed, red!80!black, thick] (C) -- (D);
+
+    \filldraw[blue!75!black] (A) circle (1.8pt) node[right=1pt, font=\tiny] {$\hat{\bx}_1 = (1, \frac{1}{4})$};
+    \filldraw[blue!75!black] (B) circle (1.8pt) node[left=1pt, font=\tiny] {$\hat{\bx}_2 = (-1, \frac{1}{4})$};
+    \filldraw[blue!75!black] (C) circle (1.8pt) node[below=1pt, font=\tiny] {$\hat{\bx}_3 = (0, -\frac{3}{4})$};
+    \filldraw[red!75!black] (D) circle (2pt) node[above=1pt, font=\tiny] {$\hat{\bx}_4 = (0, \frac{1}{4})$};
+
+    \node[font=\scriptsize, align=center] at (0, -1.25) {Flattened configuration in $\IR^2$};
+\end{tikzpicture}
+\end{column}
+\begin{column}{0.50\textwidth}
+\textbf{Core takeaways}:
+\begin{itemize}
+\item \textbf{Eigenvalues diagnose intrinsic dimension}:
+The number of strictly positive eigenvalues of $B$ gives the minimal Euclidean dimension $r = \rank(B)$
+\vfill
+\item \textbf{Continuous collapse}:
+As the height of the pyramid decreases $h \to 0$, the third eigenvalue continuously shrinks $\lambda_3(h) \to 0$
+\vfill
+\item When points become coplanar, $\lambda_3 = 0$ exactly, and the embedding dimension drops from $3$ to $2$
+\end{itemize}
+\end{column}
+\end{columns}
 \end{frame}
 
 
