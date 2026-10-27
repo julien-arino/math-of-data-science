@@ -338,6 +338,8 @@ V_r = \begin{pmatrix} \bv_1 & \cdots & \bv_r \end{pmatrix} \in \M_{nr}(\IR), \qq
 \]
 Then the matrix $X = V_r \Lambda_r^{1/2} \in \M_{nr}(\IR)$ satisfies $XX^T = B$
 \end{importanttheorem}
+\vfill
+Hey, lookee here, another matrix factorisation :)
 \end{frame}
 
 \begin{frame}{Proof of Theorem~\ref{th:psd_is_gram}}
