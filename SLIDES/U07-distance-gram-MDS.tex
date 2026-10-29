@@ -995,7 +995,7 @@ W = \Span(\11)^\perp = \left\{\bv\in\IR^n : \11^T\bv = \sum_{i=1}^n v_i = 0\righ
 \end{theorem}
 \end{frame}
 
-\begin{frame}{Proof of Theorem~\ref{th:centring_properties} -- Parts 1 and 2}
+\begin{frame}[importantcolour]{Proof of Theorem~\ref{th:centring_properties} -- Parts 1 and 2}
 \textbf{1. $C_n$ is symmetric ($C_n^T = C_n$)}:
 Using linearity of the transpose, $\II_n^T = \II_n$ and $(\11\11^T)^T = (\11^T)^T \11^T = \11\11^T$:
 \[
@@ -2223,28 +2223,28 @@ Y_k = \widetilde{X} V_k = U_k \Sigma_k = U_k \Lambda_k^{1/2} = X_k
 \end{theorem}
 \end{frame}
 
-\begin{frame}{Proof of Theorem~\ref{th:pca_mds_duality}}
-Let $\widetilde{X} = U_r \Sigma_r V_r^T$, where $U_r = [\bu_1 \;\cdots\; \bu_r]$, $V_r = [\bv_1 \;\cdots\; \bv_r]$ and $\Sigma_r = \diag(\sigma_1,\ldots,\sigma_r)$
+\begin{frame}[fragile]{Verifying PCA and classical MDS equivalence in R}
+Let us first verify Theorem~\ref{th:pca_mds_duality} numerically in \textsf{R} on a synthetic $5\times 3$ centred data matrix $\widetilde{X}$:
 \vfill
-\textbf{1. PCA projection onto top $k$ right singular vectors}:
-The columns of $V_k = [\bv_1 \;\cdots\; \bv_k]\in\M_{pk}(\IR)$ are the top $k$ orthonormal eigenvectors of $\widetilde{X}^T \widetilde{X}$ (and of $S_X = \frac{1}{n-1}\widetilde{X}^T \widetilde{X}$). 
-Using 
-\[
-V_r^T V_k = \begin{pmatrix} \II_k \\ \b0_{(r-k)\times k} \end{pmatrix}
-\]
-the PCA score matrix is
-\[
-Y_k = \widetilde{X} V_k = (U_r \Sigma_r V_r^T) V_k = U_k \Sigma_k
-\]
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{set.seed}\hldef{(}\hlnum{2740}\hldef{)}
+\hldef{X_tilde} \hlkwb{=} \hlkwd{scale}\hldef{(}\hlkwd{matrix}\hldef{(}\hlkwd{rnorm}\hldef{(}\hlnum{15}\hldef{),} \hlkwc{nrow} \hldef{=} \hlnum{5}\hldef{,} \hlkwc{ncol} \hldef{=} \hlnum{3}\hldef{),} \hlkwc{center} \hldef{=} \hlnum{TRUE}\hldef{,} \hlkwc{scale} \hldef{=} \hlnum{FALSE}\hldef{)}
+\hldef{pca_scores} \hlkwb{=} \hlkwd{prcomp}\hldef{(X_tilde,} \hlkwc{center} \hldef{=} \hlnum{FALSE}\hldef{)}\hlopt{$}\hldef{x[,} \hlnum{1}\hlopt{:}\hlnum{2}\hldef{]}
+\hldef{mds_coords} \hlkwb{=} \hlkwd{cmdscale}\hldef{(}\hlkwd{dist}\hldef{(X_tilde),} \hlkwc{k} \hldef{=} \hlnum{2}\hldef{)}
+\hlcom{# Compare absolute values (eigenvectors are defined up to a sign +/- 1)}
+\hlkwd{max}\hldef{(}\hlkwd{abs}\hldef{(}\hlkwd{abs}\hldef{(pca_scores)} \hlopt{-} \hlkwd{abs}\hldef{(mds_coords)))}
+\end{alltt}
+\begin{verbatim}
+## [1] 2.442491e-15
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\vfill
+Up to machine precision ($\approx 10^{-16}$) and column signs, the PCA scores \code{prcomp(X\_tilde)\$x[,1:2]} and the classical MDS coordinates \code{cmdscale(dist(X\_tilde), k=2)} are identical!
 \end{frame}
 
-\begin{frame}
-\textbf{2. Classical MDS on Euclidean distances of $X$}:
-By Theorem~\ref{th:double_centring}, double centring $D^{(2)}$ yields $B = -\frac{1}{2}C_n D^{(2)} C_n = \widetilde{X} \widetilde{X}^T = U_r \Sigma_r^2 U_r^T$. Thus the top $k$ eigenvalues of $B$ are $\lambda_i = \sigma_i^2$ ($\Lambda_k^{1/2} = \Sigma_k$) with orthonormal eigenvectors $U_k = [\bu_1 \;\cdots\; \bu_k]\in\M_{nk}(\IR)$. The classical MDS coordinate matrix is therefore
-\[
-X_k = U_k \Lambda_k^{1/2} = U_k \Sigma_k = Y_k \hfill\qed
-\]
-\end{frame}
 
 \begin{frame}{Computational and practical payoff of PCA--MDS duality}
 Why is Theorem~\ref{th:pca_mds_duality} so useful in practice?
@@ -2274,28 +2274,6 @@ Why is Theorem~\ref{th:pca_mds_duality} so useful in practice?
 
 %%%%%%%%%%%%%%%%%%%%%
 \SSsubsection{Application in R: reconstructing maps from distances}
-
-\begin{frame}[fragile]{Verifying PCA and classical MDS equivalence in R}
-Let us first verify Theorem~\ref{th:pca_mds_duality} numerically in \textsf{R} on a synthetic $5\times 3$ centred data matrix $\widetilde{X}$:
-\vfill
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlkwd{set.seed}\hldef{(}\hlnum{2740}\hldef{)}
-\hldef{X_tilde} \hlkwb{=} \hlkwd{scale}\hldef{(}\hlkwd{matrix}\hldef{(}\hlkwd{rnorm}\hldef{(}\hlnum{15}\hldef{),} \hlkwc{nrow} \hldef{=} \hlnum{5}\hldef{,} \hlkwc{ncol} \hldef{=} \hlnum{3}\hldef{),} \hlkwc{center} \hldef{=} \hlnum{TRUE}\hldef{,} \hlkwc{scale} \hldef{=} \hlnum{FALSE}\hldef{)}
-\hldef{pca_scores} \hlkwb{=} \hlkwd{prcomp}\hldef{(X_tilde,} \hlkwc{center} \hldef{=} \hlnum{FALSE}\hldef{)}\hlopt{$}\hldef{x[,} \hlnum{1}\hlopt{:}\hlnum{2}\hldef{]}
-\hldef{mds_coords} \hlkwb{=} \hlkwd{cmdscale}\hldef{(}\hlkwd{dist}\hldef{(X_tilde),} \hlkwc{k} \hldef{=} \hlnum{2}\hldef{)}
-\hlcom{# Compare absolute values (eigenvectors are defined up to a sign +/- 1)}
-\hlkwd{max}\hldef{(}\hlkwd{abs}\hldef{(}\hlkwd{abs}\hldef{(pca_scores)} \hlopt{-} \hlkwd{abs}\hldef{(mds_coords)))}
-\end{alltt}
-\begin{verbatim}
-## [1] 2.442491e-15
-\end{verbatim}
-\end{kframe}
-\end{knitrout}
-\vfill
-Up to machine precision ($\approx 10^{-16}$) and column signs, the PCA scores \code{prcomp(X\_tilde)\$x[,1:2]} and the classical MDS coordinates \code{cmdscale(dist(X\_tilde), k=2)} are identical!
-\end{frame}
 
 \begin{frame}[fragile]{Geographical example: Canadian cities distance matrix}
 Now suppose we are only given approximate great-circle distances (in kilometres) between $n = 8$ Canadian cities, with \textbf{no latitude or longitude coordinates}:
@@ -2381,8 +2359,9 @@ Recall that classical MDS only determines coordinates up to orthogonal transform
 \hlcom{# Ensure West < 0 and Winnipeg is North of Toronto}
 \hlkwa{if} \hldef{(coords[}\hlsng{"Vancouver"}\hldef{,} \hlnum{1}\hldef{]} \hlopt{>} \hlnum{0}\hldef{) coords[,} \hlnum{1}\hldef{]} \hlkwb{=} \hlopt{-}\hldef{coords[,} \hlnum{1}\hldef{]}
 \hlkwa{if} \hldef{(coords[}\hlsng{"Winnipeg"}\hldef{,} \hlnum{2}\hldef{]} \hlopt{<} \hldef{coords[}\hlsng{"Toronto"}\hldef{,} \hlnum{2}\hldef{]) coords[,} \hlnum{2}\hldef{]} \hlkwb{=} \hlopt{-}\hldef{coords[,} \hlnum{2}\hldef{]}
-\hlkwd{plot}\hldef{(coords[,} \hlnum{1}\hldef{], coords[,} \hlnum{2}\hldef{],} \hlkwc{pch} \hldef{=} \hlnum{19}\hldef{,} \hlkwc{cex} \hldef{=} \hlnum{1.5}\hldef{,} \hlkwc{col} \hldef{=} \hlsng{"dodgerblue4"}\hldef{,}
-     \hlkwc{asp} \hldef{=} \hlnum{1}\hldef{,} \hlkwc{xlim} \hldef{=} \hlkwd{c}\hldef{(}\hlopt{-}\hlnum{2600}\hldef{,} \hlnum{2600}\hldef{),} \hlkwc{ylim} \hldef{=} \hlkwd{c}\hldef{(}\hlopt{-}\hlnum{900}\hldef{,} \hlnum{900}\hldef{),}
+\hlkwd{plot}\hldef{(coords[,} \hlnum{1}\hldef{], coords[,} \hlnum{2}\hldef{],}
+     \hlkwc{pch} \hldef{=} \hlnum{19}\hldef{,} \hlkwc{cex} \hldef{=} \hlnum{1.5}\hldef{,} \hlkwc{col} \hldef{=} \hlsng{"dodgerblue4"}\hldef{,}
+     \hlkwc{asp} \hldef{=} \hlnum{1}\hldef{,} \hlkwc{bty} \hldef{=} \hlsng{"n"}\hldef{,} \hlkwc{xlim} \hldef{=} \hlkwd{c}\hldef{(}\hlopt{-}\hlnum{2600}\hldef{,} \hlnum{2600}\hldef{),} \hlkwc{ylim} \hldef{=} \hlkwd{c}\hldef{(}\hlopt{-}\hlnum{900}\hldef{,} \hlnum{900}\hldef{),}
      \hlkwc{xlab} \hldef{=} \hlsng{"MDS coordinate 1 (km, West - East)"}\hldef{,}
      \hlkwc{ylab} \hldef{=} \hlsng{"MDS coordinate 2 (km, South - North)"}\hldef{,}
      \hlkwc{main} \hldef{=} \hlsng{"Classical MDS of Canadian cities from distances"}\hldef{)}
@@ -2394,29 +2373,103 @@ Recall that classical MDS only determines coordinates up to orthogonal transform
 
 \maxFrameImage{FIGS/U07-plot-canadian-mds-1.pdf}
 
-\begin{frame}[fragile]{Classical example: European road distances (\code{eurodist})}
-\textsf{R}'s built-in \code{datasets} package includes \code{eurodist}, a table of road distances (in km) between $21$ European cities:
+\begin{frame}{What is wrong with this map?}
+Look closely at the reconstructed map on the previous slide
+\vfill
+\begin{itemize}
+\item \textbf{Halifax} has $y \approx +248\text{ km}$, while \textbf{Victoria} has $y \approx -68\text{ km}$
+\vfill
+\item Halifax appears to be far north of Victoria
+\vfill
+\item In reality:
+\begin{itemize}
+\item Victoria is at latitude $48.4^\circ\text{ N}$
+\item Halifax is at latitude $44.6^\circ\text{ N}$
+\end{itemize}
+Halifax is actually \textbf{south} of Victoria
+\vfill
+\item \textbf{What happened?}
+\begin{itemize}
+\item Classical MDS recovers coordinates only up to an orthogonal transformation
+\item Flipping signs only resolved axis reflections ($\pm 1$ along the axes)
+\item The first MDS axis aligns with the direction of maximal variance across Canada, which is tilted relative to lines of constant latitude
+\item In short, we did not rotate the configuration as we should have, so the orientation is a little off
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Deducing the rotation from Victoria and Halifax}
+Coordinates of the westernmost and easternmost cities:
+\begin{itemize}
+\item \textbf{Victoria}: $\bx_{\text{Vic}} \approx \begin{pmatrix} -1945.8 \\ -68.5 \end{pmatrix}\text{ km}$, \quad \textbf{Halifax}: $\bx_{\text{Hal}} \approx \begin{pmatrix} 2538.5 \\ 247.5 \end{pmatrix}\text{ km}$
+\end{itemize}
+\vfill
+The displacement vector from Victoria to Halifax is:
+\[
+\Delta\bx = \bx_{\text{Hal}} - \bx_{\text{Vic}} = \begin{pmatrix} 2538.5 - (-1945.8) \\ 247.5 - (-68.5) \end{pmatrix} = \begin{pmatrix} 4484.3 \\ 316.0 \end{pmatrix}\text{ km}
+\]
+which makes an angle with the horizontal axis of:
+\[
+\theta = \arctan\left(\frac{316.0}{4484.3}\right) \approx 0.0704\text{ rad} \approx 4.03^\circ
+\]
+\vfill
+To align this West--East baseline horizontally, we rotate clockwise by $\theta \approx 4.03^\circ$ using the rotation matrix:
+\[
+R_{-\theta} = \begin{pmatrix} \cos\theta & \sin\theta \\ -\sin\theta & \cos\theta \end{pmatrix}, \qquad X_{\text{rot}} = X R_{-\theta}^T
+\]
+\end{frame}
+
+
+\begin{frame}[fragile]{Plotting the Canadian cities map after rotation}
+We apply the rotation matrix $R_{-\theta}$ to \code{coords} and plot the rotated coordinates:
 \vfill
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hldef{D_euro} \hlkwb{=} \hlkwd{as.matrix}\hldef{(eurodist)}
-\hldef{mds_euro} \hlkwb{=} \hlkwd{cmdscale}\hldef{(eurodist,} \hlkwc{k} \hldef{=} \hlnum{2}\hldef{,} \hlkwc{eig} \hldef{=} \hlnum{TRUE}\hldef{)}
-\hldef{x_eu} \hlkwb{=} \hldef{mds_euro}\hlopt{$}\hldef{points[,} \hlnum{1}\hldef{]}
-\hldef{y_eu} \hlkwb{=} \hlopt{-}\hldef{mds_euro}\hlopt{$}\hldef{points[,} \hlnum{2}\hldef{]} \hlcom{# Flip North-South axis}
-\hlkwd{plot}\hldef{(x_eu, y_eu,} \hlkwc{pch} \hldef{=} \hlnum{19}\hldef{,} \hlkwc{col} \hldef{=} \hlsng{"firebrick"}\hldef{,} \hlkwc{asp} \hldef{=} \hlnum{1}\hldef{,}
-     \hlkwc{xlim} \hldef{=} \hlkwd{range}\hldef{(x_eu)} \hlopt{*} \hlnum{1.15}\hldef{,} \hlkwc{ylim} \hldef{=} \hlkwd{range}\hldef{(y_eu)} \hlopt{*} \hlnum{1.15}\hldef{,}
-     \hlkwc{xlab} \hldef{=} \hlsng{"MDS dimension 1 (km)"}\hldef{,} \hlkwc{ylab} \hldef{=} \hlsng{"MDS dimension 2 (km)"}\hldef{,}
-     \hlkwc{main} \hldef{=} \hlsng{"Classical MDS of 21 European cities (eurodist)"}\hldef{)}
-\hlkwd{abline}\hldef{(}\hlkwc{h} \hldef{=} \hlnum{0}\hldef{,} \hlkwc{v} \hldef{=} \hlnum{0}\hldef{,} \hlkwc{lty} \hldef{=} \hlnum{2}\hldef{,} \hlkwc{col} \hldef{=} \hlsng{"grey70"}\hldef{)}
+\hldef{theta} \hlkwb{=} \hlkwd{atan2}\hldef{(coords[}\hlsng{"Halifax"}\hldef{,} \hlnum{2}\hldef{]} \hlopt{-} \hldef{coords[}\hlsng{"Victoria"}\hldef{,} \hlnum{2}\hldef{],}
+              \hldef{coords[}\hlsng{"Halifax"}\hldef{,} \hlnum{1}\hldef{]} \hlopt{-} \hldef{coords[}\hlsng{"Victoria"}\hldef{,} \hlnum{1}\hldef{])}
+\hldef{R_rot} \hlkwb{=} \hlkwd{matrix}\hldef{(}\hlkwd{c}\hldef{(}\hlkwd{cos}\hldef{(}\hlopt{-}\hldef{theta),} \hlopt{-}\hlkwd{sin}\hldef{(}\hlopt{-}\hldef{theta),}
+                 \hlkwd{sin}\hldef{(}\hlopt{-}\hldef{theta),}  \hlkwd{cos}\hldef{(}\hlopt{-}\hldef{theta)),}
+               \hlkwc{nrow} \hldef{=} \hlnum{2}\hldef{,} \hlkwc{byrow} \hldef{=} \hlnum{TRUE}\hldef{)}
+\hldef{coords_rot} \hlkwb{=} \hldef{coords} \hlopt{%*%} \hlkwd{t}\hldef{(R_rot)}
+\hlkwd{plot}\hldef{(coords_rot[,} \hlnum{1}\hldef{], coords_rot[,} \hlnum{2}\hldef{],}
+     \hlkwc{pch} \hldef{=} \hlnum{19}\hldef{,} \hlkwc{cex} \hldef{=} \hlnum{1.5}\hldef{,} \hlkwc{col} \hldef{=} \hlsng{"dodgerblue4"}\hldef{,}
+     \hlkwc{asp} \hldef{=} \hlnum{1}\hldef{,} \hlkwc{bty} \hldef{=} \hlsng{"n"}\hldef{,} \hlkwc{xlim} \hldef{=} \hlkwd{c}\hldef{(}\hlopt{-}\hlnum{2600}\hldef{,} \hlnum{2600}\hldef{),} \hlkwc{ylim} \hldef{=} \hlkwd{c}\hldef{(}\hlopt{-}\hlnum{900}\hldef{,} \hlnum{900}\hldef{),}
+     \hlkwc{xlab} \hldef{=} \hlsng{"MDS coordinate 1 (km, West - East)"}\hldef{,}
+     \hlkwc{ylab} \hldef{=} \hlsng{"MDS coordinate 2 (km, South - North)"}\hldef{,}
+     \hlkwc{main} \hldef{=} \hlsng{"Classical MDS of Canadian cities (after rotation)"}\hldef{)}
+\hlkwd{abline}\hldef{(}\hlkwc{h} \hldef{=} \hlnum{0}\hldef{,} \hlkwc{v} \hldef{=} \hlnum{0}\hldef{,} \hlkwc{lty} \hldef{=} \hlnum{2}\hldef{,} \hlkwc{col} \hldef{=} \hlsng{"grey60"}\hldef{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
-\vfill
-Even though road distances include detours around mountains and seas (so $B$ has small negative eigenvalues), the top $2$ eigenvectors of $-\frac{1}{2}C_{21}D^{(2)}C_{21}$ faithfully reconstruct the map of Europe!
 \end{frame}
 
-\maxFrameImage{FIGS/U07-plot-eurodist-mds-1.pdf}
+\maxFrameImage{FIGS/U07-plot-canadian-mds-rotated-1.pdf}
+
+\begin{frame}{One remaining underlying issue: Earth's curvature}
+Canada is too large and the Earth is too round..
+\vfill
+\begin{itemize}
+\item Distances $D$ are \textbf{great-circle distances} measured along the spherical surface of the Earth ($R \approx 6,371\text{ km}$), not straight Euclidean distances in a flat 2D plane
+\vfill
+\item Great-circle arc between Victoria and Halifac spans $s \approx 4,490\text{ km}$, subtending a central angle:
+\[
+\alpha = \frac{s}{R} = \frac{4,490}{6,371} \approx 0.7048\text{ rad} \approx 40.4^\circ
+\]
+\vfill
+\item Straight chord through the interior of the Earth is $2R\sin(\alpha/2) \approx 4,398\text{ km}$ ($92\text{ km}$ shorter than the surface distance)
+\vfill
+\item Spherical surface bulges up to $R(1-\cos(\alpha/2)) \approx 391\text{ km}$ above this chord
+\vfill
+\item In a flat 2D projection, cities are compressed toward the chord: \textbf{Winnipeg} on the Earth's surface deviates by $\approx 374\text{ km}$ from the straight segment connecting Victoria and Halifax
+\end{itemize}
+\end{frame}
+
+
+
+\maxFrameImage{FIGS/U07-plot-earth-curvature-1.pdf}
+
 
 \begin{frame}{Summary of Unit U07}
 \begin{itemize}
