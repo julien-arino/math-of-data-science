@@ -2231,6 +2231,121 @@ rbind(empirical = prop.table(table(factor(traj, levels = 1:3))),
 @
 \end{frame}
 
+\begin{frame}{The real-world puzzle: why are orange females so rare?}
+In reality, orange cats are famously mostly male:
+\begin{itemize}
+\item Roughly \textbf{$80\%$ of all orange cats are male} and only about \textbf{$20\%$ are female} (the classic veterinary rule of thumb that ``4 out of 5 ginger cats are male'')
+\item Among all female cats, fully orange females ($X^O X^O$) are quite rare (only around $4\%$)
+\end{itemize}
+\vfill
+Why did our Markov chain predict $v_1 = 25\%$ orange females (and $\frac{50}{50 + 25} \approx 67\%$ male among orange cats)?
+\begin{itemize}
+\item Because we assumed a \textbf{$50/50$ male pool} ($50\%$ orange males $X^O Y$ and $50\%$ black males $X^o Y$)
+\item In real cat populations, orange and non-orange alleles are \textbf{not} equally common: let us replace $0.5$ by an arbitrary proportion $q \in (0, 1)$ of orange males
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Transition matrix $P(q)$ for a general male proportion $q$}
+Suppose the male pool has proportion $q \in (0, 1)$ of orange males ($X^O Y$) and $1 - q$ of black males ($X^o Y$). From our Punnett squares for each mother state:
+\begin{itemize}
+\item \textbf{From $S_1$ ($X^O X^O$)}: orange dad ($q$) $\implies S_1$; black dad ($1-q$) $\implies S_3$
+\item \textbf{From $S_2$ ($X^o X^o$)}: orange dad ($q$) $\implies S_3$; black dad ($1-q$) $\implies S_2$
+\item \textbf{From $S_3$ ($X^O X^o$)}: orange dad ($q$) $\implies \tfrac{1}{2}S_1 + \tfrac{1}{2}S_3$; black dad ($1-q$) $\implies \tfrac{1}{2}S_2 + \tfrac{1}{2}S_3$
+\end{itemize}
+\vfill
+Assembling the three columns gives the transition matrix for any $q \in (0, 1)$:
+\[
+P(q) = \begin{pmatrix}
+q & 0 & \tfrac{1}{2}q \\[3pt]
+0 & 1-q & \tfrac{1}{2}(1-q) \\[3pt]
+1-q & q & \tfrac{1}{2}
+\end{pmatrix}
+\]
+For every $q \in (0, 1)$, $P(q)$ is column-stochastic, irreducible and aperiodic (hence regular)
+\end{frame}
+
+\begin{frame}{Stationary distribution $\bv(q)$: Hardy-Weinberg equilibrium}
+We solve $(P(q) - \II_3)\bv = \b0$ subject to $v_1 + v_2 + v_3 = 1$:
+\[
+(P(q) - \II_3)\bv = \begin{pmatrix}
+-(1-q) & 0 & \tfrac{1}{2}q \\[3pt]
+0 & -q & \tfrac{1}{2}(1-q) \\[3pt]
+1-q & q & -\tfrac{1}{2}
+\end{pmatrix}
+\begin{pmatrix} v_1 \\ v_2 \\ v_3 \end{pmatrix}
+= \begin{pmatrix} 0 \\ 0 \\ 0 \end{pmatrix}
+\]
+From the first two rows:
+\[
+v_1 = \frac{q}{2(1-q)}\,v_3, \qquad v_2 = \frac{1-q}{2q}\,v_3
+\]
+Substituting into $v_1 + v_2 + v_3 = 1$ and using $q^2 + (1-q)^2 + 2q(1-q) = (q + 1 - q)^2 = 1$ gives $v_3 = 2q(1-q)$, yielding the \textbf{Hardy-Weinberg equilibrium}:
+\[
+\bv(q) = \begin{pmatrix} v_1 \\ v_2 \\ v_3 \end{pmatrix} = \begin{pmatrix} q^2 \\ (1-q)^2 \\ 2q(1-q) \end{pmatrix}
+\]
+\end{frame}
+
+\begin{frame}{In practice ($q = 0.2$): why orange females are rare}
+Population genetics surveys of domestic cats find that the orange allele $O$ has frequency roughly \textbf{$q = 0.2$} ($20\%$ orange males and $80\%$ non-orange males). Evaluating at $q = 0.2$:
+\[
+P(0.2) = \begin{pmatrix}
+0.2 & 0   & 0.1 \\
+0   & 0.8 & 0.4 \\
+0.8 & 0.2 & 0.5
+\end{pmatrix},
+\qquad
+\bv(0.2) = \begin{pmatrix}
+0.2^2 \\
+0.8^2 \\
+2(0.2)(0.8)
+\end{pmatrix}
+= \begin{pmatrix}
+0.04 \\
+0.64 \\
+0.32
+\end{pmatrix}
+\]
+\begin{itemize}
+\item \textbf{Female breakdown}: only \textbf{$4\%$} of females are orange ($S_1$), while \textbf{$64\%$} are black ($S_2$) and \textbf{$32\%$} are tortoiseshell ($S_3$), because a female needs \textbf{two} copies of the rare allele $X^O$ ($q^2 = 0.04$) whereas a male needs only \textbf{one} ($q = 0.20$)
+\item \textbf{Male-to-female ratio among orange cats}: assuming a $50/50$ sex ratio, orange males ($20\%$) outnumber orange females ($4\%$) by $\frac{q}{q^2} = \frac{1}{q} = \mathbf{5 : 1}$, so $\frac{20}{20 + 4} = \frac{5}{6} \approx \mathbf{83.3\%}$ of all orange cats are male and only $\mathbf{16.7\%}$ are female
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Why the full problem is more complex: coupled two-sex dynamics}
+In our Markov chain model, we treated the male proportion $q$ as an externally fixed constant, which made $\bp(t+1) = P(q)\bp(t)$ a \textbf{linear}, time-homogeneous system
+\vfill
+In a closed population, however, the males in generation $t+1$ are the \textbf{sons} of the females in generation $t$:
+\begin{itemize}
+\item Because a son inherits his single $X$ chromosome exclusively from his mother, the proportion $q(t+1)$ of orange males at generation $t+1$ is determined by the female state vector $\bp(t) = (p_1(t), p_2(t), p_3(t))^T$ at generation $t$:
+\[
+q(t+1) = p_1(t) + \tfrac{1}{2}p_3(t)
+\]
+\item Meanwhile, the female transition matrix at generation $t$ depends on the current male proportion $q(t)$:
+\[
+\bp(t+1) = P\bigl(q(t)\bigr)\,\bp(t)
+\]
+\end{itemize}
+\vfill
+Because the transition matrix $P(q(t))$ depends on the evolving state of the population, the joint male-female evolution is a \textbf{nonlinear dynamical system} rather than a linear Markov chain
+\end{frame}
+
+\begin{frame}{Other real-world complexities beyond our simple model}
+Real feline coat genetics involves several further layers of complexity beyond a single locus in a well-mixed population:
+\vfill
+\begin{itemize}
+\item \textbf{Spatial structure and non-random mating}:
+Cats do not mate uniformly at random across a single global pool; geographic structure, human breeding preferences and separation between feral and pet subpopulations create local variations in the allele frequency $q$
+\vfill
+\item \textbf{Multiple interacting coat-colour genes (epistasis)}:
+Coat phenotype is shaped by several other genes located on different chromosomes:
+\begin{itemize}
+\item the \emph{white-spotting} gene turns a tortoiseshell into a \textbf{calico} with large distinct patches of orange, black and white
+\item the \emph{agouti} (tabby) gene controls banded vs solid hair (and orange fur always displays tabby striping even when the agouti gene is recessive)
+\item the \emph{dilution} gene lightens black and orange pigment into grey (blue) and cream
+\end{itemize}
+\end{itemize}
+\end{frame}
+
 
 <<convert-Rnw-to-R,warning=FALSE,message=FALSE,echo=FALSE,results='hide'>>=
 rmd_chunks_to_r_temp()
