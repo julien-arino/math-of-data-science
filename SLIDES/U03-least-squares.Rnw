@@ -688,27 +688,30 @@ plot(GA)
 	\begin{align*}
 	\varepsilon_1 &= y_1 - (a+bx_1) \\
 	&\;\;\vdots \\
-	\varepsilon_n &= y_n - (a+bx_n) \\
+	\varepsilon_n &= y_n - (a+bx_n)
 	\end{align*}
-	In matrix form
-	\[
-	\be = \bb-A\bx
-	\]
-	with
-	\[
-	\be = \begin{pmatrix}
-	\varepsilon_1\\ \vdots\\ \varepsilon_n
-	\end{pmatrix},
-	A=\begin{pmatrix}
-	1 & x_1 \\ \vdots & \vdots \\ 1 & x_n
-	\end{pmatrix},
-	\bx = \begin{pmatrix}
-	a\\b
-	\end{pmatrix}\textrm{ and }
-	\bb = \begin{pmatrix}
-	y_1\\ \vdots\\ y_n
-	\end{pmatrix}
-	\]
+\end{frame}
+
+\begin{frame}{Least squares problem for an affine function}
+\begin{importantdefinition}[Least squares problem for an affine function]
+\label{def:least_squares_affine}
+Given data points $(x_1,y_1),\ldots,(x_n,y_n)$, define the error vector $\be = \bb-A\bx$ with
+\[
+\be = \begin{pmatrix}
+\varepsilon_1\\ \vdots\\ \varepsilon_n
+\end{pmatrix}, \quad
+A=\begin{pmatrix}
+1 & x_1 \\ \vdots & \vdots \\ 1 & x_n
+\end{pmatrix}, \quad
+\bx = \begin{pmatrix}
+a\\b
+\end{pmatrix}\textrm{ and }
+\bb = \begin{pmatrix}
+y_1\\ \vdots\\ y_n
+\end{pmatrix}
+\]
+The least squares problem consists in finding $\bx$ such that $\|\be\|$ is minimal
+\end{importantdefinition}
 \end{frame}
 
 \begin{frame}{The least squares problem (reformulated)}

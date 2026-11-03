@@ -251,7 +251,7 @@ Then all pairwise Euclidean distances are preserved:
 Thus, distances only determine a point configuration up to \textbf{translation}, \textbf{rotation} and \textbf{reflection} (collectively called \defword{rigid motions} or \defword{Euclidean isometries})
 \end{frame}
 
-\begin{frame}[red]{Proof of Proposition~\ref{prop:rigid_motions}}
+\begin{frame}[importantcolour]{Proof of Proposition~\ref{prop:rigid_motions}}
 Let $\by_i = Q\bx_i + \bs$ for $i=1,\ldots,n$, where $\bs\in\IR^p$ and $Q^TQ = \II_p$
 \vfill
 First, taking the difference between $\by_i$ and $\by_j$ eliminates the translation vector $\bs$:
@@ -266,7 +266,7 @@ Next, compute the squared Euclidean norm using the orthogonality of $Q$:
 &= (\bx_i - \bx_j)^T Q^T Q (\bx_i - \bx_j) \\
 &= (\bx_i - \bx_j)^T \II_p (\bx_i - \bx_j) = \|\bx_i - \bx_j\|^2
 \end{align*}
-Taking the non-negative square root yields $\|\by_i - \by_j\| = \|\bx_i - \bx_j\|$ \hfill\qed
+Taking the nonnegative square root yields $\|\by_i - \by_j\| = \|\bx_i - \bx_j\|$ \hfill\qed
 \end{frame}
 
 \begin{frame}{Running example: rigid motion of the square}
@@ -559,7 +559,7 @@ which says precisely that $A^TA$ is \textbf{positive semi-definite}! When $A$ ha
 
 \begin{frame}
 \begin{itemize}
-\item \textbf{Unit U04 (SVD, Theorem~\zref{th:eigenvalues_ATA_nonnegative})}: we proved that all eigenvalues of $A^TA$ and $AA^T$ are \textbf{real and non-negative} ($\lambda_i \ge 0$), which allowed us to define singular values $\sigma_i = \sqrt{\lambda_i}$
+\item \textbf{Unit U04 (SVD, Theorem~\zref{th:eigenvalues_ATA_nonnegative})}: we proved that all eigenvalues of $A^TA$ and $AA^T$ are \textbf{real and nonnegative} ($\lambda_i \ge 0$), which allowed us to define singular values $\sigma_i = \sqrt{\lambda_i}$
 \vfill
 \item \textbf{Unit U05 (PCA)}: the sample covariance matrix $S_X = \frac{1}{n-1}\widetilde{X}^T\widetilde{X}$ is symmetric positive semi-definite, and its eigenvalues $\lambda_i \ge 0$ are the variances along the principal axes
 \end{itemize}
@@ -572,7 +572,7 @@ Notice that for a data matrix $X\in\M_{np}(\IR)$, its Gram matrix $G = XX^T\in\M
 \label{th:gram_properties}
 Let $X\in\M_{np}(\IR)$ and let $G = XX^T\in\M_n(\IR)$ be its Gram matrix. Then:
 \begin{enumerate}
-\item $G$ is symmetric and positive semi-definite, with real non-negative eigenvalues $\lambda_1 \ge \cdots \ge \lambda_n \ge 0$
+\item $G$ is symmetric and positive semi-definite, with real nonnegative eigenvalues $\lambda_1 \ge \cdots \ge \lambda_n \ge 0$
 \item $\rank(G) = \rank(X) \le \min(n,p)$
 \item $\tr(G) = \sum_{i=1}^n \|\bx_i\|^2$
 \end{enumerate}
@@ -594,7 +594,7 @@ Before stating that theorem, we need to define the square root of a matrix...
 \begin{frame}{Square root of a matrix}
 A square matrix $S$ is called a \defword{square root} of $A$ if $S^2 = SS = A$, and we write $S = A^{1/2}$
 \vfill
-For a diagonal matrix with non-negative diagonal entries $\lambda_i \ge 0$, its square root is obtained by simply taking the square root of each diagonal entry:
+For a diagonal matrix with nonnegative diagonal entries $\lambda_i \ge 0$, its square root is obtained by simply taking the square root of each diagonal entry:
 \[
 \Lambda = \diag(\lambda_1,\ldots,\lambda_n)
 \implies
@@ -672,7 +672,7 @@ d_{ii} = \|\bx_i - \bx_i\| = 0 \implies \diag(D) = \diag(D^{(2)}) = \b0 \quad\te
 d_{ij} = \|\bx_i - \bx_j\| = \|\bx_j - \bx_i\| = d_{ji} \implies D^T = D \quad\text{and}\quad (D^{(2)})^T = D^{(2)}
 \]
 \vfill
-\item \textbf{Non-negativity}: $d_{ij} \ge 0$ and $d_{ij}^2 \ge 0$ for all $i,j=1,\ldots,n$, with $d_{ij} = 0 \iff \bx_i = \bx_j$
+\item \textbf{Nonnegativity}: $d_{ij} \ge 0$ and $d_{ij}^2 \ge 0$ for all $i,j=1,\ldots,n$, with $d_{ij} = 0 \iff \bx_i = \bx_j$
 \vfill
 \item \textbf{Triangle inequality} (for $D$, though \emph{not} necessarily for $D^{(2)}$):
 \[
