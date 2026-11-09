@@ -52,7 +52,6 @@
 
 % Set lecture number for later use
 
-
 % Part common to all the lectures
 \subtitle{MATH 2740 -- Mathematics of Data Science -- Unit U08}
 \author{\texorpdfstring{Julien Arino\newline\url{julien.arino@umanitoba.ca}}{Julien Arino}}
@@ -62,9 +61,7 @@
 \title{Nonnegative matrices, digraphs and regular Markov chains}
 
 
-
 \input{slides-setup-whiteBG.tex}
-
 
 
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
@@ -280,33 +277,32 @@ Let $M = [m_{ij}] \in \M_n(\IR_+)$ be a square nonnegative matrix with digraph $
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Orientation convention: general matrices vs Markov chains}
-There are two natural conventions for drawing arcs from a matrix $M = [m_{ij}]$:
+\begin{frame}{Orientation convention: general matrices and Markov chains}
+Throughout this course, we use the unified \textbf{row-to-column convention} for both general matrices and Markov chains:
 \vfill
 \begin{enumerate}
-\item \textbf{Row-to-column (adjacency) convention}: arc $(i, j)$ goes from $i$ to $j$ when $m_{ij} > 0$
+\item \textbf{General nonnegative matrices}: for $M = [m_{ij}]$, a positive entry $m_{ij} > 0$ gives a directed arc $(i, j)$ from row index $i$ to column index $j$ in $\G(M)$
 \begin{itemize}
 \item Row $i$ lists outgoing arcs from $i$; column $j$ lists incoming arcs into $j$
-\item \textbf{Used in Sections 1--3} for general nonnegative matrices and their digraph $\G(M)$
 \end{itemize}
 \vfill
-\item \textbf{Column-to-row (transition) convention}: in column-stochastic Markov chains, $p_{ij} = \IP(S_i(t+1) \mid S_j(t))$ is the probability of moving \textbf{from $j$ to $i$}, so we draw an arc from $j$ to $i$ when $p_{ij} > 0$
+\item \textbf{Discrete-time Markov chains}: in Section 4 and Unit 09, $p_{ij} = \IP(S_j(t+1) \mid S_i(t))$ is the probability of moving \textbf{from state $S_i$ (row $i$) to state $S_j$ (column $j$)}
 \begin{itemize}
-\item Column $j$ lists outgoing transitions from state $j$ (summing to $1$); row $i$ lists incoming transitions into state $i$
-\item \textbf{Used in Section 4 and Unit 09} for Markov chains, network centrality and PageRank (since $\bp(t+1) = P\bp(t)$ multiplies column vectors on the left)
+\item Row $i$ lists outgoing transitions from state $S_i$ (summing to $1$, so $P$ is \textbf{row-stochastic})
+\item The state transition diagram of the Markov chain is directly the digraph $\G(P)$
 \end{itemize}
 \end{enumerate}
 \end{frame}
 
-\begin{frame}{Relationship between the two orientation conventions}
-How do the row-to-column digraph $\G(P)$ and the Markov chain transition digraph relate?
+\begin{frame}{Row-stochastic vs column-stochastic conventions in the literature}
+How does our row-to-column convention relate to the transposed convention used in some linear algebra texts?
 \vfill
 \begin{itemize}
-\item Drawing an arrow from $j$ to $i$ whenever $p_{ij} > 0$ is equivalent to drawing the row-to-column digraph of the transpose:
+\item Some texts define $p_{ij}$ as the transition probability from state $S_j$ to state $S_i$ (making columns sum to $1$), so that the state transition digraph is $\G(P^T)$:
 \[
-\text{Transition digraph of } P = \G(P^T)
+\G(P^T) \text{ is obtained from } \G(P) \text{ by \textbf{reversing the direction of every arrow}}
 \]
-\item Geometrically, $\G(P^T)$ is obtained from $\G(P)$ simply by \textbf{reversing the direction of every arrow}
+\item Under our row-stochastic convention, both general matrices and Markov chains share the \textbf{same} arc orientation: an entry at $(i, j)$ always points from $i$ to $j$
 \end{itemize}
 \vfill
 \textbf{Crucial fact}: Reversing all arrows preserves closed walks, cycle lengths and strong connectedness, so \textbf{irreducibility and primitivity of $M$ and $M^T$ are identical}
@@ -1517,17 +1513,17 @@ Suppose for simplicity that $A$ is diagonalisable with eigenbasis $\{\bx, \bv_2,
 
 %%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%
-\SSsubsection{Markov chains and column-stochastic matrices}
+\SSsubsection{Markov chains and row-stochastic matrices}
 
 \begin{frame}{Discrete-time Markov chains}
 A \defword{Markov chain} is a discrete-time stochastic process whose evolution depends \textbf{only on the current state} of the system (the \defword{memoryless} or \defword{Markov property}):
 \begin{itemize}
 \item Consider a system that can be in one of $n$ finite states $S = \{S_1, \ldots, S_n\}$ at discrete times $t = 0, 1, 2, \ldots$
-\item The probability of moving to state $S_i$ at time $t+1$ given that the system is in state $S_j$ at time $t$ is
+\item The probability of moving to state $S_j$ at time $t+1$ given that the system is in state $S_i$ at time $t$ is
 \[
-p_{ij} = \IP(S_i(t+1) \mid S_j(t))
+p_{ij} = \IP(S_j(t+1) \mid S_i(t))
 \]
-\item Note the index order carefully: $p_{ij}$ is the transition probability \textbf{from state $S_j$ (column $j$) to state $S_i$ (row $i$)}
+\item Note the index order carefully: $p_{ij}$ is the transition probability \textbf{from state $S_i$ (row $i$) to state $S_j$ (column $j$)}
 \end{itemize}
 \vfill
 Markov chains are a cornerstone of data science: they underpin PageRank, Hidden Markov Models (HMMs), Markov Chain Monte Carlo (MCMC) sampling and reinforcement learning
@@ -1537,31 +1533,31 @@ Markov chains are a cornerstone of data science: they underpin PageRank, Hidden 
 \begin{importantdefinition}[Discrete-time Markov chain and transition matrix]
 A sequence of random states from $S = \{S_1, \ldots, S_n\}$ is a (time-homogeneous) \defword{discrete-time Markov chain} (DTMC) if for all $t = 0, 1, 2, \ldots$ and all $1 \le i, j \le n$, the transition probability
 \[
-p_{ij} = \IP(S_i(t+1) \mid S_j(t))
+p_{ij} = \IP(S_j(t+1) \mid S_i(t))
 \]
 depends only on $i$ and $j$. The matrix $P = [p_{ij}] \in \M_n(\IR_+)$ is called the \defword{transition matrix} of the Markov chain
 \end{importantdefinition}
 \vfill
-If the system is in state $S_j$ at time $t$, it must transition to one of $S_1, \ldots, S_n$ at time $t+1$, so the entries in \textbf{column $j$} of $P$ must sum to $1$:
+If the system is in state $S_i$ at time $t$, it must transition to one of $S_1, \ldots, S_n$ at time $t+1$, so the entries in \textbf{row $i$} of $P$ must sum to $1$:
 \[
-p_{1j} + p_{2j} + \cdots + p_{nj} = \sum_{i=1}^n p_{ij} = 1 \quad \text{for all } j = 1, \ldots, n
+p_{i1} + p_{i2} + \cdots + p_{in} = \sum_{j=1}^n p_{ij} = 1 \quad \text{for all } i = 1, \ldots, n
 \]
 \end{frame}
 
-\begin{frame}{How do we get to state $S_i$ at time $t+1$?}
-For $1 \le i \le n$, let $p_i(t) = \IP(S_i(t))$ be the probability that the system is in state $S_i$ at time $t$
+\begin{frame}{How do we get to state $S_j$ at time $t+1$?}
+For $1 \le j \le n$, let $p_j(t) = \IP(S_j(t))$ be the probability that the system is in state $S_j$ at time $t$
 \vfill
-List all $n$ mutually exclusive ways to arrive in state $S_i$ at time $t+1$:
+List all $n$ mutually exclusive ways to arrive in state $S_j$ at time $t+1$:
 \begin{enumerate}
-\item We were in $S_1$ at time $t$ (probability $p_1(t)$) and transitioned from $S_1$ to $S_i$ (probability $p_{i1}$), contributing $p_{i1} p_1(t)$
-\item We were in $S_2$ at time $t$ (probability $p_2(t)$) and transitioned from $S_2$ to $S_i$ (probability $p_{i2}$), contributing $p_{i2} p_2(t)$
+\item We were in $S_1$ at time $t$ (probability $p_1(t)$) and transitioned from $S_1$ to $S_j$ (probability $p_{1j}$), contributing $p_1(t) p_{1j}$
+\item We were in $S_2$ at time $t$ (probability $p_2(t)$) and transitioned from $S_2$ to $S_j$ (probability $p_{2j}$), contributing $p_2(t) p_{2j}$
 \item[$\vdots$]
-\item[$n$.] We were in $S_n$ at time $t$ (probability $p_n(t)$) and transitioned from $S_n$ to $S_i$ (probability $p_{in}$), contributing $p_{in} p_n(t)$
+\item[$n$.] We were in $S_n$ at time $t$ (probability $p_n(t)$) and transitioned from $S_n$ to $S_j$ (probability $p_{nj}$), contributing $p_n(t) p_{nj}$
 \end{enumerate}
 \vfill
-Summing over all $j = 1, \ldots, n$ gives the law of total probability:
+Summing over all $i = 1, \ldots, n$ gives the law of total probability:
 \[
-p_i(t+1) = \sum_{j=1}^n p_{ij} p_j(t) = p_{i1}p_1(t) + p_{i2}p_2(t) + \cdots + p_{in}p_n(t)
+p_j(t+1) = \sum_{i=1}^n p_i(t) p_{ij} = p_1(t)p_{1j} + p_2(t)p_{2j} + \cdots + p_n(t)p_{nj}
 \]
 \end{frame}
 
@@ -1571,56 +1567,53 @@ Collect the state probabilities at time $t$ into the column \defword{probability
 \bp(t) = \begin{pmatrix} p_1(t) \\ \vdots \\ p_n(t) \end{pmatrix} \ge \b0, \qquad \11^T \bp(t) = \sum_{i=1}^n p_i(t) = 1
 \]
 \vfill
-Then the law of total probability $p_i(t+1) = \sum_{j=1}^n p_{ij} p_j(t)$ for $i = 1, \ldots, n$ takes the compact matrix form
+Then the law of total probability $p_j(t+1) = \sum_{i=1}^n p_i(t) p_{ij}$ for $j = 1, \ldots, n$ takes the compact row-vector form
 \[
-\begin{pmatrix}
-p_1(t+1) \\ \vdots \\ p_n(t+1)
-\end{pmatrix}
+\bigl(p_1(t+1), \ldots, p_n(t+1)\bigr)
 =
+\bigl(p_1(t), \ldots, p_n(t)\bigr)
 \begin{pmatrix}
 p_{11} & p_{12} & \cdots & p_{1n} \\
 \vdots & \vdots & \ddots & \vdots \\
 p_{n1} & p_{n2} & \cdots & p_{nn}
 \end{pmatrix}
-\begin{pmatrix}
-p_1(t) \\ \vdots \\ p_n(t)
-\end{pmatrix}
-\qquad \Longleftrightarrow \qquad
-\bp(t+1) = P\bp(t)
+\iff
+\bp(t+1)^T = \bp(t)^T P
 \]
+(or equivalently, taking the transpose, $\bp(t+1) = P^T\bp(t)$)
 \end{frame}
 
 \begin{frame}{State distribution after $t$ steps}
-Starting from an initial probability distribution $\bp(0)$ at time $t = 0$, repeated application of $\bp(t+1) = P\bp(t)$ yields:
+Starting from an initial probability distribution $\bp(0)$ at time $t = 0$, repeated application of $\bp(t+1)^T = \bp(t)^T P$ yields:
 \begin{align*}
-\bp(1) &= P\bp(0) \\
-\bp(2) &= P\bp(1) = P(P\bp(0)) = P^2\bp(0) \\
+\bp(1)^T &= \bp(0)^T P \\
+\bp(2)^T &= \bp(1)^T P = (\bp(0)^T P) P = \bp(0)^T P^2 \\
 &\;\;\vdots \\
-\bp(t) &= P^t \bp(0) \quad \text{for any } t \in \IN
+\bp(t)^T &= \bp(0)^T P^t \quad \text{for any } t \in \IN \qquad \bigl(\text{or } \bp(t) = (P^T)^t \bp(0)\bigr)
 \end{align*}
 \vfill
 \begin{itemize}
-\item Thus the matrix power $P^t$ is the \defword{$t$-step transition matrix}: its $(i, j)$ entry $(P^t)_{ij}$ is the probability of being in state $S_i$ after $t$ steps given that the chain started in state $S_j$
+\item Thus the matrix power $P^t$ is the \defword{$t$-step transition matrix}: its $(i, j)$ entry $(P^t)_{ij}$ is the probability of being in state $S_j$ after $t$ steps given that the chain started in state $S_i$
 \end{itemize}
 \end{frame}
 
 \begin{frame}{Transition matrix and transition digraph}
-For a column-stochastic transition matrix $P = [p_{ij}]$, recall that $p_{ij} > 0$ represents a transition \textbf{from state $S_j$ to state $S_i$}:
+For a row-stochastic transition matrix $P = [p_{ij}]$, $p_{ij} > 0$ represents a transition \textbf{from state $S_i$ to state $S_j$}, so the transition digraph is directly $\G(P)$:
 \vfill
 \begin{columns}[c]
 \begin{column}{0.46\textwidth}
 \[
 P = \begin{pmatrix}
-0.5 & 0.8 & 0.1 \\
-0.5 & 0   & 0.2 \\
-0   & 0.2 & 0.7
+0.5 & 0.5 & 0 \\
+0.8 & 0   & 0.2 \\
+0.1 & 0.2 & 0.7
 \end{pmatrix}
 \]
 \vspace{0.2cm}
 \begin{itemize}
-\item \textbf{Col 1} (from $S_1$): $0.5 + 0.5 + 0 = 1$
-\item \textbf{Col 2} (from $S_2$): $0.8 + 0 + 0.2 = 1$
-\item \textbf{Col 3} (from $S_3$): $0.1 + 0.2 + 0.7 = 1$
+\item \textbf{Row 1} (from $S_1$): $0.5 + 0.5 + 0 = 1$
+\item \textbf{Row 2} (from $S_2$): $0.8 + 0 + 0.2 = 1$
+\item \textbf{Row 3} (from $S_3$): $0.1 + 0.2 + 0.7 = 1$
 \end{itemize}
 \end{column}
 \begin{column}{0.54\textwidth}
@@ -1645,59 +1638,59 @@ P = \begin{pmatrix}
 \end{column}
 \end{columns}
 \vfill
-Out-weights from each vertex $S_j$ in the transition digraph correspond to \textbf{column $j$} of $P$
+Out-weights from each vertex $S_i$ in the transition digraph $\G(P)$ correspond to \textbf{row $i$} of $P$
 \end{frame}
 
 \begin{frame}{Stochastic matrices}
-\begin{importantdefinition}[Column-stochastic, row-stochastic and doubly stochastic matrices]
+\begin{importantdefinition}[Row-stochastic, column-stochastic and doubly stochastic matrices]
 Let $M = [m_{ij}] \in \M_n(\IR_+)$ be a nonnegative matrix and $\11 = (1, \ldots, 1)^T \in \IR^n$
 \begin{itemize}
-\item $M$ is \defword{column-stochastic} if every column sums to $1$:
-\[
-\textstyle \sum_{i=1}^n m_{ij} = 1 \quad \text{for all } j = 1, \ldots, n \qquad \Longleftrightarrow \qquad \11^T M = \11^T
-\]
 \item $M$ is \defword{row-stochastic} if every row sums to $1$:
 \[
 \textstyle \sum_{j=1}^n m_{ij} = 1 \quad \text{for all } i = 1, \ldots, n \qquad \Longleftrightarrow \qquad M\11 = \11
 \]
-\item $M$ is \defword{doubly stochastic} if it is both column-stochastic and row-stochastic ($\11^T M = \11^T$ and $M\11 = \11$)
+\item $M$ is \defword{column-stochastic} if every column sums to $1$:
+\[
+\textstyle \sum_{i=1}^n m_{ij} = 1 \quad \text{for all } j = 1, \ldots, n \qquad \Longleftrightarrow \qquad \11^T M = \11^T
+\]
+\item $M$ is \defword{doubly stochastic} if it is both row-stochastic and column-stochastic ($M\11 = \11$ and $\11^T M = \11^T$)
 \end{itemize}
 \end{importantdefinition}
 \vfill
-Throughout this course, \defword{stochastic matrix} and \defword{transition matrix} mean \textbf{column-stochastic} unless explicitly stated otherwise
+Throughout this course, \defword{stochastic matrix} and \defword{transition matrix} mean \textbf{row-stochastic} unless explicitly stated otherwise
 \end{frame}
 
-\begin{frame}{Products and powers of column-stochastic matrices}
-\begin{theorem}[Closure of column-stochastic matrices under multiplication]
+\begin{frame}{Products and powers of row-stochastic matrices}
+\begin{theorem}[Closure of row-stochastic matrices under multiplication]
 \label{th:product-stochastic}
 \begin{enumerate}
-\item If $M, N \in \M_n(\IR_+)$ are column-stochastic matrices, then their product $MN$ is also column-stochastic
-\item For any column-stochastic matrix $P \in \M_n(\IR_+)$ and any integer $t \ge 1$, $P^t$ is column-stochastic, and if $\bp(0)$ is a probability vector, then $\bp(t) = P^t\bp(0)$ is a probability vector
+\item If $M, N \in \M_n(\IR_+)$ are row-stochastic matrices, then their product $MN$ is also row-stochastic
+\item For any row-stochastic matrix $P \in \M_n(\IR_+)$ and any integer $t \ge 1$, $P^t$ is row-stochastic, and if $\bp(0)$ is a probability vector, then $\bp(t)$ defined by $\bp(t)^T = \bp(0)^T P^t$ is a probability vector
 \end{enumerate}
 \end{theorem}
 \vfill
-This guarantees that at every time step $t \ge 1$, the state vector $\bp(t) = P^t\bp(0)$ remains a valid probability distribution ($\bp(t) \ge \b0$ and $\sum_{i=1}^n p_i(t) = 1$)
+This guarantees that at every time step $t \ge 1$, the state vector $\bp(t)$ remains a valid probability distribution ($\bp(t) \ge \b0$ and $\sum_{i=1}^n p_i(t) = 1$)
 \end{frame}
 
 \begin{frame}{Proof of Theorem~\ref{th:product-stochastic}}
 \begin{enumerate}
-\item Since $M \ge 0$ and $N \ge 0$, their product satisfies $MN \ge 0$. Furthermore, using the associativity of matrix multiplication and $\11^T M = \11^T$, $\11^T N = \11^T$:
+\item Since $M \ge 0$ and $N \ge 0$, their product satisfies $MN \ge 0$. Furthermore, using the associativity of matrix multiplication and $M\11 = \11$, $N\11 = \11$:
 \[
-\11^T (MN) = (\11^T M) N = \11^T N = \11^T
+(MN)\11 = M(N\11) = M\11 = \11
 \]
-Thus $MN$ is nonnegative and its columns sum to $1$, so $MN$ is column-stochastic
+Thus $MN$ is nonnegative and its rows sum to $1$, so $MN$ is row-stochastic
 \vfill
-\item By induction on $t \ge 1$, $P^t$ is column-stochastic. If $\bp(0) \ge \b0$ satisfies $\11^T\bp(0) = 1$, then $\bp(t) = P^t \bp(0) \ge \b0$ and
+\item By induction on $t \ge 1$, $P^t$ is row-stochastic. If $\bp(0) \ge \b0$ satisfies $\bp(0)^T\11 = 1$, then $\bp(t)^T = \bp(0)^T P^t \ge \b0^T$ and
 \[
-\11^T \bp(t) = \11^T (P^t\bp(0)) = (\11^T P^t)\bp(0) = \11^T \bp(0) = 1 \qquad \qed
+\bp(t)^T \11 = (\bp(0)^T P^t)\11 = \bp(0)^T (P^t \11) = \bp(0)^T \11 = 1 \qquad \qed
 \]
 \end{enumerate}
 \end{frame}
 
-\begin{frame}{Spectral radius of a column-stochastic matrix}
+\begin{frame}{Spectral radius of a row-stochastic matrix}
 \begin{importanttheorem}[Spectrum of a stochastic matrix]
 \label{th:spectrum-stochastic}
-Let $P \in \M_n(\IR_+)$ be a column-stochastic matrix. Then:
+Let $P \in \M_n(\IR_+)$ be a row-stochastic matrix. Then:
 \begin{enumerate}
 \item $\lambda_1 = 1$ is an eigenvalue of $P$
 \item Every eigenvalue $\lambda \in \sigma(P)$ satisfies $|\lambda| \le 1$, so the spectral radius is $\rho(P) = 1$
@@ -1705,18 +1698,18 @@ Let $P \in \M_n(\IR_+)$ be a column-stochastic matrix. Then:
 \end{importanttheorem}
 \vfill
 \begin{itemize}
-\item Every column-stochastic matrix has Perron root $\rho(P) = 1$, with $\11 = (1, \ldots, 1)^T$ as a left eigenvector ($\11^T P = 1 \cdot \11^T$)
-\item Any right eigenvector $\bv \ge \b0$ for $\lambda_1 = 1$ satisfies $P\bv = \bv$: it is an \defword{invariant} (or \defword{stationary}) distribution of the Markov chain
+\item Every row-stochastic matrix has Perron root $\rho(P) = 1$, with $\11 = (1, \ldots, 1)^T$ as a right eigenvector ($P\11 = 1 \cdot \11$)
+\item Any left eigenvector $\bv \ge \b0$ for $\lambda_1 = 1$ satisfies $\bv^T P = \bv^T$ (or $P^T\bv = \bv$): it is an \defword{invariant} (or \defword{stationary}) distribution of the Markov chain
 \end{itemize}
 \end{frame}
 
 \begin{frame}{Proof of Theorem~\ref{th:spectrum-stochastic}}
 \begin{enumerate}
-\item Since $P$ is column-stochastic, $\11^T P = \11^T$. Taking the transpose gives $P^T \11 = \11$ with $\11 \neq \b0$, so $\lambda = 1$ is an eigenvalue of $P^T$. Since $\det(P^T - \lambda \II_n) = \det(P - \lambda \II_n)$, $P$ and $P^T$ have the same eigenvalues ($\sigma(P) = \sigma(P^T)$), so $1 \in \sigma(P)$
+\item Since $P$ is row-stochastic, $P\11 = 1 \cdot \11$ with $\11 \neq \b0$, so $\11$ is a right eigenvector of $P$ for the eigenvalue $\lambda_1 = 1$ (and similarly for a column-stochastic matrix $M$, $\11^T M = \11^T \implies M^T\11 = \11$, with $\sigma(M) = \sigma(M^T)$)
 \vfill
-\item Let $\lambda \in \sigma(P) = \sigma(P^T)$ and let $\bx \neq \b0$ be a right eigenvector of $P^T$: $P^T \bx = \lambda \bx$. Pick an index $k$ maximising $|x_k| = \max_{1 \le j \le n} |x_j| > 0$. From row $k$ of $P^T \bx = \lambda \bx$:
+\item Let $\lambda \in \sigma(P)$ and let $\bx \neq \b0$ be a right eigenvector of $P$: $P\bx = \lambda \bx$. Pick an index $k$ maximising $|x_k| = \max_{1 \le j \le n} |x_j| > 0$. From row $k$ of $P\bx = \lambda \bx$:
 \[
-|\lambda|\, |x_k| = |\lambda x_k| = \left|\sum_{i=1}^n p_{ik} x_i\right| \le \sum_{i=1}^n p_{ik} |x_i| \le \left(\sum_{i=1}^n p_{ik}\right) |x_k| = 1 \cdot |x_k|
+|\lambda|\, |x_k| = |\lambda x_k| = \left|\sum_{j=1}^n p_{kj} x_j\right| \le \sum_{j=1}^n p_{kj} |x_j| \le \left(\sum_{j=1}^n p_{kj}\right) |x_k| = 1 \cdot |x_k|
 \]
 Dividing by $|x_k| > 0$ yields $|\lambda| \le 1$, and since $1 \in \sigma(P)$, we have $\rho(P) = 1$ \qed
 \end{enumerate}
@@ -1729,7 +1722,7 @@ Dividing by $|x_k| > 0$ yields $|\lambda| \le 1$, and since $1 \in \sigma(P)$, w
 
 \begin{frame}{Regular Markov chains}
 \begin{importantdefinition}[Regular Markov chain]
-A discrete-time Markov chain with column-stochastic transition matrix $P \in \M_n(\IR_+)$ is \defword{regular} if $P$ is \textbf{primitive}, i.e. there exists a positive integer $k \ge 1$ such that
+A discrete-time Markov chain with row-stochastic transition matrix $P \in \M_n(\IR_+)$ is \defword{regular} if $P$ is \textbf{primitive}, i.e. there exists a positive integer $k \ge 1$ such that
 \[
 P^k > 0 \quad (\text{every entry of } P^k \text{ is strictly positive})
 \]
@@ -1737,40 +1730,40 @@ P^k > 0 \quad (\text{every entry of } P^k \text{ is strictly positive})
 \vfill
 \textbf{Interpretation}:
 \begin{itemize}
-\item The entry $(P^k)_{ij}$ is the $k$-step transition probability of moving from state $S_j$ to state $S_i$ in exactly $k$ steps
-\item Thus a Markov chain is regular if and only if there is some time horizon $k \ge 1$ such that from \textbf{any} starting state $S_j$, there is a strictly positive probability of being in \textbf{any} target state $S_i$ after $k$ steps
-\item By Theorem~\ref{th:primitive-iff-sc-aperiodic}, a Markov chain is regular $\iff$ its transition digraph is \textbf{strongly connected} (irreducible) and \textbf{aperiodic} ($d = 1$, e.g. at least one state has a self-loop $p_{ii} > 0$)
+\item The entry $(P^k)_{ij}$ is the $k$-step transition probability of moving from state $S_i$ to state $S_j$ in exactly $k$ steps
+\item Thus a Markov chain is regular if and only if there is some time horizon $k \ge 1$ such that from \textbf{any} starting state $S_i$, there is a strictly positive probability of being in \textbf{any} target state $S_j$ after $k$ steps
+\item By Theorem~\ref{th:primitive-iff-sc-aperiodic}, a Markov chain is regular $\iff$ its transition digraph $\G(P)$ is \textbf{strongly connected} (irreducible) and \textbf{aperiodic} ($d = 1$, e.g. at least one state has a self-loop $p_{ii} > 0$)
 \end{itemize}
 \end{frame}
 
 \begin{frame}{The fundamental limit theorem for regular Markov chains}
 \begin{importanttheorem}[Fundamental limit theorem for regular Markov chains]
 \label{th:regular-mc-limit}
-Let $P \in \M_n(\IR_+)$ be the column-stochastic transition matrix of a \textbf{regular} Markov chain. Then:
+Let $P \in \M_n(\IR_+)$ be the row-stochastic transition matrix of a \textbf{regular} Markov chain. Then:
 \begin{enumerate}
-\item There exists a \textbf{unique} strictly positive probability vector $\bv = (v_1, \ldots, v_n)^T > \b0$ satisfying $P\bv = \bv$ and $\11^T\bv = \sum_{i=1}^n v_i = 1$, called the \defword{stationary distribution} (or \defword{equilibrium} / \defword{steady-state distribution}) of the Markov chain
-\item As $t \to \infty$, the matrix powers $P^t$ converge to the rank-one column-stochastic matrix
+\item There exists a \textbf{unique} strictly positive probability vector $\bv = (v_1, \ldots, v_n)^T > \b0$ satisfying $\bv^T P = \bv^T$ (equivalently $P^T\bv = \bv$) and $\11^T\bv = \sum_{i=1}^n v_i = 1$, called the \defword{stationary distribution} (or \defword{equilibrium} / \defword{steady-state distribution}) of the Markov chain
+\item As $t \to \infty$, the matrix powers $P^t$ converge to the rank-one row-stochastic matrix
 \[
-\lim_{t \to \infty} P^t = W = \begin{pmatrix} \bv & \bv & \cdots & \bv \end{pmatrix} = \bv \11^T > 0
+\lim_{t \to \infty} P^t = W = \begin{pmatrix} \bv^T \\ \vdots \\ \bv^T \end{pmatrix} = \11 \bv^T > 0
 \]
-\item For \textbf{any} initial probability distribution $\bp(0)$, the state vector $\bp(t) = P^t\bp(0)$ converges to $\bv$:
+\item For \textbf{any} initial probability distribution $\bp(0)$, the state vector $\bp(t)$ defined by $\bp(t)^T = \bp(0)^T P^t$ converges to $\bv$:
 \[
-\lim_{t \to \infty} \bp(t) = W\bp(0) = \bv(\11^T \bp(0)) = \bv
+\lim_{t \to \infty} \bp(t)^T = \bp(0)^T W = (\bp(0)^T \11)\bv^T = \bv^T \qquad \bigl(\text{or } \lim_{t \to \infty} \bp(t) = \bv\bigr)
 \]
 \end{enumerate}
 \end{importanttheorem}
 \end{frame}
 
 \begin{frame}{Proof of Theorem~\ref{th:regular-mc-limit}}
-Theorem~\ref{th:regular-mc-limit} is a direct specialisation of Theorem~\ref{th:primitive-limit} (asymptotics of primitive matrices) to column-stochastic matrices:
+Theorem~\ref{th:regular-mc-limit} is a direct specialisation of Theorem~\ref{th:primitive-limit} (asymptotics of primitive matrices) to row-stochastic matrices:
 \vfill
 \begin{itemize}
-\item Since $P$ is column-stochastic, Theorem~\ref{th:spectrum-stochastic} gives $\rho(P) = 1$ and $\11^T P = \11^T$
-\item Since $P$ is primitive, Perron-Frobenius gives a unique positive right Perron vector $\bv > \b0$ with $P\bv = \bv$ and $\11^T\bv = 1$
-\item The corresponding left Perron vector $\by > \b0$ normalised by $\by^T\bv = 1$ is simply $\by = \11$, because $\11^T P = \11^T$ and $\11^T\bv = 1$
-\item Substituting $\rho(P) = 1$, $\bx = \bv$ and $\by = \11$ into Theorem~\ref{th:primitive-limit} yields
+\item Since $P$ is row-stochastic, Theorem~\ref{th:spectrum-stochastic} gives $\rho(P) = 1$ and $P\11 = \11$
+\item Since $P$ is primitive, Perron-Frobenius gives a unique positive left Perron vector $\bv > \b0$ with $\bv^T P = \bv^T$ (or $P^T\bv = \bv$) and $\11^T\bv = 1$
+\item The corresponding right Perron vector $\bx > \b0$ normalised by $\bv^T\bx = 1$ is simply $\bx = \11$, because $P\11 = \11$ and $\bv^T\11 = \11^T\bv = 1$
+\item Substituting $\rho(P) = 1$, $\bx = \11$ and $\by = \bv$ into Theorem~\ref{th:primitive-limit} yields
 \[
-\lim_{t \to \infty} P^t = \lim_{t \to \infty} \left(\frac{1}{\rho(P)} P\right)^t = \bv \11^T = \begin{pmatrix} \bv & \bv & \cdots & \bv \end{pmatrix} = W \qquad \qed
+\lim_{t \to \infty} P^t = \lim_{t \to \infty} \left(\frac{1}{\rho(P)} P\right)^t = \11 \bv^T = \begin{pmatrix} \bv^T \\ \vdots \\ \bv^T \end{pmatrix} = W \qquad \qed
 \]
 \end{itemize}
 \end{frame}
@@ -1779,15 +1772,15 @@ Theorem~\ref{th:regular-mc-limit} is a direct specialisation of Theorem~\ref{th:
 How do we compute the unique stationary distribution $\bv$ of a regular transition matrix $P \in \M_n(\IR_+)$ by hand?
 \vfill
 \begin{enumerate}
-\item \textbf{Write the fixed-point equation $P\bv = \bv$ as a homogeneous linear system}:
+\item \textbf{Write the fixed-point equation $\bv^T P = \bv^T$ as a homogeneous linear system}:
 \[
-(P - \II_n)\bv = \b0 \qquad (\text{so } \bv \in \nullspace(P - \II_n))
+(P^T - \II_n)\bv = \b0 \qquad (\text{so } \bv \in \nullspace(P^T - \II_n))
 \]
 \begin{itemize}
-\item Since $\lambda_1 = 1$ is a simple eigenvalue of $P$, $\dim\nullspace(P - \II_n) = 1$
-\item Because $\11^T(P - \II_n) = \b0^T$, the rows of $P - \II_n$ always sum to zero (one row is redundant)
+\item Since $\lambda_1 = 1$ is a simple eigenvalue of $P$, $\dim\nullspace(P^T - \II_n) = 1$
+\item Because $\11^T(P^T - \II_n) = \b0^T$, the columns of $P^T - \II_n$ always sum to zero (one row is redundant)
 \end{itemize}
-\item \textbf{Row-reduce $P - \II_n$} (or solve the first $n-1$ equations) to express $v_1, \ldots, v_n$ in terms of a single free parameter, giving a positive basis vector $\bw \in \nullspace(P - \II_n)$
+\item \textbf{Row-reduce $P^T - \II_n$} (or solve $n-1$ independent equations) to express $v_1, \ldots, v_n$ in terms of a single free parameter, giving a positive basis vector $\bw \in \nullspace(P^T - \II_n)$
 \item \textbf{Normalise to a probability vector} using $\11^T\bv = v_1 + \cdots + v_n = 1$:
 \[
 \bv = \frac{\bw}{\|\bw\|_1} = \frac{\bw}{w_1 + \cdots + w_n}
@@ -1821,8 +1814,8 @@ Consider a two-state Markov chain with transition probabilities $\alpha = \IP(S_
 \begin{column}{0.55\textwidth}
 \[
 P = \begin{pmatrix}
-1 - \alpha & \beta \\
-\alpha & 1 - \beta
+1 - \alpha & \alpha \\
+\beta & 1 - \beta
 \end{pmatrix}
 \]
 \end{column}
@@ -1835,16 +1828,16 @@ P = \begin{pmatrix}
 \end{frame}
 
 \begin{frame}{Example 1 (continued): stationary distribution and limit}
-We find the unique stationary distribution $\bv = (v_1, v_2)^T$ by solving $(P - \II_2)\bv = \b0$:
+We find the unique stationary distribution $\bv = (v_1, v_2)^T$ by solving $(P^T - \II_2)\bv = \b0$:
 \[
-(P - \II_2)\bv = \begin{pmatrix} -\alpha & \beta \\ \alpha & -\beta \end{pmatrix} \begin{pmatrix} v_1 \\ v_2 \end{pmatrix} = \begin{pmatrix} 0 \\ 0 \end{pmatrix} \iff -\alpha v_1 + \beta v_2 = 0 \iff v_2 = \frac{\alpha}{\beta} v_1
+(P^T - \II_2)\bv = \begin{pmatrix} -\alpha & \beta \\ \alpha & -\beta \end{pmatrix} \begin{pmatrix} v_1 \\ v_2 \end{pmatrix} = \begin{pmatrix} 0 \\ 0 \end{pmatrix} \iff -\alpha v_1 + \beta v_2 = 0 \iff v_2 = \frac{\alpha}{\beta} v_1
 \]
 \vfill
 Imposing the normalisation condition $v_1 + v_2 = 1$ gives $v_1\left(1 + \frac{\alpha}{\beta}\right) = v_1\left(\frac{\alpha + \beta}{\beta}\right) = 1$, hence:
 \[
 \bv = \frac{1}{\alpha + \beta} \begin{pmatrix} \beta \\ \alpha \end{pmatrix},
 \qquad
-\lim_{t \to \infty} P^t = W = \frac{1}{\alpha + \beta} \begin{pmatrix} \beta & \beta \\ \alpha & \alpha \end{pmatrix}
+\lim_{t \to \infty} P^t = W = \11\bv^T = \frac{1}{\alpha + \beta} \begin{pmatrix} \beta & \alpha \\ \beta & \alpha \end{pmatrix}
 \]
 \end{frame}
 
@@ -1852,24 +1845,24 @@ Imposing the normalisation condition $v_1 + v_2 = 1$ gives $v_1\left(1 + \frac{\
 \textbf{Problem}: Show that the Markov chain with transition matrix $P$ is regular and find its stationary distribution $\bv$ and $\lim_{t \to \infty} P^t$:
 \[
 P = \begin{pmatrix}
-0.5 & 0.4 & 0 \\
-0.5 & 0.2 & 0.5 \\
-0   & 0.4 & 0.5
+0.5 & 0.5 & 0 \\
+0.4 & 0.2 & 0.4 \\
+0   & 0.5 & 0.5
 \end{pmatrix}
 \]
 \vfill
 \textbf{Step 1 (Regularity)}:
 \begin{itemize}
-\item From $P$, we have transitions $S_1 \to S_2 \to S_3 \to S_2 \to S_1$, so all 3 states communicate ($\G(P^T)$ is strongly connected, $P$ is irreducible)
+\item From $P$, we have transitions $S_1 \to S_2 \to S_3 \to S_2 \to S_1$, so all 3 states communicate ($\G(P)$ is strongly connected, $P$ is irreducible)
 \item Diagonal entries $p_{11} = 0.5 > 0$, $p_{22} = 0.2 > 0$, $p_{33} = 0.5 > 0$ give self-loops, so by Corollary~\ref{cor:self-loop-primitive}, $P$ is \textbf{primitive} (in fact $P^2 > 0$) and the chain is \textbf{regular}
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Example 2 (continued): row-reducing $P - \II_3$}
-\textbf{Step 2 (Nullspace of $P - \II_3$)}: Form $P - \II_3$ (notice the columns sum to $0$):
+\begin{frame}{Example 2 (continued): row-reducing $P^T - \II_3$}
+\textbf{Step 2 (Nullspace of $P^T - \II_3$)}: Form $P^T - \II_3$ (notice the columns sum to $0$):
 {\small
 \[
-P - \II_3 = \begin{pmatrix}
+P^T - \II_3 = \begin{pmatrix}
 -0.5 & 0.4 & 0 \\
 0.5 & -0.8 & 0.5 \\
 0 & 0.4 & -0.5
@@ -1906,10 +1899,10 @@ By Theorem~\ref{th:regular-mc-limit}, the stationary distribution $\bv$ and limi
 \[
 \bv = \begin{pmatrix} 4/13 \\ 5/13 \\ 4/13 \end{pmatrix},
 \qquad
-\lim_{t \to \infty} P^t = W = \bv\11^T = \begin{pmatrix}
-4/13 & 4/13 & 4/13 \\
-5/13 & 5/13 & 5/13 \\
-4/13 & 4/13 & 4/13
+\lim_{t \to \infty} P^t = W = \11\bv^T = \begin{pmatrix}
+4/13 & 5/13 & 4/13 \\
+4/13 & 5/13 & 4/13 \\
+4/13 & 5/13 & 4/13
 \end{pmatrix}
 \]
 \end{frame}
@@ -2059,9 +2052,9 @@ Daughters: $100\%\; S_3$
 \end{column}
 \end{columns}
 \vfill
-\textbf{Transitions from $S_1$ (column 1 of $P$)}:
+\textbf{Transitions from $S_1$ (row 1 of $P$)}:
 \begin{itemize}
-\item $p_{11} = \IP(S_1 \mid S_1) = 0.5 \times 1.0 = \mathbf{0.5}$, \quad $p_{21} = \IP(S_2 \mid S_1) = \mathbf{0}$, \quad $p_{31} = \IP(S_3 \mid S_1) = 0.5 \times 1.0 = \mathbf{0.5}$
+\item $p_{11} = \IP(S_1 \mid S_1) = 0.5 \times 1.0 = \mathbf{0.5}$, \quad $p_{12} = \IP(S_2 \mid S_1) = \mathbf{0}$, \quad $p_{13} = \IP(S_3 \mid S_1) = 0.5 \times 1.0 = \mathbf{0.5}$
 \end{itemize}
 \end{frame}
 
@@ -2095,9 +2088,9 @@ Daughters: $100\%\; S_2$
 \end{column}
 \end{columns}
 \vfill
-\textbf{Transitions from $S_2$ (column 2 of $P$)}:
+\textbf{Transitions from $S_2$ (row 2 of $P$)}:
 \begin{itemize}
-\item $p_{12} = \IP(S_1 \mid S_2) = \mathbf{0}$, \quad $p_{22} = \IP(S_2 \mid S_2) = 0.5 \times 1.0 = \mathbf{0.5}$, \quad $p_{32} = \IP(S_3 \mid S_2) = 0.5 \times 1.0 = \mathbf{0.5}$
+\item $p_{21} = \IP(S_1 \mid S_2) = \mathbf{0}$, \quad $p_{22} = \IP(S_2 \mid S_2) = 0.5 \times 1.0 = \mathbf{0.5}$, \quad $p_{23} = \IP(S_3 \mid S_2) = 0.5 \times 1.0 = \mathbf{0.5}$
 \end{itemize}
 \end{frame}
 
@@ -2131,22 +2124,22 @@ Daughters: $50\%\; S_2$, $50\%\; S_3$
 \end{column}
 \end{columns}
 \vfill
-\textbf{Transitions from $S_3$ (column 3 of $P$)}:
+\textbf{Transitions from $S_3$ (row 3 of $P$)}:
 \begin{itemize}
-\item $p_{13} = 0.5 \times 0.5 = \mathbf{0.25}$, \quad $p_{23} = 0.5 \times 0.5 = \mathbf{0.25}$, \quad $p_{33} = 0.5 \times 0.5 + 0.5 \times 0.5 = \mathbf{0.5}$
+\item $p_{31} = 0.5 \times 0.5 = \mathbf{0.25}$, \quad $p_{32} = 0.5 \times 0.5 = \mathbf{0.25}$, \quad $p_{33} = 0.5 \times 0.5 + 0.5 \times 0.5 = \mathbf{0.5}$
 \end{itemize}
 \end{frame}
 
 \begin{frame}{Transition matrix and digraph of the orange cat chain}
-Assembling the three columns gives the transition matrix $P$ and transition digraph:
+Assembling the three rows gives the transition matrix $P$ and transition digraph $\G(P)$:
 \vfill
 \begin{columns}[c]
 \begin{column}{0.42\textwidth}
 \[
 P = \begin{pmatrix}
-0.5 & 0   & 0.25 \\
-0   & 0.5 & 0.25 \\
-0.5 & 0.5 & 0.5
+0.5  & 0    & 0.5 \\
+0    & 0.5  & 0.5 \\
+0.25 & 0.25 & 0.5
 \end{pmatrix}
 \]
 \vspace{0.2cm}
@@ -2182,15 +2175,15 @@ P = \begin{pmatrix}
 Let us check whether $P$ is primitive:
 \[
 P = \begin{pmatrix}
-0.5 & 0   & 0.25 \\
-0   & 0.5 & 0.25 \\
-0.5 & 0.5 & 0.5
+0.5  & 0    & 0.5 \\
+0    & 0.5  & 0.5 \\
+0.25 & 0.25 & 0.5
 \end{pmatrix},
 \qquad
 P^2 = \begin{pmatrix}
-0.375 & 0.125 & 0.25 \\
-0.125 & 0.375 & 0.25 \\
-0.5   & 0.5   & 0.5
+0.375 & 0.125 & 0.5 \\
+0.125 & 0.375 & 0.5 \\
+0.25  & 0.25  & 0.5
 \end{pmatrix} > 0
 \]
 \vfill
@@ -2201,9 +2194,9 @@ P^2 = \begin{pmatrix}
 \end{frame}
 
 \begin{frame}{Stationary distribution of the orange cat chain}
-We solve $(P - \II_3)\bv = \b0$ with $v_1 + v_2 + v_3 = 1$:
+We solve $(P^T - \II_3)\bv = \b0$ with $v_1 + v_2 + v_3 = 1$:
 \[
-(P - \II_3)\bv = \begin{pmatrix}
+(P^T - \II_3)\bv = \begin{pmatrix}
 -0.5 & 0    & 0.25 \\
 0    & -0.5 & 0.25 \\
 0.5  & 0.5  & -0.5
@@ -2225,16 +2218,16 @@ Thus the unique stationary distribution is $\bv = (0.25, 0.25, 0.5)^T$: in the l
 \end{frame}
 
 \begin{frame}[fragile]{Computing the stationary distribution in R}
-Let us compute the dominant right eigenvector $\bv$ corresponding to $\lambda_1 = 1$ in \code{R}:
+Let us compute the dominant left eigenvector $\bv$ of $P$ (right eigenvector of $P^T$) corresponding to $\lambda_1 = 1$ in \code{R}:
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hldef{P_reg} \hlkwb{<-} \hlkwd{matrix}\hldef{(}\hlkwd{c}\hldef{(}\hlnum{0.5}\hldef{,} \hlnum{0}\hldef{,}   \hlnum{0.25}\hldef{,}
-                  \hlnum{0}\hldef{,}   \hlnum{0.5}\hldef{,} \hlnum{0.25}\hldef{,}
-                  \hlnum{0.5}\hldef{,} \hlnum{0.5}\hldef{,} \hlnum{0.5}\hldef{),}
+\hldef{P_reg} \hlkwb{<-} \hlkwd{matrix}\hldef{(}\hlkwd{c}\hldef{(}\hlnum{0.5}\hldef{,}  \hlnum{0}\hldef{,}    \hlnum{0.5}\hldef{,}
+                  \hlnum{0}\hldef{,}    \hlnum{0.5}\hldef{,}  \hlnum{0.5}\hldef{,}
+                  \hlnum{0.25}\hldef{,} \hlnum{0.25}\hldef{,} \hlnum{0.5}\hldef{),}
                 \hlkwc{nrow} \hldef{=} \hlnum{3}\hldef{,} \hlkwc{byrow} \hldef{=} \hlnum{TRUE}\hldef{)}
-\hlcom{# Dominant right eigenvector corresponding to eigenvalue 1}
-\hldef{ev} \hlkwb{<-} \hlkwd{eigen}\hldef{(P_reg)}
+\hlcom{# Dominant left eigenvector of P_reg (right eigenvector of t(P_reg)) for eigenvalue 1}
+\hldef{ev} \hlkwb{<-} \hlkwd{eigen}\hldef{(}\hlkwd{t}\hldef{(P_reg))}
 \hldef{v_stat} \hlkwb{<-} \hlkwd{Re}\hldef{(ev}\hlopt{$}\hldef{vectors[,} \hlnum{1}\hldef{])}
 \hldef{v_stat} \hlkwb{<-} \hldef{v_stat} \hlopt{/} \hlkwd{sum}\hldef{(v_stat)}
 \hldef{v_stat}
@@ -2247,7 +2240,7 @@ Let us compute the dominant right eigenvector $\bv$ corresponding to $\lambda_1 
 \end{frame}
 
 \begin{frame}[fragile]{Verifying convergence of matrix powers $P^t$ in R}
-By Theorem~\ref{th:regular-mc-limit}, $P^t$ converges to $W = \bv \11^T$ as $t \to \infty$:
+By Theorem~\ref{th:regular-mc-limit}, $P^t$ converges to $W = \11 \bv^T$ as $t \to \infty$:
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -2257,23 +2250,23 @@ By Theorem~\ref{th:regular-mc-limit}, $P^t$ converges to $W = \bv \11^T$ as $t \
 \end{alltt}
 \begin{verbatim}
 ##      [,1] [,2] [,3]
-## [1,] 0.25 0.25 0.25
-## [2,] 0.25 0.25 0.25
-## [3,] 0.50 0.50 0.50
+## [1,] 0.25 0.25  0.5
+## [2,] 0.25 0.25  0.5
+## [3,] 0.25 0.25  0.5
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-Every column of $P^{20}$ equals the stationary distribution $\bv = (0.25, 0.25, 0.5)^T$ to six decimal places
+Every row of $P^{20}$ equals the stationary distribution $\bv^T = (0.25, 0.25, 0.5)$ to six decimal places
 \end{frame}
 
-\begin{frame}[fragile]{Convergence of $\bp(t) = P^t \bp(0)$ from an initial state}
+\begin{frame}[fragile]{Convergence of $\bp(t)^T = \bp(0)^T P^t$ from an initial state}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hldef{t_max} \hlkwb{<-} \hlnum{12}
 \hldef{p_hist} \hlkwb{<-} \hlkwd{matrix}\hldef{(}\hlnum{0}\hldef{,} \hlkwc{nrow} \hldef{=} \hlnum{3}\hldef{,} \hlkwc{ncol} \hldef{= t_max} \hlopt{+} \hlnum{1}\hldef{)}
 \hldef{p_hist[,} \hlnum{1}\hldef{]} \hlkwb{<-} \hlkwd{c}\hldef{(}\hlnum{1}\hldef{,} \hlnum{0}\hldef{,} \hlnum{0}\hldef{)} \hlcom{# Start in S_1 (100% orange)}
-\hlkwa{for} \hldef{(t} \hlkwa{in} \hlnum{1}\hlopt{:}\hldef{t_max) p_hist[, t} \hlopt{+} \hlnum{1}\hldef{]} \hlkwb{<-} \hldef{P_reg} \hlopt{%*%} \hldef{p_hist[, t]}
+\hlkwa{for} \hldef{(t} \hlkwa{in} \hlnum{1}\hlopt{:}\hldef{t_max) p_hist[, t} \hlopt{+} \hlnum{1}\hldef{]} \hlkwb{<-} \hlkwd{as.vector}\hldef{(}\hlkwd{t}\hldef{(p_hist[, t])} \hlopt{%*%} \hldef{P_reg)}
 \hldef{cols} \hlkwb{<-} \hlkwd{c}\hldef{(}\hlsng{"darkorange"}\hldef{,} \hlsng{"black"}\hldef{,} \hlsng{"brown"}\hldef{)}
 \hlkwd{matplot}\hldef{(}\hlnum{0}\hlopt{:}\hldef{t_max,} \hlkwd{t}\hldef{(p_hist),} \hlkwc{type} \hldef{=} \hlsng{"b"}\hldef{,} \hlkwc{pch} \hldef{=} \hlnum{19}\hldef{,} \hlkwc{lty} \hldef{=} \hlnum{1}\hldef{,}
         \hlkwc{lwd} \hldef{=} \hlnum{2}\hldef{,} \hlkwc{col} \hldef{= cols,} \hlkwc{ylim} \hldef{=} \hlkwd{c}\hldef{(}\hlnum{0}\hldef{,} \hlnum{1}\hldef{),} \hlkwc{xlab} \hldef{=} \hlsng{"Generation t"}\hldef{,}
@@ -2290,14 +2283,14 @@ Every column of $P^{20}$ equals the stationary distribution $\bv = (0.25, 0.25, 
 \maxFrameImage{FIGS/U08-u08-convergence-plot-1.pdf}
 
 \begin{frame}[fragile]{Simulating a single realisation of the regular Markov chain}
-When in state $j$ at step $t$, the next state at step $t+1$ is drawn with probabilities given by \textbf{column $j$} of $P$:
+When in state $i$ at step $t$, the next state at step $t+1$ is drawn with probabilities given by \textbf{row $i$} of $P$:
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{set.seed}\hldef{(}\hlnum{2740}\hldef{)}
 \hldef{n_steps} \hlkwb{<-} \hlnum{40}\hldef{; states} \hlkwb{<-} \hlkwd{numeric}\hldef{(n_steps} \hlopt{+} \hlnum{1}\hldef{); states[}\hlnum{1}\hldef{]} \hlkwb{<-} \hlnum{1}
 \hlkwa{for} \hldef{(t} \hlkwa{in} \hlnum{1}\hlopt{:}\hldef{n_steps) \{}
-  \hldef{states[t} \hlopt{+} \hlnum{1}\hldef{]} \hlkwb{<-} \hlkwd{sample}\hldef{(}\hlnum{1}\hlopt{:}\hlnum{3}\hldef{,} \hlnum{1}\hldef{,} \hlkwc{prob} \hldef{= P_reg[, states[t]])}
+  \hldef{states[t} \hlopt{+} \hlnum{1}\hldef{]} \hlkwb{<-} \hlkwd{sample}\hldef{(}\hlnum{1}\hlopt{:}\hlnum{3}\hldef{,} \hlnum{1}\hldef{,} \hlkwc{prob} \hldef{= P_reg[states[t], ])}
 \hldef{\}}
 \hlkwd{plot}\hldef{(}\hlnum{0}\hlopt{:}\hldef{n_steps, states,} \hlkwc{type} \hldef{=} \hlsng{"b"}\hldef{,} \hlkwc{pch} \hldef{=} \hlnum{19}\hldef{,} \hlkwc{lwd} \hldef{=} \hlnum{1.8}\hldef{,}
      \hlkwc{col} \hldef{=} \hlsng{"darkblue"}\hldef{,} \hlkwc{yaxt} \hldef{=} \hlsng{"n"}\hldef{,}
@@ -2320,7 +2313,7 @@ By the ergodic theorem for regular Markov chains, the long-run fraction of time 
 \hlkwd{set.seed}\hldef{(}\hlnum{2740}\hldef{)}
 \hldef{n_long} \hlkwb{<-} \hlnum{10000}\hldef{; traj} \hlkwb{<-} \hlkwd{numeric}\hldef{(n_long); traj[}\hlnum{1}\hldef{]} \hlkwb{<-} \hlnum{1}
 \hlkwa{for} \hldef{(t} \hlkwa{in} \hlnum{1}\hlopt{:}\hldef{(n_long} \hlopt{-} \hlnum{1}\hldef{)) \{}
-  \hldef{traj[t} \hlopt{+} \hlnum{1}\hldef{]} \hlkwb{<-} \hlkwd{sample}\hldef{(}\hlnum{1}\hlopt{:}\hlnum{3}\hldef{,} \hlnum{1}\hldef{,} \hlkwc{prob} \hldef{= P_reg[, traj[t]])}
+  \hldef{traj[t} \hlopt{+} \hlnum{1}\hldef{]} \hlkwb{<-} \hlkwd{sample}\hldef{(}\hlnum{1}\hlopt{:}\hlnum{3}\hldef{,} \hlnum{1}\hldef{,} \hlkwc{prob} \hldef{= P_reg[traj[t], ])}
 \hldef{\}}
 \hlkwd{rbind}\hldef{(}\hlkwc{empirical} \hldef{=} \hlkwd{prop.table}\hldef{(}\hlkwd{table}\hldef{(}\hlkwd{factor}\hldef{(traj,} \hlkwc{levels} \hldef{=} \hlnum{1}\hlopt{:}\hlnum{3}\hldef{))),}
       \hlkwc{stationary} \hldef{= v_stat)}
@@ -2356,21 +2349,21 @@ Suppose the male pool has proportion $q \in (0, 1)$ of orange males ($X^O Y$) an
 \item \textbf{From $S_3$ ($X^O X^o$)}: orange dad ($q$) $\implies \tfrac{1}{2}S_1 + \tfrac{1}{2}S_3$; black dad ($1-q$) $\implies \tfrac{1}{2}S_2 + \tfrac{1}{2}S_3$
 \end{itemize}
 \vfill
-Assembling the three columns gives the transition matrix for any $q \in (0, 1)$:
+Assembling the three rows gives the transition matrix for any $q \in (0, 1)$:
 \[
 P(q) = \begin{pmatrix}
-q & 0 & \tfrac{1}{2}q \\[3pt]
-0 & 1-q & \tfrac{1}{2}(1-q) \\[3pt]
-1-q & q & \tfrac{1}{2}
+q & 0 & 1-q \\[3pt]
+0 & 1-q & q \\[3pt]
+\tfrac{1}{2}q & \tfrac{1}{2}(1-q) & \tfrac{1}{2}
 \end{pmatrix}
 \]
-For every $q \in (0, 1)$, $P(q)$ is column-stochastic, irreducible and aperiodic (hence regular)
+For every $q \in (0, 1)$, $P(q)$ is row-stochastic, irreducible and aperiodic (hence regular)
 \end{frame}
 
 \begin{frame}{Stationary distribution $\bv(q)$: Hardy-Weinberg equilibrium}
-We solve $(P(q) - \II_3)\bv = \b0$ subject to $v_1 + v_2 + v_3 = 1$:
+We solve $(P(q)^T - \II_3)\bv = \b0$ subject to $v_1 + v_2 + v_3 = 1$:
 \[
-(P(q) - \II_3)\bv = \begin{pmatrix}
+(P(q)^T - \II_3)\bv = \begin{pmatrix}
 -(1-q) & 0 & \tfrac{1}{2}q \\[3pt]
 0 & -q & \tfrac{1}{2}(1-q) \\[3pt]
 1-q & q & -\tfrac{1}{2}
@@ -2392,9 +2385,9 @@ Substituting into $v_1 + v_2 + v_3 = 1$ and using $q^2 + (1-q)^2 + 2q(1-q) = (q 
 Population genetics surveys of domestic cats find that the orange allele $O$ has frequency roughly \textbf{$q = 0.2$} ($20\%$ orange males and $80\%$ non-orange males). Evaluating at $q = 0.2$:
 \[
 P(0.2) = \begin{pmatrix}
-0.2 & 0   & 0.1 \\
-0   & 0.8 & 0.4 \\
-0.8 & 0.2 & 0.5
+0.2 & 0   & 0.8 \\
+0   & 0.8 & 0.2 \\
+0.1 & 0.4 & 0.5
 \end{pmatrix},
 \qquad
 \bv(0.2) = \begin{pmatrix}
@@ -2415,7 +2408,7 @@ P(0.2) = \begin{pmatrix}
 \end{frame}
 
 \begin{frame}{Why the full problem is more complex: coupled two-sex dynamics}
-In our Markov chain model, we treated the male proportion $q$ as an externally fixed constant, which made $\bp(t+1) = P(q)\bp(t)$ a \textbf{linear}, time-homogeneous system
+In our Markov chain model, we treated the male proportion $q$ as an externally fixed constant, which made $\bp(t+1)^T = \bp(t)^T P(q)$ a \textbf{linear}, time-homogeneous system
 \vfill
 In a closed population, however, the males in generation $t+1$ are the \textbf{sons} of the females in generation $t$:
 \begin{itemize}
@@ -2425,7 +2418,7 @@ q(t+1) = p_1(t) + \tfrac{1}{2}p_3(t)
 \]
 \item Meanwhile, the female transition matrix at generation $t$ depends on the current male proportion $q(t)$:
 \[
-\bp(t+1) = P\bigl(q(t)\bigr)\,\bp(t)
+\bp(t+1)^T = \bp(t)^T P\bigl(q(t)\bigr)
 \]
 \end{itemize}
 \vfill
@@ -2448,7 +2441,6 @@ Coat phenotype is shaped by several other genes located on different chromosomes
 \end{itemize}
 \end{itemize}
 \end{frame}
-
 
 
 

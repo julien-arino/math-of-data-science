@@ -19,17 +19,18 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 
 
 ## ----absorbing-base-R---------------------------------------------------------
-R_mat <- matrix(c(0.5, 0,   0,
-                  0,   0,   0.5), nrow = 2, byrow = TRUE)
+R_mat <- matrix(c(0.5, 0,
+                  0,   0,
+                  0,   0.5), nrow = 3, byrow = TRUE)
 Q_mat <- matrix(c(0,   0.5, 0,
                   0.5, 0,   0.5,
                   0,   0.5, 0),   nrow = 3, byrow = TRUE)
-colnames(R_mat) <- colnames(Q_mat) <- rownames(Q_mat) <- c("S2", "S3", "S4")
-rownames(R_mat) <- c("S1", "S5")
+rownames(R_mat) <- colnames(Q_mat) <- rownames(Q_mat) <- c("S2", "S3", "S4")
+colnames(R_mat) <- c("S1", "S5")
 
 N_mat <- solve(diag(3) - Q_mat)
-t_vec <- colSums(N_mat)
-B_mat <- R_mat %*% N_mat
+t_vec <- rowSums(N_mat)
+B_mat <- N_mat %*% R_mat
 N_mat
 t_vec
 B_mat
@@ -37,12 +38,12 @@ B_mat
 
 ## ----absorbing-mc-pkg---------------------------------------------------------
 library(markovchain)
-P_abs <- matrix(c(1, 0, 0.5,
-                  0, 0, 0,
-                  0, 1, 0.5), nrow = 3, byrow = TRUE)
+P_abs <- matrix(c(1,   0, 0,
+                  0,   0, 1,
+                  0.5, 0, 0.5), nrow = 3, byrow = TRUE)
 mc_abs <- new("markovchain",
               states = sprintf("S_%d", 1:3),
-              transitionMatrix = t(P_abs),
+              transitionMatrix = P_abs,
               name = "orange_abs")
 summary(mc_abs)
 
@@ -57,17 +58,17 @@ absorptionProbabilities(mc_abs)
 library(DTMCPack)
 set.seed(2740)
 IC <- c(0, 1, 0) # Start in S_2 (black female)
-sol <- DTMC(t(P_abs), IC, 10, trace = TRUE)
+sol <- DTMC(P_abs, IC, 10, trace = TRUE)
 
 
 ## ----pagerank-3page-R---------------------------------------------------------
-P3 <- matrix(c(0,   0, 1,
-               0.5, 0, 0,
-               0.5, 1, 0), nrow = 3, byrow = TRUE)
+P3 <- matrix(c(0, 0.5, 0.5,
+               0, 0,   1,
+               1, 0,   0), nrow = 3, byrow = TRUE)
 
-# Solve (I - alpha * P) x = ((1 - alpha) / n) * 1 for alpha = 0.5
+# Solve (I - alpha * P^T) x = ((1 - alpha) / n) * 1 for alpha = 0.5
 alpha <- 0.5
-x_half <- solve(diag(3) - alpha * P3, rep((1 - alpha) / 3, 3))
+x_half <- solve(diag(3) - alpha * t(P3), rep((1 - alpha) / 3, 3))
 MASS::fractions(x_half)
 
 # Compare with igraph::page_rank at alpha = 0.85
@@ -90,21 +91,20 @@ plot(g6, vertex.size = 350 * pr6 + 18, vertex.color = "lightblue",
 
 
 ## ----U09-pagerank-convergence-------------------------------------------------
-A6 <- as.matrix(as_adjacency_matrix(g6)) # row i -> col j in igraph, so transpose!
-A6 <- t(A6)                              # now a_{ij} = 1 if j -> i
+A6 <- as.matrix(as_adjacency_matrix(g6)) # a_{ij} = 1 if i -> j
 n <- nrow(A6)
-out_deg <- colSums(A6)
+out_deg <- rowSums(A6)
 P6 <- matrix(0, n, n)
-for (j in 1:n) {
-  if (out_deg[j] > 0) P6[, j] <- A6[, j] / out_deg[j] else P6[, j] <- rep(1 / n, n)
+for (i in 1:n) {
+  if (out_deg[i] > 0) P6[i, ] <- A6[i, ] / out_deg[i] else P6[i, ] <- rep(1 / n, n)
 }
 alpha <- 0.85
-x_exact <- solve(diag(n) - alpha * P6, rep((1 - alpha) / n, n))
+x_exact <- solve(diag(n) - alpha * t(P6), rep((1 - alpha) / n, n))
 
 x_k <- rep(1 / n, n)
 err <- numeric(30)
 for (k in 1:30) {
-  x_k <- alpha * (P6 %*% x_k) + (1 - alpha) / n
+  x_k <- alpha * as.vector(t(P6) %*% x_k) + (1 - alpha) / n
   err[k] <- sum(abs(x_k - x_exact))
 }
 plot(1:30, err, type = "b", log = "y", pch = 19, col = "dodgerblue4",
