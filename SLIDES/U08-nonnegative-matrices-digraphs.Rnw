@@ -505,7 +505,7 @@ Using the same digraph $G = (V, A)$:
 \end{columns}
 \end{frame}
 
-\begin{frame}{Powers of a matrix and walks in its digraph}
+\begin{frame}{Powers of a matrix}
 \begin{theorem}[Entries of matrix powers]
 \label{th:matrix-powers-formula}
 Let $A = [a_{ij}] \in \M_n(\IR_+)$ and denote the $(i, j)$ entry of $A^k$ by $a_{ij}^{(k)}$ for $k \in \IN_+$. Then
@@ -514,6 +514,10 @@ a_{ij}^{(k)} = \sum_{r_1=1}^n \sum_{r_2=1}^n \cdots \sum_{r_{k-1}=1}^n a_{i, r_1
 \]
 \end{theorem}
 \vfill
+Each product $a_{i, r_1} a_{r_1, r_2} \cdots a_{r_{k-1}, j}$ is the product of the arc weights along the candidate walk $i \to r_1 \to r_2 \to \cdots \to r_{k-1} \to j$ of length $k$
+\end{frame}
+
+\begin{frame}{Matrix powers and walks in the digraph}
 \begin{importantcorollary}[Matrix powers count walks]
 \label{cor:matrix-powers-walks}
 Let $A = [a_{ij}] \in \M_n(\IR_+)$ and denote the $(i, j)$ entry of $A^k$ by $a_{ij}^{(k)}$ for $k \in \IN_+$
@@ -959,7 +963,7 @@ C_2 = \begin{pmatrix} 0 & 1 \\ 1 & 0 \end{pmatrix}
 \item Yet its powers alternate forever:
 \[
 C_2^{2k} = \begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix} = \II_2,
-\quad
+\;
 C_2^{2k+1} = \begin{pmatrix} 0 & 1 \\ 1 & 0 \end{pmatrix} = C_2
 \]
 \item Walks from $1$ to $1$ only have \textbf{even} length, while walks from $1$ to $2$ only have \textbf{odd} length, so no power $C_2^m$ is ever strictly positive!
@@ -1291,7 +1295,7 @@ Why must a positive matrix $A > 0$ have a positive eigenvalue with a positive ei
 \begin{columns}[c]
 \begin{column}{0.48\textwidth}
 \centering
-\begin{tikzpicture}[scale=1.05, >=Latex]
+\begin{tikzpicture}[scale=0.95, >=Latex]
     % Shaded positive quadrant
     \fill[HighlightGold!15] (0,0) rectangle (3.4,2.8);
     % Shaded image cone A(R_+^2)
@@ -1511,10 +1515,8 @@ p_{11} & p_{12} & \cdots & p_{1n} \\
 \vdots & \vdots & \ddots & \vdots \\
 p_{n1} & p_{n2} & \cdots & p_{nn}
 \end{pmatrix}
-\iff
-\bp(t+1)^T = \bp(t)^T P
 \]
-(or equivalently, taking the transpose, $\bp(t+1) = P^T\bp(t)$)
+That is, $\bp(t+1)^T = \bp(t)^T P$ (or equivalently, taking the transpose, $\bp(t+1) = P^T\bp(t)$)
 \end{frame}
 
 \begin{frame}{State distribution after $t$ steps}
@@ -1675,11 +1677,8 @@ P^k > 0 \quad (\text{every entry of } P^k \text{ is strictly positive})
 \label{th:regular-mc-limit}
 Let $P \in \M_n(\IR_+)$ be the row-stochastic transition matrix of a \textbf{regular} Markov chain. Then:
 \begin{enumerate}
-\item There exists a \textbf{unique} strictly positive probability vector $\bv = (v_1, \ldots, v_n)^T > \b0$ satisfying $\bv^T P = \bv^T$ (equivalently $P^T\bv = \bv$) and $\11^T\bv = \sum_{i=1}^n v_i = 1$, called the \defword{stationary distribution} (or \defword{equilibrium} / \defword{steady-state distribution}) of the Markov chain
-\item As $t \to \infty$, the matrix powers $P^t$ converge to the rank-one row-stochastic matrix
-\[
-\lim_{t \to \infty} P^t = W = \begin{pmatrix} \bv^T \\ \vdots \\ \bv^T \end{pmatrix} = \11 \bv^T > 0
-\]
+\item There exists a \textbf{unique} strictly positive probability vector $\bv = (v_1, \ldots, v_n)^T > \b0$ satisfying $\bv^T P = \bv^T$ (or $P^T\bv = \bv$) and $\11^T\bv = 1$, called the \defword{stationary distribution} (or \defword{equilibrium} / \defword{steady-state distribution}) of the Markov chain
+\item As $t \to \infty$, the matrix powers $P^t$ converge to the rank-one row-stochastic matrix $W = \lim_{t \to \infty} P^t = \11\bv^T > 0$ whose rows are all equal to $\bv^T$
 \item For \textbf{any} initial probability distribution $\bp(0)$, the state vector $\bp(t)$ defined by $\bp(t)^T = \bp(0)^T P^t$ converges to $\bv$:
 \[
 \lim_{t \to \infty} \bp(t)^T = \bp(0)^T W = (\bp(0)^T \11)\bv^T = \bv^T \qquad \bigl(\text{or } \lim_{t \to \infty} \bp(t) = \bv\bigr)
@@ -1731,21 +1730,21 @@ How do we compute the unique stationary distribution $\bv$ of a regular transiti
 Consider a two-state Markov chain with transition probabilities $\alpha = \IP(S_2 \mid S_1)$ and $\beta = \IP(S_1 \mid S_2)$, where $0 < \alpha, \beta < 1$:
 \vfill
 \begin{columns}[c]
-\begin{column}{0.45\textwidth}
+\begin{column}{0.55\textwidth}
 \centering
 \begin{tikzpicture}[
     ->, >=Latex, every path/.style={thick},
     state_node/.style={circle, draw=UMbrown, fill=HighlightGold!25, thick, minimum size=9mm, font=\bfseries}
 ]
     \node[state_node] (S1) at (0, 0) {$S_1$};
-    \node[state_node] (S2) at (2.8, 0) {$S_2$};
+    \node[state_node] (S2) at (2.2, 0) {$S_2$};
     \path (S1) edge [loop left] node[left] {$1-\alpha$} (S1);
     \path (S1) edge [bend left=20] node[above] {$\alpha$} (S2);
     \path (S2) edge [bend left=20] node[below] {$\beta$} (S1);
     \path (S2) edge [loop right] node[right] {$1-\beta$} (S2);
 \end{tikzpicture}
 \end{column}
-\begin{column}{0.55\textwidth}
+\begin{column}{0.45\textwidth}
 \[
 P = \begin{pmatrix}
 1 - \alpha & \alpha \\
@@ -1794,7 +1793,7 @@ P = \begin{pmatrix}
 
 \begin{frame}{Example 2 (continued): row-reducing $P^T - \II_3$}
 \textbf{Step 2 (Nullspace of $P^T - \II_3$)}: Form $P^T - \II_3$ (notice the columns sum to $0$):
-{\small
+{\footnotesize
 \[
 P^T - \II_3 = \begin{pmatrix}
 -0.5 & 0.4 & 0 \\
@@ -1900,20 +1899,20 @@ Fixing the background coat genes so that the non-orange allele $X^o$ produces \t
 \end{frame}
 
 \begin{frame}{Warm up: crossing two parents and Punnett squares}
-\begin{columns}[T]
+\begin{columns}[c]
 \begin{column}{0.48\textwidth}
 \textbf{Cross 1: orange dad ($X^O Y$) + black mum ($X^o X^o$)}
-\vfill
+\vspace{0.2cm}
 \begin{center}
-\renewcommand{\arraystretch}{1.35}
+\renewcommand{\arraystretch}{1.25}
 \begin{tabular}{c c | c | c |}
 \multicolumn{2}{c}{} & \multicolumn{2}{c}{Father} \\
 \multicolumn{2}{c}{} & \multicolumn{1}{c}{$X^O$} & \multicolumn{1}{c}{$Y$} \\ \cline{3-4}
-\multirow{2}{*}{\rotatebox{90}{Mother}} & $X^o$ & \cellcolor{punnetttortie}$X^O X^o$ & \cellcolor{punnettblack}$X^o Y$ \\ \cline{2-4}
+\multirow{2}{*}{\rotatebox{90}{\footnotesize Mother}} & $X^o$ & \cellcolor{punnetttortie}$X^O X^o$ & \cellcolor{punnettblack}$X^o Y$ \\ \cline{2-4}
 & $X^o$ & \cellcolor{punnetttortie}$X^O X^o$ & \cellcolor{punnettblack}$X^o Y$ \\ \cline{2-4}
 \end{tabular}
 \end{center}
-\vfill
+\vspace{0.2cm}
 \begin{itemize}
 \item All daughters ($X^O X^o$) are \textbf{tortoiseshell}
 \item All sons ($X^o Y$) are \textbf{black}
@@ -1921,17 +1920,17 @@ Fixing the background coat genes so that the non-orange allele $X^o$ produces \t
 \end{column}
 \begin{column}{0.48\textwidth}
 \textbf{Cross 2: black dad ($X^o Y$) + tortie mum ($X^O X^o$)}
-\vfill
+\vspace{0.2cm}
 \begin{center}
-\renewcommand{\arraystretch}{1.35}
+\renewcommand{\arraystretch}{1.25}
 \begin{tabular}{c c | c | c |}
 \multicolumn{2}{c}{} & \multicolumn{2}{c}{Father} \\
 \multicolumn{2}{c}{} & \multicolumn{1}{c}{$X^o$} & \multicolumn{1}{c}{$Y$} \\ \cline{3-4}
-\multirow{2}{*}{\rotatebox{90}{Mother}} & $X^O$ & \cellcolor{punnetttortie}$X^O X^o$ & \cellcolor{punnettorange}$X^O Y$ \\ \cline{2-4}
+\multirow{2}{*}{\rotatebox{90}{\footnotesize Mother}} & $X^O$ & \cellcolor{punnetttortie}$X^O X^o$ & \cellcolor{punnettorange}$X^O Y$ \\ \cline{2-4}
 & $X^o$ & \cellcolor{punnettblack}$X^o X^o$ & \cellcolor{punnettblack}$X^o Y$ \\ \cline{2-4}
 \end{tabular}
 \end{center}
-\vfill
+\vspace{0.2cm}
 \begin{itemize}
 \item Daughters: $50\%$ tortie ($X^O X^o$), $50\%$ black ($X^o X^o$)
 \item Sons: $50\%$ orange ($X^O Y$), $50\%$ black ($X^o Y$)
@@ -1959,29 +1958,29 @@ and select one of her daughters at random as the next generation's female
 \begin{frame}{State 1: orange female ($X^O X^O$)}
 The mother is $X^O X^O$. We pick a father with $50/50$ probability:
 \vfill
-\begin{columns}[T]
-\begin{column}{.5\textwidth}
+\begin{columns}[c]
+\begin{column}{0.48\textwidth}
 \centering
-\textbf{Case 1: father is $X^O Y$}\\[0.15cm]
-\renewcommand{\arraystretch}{1.3}
+\textbf{Case 1: father is $X^O Y$}\\[0.1cm]
+\renewcommand{\arraystretch}{1.25}
 \begin{tabular}{c c | c | c |}
 \multicolumn{2}{c}{} & \multicolumn{1}{c}{$X^O$} & \multicolumn{1}{c}{$Y$} \\ \cline{3-4}
-\multirow{2}{*}{\rotatebox{90}{Mother}} & $X^O$ & \cellcolor{punnettorange}$X^O X^O$ ($S_1$) & \cellcolor{punnettorange}Male \\ \cline{2-4}
+\multirow{2}{*}{\rotatebox{90}{\footnotesize Mother}} & $X^O$ & \cellcolor{punnettorange}$X^O X^O$ ($S_1$) & \cellcolor{punnettorange}Male \\ \cline{2-4}
 & $X^O$ & \cellcolor{punnettorange}$X^O X^O$ ($S_1$) & \cellcolor{punnettorange}Male \\ \cline{2-4}
 \end{tabular}
-\\[0.15cm]
+\\[0.1cm]
 Daughters: $100\%\; S_1$
 \end{column}
-\begin{column}{.5\textwidth}
+\begin{column}{0.48\textwidth}
 \centering
-\textbf{Case 2: father is $X^o Y$}\\[0.15cm]
-\renewcommand{\arraystretch}{1.3}
+\textbf{Case 2: father is $X^o Y$}\\[0.1cm]
+\renewcommand{\arraystretch}{1.25}
 \begin{tabular}{c c | c | c |}
 \multicolumn{2}{c}{} & \multicolumn{1}{c}{$X^o$} & \multicolumn{1}{c}{$Y$} \\ \cline{3-4}
-\multirow{2}{*}{\rotatebox{90}{Mother}} & $X^O$ & \cellcolor{punnetttortie}$X^O X^o$ ($S_3$) & \cellcolor{punnettorange}Male \\ \cline{2-4}
+\multirow{2}{*}{\rotatebox{90}{\footnotesize Mother}} & $X^O$ & \cellcolor{punnetttortie}$X^O X^o$ ($S_3$) & \cellcolor{punnettorange}Male \\ \cline{2-4}
 & $X^O$ & \cellcolor{punnetttortie}$X^O X^o$ ($S_3$) & \cellcolor{punnettorange}Male \\ \cline{2-4}
 \end{tabular}
-\\[0.15cm]
+\\[0.1cm]
 Daughters: $100\%\; S_3$
 \end{column}
 \end{columns}
@@ -1995,29 +1994,29 @@ Daughters: $100\%\; S_3$
 \begin{frame}{State 2: black female ($X^o X^o$)}
 The mother is $X^o X^o$. We pick a father with $50/50$ probability:
 \vfill
-\begin{columns}[T]
-\begin{column}{.5\textwidth}
+\begin{columns}[c]
+\begin{column}{0.48\textwidth}
 \centering
-\textbf{Case 1: father is $X^O Y$}\\[0.15cm]
-\renewcommand{\arraystretch}{1.3}
+\textbf{Case 1: father is $X^O Y$}\\[0.1cm]
+\renewcommand{\arraystretch}{1.25}
 \begin{tabular}{c c | c | c |}
 \multicolumn{2}{c}{} & \multicolumn{1}{c}{$X^O$} & \multicolumn{1}{c}{$Y$} \\ \cline{3-4}
-\multirow{2}{*}{\rotatebox{90}{Mother}} & $X^o$ & \cellcolor{punnetttortie}$X^O X^o$ ($S_3$)& \cellcolor{punnettblack}Male \\ \cline{2-4}
+\multirow{2}{*}{\rotatebox{90}{\footnotesize Mother}} & $X^o$ & \cellcolor{punnetttortie}$X^O X^o$ ($S_3$)& \cellcolor{punnettblack}Male \\ \cline{2-4}
 & $X^o$ & \cellcolor{punnetttortie}$X^O X^o$ ($S_3$)& \cellcolor{punnettblack}Male \\ \cline{2-4}
 \end{tabular}
-\\[0.15cm]
+\\[0.1cm]
 Daughters: $100\%\; S_3$
 \end{column}
-\begin{column}{.5\textwidth}
+\begin{column}{0.48\textwidth}
 \centering
-\textbf{Case 2: father is $X^o Y$}\\[0.15cm]
-\renewcommand{\arraystretch}{1.3}
+\textbf{Case 2: father is $X^o Y$}\\[0.1cm]
+\renewcommand{\arraystretch}{1.25}
 \begin{tabular}{c c | c | c |}
 \multicolumn{2}{c}{} & \multicolumn{1}{c}{$X^o$} & \multicolumn{1}{c}{$Y$} \\ \cline{3-4}
-\multirow{2}{*}{\rotatebox{90}{Mother}} & $X^o$ & \cellcolor{punnettblack}$X^o X^o$ ($S_2$)& \cellcolor{punnettblack}Male \\ \cline{2-4}
+\multirow{2}{*}{\rotatebox{90}{\footnotesize Mother}} & $X^o$ & \cellcolor{punnettblack}$X^o X^o$ ($S_2$)& \cellcolor{punnettblack}Male \\ \cline{2-4}
 & $X^o$ & \cellcolor{punnettblack}$X^o X^o$ ($S_2$)& \cellcolor{punnettblack}Male \\ \cline{2-4}
 \end{tabular}
-\\[0.15cm]
+\\[0.1cm]
 Daughters: $100\%\; S_2$
 \end{column}
 \end{columns}
@@ -2031,29 +2030,29 @@ Daughters: $100\%\; S_2$
 \begin{frame}{State 3: tortoiseshell female ($X^O X^o$)}
 The mother is $X^O X^o$. We pick a father with $50/50$ probability:
 \vfill
-\begin{columns}[T]
+\begin{columns}[c]
 \begin{column}{0.48\textwidth}
 \centering
-\textbf{Case 1: father is $X^O Y$}\\[0.15cm]
-\renewcommand{\arraystretch}{1.3}
+\textbf{Case 1: father is $X^O Y$}\\[0.1cm]
+\renewcommand{\arraystretch}{1.25}
 \begin{tabular}{c c | c | c |}
 \multicolumn{2}{c}{} & \multicolumn{1}{c}{$X^O$} & \multicolumn{1}{c}{$Y$} \\ \cline{3-4}
-\multirow{2}{*}{\rotatebox{90}{Mother}} & $X^O$ & \cellcolor{punnettorange}$X^O X^O$ ($S_1$) & \cellcolor{punnettorange}Male \\ \cline{2-4}
+\multirow{2}{*}{\rotatebox{90}{\footnotesize Mother}} & $X^O$ & \cellcolor{punnettorange}$X^O X^O$ ($S_1$) & \cellcolor{punnettorange}Male \\ \cline{2-4}
 & $X^o$ & \cellcolor{punnetttortie}$X^O X^o$ ($S_3$) & \cellcolor{punnettblack}Male \\ \cline{2-4}
 \end{tabular}
-\\[0.15cm]
+\\[0.1cm]
 Daughters: $50\%\; S_1$, $50\%\; S_3$
 \end{column}
 \begin{column}{0.48\textwidth}
 \centering
-\textbf{Case 2: father is $X^o Y$}\\[0.15cm]
-\renewcommand{\arraystretch}{1.3}
+\textbf{Case 2: father is $X^o Y$}\\[0.1cm]
+\renewcommand{\arraystretch}{1.25}
 \begin{tabular}{c c | c | c |}
 \multicolumn{2}{c}{} & \multicolumn{1}{c}{$X^o$} & \multicolumn{1}{c}{$Y$} \\ \cline{3-4}
-\multirow{2}{*}{\rotatebox{90}{Mother}} & $X^O$ & \cellcolor{punnetttortie}$X^O X^o$ ($S_3$) & \cellcolor{punnettorange}Male \\ \cline{2-4}
+\multirow{2}{*}{\rotatebox{90}{\footnotesize Mother}} & $X^O$ & \cellcolor{punnetttortie}$X^O X^o$ ($S_3$) & \cellcolor{punnettorange}Male \\ \cline{2-4}
 & $X^o$ & \cellcolor{punnettblack}$X^o X^o$ ($S_2$) & \cellcolor{punnettblack}Male \\ \cline{2-4}
 \end{tabular}
-\\[0.15cm]
+\\[0.1cm]
 Daughters: $50\%\; S_2$, $50\%\; S_3$
 \end{column}
 \end{columns}
@@ -2158,7 +2157,7 @@ P_reg <- matrix(c(0.5,  0,    0.5,
                   0,    0.5,  0.5,
                   0.25, 0.25, 0.5),
                 nrow = 3, byrow = TRUE)
-# Dominant left eigenvector of P_reg (right eigenvector of t(P_reg)) for eigenvalue 1
+# Right eigenvector of t(P_reg) for lambda = 1
 ev <- eigen(t(P_reg))
 v_stat <- Re(ev$vectors[, 1])
 v_stat <- v_stat / sum(v_stat)
@@ -2181,7 +2180,9 @@ Every row of $P^{20}$ equals the stationary distribution $\bv^T = (0.25, 0.25, 0
 t_max <- 12
 p_hist <- matrix(0, nrow = 3, ncol = t_max + 1)
 p_hist[, 1] <- c(1, 0, 0) # Start in S_1 (100% orange)
-for (t in 1:t_max) p_hist[, t + 1] <- as.vector(t(p_hist[, t]) %*% P_reg)
+for (t in 1:t_max) {
+  p_hist[, t + 1] <- as.vector(t(p_hist[, t]) %*% P_reg)
+}
 cols <- c("darkorange", "black", "brown")
 matplot(0:t_max, t(p_hist), type = "b", pch = 19, lty = 1,
         lwd = 2, col = cols, ylim = c(0, 1), xlab = "Generation t",

@@ -44,7 +44,7 @@ P_reg <- matrix(c(0.5,  0,    0.5,
                   0,    0.5,  0.5,
                   0.25, 0.25, 0.5),
                 nrow = 3, byrow = TRUE)
-# Dominant left eigenvector of P_reg (right eigenvector of t(P_reg)) for eigenvalue 1
+# Right eigenvector of t(P_reg) for lambda = 1
 ev <- eigen(t(P_reg))
 v_stat <- Re(ev$vectors[, 1])
 v_stat <- v_stat / sum(v_stat)
@@ -61,7 +61,9 @@ round(P_20, 6)
 t_max <- 12
 p_hist <- matrix(0, nrow = 3, ncol = t_max + 1)
 p_hist[, 1] <- c(1, 0, 0) # Start in S_1 (100% orange)
-for (t in 1:t_max) p_hist[, t + 1] <- as.vector(t(p_hist[, t]) %*% P_reg)
+for (t in 1:t_max) {
+  p_hist[, t + 1] <- as.vector(t(p_hist[, t]) %*% P_reg)
+}
 cols <- c("darkorange", "black", "brown")
 matplot(0:t_max, t(p_hist), type = "b", pch = 19, lty = 1,
         lwd = 2, col = cols, ylim = c(0, 1), xlab = "Generation t",
