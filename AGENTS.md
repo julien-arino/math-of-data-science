@@ -28,3 +28,4 @@ Detailed rules live in `.agents/rules/`. Read and follow the applicable files be
 ## Beamer slides
 - **Prefer more, less-crowded slides over fewer, crowded slides**: When creating or editing Beamer slides (`.Rnw` or `.tex`), split content across multiple frames rather than packing too much onto a single slide.
 - **No text overfill**: Always check compiled slides (and the `.log` file for `Overfull \vbox` and `Overfull \hbox` warnings) to verify that no text, equation, table, code chunk or figure overflows the frame vertically or horizontally. If a frame is crowded or overfull, split it into two or more frames.
+- **Run `compile-slides` before pushing**: Whenever slides are modified, run `SLIDES/compile-slides` (three `pdflatex` passes across all units in sequence to resolve cross-unit references and theorem counters, followed by regenerating `SLIDES/all-slides.pdf`) before committing and pushing.
