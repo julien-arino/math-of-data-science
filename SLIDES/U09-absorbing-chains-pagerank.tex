@@ -229,7 +229,7 @@ P = \begin{pmatrix}
 \end{center}
 \end{frame}
 
-\begin{frame}{Absorbing states and absorbing Markov chains}
+\begin{frame}{Absorbing states}
 \begin{importantdefinition}[Absorbing state]
 A state $S_i$ in a Markov chain with row-stochastic transition matrix $P = [p_{ij}]$ is \defword{absorbing} if once the chain enters $S_i$, it never leaves:
 \[
@@ -237,7 +237,9 @@ p_{ii} = 1 \quad \text{and} \quad p_{ij} = 0 \text{ for all } j \neq i
 \]
 Equivalently, row $i$ of $P$ is the standard basis row vector $\be_i^T$, and in $\G(P)$ vertex $S_i$ has a self-loop of weight $1$ and no outgoing arcs to any other vertex
 \end{importantdefinition}
-\vfill
+\end{frame}
+
+\begin{frame}{Absorbing Markov chains}
 \begin{importantdefinition}[Absorbing Markov chain]
 A Markov chain is \defword{absorbing} if:
 \begin{enumerate}
