@@ -529,7 +529,7 @@ which says precisely that $A^TA$ is \textbf{positive semi-definite}! When $A$ ha
 \begin{frame}{Fundamental properties of Gram matrices}
 Notice that for a data matrix $X\in\M_{np}(\IR)$, its Gram matrix $G = XX^T\in\M_n(\IR)$ is simply the matrix $AA^T$ from the SVD in Unit~U04 (with $A = X$), whose eigenvectors are the left singular vectors of $X$
 \vfill
-\begin{importanttheorem}[Properties of the Gram matrix]
+\begin{theorem}[Properties of the Gram matrix]
 \label{th:gram_properties}
 Let $X\in\M_{np}(\IR)$ and let $G = XX^T\in\M_n(\IR)$ be its Gram matrix. Then:
 \begin{enumerate}
@@ -537,7 +537,7 @@ Let $X\in\M_{np}(\IR)$ and let $G = XX^T\in\M_n(\IR)$ be its Gram matrix. Then:
 \item $\rank(G) = \rank(X) \le \min(n,p)$
 \item $\tr(G) = \sum_{i=1}^n \|\bx_i\|^2$
 \end{enumerate}
-\end{importanttheorem}
+\end{theorem}
 \end{frame}
 
 \begin{frame}{Characterisation of Gram matrices via spectral factorisation}
@@ -579,7 +579,7 @@ since
 \end{frame}
 
 \begin{frame}
-\begin{importanttheorem}[Spectral factorisation of symmetric PSD matrices]
+\begin{theorem}[Spectral factorisation of symmetric PSD matrices]
 \label{th:psd_is_gram}
 Let $B\in\M_n(\IR)$ be symmetric and positive semi-definite with $\rank(B) = r \le n$. Let its ordered eigenvalues be
 \[
@@ -591,7 +591,7 @@ V_r = \begin{pmatrix} \bv_1 & \cdots & \bv_r \end{pmatrix} \in \M_{nr}(\IR), \qq
 \Lambda_r = \diag(\lambda_1,\ldots,\lambda_r) \in \M_r(\IR)
 \]
 Then the matrix $X = V_r \Lambda_r^{1/2} \in \M_{nr}(\IR)$ satisfies $XX^T = B$
-\end{importanttheorem}
+\end{theorem}
 \vfill
 Hey, lookee here, another matrix factorisation :) Conditions are much more restrictive than in past factorisations, though, since we need a PSD matrix as input
 \end{frame}
@@ -690,7 +690,7 @@ Notice that this is the law of cosines: $c^2 = a^2 + b^2 - 2ab\cos\theta$
 \begin{frame}{Matrix formula for $D^{(2)}$ in terms of $G$}
 We can write the entrywise identity $d_{ij}^2 = g_{ii} - 2g_{ij} + g_{jj}$ as a single matrix equation
 \vfill
-\begin{importanttheorem}[Squared distance matrix from the Gram matrix]
+\begin{theorem}[Squared distance matrix from the Gram matrix]
 \label{th:D2_from_G}
 Let $X\in\M_{np}(\IR)$ have Gram matrix $G = XX^T\in\M_n(\IR)$. Let
 \[
@@ -702,7 +702,7 @@ Then the squared Euclidean distance matrix $D^{(2)} = [d_{ij}^2]\in\M_n(\IR)$ is
 \[
 D^{(2)} = \bg\11^T - 2G + \11\bg^T
 \]
-\end{importanttheorem}
+\end{theorem}
 \end{frame}
 
 \begin{frame}{Proof of Theorem~\ref{th:D2_from_G}}
@@ -1111,14 +1111,14 @@ This operation $D^{(2)} \mapsto -\frac{1}{2}C_n D^{(2)} C_n$ is called \defword{
 \end{frame}
 
 \begin{frame}{The double centring theorem}
-\begin{importanttheorem}[Double centring formula]
+\begin{theorem}[Double centring formula]
 \label{th:double_centring}
 Let $X\in\M_{np}(\IR)$ be a data matrix with squared Euclidean distance matrix $D^{(2)} = [d_{ij}^2]\in\M_n(\IR)$, and let $\widetilde{X} = C_n X$ be the column-centred data matrix with centred Gram matrix $B = \widetilde{X}\widetilde{X}^T = C_n X X^T C_n$. Then
 \[
 B = -\frac{1}{2} C_n D^{(2)} C_n = \widetilde{X}\widetilde{X}^T
 \]
 In particular, if the points in $X$ are already centred at the origin ($C_n X = X$, so $\sum_{i=1}^n \bx_i = \b0$), then $B = -\frac{1}{2} C_n D^{(2)} C_n = G = XX^T$ recovers the Gram matrix of $X$
-\end{importanttheorem}
+\end{theorem}
 \end{frame}
 
 \begin{frame}{Proof of Theorem~\ref{th:double_centring}}

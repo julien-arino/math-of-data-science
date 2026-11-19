@@ -66,6 +66,41 @@ Both questions are answered by the same two linear algebra tools: \textbf{Perron
 
 \SSsubsection{Absorbing states and motivating examples}
 
+\begin{frame}{Motivating context: the gambler's ruin}
+Consider the classical \defword{gambler's ruin} problem: a gambler starts with $\$k$ ($k \ge 1$) and repeatedly bets $\$1$ against an infinitely rich house
+\begin{itemize}
+\item On each bet, the gambler wins $\$1$ with probability $p \in (0, 1)$ and loses $\$1$ with probability $q = 1 - p$
+\item If the gambler's fortune reaches $\$0$, play stops forever: state $0$ is the \textbf{sole absorbing state}
+\end{itemize}
+\vfill
+\begin{center}
+\begin{tikzpicture}[
+    ->,
+    >=Latex,
+    node distance=1.8cm,
+    every path/.style={thick},
+    abs/.style={state, fill=red!20, minimum size=0.95cm},
+    trans/.style={state, fill=black!10, minimum size=0.95cm}
+]
+    \node[abs] (S0) {$0$};
+    \node[trans, right=of S0] (S1) {$1$};
+    \node[trans, right=of S1] (S2) {$2$};
+    \node[trans, right=of S2] (S3) {$3$};
+    \node[right=1.2cm of S3] (dots) {$\cdots$};
+    \path (S0) edge [loop left] node[left] {$1$} (S0);
+    \path (S1) edge node[above] {$q$} (S0);
+    \path (S1) edge [bend left=18] node[above] {$p$} (S2);
+    \path (S2) edge [bend left=18] node[below] {$q$} (S1);
+    \path (S2) edge [bend left=18] node[above] {$p$} (S3);
+    \path (S3) edge [bend left=18] node[below] {$q$} (S2);
+    \path (S3) edge [bend left=18] node[above] {$p$} (dots);
+    \path (dots) edge [bend left=18] node[below] {$q$} (S3);
+\end{tikzpicture}
+\end{center}
+\vfill
+If the gambler also stops upon reaching a target jackpot, we obtain a finite chain with \textbf{two} absorbing boundaries
+\end{frame}
+
 \begin{frame}{Motivating example 1: 1D random walk with absorbing walls}
 Consider a particle (or gambler's fortune) moving on the states $\{S_1, S_2, S_3, S_4, S_5\}$:
 \begin{itemize}
@@ -215,12 +250,12 @@ In an absorbing Markov chain, a state that is not absorbing is called \defword{t
 \end{frame}
 
 \begin{frame}{Key questions about absorbing Markov chains}
-Suppose we have an absorbing chain such as a random walk with two absorbing boundaries $S_1$ and $S_4$:
+Suppose we have an absorbing chain such as the 5-state random walk with two absorbing boundaries $S_1$ and $S_5$ (and three transient states $S_2, S_3, S_4$):
 \begin{center}
 \begin{tikzpicture}[
     ->,
     >=Latex,
-    node distance=2cm,
+    node distance=1.8cm,
     every path/.style={thick},
     abs/.style={state, fill=red!20, minimum size=0.95cm},
     trans/.style={state, fill=black!10, minimum size=0.95cm}
@@ -228,15 +263,16 @@ Suppose we have an absorbing chain such as a random walk with two absorbing boun
     \node[abs] (1) {$S_1$};
     \node[trans, right=of 1] (2) {$S_2$};
     \node[trans, right=of 2] (3) {$S_3$};
-    \node[abs, right=of 3] (4) {$S_4$};
-    \draw[->] (1) to [loop above] (1);
-    \draw[->] (2) to [loop above] (2);
-    \draw[->] (3) to [loop above] (3);
-    \draw[->] (4) to [loop above] (4);
+    \node[trans, right=of 3] (4) {$S_4$};
+    \node[abs, right=of 4] (5) {$S_5$};
+    \draw[->] (1) to [loop left] (1);
+    \draw[->] (5) to [loop right] (5);
     \draw[->] (2) to (1);
     \draw[->] (2) to [bend left=18] (3);
     \draw[->] (3) to [bend left=18] (2);
-    \draw[->] (3) to (4);
+    \draw[->] (3) to [bend left=18] (4);
+    \draw[->] (4) to [bend left=18] (3);
+    \draw[->] (4) to (5);
 \end{tikzpicture}
 \end{center}
 \vfill
@@ -364,7 +400,7 @@ P^k = \begin{pmatrix}
 The $(i,j)$ entry of $Q^k$ is the probability that the chain is in the $j$th transient state after $k$ steps, given that it started in the $i$th transient state
 \end{frame}
 
-\begin{frame}[importantcolour]{Proof of Proposition~\ref{prop:powers-canonical-P}}
+\begin{frame}{Proof of Proposition~\ref{prop:powers-canonical-P}}
 We proceed by mathematical induction on $k \ge 1$
 \vfill
 \textbf{Base case ($k=1$):} Since $Q^0 = \II_m$, the formula gives $\begin{pmatrix} \II_r & \b0_{rm} \\ \II_m R & Q^1 \end{pmatrix} = P$, which holds
@@ -435,18 +471,18 @@ Indeed, starting from transient state $i$, the probability of still being in \em
 \begin{frame}{The Neumann series for matrices}
 Recall the scalar geometric series: for $q \in \IR$ with $|q| < 1$, $(1 - q)^{-1} = \sum_{k=0}^\infty q^k$. The exact same identity holds for square matrices!
 \vfill
-\begin{importanttheorem}[Neumann series]
+\begin{theorem}[Neumann series]
 \label{th:neumann-series}
 Let $Q \in \M_m$ be a matrix with spectral radius $\rho(Q) < 1$ (equivalently, $\lim_{k\to\infty} Q^k = \b0_m$). Then $\II_m - Q$ is invertible and its inverse is given by the convergent series
 \[
 (\II_m - Q)^{-1} = \sum_{k=0}^\infty Q^k = \II_m + Q + Q^2 + Q^3 + \cdots
 \]
-\end{importanttheorem}
+\end{theorem}
 \vfill
 In particular, since $Q \ge 0$ for an absorbing Markov chain, every term $Q^k \ge 0$ is nonnegative, so $(\II_m - Q)^{-1} \ge \II_m \ge 0$ has strictly nonnegative entries (and diagonal entries $\ge 1$)
 \end{frame}
 
-\begin{frame}[importantcolour]{Proof of Theorem~\ref{th:neumann-series} (Neumann series)}
+\begin{frame}{Proof of Theorem~\ref{th:neumann-series} (Neumann series)}
 Consider the partial sum $S_k = \II_m + Q + Q^2 + \cdots + Q^{k-1}$ for $k \ge 1$. Multiplying by $\II_m - Q$ gives a telescoping sum:
 \begin{align*}
 (\II_m - Q) S_k &= (\II_m - Q)(\II_m + Q + Q^2 + \cdots + Q^{k-1}) \\
@@ -470,7 +506,7 @@ Taking the limit as $k \to \infty$ and using $\lim_{k\to\infty} Q^k = \b0_m$ yie
 \begin{importantdefinition}[Fundamental matrix]
 For an absorbing Markov chain with canonical transient block $Q \in \M_m$, the matrix
 \[
-N = (\II_m - Q)^{-1} = \II_m + Q + Q^2 + \cdots \in \M_m
+N = (\II_m - Q)^{-1} \in \M_m \qquad (= \II_m + Q + Q^2 + \cdots)
 \]
 is called the \defword{fundamental matrix} of the absorbing Markov chain
 \end{importantdefinition}
@@ -482,7 +518,7 @@ is called the \defword{fundamental matrix} of the absorbing Markov chain
 \end{frame}
 
 \begin{frame}{Absorption quantities from the fundamental matrix}
-\begin{importanttheorem}[Quantitative analysis of absorbing Markov chains]
+\begin{theorem}[Quantitative analysis of absorbing Markov chains]
 \label{th:absorbing-chain-quantities}
 Let $P = \begin{pmatrix} \II_r & \b0_{rm} \\ R & Q \end{pmatrix}$ be in canonical form with fundamental matrix $N = [n_{ij}] = (\II_m - Q)^{-1}$. Then:
 \begin{enumerate}
@@ -490,7 +526,7 @@ Let $P = \begin{pmatrix} \II_r & \b0_{rm} \\ R & Q \end{pmatrix}$ be in canonica
 \item \textbf{Expected time to absorption:} Let $\bt = N\11_m = (t_1, \ldots, t_m)^T$. Then $t_i = \sum_{j=1}^m n_{ij}$ (the $i$th row sum of $N$) is the expected number of steps before absorption when starting in the $i$th transient state
 \item \textbf{Absorption probabilities:} Let $B = [b_{ij}] = N R \in \M_{mr}$. Then $b_{ij}$ is the probability of eventually being absorbed in the $j$th absorbing state when starting in the $i$th transient state
 \end{enumerate}
-\end{importanttheorem}
+\end{theorem}
 \end{frame}
 
 \begin{frame}{Proof of Theorem~\ref{th:absorbing-chain-quantities} (part 1: visits and time)}
@@ -826,7 +862,7 @@ Notice that $x_i = \frac{1}{\lambda}\sum_{j \in \N^{\text{in}}(i)} x_j$ depends 
 \end{frame}
 
 \begin{frame}{Why Perron-Frobenius theory is essential here}
-\begin{importanttheorem}[Existence and uniqueness of eigenvector centrality]
+\begin{theorem}[Existence and uniqueness of eigenvector centrality]
 Let $\G = (V, E)$ be a strongly connected digraph (or connected undirected graph) with adjacency matrix $A \in \M_n$. Then $A$ (and hence $A^T$) is irreducible and nonnegative, so by the Perron-Frobenius theorem (Unit 08):
 \begin{enumerate}
 \item The spectral radius $\lambda_1 = \rho(A) > 0$ is a simple eigenvalue of $A$ and $A^T$
@@ -836,7 +872,7 @@ A^T \bx = \rho(A)\bx \quad \bigl(\text{equivalently } \bx^T A = \rho(A)\bx^T\big
 \]
 \item No other eigenvalue of $A^T$ has a nonnegative eigenvector
 \end{enumerate}
-\end{importanttheorem}
+\end{theorem}
 \end{frame}
 
 \begin{frame}{Constructing a stochastic matrix from an adjacency matrix}
@@ -851,7 +887,7 @@ The matrix $P = D^{-1} A$ is \textbf{row-stochastic}, and defines the transition
 \end{proposition}
 \end{frame}
 
-\begin{frame}[importantcolour]{Proof of Proposition~\ref{prop:DinvA-row-stochastic}}
+\begin{frame}{Proof of Proposition~\ref{prop:DinvA-row-stochastic}}
 Write the entries of the diagonal matrix $D^{-1}$ as $d_{ij}^{-1}$, where $d_{ii}^{-1} = 1/d_{ii}$ for $1 \le i \le n$ and $d_{ij}^{-1} = 0$ for $i \neq j$
 \vfill
 By matrix multiplication, the $(i, j)$ entry of $D^{-1} A$ is
@@ -948,14 +984,14 @@ Consider a simple 4-vertex directed chain where only vertex $4$ has a self-loop:
 \begin{frame}{Katz centrality (1953): baseline ``free'' importance}
 Leo Katz (1953) resolved the zero-propagation problem on directed graphs by giving every vertex a small baseline ``free'' importance $\beta > 0$, plus damped importance $\alpha > 0$ from its in-neighbours
 \vfill
-\begin{importantdefinition}[Katz centrality]
+\begin{definition}[Katz centrality]
 Let $A \in \M_n$ be the adjacency matrix of a directed graph (with $a_{ij} = 1$ if $i \to j$), $\alpha > 0$ be an \defword{attenuation factor} (or damping parameter) and $\beta > 0$ be a baseline constant. The \defword{Katz centrality} vector $\bx \in \IR^n$ is the solution to
 \[
 x_i = \alpha \sum_{j=1}^n a_{ji} x_j + \beta, \quad i=1,\ldots,n
 \iff
 \bx = \alpha A^T \bx + \beta \11_n
 \]
-\end{importantdefinition}
+\end{definition}
 \vfill
 Rearranging terms gives the linear system $(\II_n - \alpha A^T)\bx = \beta \11_n$ (or $\bx^T(\II_n - \alpha A) = \beta\11_n^T$). Since $\beta$ only scales $\bx$ by a positive constant, we typically set $\beta = 1$
 \end{frame}
@@ -963,12 +999,12 @@ Rearranging terms gives the linear system $(\II_n - \alpha A^T)\bx = \beta \11_n
 \begin{frame}{Existence of Katz centrality via the Neumann series}
 When is $\II_n - \alpha A^T$ guaranteed to be invertible with a strictly positive solution $\bx > \b0$?
 \vfill
-\begin{importanttheorem}[Existence and Neumann expansion of Katz centrality]
+\begin{theorem}[Existence and walk-counting expansion of Katz centrality]
 Let $A \in \M_n$ be a nonnegative adjacency matrix and suppose $0 < \alpha < \frac{1}{\rho(A)}$ and $\beta > 0$. Then $\rho(\alpha A^T) = \alpha \rho(A) < 1$, so by Theorem~\ref{th:neumann-series} (the Neumann series), $\II_n - \alpha A^T$ is invertible and
 \[
 \bx = \beta (\II_n - \alpha A^T)^{-1} \11_n = \beta \left(\sum_{k=0}^\infty \alpha^k (A^T)^k\right) \11_n > \b0
 \]
-\end{importanttheorem}
+\end{theorem}
 \vfill
 Expanding the series term by term gives
 \[
@@ -1205,7 +1241,7 @@ Let $P \in \M_n$ be row-stochastic and $\alpha \in (0, 1)$. Then $G = \alpha P +
 \end{importanttheorem}
 \end{frame}
 
-\begin{frame}[importantcolour]{Proof of Theorem~\ref{th:pagerank-theorem}}
+\begin{frame}{Proof of Theorem~\ref{th:pagerank-theorem}}
 \textbf{1. Strict positivity ($G > 0$):} Since $P \ge 0$ and $\alpha \in (0, 1)$, we have $\alpha P \ge 0$. Every entry of $\frac{1-\alpha}{n}\IJ_n$ equals $\frac{1-\alpha}{n} > 0$. Therefore, every entry of $G$ satisfies
 \[
 g_{ij} = \alpha p_{ij} + \frac{1-\alpha}{n} \ge \frac{1-\alpha}{n} > 0
@@ -1228,7 +1264,7 @@ Thus $G$ is row-stochastic, which implies $\rho(G) = 1$
 \begin{frame}{Reformulating PageRank as a linear system}
 Using the normalisation condition $\11_n^T \bx = 1$, we can turn the eigenvalue problem $G^T\bx = \bx$ into a \textbf{non-homogeneous linear system}:
 \vfill
-\begin{importanttheorem}[Linear system formulation of PageRank]
+\begin{theorem}[Linear system formulation of PageRank]
 \label{th:pagerank-linear-system}
 Let $P \in \M_n$ be row-stochastic and $\alpha \in (0, 1)$. A vector $\bx \in \IR^n$ with $\11_n^T \bx = 1$ satisfies $\bx^T G = \bx^T$ (or $G^T\bx = \bx$) if and only if it satisfies the linear system
 \[
@@ -1238,10 +1274,10 @@ Moreover, $\II_n - \alpha P^T$ is invertible with $(\II_n - \alpha P^T)^{-1} = \
 \[
 \bx = \frac{1 - \alpha}{n} (\II_n - \alpha P^T)^{-1} \11_n
 \]
-\end{importanttheorem}
+\end{theorem}
 \end{frame}
 
-\begin{frame}[importantcolour]{Proof of Theorem~\ref{th:pagerank-linear-system}}
+\begin{frame}{Proof of Theorem~\ref{th:pagerank-linear-system}}
 \textbf{1. Equivalence with $G^T\bx = \bx$:} For any $\bx$ with $\11_n^T \bx = 1$, $\IJ_n^T \bx = \11_n (\11_n^T \bx) = \11_n$, so
 \begin{align*}
 G^T\bx = \bx
