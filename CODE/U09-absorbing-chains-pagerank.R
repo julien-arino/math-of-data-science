@@ -1,16 +1,24 @@
-## ----set-lecture-number----
+## ----set-lecture-number,echo=FALSE--------------------------------------------
 lecture_number = "U09"
 
-## ----set-slide-background----
+
+## ----set-options,echo=FALSE,warning=FALSE,message=FALSE-----------------------
+# Source the code common to all lectures
+source("common-code.R")
+
+
+## ----set-slide-background,echo=FALSE,results='asis'---------------------------
 # Are we plotting for a dark background? Setting is in common-code.R, but
 # cat command must run here.
 cat(input_setup)
 
-## ----setup----
+
+## ----setup, include=FALSE-----------------------------------------------------
 # Set global chunk options
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 
-## ----absorbing-base-R-setup----
+
+## ----absorbing-base-R-setup---------------------------------------------------
 R_mat <- matrix(c(0.5, 0,  0, 0,  0, 0.5), nrow = 3, byrow = TRUE,
                 dimnames = list(c("S2", "S3", "S4"), c("S1", "S5")))
 Q_mat <- matrix(c(0, 0.5, 0,  0.5, 0, 0.5,  0, 0.5, 0), nrow = 3,
@@ -18,13 +26,15 @@ Q_mat <- matrix(c(0, 0.5, 0,  0.5, 0, 0.5,  0, 0.5, 0), nrow = 3,
 N_mat <- solve(diag(3) - Q_mat)
 N_mat
 
-## ----absorbing-base-R-results----
+
+## ----absorbing-base-R-results-------------------------------------------------
 t_vec <- rowSums(N_mat)
 t_vec
 B_mat <- N_mat %*% R_mat
 B_mat
 
-## ----absorbing-mc-pkg----
+
+## ----absorbing-mc-pkg---------------------------------------------------------
 library(markovchain)
 P_abs <- matrix(c(1,   0, 0,
                   0,   0, 1,
@@ -34,21 +44,25 @@ mc_abs <- new("markovchain",
               transitionMatrix = P_abs,
               name = "orange_abs")
 
-## ----absorbing-mc-summary----
+
+## ----absorbing-mc-summary-----------------------------------------------------
 summary(mc_abs)
 
-## ----absorbing-mc-functions----
+
+## ----absorbing-mc-functions---------------------------------------------------
 absorbingStates(mc_abs)
 meanAbsorptionTime(mc_abs)
 absorptionProbabilities(mc_abs)
 
-## ----U09-absorbing-realisation----
+
+## ----U09-absorbing-realisation------------------------------------------------
 library(DTMCPack)
 set.seed(2740)
 IC <- c(0, 1, 0) # Start in S_2 (black female)
 sol <- DTMC(P_abs, IC, 10, trace = TRUE)
 
-## ----pagerank-3page-R----
+
+## ----pagerank-3page-R---------------------------------------------------------
 P3 <- matrix(c(0, 0.5, 0.5,
                0, 0,   1,
                1, 0,   0), nrow = 3, byrow = TRUE)
@@ -58,13 +72,15 @@ alpha <- 0.5
 x_half <- solve(diag(3) - alpha * t(P3), rep((1 - alpha) / 3, 3))
 MASS::fractions(x_half)
 
-## ----pagerank-3page-igraph----
+
+## ----pagerank-3page-igraph----------------------------------------------------
 library(igraph)
 edges3 <- matrix(c(1,2, 1,3, 2,3, 3,1), ncol = 2, byrow = TRUE)
 g3 <- graph_from_edgelist(edges3, directed = TRUE)
 page_rank(g3, damping = 0.85)$vector
 
-## ----U09-pagerank-6page-graph----
+
+## ----U09-pagerank-6page-graph-------------------------------------------------
 edges <- matrix(c(1,2, 1,3, 2,3, 3,1, 2,4, 3,5, 5,6, 6,5),
                 ncol = 2, byrow = TRUE)
 g6 <- graph_from_edgelist(edges, directed = TRUE)
@@ -76,7 +92,8 @@ par(mar = c(0, 0, 0, 0))
 plot(g6, vertex.size = 350 * pr6 + 18, vertex.color = "lightblue",
      vertex.label.cex = 1.1, edge.arrow.size = 0.7)
 
-## ----U09-pagerank-setup----
+
+## ----U09-pagerank-setup-------------------------------------------------------
 A6 <- as.matrix(as_adjacency_matrix(g6)) # a_{ij} = 1 if i -> j
 n <- nrow(A6)
 out_deg <- rowSums(A6)
@@ -91,7 +108,8 @@ for (i in 1:n) {
 alpha <- 0.85
 x_exact <- solve(diag(n) - alpha * t(P6), rep((1 - alpha) / n, n))
 
-## ----U09-pagerank-convergence----
+
+## ----U09-pagerank-convergence-------------------------------------------------
 x_k <- rep(1 / n, n)
 err <- numeric(30)
 for (k in 1:30) {
@@ -105,3 +123,8 @@ lines(1:30, err[1] * (alpha^(0:29)),
       lty = 2, lwd = 2, col = "firebrick")
 legend("topright", c("Actual L1 error", "Rate 0.85^k"),
        col = c("dodgerblue4", "firebrick"), lty = 1:2)
+
+
+## ----convert-Rnw-to-R,warning=FALSE,message=FALSE,echo=FALSE,results='hide'----
+rmd_chunks_to_r_temp()
+

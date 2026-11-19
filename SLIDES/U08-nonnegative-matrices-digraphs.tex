@@ -52,6 +52,7 @@
 
 % Set lecture number for later use
 
+
 % Part common to all the lectures
 \subtitle{MATH 2740 -- Mathematics of Data Science -- Unit U08}
 \author{\texorpdfstring{Julien Arino\newline\url{julien.arino@umanitoba.ca}}{Julien Arino}}
@@ -61,7 +62,9 @@
 \title{Nonnegative matrices, digraphs and regular Markov chains}
 
 
+
 \input{slides-setup-whiteBG.tex}
+
 
 
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
@@ -706,10 +709,10 @@ i \equiv j \iff i = j \text{ or there is a directed walk from } i \text{ to } j 
 \end{frame}
 
 \begin{frame}{Permutation matrices and simultaneous relabelling}
-\begin{definition}[Permutation matrix]
+\begin{importantdefinition}[Permutation matrix]
 \label{def:permutation-matrix}
 A matrix $P_\pi \in \M_n(\{0, 1\})$ is a \defword{permutation matrix} if it is obtained by permuting the columns (or rows) of the identity matrix $\II_n$ according to a bijection $\pi : \{1, \ldots, n\} \to \{1, \ldots, n\}$; equivalently, $P_\pi$ has \textbf{exactly one $1$ in each row and each column} and $0$s elsewhere
-\end{definition}
+\end{importantdefinition}
 \vfill
 \begin{itemize}
 \item Every permutation matrix is \textbf{orthogonal}: $P_\pi^T P_\pi = P_\pi P_\pi^T = \II_n$, so $P_\pi^{-1} = P_\pi^T$
@@ -767,38 +770,51 @@ so $(\tilde{A}^k)_{ij} = 0$ for all $i \in V_2$ and $j \in V_1$
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Characterisations of irreducibility}
-\begin{importanttheorem}[Characterisations of irreducible matrices]
-\label{th:irreducible-tfae}
+\begin{frame}{Irreducibility and strong connectedness}
+\begin{importanttheorem}[Irreducibility and strong connectedness]
+\label{th:irreducible-strongly-connected}
+A nonnegative matrix $A \in \M_n(\IR_+)$ is irreducible if and only if its associated digraph $\G(A)$ is strongly connected
+\end{importanttheorem}
+\vfill
+This is the fundamental bridge between the matrix property (irreducibility) and the graph property (strong connectedness)
+\end{frame}
+
+\begin{frame}{Proof of Theorem~\ref{th:irreducible-strongly-connected}}
+\begin{itemize}
+\item $A$ is reducible $\iff$ its vertices can be partitioned into two non-empty sets $V_1, V_2$ with no arc from $V_2$ to $V_1$
+\vfill
+\item This holds $\iff$ no directed walk can go from $V_2$ to $V_1$
+\vfill
+\item No directed walk can go from $V_2$ to $V_1$ $\iff$ $\G(A)$ is not strongly connected $\qquad \qed$
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Algebraic characterisations of irreducibility}
+\begin{theorem}[Algebraic characterisations of irreducibility]
+\label{th:irreducible-algebraic}
 For a nonnegative matrix $A \in \M_n(\IR_+)$, the following statements are equivalent:
 \begin{enumerate}
 \item $A$ is irreducible
-\item The associated digraph $\G(A)$ is strongly connected
 \item $\II_n + A + A^2 + \cdots + A^{n-1} > 0$ (strictly positive entrywise)
 \item $(\II_n + A)^{n-1} > 0$ (strictly positive entrywise)
 \end{enumerate}
-\end{importanttheorem}
+\end{theorem}
 \vfill
-Items 3 and 4 provide a purely algebraic test for irreducibility without searching over all $n!$ permutation matrices
+Items~2 and~3 provide a purely algebraic test for irreducibility without searching over all $n!$ permutation matrices
 \end{frame}
 
-\begin{frame}{Proof of Theorem~\ref{th:irreducible-tfae} (part 1)}
+\begin{frame}{Proof of Theorem~\ref{th:irreducible-algebraic} (part 1)}
 \textbf{(1) $\iff$ (2)}:
 \begin{itemize}
-\item $A$ is reducible $\iff$ its vertices can be partitioned into two non-empty sets $V_1, V_2$ with no arc from $V_2$ to $V_1$
-\item This holds $\iff$ no directed walk can go from $V_2$ to $V_1$ $\iff$ $\G(A)$ is not strongly connected
-\end{itemize}
-\vfill
-\textbf{(2) $\iff$ (3)}:
-\begin{itemize}
+\item By Theorem~\ref{th:irreducible-strongly-connected}, $A$ is irreducible $\iff$ $\G(A)$ is strongly connected
 \item By Corollary~\ref{cor:matrix-powers-walks}, $(A^k)_{ij} > 0 \iff$ there is a directed walk of length $k$ from $i$ to $j$
 \item Any shortest walk between two distinct vertices $i \neq j$ is a simple path visiting at most $n$ vertices, so its length is $k \in \{1, \ldots, n-1\}$
 \item With $(\II_n)_{ii} = 1 > 0$ covering $i = j$, $\G(A)$ is strongly connected $\iff$ for every pair $(i, j)$ there is some $k \in \{0, 1, \ldots, n-1\}$ with $(A^k)_{ij} > 0$ $\iff$ $\sum_{k=0}^{n-1} A^k > 0$
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Proof of Theorem~\ref{th:irreducible-tfae} (part 2)}
-\textbf{(3) $\iff$ (4)}:
+\begin{frame}{Proof of Theorem~\ref{th:irreducible-algebraic} (part 2)}
+\textbf{(2) $\iff$ (3)}:
 \begin{itemize}
 \item Since $\II_n$ and $A$ commute, the binomial theorem gives
 \[
@@ -1481,13 +1497,13 @@ Let $A \in \M_n(\IR_+)$ have Perron root $\lambda_P = \rho(A)$ and right/left Pe
 \end{frame}
 
 \begin{frame}{Asymptotic behaviour of powers of a primitive matrix}
-\begin{importanttheorem}[Asymptotics of primitive matrices]
+\begin{theorem}[Asymptotics of primitive matrices]
 \label{th:primitive-limit}
 Let $A \in \M_n(\IR_+)$ be a primitive matrix with Perron root $\rho(A) > 0$. Let $\bx > \b0$ and $\by > \b0$ be the unique positive right and left eigenvectors satisfying $A\bx = \rho(A)\bx$, $\by^T A = \rho(A)\by^T$, $\11^T\bx = 1$ and $\by^T\bx = 1$. Then
 \[
 \lim_{k \to \infty} \left(\frac{1}{\rho(A)} A\right)^k = \bx \by^T > 0
 \]
-\end{importanttheorem}
+\end{theorem}
 \vfill
 In particular, for large $k$, $A^k \approx \rho(A)^k \bx \by^T$: every column of $A^k$ becomes proportional to the right Perron vector $\bx$, and every row becomes proportional to the left Perron vector $\by^T$
 \end{frame}
@@ -2442,6 +2458,7 @@ Coat phenotype is shaped by several other genes located on different chromosomes
 \end{itemize}
 \end{itemize}
 \end{frame}
+
 
 
 

@@ -115,7 +115,9 @@ The function \code{read.csv} reads in a file (potentially directly from the web)
 \hldef{url} \hlkwb{=} \hlkwd{paste0}\hldef{(prefix, page)}
 \hldef{data_old} \hlkwb{=} \hlkwd{read.csv}\hldef{(url)}
 \end{alltt}
-\end{kframe}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in `file()`:\\\#\# ! cannot open the connection to 'https://www150.statcan.gc.ca/n1/en/pub/11-516-x/sectiona/A2\_14-eng.csv?st=L7vSnqio'}}\end{kframe}
 \end{knitrout}
 \vfill
 This directly assigns the result to the variable \code{data}
@@ -129,37 +131,9 @@ We then use the function \code{head} to show the first few lines in the result
 \begin{alltt}
 \hlkwd{head}\hldef{(data_old)}
 \end{alltt}
-\begin{verbatim}
-##    X Series.A2.14.
-## 1 NA              
-## 2 NA          Year
-## 3 NA              
-## 4 NA              
-## 5 NA              
-## 6 NA              
-##   Population.of.Canada..by.province..census.dates..1851.to.1976 X.1       X.2
-## 1                                                                NA          
-## 2                                                        Canada  NA Newfound-
-## 3                                                                NA      land
-## 4                                                                NA          
-## 5                                                             2  NA         3
-## 6                                                                NA          
-##      X.3 X.4    X.5       X.6    X.7     X.8       X.9 X.10    X.11 X.12
-## 1         NA                                             NA           NA
-## 2 Prince  NA   Nova       New Quebec Ontario  Manitoba   NA Saskat-   NA
-## 3 Edward  NA Scotia Brunswick                            NA  chewan   NA
-## 4 Island  NA                                             NA           NA
-## 5      4  NA      5         6      7       8         9   NA      10   NA
-## 6         NA                                             NA           NA
-##      X.13 X.14     X.15 X.16      X.17        X.18 X.19 X.20
-## 1           NA            NA                         NA   NA
-## 2 Alberta   NA  British   NA     Yukon   Northwest   NA   NA
-## 3           NA Columbia   NA Territory Territories   NA   NA
-## 4           NA            NA                         NA   NA
-## 5      11   NA       12   NA        13          14   NA   NA
-## 6           NA            NA                         NA   NA
-\end{verbatim}
-\end{kframe}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in `h()`:\\\#\# ! error in evaluating the argument 'x' in selecting a method for function 'head': object 'data\_old' not found}}\end{kframe}
 \end{knitrout}
 \end{frame}
 
@@ -170,15 +144,9 @@ Obviously, this does not make a lot of sense. This is normal: take a look at the
 \begin{alltt}
 \hlkwd{head}\hldef{(data_old,} \hlkwc{n} \hldef{=} \hlnum{1}\hldef{)}
 \end{alltt}
-\begin{verbatim}
-##    X Series.A2.14.
-## 1 NA              
-##   Population.of.Canada..by.province..census.dates..1851.to.1976 X.1 X.2 X.3 X.4
-## 1                                                                NA          NA
-##   X.5 X.6 X.7 X.8 X.9 X.10 X.11 X.12 X.13 X.14 X.15 X.16 X.17 X.18 X.19 X.20
-## 1                       NA        NA        NA        NA             NA   NA
-\end{verbatim}
-\end{kframe}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in `h()`:\\\#\# ! error in evaluating the argument 'x' in selecting a method for function 'head': object 'data\_old' not found}}\end{kframe}
 \end{knitrout}
 \vfill
 This happens often: the first few lines are here to describe the information contained in the data set, i.e., the so-called \defword{metadata}
@@ -193,20 +161,15 @@ The second line is also empty, so let us skip it too
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hldef{data_old} \hlkwb{=} \hlkwd{read.csv}\hldef{(url,} \hlkwc{skip} \hldef{=} \hlnum{2}\hldef{)}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in `file()`:\\\#\# ! cannot open the connection to 'https://www150.statcan.gc.ca/n1/en/pub/11-516-x/sectiona/A2\_14-eng.csv?st=L7vSnqio'}}\begin{alltt}
 \hlkwd{head}\hldef{(data_old,} \hlkwc{n} \hldef{=} \hlnum{2}\hldef{)}
 \end{alltt}
-\begin{verbatim}
-##    X Year Canada X.1 Newfound. Prince X.2   Nova       New Quebec Ontario
-## 1 NA              NA      land Edward  NA Scotia Brunswick               
-## 2 NA              NA           Island  NA                                
-##   Manitoba X.3 Saskat. X.4 Alberta X.5  British X.6     Yukon   Northwest X.7
-## 1           NA  chewan  NA          NA Columbia  NA Territory Territories  NA
-## 2           NA          NA          NA           NA                        NA
-##   X.8
-## 1  NA
-## 2  NA
-\end{verbatim}
-\end{kframe}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in `h()`:\\\#\# ! error in evaluating the argument 'x' in selecting a method for function 'head': object 'data\_old' not found}}\end{kframe}
 \end{knitrout}
 \end{frame}
 
@@ -222,16 +185,15 @@ Because we are only interested in the total population of the country and the ye
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hldef{data_old} \hlkwb{=} \hldef{data_old[}\hlnum{5}\hlopt{:}\hlkwd{dim}\hldef{(data_old)[}\hlnum{1}\hldef{],} \hlnum{2}\hlopt{:}\hlnum{3}\hldef{]}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error:\\\#\# ! object 'data\_old' not found}}\begin{alltt}
 \hlkwd{head}\hldef{(data_old,} \hlkwc{n}\hldef{=}\hlnum{4}\hldef{)}
 \end{alltt}
-\begin{verbatim}
-##   Year     Canada
-## 5 1976 22,992,604
-## 6                
-## 7 1971 21,568,311
-## 8 1966 20,014,880
-\end{verbatim}
-\end{kframe}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in `h()`:\\\#\# ! error in evaluating the argument 'x' in selecting a method for function 'head': object 'data\_old' not found}}\end{kframe}
 \end{knitrout}
 \end{frame}
 
@@ -242,21 +204,14 @@ Because we are only interested in the total population of the country and the ye
 \begin{alltt}
 \hlkwd{head}\hldef{(data_old,} \hlkwc{n}\hldef{=}\hlnum{3}\hldef{)}
 \end{alltt}
-\begin{verbatim}
-##   Year     Canada
-## 5 1976 22,992,604
-## 6                
-## 7 1971 21,568,311
-\end{verbatim}
-\begin{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in `h()`:\\\#\# ! error in evaluating the argument 'x' in selecting a method for function 'head': object 'data\_old' not found}}\begin{alltt}
 \hlkwd{tail}\hldef{(data_old,} \hlkwc{n}\hldef{=}\hlnum{2}\hldef{)}
 \end{alltt}
-\begin{verbatim}
-##                           Year Canada
-## 28 see notes to series A15-53.       
-## 29                1848 figure.
-\end{verbatim}
-\end{kframe}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in `h()`:\\\#\# ! error in evaluating the argument 'x' in selecting a method for function 'tail': object 'data\_old' not found}}\end{kframe}
 \end{knitrout}
 \begin{enumerate}
 \item there are some empty rows
@@ -286,23 +241,40 @@ Finally, as remarked above, for now, both the year and the population are consid
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hldef{data_old} \hlkwb{=} \hldef{data_old[}\hlkwd{which}\hldef{(data_old}\hlopt{$}\hldef{Canada} \hlopt{!=} \hlsng{""}\hldef{),]}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error:\\\#\# ! object 'data\_old' not found}}\begin{alltt}
 \hldef{data_old}\hlopt{$}\hldef{Canada} \hlkwb{=} \hlkwd{gsub}\hldef{(}\hlsng{","}\hldef{,} \hlsng{""}\hldef{, data_old}\hlopt{$}\hldef{Canada)}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error:\\\#\# ! object 'data\_old' not found}}\begin{alltt}
 \hldef{order_data} \hlkwb{=} \hlkwd{order}\hldef{(data_old}\hlopt{$}\hldef{Year)}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error:\\\#\# ! object 'data\_old' not found}}\begin{alltt}
 \hldef{data_old} \hlkwb{=} \hldef{data_old[order_data,]}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error:\\\#\# ! object 'data\_old' not found}}\begin{alltt}
 \hldef{data_old}\hlopt{$}\hldef{Year} \hlkwb{=} \hlkwd{as.numeric}\hldef{(data_old}\hlopt{$}\hldef{Year)}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error:\\\#\# ! object 'data\_old' not found}}\begin{alltt}
 \hldef{data_old}\hlopt{$}\hldef{Canada} \hlkwb{=} \hlkwd{as.numeric}\hldef{(data_old}\hlopt{$}\hldef{Canada)}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error:\\\#\# ! object 'data\_old' not found}}\begin{alltt}
 \hlkwd{head}\hldef{(data_old)}
 \end{alltt}
-\begin{verbatim}
-##    Year  Canada
-## 23 1851 2436297
-## 22 1861 3229633
-## 21 1871 3689257
-## 20 1881 4324810
-## 19 1891 4833239
-## 17 1901 5371315
-\end{verbatim}
-\end{kframe}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in `h()`:\\\#\# ! error in evaluating the argument 'x' in selecting a method for function 'head': object 'data\_old' not found}}\end{kframe}
 \end{knitrout}
 \end{frame}
 
@@ -313,18 +285,15 @@ Row numbers are a little weird
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{row.names}\hldef{(data_old)} \hlkwb{=} \hlnum{1}\hlopt{:}\hlkwd{dim}\hldef{(data_old)[}\hlnum{1}\hldef{]}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error:\\\#\# ! object 'data\_old' not found}}\begin{alltt}
 \hlkwd{head}\hldef{(data_old)}
 \end{alltt}
-\begin{verbatim}
-##   Year  Canada
-## 1 1851 2436297
-## 2 1861 3229633
-## 3 1871 3689257
-## 4 1881 4324810
-## 5 1891 4833239
-## 6 1901 5371315
-\end{verbatim}
-\end{kframe}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in `h()`:\\\#\# ! error in evaluating the argument 'x' in selecting a method for function 'head': object 'data\_old' not found}}\end{kframe}
 \end{knitrout}
 
 Well, that looks about right! Let's see what this looks like in a graph
@@ -338,8 +307,9 @@ Well, that looks about right! Let's see what this looks like in a graph
     \hlkwc{type} \hldef{=} \hlsng{"b"}\hldef{,} \hlkwc{lwd} \hldef{=} \hlnum{2}\hldef{,}
     \hlkwc{xlab} \hldef{=} \hlsng{"Year"}\hldef{,} \hlkwc{ylab} \hldef{=} \hlsng{"Population"}\hldef{)}
 \end{alltt}
-\end{kframe}
-\includegraphics[width=\maxwidth]{FIGS/U03-plot-old-Canada-census-data-1} 
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in `h()`:\\\#\# ! error in evaluating the argument 'x' in selecting a method for function 'plot': object 'data\_old' not found}}\end{kframe}
 \end{knitrout}
 \end{frame}
 
@@ -370,24 +340,18 @@ To get a sense of that, we dump a few random rows
 \hldef{data_new[}\hlkwd{sort}\hldef{(}\hlkwd{unique}\hldef{(}\hlkwd{c}\hldef{(}\hlnum{1}\hldef{,}\hlkwd{sample}\hldef{(}\hlkwd{nrow}\hldef{(data_new),} \hlnum{4}\hldef{)))), ]}
 \end{alltt}
 \begin{verbatim}
-##                 GEOGRAPHY.NAME
-## 1                       Canada
-## 453  Newfoundland and Labrador
-## 3126            Trois-Rivières
-## 5586                    London
-## 5636                   Windsor
-##                                                    CHARACTERISTIC YEAR.S.
-## 1                                       Population (in thousands)    1956
-## 453                   Population by single years of age: 76 years    2011
-## 3126                                 % of three-person households    2006
-## 5586 % of private households containing a couple without children    2011
-## 5636                       % of the population aged 0 to 14 years    2011
-##        TOTAL FLAG_TOTAL
-## 1    16081.0           
-## 453   3145.0           
-## 3126    14.3           
-## 5586    28.8           
-## 5636    17.6
+##      GEOGRAPHY.NAME                              CHARACTERISTIC YEAR.S.
+## 1            Canada                   Population (in thousands)    1956
+## 1264    Nova Scotia                 % of four-person households    2011
+## 1741  New Brunswick                % of married-couple families    2011
+## 7960       Edmonton Population by single years of age: 26 years    2011
+## 8822      Vancouver Population by single years of age: 67 years    2011
+##         TOTAL FLAG_TOTAL
+## 1    16081.00           
+## 1264    12.27           
+## 1741    67.88           
+## 7960 19490.00           
+## 8822 19345.00
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -469,6 +433,10 @@ To do this, we need the two data frames to have the same number of columns, same
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{colnames}\hldef{(data_old)} \hlkwb{=} \hlkwd{c}\hldef{(}\hlsng{"year"}\hldef{,} \hlsng{"population"}\hldef{)}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error:\\\#\# ! object 'data\_old' not found}}\begin{alltt}
 \hldef{data_new} \hlkwb{=} \hldef{data_new[,}\hlkwd{c}\hldef{(}\hlsng{"YEAR.S."}\hldef{,}\hlsng{"TOTAL"}\hldef{)]}
 \hlkwd{colnames}\hldef{(data_new)} \hlkwb{=} \hlkwd{c}\hldef{(}\hlsng{"year"}\hldef{,} \hlsng{"population"}\hldef{)}
 \hldef{data_new}\hlopt{$}\hldef{year} \hlkwb{=} \hlkwd{as.numeric}\hldef{(data_new}\hlopt{$}\hldef{year)}
@@ -477,7 +445,9 @@ To do this, we need the two data frames to have the same number of columns, same
 
 \hldef{data} \hlkwb{=} \hlkwd{rbind}\hldef{(data_old,data_new)}
 \end{alltt}
-\end{kframe}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error:\\\#\# ! object 'data\_old' not found}}\end{kframe}
 \end{knitrout}
 \end{frame}
 
@@ -490,8 +460,9 @@ To do this, we need the two data frames to have the same number of columns, same
     \hlkwc{type} \hldef{=} \hlsng{"b"}\hldef{,} \hlkwc{lwd} \hldef{=} \hlnum{2}\hldef{,}
     \hlkwc{xlab} \hldef{=} \hlsng{"Year"}\hldef{,} \hlkwc{ylab} \hldef{=} \hlsng{"Population"}\hldef{)}
 \end{alltt}
-\end{kframe}
-\includegraphics[width=\maxwidth]{FIGS/U03-plot-whole-Canada-census-data-1} 
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error:\\\#\# ! error in evaluating the argument 'x' in selecting a method for function 'plot': object of type 'closure' is not subsettable}}\end{kframe}
 \end{knitrout}
 \end{frame}
 
@@ -503,7 +474,9 @@ In case we need the data elsewhere, we save the data to a \code{csv} file
 \begin{alltt}
 \hlkwd{write.csv}\hldef{(data,} \hlkwc{file} \hldef{=} \hlsng{"../CODE/Canada_census.csv"}\hldef{)}
 \end{alltt}
-\end{kframe}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in `as.data.frame.default()`:\\\#\# ! cannot coerce class '"{}function"{}' to a data.frame}}\end{kframe}
 \end{knitrout}
 \vfill
 Using \code{readr} saves the data without row numbers (by default), so we can do this instead
@@ -513,7 +486,9 @@ Using \code{readr} saves the data without row numbers (by default), so we can do
 \begin{alltt}
 \hldef{readr}\hlopt{::}\hlkwd{write_csv}\hldef{(data,} \hlkwc{file} \hldef{=} \hlsng{"../CODE/Canada_census.csv"}\hldef{)}
 \end{alltt}
-\end{kframe}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in `write\_delim()`:\\\#\# ! is.data.frame(x) is not TRUE}}\end{kframe}
 \end{knitrout}
 \end{frame}
 
@@ -905,7 +880,7 @@ Access slots using @. For instance, the GA finds the coefficients
 \end{alltt}
 \begin{verbatim}
 ##            x1        x2
-## [1,] 2.999243 0.5004865
+## [1,] 3.000455 0.4998473
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -968,27 +943,30 @@ with fitness value (i.e., $\|\be\|$)
 	\begin{align*}
 	\varepsilon_1 &= y_1 - (a+bx_1) \\
 	&\;\;\vdots \\
-	\varepsilon_n &= y_n - (a+bx_n) \\
+	\varepsilon_n &= y_n - (a+bx_n)
 	\end{align*}
-	In matrix form
-	\[
-	\be = \bb-A\bx
-	\]
-	with
-	\[
-	\be = \begin{pmatrix}
-	\varepsilon_1\\ \vdots\\ \varepsilon_n
-	\end{pmatrix},
-	A=\begin{pmatrix}
-	1 & x_1 \\ \vdots & \vdots \\ 1 & x_n
-	\end{pmatrix},
-	\bx = \begin{pmatrix}
-	a\\b
-	\end{pmatrix}\textrm{ and }
-	\bb = \begin{pmatrix}
-	y_1\\ \vdots\\ y_n
-	\end{pmatrix}
-	\]
+\end{frame}
+
+\begin{frame}{Least squares problem for an affine function}
+\begin{importantdefinition}[Least squares problem for an affine function]
+\label{def:least_squares_affine}
+Given data points $(x_1,y_1),\ldots,(x_n,y_n)$, define the error vector $\be = \bb-A\bx$ with
+\[
+\be = \begin{pmatrix}
+\varepsilon_1\\ \vdots\\ \varepsilon_n
+\end{pmatrix}, \quad
+A=\begin{pmatrix}
+1 & x_1 \\ \vdots & \vdots \\ 1 & x_n
+\end{pmatrix}, \quad
+\bx = \begin{pmatrix}
+a\\b
+\end{pmatrix}\textrm{ and }
+\bb = \begin{pmatrix}
+y_1\\ \vdots\\ y_n
+\end{pmatrix}
+\]
+The least squares problem consists in finding $\bx$ such that $\|\be\|$ is minimal
+\end{importantdefinition}
 \end{frame}
 
 \begin{frame}{The least squares problem (reformulated)}

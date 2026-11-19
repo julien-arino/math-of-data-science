@@ -470,12 +470,15 @@ g_{ii} = \bx_i^T \bx_i = \|\bx_i\|^2 \ge 0, \qquad i=1,\ldots,n
 \[
 g_{ij} = \bx_i^T \bx_j = \|\bx_i\|\,\|\bx_j\|\cos\theta_{ij}, \qquad i\neq j
 \]
-\vfill
-\item \textbf{Orthogonal invariance}: if we rotate or reflect all points by an orthogonal matrix $Q\in\M_p(\IR)$ (so $\bx_i \mapsto Q\bx_i$ and $X \mapsto XQ^T$), the Gram matrix is \textbf{unchanged}:
-\[
-(XQ^T)(XQ^T)^T = X Q^T Q X^T = X \II_p X^T = XX^T = G
-\]
 \end{itemize}
+\vfill
+\begin{theorem}[Invariance of the Gram matrix under orthogonal transformations]
+\label{th:gram_orthogonal_invariance}
+Let $X\in\M_{np}(\IR)$ and let $Q\in\M_p(\IR)$ be an orthogonal matrix ($Q^TQ = \II_p$). If $Y = XQ^T\in\M_{np}(\IR)$ is the matrix whose $i$th row is $(Q\bx_i)^T$, then $Y$ and $X$ have the same Gram matrix:
+\[
+YY^T = (XQ^T)(XQ^T)^T = X Q^T Q X^T = X \II_p X^T = XX^T = G
+\]
+\end{theorem}
 \end{frame}
 
 \begin{frame}{Running example: Gram matrix of the square}
@@ -568,7 +571,7 @@ which says precisely that $A^TA$ is \textbf{positive semi-definite}! When $A$ ha
 \begin{frame}{Fundamental properties of Gram matrices}
 Notice that for a data matrix $X\in\M_{np}(\IR)$, its Gram matrix $G = XX^T\in\M_n(\IR)$ is simply the matrix $AA^T$ from the SVD in Unit~U04 (with $A = X$), whose eigenvectors are the left singular vectors of $X$
 \vfill
-\begin{importanttheorem}[Properties of the Gram matrix]
+\begin{theorem}[Properties of the Gram matrix]
 \label{th:gram_properties}
 Let $X\in\M_{np}(\IR)$ and let $G = XX^T\in\M_n(\IR)$ be its Gram matrix. Then:
 \begin{enumerate}
@@ -576,7 +579,7 @@ Let $X\in\M_{np}(\IR)$ and let $G = XX^T\in\M_n(\IR)$ be its Gram matrix. Then:
 \item $\rank(G) = \rank(X) \le \min(n,p)$
 \item $\tr(G) = \sum_{i=1}^n \|\bx_i\|^2$
 \end{enumerate}
-\end{importanttheorem}
+\end{theorem}
 \end{frame}
 
 \begin{frame}{Characterisation of Gram matrices via spectral factorisation}
@@ -618,7 +621,7 @@ since
 \end{frame}
 
 \begin{frame}
-\begin{importanttheorem}[Spectral factorisation of symmetric PSD matrices]
+\begin{theorem}[Spectral factorisation of symmetric PSD matrices]
 \label{th:psd_is_gram}
 Let $B\in\M_n(\IR)$ be symmetric and positive semi-definite with $\rank(B) = r \le n$. Let its ordered eigenvalues be
 \[
@@ -630,7 +633,7 @@ V_r = \begin{pmatrix} \bv_1 & \cdots & \bv_r \end{pmatrix} \in \M_{nr}(\IR), \qq
 \Lambda_r = \diag(\lambda_1,\ldots,\lambda_r) \in \M_r(\IR)
 \]
 Then the matrix $X = V_r \Lambda_r^{1/2} \in \M_{nr}(\IR)$ satisfies $XX^T = B$
-\end{importanttheorem}
+\end{theorem}
 \vfill
 Hey, lookee here, another matrix factorisation :) Conditions are much more restrictive than in past factorisations, though, since we need a PSD matrix as input
 \end{frame}
@@ -729,7 +732,7 @@ Notice that this is the law of cosines: $c^2 = a^2 + b^2 - 2ab\cos\theta$
 \begin{frame}{Matrix formula for $D^{(2)}$ in terms of $G$}
 We can write the entrywise identity $d_{ij}^2 = g_{ii} - 2g_{ij} + g_{jj}$ as a single matrix equation
 \vfill
-\begin{importanttheorem}[Squared distance matrix from the Gram matrix]
+\begin{theorem}[Squared distance matrix from the Gram matrix]
 \label{th:D2_from_G}
 Let $X\in\M_{np}(\IR)$ have Gram matrix $G = XX^T\in\M_n(\IR)$. Let
 \[
@@ -741,7 +744,7 @@ Then the squared Euclidean distance matrix $D^{(2)} = [d_{ij}^2]\in\M_n(\IR)$ is
 \[
 D^{(2)} = \bg\11^T - 2G + \11\bg^T
 \]
-\end{importanttheorem}
+\end{theorem}
 \end{frame}
 
 \begin{frame}{Proof of Theorem~\ref{th:D2_from_G}}
@@ -978,24 +981,18 @@ C_4 = \frac{1}{4}\begin{pmatrix}
 Notice that in every $C_n$, each row and each column sums to zero!
 \end{frame}
 
-\begin{frame}{Algebraic and geometric properties of the centring matrix}
-\begin{theorem}[Properties of the centring matrix $C_n$]
+\begin{frame}{Symmetry and idempotence of the centring matrix}
+\begin{importanttheorem}[Symmetry and idempotence of the centring matrix $C_n$]
 \label{th:centring_properties}
 Let $C_n = \II_n - \frac{1}{n}\11\11^T \in \M_n(\IR)$. Then:
 \begin{enumerate}
 \item \textbf{Symmetry}: $C_n^T = C_n$
 \item \textbf{Idempotence}: $C_n^2 = C_n$ (and more generally $C_n^k = C_n$ for all integers $k\ge 1$)
-\item \textbf{Null space}: $C_n\11 = \b0$ and $\11^T C_n = \b0^T$; in fact, $\nullspace(C_n) = \Span(\11)$
-\item \textbf{Orthogonal projector}: $C_n$ is the orthogonal projection matrix onto the $(n-1)$-dimensional subspace of zero-mean vectors
-\[
-W = \Span(\11)^\perp = \left\{\bv\in\IR^n : \11^T\bv = \sum_{i=1}^n v_i = 0\right\}
-\]
-\item \textbf{Spectrum, trace and rank}: the eigenvalues of $C_n$ are $\lambda = 0$ (with multiplicity $1$, eigenspace $\Span(\11)$) and $\lambda = 1$ (with multiplicity $n-1$, eigenspace $W$). Consequently, $\rank(C_n) = \tr(C_n) = n-1$
 \end{enumerate}
-\end{theorem}
+\end{importanttheorem}
 \end{frame}
 
-\begin{frame}[importantcolour]{Proof of Theorem~\ref{th:centring_properties} -- Parts 1 and 2}
+\begin{frame}[importantcolour]{Proof of Theorem~\ref{th:centring_properties}}
 \textbf{1. $C_n$ is symmetric ($C_n^T = C_n$)}:
 Using linearity of the transpose, $\II_n^T = \II_n$ and $(\11\11^T)^T = (\11^T)^T \11^T = \11\11^T$:
 \[
@@ -1012,8 +1009,23 @@ C_n^2 &= \left(\II_n - \frac{1}{n}\11\11^T\right)\left(\II_n - \frac{1}{n}\11\11
 \end{align*}
 \end{frame}
 
-\begin{frame}{Proof of Theorem~\ref{th:centring_properties} -- Part 3}
-\textbf{3. $C_n\11 = \b0$, $\11^T C_n = \b0^T$ and $\nullspace(C_n) = \Span(\11)$}:
+\begin{frame}{Further properties of the centring matrix}
+\begin{theorem}[Further properties of the centring matrix $C_n$]
+\label{th:centring_further_properties}
+Let $C_n = \II_n - \frac{1}{n}\11\11^T \in \M_n(\IR)$. Then:
+\begin{enumerate}
+\item \textbf{Null space}: $C_n\11 = \b0$ and $\11^T C_n = \b0^T$; in fact, $\nullspace(C_n) = \Span(\11)$
+\item \textbf{Orthogonal projector}: $C_n$ is the orthogonal projection matrix onto the $(n-1)$-dimensional subspace of zero-mean vectors
+\[
+W = \Span(\11)^\perp = \left\{\bv\in\IR^n : \11^T\bv = \sum_{i=1}^n v_i = 0\right\}
+\]
+\item \textbf{Spectrum, trace and rank}: the eigenvalues of $C_n$ are $\lambda = 0$ (with multiplicity $1$, eigenspace $\Span(\11)$) and $\lambda = 1$ (with multiplicity $n-1$, eigenspace $W$). Consequently, $\rank(C_n) = \tr(C_n) = n-1$
+\end{enumerate}
+\end{theorem}
+\end{frame}
+
+\begin{frame}{Proof of Theorem~\ref{th:centring_further_properties} -- Part 1}
+\textbf{1. $C_n\11 = \b0$, $\11^T C_n = \b0^T$ and $\nullspace(C_n) = \Span(\11)$}:
 \vfill
 First, multiply $C_n$ on the right by $\11$:
 \[
@@ -1031,8 +1043,8 @@ To show $\nullspace(C_n) = \Span(\11)$, let $\bv\in\IR^n$. Then
 Thus $\nullspace(C_n) = \Span(\11)$, which is a $1$-dimensional subspace of $\IR^n$ ($\nullity(C_n) = 1$) \hfill\qed
 \end{frame}
 
-\begin{frame}{Proof of Theorem~\ref{th:centring_properties} -- Part 4}
-\textbf{4. $C_n$ is the orthogonal projection matrix onto $W = \Span(\11)^\perp$}:
+\begin{frame}{Proof of Theorem~\ref{th:centring_further_properties} -- Part 2}
+\textbf{2. $C_n$ is the orthogonal projection matrix onto $W = \Span(\11)^\perp$}:
 \vfill
 Let $L = \Span(\11)$. Since $\{\11\}$ is an orthogonal basis of the $1$-dimensional subspace $L$ with $\|\11\|^2 = \11^T\11 = n$, the orthogonal projection of any vector $\bv\in\IR^n$ onto $L$ is
 \[
@@ -1050,8 +1062,8 @@ Note also that for any $\bv\in\IR^n$, the centred vector $C_n\bv$ and the mean v
 \]
 \end{frame}
 
-\begin{frame}{Proof of Theorem~\ref{th:centring_properties} -- Part 5}
-\textbf{5. Eigenvalues, trace and rank of $C_n$}:
+\begin{frame}{Proof of Theorem~\ref{th:centring_further_properties} -- Part 3}
+\textbf{3. Eigenvalues, trace and rank of $C_n$}:
 \vfill
 Let $(\lambda,\bv)$ be an eigenpair of $C_n$ ($\bv\neq\b0$ and $C_n\bv = \lambda\bv$). Applying $C_n$ to both sides and using idempotence $C_n^2 = C_n$:
 \[
@@ -1141,14 +1153,14 @@ This operation $D^{(2)} \mapsto -\frac{1}{2}C_n D^{(2)} C_n$ is called \defword{
 \end{frame}
 
 \begin{frame}{The double centring theorem}
-\begin{importanttheorem}[Double centring formula]
+\begin{theorem}[Double centring formula]
 \label{th:double_centring}
 Let $X\in\M_{np}(\IR)$ be a data matrix with squared Euclidean distance matrix $D^{(2)} = [d_{ij}^2]\in\M_n(\IR)$, and let $\widetilde{X} = C_n X$ be the column-centred data matrix with centred Gram matrix $B = \widetilde{X}\widetilde{X}^T = C_n X X^T C_n$. Then
 \[
 B = -\frac{1}{2} C_n D^{(2)} C_n = \widetilde{X}\widetilde{X}^T
 \]
 In particular, if the points in $X$ are already centred at the origin ($C_n X = X$, so $\sum_{i=1}^n \bx_i = \b0$), then $B = -\frac{1}{2} C_n D^{(2)} C_n = G = XX^T$ recovers the Gram matrix of $X$
-\end{importanttheorem}
+\end{theorem}
 \end{frame}
 
 \begin{frame}{Proof of Theorem~\ref{th:double_centring}}
@@ -1159,7 +1171,7 @@ Multiply $D^{(2)}$ on the left by $C_n$ and on the right by $C_n$:
 C_n D^{(2)} C_n = C_n(\bg\11^T)C_n - 2 C_n G C_n + C_n(\11\bg^T)C_n
 \]
 \vfill
-Using associativity and Part 3 of Theorem~\ref{th:centring_properties} ($C_n\11 = \b0$ and $\11^T C_n = \b0^T$):
+Using associativity and Part 1 of Theorem~\ref{th:centring_further_properties} ($C_n\11 = \b0$ and $\11^T C_n = \b0^T$):
 \begin{align*}
 C_n(\bg\11^T)C_n &= (C_n\bg)(\underbrace{\11^T C_n}_{=\,\b0^T}) = (C_n\bg)\b0^T = \b0_{n\times n} \\
 C_n(\11\bg^T)C_n &= (\underbrace{C_n\11}_{=\,\b0})(\bg^T C_n) = \b0(\bg^T C_n) = \b0_{n\times n}
@@ -2237,7 +2249,7 @@ Let us first verify Theorem~\ref{th:pca_mds_duality} numerically in \textsf{R} o
 \hlkwd{max}\hldef{(}\hlkwd{abs}\hldef{(}\hlkwd{abs}\hldef{(pca_scores)} \hlopt{-} \hlkwd{abs}\hldef{(mds_coords)))}
 \end{alltt}
 \begin{verbatim}
-## [1] 2.442491e-15
+## [1] 3.108624e-15
 \end{verbatim}
 \end{kframe}
 \end{knitrout}

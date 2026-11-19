@@ -291,7 +291,7 @@ In order to do so, we need to learn how to change bases
 \end{frame}
 
 \begin{frame}{Change of basis}
-\begin{definition}[Change of basis matrix]
+\begin{importantdefinition}[Change of basis matrix]
 Let $\B=\{\bu_1,\ldots,\bu_n\}$ and $\C=\{\bv_1,\ldots,\bv_n\}$ be bases of vector space $V$
 \vskip0.5cm
 The \textbf{change of basis matrix} $P_{\C\leftarrow\B}\in\M_n$ from basis $\B$ to $\C$ is
@@ -302,7 +302,7 @@ P_{\C\leftarrow\B}
 \right]
 \]
 i.e., its columns are the coordinate vectors $[\bu_1]_\C,\ldots,[\bu_n]_\C$ of vectors in $\B$ with respect to $\C$
-\end{definition}
+\end{importantdefinition}
 \end{frame}
 
 \begin{frame}{Example -- $\B$ is the canonical basis of $\IR^3$}
@@ -355,14 +355,14 @@ P_{\C\leftarrow\B} = [[\bu_1]_\C \;\; [\bu_2]_\C \;\; [\bu_3]_\C] = \begin{pmatr
 \end{frame}
 
 \begin{frame}
-\begin{theorem}\label{th:change-of-basis-properties}
+\begin{importanttheorem}\label{th:change-of-basis-properties}
 $\B=\{\bu_1,\ldots,\bu_n\}$ and $\C=\{\bv_1,\ldots,\bv_n\}$ bases of vector space $V$ and $P_{\C\leftarrow\B}$ a change of basis matrix from $\B$ to $\C$
 \begin{enumerate}
 \item $\forall\bx\in V$, $P_{\C\leftarrow\B}[\bx]_\B = [\bx]_\C$
 \item $P_{\C\leftarrow\B}$ s.t. $\forall\bx\in V$, $P_{\C\leftarrow\B}[\bx]_\B = [\bx]_\C$ is \textbf{unique}
 \item $P_{\C\leftarrow\B}$ invertible and $P_{\C\leftarrow\B}^{-1}=P_{\B\leftarrow\C}$
 \end{enumerate}
-\end{theorem}
+\end{importanttheorem}
 \end{frame}
 
 \begin{frame}{Example -- Linking the two directions}
@@ -898,7 +898,7 @@ More than the exact value, the sign is important:
 \end{frame}
 
 \begin{frame}{The covariance matrix}
-\begin{definition}[Covariance matrix]
+\begin{importantdefinition}[Covariance matrix]
 Suppose $p$ random variables $X_1,\ldots,X_p$. Then the covariance matrix is the symmetric matrix
 \[
 \begin{pmatrix}
@@ -908,7 +908,7 @@ Suppose $p$ random variables $X_1,\ldots,X_p$. Then the covariance matrix is the
 \cov(X_1,X_p) & \cov(X_2,X_p) & \cdots & \Var X_p 
 \end{pmatrix}
 \]
-\end{definition}
+\end{importantdefinition}
 \vfill
 The actual form of the matrix is below but the form above stems from the properties of covariance
 \[
@@ -922,11 +922,14 @@ The actual form of the matrix is below but the form above stems from the propert
 \end{frame}
 
 \begin{frame}{Sample covariance matrix}
+\begin{importantproposition}[Matrix form of the sample covariance matrix]
+\label{prop:sample-covariance-matrix}
 Let $X\in\M_{np}$ be the data matrix ($n$ observations in rows, $p$ features or variables in columns) and $\widetilde{X}\in\M_{np}$ be the \textbf{centred data matrix}. Then the (sample) covariance matrix $S_X\in\M_p$ takes the form
 \[
 S_X = \frac{1}{n-1}\widetilde{X}^T\widetilde{X}
 \]
 where the data is centred!
+\end{importantproposition}
 \vfill
 Sometimes you will see $S_X=1/(n-1)\widetilde{X}\widetilde{X}^T$. This is for matrices with observations in columns and features (variables) in rows. Just remember that you want the covariance matrix to have size the number of features ($p$), not observations ($n$), this will give you the order in which to take the product
 \end{frame}
@@ -1097,19 +1100,20 @@ And we continue...
 \vfill
 At $k$th stage, we find a linear function $\bm{\alpha}_k^T\bx$ with maximum variance, uncorrelated to $\bm{\alpha}_1^T\bx,\ldots,\bm{\alpha}_{k-1}^T\bx$
 \vfill
-$\bm{\alpha}_i^T\bx$ is the $i$th \textbf{principal component} (PC)
+\begin{importantdefinition}[Principal components]
+The linear combination $z_k = \bm{\alpha}_k^T\bx$ obtained at the $k$th stage is the $k$th \textbf{principal component} (PC) of $\bx$, and $\bm{\alpha}_k$ is the $k$th \textbf{principal direction} (or vector of \textbf{loadings})
+\end{importantdefinition}
 \end{frame}
 
 \begin{frame}{Case of known covariance matrix}
-Suppose we know $\Sigma$, covariance matrix of $\bx$ (i.e., typically: we know $\bx$)
-\vfill
-Then the $k$th PC is 
+\begin{importanttheorem}[Principal components from the covariance matrix]
+\label{th:pca-eigen}
+Suppose we know $\Sigma$, covariance matrix of $\bx$ (with eigenvalues $\lambda_1 \ge \lambda_2 \ge \cdots \ge \lambda_p \ge 0$). Then the $k$th PC is 
 \[
 z_k=\bm{\alpha}_k^T\bx
 \]
-where $\bm{\alpha}_k$ is an eigenvector of $\Sigma$ corresponding to the $k$th largest eigenvalue $\lambda_k$
-\vfill
-If, additionally, $\|\bm{\alpha}_k\|=\bm{\alpha}_k^T\bm{\alpha}=1$, then $\lambda_k=\Var z_k$
+where $\bm{\alpha}_k$ is an eigenvector of $\Sigma$ corresponding to the $k$th largest eigenvalue $\lambda_k$. If, additionally, $\|\bm{\alpha}_k\|=\bm{\alpha}_k^T\bm{\alpha}_k=1$, then $\lambda_k=\Var z_k$
+\end{importanttheorem}
 \end{frame}
 
 
@@ -1866,8 +1870,8 @@ Multiplying $\widetilde{X}$ by $P^T$ gives coordinates $X_{\text{new}}$ in the n
 \end{alltt}
 \begin{verbatim}
 ##               [,1]          [,2]
-## [1,]  6.687496e+01 -2.328994e-13
-## [2,] -2.328994e-13  1.059793e+01
+## [1,]  6.687496e+01 -2.326954e-13
+## [2,] -2.326954e-13  1.059793e+01
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1886,8 +1890,8 @@ As confirmed by \code{cov(X.new)}:
 \end{alltt}
 \begin{verbatim}
 ##               [,1]          [,2]
-## [1,]  6.687496e+01 -2.328994e-13
-## [2,] -2.328994e-13  1.059793e+01
+## [1,]  6.687496e+01 -2.326954e-13
+## [2,] -2.326954e-13  1.059793e+01
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
