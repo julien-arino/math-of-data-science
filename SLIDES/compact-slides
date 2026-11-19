@@ -1,0 +1,39 @@
+#!/bin/bash
+set -euo pipefail
+
+##
+## Compact a PDF using Ghostscript (defaults to all-slides.pdf with /ebook)
+##
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+INPUT_PDF="${1:-$SCRIPT_DIR/all-slides.pdf}"
+PRESET="${2:-/ebook}"
+
+if [[ ! -f "$INPUT_PDF" ]]; then
+  echo "Error: file not found: $INPUT_PDF" >&2
+  exit 1
+fi
+
+TMP_PDF="$(mktemp "${INPUT_PDF}.XXXXXX.pdf")"
+trap 'rm -f "$TMP_PDF"' EXIT
+
+BEFORE_BYTES=$(stat -c%s "$INPUT_PDF")
+
+gs -sDEVICE=pdfwrite \
+   -dCompatibilityLevel=1.5 \
+   -dPDFSETTINGS="$PRESET" \
+   -dColorConversionStrategy=/LeaveColorUnchanged \
+   -dNOPAUSE \
+   -dQUIET \
+   -dBATCH \
+   -sOutputFile="$TMP_PDF" \
+   "$INPUT_PDF"
+
+AFTER_BYTES=$(stat -c%s "$TMP_PDF")
+
+if [[ "$AFTER_BYTES" -gt 0 && "$AFTER_BYTES" -lt "$BEFORE_BYTES" ]]; then
+  mv "$TMP_PDF" "$INPUT_PDF"
+  echo "Compacted $INPUT_PDF ($PRESET): $(numfmt --to=iec "$BEFORE_BYTES") -> $(numfmt --to=iec "$AFTER_BYTES")"
+else
+  echo "Kept original $INPUT_PDF ($(numfmt --to=iec "$BEFORE_BYTES")); compacted version was not smaller ($(numfmt --to=iec "$AFTER_BYTES"))"
+fi
