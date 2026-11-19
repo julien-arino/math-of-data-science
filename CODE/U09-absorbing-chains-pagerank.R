@@ -62,6 +62,20 @@ IC <- c(0, 1, 0) # Start in S_2 (black female)
 sol <- DTMC(P_abs, IC, 10, trace = TRUE)
 
 
+## ----limited-gamblers-ruin----------------------------------------------------
+library(Matrix)
+M <- 1e6
+m <- M - 1
+p <- 0.5
+q <- 1 - p
+A <- bandSparse(m, k = c(-1, 0, 1),
+                diagonals = list(rep(-q, m - 1),
+                                 rep(1, m),
+                                 rep(-p, m - 1)))
+t_vec <- solve(A, rep(1, m))
+t_vec[5e5]
+
+
 ## ----pagerank-3page-R---------------------------------------------------------
 P3 <- matrix(c(0, 0.5, 0.5,
                0, 0,   1,

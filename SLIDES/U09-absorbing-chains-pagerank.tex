@@ -899,6 +899,48 @@ The \code{markovchain} package uses the same row-stochastic convention, so we pa
 
 \maxFrameImage{FIGS/U09-U09-absorbing-realisation-1.pdf}
 
+\begin{frame}{Example 4: ``limited'' gambler's ruin (\$500K start, \$1M cap)}
+Suppose a gambler starts with $\$500\,000$ and places $\$1$ fair bets ($p = q = 1/2$), stopping either at ruin ($\$0$) or when the bank halts betting at $M = \$1\,000\,000$
+\begin{itemize}
+\item Absorbing states: $0$ and $M = 10^6$; transient states: $\{1, 2, \ldots, 999\,999\}$ ($m = 999\,999$)
+\item Forming $N = (\II_m - Q)^{-1}$ as a dense matrix is impossible: $m^2 \approx 10^{12}$ entries ($\approx 8\text{ TB}$ of RAM)
+\end{itemize}
+\vfill
+Instead, $\bt = (\II_m - Q)^{-1}\11_m$ solves the \textbf{tridiagonal linear system} $(\II_m - Q)\bt = \11_m$, where row $i$ reads
+\[
+t_i = 1 + \frac{1}{2} t_{i-1} + \frac{1}{2} t_{i+1}, \qquad t_0 = t_M = 0
+\]
+This recurrence has the closed-form solution $t_k = k(M - k)$, so starting at $k = 500\,000$:
+\[
+t_{500\,000} = (5 \times 10^5)(10^6 - 5 \times 10^5) = 2.5 \times 10^{11} \text{ steps}
+\]
+By symmetry ($k = M/2$, $p = q = 1/2$), ruin occurs with probability $1/2$ and the expected number of steps until ruin (given ruin occurs) is also $2.5 \times 10^{11}$
+\end{frame}
+
+\begin{frame}[fragile]{Sparse R implementation for the limited gambler's ruin}
+Using \code{Matrix::bandSparse}, we store only the three nonzero diagonals of $\II_m - Q$ ($O(m)$ memory) and solve $(\II_m - Q)\bt = \11_m$ directly:
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{library}\hldef{(Matrix)}
+\hldef{M} \hlkwb{<-} \hlnum{1e6}
+\hldef{m} \hlkwb{<-} \hldef{M} \hlopt{-} \hlnum{1}
+\hldef{p} \hlkwb{<-} \hlnum{0.5}
+\hldef{q} \hlkwb{<-} \hlnum{1} \hlopt{-} \hldef{p}
+\hldef{A} \hlkwb{<-} \hlkwd{bandSparse}\hldef{(m,} \hlkwc{k} \hldef{=} \hlkwd{c}\hldef{(}\hlopt{-}\hlnum{1}\hldef{,} \hlnum{0}\hldef{,} \hlnum{1}\hldef{),}
+                \hlkwc{diagonals} \hldef{=} \hlkwd{list}\hldef{(}\hlkwd{rep}\hldef{(}\hlopt{-}\hldef{q, m} \hlopt{-} \hlnum{1}\hldef{),}
+                                 \hlkwd{rep}\hldef{(}\hlnum{1}\hldef{, m),}
+                                 \hlkwd{rep}\hldef{(}\hlopt{-}\hldef{p, m} \hlopt{-} \hlnum{1}\hldef{)))}
+\hldef{t_vec} \hlkwb{<-} \hlkwd{solve}\hldef{(A,} \hlkwd{rep}\hldef{(}\hlnum{1}\hldef{, m))}
+\hldef{t_vec[}\hlnum{5e5}\hldef{]}
+\end{alltt}
+\begin{verbatim}
+## [1] 250000149671
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
