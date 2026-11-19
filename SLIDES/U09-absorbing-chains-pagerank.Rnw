@@ -788,6 +788,41 @@ sol <- DTMC(P_abs, IC, 10, trace = TRUE)
 
 \maxFrameImage{\Sexpr{knitr::fig_chunk('U09-absorbing-realisation', 'pdf')}}
 
+\begin{frame}{Example 4: ``limited'' gambler's ruin (\$500K start, \$1M cap)}
+Suppose a gambler starts with $\$500\,000$ and places $\$1$ fair bets ($p = q = 1/2$), stopping either at ruin ($\$0$) or when the bank halts betting at $M = \$1\,000\,000$
+\begin{itemize}
+\item Absorbing states: $0$ and $M = 10^6$; transient states: $\{1, 2, \ldots, 999\,999\}$ ($m = 999\,999$)
+\item Forming $N = (\II_m - Q)^{-1}$ as a dense matrix is impossible: $m^2 \approx 10^{12}$ entries ($\approx 8\text{ TB}$ of RAM)
+\end{itemize}
+\vfill
+Instead, $\bt = (\II_m - Q)^{-1}\11_m$ solves the \textbf{tridiagonal linear system} $(\II_m - Q)\bt = \11_m$, where row $i$ reads
+\[
+t_i = 1 + \frac{1}{2} t_{i-1} + \frac{1}{2} t_{i+1}, \qquad t_0 = t_M = 0
+\]
+This recurrence has the closed-form solution $t_k = k(M - k)$, so starting at $k = 500\,000$:
+\[
+t_{500\,000} = (5 \times 10^5)(10^6 - 5 \times 10^5) = 2.5 \times 10^{11} \text{ steps}
+\]
+By symmetry ($k = M/2$, $p = q = 1/2$), ruin occurs with probability $1/2$ and the expected number of steps until ruin (given ruin occurs) is also $2.5 \times 10^{11}$
+\end{frame}
+
+\begin{frame}[fragile]{Sparse R implementation for the limited gambler's ruin}
+Using \code{Matrix::bandSparse}, we store only the three nonzero diagonals of $\II_m - Q$ ($O(m)$ memory) and solve $(\II_m - Q)\bt = \11_m$ directly:
+<<limited-gamblers-ruin>>=
+library(Matrix)
+M <- 1e6
+m <- M - 1
+p <- 0.5
+q <- 1 - p
+A <- bandSparse(m, k = c(-1, 0, 1),
+                diagonals = list(rep(-q, m - 1),
+                                 rep(1, m),
+                                 rep(-p, m - 1)))
+t_vec <- solve(A, rep(1, m))
+t_vec[5e5]
+@
+\end{frame}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
