@@ -408,7 +408,7 @@ How do we stack all $n$ rows simultaneously into a single matrix equation?
 \end{frame}
 
 
-\begin{frame}{Batch matrix formulation and rank-1 bias broadcasting}
+\begin{frame}{Batch matrix formulation of an MLP layer}
 \begin{importantdefinition}[Batch matrix forward propagation]
 \label{def:mlp-batch-layer}
 Given a data matrix (batch input matrix) $A^{(0)} = X \in \M_{n, p_0}$ whose $n$ rows are input observations, layer $\ell \in \{1, \ldots, L\}$ computes the pre-activation matrix $Z^{(\ell)} \in \M_{n, p_\ell}$ and activation matrix $A^{(\ell)} \in \M_{n, p_\ell}$ via
@@ -418,8 +418,13 @@ A^{(\ell)} = \sigma_\ell\big(Z^{(\ell)}\big) \in \M_{n, p_\ell}
 \]
 where $\11_n = (1, 1, \ldots, 1)^T \in \IR^n$ is the all-ones column vector
 \end{importantdefinition}
+\end{frame}
+
+
+\begin{frame}{Rank-1 bias broadcasting}
+Why does $\11_n \big(\bb^{(\ell)}\big)^T$ appear in Definition~\ref{def:mlp-batch-layer}?
 \vfill
-Why does $\11_n \big(\bb^{(\ell)}\big)^T$ appear? Because the outer product of $\11_n \in \M_{n1}$ and $\big(\bb^{(\ell)}\big)^T \in \M_{1, p_\ell}$ is a \defword{rank-1 matrix} that replicates the bias row vector across all $n$ observations:
+Because the outer product of $\11_n \in \M_{n1}$ and $\big(\bb^{(\ell)}\big)^T \in \M_{1, p_\ell}$ is a \defword{rank-1 matrix} that replicates the bias row vector across all $n$ observations:
 \[
 \11_n \big(\bb^{(\ell)}\big)^T =
 \begin{pmatrix} 1 \\ 1 \\ \vdots \\ 1 \end{pmatrix}
@@ -456,13 +461,11 @@ Both views are algebraically identical: the rank-1 outer product $\11_n \big(\bb
 \end{frame}
 
 
-\begin{frame}{Dimension tracking and parameter counting}
-In software (such as R or PyTorch), shape mismatches are the most common source of bugs. Tracking dimensions systematically is essential
+\begin{frame}{Dimension tracking across MLP layers}
+In software (such as R or PyTorch), shape mismatches are the most common source of bugs.
+Tracking dimensions systematically is essential
 \vfill
-\begin{proposition}[Dimension and parameter count of an $L$-layer MLP]
-For a batch of $n$ observations passing through an MLP with widths $p_0, p_1, \ldots, p_L$:
-\begin{itemize}
-\item At layer $\ell \in \{1, \ldots, L\}$:
+For a batch of $n$ observations passing through an MLP with widths $p_0, p_1, \ldots, p_L$, layer $\ell \in \{1, \ldots, L\}$ transforms shapes as
 \[
 \underbrace{A^{(\ell-1)}}_{n \times p_{\ell-1}}
 \underbrace{\big(W^{(\ell)}\big)^T}_{p_{\ell-1} \times p_\ell}
@@ -474,13 +477,18 @@ For a batch of $n$ observations passing through an MLP with widths $p_0, p_1, \l
 \xrightarrow{\sigma_\ell}
 \underbrace{A^{(\ell)}}_{n \times p_\ell}
 \]
-\item The total number of trainable scalar parameters (weights and biases) is
+\end{frame}
+
+
+\begin{frame}{Parameter counting for an $L$-layer MLP}
+\begin{proposition}[Parameter count of an $L$-layer MLP]
+For an MLP with layer widths $p_0, p_1, \ldots, p_L$, the total number of trainable scalar parameters (weights and biases) is
 \[
 P = \sum_{\ell=1}^L \big(p_\ell p_{\ell-1} + p_\ell\big) = \sum_{\ell=1}^L p_\ell\big(p_{\ell-1} + 1\big)
 \]
-Notice that $P$ is \textbf{independent of the number of observations $n$}
-\end{itemize}
 \end{proposition}
+\vfill
+Notice that $P$ is \textbf{independent of the number of observations $n$}
 \end{frame}
 
 
@@ -572,14 +580,14 @@ The 2-layer ReLU network reproduces the exact XOR truth table on all four points
 
 \begin{frame}{Geometric interpretation: how the hidden layer untangles XOR}
 Look at the rows of the hidden activation matrix $A^{(1)}$ as coordinates in the hidden space $\IR^2$:
-\[
-\bx_1 = (0,0)^T \mapsto \ba_1^{(1)} = (0,0)^T, \quad
-\bx_2 = (1,0)^T \text{ and } \bx_3 = (0,1)^T \mapsto (1,0)^T, \quad
-\bx_4 = (1,1)^T \mapsto (2,1)^T
-\]
+\begin{gather*}
+\bx_1 = (0,0)^T \mapsto \ba_1^{(1)} = (0,0)^T, \qquad
+\bx_4 = (1,1)^T \mapsto \ba_4^{(1)} = (2,1)^T \\
+\bx_2 = (1,0)^T,\; \bx_3 = (0,1)^T \mapsto (1,0)^T
+\end{gather*}
 \vfill
 \begin{center}
-\begin{tikzpicture}[scale=1.45, auto, >=Latex]
+\begin{tikzpicture}[scale=1.25, auto, >=Latex]
     % Input space
     \draw[step=1cm, gray!25, very thin] (-0.3,-0.3) grid (1.4,1.4);
     \draw[thick, ->] (-0.3,0) -- (1.6,0) node[right, font=\footnotesize] {$x_1$};
@@ -588,21 +596,21 @@ Look at the rows of the hidden activation matrix $A^{(1)}$ as coordinates in the
     \fill[blue!80!black] (1,0) circle[radius=2.5pt];
     \fill[blue!80!black] (0,1) circle[radius=2.5pt];
     \node[circle, draw, very thick, fill=white, inner sep=2.2pt] at (1,1) {};
-    \node[font=\footnotesize\bfseries] at (0.6, -0.5) {Input space $\bx \in \IR^2$};
+    \node[font=\footnotesize\bfseries] at (0.6, -0.75) {Input space $\bx \in \IR^2$};
 
     % Arrow
-    \draw[->, ultra thick, UMbrown] (2.1, 0.6) -- node[above, font=\footnotesize\bfseries] {$\bx \mapsto \operatorname{ReLU}(W^{(1)}\bx+\bb^{(1)})$} (4.1, 0.6);
+    \draw[->, ultra thick, UMbrown] (2.1, 0.65) -- node[above, font=\scriptsize\bfseries] {$\operatorname{ReLU}(W^{(1)}\bx+\bb^{(1)})$} (4.4, 0.65);
 
     % Hidden space
-    \begin{scope}[xshift=4.8cm]
+    \begin{scope}[xshift=5.0cm]
         \draw[step=1cm, gray!25, very thin] (-0.3,-0.3) grid (2.3,1.4);
         \draw[thick, ->] (-0.3,0) -- (2.5,0) node[right, font=\footnotesize] {$a_1^{(1)}$};
         \draw[thick, ->] (0,-0.3) -- (0,1.6) node[above, font=\footnotesize] {$a_2^{(1)}$};
-        \draw[very thick, red!80!black, dashed] (0.5, -0.1) -- (2.3, 0.8) node[above, font=\scriptsize] {$a_1^{(1)} - 2a_2^{(1)} = 0.5$};
+        \draw[very thick, red!80!black, dashed] (0.5, -0.1) -- (2.3, 0.8) node[right, font=\scriptsize] {$a_1^{(1)} - 2a_2^{(1)} = 0.5$};
         \node[circle, draw, very thick, fill=white, inner sep=2.2pt] at (0,0) {};
-        \fill[blue!80!black] (1,0) circle[radius=2.8pt] node[below=3pt, font=\scriptsize] {$(1,0)$};
+        \fill[blue!80!black] (1,0) circle[radius=2.8pt] node[below=4pt, font=\scriptsize] {$(1,0)$};
         \node[circle, draw, very thick, fill=white, inner sep=2.2pt] at (2,1) {};
-        \node[font=\footnotesize\bfseries] at (1.0, -0.5) {Hidden space $\ba^{(1)} \in \IR^2$ (separable!)};
+        \node[font=\footnotesize\bfseries] at (1.1, -0.75) {Hidden space $\ba^{(1)} \in \IR^2$ (separable!)};
     \end{scope}
 \end{tikzpicture}
 \end{center}
@@ -781,19 +789,19 @@ W^{(2)} = \begin{pmatrix} 2 & 1 \\ -1 & 0 \\ 1 & 1 \end{pmatrix}, \quad
 Find the collapsed affine map $f(\bx) = W\bx + \bb$ and determine $\rank(W)$
 \vfill
 \textbf{Solution:} By Theorem~\ref{th:affine-collapse},
-\[
-W = W^{(2)} W^{(1)} =
+\begin{align*}
+W &= W^{(2)} W^{(1)} =
 \begin{pmatrix} 2 & 1 \\ -1 & 0 \\ 1 & 1 \end{pmatrix}
 \begin{pmatrix} 1 & 2 & -1 \\ 0 & 1 & 1 \end{pmatrix}
 =
-\begin{pmatrix} 2 & 5 & -1 \\ -1 & -2 & 1 \\ 1 & 3 & 0 \end{pmatrix}, \quad
-\bb = W^{(2)} \bb^{(1)} + \bb^{(2)} =
+\begin{pmatrix} 2 & 5 & -1 \\ -1 & -2 & 1 \\ 1 & 3 & 0 \end{pmatrix} \\
+\bb &= W^{(2)} \bb^{(1)} + \bb^{(2)} =
 \begin{pmatrix} 1 \\ -1 \\ 0 \end{pmatrix}
 +
 \begin{pmatrix} 0 \\ 2 \\ 1 \end{pmatrix}
 =
 \begin{pmatrix} 1 \\ 1 \\ 1 \end{pmatrix}
-\]
+\end{align*}
 \end{frame}
 
 
@@ -804,13 +812,27 @@ Although $W \in \M_3$ is a $3 \times 3$ matrix, Theorem~\ref{th:rank-bottleneck}
 \]
 so $W$ \textbf{cannot be invertible} ($\det(W) = 0$)
 \vfill
-Indeed, inspecting the rows $R_1, R_2, R_3$ of $W = \begin{pmatrix} 2 & 5 & -1 \\ -1 & -2 & 1 \\ 1 & 3 & 0 \end{pmatrix}$, we see that
+Indeed, inspecting the rows $R_1, R_2, R_3$ of
 \[
-R_1 + R_2 = (2 - 1, \; 5 - 2, \; -1 + 1) = (1, 3, 0) = R_3
+W = \begin{pmatrix} 2 & 5 & -1 \\ -1 & -2 & 1 \\ 1 & 3 & 0 \end{pmatrix}
 \]
+we see that $R_1 + R_2 = (2 - 1, \; 5 - 2, \; -1 + 1) = (1, 3, 0) = R_3$.
 Since $R_1$ and $R_2$ are not scalar multiples of each other, $\rank(W) = 2$
+\end{frame}
+
+
+\begin{frame}{How ReLU breaks the rank bound on XOR}
+In our XOR example, the hidden pre-activation matrix was
+\[
+Z^{(1)} = \begin{pmatrix} 0 & -1 \\ 1 & 0 \\ 1 & 0 \\ 2 & 1 \end{pmatrix}
+\]
+Here column $2$ equals $(\text{column } 1) - \11_4$, so no linear combination of the columns of $Z^{(1)}$ with $\11_4$ could yield $\by = (0, 1, 1, 0)^T$
 \vfill
-\textbf{How ReLU breaks the rank bound}: In our XOR example, the pre-activation matrix $Z^{(1)} = \begin{pmatrix} 0 & -1 \\ 1 & 0 \\ 1 & 0 \\ 2 & 1 \end{pmatrix}$ had column 2 equal to $(\text{column } 1) - \11_4$, so no linear combination with $\11_4$ could yield $\by = (0, 1, 1, 0)^T$. Applying $\operatorname{ReLU}$ zeroed out only the $-1$ entry in row 1, producing $A^{(1)} = \begin{pmatrix} 0 & 0 \\ 1 & 0 \\ 1 & 0 \\ 2 & 1 \end{pmatrix}$ whose columns span $\by$!
+Applying $\operatorname{ReLU}$ zeroed out only the $-1$ entry in row $1$, producing
+\[
+A^{(1)} = \begin{pmatrix} 0 & 0 \\ 1 & 0 \\ 1 & 0 \\ 2 & 1 \end{pmatrix}
+\]
+whose columns span $\by$ (specifically, $\by = A^{(1)}(1, -2)^T$)!
 \end{frame}
 
 
@@ -853,10 +875,11 @@ In \defword{unsupervised representation learning} and \defword{dimensionality re
 \end{frame}
 
 
-\begin{frame}{Linear autoencoders}
+\begin{frame}{Linear autoencoders: encoder and decoder}
 \begin{importantdefinition}[Linear autoencoder]
 \label{def:linear-autoencoder}
-Let $\widetilde{X} = C_n X \in \M_{np}$ be a centred data matrix ($n$ observations in $\IR^p$, column means zero) and let $1 \le k < p$ be the bottleneck dimension. A \defword{linear autoencoder} consists of:
+Let $\widetilde{X} = C_n X \in \M_{np}$ be a centred data matrix ($n$ observations in $\IR^p$, column means zero) and let $1 \le k < p$ be the bottleneck dimension.
+A \defword{linear autoencoder} consists of:
 \begin{enumerate}
 \item An \defword{encoder matrix} $W_1 \in \M_{pk}$ mapping data to a low-dimensional \defword{latent code}
 \[
@@ -867,12 +890,19 @@ Z = \widetilde{X} W_1 \in \M_{nk}
 \hat{X} = Z W_2 = \widetilde{X} W_1 W_2 \in \M_{np}
 \]
 \end{enumerate}
-The autoencoder is trained to minimise the squared Frobenius reconstruction error:
+\end{importantdefinition}
+\end{frame}
+
+
+\begin{frame}{Linear autoencoder training objective}
+The linear autoencoder is trained to minimise the squared Frobenius reconstruction error between the centred data $\widetilde{X}$ and its reconstruction $\hat{X} = \widetilde{X} W_1 W_2$:
+\vfill
 \[
 \min_{W_1 \in \M_{pk},\; W_2 \in \M_{kp}} \|\widetilde{X} - \widetilde{X} W_1 W_2\|_F^2
 = \min_{W_1 \in \M_{pk},\; W_2 \in \M_{kp}} \sum_{i=1}^n \big\|\tilde{\bx}_i - W_2^T W_1^T \tilde{\bx}_i\big\|_2^2
 \]
-\end{importantdefinition}
+\vfill
+In words, we seek an encoder-decoder pair $(W_1, W_2)$ passing through a $k$-dimensional bottleneck that loses as little total squared Euclidean energy as possible
 \end{frame}
 
 
@@ -898,17 +928,11 @@ where $P_k = V_k V_k^T \in \M_p$ is the \defword{orthogonal projector} onto $\Sp
 \begin{frame}{Optimal linear autoencoders recover the PCA subspace}
 \begin{importanttheorem}[Baldi and Hornik, 1989 -- Eckart-Young corollary]
 \label{th:baldi-hornik}
-Let $\widetilde{X} \in \M_{np}$ have singular values $\sigma_1 \ge \cdots \ge \sigma_p \ge 0$ and right singular vectors $V = [\bv_1, \ldots, \bv_p] \in \M_p$. For any $k < \rank(\widetilde{X})$, consider
-\[
-\min_{W_1 \in \M_{pk},\; W_2 \in \M_{kp}} \|\widetilde{X} - \widetilde{X} W_1 W_2\|_F^2
-\]
+Let $\widetilde{X} \in \M_{np}$ have singular values $\sigma_1 \ge \cdots \ge \sigma_p \ge 0$ and right singular vectors $V = [\bv_1, \ldots, \bv_p] \in \M_p$.
+For any $k < \rank(\widetilde{X})$, consider $\min_{W_1 \in \M_{pk},\; W_2 \in \M_{kp}} \|\widetilde{X} - \widetilde{X} W_1 W_2\|_F^2$.
 \begin{enumerate}
-\item The minimum reconstruction error is $\displaystyle \sum_{j=k+1}^p \sigma_j^2$
-\item When $\sigma_k > \sigma_{k+1}$, the global minimum on $\range(\widetilde{X}^T)$ is achieved when
-\[
-P = W_1 W_2 = V_k V_k^T
-\]
-is the orthogonal projection matrix onto the top-$k$ principal subspace $\Span\{\bv_1, \ldots, \bv_k\}$, achieved by
+\item The minimum squared reconstruction error is $\sum_{j=k+1}^p \sigma_j^2$.
+\item When $\sigma_k > \sigma_{k+1}$, the global minimum on $\range(\widetilde{X}^T)$ is achieved when $P = W_1 W_2 = V_k V_k^T$ is the orthogonal projector onto $\Span\{\bv_1, \ldots, \bv_k\}$, namely
 \[
 W_1 = V_k C, \qquad W_2 = C^{-1} V_k^T \qquad \text{for any invertible } C \in \GL_k(\IR)
 \]
@@ -917,24 +941,38 @@ W_1 = V_k C, \qquad W_2 = C^{-1} V_k^T \qquad \text{for any invertible } C \in \
 \end{frame}
 
 
-\begin{frame}[red]{Proof of Theorem \ref{th:baldi-hornik} (Baldi-Hornik / Eckart-Young corollary)}
+\begin{frame}[red]{Proof of Theorem \ref{th:baldi-hornik} -- part 1: lower bound}
 \begin{enumerate}
 \item \textbf{Lower bound via the rank bottleneck bound and Eckart-Young}:
 For any $W_1 \in \M_{pk}$ and $W_2 \in \M_{kp}$, Theorem~\ref{th:rank-bottleneck} implies
 \[
 \rank(W_1 W_2) \le \min(p, k, p) = k \implies \rank(\widetilde{X} W_1 W_2) \le \rank(W_1 W_2) \le k
 \]
-Hence $\hat{X} = \widetilde{X} W_1 W_2 \in \M_{np}$ is a matrix of rank at most $k$. By the Eckart-Young theorem (Unit 04), the best rank-$k$ approximation to $\widetilde{X}$ in the Frobenius norm is the truncated SVD $\widetilde{X}_k = U_k \Sigma_k V_k^T$, so for all $W_1, W_2$:
+\vfill
+Hence $\hat{X} = \widetilde{X} W_1 W_2 \in \M_{np}$ has rank at most $k$.
+By the Eckart-Young theorem (Unit 04), the best rank-$k$ approximation to $\widetilde{X}$ in the Frobenius norm is the truncated SVD $\widetilde{X}_k = U_k \Sigma_k V_k^T$, so for all $W_1, W_2$:
 \[
 \|\widetilde{X} - \widetilde{X} W_1 W_2\|_F^2 \ge \|\widetilde{X} - \widetilde{X}_k\|_F^2 = \sum_{j=k+1}^p \sigma_j^2
 \]
-\vfill
+\end{enumerate}
+\end{frame}
+
+
+\begin{frame}[red]{Proof of Theorem \ref{th:baldi-hornik} -- part 2: attaining the bound}
+\begin{enumerate}
+\setcounter{enumi}{1}
 \item \textbf{Attaining the bound}:
-Let $C \in \GL_k(\IR)$ be any invertible $k \times k$ matrix and set $W_1 = V_k C \in \M_{pk}$ and $W_2 = C^{-1} V_k^T \in \M_{kp}$. Then
+Let $C \in \GL_k(\IR)$ be any invertible $k \times k$ matrix and set $W_1 = V_k C \in \M_{pk}$ and $W_2 = C^{-1} V_k^T \in \M_{kp}$.
+Then
 \[
 W_1 W_2 = (V_k C)(C^{-1} V_k^T) = V_k (C C^{-1}) V_k^T = V_k \II_k V_k^T = V_k V_k^T
 \]
-Since $\widetilde{X} V_k = U \Sigma V^T V_k = U_k \Sigma_k$, we obtain $\widetilde{X} W_1 W_2 = \widetilde{X} V_k V_k^T = U_k \Sigma_k V_k^T = \widetilde{X}_k$, achieving the exact Eckart-Young minimum $\sum_{j=k+1}^p \sigma_j^2 \qed$
+\vfill
+Since $\widetilde{X} V_k = U \Sigma V^T V_k = U_k \Sigma_k$, we obtain
+\[
+\widetilde{X} W_1 W_2 = \widetilde{X} V_k V_k^T = U_k \Sigma_k V_k^T = \widetilde{X}_k
+\]
+which achieves the exact Eckart-Young minimum $\sum_{j=k+1}^p \sigma_j^2$ \hfill $\qed$
 \end{enumerate}
 \end{frame}
 
@@ -952,21 +990,30 @@ Notice a subtle and important distinction in Theorem~\ref{th:baldi-hornik}:
 \end{frame}
 
 
-\begin{frame}{Orthogonal projector properties and Pythagorean error decomposition}
+\begin{frame}{Orthogonal projector properties of $P_k = V_k V_k^T$}
 Let us verify that $P_k = V_k V_k^T \in \M_p$ is an \defword{orthogonal projection matrix}:
+\vfill
 \begin{itemize}
-\item \textbf{Symmetric}: $P_k^T = \big(V_k V_k^T\big)^T = \big(V_k^T\big)^T V_k^T = V_k V_k^T = P_k$
+\item \textbf{Symmetric}:
+\[
+P_k^T = \big(V_k V_k^T\big)^T = \big(V_k^T\big)^T V_k^T = V_k V_k^T = P_k
+\]
+\vfill
 \item \textbf{Idempotent}: Since the columns of $V_k$ are orthonormal ($V_k^T V_k = \II_k$),
 \[
 P_k^2 = \big(V_k V_k^T\big)\big(V_k V_k^T\big) = V_k \big(V_k^T V_k\big) V_k^T = V_k \II_k V_k^T = P_k
 \]
 \end{itemize}
-\vfill
+\end{frame}
+
+
+\begin{frame}{Pythagorean decomposition of the reconstruction error}
 Every centred data matrix $\widetilde{X} \in \M_{np}$ decomposes into two mutually orthogonal components:
 \[
 \widetilde{X} = \underbrace{\widetilde{X} P_k}_{\text{projection onto } \S_k} + \underbrace{\widetilde{X} (\II_p - P_k)}_{\text{residual in } \S_k^\perp}
 \]
-Because $P_k(\II_p - P_k) = P_k - P_k^2 = 0$, the squared Frobenius norm splits by Pythagoras:
+\vfill
+Because $P_k(\II_p - P_k) = P_k - P_k^2 = \b0$, the squared Frobenius norm splits by Pythagoras:
 \[
 \|\widetilde{X} - \widetilde{X} P_k\|_F^2 = \|\widetilde{X}\|_F^2 - \|\widetilde{X} P_k\|_F^2 = \sum_{j=1}^p \sigma_j^2 - \sum_{j=1}^k \sigma_j^2 = \sum_{j=k+1}^p \sigma_j^2
 \]
@@ -981,40 +1028,73 @@ Consider the centred $4 \times 2$ data matrix $\widetilde{X} \in \M_{42}$ and bo
 \]
 \vfill
 \begin{itemize}
-\item The unit eigenvector of $\widetilde{X}^T \widetilde{X}$ for $\lambda_1 = \sigma_1^2 = 100$ is $\bv_1 = \begin{pmatrix} 0.6 \\ 0.8 \end{pmatrix}$ (and $\sigma_2^2 = 0$ for $\bv_2 = \begin{pmatrix} -0.8 \\ 0.6 \end{pmatrix}$)
-\item The PCA choice ($C = 1$) uses $W_1 = \bv_1 = \begin{pmatrix} 0.6 \\ 0.8 \end{pmatrix}$ and $W_2 = \bv_1^T = \begin{pmatrix} 0.6 & 0.8 \end{pmatrix}$
-\item Any scaled pair $\widetilde{W}_1 = c \bv_1 = \begin{pmatrix} 1.2 \\ 1.6 \end{pmatrix}$ and $\widetilde{W}_2 = c^{-1} \bv_1^T = \begin{pmatrix} 0.3 & 0.4 \end{pmatrix}$ (with $c = 2$) gives the \textbf{exact same orthogonal projector}:
-\[
-P = W_1 W_2 = \widetilde{W}_1 \widetilde{W}_2 = \bv_1 \bv_1^T = \begin{pmatrix} 0.36 & 0.48 \\ 0.48 & 0.64 \end{pmatrix}, \qquad \hat{X} = \widetilde{X} P = \widetilde{X}
-\]
+\item The unit eigenvector of $\widetilde{X}^T \widetilde{X}$ for $\lambda_1 = \sigma_1^2 = 100$ is $\bv_1 = (0.6, 0.8)^T$
+\vfill
+\item The orthogonal direction $\bv_2 = (-0.8, 0.6)^T$ has $\lambda_2 = \sigma_2^2 = 0$
 \end{itemize}
 \end{frame}
 
 
-\begin{frame}[fragile]{R demonstration: training a linear autoencoder recovers PCA}
-Generate a centred 3D dataset ($n = 150, p = 3$) and train a linear autoencoder ($k = 2$) by minimising $\|\widetilde{X} - \widetilde{X} W_1 W_2\|_F^2$ from random initial weights:
-<<linear-autoencoder-pca>>=
-set.seed(2740); n = 150; p = 3; k = 2
-M_mix = matrix(c(3, 2, 1, 0, 1.5, 1, 0, 0, 0.3), nrow = 3, byrow = TRUE)
-X_tilde = scale(matrix(rnorm(n * p), n, p) %*% M_mix, center = TRUE, scale = FALSE)
-V_k = svd(X_tilde)$v[, 1:k];  P_pca = V_k %*% t(V_k)
+\begin{frame}{Example by hand: gauge freedom and unique projector}
+Compare the PCA choice ($C = 1$) with any rescaled encoder-decoder pair (e.g., $c = 2$):
+\vfill
+\begin{itemize}
+\item \textbf{PCA ($C = 1$):} $W_1 = \bv_1 = (0.6, 0.8)^T$ and $W_2 = \bv_1^T = (0.6, 0.8)$
+\vfill
+\item \textbf{Rescaled autoencoder ($c = 2$):} $\widetilde{W}_1 = 2\bv_1 = (1.2, 1.6)^T$ and $\widetilde{W}_2 = \tfrac{1}{2}\bv_1^T = (0.3, 0.4)$
+\end{itemize}
+\vfill
+Both pairs yield the \textbf{exact same orthogonal projector} and zero reconstruction error:
+\[
+P = W_1 W_2 = \widetilde{W}_1 \widetilde{W}_2 = \bv_1 \bv_1^T = \begin{pmatrix} 0.36 & 0.48 \\ 0.48 & 0.64 \end{pmatrix}, \qquad \hat{X} = \widetilde{X} P = \widetilde{X}
+\]
+\end{frame}
 
+
+\begin{frame}[fragile]{R demonstration: linear autoencoder setup and PCA projector}
+Generate a centred 3D dataset ($n = 150, p = 3$) and compute its rank-$2$ PCA projector $P_{\text{PCA}} = V_k V_k^T$:
+\vfill
+<<linear-autoencoder-setup>>=
+set.seed(2740); n = 150; p = 3; k = 2
+M_mix = matrix(c(3, 2, 1, 0, 1.5, 1, 0, 0, 0.3),
+               nrow = 3, byrow = TRUE)
+X_raw = matrix(rnorm(n * p), n, p) %*% M_mix
+X_tilde = scale(X_raw, center = TRUE, scale = FALSE)
+V_k = svd(X_tilde)$v[, 1:k]
+P_pca = V_k %*% t(V_k)
+@
+\end{frame}
+
+
+\begin{frame}[fragile]{R demonstration: training the linear autoencoder via BFGS}
+Now train a linear autoencoder ($k = 2$) by minimising $\|\widetilde{X} - \widetilde{X} W_1 W_2\|_F^2$ from random initial weights:
+\vfill
+<<linear-autoencoder-pca>>=
 ae_loss = function(th) {
   W1 = matrix(th[1:6], p, k);  W2 = matrix(th[7:12], k, p)
   sum((X_tilde - X_tilde %*% W1 %*% W2)^2)
 }
 opt = optim(rnorm(12, sd = 0.5), ae_loss, method = "BFGS",
             control = list(maxit = 500, reltol = 1e-12))
-W1_hat = matrix(opt$par[1:6], p, k);  W2_hat = matrix(opt$par[7:12], k, p)
+W1_hat = matrix(opt$par[1:6], p, k)
+W2_hat = matrix(opt$par[7:12], k, p)
 P_ae = W1_hat %*% W2_hat
 @
 \end{frame}
 
 
-\begin{frame}[fragile]{Comparing the learned projector $W_1 W_2$ with $V_k V_k^T$}
-Even though $W_1$ and $V_k$ differ by an invertible change of basis $C \in \GL_2(\IR)$, their product $W_1 W_2$ matches the orthogonal PCA projector $V_k V_k^T$ to high precision:
-<<linear-autoencoder-compare>>=
+\begin{frame}[fragile]{Comparing the learned projector $W_1 W_2$ with $V_k V_k^T$ (PCA)}
+Even though $W_1$ and $V_k$ differ by an invertible change of basis $C \in \GL_2(\IR)$, their product $W_1 W_2$ matches the orthogonal PCA projector $V_k V_k^T$ to high precision.
+First, inspect the PCA projector $P_{\text{PCA}} = V_k V_k^T$:
+<<linear-autoencoder-compare-pca>>=
 round(P_pca, 4)
+@
+\end{frame}
+
+
+\begin{frame}[fragile]{Comparing the learned projector $W_1 W_2$ with $V_k V_k^T$ (autoencoder)}
+Now compare the learned autoencoder projector $P_{\text{AE}} = \hat{W}_1 \hat{W}_2$ and the maximum entrywise error:
+<<linear-autoencoder-compare>>=
 round(P_ae, 4)
 max(abs(P_pca - P_ae))
 @
@@ -1074,24 +1154,31 @@ How can a neural network layer use \textbf{both} the vertex features $X \in \M_{
 \end{frame}
 
 
-\begin{frame}{The fundamental linear algebra duality: left vs right multiplication}
-Given a data matrix (vertex feature matrix) $X \in \M_{np}$ ($n$ vertices in rows, $p$ features in columns), consider what happens when we multiply $X$ on the \textbf{right} versus on the \textbf{left}:
+\begin{frame}{Right-multiplication mixes features (MLP layer)}
+Given a data matrix (vertex feature matrix) $X \in \M_{np}$ ($n$ vertices in rows, $p$ features in columns), consider multiplying $X$ on the \textbf{right} versus on the \textbf{left}:
 \vfill
-\begin{importantproperty}[Right-multiplication mixes features; left-multiplication mixes vertices]
+\begin{importantproperty}[Right-multiplication mixes features]
 \label{prop:left-vs-right}
-Let $X \in \M_{np}$ have rows $\bx_1^T, \ldots, \bx_n^T \in \IR^{1 \times p}$ and columns $\bc_1, \ldots, \bc_p \in \IR^n$:
-\begin{enumerate}
-\item \textbf{Right-multiplication by a weight matrix $W \in \M_{pq}$}:
+Let $X \in \M_{np}$ have rows $\bx_1^T, \ldots, \bx_n^T \in \IR^{1 \times p}$.
+For any feature weight matrix $W \in \M_{pq}$,
 \[
 (XW)_{i\bullet} = \bx_i^T W \in \IR^{1 \times q} \qquad (i = 1, \ldots, n)
 \]
 Each vertex $i$ transforms its \textbf{own features} independently of all other vertices (this is a standard MLP layer, completely ignoring the graph $G$)
-\item \textbf{Left-multiplication by a graph operator $S \in \M_n$}:
+\end{importantproperty}
+\end{frame}
+
+
+\begin{frame}{Left-multiplication mixes vertices (graph operator)}
+Now consider multiplying the same vertex feature matrix $X \in \M_{np}$ on the \textbf{left} by a square matrix $S \in \M_n$:
+\vfill
+\begin{importantproperty}[Left-multiplication mixes vertices]
+Let $X \in \M_{np}$ have rows $\bx_1^T, \ldots, \bx_n^T \in \IR^{1 \times p}$.
+For any graph operator $S = [s_{ij}] \in \M_n$,
 \[
 (SX)_{i\bullet} = \sum_{j=1}^n s_{ij} \bx_j^T \in \IR^{1 \times p} \qquad (i = 1, \ldots, n)
 \]
 Each vertex $i$ forms a linear combination of the \textbf{feature vectors of neighbouring vertices} across the graph!
-\end{enumerate}
 \end{importantproperty}
 \end{frame}
 
@@ -1158,13 +1245,12 @@ Since $d_i \ge 0$, $\tilde{d}_{ii} = d_i + 1 \ge 1 > 0$, so $\tilde{D}$ is \text
 \end{frame}
 
 
-\begin{frame}{Two canonical normalised graph smoothing operators}
-Using $\tilde{A} = A + \II_n$ and $\tilde{D} = D + \II_n$, there are two standard choices for the smoothing operator $S \in \M_n$:
+\begin{frame}{Random-walk normalised graph smoothing operator}
+Using $\tilde{A} = A + \II_n$ and $\tilde{D} = D + \II_n$, the first canonical smoothing operator is row-normalised:
 \vfill
-\begin{definition}[Random-walk and symmetric normalised graph operators]
+\begin{definition}[Random-walk propagation matrix]
 \label{def:gcn-operators}
-\begin{enumerate}
-\item \defword{Random-walk (row-normalised) propagation matrix}:
+The \defword{random-walk (row-normalised) propagation matrix} is
 \[
 S_{\text{rw}} = \tilde{D}^{-1} \tilde{A}, \qquad \big(S_{\text{rw}}\big)_{ij} = \frac{\tilde{a}_{ij}}{d_i + 1}
 \]
@@ -1172,13 +1258,22 @@ Here $S_{\text{rw}}$ is \textbf{row-stochastic} ($S_{\text{rw}} \11_n = \11_n$) 
 \[
 \big(\tilde{D}^{-1}\tilde{A} X\big)_{i\bullet} = \frac{1}{d_i + 1}\bx_i^T + \sum_{j \in \N(i)} \frac{1}{d_i + 1}\bx_j^T
 \]
-\item \defword{Symmetric normalised propagation matrix} (Kipf and Welling, 2017):
+\end{definition}
+\end{frame}
+
+
+\begin{frame}{Symmetric normalised graph smoothing operator}
+To preserve symmetry (and hence real eigenvalues and orthogonal eigenvectors), Kipf and Welling (2017) use a two-sided degree normalisation:
+\vfill
+\begin{definition}[Symmetric normalised propagation matrix]
+The \defword{symmetric normalised propagation matrix} is
 \[
 S_{\text{sym}} = \tilde{D}^{-1/2} \tilde{A} \tilde{D}^{-1/2}, \qquad \big(S_{\text{sym}}\big)_{ij} = \frac{\tilde{a}_{ij}}{\sqrt{(d_i + 1)(d_j + 1)}}
 \]
 Here $S_{\text{sym}}$ is \textbf{symmetric} ($S_{\text{sym}}^T = S_{\text{sym}}$) with real eigenvalues in $[-1, 1]$
-\end{enumerate}
 \end{definition}
+\vfill
+Notice the parallel with Unit 10: $S_{\text{rw}} = \II_n - \tilde{L}_{\text{rw}}$ and $S_{\text{sym}} = \II_n - \tilde{L}_{\text{sym}}$
 \end{frame}
 
 
@@ -1215,18 +1310,32 @@ What happens as we stack $L$ GCN layers?
 \end{frame}
 
 
-\begin{frame}{Brief remark: Transformers and self-attention as dynamic graph operators}
-In large language models (Transformers), a sequence of $n$ tokens is represented by a data matrix (token embedding matrix) $X \in \M_{np}$. A \defword{self-attention head} projects $X$ using three weight matrices $W_Q, W_K \in \M_{p, d_k}$ and $W_V \in \M_{p, d_v}$:
+\begin{frame}{Brief remark: Transformers and self-attention}
+In large language models (Transformers), a sequence of $n$ tokens is represented by a data matrix (token embedding matrix) $X \in \M_{np}$.
+A \defword{self-attention head} projects $X$ using three weight matrices $W_Q, W_K \in \M_{p, d_k}$ and $W_V \in \M_{p, d_v}$:
 \[
 Q = X W_Q, \qquad K = X W_K, \qquad V = X W_V
 \]
-and computes the output matrix
+\vfill
+It then computes the output matrix
 \[
 \operatorname{Attention}(X) = \underbrace{\operatorname{softmax}\!\left(\frac{Q K^T}{\sqrt{d_k}}\right)}_{S(X) \in \M_n} X W_V
 \]
 where $\operatorname{softmax}$ is applied row-wise so every row of $S(X)$ is non-negative and sums to $1$
+\end{frame}
+
+
+\begin{frame}{Self-attention as a dynamic graph operator}
+\textbf{Linear algebra unification:} Self-attention is also a two-sided sandwich product $S(X) X W_V$!
 \vfill
-\textbf{Linear algebra unification}: Self-attention is also a sandwich product $S(X) X W_V$! Instead of a fixed graph operator $S = \tilde{D}^{-1}\tilde{A}$, the row-stochastic matrix $S(X) \in \M_n$ is a \defword{learned, data-dependent adjacency matrix} computed dynamically from the pairwise inner products $Q K^T = X W_Q W_K^T X^T$
+\begin{itemize}
+\item In a GCN layer, the left-multiplier $S = \tilde{D}^{-1}\tilde{A}$ is fixed in advance by the given graph $G$
+\vfill
+\item In a Transformer self-attention head, the row-stochastic left-multiplier $S(X) \in \M_n$ is a \defword{learned, data-dependent adjacency matrix} computed dynamically from the pairwise inner products
+\[
+Q K^T = X W_Q W_K^T X^T
+\]
+\end{itemize}
 \end{frame}
 
 
@@ -1304,8 +1413,9 @@ S_{\text{rw}} = \tilde{D}^{-1}\tilde{A} =
 \end{frame}
 
 
-\begin{frame}{Example by hand: step 2 -- left-multiplying $X$ and right-multiplying $W$}
-\textbf{Neighbourhood feature averaging} (left-multiplication by $\tilde{D}^{-1}\tilde{A}$):
+\begin{frame}{Example by hand: step 2a -- neighbourhood feature averaging}
+Left-multiplying $X$ by $S_{\text{rw}} = \tilde{D}^{-1}\tilde{A}$ averages each vertex's features with its neighbours:
+\vfill
 \[
 \tilde{D}^{-1}\tilde{A} X =
 \begin{pmatrix}
@@ -1317,15 +1427,23 @@ S_{\text{rw}} = \tilde{D}^{-1}\tilde{A} =
 =
 \begin{pmatrix} 1 & 3 \\ 2 & 2 \\ 2 & 3 \end{pmatrix}
 \]
-Notice how vertex 2 (which initially had feature $x_{21} = 0$) acquired a positive first feature $(2+0+4)/3 = 2$ from its neighbours 1 and 3!
 \vfill
-\textbf{Feature projection and ReLU activation} (right-multiplication by $W$, then $\max(0, \cdot)$):
+Notice how vertex $2$ (which initially had feature $x_{21} = 0$) acquired a positive first feature $(2+0+4)/3 = 2$ from its neighbours $1$ and $3$!
+\end{frame}
+
+
+\begin{frame}{Example by hand: step 2b -- feature projection and ReLU activation}
+Right-multiplying the smoothed feature matrix by $W$ projects features:
 \[
 Z = \big(\tilde{D}^{-1}\tilde{A} X\big) W =
 \begin{pmatrix} 1 & 3 \\ 2 & 2 \\ 2 & 3 \end{pmatrix}
 \begin{pmatrix} 2 & -1 \\ -1 & 1 \end{pmatrix}
 =
-\begin{pmatrix} -1 & 2 \\ 2 & 0 \\ 1 & 1 \end{pmatrix}, \qquad
+\begin{pmatrix} -1 & 2 \\ 2 & 0 \\ 1 & 1 \end{pmatrix}
+\]
+\vfill
+Applying $\operatorname{ReLU}(z) = \max(0, z)$ entrywise zeroes out the single negative entry in row $1$:
+\[
 H = \operatorname{ReLU}(Z) =
 \begin{pmatrix} 0 & 2 \\ 2 & 0 \\ 1 & 1 \end{pmatrix}
 \]
@@ -1388,17 +1506,29 @@ legend("bottomleft", legend = c("Faction 1 (Mr Hi)", "Faction 2 (Officer)"),
 \maxFrameImage{\Sexpr{knitr::fig_chunk("plot-karate-gcn", "pdf")}}
 
 
-\begin{frame}[fragile]{R demonstration: visualising Markov chain over-smoothing as $k$ grows}
-Applying $S_{\text{rw}} = \tilde{D}^{-1}\tilde{A}$ for $k = 1, 5, 50$ steps to initial 2D features $X_0 \in \M_{34, 2}$ converges to the rank-1 stationary average $\11_n(\bm{\pi}^T X_0)$:
-<<karate-oversmoothing>>=
+\begin{frame}[fragile]{R demonstration: Markov chain over-smoothing setup}
+Apply $S_{\text{rw}} = \tilde{D}^{-1}\tilde{A}$ for $k = 1, 5, 50$ steps to initial 2D features $X_0 \in \M_{34, 2}$ on Zachary's Karate Club graph:
+\vfill
+<<karate-oversmoothing-setup>>=
 S_rw_k = diag(1 / rowSums(A_tilde_k)) %*% A_tilde_k;  set.seed(7)
 X0_k = cbind(ifelse(faction == 1, -1, 1) + rnorm(n_k, sd = 0.4),
              rnorm(n_k, sd = 0.6))
-mat_pow = function(M, k) Reduce(`%*%`, replicate(k, M, simplify = FALSE))
-X_step1  = S_rw_k %*% X0_k;  X_step5 = mat_pow(S_rw_k, 5) %*% X0_k
+mat_pow = function(M, k)
+  Reduce(`%*%`, replicate(k, M, simplify = FALSE))
+X_step1  = S_rw_k %*% X0_k
+X_step5  = mat_pow(S_rw_k, 5) %*% X0_k
 X_step50 = mat_pow(S_rw_k, 50) %*% X0_k
+@
+\end{frame}
+
+
+\begin{frame}[fragile]{R demonstration: convergence to the stationary average}
+After $k = 50$ steps, every row of $S_{\text{rw}}^{50} X_0$ converges to the rank-1 stationary average $\bm{\pi}^T X_0$:
+\vfill
+<<karate-oversmoothing>>=
 pi_stat = rowSums(A_tilde_k) / sum(A_tilde_k)
-rbind(Row1_k50 = X_step50[1, ], Stat_avg = as.vector(t(pi_stat) %*% X0_k))
+rbind(Row1_k50 = X_step50[1, ],
+      Stat_avg = as.vector(t(pi_stat) %*% X0_k))
 @
 \end{frame}
 
@@ -1434,6 +1564,7 @@ legend("topright", legend = c("Faction 1", "Faction 2", expression(pi^T * X[0]))
 \begin{frame}{Summary: neural networks through the lens of linear algebra}
 \begin{center}
 {\footnotesize
+\setlength{\tabcolsep}{4pt}
 \renewcommand{\arraystretch}{1.35}
 \begin{tabular}{lll}
 \toprule
@@ -1443,8 +1574,8 @@ Single neuron & $\sigma\big(X\bw + b\11_n\big)$ & Affine hyperplane $\bw^T\bx + 
 MLP layer & $\sigma\big(X W^T + \11_n \bb^T\big)$ & Right-multiplication + rank-1 bias broadcast \\
 Deep linear net & $X \big(W^{(L)}\cdots W^{(1)}\big)^T + \11_n \bb^T$ & Collapses to 1 matrix; $\rank(W) \le \min_\ell p_\ell$ \\
 Linear autoencoder & $\hat{X} = \widetilde{X} W_1 W_2 \;\; (k < p)$ & Optimal $W_1 W_2 = V_k V_k^T$ is PCA (Units 04--05) \\
-GCN layer & $\sigma\big(\tilde{D}^{-1}\tilde{A} X W\big)$ & Left graph smoothing $\times$ right feature projection \\
-Self-attention & $\operatorname{softmax}\!\big(\frac{XW_QW_K^TX^T}{\sqrt{d_k}}\big) X W_V$ & Data-dependent row-stochastic left multiplier \\
+GCN layer & $\sigma\big(\tilde{D}^{-1}\tilde{A} X W\big)$ & Left smoothing $\times$ right feature projection \\
+Self-attention & $\operatorname{softmax}\!\big(\frac{XW_QW_K^TX^T}{\sqrt{d_k}}\big) X W_V$ & Data-dependent row-stochastic multiplier \\
 \bottomrule
 \end{tabular}
 }

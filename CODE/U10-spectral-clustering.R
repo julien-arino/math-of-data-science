@@ -18,10 +18,11 @@ set.seed(2740)
 n1 = 80; n2 = 80
 theta1 = seq(0, 2 * pi, length.out = n1 + 1)[-(n1 + 1)]
 theta2 = seq(0, 2 * pi, length.out = n2 + 1)[-(n2 + 1)]
-X = rbind(
-  cbind(1.0 * cos(theta1), 1.0 * sin(theta1)) + rnorm(2 * n1, sd = 0.06),
-  cbind(2.3 * cos(theta2), 2.3 * sin(theta2)) + rnorm(2 * n2, sd = 0.06)
-)
+r1 = cbind(1.0 * cos(theta1), 1.0 * sin(theta1)) +
+  rnorm(2 * n1, sd = 0.06)
+r2 = cbind(2.3 * cos(theta2), 2.3 * sin(theta2)) +
+  rnorm(2 * n2, sd = 0.06)
+X = rbind(r1, r2)
 # epsilon-neighbourhood adjacency matrix (epsilon = 0.65)
 dist_mat = as.matrix(dist(X))
 A_rings = (dist_mat <= 0.65 & dist_mat > 0) * 1
@@ -54,18 +55,21 @@ points(X[, 1], X[, 2],
        pch = 19)
 
 
-## ----three-components-R,echo=TRUE---------------------------------------------
+## ----three-components-R-setup,echo=TRUE---------------------------------------
 G_comp = make_graph(edges = c(1,2, 2,3, 1,3,  4,5, 5,6,  7,8),
                     n = 8, directed = FALSE)
 L_comp = as.matrix(laplacian_matrix(G_comp))
 ev_comp = eigen(L_comp, symmetric = TRUE)
+
+
+## ----three-components-R,echo=TRUE---------------------------------------------
 # Eigenvalues of L in ascending order
 round(rev(ev_comp$values), 4)
 # Number of zero eigenvalues (up to numerical precision)
 sum(abs(ev_comp$values) < 1e-10)
 
 
-## ----barbell-R,echo=TRUE------------------------------------------------------
+## ----barbell-R-setup,echo=TRUE------------------------------------------------
 A_barbell = matrix(c(
   0, 1, 1, 0, 0, 0,
   1, 0, 1, 0, 0, 0,
@@ -75,19 +79,24 @@ A_barbell = matrix(c(
   0, 0, 0, 1, 1, 0
 ), nrow = 6, byrow = TRUE)
 L_barbell = diag(rowSums(A_barbell)) - A_barbell
+
+
+## ----barbell-R,echo=TRUE------------------------------------------------------
 ev_b = eigen(L_barbell, symmetric = TRUE)
 round(rev(ev_b$values), 4)          # eigenvalues in ascending order
 round(ev_b$vectors[, 5], 4)         # unit Fiedler vector v_2
 
 
-## ----karate-spectral,echo=TRUE------------------------------------------------
+## ----karate-spectral-setup,echo=TRUE------------------------------------------
 G_karate = make_graph("Zachary")
 L_karate = as.matrix(laplacian_matrix(G_karate))
 ev_k = eigen(L_karate, symmetric = TRUE)
 n_k = vcount(G_karate)
 # Smallest three eigenvalues of L
 round(ev_k$values[n_k:(n_k - 2)], 4)
-# Fiedler vector v_2 (oriented so vertex 1 is positive)
+
+
+## ----karate-spectral,echo=TRUE------------------------------------------------
 v2_k = ev_k$vectors[, n_k - 1]
 if (v2_k[1] < 0) v2_k = -v2_k
 table(Sign_of_v2 = ifelse(v2_k >= 0, "Group 1 (+)", "Group 2 (-)"))
@@ -117,7 +126,7 @@ plot(G_karate, layout = lay_k,
      main = "Karate club partitioned by sign(v2)")
 
 
-## ----three-way-spectral,echo=TRUE---------------------------------------------
+## ----three-way-spectral-setup,echo=TRUE---------------------------------------
 set.seed(2740)
 pm = matrix(0.03, nrow = 3, ncol = 3); diag(pm) = 0.70
 G_sbm = sample_sbm(45, pref.matrix = pm, block.sizes = c(15, 15, 15))
@@ -125,10 +134,13 @@ L_sbm = as.matrix(laplacian_matrix(G_sbm))
 ev_sbm = eigen(L_sbm, symmetric = TRUE)
 # Smallest 6 eigenvalues of L (note the jump after lambda_3!)
 round(rev(ev_sbm$values)[1:6], 3)
-# Spectral embedding using v_2 and v_3, followed by k-means (k = 3)
+
+
+## ----three-way-spectral,echo=TRUE---------------------------------------------
 U_sbm = ev_sbm$vectors[, c(44, 43)]
 km_sbm = kmeans(U_sbm, centers = 3, nstart = 20)
-table(True_block = rep(1:3, each = 15), Spectral_cluster = km_sbm$cluster)
+table(True_block = rep(1:3, each = 15),
+      Spectral_cluster = km_sbm$cluster)
 
 
 ## ----plot-three-way-spectral,echo=FALSE,fig.width=8.5,fig.height=4.2----------

@@ -48,24 +48,33 @@ y_hat = A1 %*% c(1, -2)
 cbind(X, A1 = A1, y_hat = as.vector(y_hat))
 
 
-## ----linear-autoencoder-pca---------------------------------------------------
+## ----linear-autoencoder-setup-------------------------------------------------
 set.seed(2740); n = 150; p = 3; k = 2
-M_mix = matrix(c(3, 2, 1, 0, 1.5, 1, 0, 0, 0.3), nrow = 3, byrow = TRUE)
-X_tilde = scale(matrix(rnorm(n * p), n, p) %*% M_mix, center = TRUE, scale = FALSE)
-V_k = svd(X_tilde)$v[, 1:k];  P_pca = V_k %*% t(V_k)
+M_mix = matrix(c(3, 2, 1, 0, 1.5, 1, 0, 0, 0.3),
+               nrow = 3, byrow = TRUE)
+X_raw = matrix(rnorm(n * p), n, p) %*% M_mix
+X_tilde = scale(X_raw, center = TRUE, scale = FALSE)
+V_k = svd(X_tilde)$v[, 1:k]
+P_pca = V_k %*% t(V_k)
 
+
+## ----linear-autoencoder-pca---------------------------------------------------
 ae_loss = function(th) {
   W1 = matrix(th[1:6], p, k);  W2 = matrix(th[7:12], k, p)
   sum((X_tilde - X_tilde %*% W1 %*% W2)^2)
 }
 opt = optim(rnorm(12, sd = 0.5), ae_loss, method = "BFGS",
             control = list(maxit = 500, reltol = 1e-12))
-W1_hat = matrix(opt$par[1:6], p, k);  W2_hat = matrix(opt$par[7:12], k, p)
+W1_hat = matrix(opt$par[1:6], p, k)
+W2_hat = matrix(opt$par[7:12], k, p)
 P_ae = W1_hat %*% W2_hat
 
 
-## ----linear-autoencoder-compare-----------------------------------------------
+## ----linear-autoencoder-compare-pca-------------------------------------------
 round(P_pca, 4)
+
+
+## ----linear-autoencoder-compare-----------------------------------------------
 round(P_ae, 4)
 max(abs(P_pca - P_ae))
 
@@ -142,15 +151,21 @@ legend("bottomleft", legend = c("Faction 1 (Mr Hi)", "Faction 2 (Officer)"),
        pt.bg = c("dodgerblue3", "firebrick2"), pch = 21, pt.cex = 1.5, bty = "n", cex = 0.85)
 
 
-## ----karate-oversmoothing-----------------------------------------------------
+## ----karate-oversmoothing-setup-----------------------------------------------
 S_rw_k = diag(1 / rowSums(A_tilde_k)) %*% A_tilde_k;  set.seed(7)
 X0_k = cbind(ifelse(faction == 1, -1, 1) + rnorm(n_k, sd = 0.4),
              rnorm(n_k, sd = 0.6))
-mat_pow = function(M, k) Reduce(`%*%`, replicate(k, M, simplify = FALSE))
-X_step1  = S_rw_k %*% X0_k;  X_step5 = mat_pow(S_rw_k, 5) %*% X0_k
+mat_pow = function(M, k)
+  Reduce(`%*%`, replicate(k, M, simplify = FALSE))
+X_step1  = S_rw_k %*% X0_k
+X_step5  = mat_pow(S_rw_k, 5) %*% X0_k
 X_step50 = mat_pow(S_rw_k, 50) %*% X0_k
+
+
+## ----karate-oversmoothing-----------------------------------------------------
 pi_stat = rowSums(A_tilde_k) / sum(A_tilde_k)
-rbind(Row1_k50 = X_step50[1, ], Stat_avg = as.vector(t(pi_stat) %*% X0_k))
+rbind(Row1_k50 = X_step50[1, ],
+      Stat_avg = as.vector(t(pi_stat) %*% X0_k))
 
 
 ## ----plot-karate-oversmoothing,echo=FALSE,fig.width=9,fig.height=3.6----------

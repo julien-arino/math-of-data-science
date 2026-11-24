@@ -13,10 +13,10 @@
 
 \definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
 \newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
-\newcommand{\hlsng}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
 \newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
 \newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
-\newcommand{\hldef}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
 \newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
 \newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
 \newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
@@ -203,16 +203,16 @@ Suppose we are given $n$ observations $\bx_1, \bx_2, \ldots, \bx_n \in \IR^p$ an
 \begin{columns}[c]
 \begin{column}{0.56\textwidth}
 \begin{itemize}
-\item Centroid-based methods ($k$-means) and linear projections (PCA) rely on \textbf{global Euclidean distances} $\|\bx_i - \bx_j\|_2$ and linear separating hyperplanes
+\item Centroid-based methods ($k$-means) and linear projections (PCA) rely on \textbf{global Euclidean distances} $\|\bx_i - \bx_j\|_2$ and linear hyperplanes
 \vfill
 \item They work well when clusters are compact, convex clouds
 \vfill
-\item They fail completely when clusters have \textbf{non-convex geometry} (such as concentric rings, spirals or interlocking crescents), where points in the same cluster are far apart in $\IR^p$ but connected through a chain of nearby neighbours
+\item They fail on \textbf{non-convex geometry} (concentric rings, spirals or crescents), where points in the same cluster are far apart in $\IR^p$ but linked via nearby neighbours
 \end{itemize}
 \end{column}
 \begin{column}{0.44\textwidth}
 \centering
-\begin{tikzpicture}[scale=0.95]
+\begin{tikzpicture}[scale=0.85]
 % Outer ring
 \foreach \ang in {0,30,...,330} {
   \filldraw[blue!75!black] (\ang:1.6) circle (2pt);
@@ -229,7 +229,7 @@ Suppose we are given $n$ observations $\bx_1, \bx_2, \ldots, \bx_n \in \IR^p$ an
 \end{column}
 \end{columns}
 \vfill
-Representing the data as a \textbf{local similarity graph} turns non-convex geometric clustering into a \textbf{graph connectivity} problem
+Representing data as a \textbf{local similarity graph} turns non-convex clustering into a \textbf{graph connectivity} problem
 \end{frame}
 
 
@@ -252,11 +252,11 @@ where $\sigma > 0$ is the bandwidth (scale) parameter
 \end{frame}
 
 
-\begin{frame}{Example: from 4 points in $\IR^2$ to a similarity graph}
+\begin{frame}{Example: from 4 points in $\IR^2$ to an $\varepsilon$-neighbourhood graph}
 Consider $n = 4$ points in $\IR^2$: two nearby points $\bx_1 = (0, 0)^T, \bx_2 = (0, 1)^T$ on the left and two nearby points $\bx_3 = (3, 0)^T, \bx_4 = (3, 1)^T$ on the right
 \vfill
 \begin{columns}[c]
-\begin{column}{0.48\textwidth}
+\begin{column}{0.50\textwidth}
 Pairwise Euclidean distances $\|\bx_i - \bx_j\|_2$:
 \[
 \Delta = \begin{pmatrix}
@@ -266,6 +266,8 @@ Pairwise Euclidean distances $\|\bx_i - \bx_j\|_2$:
 \sqrt{10} & 3 & 1 & 0
 \end{pmatrix}
 \]
+\end{column}
+\begin{column}{0.50\textwidth}
 With $\varepsilon = 1.5$, the \textbf{$\varepsilon$-neighbourhood graph} has adjacency matrix
 \[
 A = \begin{pmatrix}
@@ -276,8 +278,14 @@ A = \begin{pmatrix}
 \end{pmatrix}
 \]
 \end{column}
-\begin{column}{0.52\textwidth}
-With $\sigma = 1$, the \textbf{Gaussian similarity matrix} $w_{ij} = e^{-\|\bx_i - \bx_j\|_2^2 / 2}$ ($i \neq j$) is
+\end{columns}
+\vfill
+The threshold $\varepsilon = 1.5$ connects $\{1, 2\}$ and $\{3, 4\}$ while severing all cross-cluster edges
+\end{frame}
+
+
+\begin{frame}{Example (continued): Gaussian similarity graph for the 4 points}
+Using the same pairwise distances $\Delta$ with bandwidth $\sigma = 1$, the \textbf{Gaussian similarity matrix} $w_{ij} = \exp(-\|\bx_i - \bx_j\|_2^2 / 2)$ ($i \neq j$) is
 \[
 W \approx \begin{pmatrix}
 0 & 0.607 & 0.011 & 0.007 \\
@@ -286,12 +294,11 @@ W \approx \begin{pmatrix}
 0.007 & 0.011 & 0.607 & 0
 \end{pmatrix}
 \]
+\vfill
 \begin{itemize}
 \item Within-cluster weights: $e^{-1/2} \approx 0.607$
 \item Between-cluster weights: $e^{-9/2} \approx 0.011$ and $e^{-10/2} \approx 0.007$
 \end{itemize}
-\end{column}
-\end{columns}
 \end{frame}
 
 
@@ -360,17 +367,18 @@ Let us generate $n = 160$ points on two concentric circles in $\IR^2$ and compar
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{set.seed}\hldef{(}\hlnum{2740}\hldef{)}
-\hldef{n1} \hlkwb{=} \hlnum{80}\hldef{; n2} \hlkwb{=} \hlnum{80}
-\hldef{theta1} \hlkwb{=} \hlkwd{seq}\hldef{(}\hlnum{0}\hldef{,} \hlnum{2} \hlopt{*} \hldef{pi,} \hlkwc{length.out} \hldef{= n1} \hlopt{+} \hlnum{1}\hldef{)[}\hlopt{-}\hldef{(n1} \hlopt{+} \hlnum{1}\hldef{)]}
-\hldef{theta2} \hlkwb{=} \hlkwd{seq}\hldef{(}\hlnum{0}\hldef{,} \hlnum{2} \hlopt{*} \hldef{pi,} \hlkwc{length.out} \hldef{= n2} \hlopt{+} \hlnum{1}\hldef{)[}\hlopt{-}\hldef{(n2} \hlopt{+} \hlnum{1}\hldef{)]}
-\hldef{X} \hlkwb{=} \hlkwd{rbind}\hldef{(}
-  \hlkwd{cbind}\hldef{(}\hlnum{1.0} \hlopt{*} \hlkwd{cos}\hldef{(theta1),} \hlnum{1.0} \hlopt{*} \hlkwd{sin}\hldef{(theta1))} \hlopt{+} \hlkwd{rnorm}\hldef{(}\hlnum{2} \hlopt{*} \hldef{n1,} \hlkwc{sd} \hldef{=} \hlnum{0.06}\hldef{),}
-  \hlkwd{cbind}\hldef{(}\hlnum{2.3} \hlopt{*} \hlkwd{cos}\hldef{(theta2),} \hlnum{2.3} \hlopt{*} \hlkwd{sin}\hldef{(theta2))} \hlopt{+} \hlkwd{rnorm}\hldef{(}\hlnum{2} \hlopt{*} \hldef{n2,} \hlkwc{sd} \hldef{=} \hlnum{0.06}\hldef{)}
-\hldef{)}
+\hlkwd{set.seed}\hlstd{(}\hlnum{2740}\hlstd{)}
+\hlstd{n1} \hlkwb{=} \hlnum{80}\hlstd{; n2} \hlkwb{=} \hlnum{80}
+\hlstd{theta1} \hlkwb{=} \hlkwd{seq}\hlstd{(}\hlnum{0}\hlstd{,} \hlnum{2} \hlopt{*} \hlstd{pi,} \hlkwc{length.out} \hlstd{= n1} \hlopt{+} \hlnum{1}\hlstd{)[}\hlopt{-}\hlstd{(n1} \hlopt{+} \hlnum{1}\hlstd{)]}
+\hlstd{theta2} \hlkwb{=} \hlkwd{seq}\hlstd{(}\hlnum{0}\hlstd{,} \hlnum{2} \hlopt{*} \hlstd{pi,} \hlkwc{length.out} \hlstd{= n2} \hlopt{+} \hlnum{1}\hlstd{)[}\hlopt{-}\hlstd{(n2} \hlopt{+} \hlnum{1}\hlstd{)]}
+\hlstd{r1} \hlkwb{=} \hlkwd{cbind}\hlstd{(}\hlnum{1.0} \hlopt{*} \hlkwd{cos}\hlstd{(theta1),} \hlnum{1.0} \hlopt{*} \hlkwd{sin}\hlstd{(theta1))} \hlopt{+}
+  \hlkwd{rnorm}\hlstd{(}\hlnum{2} \hlopt{*} \hlstd{n1,} \hlkwc{sd} \hlstd{=} \hlnum{0.06}\hlstd{)}
+\hlstd{r2} \hlkwb{=} \hlkwd{cbind}\hlstd{(}\hlnum{2.3} \hlopt{*} \hlkwd{cos}\hlstd{(theta2),} \hlnum{2.3} \hlopt{*} \hlkwd{sin}\hlstd{(theta2))} \hlopt{+}
+  \hlkwd{rnorm}\hlstd{(}\hlnum{2} \hlopt{*} \hlstd{n2,} \hlkwc{sd} \hlstd{=} \hlnum{0.06}\hlstd{)}
+\hlstd{X} \hlkwb{=} \hlkwd{rbind}\hlstd{(r1, r2)}
 \hlcom{# epsilon-neighbourhood adjacency matrix (epsilon = 0.65)}
-\hldef{dist_mat} \hlkwb{=} \hlkwd{as.matrix}\hldef{(}\hlkwd{dist}\hldef{(X))}
-\hldef{A_rings} \hlkwb{=} \hldef{(dist_mat} \hlopt{<=} \hlnum{0.65} \hlopt{&} \hldef{dist_mat} \hlopt{>} \hlnum{0}\hldef{)} \hlopt{*} \hlnum{1}
+\hlstd{dist_mat} \hlkwb{=} \hlkwd{as.matrix}\hlstd{(}\hlkwd{dist}\hlstd{(X))}
+\hlstd{A_rings} \hlkwb{=} \hlstd{(dist_mat} \hlopt{<=} \hlnum{0.65} \hlopt{&} \hlstd{dist_mat} \hlopt{>} \hlnum{0}\hlstd{)} \hlopt{*} \hlnum{1}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -432,7 +440,7 @@ Consider the 4-vertex graph $G = (V, E)$ below (a triangle $\{1, 2, 3\}$ with a 
 \begin{columns}[c]
 \begin{column}{0.36\textwidth}
 \centering
-\begin{tikzpicture}[scale=1.15, every node/.style={circle, draw=black, thick, fill=yellow!20, minimum size=7mm, font=\small\bfseries}]
+\begin{tikzpicture}[scale=1.0, every node/.style={circle, draw=black, thick, fill=yellow!20, minimum size=6.5mm, font=\small\bfseries}]
 \node (1) at (0, 1.4) {1};
 \node (2) at (0, 0) {2};
 \node (3) at (1.4, 0.7) {3};
@@ -442,7 +450,7 @@ Consider the 4-vertex graph $G = (V, E)$ below (a triangle $\{1, 2, 3\}$ with a 
 \draw[very thick] (2) -- (3);
 \draw[very thick] (3) -- (4);
 \end{tikzpicture}
-\vskip0.2cm
+\vskip0.15cm
 \footnotesize
 Degrees: $d_1 = 2$, $d_2 = 2$, $d_3 = 3$, $d_4 = 1$
 \end{column}
@@ -472,10 +480,9 @@ L = D - A = \begin{pmatrix}
 \end{column}
 \end{columns}
 \vfill
-Quick sanity check on $L$:
 \begin{itemize}
 \item $L$ is symmetric ($L^T = L$), with positive degrees on the diagonal and $-1$ on edges
-\item Every row and every column of $L$ sums to $0$: e.g. row 3 has $(-1) + (-1) + 3 + (-1) = 0$
+\item Every row and every column of $L$ sums to $0$: e.g., row 3 has $(-1) + (-1) + 3 + (-1) = 0$
 \end{itemize}
 \end{frame}
 
@@ -579,15 +586,15 @@ b_{kv} = \begin{cases}
 \end{cases}
 \]
 \end{definition}
-\vfill
+\end{frame}
+
+
+\begin{frame}[red]{Incidence factorisation of the Laplacian ($L = B^T B$)}
 \begin{proposition}[Incidence factorisation of the Laplacian]
 \label{prop:incidence-laplacian}
 For any choice of edge orientations on an unweighted graph $G$, $L = B^T B$
 \end{proposition}
-\end{frame}
-
-
-\begin{frame}[red]{Proof of Proposition~\ref{prop:incidence-laplacian} ($L = B^T B$) and worked check}
+\vfill
 \textbf{Proof:} The $(u, v)$-entry of $B^T B \in \M_n(\IR)$ is the dot product of columns $u$ and $v$ of $B$:
 \[
 (B^T B)_{uv} = \sum_{k=1}^m b_{ku} b_{kv}
@@ -596,8 +603,12 @@ For any choice of edge orientations on an unweighted graph $G$, $L = B^T B$
 \item If $u = v$: $b_{ku}^2 = (\pm 1)^2 = 1$ whenever edge $e_k$ is incident to vertex $u$, and $0$ otherwise, so $(B^T B)_{uu} = \sum_{k=1}^m b_{ku}^2 = d_u = \ell_{uu}$
 \item If $u \neq v$: the product $b_{ku} b_{kv}$ is non-zero only if edge $e_k$ connects $u$ and $v$, in which case one entry is $+1$ and the other is $-1$, so $b_{ku} b_{kv} = -1 = \ell_{uv}$ \hfill $\qed$
 \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Worked check of $L = B^T B$ on the 4-vertex paw graph}
+Orienting the edges of the 4-vertex paw graph as $e_1 = (1, 2)$, $e_2 = (1, 3)$, $e_3 = (2, 3)$ and $e_4 = (3, 4)$ gives the $4 \times 4$ oriented incidence matrix $B$:
 \vfill
-\textbf{Check on the 4-vertex paw graph} (orienting $e_1=(1,2), e_2=(1,3), e_3=(2,3), e_4=(3,4)$):
 \[
 B = \begin{pmatrix}
 1 & -1 & 0 & 0 \\
@@ -613,6 +624,8 @@ B^T B = \begin{pmatrix}
 0 & 0 & -1 & 1
 \end{pmatrix} = L
 \]
+\vfill
+Reversing the orientation of any edge $e_k$ multiplies row $k$ of $B$ by $-1$, which leaves $B^T B$ unchanged
 \end{frame}
 
 
@@ -687,18 +700,30 @@ In particular, for an unweighted simple graph ($a_{ij} \in \{0, 1\}$),
 \end{frame}
 
 
-\begin{frame}[red]{Proof of Theorem~\ref{th:laplacian-quadratic-form} (Method 1: direct algebraic expansion)}
-Let $\bx = (x_1, \ldots, x_n)^T \in \IR^n$. Using $L = D - A$ and $d_i = \sum_{j=1}^n a_{ij}$, we expand
+\begin{frame}[red]{Proof of Theorem~\ref{th:laplacian-quadratic-form} (Method 1 -- step 1)}
+Let $\bx = (x_1, \ldots, x_n)^T \in \IR^n$.
+Using $L = D - A$ and $d_i = \sum_{j=1}^n a_{ij}$, we expand
 \begin{align*}
 \bx^T L \bx &= \bx^T D \bx - \bx^T A \bx = \sum_{i=1}^n d_i x_i^2 - \sum_{i=1}^n \sum_{j=1}^n a_{ij} x_i x_j \\
 &= \sum_{i=1}^n \left(\sum_{j=1}^n a_{ij}\right) x_i^2 - \sum_{i=1}^n \sum_{j=1}^n a_{ij} x_i x_j
 \end{align*}
-By symmetry $a_{ij} = a_{ji}$, relabelling dummy indices $i \leftrightarrow j$ gives $\sum_{i,j} a_{ij} x_i^2 = \sum_{i,j} a_{ji} x_j^2 = \sum_{i,j} a_{ij} x_j^2$, so we can split the first sum into two equal halves:
+\vfill
+By symmetry $a_{ij} = a_{ji}$, relabelling dummy indices $i \leftrightarrow j$ gives
+\[
+\sum_{i=1}^n \sum_{j=1}^n a_{ij} x_i^2 = \sum_{i=1}^n \sum_{j=1}^n a_{ji} x_j^2 = \sum_{i=1}^n \sum_{j=1}^n a_{ij} x_j^2
+\]
+\end{frame}
+
+
+\begin{frame}[red]{Proof of Theorem~\ref{th:laplacian-quadratic-form} (Method 1 -- step 2)}
+Splitting the first sum into two equal halves using the symmetry identity yields
 \begin{align*}
 \bx^T L \bx &= \frac{1}{2}\sum_{i=1}^n \sum_{j=1}^n a_{ij} x_i^2 - \sum_{i=1}^n \sum_{j=1}^n a_{ij} x_i x_j + \frac{1}{2}\sum_{i=1}^n \sum_{j=1}^n a_{ij} x_j^2 \\
-&= \frac{1}{2}\sum_{i=1}^n \sum_{j=1}^n a_{ij}\left(x_i^2 - 2x_i x_j + x_j^2\right) = \frac{1}{2}\sum_{i=1}^n \sum_{j=1}^n a_{ij}(x_i - x_j)^2
+&= \frac{1}{2}\sum_{i=1}^n \sum_{j=1}^n a_{ij}\left(x_i^2 - 2x_i x_j + x_j^2\right) \\
+&= \frac{1}{2}\sum_{i=1}^n \sum_{j=1}^n a_{ij}(x_i - x_j)^2
 \end{align*}
-Since each undirected edge $\{i, j\} \in E$ appears twice in the double sum (as $(i, j)$ and $(j, i)$), the factor $\frac{1}{2}$ cancels when summing over $\{i, j\} \in E$ \hfill $\qed$
+\vfill
+Since each undirected edge $\{i, j\} \in E$ appears twice in the double sum (as $(i, j)$ and $(j, i)$), the factor $1/2$ cancels when summing over $\{i, j\} \in E$ \hfill $\qed$
 \end{frame}
 
 
@@ -786,7 +811,7 @@ Let $G = (V, E)$ be an undirected graph on $n$ vertices with symmetric nonnegati
 \end{frame}
 
 
-\begin{frame}[red]{Proof of Theorem~\ref{th:laplacian-spectrum}}
+\begin{frame}[red]{Proof of Theorem~\ref{th:laplacian-spectrum} (parts 1 and 2)}
 \begin{enumerate}
 \item \textbf{Symmetry and real spectrum:} Since $D$ is diagonal ($D^T = D$) and $A$ is symmetric ($A^T = A$),
 \[
@@ -798,14 +823,23 @@ By the spectral theorem for real symmetric matrices, $L$ has $n$ real eigenvalue
 \[
 \bx^T L \bx = \sum_{\{i, j\} \in E} a_{ij}(x_i - x_j)^2 \ge 0
 \]
-since $a_{ij} \ge 0$ and $(x_i - x_j)^2 \ge 0$. If $L\bv_k = \lambda_k \bv_k$ with $\bv_k \neq \b0$, then
+since $a_{ij} \ge 0$ and $(x_i - x_j)^2 \ge 0$.
+If $L\bv_k = \lambda_k \bv_k$ with $\bv_k \neq \b0$, then
 \[
 \lambda_k = \frac{\bv_k^T (L\bv_k)}{\bv_k^T \bv_k} = \frac{\bv_k^T L \bv_k}{\|\bv_k\|_2^2} \ge 0
 \]
+\end{enumerate}
+\end{frame}
+
+
+\begin{frame}[red]{Proof of Theorem~\ref{th:laplacian-spectrum} (part 3)}
+\begin{enumerate}
+\setcounter{enumi}{2}
 \item \textbf{Zero row sums ($L\11 = \b0$):} For each row $i = 1, \ldots, n$,
 \[
-(L\11)_i = \sum_{j=1}^n \ell_{ij} \cdot 1 = d_i - \sum_{j=1}^n a_{ij} = d_i - d_i = 0 \implies L\11 = \b0 = 0\cdot \11 \qquad \qed
+(L\11)_i = \sum_{j=1}^n \ell_{ij} \cdot 1 = d_i - \sum_{j=1}^n a_{ij} = d_i - d_i = 0
 \]
+Hence $L\11 = \b0 = 0 \cdot \11$, so $\lambda_1 = 0$ is always the smallest eigenvalue of $L$ with eigenvector $\bv_1 = \11$ (or unit eigenvector $\11 / \sqrt{n}$) \hfill $\qed$
 \end{enumerate}
 \end{frame}
 
@@ -836,7 +870,7 @@ We know $\lambda_1 = 0$ is always an eigenvalue of $L$. When is $\lambda_2 = 0$ 
 \label{th:zero-eigenvalues-components}
 Let $G = (V, E)$ be an undirected graph with nonnegative edge weights and Laplacian $L$. The multiplicity of $0$ as an eigenvalue of $L$ (that is, $\nullity(L) = \dim(\nullspace(L))$) equals the number $k$ of connected components $C_1, C_2, \ldots, C_k$ of $G$
 \vskip0.2cm
-Moreover, the component indicator vectors $\11_{C_1}, \11_{C_2}, \ldots, \11_{C_k} \in \{0, 1\}^n$, defined by
+In addition, the component indicator vectors $\11_{C_1}, \11_{C_2}, \ldots, \11_{C_k} \in \{0, 1\}^n$, defined by
 \[
 (\11_{C_r})_i = \begin{cases}
 1 & \text{if } i \in C_r \\
@@ -869,8 +903,9 @@ Suppose first that $G$ is connected ($k = 1$). We must show that $\nullspace(L) 
 \end{frame}
 
 
-\begin{frame}[red]{Proof of Theorem~\ref{th:zero-eigenvalues-components} -- Part 2: $k$ connected components ($k \ge 2$)}
-Now suppose $G$ has $k$ connected components $C_1, \ldots, C_k$. Reorder the vertices so that those in $C_1$ come first, followed by $C_2$, \ldots, $C_k$
+\begin{frame}[red]{Proof of Theorem~\ref{th:zero-eigenvalues-components} -- Part 2 ($k \ge 2$, block form)}
+Now suppose $G$ has $k$ connected components $C_1, \ldots, C_k$.
+Reorder the vertices so that those in $C_1$ come first, followed by $C_2$, \ldots, $C_k$
 \vfill
 \begin{enumerate}
 \item Because there are no edges between different components, $A$, $D$ and $L$ are block-diagonal:
@@ -883,12 +918,23 @@ L_1 & \b0 & \cdots & \b0 \\
 \end{pmatrix}
 \]
 where each $L_r$ is the Laplacian of the connected subgraph on $C_r$
+\vfill
 \item Writing $\bx = (\bx^{(1)}, \ldots, \bx^{(k)})^T$ according to the blocks, $L\bx = \b0 \iff L_r \bx^{(r)} = \b0$ for every $r = 1, \ldots, k$
+\end{enumerate}
+\end{frame}
+
+
+\begin{frame}[red]{Proof of Theorem~\ref{th:zero-eigenvalues-components} -- Part 2 ($k \ge 2$, basis)}
+\begin{enumerate}
+\setcounter{enumi}{2}
 \item By Part 1 applied to each connected component $C_r$, $L_r \bx^{(r)} = \b0 \iff \bx^{(r)} = c_r \11_{|C_r|}$, which in $\IR^n$ means
 \[
 \bx = c_1 \11_{C_1} + c_2 \11_{C_2} + \cdots + c_k \11_{C_k}
 \]
-\item Since $C_1, \ldots, C_k$ are disjoint, $\11_{C_r}^T \11_{C_s} = 0$ for $r \neq s$, so $\{\11_{C_1}, \ldots, \11_{C_k}\}$ is an orthogonal basis of $\nullspace(L)$ and $\dim(\nullspace(L)) = k$ \hfill $\qed$
+\vfill
+\item Since $C_1, \ldots, C_k$ are pairwise disjoint, $\11_{C_r}^T \11_{C_s} = 0$ for all $r \neq s$
+\vfill
+Hence $\{\11_{C_1}, \ldots, \11_{C_k}\}$ is an orthogonal basis of $\nullspace(L)$ and $\dim(\nullspace(L)) = k$ \hfill $\qed$
 \end{enumerate}
 \end{frame}
 
@@ -931,25 +977,37 @@ L = \left(\begin{array}{cc|cc}
 \end{frame}
 
 
-\begin{frame}[fragile]{Counting connected components with $\lambda = 0$ in R}
-Let us build a graph on $n = 8$ vertices consisting of $k = 3$ disconnected components (a triangle $\{1, 2, 3\}$, a path $\{4, 5, 6\}$ and an edge $\{7, 8\}$) and check the eigenvalues of $L$:
+\begin{frame}[fragile]{Counting connected components with $\lambda = 0$ in R (setup)}
+Let us build a graph on $n = 8$ vertices consisting of $k = 3$ disconnected components (a triangle $\{1, 2, 3\}$, a path $\{4, 5, 6\}$ and an edge $\{7, 8\}$) and compute its Laplacian:
 \vfill
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hldef{G_comp} \hlkwb{=} \hlkwd{make_graph}\hldef{(}\hlkwc{edges} \hldef{=} \hlkwd{c}\hldef{(}\hlnum{1}\hldef{,}\hlnum{2}\hldef{,} \hlnum{2}\hldef{,}\hlnum{3}\hldef{,} \hlnum{1}\hldef{,}\hlnum{3}\hldef{,}  \hlnum{4}\hldef{,}\hlnum{5}\hldef{,} \hlnum{5}\hldef{,}\hlnum{6}\hldef{,}  \hlnum{7}\hldef{,}\hlnum{8}\hldef{),}
-                    \hlkwc{n} \hldef{=} \hlnum{8}\hldef{,} \hlkwc{directed} \hldef{=} \hlnum{FALSE}\hldef{)}
-\hldef{L_comp} \hlkwb{=} \hlkwd{as.matrix}\hldef{(}\hlkwd{laplacian_matrix}\hldef{(G_comp))}
-\hldef{ev_comp} \hlkwb{=} \hlkwd{eigen}\hldef{(L_comp,} \hlkwc{symmetric} \hldef{=} \hlnum{TRUE}\hldef{)}
+\hlstd{G_comp} \hlkwb{=} \hlkwd{make_graph}\hlstd{(}\hlkwc{edges} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{2}\hlstd{,} \hlnum{2}\hlstd{,}\hlnum{3}\hlstd{,} \hlnum{1}\hlstd{,}\hlnum{3}\hlstd{,}  \hlnum{4}\hlstd{,}\hlnum{5}\hlstd{,} \hlnum{5}\hlstd{,}\hlnum{6}\hlstd{,}  \hlnum{7}\hlstd{,}\hlnum{8}\hlstd{),}
+                    \hlkwc{n} \hlstd{=} \hlnum{8}\hlstd{,} \hlkwc{directed} \hlstd{=} \hlnum{FALSE}\hlstd{)}
+\hlstd{L_comp} \hlkwb{=} \hlkwd{as.matrix}\hlstd{(}\hlkwd{laplacian_matrix}\hlstd{(G_comp))}
+\hlstd{ev_comp} \hlkwb{=} \hlkwd{eigen}\hlstd{(L_comp,} \hlkwc{symmetric} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+\begin{frame}[fragile]{Counting connected components with $\lambda = 0$ in R (spectrum)}
+Inspecting the eigenvalues of \code{L\_comp} in ascending order and counting those equal to $0$:
+\vfill
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
 \hlcom{# Eigenvalues of L in ascending order}
-\hlkwd{round}\hldef{(}\hlkwd{rev}\hldef{(ev_comp}\hlopt{$}\hldef{values),} \hlnum{4}\hldef{)}
+\hlkwd{round}\hlstd{(}\hlkwd{rev}\hlstd{(ev_comp}\hlopt{$}\hlstd{values),} \hlnum{4}\hlstd{)}
 \end{alltt}
 \begin{verbatim}
 ## [1] 0 0 0 1 2 3 3 3
 \end{verbatim}
 \begin{alltt}
 \hlcom{# Number of zero eigenvalues (up to numerical precision)}
-\hlkwd{sum}\hldef{(}\hlkwd{abs}\hldef{(ev_comp}\hlopt{$}\hldef{values)} \hlopt{<} \hlnum{1e-10}\hldef{)}
+\hlkwd{sum}\hlstd{(}\hlkwd{abs}\hlstd{(ev_comp}\hlopt{$}\hlstd{values)} \hlopt{<} \hlnum{1e-10}\hlstd{)}
 \end{alltt}
 \begin{verbatim}
 ## [1] 3
@@ -961,24 +1019,26 @@ Exactly three eigenvalues of $L$ equal $0$, matching the $k = 3$ connected compo
 \end{frame}
 
 
-\begin{frame}{Spectrum of extreme graphs: empty vs complete graph $K_n$}
-Comparing two extreme graphs on $n$ vertices illustrates how Laplacian eigenvalues measure connectivity:
+\begin{frame}{Spectrum of extreme graphs: the empty graph $E_n$}
+Comparing two extreme graphs on $n$ vertices illustrates how Laplacian eigenvalues measure connectivity
 \vfill
-\begin{columns}[t]
-\begin{column}{0.46\textwidth}
 \textbf{1. Empty graph $E_n$ ($|E| = 0$):}
 \[
 L = \b0_n
 \]
+\vfill
 \begin{itemize}
-\item $n$ isolated vertices ($k = n$ components)
-\item Spectrum of $L$:
+\item Every vertex is isolated, so $G$ has $k = n$ connected components
+\vfill
+\item The entire spectrum of $L$ collapses to $0$:
 \[
 \lambda_1 = \lambda_2 = \cdots = \lambda_n = 0
 \]
 \end{itemize}
-\end{column}
-\begin{column}{0.52\textwidth}
+\end{frame}
+
+
+\begin{frame}{Spectrum of extreme graphs: the complete graph $K_n$}
 \textbf{2. Complete graph $K_n$ (all pairs connected):}
 \[
 L = (n - 1)\II_n - (\IJ_n - \II_n) = n\II_n - \11\11^T
@@ -991,10 +1051,11 @@ L\bx = n\bx - \11(\11^T \bx) = n\bx
 \]
 \item Spectrum of $K_n$: $\lambda_1 = 0$ and $\lambda_2 = \cdots = \lambda_n = n$
 \end{itemize}
-\end{column}
-\end{columns}
 \vfill
-For every simple graph $G$ on $n$ vertices, its eigenvalues lie between these two extremes: $0 = \lambda_1 \le \lambda_2 \le \cdots \le \lambda_n \le n$
+For every simple graph $G$ on $n$ vertices, its eigenvalues lie between these two extremes:
+\[
+0 = \lambda_1 \le \lambda_2 \le \cdots \le \lambda_n \le n
+\]
 \end{frame}
 
 
@@ -1048,10 +1109,8 @@ x_i = \begin{cases}
 \end{cases}
 \]
 \vfill
-\begin{columns}[c]
-\begin{column}{0.48\textwidth}
-\centering
-\begin{tikzpicture}[scale=1.05]
+\begin{center}
+\begin{tikzpicture}[scale=1.15]
 \node[circle, draw=blue!80!black, very thick, fill=blue!15, minimum size=7mm, font=\small\bfseries] (1) at (0, 1.3) {$+1$};
 \node[circle, draw=blue!80!black, very thick, fill=blue!15, minimum size=7mm, font=\small\bfseries] (2) at (0, 0) {$+1$};
 \node[circle, draw=blue!80!black, very thick, fill=blue!15, minimum size=7mm, font=\small\bfseries] (3) at (1.3, 0.65) {$+1$};
@@ -1065,8 +1124,13 @@ x_i = \begin{cases}
 \node[below, font=\footnotesize, text=blue!80!black] at (0.5, -0.3) {$S = \{1, 2, 3\}$};
 \node[below, font=\footnotesize, text=red!80!black] at (3.5, -0.3) {$\bar{S} = \{4, 5, 6\}$};
 \end{tikzpicture}
-\end{column}
-\begin{column}{0.52\textwidth}
+\end{center}
+\end{frame}
+
+
+\begin{frame}{Cut size as a Laplacian quadratic form}
+Evaluating the Laplacian quadratic form on a $\pm 1$ indicator vector recovers the cut size up to a factor of $4$:
+\vfill
 \begin{importantproposition}[Cut size as a quadratic form]
 \label{prop:cut-quadratic-form}
 For any partition $(S, \bar{S})$ of $V$ with indicator vector $\bx \in \{-1, +1\}^n$,
@@ -1078,8 +1142,8 @@ or equivalently,
 \mathsf{cut}(S, \bar{S}) = \frac{1}{4}\bx^T L \bx
 \]
 \end{importantproposition}
-\end{column}
-\end{columns}
+\vfill
+Minimising the graph cut is therefore equivalent to minimising the Dirichlet energy $\bx^T L \bx$ over discrete vectors $\bx \in \{-1, +1\}^n$
 \end{frame}
 
 
@@ -1108,8 +1172,11 @@ Substituting into Theorem~\ref{th:laplacian-quadratic-form} ($\bx^T L \bx = \sum
 \end{frame}
 
 
-\begin{frame}{Example: comparing two cuts on the 4-vertex paw graph}
-Recall the 4-vertex paw graph with Laplacian
+\begin{frame}{Example: Partition A on the 4-vertex paw graph}
+Recall the 4-vertex paw graph with Laplacian $L$ and evaluate $\mathsf{cut}(S, \bar{S}) = (\bx^T L \bx)/4$ on Partition A:
+\vfill
+\begin{columns}[c]
+\begin{column}{0.44\textwidth}
 \[
 L = \begin{pmatrix}
 2 & -1 & -1 & 0 \\
@@ -1118,10 +1185,8 @@ L = \begin{pmatrix}
 0 & 0 & -1 & 1
 \end{pmatrix}
 \]
-Let us compare two candidate partitions using $\mathsf{cut}(S, \bar{S}) = \frac{1}{4}\bx^T L \bx$:
-\vfill
-\begin{columns}[t]
-\begin{column}{0.48\textwidth}
+\end{column}
+\begin{column}{0.56\textwidth}
 \textbf{Partition A:} $S_1 = \{1, 2, 3\}$, $\bar{S}_1 = \{4\}$
 \[
 \bx^{(1)} = (1, 1, 1, -1)^T
@@ -1133,7 +1198,13 @@ L\bx^{(1)} = \begin{pmatrix} 0 \\ 0 \\ 2 \\ -2 \end{pmatrix} \implies (\bx^{(1)}
 \mathsf{cut}(S_1, \bar{S}_1) = \frac{4}{4} = 1 \quad (\text{only edge } \{3, 4\})
 \]
 \end{column}
-\begin{column}{0.48\textwidth}
+\end{columns}
+\end{frame}
+
+
+\begin{frame}{Example (continued): Partition B on the 4-vertex paw graph}
+Now evaluate a less cohesive partition on the same 4-vertex paw graph:
+\vfill
 \textbf{Partition B:} $S_2 = \{1, 3\}$, $\bar{S}_2 = \{2, 4\}$
 \[
 \bx^{(2)} = (1, -1, 1, -1)^T
@@ -1142,10 +1213,10 @@ L\bx^{(1)} = \begin{pmatrix} 0 \\ 0 \\ 2 \\ -2 \end{pmatrix} \implies (\bx^{(1)}
 L\bx^{(2)} = \begin{pmatrix} 2 \\ -4 \\ 4 \\ -2 \end{pmatrix} \implies (\bx^{(2)})^T L \bx^{(2)} = 12
 \]
 \[
-\mathsf{cut}(S_2, \bar{S}_2) = \frac{12}{4} = 3 \quad (\text{edges } \{1,2\}, \{2,3\}, \{3,4\})
+\mathsf{cut}(S_2, \bar{S}_2) = \frac{12}{4} = 3 \quad (\text{edges } \{1,2\}, \{2,3\} \text{ and } \{3,4\})
 \]
-\end{column}
-\end{columns}
+\vfill
+Partition A cuts only $1$ edge whereas Partition B cuts $3$ edges, matching the quadratic form values $4$ vs $12$
 \end{frame}
 
 
@@ -1279,7 +1350,8 @@ Let $G = (V, E)$ be an undirected graph on $n$ vertices with Laplacian eigenvalu
 
 
 \begin{frame}{The 2-way spectral partitioning algorithm}
-How do we turn the continuous Fiedler vector $\bv_2 = (v_{21}, \ldots, v_{2n})^T \in \IR^n$ back into a discrete partition $(S, \bar{S})$? We round its entries by their signs!
+How do we turn the continuous Fiedler vector $\bv_2 = (v_{21}, \ldots, v_{2n})^T \in \IR^n$ back into a discrete partition $(S, \bar{S})$?
+We round its entries by their signs!
 \vfill
 \begin{block}{Algorithm: 2-way unnormalised spectral clustering (Fiedler bisection)}
 \textbf{Input:} Undirected graph $G = (V, E)$ with symmetric adjacency/similarity matrix $A \in \M_n(\IRplus)$
@@ -1290,11 +1362,17 @@ How do we turn the continuous Fiedler vector $\bv_2 = (v_{21}, \ldots, v_{2n})^T
 \[
 S = \{i \in V : v_{2i} \ge 0\}, \qquad \bar{S} = \{i \in V : v_{2i} < 0\}
 \]
-(Alternatively, split at the median of $\bv_2$ if an exact $n/2 - n/2$ split is required)
 \end{enumerate}
 \end{block}
+\end{frame}
+
+
+\begin{frame}{Practical notes on Fiedler bisection}
+\begin{itemize}
+\item \textbf{Sign ambiguity of eigenvectors:} Because $-\bv_2$ is also a Fiedler vector, flipping the sign of $\bv_2$ simply swaps the labels $S \leftrightarrow \bar{S}$, which defines the \emph{exact same} partition of $V$
 \vfill
-Note: Because $-\bv_2$ is also a Fiedler vector, flipping the sign of $\bv_2$ simply swaps the labels $S \leftrightarrow \bar{S}$, which defines the \emph{exact same} partition of $V$
+\item \textbf{Threshold choice:} Splitting at $0$ is the default rule; if an exact $n/2$ vs $n/2$ split is required, one can instead split at the median entry of $\bv_2$
+\end{itemize}
 \end{frame}
 
 
@@ -1355,13 +1433,14 @@ Consider the 4-vertex path graph $P_4$:
 \end{center}
 \vfill
 \textbf{Step 1 -- Degree, adjacency and Laplacian matrices:}
+{\setlength{\arraycolsep}{3.5pt}
 \[
 D = \begin{pmatrix}
 1 & 0 & 0 & 0 \\
 0 & 2 & 0 & 0 \\
 0 & 0 & 2 & 0 \\
 0 & 0 & 0 & 1
-\end{pmatrix}, \quad
+\end{pmatrix}, \;\;
 A = \begin{pmatrix}
 0 & 1 & 0 & 0 \\
 1 & 0 & 1 & 0 \\
@@ -1375,16 +1454,21 @@ L = D - A = \begin{pmatrix}
 0 & 0 & -1 & 1
 \end{pmatrix}
 \]
+}
 \end{frame}
 
 
-\begin{frame}{Example 1 (continued): Fiedler vector and cut of $P_4$}
+\begin{frame}{Example 1 (continued): verifying the Fiedler eigenpair of $P_4$}
 \textbf{Step 2 -- Verify the Fiedler eigenpair $(\lambda_2, \bv_2)$:}
-Claim: $\lambda_2 = 2 - \sqrt{2} \approx 0.586$ and $\bv_2 = \begin{pmatrix} 1, & \sqrt{2}-1, & 1-\sqrt{2}, & -1 \end{pmatrix}^T \approx \begin{pmatrix} 1, & 0.414, & -0.414, & -1 \end{pmatrix}^T$
-\vfill
-Let us verify $L\bv_2 = \lambda_2 \bv_2$ directly:
+Claim: $\lambda_2 = 2 - \sqrt{2} \approx 0.586$ and
 \[
-L\bv_2 = \begin{pmatrix}
+\bv_2 = \begin{pmatrix} 1, & \sqrt{2}-1, & 1-\sqrt{2}, & -1 \end{pmatrix}^T
+\approx \begin{pmatrix} 1, & 0.414, & -0.414, & -1 \end{pmatrix}^T
+\]
+\vfill
+Checking $L\bv_2 = \lambda_2 \bv_2$ directly:
+\begin{align*}
+L\bv_2 &= \begin{pmatrix}
 1 & -1 & 0 & 0 \\
 -1 & 2 & -1 & 0 \\
 0 & -1 & 2 & -1 \\
@@ -1398,18 +1482,25 @@ L\bv_2 = \begin{pmatrix}
 3\sqrt{2} - 4 \\
 4 - 3\sqrt{2} \\
 \sqrt{2} - 2
-\end{pmatrix}
-= (2 - \sqrt{2})
+\end{pmatrix} \\
+&= (2 - \sqrt{2})
 \begin{pmatrix}
 1 \\ \sqrt{2}-1 \\ 1-\sqrt{2} \\ -1
 \end{pmatrix} = \lambda_2 \bv_2
-\]
-(since $(2-\sqrt{2})(\sqrt{2}-1) = 3\sqrt{2}-4$). Notice also that $\11^T \bv_2 = 1 + (\sqrt{2}-1) + (1-\sqrt{2}) - 1 = 0$
+\end{align*}
+(since $(2-\sqrt{2})(\sqrt{2}-1) = 3\sqrt{2}-4$)
+\end{frame}
+
+
+\begin{frame}{Example 1 (continued): partitioning $P_4$ by the signs of $\bv_2$}
+Notice first that $\11^T \bv_2 = 1 + (\sqrt{2}-1) + (1-\sqrt{2}) - 1 = 0$, so $\bv_2 \perp \11$ as required
 \vfill
 \textbf{Step 3 -- Partition by the signs of $\bv_2$:}
 \begin{itemize}
 \item $v_{21} = 1 > 0$ and $v_{22} = \sqrt{2}-1 \approx 0.414 > 0 \implies S = \{1, 2\}$
+\vfill
 \item $v_{23} = 1-\sqrt{2} \approx -0.414 < 0$ and $v_{24} = -1 < 0 \implies \bar{S} = \{3, 4\}$
+\vfill
 \item The spectral cut severing the middle edge $\{2, 3\}$ has $\mathsf{cut}(S, \bar{S}) = 1$
 \end{itemize}
 \end{frame}
@@ -1478,35 +1569,49 @@ Splitting by sign ($\ge 0$ vs $< 0$) gives $S = \{1, 2, 3\}$ and $\bar{S} = \{4,
 \end{frame}
 
 
-\begin{frame}[fragile]{Computing the barbell Fiedler vector in R}
-We can build the barbell Laplacian in R (either from $D - A$ or with \code{igraph::laplacian\_matrix}) and inspect its eigenvalues and Fiedler vector:
+\begin{frame}[fragile]{Building the barbell Laplacian in R}
+We can build the barbell Laplacian in R from $D - A$ (or with \code{igraph::laplacian\_matrix}):
 \vfill
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hldef{A_barbell} \hlkwb{=} \hlkwd{matrix}\hldef{(}\hlkwd{c}\hldef{(}
-  \hlnum{0}\hldef{,} \hlnum{1}\hldef{,} \hlnum{1}\hldef{,} \hlnum{0}\hldef{,} \hlnum{0}\hldef{,} \hlnum{0}\hldef{,}
-  \hlnum{1}\hldef{,} \hlnum{0}\hldef{,} \hlnum{1}\hldef{,} \hlnum{0}\hldef{,} \hlnum{0}\hldef{,} \hlnum{0}\hldef{,}
-  \hlnum{1}\hldef{,} \hlnum{1}\hldef{,} \hlnum{0}\hldef{,} \hlnum{1}\hldef{,} \hlnum{0}\hldef{,} \hlnum{0}\hldef{,}
-  \hlnum{0}\hldef{,} \hlnum{0}\hldef{,} \hlnum{1}\hldef{,} \hlnum{0}\hldef{,} \hlnum{1}\hldef{,} \hlnum{1}\hldef{,}
-  \hlnum{0}\hldef{,} \hlnum{0}\hldef{,} \hlnum{0}\hldef{,} \hlnum{1}\hldef{,} \hlnum{0}\hldef{,} \hlnum{1}\hldef{,}
-  \hlnum{0}\hldef{,} \hlnum{0}\hldef{,} \hlnum{0}\hldef{,} \hlnum{1}\hldef{,} \hlnum{1}\hldef{,} \hlnum{0}
-\hldef{),} \hlkwc{nrow} \hldef{=} \hlnum{6}\hldef{,} \hlkwc{byrow} \hldef{=} \hlnum{TRUE}\hldef{)}
-\hldef{L_barbell} \hlkwb{=} \hlkwd{diag}\hldef{(}\hlkwd{rowSums}\hldef{(A_barbell))} \hlopt{-} \hldef{A_barbell}
-\hldef{ev_b} \hlkwb{=} \hlkwd{eigen}\hldef{(L_barbell,} \hlkwc{symmetric} \hldef{=} \hlnum{TRUE}\hldef{)}
-\hlkwd{round}\hldef{(}\hlkwd{rev}\hldef{(ev_b}\hlopt{$}\hldef{values),} \hlnum{4}\hldef{)}          \hlcom{# eigenvalues in ascending order}
+\hlstd{A_barbell} \hlkwb{=} \hlkwd{matrix}\hlstd{(}\hlkwd{c}\hlstd{(}
+  \hlnum{0}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{0}\hlstd{,} \hlnum{0}\hlstd{,} \hlnum{0}\hlstd{,}
+  \hlnum{1}\hlstd{,} \hlnum{0}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{0}\hlstd{,} \hlnum{0}\hlstd{,} \hlnum{0}\hlstd{,}
+  \hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{0}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{0}\hlstd{,} \hlnum{0}\hlstd{,}
+  \hlnum{0}\hlstd{,} \hlnum{0}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{0}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,}
+  \hlnum{0}\hlstd{,} \hlnum{0}\hlstd{,} \hlnum{0}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{0}\hlstd{,} \hlnum{1}\hlstd{,}
+  \hlnum{0}\hlstd{,} \hlnum{0}\hlstd{,} \hlnum{0}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{0}
+\hlstd{),} \hlkwc{nrow} \hlstd{=} \hlnum{6}\hlstd{,} \hlkwc{byrow} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\hlstd{L_barbell} \hlkwb{=} \hlkwd{diag}\hlstd{(}\hlkwd{rowSums}\hlstd{(A_barbell))} \hlopt{-} \hlstd{A_barbell}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+\begin{frame}[fragile]{Barbell eigenvalues and Fiedler vector in R}
+Computing the spectrum and unit Fiedler vector $\bv_2$ of \code{L\_barbell}:
+\vfill
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{ev_b} \hlkwb{=} \hlkwd{eigen}\hlstd{(L_barbell,} \hlkwc{symmetric} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\hlkwd{round}\hlstd{(}\hlkwd{rev}\hlstd{(ev_b}\hlopt{$}\hlstd{values),} \hlnum{4}\hlstd{)}          \hlcom{# eigenvalues in ascending order}
 \end{alltt}
 \begin{verbatim}
 ## [1] 0.0000 0.4384 3.0000 3.0000 3.0000 4.5616
 \end{verbatim}
 \begin{alltt}
-\hlkwd{round}\hldef{(ev_b}\hlopt{$}\hldef{vectors[,} \hlnum{5}\hldef{],} \hlnum{4}\hldef{)}         \hlcom{# unit Fiedler vector v_2}
+\hlkwd{round}\hlstd{(ev_b}\hlopt{$}\hlstd{vectors[,} \hlnum{5}\hlstd{],} \hlnum{4}\hlstd{)}         \hlcom{# unit Fiedler vector v_2}
 \end{alltt}
 \begin{verbatim}
 ## [1]  0.4647  0.4647  0.2610 -0.2610 -0.4647 -0.4647
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
+\vfill
+The signs of $\bv_2$ separate $\{1, 2, 3\}$ from $\{4, 5, 6\}$, matching our hand calculation $\lambda_2 \approx 0.4384$
 \end{frame}
 
 
@@ -1516,21 +1621,30 @@ Zachary (1977) recorded social interactions among $n = 34$ members of a universi
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hldef{G_karate} \hlkwb{=} \hlkwd{make_graph}\hldef{(}\hlsng{"Zachary"}\hldef{)}
-\hldef{L_karate} \hlkwb{=} \hlkwd{as.matrix}\hldef{(}\hlkwd{laplacian_matrix}\hldef{(G_karate))}
-\hldef{ev_k} \hlkwb{=} \hlkwd{eigen}\hldef{(L_karate,} \hlkwc{symmetric} \hldef{=} \hlnum{TRUE}\hldef{)}
-\hldef{n_k} \hlkwb{=} \hlkwd{vcount}\hldef{(G_karate)}
+\hlstd{G_karate} \hlkwb{=} \hlkwd{make_graph}\hlstd{(}\hlstr{"Zachary"}\hlstd{)}
+\hlstd{L_karate} \hlkwb{=} \hlkwd{as.matrix}\hlstd{(}\hlkwd{laplacian_matrix}\hlstd{(G_karate))}
+\hlstd{ev_k} \hlkwb{=} \hlkwd{eigen}\hlstd{(L_karate,} \hlkwc{symmetric} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\hlstd{n_k} \hlkwb{=} \hlkwd{vcount}\hlstd{(G_karate)}
 \hlcom{# Smallest three eigenvalues of L}
-\hlkwd{round}\hldef{(ev_k}\hlopt{$}\hldef{values[n_k}\hlopt{:}\hldef{(n_k} \hlopt{-} \hlnum{2}\hldef{)],} \hlnum{4}\hldef{)}
+\hlkwd{round}\hlstd{(ev_k}\hlopt{$}\hlstd{values[n_k}\hlopt{:}\hlstd{(n_k} \hlopt{-} \hlnum{2}\hlstd{)],} \hlnum{4}\hlstd{)}
 \end{alltt}
 \begin{verbatim}
 ## [1] 0.0000 0.4685 0.9092
 \end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+\begin{frame}[fragile]{Zachary's Karate club: Fiedler vector partition in R}
+Orienting the Fiedler vector $\bv_2$ so vertex $1$ is positive and tabulating the resulting bipartition:
+\vfill
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcom{# Fiedler vector v_2 (oriented so vertex 1 is positive)}
-\hldef{v2_k} \hlkwb{=} \hldef{ev_k}\hlopt{$}\hldef{vectors[, n_k} \hlopt{-} \hlnum{1}\hldef{]}
-\hlkwa{if} \hldef{(v2_k[}\hlnum{1}\hldef{]} \hlopt{<} \hlnum{0}\hldef{) v2_k} \hlkwb{=} \hlopt{-}\hldef{v2_k}
-\hlkwd{table}\hldef{(}\hlkwc{Sign_of_v2} \hldef{=} \hlkwd{ifelse}\hldef{(v2_k} \hlopt{>=} \hlnum{0}\hldef{,} \hlsng{"Group 1 (+)"}\hldef{,} \hlsng{"Group 2 (-)"}\hldef{))}
+\hlstd{v2_k} \hlkwb{=} \hlstd{ev_k}\hlopt{$}\hlstd{vectors[, n_k} \hlopt{-} \hlnum{1}\hlstd{]}
+\hlkwa{if} \hlstd{(v2_k[}\hlnum{1}\hlstd{]} \hlopt{<} \hlnum{0}\hlstd{) v2_k} \hlkwb{=} \hlopt{-}\hlstd{v2_k}
+\hlkwd{table}\hlstd{(}\hlkwc{Sign_of_v2} \hlstd{=} \hlkwd{ifelse}\hlstd{(v2_k} \hlopt{>=} \hlnum{0}\hlstd{,} \hlstr{"Group 1 (+)"}\hlstd{,} \hlstr{"Group 2 (-)"}\hlstd{))}
 \end{alltt}
 \begin{verbatim}
 ## Sign_of_v2
@@ -1553,22 +1667,32 @@ Suppose a network has $k = 3$ dense communities of $15$ vertices each ($n = 45$)
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{set.seed}\hldef{(}\hlnum{2740}\hldef{)}
-\hldef{pm} \hlkwb{=} \hlkwd{matrix}\hldef{(}\hlnum{0.03}\hldef{,} \hlkwc{nrow} \hldef{=} \hlnum{3}\hldef{,} \hlkwc{ncol} \hldef{=} \hlnum{3}\hldef{);} \hlkwd{diag}\hldef{(pm)} \hlkwb{=} \hlnum{0.70}
-\hldef{G_sbm} \hlkwb{=} \hlkwd{sample_sbm}\hldef{(}\hlnum{45}\hldef{,} \hlkwc{pref.matrix} \hldef{= pm,} \hlkwc{block.sizes} \hldef{=} \hlkwd{c}\hldef{(}\hlnum{15}\hldef{,} \hlnum{15}\hldef{,} \hlnum{15}\hldef{))}
-\hldef{L_sbm} \hlkwb{=} \hlkwd{as.matrix}\hldef{(}\hlkwd{laplacian_matrix}\hldef{(G_sbm))}
-\hldef{ev_sbm} \hlkwb{=} \hlkwd{eigen}\hldef{(L_sbm,} \hlkwc{symmetric} \hldef{=} \hlnum{TRUE}\hldef{)}
+\hlkwd{set.seed}\hlstd{(}\hlnum{2740}\hlstd{)}
+\hlstd{pm} \hlkwb{=} \hlkwd{matrix}\hlstd{(}\hlnum{0.03}\hlstd{,} \hlkwc{nrow} \hlstd{=} \hlnum{3}\hlstd{,} \hlkwc{ncol} \hlstd{=} \hlnum{3}\hlstd{);} \hlkwd{diag}\hlstd{(pm)} \hlkwb{=} \hlnum{0.70}
+\hlstd{G_sbm} \hlkwb{=} \hlkwd{sample_sbm}\hlstd{(}\hlnum{45}\hlstd{,} \hlkwc{pref.matrix} \hlstd{= pm,} \hlkwc{block.sizes} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{15}\hlstd{,} \hlnum{15}\hlstd{,} \hlnum{15}\hlstd{))}
+\hlstd{L_sbm} \hlkwb{=} \hlkwd{as.matrix}\hlstd{(}\hlkwd{laplacian_matrix}\hlstd{(G_sbm))}
+\hlstd{ev_sbm} \hlkwb{=} \hlkwd{eigen}\hlstd{(L_sbm,} \hlkwc{symmetric} \hlstd{=} \hlnum{TRUE}\hlstd{)}
 \hlcom{# Smallest 6 eigenvalues of L (note the jump after lambda_3!)}
-\hlkwd{round}\hldef{(}\hlkwd{rev}\hldef{(ev_sbm}\hlopt{$}\hldef{values)[}\hlnum{1}\hlopt{:}\hlnum{6}\hldef{],} \hlnum{3}\hldef{)}
+\hlkwd{round}\hlstd{(}\hlkwd{rev}\hlstd{(ev_sbm}\hlopt{$}\hlstd{values)[}\hlnum{1}\hlopt{:}\hlnum{6}\hlstd{],} \hlnum{3}\hlstd{)}
 \end{alltt}
 \begin{verbatim}
 ## [1] 0.000 1.203 1.500 5.418 6.865 7.517
 \end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+
+\begin{frame}[fragile]{$k$-way spectral clustering in R: embedding and $k$-means}
+Embedding the vertices with $(\bv_2, \bv_3)$ and running $k$-means ($k = 3$) recovers the three blocks exactly:
+\vfill
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcom{# Spectral embedding using v_2 and v_3, followed by k-means (k = 3)}
-\hldef{U_sbm} \hlkwb{=} \hldef{ev_sbm}\hlopt{$}\hldef{vectors[,} \hlkwd{c}\hldef{(}\hlnum{44}\hldef{,} \hlnum{43}\hldef{)]}
-\hldef{km_sbm} \hlkwb{=} \hlkwd{kmeans}\hldef{(U_sbm,} \hlkwc{centers} \hldef{=} \hlnum{3}\hldef{,} \hlkwc{nstart} \hldef{=} \hlnum{20}\hldef{)}
-\hlkwd{table}\hldef{(}\hlkwc{True_block} \hldef{=} \hlkwd{rep}\hldef{(}\hlnum{1}\hlopt{:}\hlnum{3}\hldef{,} \hlkwc{each} \hldef{=} \hlnum{15}\hldef{),} \hlkwc{Spectral_cluster} \hldef{= km_sbm}\hlopt{$}\hldef{cluster)}
+\hlstd{U_sbm} \hlkwb{=} \hlstd{ev_sbm}\hlopt{$}\hlstd{vectors[,} \hlkwd{c}\hlstd{(}\hlnum{44}\hlstd{,} \hlnum{43}\hlstd{)]}
+\hlstd{km_sbm} \hlkwb{=} \hlkwd{kmeans}\hlstd{(U_sbm,} \hlkwc{centers} \hlstd{=} \hlnum{3}\hlstd{,} \hlkwc{nstart} \hlstd{=} \hlnum{20}\hlstd{)}
+\hlkwd{table}\hlstd{(}\hlkwc{True_block} \hlstd{=} \hlkwd{rep}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{3}\hlstd{,} \hlkwc{each} \hlstd{=} \hlnum{15}\hlstd{),}
+      \hlkwc{Spectral_cluster} \hlstd{= km_sbm}\hlopt{$}\hlstd{cluster)}
 \end{alltt}
 \begin{verbatim}
 ##           Spectral_cluster
