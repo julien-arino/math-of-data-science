@@ -2,7 +2,7 @@
 
 % Set lecture number for later use
 <<set-lecture-number,echo=FALSE>>=
-lecture_number = "U11"
+lecture_number = "U12"
 @
 
 % Part common to all the lectures
@@ -32,7 +32,7 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 \begin{document}
 
 % Set up cross-references and counter persistence
-\setcounter{theorem}{166}
+\setcounter{theorem}{181}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

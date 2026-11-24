@@ -2,7 +2,7 @@
 
 % Set lecture number for later use
 <<set-lecture-number,echo=FALSE>>=
-lecture_number = "U12"
+lecture_number = "U11"
 @
 
 % Part common to all the lectures
@@ -27,7 +27,7 @@ cat(input_setup)
 \begin{document}
 
 % Set up cross-references and counter persistence
-\setcounter{theorem}{179}
+\setcounter{theorem}{169}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

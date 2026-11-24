@@ -1,5 +1,5 @@
 ## ----set-lecture-number,echo=FALSE--------------------------------------------
-lecture_number = "U12"
+lecture_number = "U11"
 
 
 ## ----set-options,echo=FALSE,warning=FALSE,message=FALSE-----------------------
