@@ -862,7 +862,7 @@ form an orthogonal basis of $\nullspace(L)$
 \end{frame}
 
 
-\begin{frame}[red]{Proof of Theorem~\ref{th:zero-eigenvalues-components} -- Part 1: connected graph ($k = 1$)}
+\begin{frame}[importantcolour]{Proof of Theorem~\ref{th:zero-eigenvalues-components} -- Part 1: connected graph ($k = 1$)}
 Suppose first that $G$ is connected ($k = 1$). We must show that $\nullspace(L) = \Span\{\11\}$, so $\dim(\nullspace(L)) = 1$
 \vfill
 \begin{enumerate}
@@ -883,7 +883,7 @@ Suppose first that $G$ is connected ($k = 1$). We must show that $\nullspace(L) 
 \end{frame}
 
 
-\begin{frame}[red]{Proof of Theorem~\ref{th:zero-eigenvalues-components} -- Part 2 ($k \ge 2$, block form)}
+\begin{frame}[importantcolour]{Proof of Theorem~\ref{th:zero-eigenvalues-components} -- Part 2 ($k \ge 2$, block form)}
 Now suppose $G$ has $k$ connected components $C_1, \ldots, C_k$.
 Reorder the vertices so that those in $C_1$ come first, followed by $C_2$, \ldots, $C_k$
 \vfill
@@ -904,7 +904,7 @@ where each $L_r$ is the Laplacian of the connected subgraph on $C_r$
 \end{frame}
 
 
-\begin{frame}[red]{Proof of Theorem~\ref{th:zero-eigenvalues-components} -- Part 2 ($k \ge 2$, basis)}
+\begin{frame}[importantcolour]{Proof of Theorem~\ref{th:zero-eigenvalues-components} -- Part 2 ($k \ge 2$, basis)}
 \begin{enumerate}
 \setcounter{enumi}{2}
 \item By Part 1 applied to each connected component $C_r$, $L_r \bx^{(r)} = \b0 \iff \bx^{(r)} = c_r \11_{|C_r|}$, which in $\IR^n$ means
@@ -1111,7 +1111,7 @@ Minimising the graph cut is therefore equivalent to minimising the Dirichlet ene
 \end{frame}
 
 
-\begin{frame}[red]{Proof of Proposition~\ref{prop:cut-quadratic-form} ($\bx^T L \bx = 4\,\mathsf{cut}(S, \bar{S})$)}
+\begin{frame}[importantcolour]{Proof of Proposition~\ref{prop:cut-quadratic-form} ($\bx^T L \bx = 4\,\mathsf{cut}(S, \bar{S})$)}
 Let $\bx \in \{-1, +1\}^n$ be the cut indicator vector for $(S, \bar{S})$. For any edge $\{i, j\} \in E$, look at the squared difference $(x_i - x_j)^2$:
 \vfill
 \begin{itemize}
@@ -1274,7 +1274,7 @@ In particular, if we scale $\bv_2$ so that $\|\bx\|_2^2 = n$, the optimal contin
 \end{frame}
 
 
-\begin{frame}[red]{Proof of Theorem~\ref{th:rayleigh-fiedler}}
+\begin{frame}[importantcolour]{Proof of Theorem~\ref{th:rayleigh-fiedler}}
 Let $\{\bv_1, \bv_2, \ldots, \bv_n\}$ be an orthonormal basis of eigenvectors of $L$ with $L\bv_k = \lambda_k \bv_k$, where $0 = \lambda_1 \le \lambda_2 \le \cdots \le \lambda_n$ and $\bv_1 = \frac{1}{\sqrt{n}}\11$
 \vfill
 \begin{enumerate}
