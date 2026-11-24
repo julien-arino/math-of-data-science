@@ -613,7 +613,7 @@ Reversing the orientation of any edge $e_k$ multiplies row $k$ of $B$ by $-1$, w
 From $L = D - A$ and $L = B^T B$, several useful matrix identities follow immediately:
 \vfill
 \begin{enumerate}
-\item \textbf{Trace of $L$:} By the handshaking lemma, the sum of the eigenvalues of $L$ equals twice the total edge weight:
+\item \textbf{Trace of $L$:} Since $A$ is symmetric with zero diagonal, each edge $\{i, j\} \in E$ contributes $a_{ij}$ to both $d_i$ and $d_j$, so the sum of the eigenvalues of $L$ equals twice the total edge weight:
 \[
 \sum_{k=1}^n \lambda_k = \tr(L) = \sum_{i=1}^n d_i = 2 \sum_{\{i, j\} \in E} a_{ij} \qquad (= 2|E| \text{ for an unweighted graph})
 \]
