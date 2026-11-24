@@ -66,7 +66,7 @@ When a matrix $M \in \M_n(\IR)$ is symmetric ($M^T = M$), the spectral theorem g
 \begin{enumerate}
 \item \textbf{Undirected graphs and similarity graphs:} turning point clouds $\bx_1, \ldots, \bx_n \in \IR^p$ into symmetric adjacency and weight matrices
 \vfill
-\item \textbf{The combinatorial graph Laplacian $L = D - A$:} degree matrix, incidence factorisation $L = B^T B$ and the quadratic form $\bx^T L \bx = \sum_{\{i,j\}\in E} a_{ij}(x_i - x_j)^2$
+\item \textbf{The Laplacian matrix $L = D - A$:} degree matrix, incidence factorisation $L = B^T B$ and the quadratic form $\bx^T L \bx = \sum_{\{i,j\}\in E} a_{ij}(x_i - x_j)^2$
 \vfill
 \item \textbf{Spectral properties of $L$:} positive semi-definiteness, $\lambda_1 = 0$ with eigenvector $\11$ and why the multiplicity of $\lambda = 0$ counts connected components
 \vfill
@@ -371,7 +371,7 @@ points(X[, 1], X[, 2],
 
 %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%
-\SSsection{The combinatorial graph Laplacian}
+\SSsection{The Laplacian matrix}
 
 \SSsubsection{Definition and basic examples}
 
@@ -394,9 +394,10 @@ d_1 & 0 & \cdots & 0 \\
 \end{frame}
 
 
-\begin{frame}{The combinatorial graph Laplacian}
-\begin{importantdefinition}[Combinatorial graph Laplacian]
-Let $G = (V, E)$ be an undirected graph on $n$ vertices with degree matrix $D$ and adjacency (or weight) matrix $A$. The \defword{combinatorial graph Laplacian} (or simply \defword{Laplacian matrix}) of $G$ is the $n \times n$ matrix
+\begin{frame}{The Laplacian matrix}
+\begin{importantdefinition}[Laplacian matrix]
+Let $G = (V, E)$ be an undirected graph on $n$ vertices with degree matrix $D$ and adjacency (or weight) matrix $A$.
+The \defword{Laplacian matrix} (also called the combinatorial graph Laplacian) of $G$ is the $n \times n$ matrix
 \[
 L = D - A
 \]
@@ -667,7 +668,7 @@ Multiplying on the left by $\bx^T$ produces the fundamental identity of spectral
 \begin{frame}{The Laplacian quadratic form}
 \begin{importanttheorem}[Laplacian quadratic form]
 \label{th:laplacian-quadratic-form}
-Let $G = (V, E)$ be an undirected graph on $n$ vertices with symmetric weight matrix $A = [a_{ij}]$ ($a_{ij} = a_{ji} \ge 0$) and combinatorial Laplacian $L = D - A$. Then for every vector $\bx = (x_1, \ldots, x_n)^T \in \IR^n$,
+Let $G = (V, E)$ be an undirected graph on $n$ vertices with symmetric weight matrix $A = [a_{ij}]$ ($a_{ij} = a_{ji} \ge 0$) and Laplacian matrix $L = D - A$. Then for every vector $\bx = (x_1, \ldots, x_n)^T \in \IR^n$,
 \[
 \bx^T L \bx = \frac{1}{2} \sum_{i=1}^n \sum_{j=1}^n a_{ij}(x_i - x_j)^2 = \sum_{\{i, j\} \in E} a_{ij}(x_i - x_j)^2
 \]
@@ -777,7 +778,7 @@ Adjacent vertices $1$ and $2$ jump from $+1$ to $-1$, producing a much larger en
 \begin{frame}{Fundamental spectral properties of the Laplacian}
 \begin{importanttheorem}[Fundamental spectral properties of $L$]
 \label{th:laplacian-spectrum}
-Let $G = (V, E)$ be an undirected graph on $n$ vertices with symmetric nonnegative weight matrix $A = [a_{ij}]$ and combinatorial Laplacian $L = D - A$. Then:
+Let $G = (V, E)$ be an undirected graph on $n$ vertices with symmetric nonnegative weight matrix $A = [a_{ij}]$ and Laplacian matrix $L = D - A$. Then:
 \begin{enumerate}
 \item $L$ is real and symmetric ($L^T = L$), so it has $n$ real eigenvalues and an orthonormal basis of real eigenvectors $\{\bv_1, \bv_2, \ldots, \bv_n\}$
 \item $L$ is \defword{positive semi-definite} ($\bx^T L \bx \ge 0$ for all $\bx \in \IR^n$), so all eigenvalues of $L$ are nonnegative and can be ordered in ascending order:
@@ -1664,7 +1665,7 @@ points(km_sbm$centers, pch = 4, cex = 2, lwd = 3, col = "black")
 
 \begin{frame}{Summary of Unit 10}
 \begin{itemize}
-\item For an undirected graph $G = (V, E)$ with symmetric adjacency/weight matrix $A$ and degree matrix $D = \diag(A\11)$, the \textbf{combinatorial Laplacian} is $L = D - A = B^T B$
+\item For an undirected graph $G = (V, E)$ with symmetric adjacency/weight matrix $A$ and degree matrix $D = \diag(A\11)$, the \textbf{Laplacian matrix} is $L = D - A = B^T B$
 \vfill
 \item The \textbf{Laplacian quadratic form} measures smoothness across edges:
 \[
