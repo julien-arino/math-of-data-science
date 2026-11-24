@@ -701,7 +701,7 @@ In particular, for an unweighted simple graph ($a_{ij} \in \{0, 1\}$),
 \end{frame}
 
 
-\begin{frame}[red]{Proof of Theorem~\ref{th:laplacian-quadratic-form} (Method 1 -- step 1)}
+\begin{frame}{Proof of Theorem~\ref{th:laplacian-quadratic-form} (Method 1 -- step 1)}
 Let $\bx = (x_1, \ldots, x_n)^T \in \IR^n$.
 Using $L = D - A$ and $d_i = \sum_{j=1}^n a_{ij}$, we expand
 \begin{align*}
@@ -716,7 +716,7 @@ By symmetry $a_{ij} = a_{ji}$, relabelling dummy indices $i \leftrightarrow j$ g
 \end{frame}
 
 
-\begin{frame}[red]{Proof of Theorem~\ref{th:laplacian-quadratic-form} (Method 1 -- step 2)}
+\begin{frame}{Proof of Theorem~\ref{th:laplacian-quadratic-form} (Method 1 -- step 2)}
 Splitting the first sum into two equal halves using the symmetry identity yields
 \begin{align*}
 \bx^T L \bx &= \frac{1}{2}\sum_{i=1}^n \sum_{j=1}^n a_{ij} x_i^2 - \sum_{i=1}^n \sum_{j=1}^n a_{ij} x_i x_j + \frac{1}{2}\sum_{i=1}^n \sum_{j=1}^n a_{ij} x_j^2 \\
@@ -728,7 +728,7 @@ Since each undirected edge $\{i, j\} \in E$ appears twice in the double sum (as 
 \end{frame}
 
 
-\begin{frame}[red]{Proof of Theorem~\ref{th:laplacian-quadratic-form} (Method 2: via the incidence matrix)}
+\begin{frame}{Proof of Theorem~\ref{th:laplacian-quadratic-form} (Method 2: via the incidence matrix)}
 For an unweighted graph $G = (V, E)$ with $m = |E|$ edges, Proposition~\ref{prop:incidence-laplacian} gives $L = B^T B$, where $B \in \M_{mn}$ is the oriented incidence matrix
 \vfill
 For any $\bx \in \IR^n$, the $k$th entry of $B\bx \in \IR^m$ corresponding to oriented edge $e_k = (i, j)$ is
