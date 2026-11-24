@@ -421,7 +421,7 @@ where $\11_n = (1, 1, \ldots, 1)^T \in \IR^n$ is the all-ones column vector
 \end{frame}
 
 
-\begin{frame}{Rank-1 bias broadcasting}
+\begin{frame}{Rank-1 outer product for bias replication (broadcasting)}
 Why does $\11_n \big(\bb^{(\ell)}\big)^T$ appear in Definition~\ref{def:mlp-batch-layer}?
 \vfill
 Because the outer product of $\11_n \in \M_{n1}$ and $\big(\bb^{(\ell)}\big)^T \in \M_{1, p_\ell}$ is a \defword{rank-1 matrix} that replicates the bias row vector across all $n$ observations:
@@ -983,7 +983,7 @@ Notice a subtle and important distinction in Theorem~\ref{th:baldi-hornik}:
 \begin{itemize}
 \item \textbf{What is unique}: The product $P = W_1 W_2 = V_k V_k^T \in \M_p$ is the unique orthogonal projector onto the $k$-dimensional principal subspace $\S_k = \Span\{\bv_1, \ldots, \bv_k\}$ (satisfying $P^2 = P$ and $P^T = P$)
 \vfill
-\item \textbf{What is not unique (gauge freedom)}: Because $W_1 = V_k C$ and $W_2 = C^{-1} V_k^T$ give the exact same product $W_1 W_2 = V_k V_k^T$ for \textbf{any} invertible $C \in \GL_k(\IR)$, a linear autoencoder without extra constraints learns a basis for the principal subspace $\S_k$, not necessarily the orthogonal principal axes $V_k$ themselves
+\item \textbf{What is not unique (change of basis, also called gauge freedom)}: Because $W_1 = V_k C$ and $W_2 = C^{-1} V_k^T$ give the exact same product $W_1 W_2 = V_k V_k^T$ for \textbf{any} invertible $C \in \GL_k(\IR)$, a linear autoencoder without extra constraints learns a basis for the principal subspace $\S_k$, not necessarily the orthogonal principal axes $V_k$ themselves
 \vfill
 \item \textbf{PCA corresponds to choosing $C = \II_k$}: Setting $W_1 = V_k$ and $W_2 = V_k^T$ imposes the orthogonality constraint $W_1^T W_1 = \II_k$ and ties the decoder weights to the transpose of the encoder ($W_2 = W_1^T$)
 \end{itemize}
@@ -1035,7 +1035,7 @@ Consider the centred $4 \times 2$ data matrix $\widetilde{X} \in \M_{42}$ and bo
 \end{frame}
 
 
-\begin{frame}{Example by hand: gauge freedom and unique projector}
+\begin{frame}{Example by hand: basis non-uniqueness and unique projector}
 Compare the PCA choice ($C = 1$) with any rescaled encoder-decoder pair (e.g., $c = 2$):
 \vfill
 \begin{itemize}
@@ -1571,7 +1571,7 @@ legend("topright", legend = c("Faction 1", "Faction 2", expression(pi^T * X[0]))
 \textbf{Architecture} & \textbf{Layer operator on $X \in \M_{np}$} & \textbf{Core linear algebra mechanism} \\
 \midrule
 Single neuron & $\sigma\big(X\bw + b\11_n\big)$ & Affine hyperplane $\bw^T\bx + b = 0$ (Unit 06) \\
-MLP layer & $\sigma\big(X W^T + \11_n \bb^T\big)$ & Right-multiplication + rank-1 bias broadcast \\
+MLP layer & $\sigma\big(X W^T + \11_n \bb^T\big)$ & Right-multiplication + rank-1 bias replication \\
 Deep linear net & $X \big(W^{(L)}\cdots W^{(1)}\big)^T + \11_n \bb^T$ & Collapses to 1 matrix; $\rank(W) \le \min_\ell p_\ell$ \\
 Linear autoencoder & $\hat{X} = \widetilde{X} W_1 W_2 \;\; (k < p)$ & Optimal $W_1 W_2 = V_k V_k^T$ is PCA (Units 04--05) \\
 GCN layer & $\sigma\big(\tilde{D}^{-1}\tilde{A} X W\big)$ & Left smoothing $\times$ right feature projection \\

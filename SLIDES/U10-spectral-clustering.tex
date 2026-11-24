@@ -247,7 +247,7 @@ Given observations $\bx_1, \ldots, \bx_n \in \IR^p$ with pairwise distances $d(\
 \[
 w_{ij} = \exp\!\left(-\frac{\|\bx_i - \bx_j\|_2^2}{2\sigma^2}\right), \qquad w_{ii} = 0
 \]
-where $\sigma > 0$ is the bandwidth (scale) parameter
+where $\sigma > 0$ is the scale parameter (also called the bandwidth)
 \end{enumerate}
 \end{frame}
 
@@ -285,7 +285,7 @@ The threshold $\varepsilon = 1.5$ connects $\{1, 2\}$ and $\{3, 4\}$ while sever
 
 
 \begin{frame}{Example (continued): Gaussian similarity graph for the 4 points}
-Using the same pairwise distances $\Delta$ with bandwidth $\sigma = 1$, the \textbf{Gaussian similarity matrix} $w_{ij} = \exp(-\|\bx_i - \bx_j\|_2^2 / 2)$ ($i \neq j$) is
+Using the same pairwise distances $\Delta$ with scale parameter $\sigma = 1$, the \textbf{Gaussian similarity matrix} $w_{ij} = \exp(-\|\bx_i - \bx_j\|_2^2 / 2)$ ($i \neq j$) is
 \[
 W \approx \begin{pmatrix}
 0 & 0.607 & 0.011 & 0.007 \\
