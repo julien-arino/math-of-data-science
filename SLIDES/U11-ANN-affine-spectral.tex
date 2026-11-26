@@ -13,10 +13,10 @@
 
 \definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
 \newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
-\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlsng}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
 \newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
 \newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
-\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hldef}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
 \newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
 \newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
 \newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
@@ -640,21 +640,21 @@ Look at the rows of the hidden activation matrix $A^{(1)}$ as coordinates in the
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{X} \hlkwb{=} \hlkwd{matrix}\hlstd{(}\hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,} \hlnum{0}\hlstd{,}  \hlnum{1}\hlstd{,} \hlnum{0}\hlstd{,}  \hlnum{0}\hlstd{,} \hlnum{1}\hlstd{,}  \hlnum{1}\hlstd{,} \hlnum{1}\hlstd{),} \hlkwc{nrow} \hlstd{=} \hlnum{4}\hlstd{,} \hlkwc{byrow} \hlstd{=} \hlnum{TRUE}\hlstd{)}
-\hlstd{W1} \hlkwb{=} \hlkwd{matrix}\hlstd{(}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{1}\hlstd{,}  \hlnum{1}\hlstd{,} \hlnum{1}\hlstd{),} \hlkwc{nrow} \hlstd{=} \hlnum{2}\hlstd{,} \hlkwc{byrow} \hlstd{=} \hlnum{TRUE}\hlstd{)}
-\hlstd{b1} \hlkwb{=} \hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,} \hlopt{-}\hlnum{1}\hlstd{);  one_n} \hlkwb{=} \hlkwd{rep}\hlstd{(}\hlnum{1}\hlstd{,} \hlkwd{nrow}\hlstd{(X))}
-\hlstd{Z1} \hlkwb{=} \hlstd{X} \hlopt{%*%} \hlkwd{t}\hlstd{(W1)} \hlopt{+} \hlstd{one_n} \hlopt{%*%} \hlkwd{t}\hlstd{(b1)}
-\hlstd{A1} \hlkwb{=} \hlkwd{pmax}\hlstd{(}\hlnum{0}\hlstd{, Z1)}
-\hlstd{y_hat} \hlkwb{=} \hlstd{A1} \hlopt{%*%} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlopt{-}\hlnum{2}\hlstd{)}
+\hldef{X} \hlkwb{=} \hlkwd{matrix}\hldef{(}\hlkwd{c}\hldef{(}\hlnum{0}\hldef{,} \hlnum{0}\hldef{,}  \hlnum{1}\hldef{,} \hlnum{0}\hldef{,}  \hlnum{0}\hldef{,} \hlnum{1}\hldef{,}  \hlnum{1}\hldef{,} \hlnum{1}\hldef{),} \hlkwc{nrow} \hldef{=} \hlnum{4}\hldef{,} \hlkwc{byrow} \hldef{=} \hlnum{TRUE}\hldef{)}
+\hldef{W1} \hlkwb{=} \hlkwd{matrix}\hldef{(}\hlkwd{c}\hldef{(}\hlnum{1}\hldef{,} \hlnum{1}\hldef{,}  \hlnum{1}\hldef{,} \hlnum{1}\hldef{),} \hlkwc{nrow} \hldef{=} \hlnum{2}\hldef{,} \hlkwc{byrow} \hldef{=} \hlnum{TRUE}\hldef{)}
+\hldef{b1} \hlkwb{=} \hlkwd{c}\hldef{(}\hlnum{0}\hldef{,} \hlopt{-}\hlnum{1}\hldef{);  one_n} \hlkwb{=} \hlkwd{rep}\hldef{(}\hlnum{1}\hldef{,} \hlkwd{nrow}\hldef{(X))}
+\hldef{Z1} \hlkwb{=} \hldef{X} \hlopt{%*%} \hlkwd{t}\hldef{(W1)} \hlopt{+} \hldef{one_n} \hlopt{%*%} \hlkwd{t}\hldef{(b1)}
+\hldef{A1} \hlkwb{=} \hlkwd{pmax}\hldef{(}\hlnum{0}\hldef{, Z1)}
+\hldef{y_hat} \hlkwb{=} \hldef{A1} \hlopt{%*%} \hlkwd{c}\hldef{(}\hlnum{1}\hldef{,} \hlopt{-}\hlnum{2}\hldef{)}
 \end{alltt}
 
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in A1 \%*\% c(1, -2): non-conformable arguments}}\begin{alltt}
-\hlkwd{cbind}\hlstd{(X,} \hlkwc{A1} \hlstd{= A1,} \hlkwc{y_hat} \hlstd{=} \hlkwd{as.vector}\hlstd{(y_hat))}
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in `A1 \%*\% c(1, -2)`:\\\#\# ! non-conformable arguments}}\begin{alltt}
+\hlkwd{cbind}\hldef{(X,} \hlkwc{A1} \hldef{= A1,} \hlkwc{y_hat} \hldef{=} \hlkwd{as.vector}\hldef{(y_hat))}
 \end{alltt}
 
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): object 'y\_hat' not found}}\end{kframe}
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error:\\\#\# ! object 'y\_hat' not found}}\end{kframe}
 \end{knitrout}
 \end{frame}
 
@@ -1086,13 +1086,13 @@ Generate a centred 3D dataset ($n = 150, p = 3$) and compute its rank-$2$ PCA pr
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{set.seed}\hlstd{(}\hlnum{2740}\hlstd{); n} \hlkwb{=} \hlnum{150}\hlstd{; p} \hlkwb{=} \hlnum{3}\hlstd{; k} \hlkwb{=} \hlnum{2}
-\hlstd{M_mix} \hlkwb{=} \hlkwd{matrix}\hlstd{(}\hlkwd{c}\hlstd{(}\hlnum{3}\hlstd{,} \hlnum{2}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{0}\hlstd{,} \hlnum{1.5}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{0}\hlstd{,} \hlnum{0}\hlstd{,} \hlnum{0.3}\hlstd{),}
-               \hlkwc{nrow} \hlstd{=} \hlnum{3}\hlstd{,} \hlkwc{byrow} \hlstd{=} \hlnum{TRUE}\hlstd{)}
-\hlstd{X_raw} \hlkwb{=} \hlkwd{matrix}\hlstd{(}\hlkwd{rnorm}\hlstd{(n} \hlopt{*} \hlstd{p), n, p)} \hlopt{%*%} \hlstd{M_mix}
-\hlstd{X_tilde} \hlkwb{=} \hlkwd{scale}\hlstd{(X_raw,} \hlkwc{center} \hlstd{=} \hlnum{TRUE}\hlstd{,} \hlkwc{scale} \hlstd{=} \hlnum{FALSE}\hlstd{)}
-\hlstd{V_k} \hlkwb{=} \hlkwd{svd}\hlstd{(X_tilde)}\hlopt{$}\hlstd{v[,} \hlnum{1}\hlopt{:}\hlstd{k]}
-\hlstd{P_pca} \hlkwb{=} \hlstd{V_k} \hlopt{%*%} \hlkwd{t}\hlstd{(V_k)}
+\hlkwd{set.seed}\hldef{(}\hlnum{2740}\hldef{); n} \hlkwb{=} \hlnum{150}\hldef{; p} \hlkwb{=} \hlnum{3}\hldef{; k} \hlkwb{=} \hlnum{2}
+\hldef{M_mix} \hlkwb{=} \hlkwd{matrix}\hldef{(}\hlkwd{c}\hldef{(}\hlnum{3}\hldef{,} \hlnum{2}\hldef{,} \hlnum{1}\hldef{,} \hlnum{0}\hldef{,} \hlnum{1.5}\hldef{,} \hlnum{1}\hldef{,} \hlnum{0}\hldef{,} \hlnum{0}\hldef{,} \hlnum{0.3}\hldef{),}
+               \hlkwc{nrow} \hldef{=} \hlnum{3}\hldef{,} \hlkwc{byrow} \hldef{=} \hlnum{TRUE}\hldef{)}
+\hldef{X_raw} \hlkwb{=} \hlkwd{matrix}\hldef{(}\hlkwd{rnorm}\hldef{(n} \hlopt{*} \hldef{p), n, p)} \hlopt{%*%} \hldef{M_mix}
+\hldef{X_tilde} \hlkwb{=} \hlkwd{scale}\hldef{(X_raw,} \hlkwc{center} \hldef{=} \hlnum{TRUE}\hldef{,} \hlkwc{scale} \hldef{=} \hlnum{FALSE}\hldef{)}
+\hldef{V_k} \hlkwb{=} \hlkwd{svd}\hldef{(X_tilde)}\hlopt{$}\hldef{v[,} \hlnum{1}\hlopt{:}\hldef{k]}
+\hldef{P_pca} \hlkwb{=} \hldef{V_k} \hlopt{%*%} \hlkwd{t}\hldef{(V_k)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -1105,15 +1105,15 @@ Now train a linear autoencoder ($k = 2$) by minimising $\|\widetilde{X} - \widet
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{ae_loss} \hlkwb{=} \hlkwa{function}\hlstd{(}\hlkwc{th}\hlstd{) \{}
-  \hlstd{W1} \hlkwb{=} \hlkwd{matrix}\hlstd{(th[}\hlnum{1}\hlopt{:}\hlnum{6}\hlstd{], p, k);  W2} \hlkwb{=} \hlkwd{matrix}\hlstd{(th[}\hlnum{7}\hlopt{:}\hlnum{12}\hlstd{], k, p)}
-  \hlkwd{sum}\hlstd{((X_tilde} \hlopt{-} \hlstd{X_tilde} \hlopt{%*%} \hlstd{W1} \hlopt{%*%} \hlstd{W2)}\hlopt{^}\hlnum{2}\hlstd{)}
-\hlstd{\}}
-\hlstd{opt} \hlkwb{=} \hlkwd{optim}\hlstd{(}\hlkwd{rnorm}\hlstd{(}\hlnum{12}\hlstd{,} \hlkwc{sd} \hlstd{=} \hlnum{0.5}\hlstd{), ae_loss,} \hlkwc{method} \hlstd{=} \hlstr{"BFGS"}\hlstd{,}
-            \hlkwc{control} \hlstd{=} \hlkwd{list}\hlstd{(}\hlkwc{maxit} \hlstd{=} \hlnum{500}\hlstd{,} \hlkwc{reltol} \hlstd{=} \hlnum{1e-12}\hlstd{))}
-\hlstd{W1_hat} \hlkwb{=} \hlkwd{matrix}\hlstd{(opt}\hlopt{$}\hlstd{par[}\hlnum{1}\hlopt{:}\hlnum{6}\hlstd{], p, k)}
-\hlstd{W2_hat} \hlkwb{=} \hlkwd{matrix}\hlstd{(opt}\hlopt{$}\hlstd{par[}\hlnum{7}\hlopt{:}\hlnum{12}\hlstd{], k, p)}
-\hlstd{P_ae} \hlkwb{=} \hlstd{W1_hat} \hlopt{%*%} \hlstd{W2_hat}
+\hldef{ae_loss} \hlkwb{=} \hlkwa{function}\hldef{(}\hlkwc{th}\hldef{) \{}
+  \hldef{W1} \hlkwb{=} \hlkwd{matrix}\hldef{(th[}\hlnum{1}\hlopt{:}\hlnum{6}\hldef{], p, k);  W2} \hlkwb{=} \hlkwd{matrix}\hldef{(th[}\hlnum{7}\hlopt{:}\hlnum{12}\hldef{], k, p)}
+  \hlkwd{sum}\hldef{((X_tilde} \hlopt{-} \hldef{X_tilde} \hlopt{%*%} \hldef{W1} \hlopt{%*%} \hldef{W2)}\hlopt{^}\hlnum{2}\hldef{)}
+\hldef{\}}
+\hldef{opt} \hlkwb{=} \hlkwd{optim}\hldef{(}\hlkwd{rnorm}\hldef{(}\hlnum{12}\hldef{,} \hlkwc{sd} \hldef{=} \hlnum{0.5}\hldef{), ae_loss,} \hlkwc{method} \hldef{=} \hlsng{"BFGS"}\hldef{,}
+            \hlkwc{control} \hldef{=} \hlkwd{list}\hldef{(}\hlkwc{maxit} \hldef{=} \hlnum{500}\hldef{,} \hlkwc{reltol} \hldef{=} \hlnum{1e-12}\hldef{))}
+\hldef{W1_hat} \hlkwb{=} \hlkwd{matrix}\hldef{(opt}\hlopt{$}\hldef{par[}\hlnum{1}\hlopt{:}\hlnum{6}\hldef{], p, k)}
+\hldef{W2_hat} \hlkwb{=} \hlkwd{matrix}\hldef{(opt}\hlopt{$}\hldef{par[}\hlnum{7}\hlopt{:}\hlnum{12}\hldef{], k, p)}
+\hldef{P_ae} \hlkwb{=} \hldef{W1_hat} \hlopt{%*%} \hldef{W2_hat}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -1126,7 +1126,7 @@ First, inspect the PCA projector $P_{\text{PCA}} = V_k V_k^T$:
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{round}\hlstd{(P_pca,} \hlnum{4}\hlstd{)}
+\hlkwd{round}\hldef{(P_pca,} \hlnum{4}\hldef{)}
 \end{alltt}
 \begin{verbatim}
 ##         [,1]   [,2]    [,3]
@@ -1144,7 +1144,7 @@ Now compare the learned autoencoder projector $P_{\text{AE}} = \hat{W}_1 \hat{W}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{round}\hlstd{(P_ae,} \hlnum{4}\hlstd{)}
+\hlkwd{round}\hldef{(P_ae,} \hlnum{4}\hldef{)}
 \end{alltt}
 \begin{verbatim}
 ##         [,1]   [,2]    [,3]
@@ -1153,7 +1153,7 @@ Now compare the learned autoencoder projector $P_{\text{AE}} = \hat{W}_1 \hat{W}
 ## [3,] -0.0832 0.4615  0.3265
 \end{verbatim}
 \begin{alltt}
-\hlkwd{max}\hlstd{(}\hlkwd{abs}\hlstd{(P_pca} \hlopt{-} \hlstd{P_ae))}
+\hlkwd{max}\hldef{(}\hlkwd{abs}\hldef{(P_pca} \hlopt{-} \hldef{P_ae))}
 \end{alltt}
 \begin{verbatim}
 ## [1] 4.12129e-08
@@ -1492,13 +1492,13 @@ H = \operatorname{ReLU}(Z) =
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{A} \hlkwb{=} \hlkwd{matrix}\hlstd{(}\hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{0}\hlstd{,}  \hlnum{1}\hlstd{,} \hlnum{0}\hlstd{,} \hlnum{1}\hlstd{,}  \hlnum{0}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{0}\hlstd{),} \hlkwc{nrow} \hlstd{=} \hlnum{3}\hlstd{,} \hlkwc{byrow} \hlstd{=} \hlnum{TRUE}\hlstd{)}
-\hlstd{A_tilde} \hlkwb{=} \hlstd{A} \hlopt{+} \hlkwd{diag}\hlstd{(}\hlnum{3}\hlstd{)}
-\hlstd{S_rw} \hlkwb{=} \hlkwd{diag}\hlstd{(}\hlnum{1} \hlopt{/} \hlkwd{rowSums}\hlstd{(A_tilde))} \hlopt{%*%} \hlstd{A_tilde}
-\hlstd{X} \hlkwb{=} \hlkwd{matrix}\hlstd{(}\hlkwd{c}\hlstd{(}\hlnum{2}\hlstd{,} \hlnum{0}\hlstd{,}  \hlnum{0}\hlstd{,} \hlnum{6}\hlstd{,}  \hlnum{4}\hlstd{,} \hlnum{0}\hlstd{),} \hlkwc{nrow} \hlstd{=} \hlnum{3}\hlstd{,} \hlkwc{byrow} \hlstd{=} \hlnum{TRUE}\hlstd{)}
-\hlstd{W} \hlkwb{=} \hlkwd{matrix}\hlstd{(}\hlkwd{c}\hlstd{(}\hlnum{2}\hlstd{,} \hlopt{-}\hlnum{1}\hlstd{,}  \hlopt{-}\hlnum{1}\hlstd{,} \hlnum{1}\hlstd{),} \hlkwc{nrow} \hlstd{=} \hlnum{2}\hlstd{,} \hlkwc{byrow} \hlstd{=} \hlnum{TRUE}\hlstd{)}
-\hlstd{SX} \hlkwb{=} \hlstd{S_rw} \hlopt{%*%} \hlstd{X;  Z} \hlkwb{=} \hlstd{SX} \hlopt{%*%} \hlstd{W;  H} \hlkwb{=} \hlkwd{pmax}\hlstd{(}\hlnum{0}\hlstd{, Z)}
-\hlkwd{cbind}\hlstd{(}\hlkwc{SX} \hlstd{= SX,} \hlkwc{Z} \hlstd{= Z,} \hlkwc{H} \hlstd{= H)}
+\hldef{A} \hlkwb{=} \hlkwd{matrix}\hldef{(}\hlkwd{c}\hldef{(}\hlnum{0}\hldef{,} \hlnum{1}\hldef{,} \hlnum{0}\hldef{,}  \hlnum{1}\hldef{,} \hlnum{0}\hldef{,} \hlnum{1}\hldef{,}  \hlnum{0}\hldef{,} \hlnum{1}\hldef{,} \hlnum{0}\hldef{),} \hlkwc{nrow} \hldef{=} \hlnum{3}\hldef{,} \hlkwc{byrow} \hldef{=} \hlnum{TRUE}\hldef{)}
+\hldef{A_tilde} \hlkwb{=} \hldef{A} \hlopt{+} \hlkwd{diag}\hldef{(}\hlnum{3}\hldef{)}
+\hldef{S_rw} \hlkwb{=} \hlkwd{diag}\hldef{(}\hlnum{1} \hlopt{/} \hlkwd{rowSums}\hldef{(A_tilde))} \hlopt{%*%} \hldef{A_tilde}
+\hldef{X} \hlkwb{=} \hlkwd{matrix}\hldef{(}\hlkwd{c}\hldef{(}\hlnum{2}\hldef{,} \hlnum{0}\hldef{,}  \hlnum{0}\hldef{,} \hlnum{6}\hldef{,}  \hlnum{4}\hldef{,} \hlnum{0}\hldef{),} \hlkwc{nrow} \hldef{=} \hlnum{3}\hldef{,} \hlkwc{byrow} \hldef{=} \hlnum{TRUE}\hldef{)}
+\hldef{W} \hlkwb{=} \hlkwd{matrix}\hldef{(}\hlkwd{c}\hldef{(}\hlnum{2}\hldef{,} \hlopt{-}\hlnum{1}\hldef{,}  \hlopt{-}\hlnum{1}\hldef{,} \hlnum{1}\hldef{),} \hlkwc{nrow} \hldef{=} \hlnum{2}\hldef{,} \hlkwc{byrow} \hldef{=} \hlnum{TRUE}\hldef{)}
+\hldef{SX} \hlkwb{=} \hldef{S_rw} \hlopt{%*%} \hldef{X;  Z} \hlkwb{=} \hldef{SX} \hlopt{%*%} \hldef{W;  H} \hlkwb{=} \hlkwd{pmax}\hldef{(}\hlnum{0}\hldef{, Z)}
+\hlkwd{cbind}\hldef{(}\hlkwc{SX} \hldef{= SX,} \hlkwc{Z} \hldef{= Z,} \hlkwc{H} \hldef{= H)}
 \end{alltt}
 \begin{verbatim}
 ##               H
@@ -1516,16 +1516,16 @@ Kipf and Welling (2017) showed on Zachary's Karate Club network ($n = 34$ vertic
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{G_karate} \hlkwb{=} \hlkwd{make_graph}\hlstd{(}\hlstr{"Zachary"}\hlstd{)}
-\hlstd{A_k} \hlkwb{=} \hlkwd{as.matrix}\hlstd{(}\hlkwd{as_adjacency_matrix}\hlstd{(G_karate));  n_k} \hlkwb{=} \hlkwd{nrow}\hlstd{(A_k)}
-\hlstd{A_tilde_k} \hlkwb{=} \hlstd{A_k} \hlopt{+} \hlkwd{diag}\hlstd{(n_k)}
-\hlstd{D_inv_sqrt} \hlkwb{=} \hlkwd{diag}\hlstd{(}\hlnum{1} \hlopt{/} \hlkwd{sqrt}\hlstd{(}\hlkwd{rowSums}\hlstd{(A_tilde_k)))}
-\hlstd{S_sym} \hlkwb{=} \hlstd{D_inv_sqrt} \hlopt{%*%} \hlstd{A_tilde_k} \hlopt{%*%} \hlstd{D_inv_sqrt}
-\hlkwd{set.seed}\hlstd{(}\hlnum{42}\hlstd{)}
-\hlstd{W1_k} \hlkwb{=} \hlkwd{matrix}\hlstd{(}\hlkwd{rnorm}\hlstd{(n_k} \hlopt{*} \hlnum{8}\hlstd{,} \hlkwc{sd} \hlstd{=} \hlnum{0.6}\hlstd{), n_k,} \hlnum{8}\hlstd{)}
-\hlstd{W2_k} \hlkwb{=} \hlkwd{matrix}\hlstd{(}\hlkwd{rnorm}\hlstd{(}\hlnum{8} \hlopt{*} \hlnum{2}\hlstd{,} \hlkwc{sd} \hlstd{=} \hlnum{0.6}\hlstd{),} \hlnum{8}\hlstd{,} \hlnum{2}\hlstd{)}
-\hlstd{H1_k} \hlkwb{=} \hlkwd{tanh}\hlstd{(S_sym} \hlopt{%*%} \hlkwd{diag}\hlstd{(n_k)} \hlopt{%*%} \hlstd{W1_k)}
-\hlstd{H2_k} \hlkwb{=} \hlkwd{tanh}\hlstd{(S_sym} \hlopt{%*%} \hlstd{H1_k} \hlopt{%*%} \hlstd{W2_k)}
+\hldef{G_karate} \hlkwb{=} \hlkwd{make_graph}\hldef{(}\hlsng{"Zachary"}\hldef{)}
+\hldef{A_k} \hlkwb{=} \hlkwd{as.matrix}\hldef{(}\hlkwd{as_adjacency_matrix}\hldef{(G_karate));  n_k} \hlkwb{=} \hlkwd{nrow}\hldef{(A_k)}
+\hldef{A_tilde_k} \hlkwb{=} \hldef{A_k} \hlopt{+} \hlkwd{diag}\hldef{(n_k)}
+\hldef{D_inv_sqrt} \hlkwb{=} \hlkwd{diag}\hldef{(}\hlnum{1} \hlopt{/} \hlkwd{sqrt}\hldef{(}\hlkwd{rowSums}\hldef{(A_tilde_k)))}
+\hldef{S_sym} \hlkwb{=} \hldef{D_inv_sqrt} \hlopt{%*%} \hldef{A_tilde_k} \hlopt{%*%} \hldef{D_inv_sqrt}
+\hlkwd{set.seed}\hldef{(}\hlnum{42}\hldef{)}
+\hldef{W1_k} \hlkwb{=} \hlkwd{matrix}\hldef{(}\hlkwd{rnorm}\hldef{(n_k} \hlopt{*} \hlnum{8}\hldef{,} \hlkwc{sd} \hldef{=} \hlnum{0.6}\hldef{), n_k,} \hlnum{8}\hldef{)}
+\hldef{W2_k} \hlkwb{=} \hlkwd{matrix}\hldef{(}\hlkwd{rnorm}\hldef{(}\hlnum{8} \hlopt{*} \hlnum{2}\hldef{,} \hlkwc{sd} \hldef{=} \hlnum{0.6}\hldef{),} \hlnum{8}\hldef{,} \hlnum{2}\hldef{)}
+\hldef{H1_k} \hlkwb{=} \hlkwd{tanh}\hldef{(S_sym} \hlopt{%*%} \hlkwd{diag}\hldef{(n_k)} \hlopt{%*%} \hldef{W1_k)}
+\hldef{H2_k} \hlkwb{=} \hlkwd{tanh}\hldef{(S_sym} \hlopt{%*%} \hldef{H1_k} \hlopt{%*%} \hldef{W2_k)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -1543,14 +1543,14 @@ Apply $S_{\text{rw}} = \tilde{D}^{-1}\tilde{A}$ for $k = 1, 5, 50$ steps to init
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{S_rw_k} \hlkwb{=} \hlkwd{diag}\hlstd{(}\hlnum{1} \hlopt{/} \hlkwd{rowSums}\hlstd{(A_tilde_k))} \hlopt{%*%} \hlstd{A_tilde_k;}  \hlkwd{set.seed}\hlstd{(}\hlnum{7}\hlstd{)}
-\hlstd{X0_k} \hlkwb{=} \hlkwd{cbind}\hlstd{(}\hlkwd{ifelse}\hlstd{(faction} \hlopt{==} \hlnum{1}\hlstd{,} \hlopt{-}\hlnum{1}\hlstd{,} \hlnum{1}\hlstd{)} \hlopt{+} \hlkwd{rnorm}\hlstd{(n_k,} \hlkwc{sd} \hlstd{=} \hlnum{0.4}\hlstd{),}
-             \hlkwd{rnorm}\hlstd{(n_k,} \hlkwc{sd} \hlstd{=} \hlnum{0.6}\hlstd{))}
-\hlstd{mat_pow} \hlkwb{=} \hlkwa{function}\hlstd{(}\hlkwc{M}\hlstd{,} \hlkwc{k}\hlstd{)}
-  \hlkwd{Reduce}\hlstd{(`%*%`,} \hlkwd{replicate}\hlstd{(k, M,} \hlkwc{simplify} \hlstd{=} \hlnum{FALSE}\hlstd{))}
-\hlstd{X_step1}  \hlkwb{=} \hlstd{S_rw_k} \hlopt{%*%} \hlstd{X0_k}
-\hlstd{X_step5}  \hlkwb{=} \hlkwd{mat_pow}\hlstd{(S_rw_k,} \hlnum{5}\hlstd{)} \hlopt{%*%} \hlstd{X0_k}
-\hlstd{X_step50} \hlkwb{=} \hlkwd{mat_pow}\hlstd{(S_rw_k,} \hlnum{50}\hlstd{)} \hlopt{%*%} \hlstd{X0_k}
+\hldef{S_rw_k} \hlkwb{=} \hlkwd{diag}\hldef{(}\hlnum{1} \hlopt{/} \hlkwd{rowSums}\hldef{(A_tilde_k))} \hlopt{%*%} \hldef{A_tilde_k;}  \hlkwd{set.seed}\hldef{(}\hlnum{7}\hldef{)}
+\hldef{X0_k} \hlkwb{=} \hlkwd{cbind}\hldef{(}\hlkwd{ifelse}\hldef{(faction} \hlopt{==} \hlnum{1}\hldef{,} \hlopt{-}\hlnum{1}\hldef{,} \hlnum{1}\hldef{)} \hlopt{+} \hlkwd{rnorm}\hldef{(n_k,} \hlkwc{sd} \hldef{=} \hlnum{0.4}\hldef{),}
+             \hlkwd{rnorm}\hldef{(n_k,} \hlkwc{sd} \hldef{=} \hlnum{0.6}\hldef{))}
+\hldef{mat_pow} \hlkwb{=} \hlkwa{function}\hldef{(}\hlkwc{M}\hldef{,} \hlkwc{k}\hldef{)}
+  \hlkwd{Reduce}\hldef{(`%*%`,} \hlkwd{replicate}\hldef{(k, M,} \hlkwc{simplify} \hldef{=} \hlnum{FALSE}\hldef{))}
+\hldef{X_step1}  \hlkwb{=} \hldef{S_rw_k} \hlopt{%*%} \hldef{X0_k}
+\hldef{X_step5}  \hlkwb{=} \hlkwd{mat_pow}\hldef{(S_rw_k,} \hlnum{5}\hldef{)} \hlopt{%*%} \hldef{X0_k}
+\hldef{X_step50} \hlkwb{=} \hlkwd{mat_pow}\hldef{(S_rw_k,} \hlnum{50}\hldef{)} \hlopt{%*%} \hldef{X0_k}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -1563,9 +1563,9 @@ After $k = 50$ steps, every row of $S_{\text{rw}}^{50} X_0$ converges to the ran
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{pi_stat} \hlkwb{=} \hlkwd{rowSums}\hlstd{(A_tilde_k)} \hlopt{/} \hlkwd{sum}\hlstd{(A_tilde_k)}
-\hlkwd{rbind}\hlstd{(}\hlkwc{Row1_k50} \hlstd{= X_step50[}\hlnum{1}\hlstd{, ],}
-      \hlkwc{Stat_avg} \hlstd{=} \hlkwd{as.vector}\hlstd{(}\hlkwd{t}\hlstd{(pi_stat)} \hlopt{%*%} \hlstd{X0_k))}
+\hldef{pi_stat} \hlkwb{=} \hlkwd{rowSums}\hldef{(A_tilde_k)} \hlopt{/} \hlkwd{sum}\hldef{(A_tilde_k)}
+\hlkwd{rbind}\hldef{(}\hlkwc{Row1_k50} \hldef{= X_step50[}\hlnum{1}\hldef{, ],}
+      \hlkwc{Stat_avg} \hldef{=} \hlkwd{as.vector}\hldef{(}\hlkwd{t}\hldef{(pi_stat)} \hlopt{%*%} \hldef{X0_k))}
 \end{alltt}
 \begin{verbatim}
 ##               [,1]      [,2]

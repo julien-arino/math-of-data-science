@@ -62,11 +62,65 @@ L_comp = as.matrix(laplacian_matrix(G_comp))
 ev_comp = eigen(L_comp, symmetric = TRUE)
 
 
+## ----plot-three-components,echo=FALSE,fig.width=8,fig.height=4.2--------------
+lay_comp = matrix(c(
+  -1.00,  0.80,
+  -1.00, -0.80,
+  -0.42,  0.00,
+  -0.02, -0.55,
+   0.22,  0.55,
+   0.46, -0.55,
+   0.95,  0.65,
+   0.95, -0.65
+), ncol = 2, byrow = TRUE)
+par(mar = c(0.5, 0.5, 2.5, 0.5))
+plot(G_comp, layout = lay_comp, asp = 0.50,
+     xlim = c(-1.25, 1.25), ylim = c(-1.35, 1.35),
+     vertex.color = "grey88",
+     vertex.size = 24,
+     vertex.label.cex = 1.2,
+     vertex.label.color = "black",
+     edge.color = "grey30",
+     edge.width = 2.5,
+     main = "Graph G_comp on 8 vertices")
+
+
 ## ----three-components-R,echo=TRUE---------------------------------------------
 # Eigenvalues of L in ascending order
 round(rev(ev_comp$values), 4)
 # Number of zero eigenvalues (up to numerical precision)
 sum(abs(ev_comp$values) < 1e-10)
+
+
+## ----plot-three-components-highlighted,echo=FALSE,fig.width=8,fig.height=4.2----
+# Group vertices by identical rows in the zero-eigenvector subspace
+V0_comp = ev_comp$vectors[, abs(ev_comp$values) < 1e-10, drop = FALSE]
+V0_keys = apply(round(V0_comp, 6) + 0, 1, paste, collapse = ",")
+comp_id = match(V0_keys, unique(V0_keys))
+comp_groups = split(seq_len(vcount(G_comp)), comp_id)
+
+palette_fill = c("lightskyblue", "darkseagreen2", "salmon")
+mark_fill = adjustcolor(palette_fill, alpha.f = 0.25)
+mark_border = c("dodgerblue3", "forestgreen", "firebrick3")
+
+par(mar = c(2.5, 0.5, 2.5, 0.5))
+plot(G_comp, layout = lay_comp, asp = 0.50,
+     xlim = c(-1.25, 1.25), ylim = c(-1.35, 1.35),
+     mark.groups = comp_groups,
+     mark.col = mark_fill,
+     mark.border = mark_border,
+     mark.expand = 18,
+     vertex.color = palette_fill[comp_id],
+     vertex.size = 24,
+     vertex.label.cex = 1.2,
+     vertex.label.color = "black",
+     edge.color = "grey30",
+     edge.width = 2.5,
+     main = "Connected components identified from the 3 zero-eigenvectors")
+legend("bottom", inset = c(0, -0.14), xpd = TRUE,
+       legend = c("Component 1", "Component 2", "Component 3"),
+       pt.bg = palette_fill, col = mark_border,
+       pch = 21, pt.cex = 2, horiz = TRUE, bty = "n", cex = 1.05)
 
 
 ## ----barbell-R-setup,echo=TRUE------------------------------------------------

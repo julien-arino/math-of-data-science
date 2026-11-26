@@ -340,18 +340,24 @@ To get a sense of that, we dump a few random rows
 \hldef{data_new[}\hlkwd{sort}\hldef{(}\hlkwd{unique}\hldef{(}\hlkwd{c}\hldef{(}\hlnum{1}\hldef{,}\hlkwd{sample}\hldef{(}\hlkwd{nrow}\hldef{(data_new),} \hlnum{4}\hldef{)))), ]}
 \end{alltt}
 \begin{verbatim}
-##      GEOGRAPHY.NAME                              CHARACTERISTIC YEAR.S.
-## 1            Canada                   Population (in thousands)    1956
-## 1264    Nova Scotia                 % of four-person households    2011
-## 1741  New Brunswick                % of married-couple families    2011
-## 7960       Edmonton Population by single years of age: 26 years    2011
-## 8822      Vancouver Population by single years of age: 67 years    2011
-##         TOTAL FLAG_TOTAL
-## 1    16081.00           
-## 1264    12.27           
-## 1741    67.88           
-## 7960 19490.00           
-## 8822 19345.00
+##      GEOGRAPHY.NAME
+## 1            Canada
+## 1783  New Brunswick
+## 3829       Kingston
+## 5317         Guelph
+## 6385       Manitoba
+##                                                                                    CHARACTERISTIC
+## 1                                                                       Population (in thousands)
+## 1783 Mother-tongue retention (partial - language spoken regularly at home): Non-official language
+## 3829                                                   Population by single years of age: 5 years
+## 5317                                                  Population by single years of age: 29 years
+## 6385                                                      % of the population aged 15 to 64 years
+##      YEAR.S.   TOTAL FLAG_TOTAL
+## 1       1956 16081.0           
+## 1783    2011    24.1           
+## 3829    2011  1575.0           
+## 5317    2011  1915.0           
+## 6385    1996    64.4
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -880,7 +886,7 @@ Access slots using @. For instance, the GA finds the coefficients
 \end{alltt}
 \begin{verbatim}
 ##            x1        x2
-## [1,] 3.000455 0.4998473
+## [1,] 2.997106 0.5011015
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -891,7 +897,7 @@ with fitness value (i.e., $\|\be\|$)
 \hlopt{-}\hldef{GA}\hlopt{@}\hlkwc{fitnessValue}
 \end{alltt}
 \begin{verbatim}
-## [1] 1.224745
+## [1] 1.224746
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
