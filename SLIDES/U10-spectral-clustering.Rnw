@@ -680,34 +680,7 @@ In particular, for an unweighted simple graph ($a_{ij} \in \{0, 1\}$),
 \end{frame}
 
 
-\begin{frame}{Proof of Theorem~\ref{th:laplacian-quadratic-form} (Method 1 -- step 1)}
-Let $\bx = (x_1, \ldots, x_n)^T \in \IR^n$.
-Using $L = D - A$ and $d_i = \sum_{j=1}^n a_{ij}$, we expand
-\begin{align*}
-\bx^T L \bx &= \bx^T D \bx - \bx^T A \bx = \sum_{i=1}^n d_i x_i^2 - \sum_{i=1}^n \sum_{j=1}^n a_{ij} x_i x_j \\
-&= \sum_{i=1}^n \left(\sum_{j=1}^n a_{ij}\right) x_i^2 - \sum_{i=1}^n \sum_{j=1}^n a_{ij} x_i x_j
-\end{align*}
-\vfill
-By symmetry $a_{ij} = a_{ji}$, relabelling dummy indices $i \leftrightarrow j$ gives
-\[
-\sum_{i=1}^n \sum_{j=1}^n a_{ij} x_i^2 = \sum_{i=1}^n \sum_{j=1}^n a_{ji} x_j^2 = \sum_{i=1}^n \sum_{j=1}^n a_{ij} x_j^2
-\]
-\end{frame}
-
-
-\begin{frame}{Proof of Theorem~\ref{th:laplacian-quadratic-form} (Method 1 -- step 2)}
-Splitting the first sum into two equal halves using the symmetry identity yields
-\begin{align*}
-\bx^T L \bx &= \frac{1}{2}\sum_{i=1}^n \sum_{j=1}^n a_{ij} x_i^2 - \sum_{i=1}^n \sum_{j=1}^n a_{ij} x_i x_j + \frac{1}{2}\sum_{i=1}^n \sum_{j=1}^n a_{ij} x_j^2 \\
-&= \frac{1}{2}\sum_{i=1}^n \sum_{j=1}^n a_{ij}\left(x_i^2 - 2x_i x_j + x_j^2\right) \\
-&= \frac{1}{2}\sum_{i=1}^n \sum_{j=1}^n a_{ij}(x_i - x_j)^2
-\end{align*}
-\vfill
-Since each undirected edge $\{i, j\} \in E$ appears twice in the double sum (as $(i, j)$ and $(j, i)$), the factor $1/2$ cancels when summing over $\{i, j\} \in E$ \hfill $\qed$
-\end{frame}
-
-
-\begin{frame}{Proof of Theorem~\ref{th:laplacian-quadratic-form} (Method 2: via the incidence matrix)}
+\begin{frame}{Proof of Theorem~\ref{th:laplacian-quadratic-form} (via the incidence matrix)}
 For an unweighted graph $G = (V, E)$ with $m = |E|$ edges, Proposition~\ref{prop:incidence-laplacian} gives $L = B^T B$, where $B \in \M_{mn}$ is the oriented incidence matrix
 \vfill
 For any $\bx \in \IR^n$, the $k$th entry of $B\bx \in \IR^m$ corresponding to oriented edge $e_k = (i, j)$ is
