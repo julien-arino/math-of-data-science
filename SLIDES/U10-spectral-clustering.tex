@@ -99,8 +99,27 @@ When a matrix $M \in \M_n(\IR)$ is symmetric ($M^T = M$), the spectral theorem g
 \vfill
 \item Eigenvectors from distinct eigenspaces are \textbf{mutually orthogonal}, and $\IR^n$ has an \textbf{orthonormal basis of eigenvectors} $\{\bv_1, \ldots, \bv_n\}$
 \vfill
-\item Eigenvalues and eigenvectors are characterised variationally through the \textbf{quadratic form} $\bx^T M \bx$ and the \textbf{Rayleigh quotient} $\dfrac{\bx^T M \bx}{\bx^T \bx}$
+\item Eigenvalues and eigenvectors are characterised variationally through the \textbf{quadratic form} $\bx^T M \bx$ and the \textbf{Rayleigh quotient} $(\bx^T M \bx)/(\bx^T \bx)$
 \end{enumerate}
+\end{frame}
+
+
+\begin{frame}{Quadratic form, Rayleigh quotient and variational characterisation}
+For a real symmetric matrix $M \in \M_n(\IR)$ with eigenvalues $\lambda_1 \le \lambda_2 \le \cdots \le \lambda_n$ and any $\bx \in \IR^n \setminus \{\b0\}$:
+\vfill
+\begin{itemize}
+\item The \defword{quadratic form} $\bx^T M \bx = \sum_{i,j=1}^n m_{ij} x_i x_j \in \IR$ assigns a single real number to $\bx$
+\vfill
+\item The \defword{Rayleigh quotient} normalises it by $\|\bx\|_2^2 = \bx^T \bx$ so that scaling $\bx$ has no effect:
+\[
+R_M(\bx) = \frac{\bx^T M \bx}{\bx^T \bx}
+\]
+\item \textbf{Variational characterisation:} eigenvalues are the extreme values of $R_M(\bx)$ over $\IR^n \setminus \{\b0\}$, attained at the corresponding eigenvectors,
+\[
+\lambda_1 = \min_{\bx \neq \b0} R_M(\bx), \qquad \lambda_n = \max_{\bx \neq \b0} R_M(\bx)
+\]
+and restricting to $\bx \perp \bv_1$ yields $\lambda_2 = \min_{\bx \perp \bv_1,\, \bx \neq \b0} R_M(\bx)$ (used for the Fiedler vector later in this unit)
+\end{itemize}
 \end{frame}
 
 
