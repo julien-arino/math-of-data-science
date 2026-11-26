@@ -139,13 +139,13 @@ Notice that the trace of $A$ is $\tr(A) = \sum_{i=1}^n a_{ii} = 0$, so the $n$ r
 \begin{frame}{Weighted similarity graphs}
 In data science, edges often carry a nonnegative weight measuring the \defword{similarity} (or affinity) between vertices $i$ and $j$
 \vfill
-\begin{definition}[Weighted similarity graph and weight matrix]
+\begin{importantdefinition}[Weighted similarity graph and weight matrix]
 A \defword{weighted undirected graph} $G = (V, E, W)$ has a symmetric weight matrix $W = [w_{ij}] \in \M_n(\IRplus)$ satisfying
 \[
 w_{ij} = w_{ji} \ge 0 \quad (\forall i, j = 1, \ldots, n) \qquad \text{and} \qquad w_{ii} = 0 \quad (\forall i = 1, \ldots, n)
 \]
 Here $w_{ij} > 0$ if $\{i, j\} \in E$ and $w_{ij} = 0$ if $\{i, j\} \notin E$
-\end{definition}
+\end{importantdefinition}
 \vfill
 \begin{itemize}
 \item Large $w_{ij}$ means vertices $i$ and $j$ are \textbf{strongly connected} (highly similar)
@@ -316,6 +316,44 @@ In all three constructions, the scale parameter controls which pairs are treated
 \end{columns}
 \vfill
 In what follows, we write $A = [a_{ij}]$ for the adjacency or similarity matrix (whether $a_{ij} \in \{0, 1\}$ or $a_{ij} = w_{ij} \ge 0$): all formulas hold identically in both cases
+\end{frame}
+
+
+\begin{frame}{What is $k$-means clustering?}
+Before comparing $k$-means to a similarity graph, let us recall what \defword{$k$-means clustering} does
+\vfill
+Given $n$ points $\bx_1, \ldots, \bx_n \in \IR^p$ and a chosen number of groups $k$, $k$-means summarises the dataset with $k$ representative centres (\defword{centroids}) so that each point sits close to its assigned centre
+\vfill
+Starting from $k$ initial centroids, it alternates two steps:
+\begin{enumerate}
+\item \textbf{Assign:} place each point into the cluster of its nearest centroid in Euclidean distance
+\vfill
+\item \textbf{Update:} move each centroid to the average position (mean) of all points currently assigned to it
+\end{enumerate}
+\vfill
+These two steps repeat until the cluster assignments stop changing
+\vfill
+Because each point is assigned to its \emph{nearest} centroid, the boundaries between clusters are straight lines (hyperplanes), so $k$-means can only form \textbf{convex} clusters
+\end{frame}
+
+
+\begin{frame}{Mathematical formulation of $k$-means}
+Given $\bx_1, \ldots, \bx_n \in \IR^p$ and $k \ge 2$, choose a partition $C_1, \ldots, C_k$ of $\{1, \ldots, n\}$ and centroids $\bmu_1, \ldots, \bmu_k \in \IR^p$ minimising
+\[
+J(C_1, \ldots, C_k; \bmu_1, \ldots, \bmu_k) = \sum_{\ell=1}^k \sum_{i \in C_\ell} \|\bx_i - \bmu_\ell\|_2^2
+\]
+\textbf{Lloyd's algorithm} alternates two updates from initial centroids $\bmu_1^{(0)}, \ldots, \bmu_k^{(0)}$:
+\begin{enumerate}
+\item \textbf{Assignment} (fix centroids, assign each point to its nearest centroid):
+\[
+C_\ell^{(t)} = \Bigl\{i \in \{1, \ldots, n\} : \|\bx_i - \bmu_\ell^{(t)}\|_2^2 \le \|\bx_i - \bmu_m^{(t)}\|_2^2 \text{ for all } m\Bigr\}
+\]
+\item \textbf{Update} (fix clusters, recompute each centroid as the cluster mean):
+\[
+\bmu_\ell^{(t+1)} = \frac{1}{|C_\ell^{(t)}|} \sum_{i \in C_\ell^{(t)}} \bx_i, \qquad \ell = 1, \ldots, k
+\]
+\end{enumerate}
+Each step lowers $J$ to a local minimum; in R, \texttt{kmeans(X, centers = k, nstart = 20)} keeps the best of $20$ random starts
 \end{frame}
 
 
@@ -1515,7 +1553,7 @@ Using $p(\lambda) = \lambda^2 - 3\lambda + 1$, we get
 \vfill
 The quadratic formula gives $\lambda = (4 \pm \sqrt{16 - 8})/2 = 2 \pm \sqrt{2}$, so the four eigenvalues in ascending order are
 \[
-\lambda_1 = 0, \qquad \lambda_2 = 2 - \sqrt{2} \approx 0.586, \qquad \lambda_3 = 2, \qquad \lambda_4 = 2 + \sqrt{2} \approx 3.414
+\lambda_1 = 0, \qquad \lambda_2 = 2 - \sqrt{2}, \qquad \lambda_3 = 2, \qquad \lambda_4 = 2 + \sqrt{2}
 \]
 (Quick check: $\lambda_1 + \lambda_2 + \lambda_3 + \lambda_4 = 6 = \tr(L)$)
 \end{frame}
@@ -1561,7 +1599,6 @@ Because eigenvectors are defined up to a non-zero scalar multiple, set $x_1 = 1$
 Therefore, the Fiedler vector of $P_4$ is
 \[
 \bv_2 = \begin{pmatrix} 1, & \sqrt{2}-1, & 1-\sqrt{2}, & -1 \end{pmatrix}^T
-\approx \begin{pmatrix} 1, & 0.414, & -0.414, & -1 \end{pmatrix}^T
 \]
 \end{frame}
 
@@ -1571,9 +1608,9 @@ Notice first that $\11^T \bv_2 = 1 + (\sqrt{2}-1) + (1-\sqrt{2}) - 1 = 0$, so $\
 \vfill
 \textbf{Step 3 -- Partition by the signs of $\bv_2$:}
 \begin{itemize}
-\item $v_{21} = 1 > 0$ and $v_{22} = \sqrt{2}-1 \approx 0.414 > 0 \implies S = \{1, 2\}$
+\item $v_{21} = 1 > 0$ and $v_{22} = \sqrt{2}-1 > 0 \implies S = \{1, 2\}$
 \vfill
-\item $v_{23} = 1-\sqrt{2} \approx -0.414 < 0$ and $v_{24} = -1 < 0 \implies \bar{S} = \{3, 4\}$
+\item $v_{23} = 1-\sqrt{2} < 0$ and $v_{24} = -1 < 0 \implies \bar{S} = \{3, 4\}$
 \vfill
 \item The spectral cut severing the middle edge $\{2, 3\}$ has $\mathsf{cut}(S, \bar{S}) = 1$
 \end{itemize}
@@ -1649,9 +1686,9 @@ Substitute $c = 1 - \lambda$ into $4c - 2 = \lambda c$:
 4(1 - \lambda) - 2 = \lambda(1 - \lambda) \iff \lambda^2 - 5\lambda + 2 = 0 \implies \lambda = \frac{5 \pm \sqrt{17}}{2}
 \]
 \vfill
-Taking the smaller root gives $\lambda_2 = (5 - \sqrt{17})/2 \approx 0.4384$ and $c = 1 - \lambda_2 = (\sqrt{17} - 3)/2 \approx 0.5616 > 0$:
+Taking the smaller root gives $\lambda_2 = (5 - \sqrt{17})/2$ and $c = 1 - \lambda_2 = (\sqrt{17} - 3)/2 > 0$, so
 \[
-\bv_2 \approx (1, \; 1, \; 0.562, \; -0.562, \; -1, \; -1)^T
+\bv_2 = \left(1, \; 1, \; \frac{\sqrt{17} - 3}{2}, \; \frac{3 - \sqrt{17}}{2}, \; -1, \; -1\right)^T
 \]
 Splitting by sign ($\ge 0$ vs $< 0$) gives $S = \{1, 2, 3\}$ and $\bar{S} = \{4, 5, 6\}$, cutting only the bridge $\{3, 4\}$!
 \end{frame}
